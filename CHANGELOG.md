@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.6
+
+### Patch Changes
+
+- a2f69dd: Move package-neutral Studio manifest persistence and runtime-sync signature helpers into the standalone Studio package under `@ankhorage/studio/manifestSync`.
+
 ## 0.0.5
 
 ### Patch Changes
