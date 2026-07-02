@@ -1,0 +1,12 @@
+graph LR
+  module_knip_config_ts["knip.config.ts"]
+  module_paradox_config_ts["paradox.config.ts"]
+  module_scripts_check_docs_ts["scripts/check-docs.ts"]
+  module_src_index_test_ts["src/index.test.ts"]
+  module_src_index_ts["src/index.ts"]
+  export_STUDIO_PACKAGE_BOUNDARY["STUDIO_PACKAGE_BOUNDARY"]
+  module_src_index_ts --> export_STUDIO_PACKAGE_BOUNDARY
+  export_STUDIO_PACKAGE_NAME["STUDIO_PACKAGE_NAME"]
+  module_src_index_ts --> export_STUDIO_PACKAGE_NAME
+  export_StudioPackageBoundary["StudioPackageBoundary"]
+  module_src_index_ts --> export_StudioPackageBoundary

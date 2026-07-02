@@ -1,0 +1,227 @@
+{
+  "packageName": "@ankhorage/studio",
+  "packageId": "@ankhorage/studio",
+  "description": "Standalone Studio authoring package for Ankhorage apps.",
+  "badges": [
+    {
+      "id": "license",
+      "label": "license",
+      "value": "MIT",
+      "color": "2563eb"
+    },
+    {
+      "id": "npm",
+      "label": "npm",
+      "value": "v0.0.1",
+      "color": "cb3837"
+    },
+    {
+      "id": "runtime",
+      "label": "runtime",
+      "value": "bun",
+      "color": "f59e0b"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "value": "strict",
+      "color": "2563eb"
+    },
+    {
+      "id": "eslint",
+      "label": "eslint",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "prettier",
+      "label": "prettier",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "build",
+      "label": "build",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "docs",
+      "label": "docs",
+      "value": "paradox",
+      "color": "0f766e"
+    }
+  ],
+  "usage": null,
+  "readmeUsage": [],
+  "config": null,
+  "entrypoints": ["src/index.ts"],
+  "modules": [
+    {
+      "path": "knip.config.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["default"]
+    },
+    {
+      "path": "paradox.config.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["default"]
+    },
+    {
+      "path": "scripts/check-docs.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/index.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/index.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": ["STUDIO_PACKAGE_BOUNDARY", "STUDIO_PACKAGE_NAME", "StudioPackageBoundary"]
+    }
+  ],
+  "exports": [
+    {
+      "name": "STUDIO_PACKAGE_BOUNDARY",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 9,
+        "column": 14
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "STUDIO_PACKAGE_NAME",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 1,
+        "column": 14
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioPackageBoundary",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "consumes",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "doesNotOwn",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "owns",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    }
+  ],
+  "components": [],
+  "sourceFunctions": [],
+  "sequenceScenarios": [],
+  "graphs": {
+    "imports": [
+      {
+        "fromPath": "src/index.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/index.test.ts"
+      }
+    ],
+    "calls": [
+      {
+        "fromSymbol": "knip.config.ts",
+        "toSymbol": "createKnipConfig",
+        "callExpression": "createKnipConfig",
+        "sourcePath": "knip.config.ts"
+      },
+      {
+        "fromSymbol": "paradox.config.ts",
+        "toSymbol": "defineParadoxConfig",
+        "callExpression": "defineParadoxConfig",
+        "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "scripts/check-docs.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/check-docs.ts"
+      },
+      {
+        "fromSymbol": "src/index.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromSymbol": "src/index.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromSymbol": "src/index.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/index.test.ts"
+      }
+    ],
+    "typeReferences": [],
+    "componentComposition": []
+  }
+}

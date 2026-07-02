@@ -1,0 +1,14 @@
+graph TD
+  package__ankhorage_studio["@ankhorage/studio"]
+  entrypoint_src_index_ts["src/index.ts"]
+  package__ankhorage_studio --> entrypoint_src_index_ts
+  module_knip_config_ts["knip.config.ts"]
+  package__ankhorage_studio -.-> module_knip_config_ts
+  module_paradox_config_ts["paradox.config.ts"]
+  package__ankhorage_studio -.-> module_paradox_config_ts
+  module_scripts_check_docs_ts["scripts/check-docs.ts"]
+  package__ankhorage_studio -.-> module_scripts_check_docs_ts
+  module_src_index_test_ts["src/index.test.ts"]
+  package__ankhorage_studio -.-> module_src_index_test_ts
+  module_src_index_test_ts --> module_src_index_ts
+  module_src_index_ts["src/index.ts"]

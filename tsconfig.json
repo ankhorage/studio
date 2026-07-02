@@ -15,11 +15,6 @@
     "baseUrl": ".",
     "types": ["bun", "node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "scripts/**/*.ts",
-    "knip.config.ts",
-    "paradox.config.ts"
-  ],
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "knip.config.ts", "paradox.config.ts"],
   "exclude": ["dist", "node_modules"]
 }
