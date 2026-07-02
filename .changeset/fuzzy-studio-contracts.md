@@ -1,5 +1,5 @@
 ---
-"@ankhorage/studio": patch
+'@ankhorage/studio': patch
 ---
 
 Add the first package-neutral Studio authoring contracts for manifest editing, selection state,
