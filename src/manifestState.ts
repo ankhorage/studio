@@ -310,8 +310,7 @@ export function insertStudioManifestNodeAtPlacement(args: {
   if (!activeScreenId) return null;
   const screen = manifest.screens[activeScreenId];
   if (!screen) return null;
-  if (!validateManifestNodePlacement(screen.root, placement, newNode.type, componentMeta))
-    return null;
+  if (!validateManifestNodePlacement(screen.root, placement, newNode.type, componentMeta)) return null;
 
   const insertion = insertChildAtIndex({
     node: screen.root,
@@ -458,10 +457,7 @@ export function updateStudioManifestTheme(
   };
 }
 
-export function deleteStudioManifestTheme(
-  manifest: StudioManifest,
-  themeId: string,
-): StudioManifest {
+export function deleteStudioManifestTheme(manifest: StudioManifest, themeId: string): StudioManifest {
   if (manifest.themes.length <= 1) return manifest;
 
   const themes = manifest.themes.filter((theme) => theme.id !== themeId);
@@ -594,12 +590,7 @@ export function findParentPathForScreenId(
     const routePath = [...routePathPrefix, route.name];
     if (route.screenId === screenId) return parentPath;
     if (route.navigator?.routes.length) {
-      const nested = findParentPathForScreenId(
-        route.navigator.routes,
-        screenId,
-        routePath,
-        routePath,
-      );
+      const nested = findParentPathForScreenId(route.navigator.routes, screenId, routePath, routePath);
       if (nested) return nested;
     }
   }
@@ -795,7 +786,7 @@ export function deleteStudioManifestScreen(
   let safeRoutes = removeScreenIdFromRoutes(manifest.navigator.routes, screenId);
 
   if (safeRoutes.length === 0 && remainingScreenIds.length > 0) {
-    const fallbackScreenId = remainingScreenIds[0];
+    const [fallbackScreenId] = remainingScreenIds;
     if (!fallbackScreenId) return { manifest, activeScreenId };
     const fallbackScreen = remainingScreens[fallbackScreenId];
     safeRoutes = [
@@ -972,9 +963,7 @@ function removeNodeFromManifestTree(root: UiNode, nodeId: string): UiNode | null
     return { ...root, children: filteredChildren };
   }
 
-  const nextChildren = root.children.map(
-    (child) => removeNodeFromManifestTree(child, nodeId) ?? child,
-  );
+  const nextChildren = root.children.map((child) => removeNodeFromManifestTree(child, nodeId) ?? child);
   const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
@@ -997,12 +986,8 @@ function moveNodeInManifestTree(root: UiNode, nodeId: string, direction: 'up' | 
     return { ...root, children: nextChildren };
   }
 
-  const nextChildren = root.children.map((child) =>
-    moveNodeInManifestTree(child, nodeId, direction),
-  );
-  const hasChanged = nextChildren.some(
-    (child, childIndex) => child !== root.children?.[childIndex],
-  );
+  const nextChildren = root.children.map((child) => moveNodeInManifestTree(child, nodeId, direction));
+  const hasChanged = nextChildren.some((child, childIndex) => child !== root.children?.[childIndex]);
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
 
@@ -1119,19 +1104,19 @@ function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
       continue;
     }
 
-    const result = removeNodeForMove({ node: child, nodeId });
-    if (result.removedNode) removedNode = result.removedNode;
-    nextChildren.push(result.node);
+    const { node: nextChild, removedNode: nextRemovedNode } = removeNodeForMove({
+      node: child,
+      nodeId,
+    });
+    if (nextRemovedNode) removedNode = nextRemovedNode;
+    nextChildren.push(nextChild);
   }
 
   if (!removedNode) return { node, removedNode: null };
   return { node: { ...node, children: nextChildren }, removedNode };
 }
 
-function adjustMovePlacement(args: {
-  source: NodeWithParent;
-  placement: NodePlacement;
-}): NodePlacement | null {
+function adjustMovePlacement(args: { source: NodeWithParent; placement: NodePlacement }): NodePlacement | null {
   const { source, placement } = args;
   if (!source.parent) return null;
   if (placement.referenceId === source.node.id) return null;
