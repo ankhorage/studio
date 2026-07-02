@@ -33,10 +33,7 @@ Where a mutation needs component placement rules, callers pass `StudioComponentM
 Use the manifest-state subpath when consuming these helpers:
 
 ```ts
-import {
-  updateStudioManifestNode,
-  addStudioManifestScreen,
-} from '@ankhorage/studio/manifestState';
+import { updateStudioManifestNode, addStudioManifestScreen } from '@ankhorage/studio/manifestState';
 ```
 
 The root package remains the public contracts and authoring model entrypoint. The manifest-state subpath is intentionally separate so `ankhorage4` can migrate its React hook shell incrementally.

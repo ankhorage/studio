@@ -8,7 +8,11 @@ sequenceDiagram
   participant_resolveInsertPlacement->>participant_findNodeWithParent: findNodeWithParent()
   participant_findNodeWithParent->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
   participant_visit-->>participant_visit: return
+  participant_visit-->>participant_visit: return
+  participant_visit-->>participant_findNodeWithParent: return
+  participant_findNodeWithParent->>participant_visit: visit()
   participant_visit-->>participant_findNodeWithParent: return
   participant_findNodeWithParent-->>participant_resolveInsertPlacement: return
   participant_resolveInsertPlacement->>participant_validateNodePlacement: validateNodePlacement()
