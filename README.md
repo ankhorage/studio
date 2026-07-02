@@ -7,8 +7,8 @@ This repository is the extraction target for the Studio code currently living in
 
 ## Ownership
 
-`@ankhorage/studio` owns Studio authoring and product contracts. Later extraction slices may
-move Studio-specific UI and Studio-specific commands here.
+@ankhorage/studio owns Studio authoring and product contracts. Later extraction slices may move
+Studio-specific UI and Studio-specific commands here.
 
 ## Consumes
 
