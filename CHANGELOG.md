@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.5
+
+### Patch Changes
+
+- 0575e2e: Move package-neutral Studio manifest state helpers into the standalone Studio package, including manifest fingerprinting, route tree helpers, node/screen/theme/data/module/OAuth mutations, and a manifest-state package subpath.
+
 ## 0.0.4
 
 ### Patch Changes
