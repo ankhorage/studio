@@ -71,11 +71,7 @@ export type StudioMode = 'light' | 'dark';
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers' | 'modules' | 'localization';
 export type StudioAdminRoutePath =
-  | '/'
-  | '/ankh/apis'
-  | '/ankh/auth'
-  | '/ankh/properties'
-  | '/ankh/theme';
+  '/' | '/ankh/apis' | '/ankh/auth' | '/ankh/properties' | '/ankh/theme';
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {
@@ -151,10 +147,7 @@ export type InsertCatalogEntryKind = 'component' | 'recipe';
 export type InsertCatalogEntryStatus = 'enabled' | 'disabled';
 
 export type InsertCatalogDisabledReasonCode =
-  | 'missing-meta'
-  | 'invalid-recipe'
-  | 'no-placement'
-  | 'not-direct';
+  'missing-meta' | 'invalid-recipe' | 'no-placement' | 'not-direct';
 
 export interface InsertRecipeNode {
   type: string;

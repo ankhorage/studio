@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { STUDIO_PACKAGE_BOUNDARY, STUDIO_PACKAGE_NAME, STUDIO_PUBLIC_CONTRACTS } from './index';
 import type {
   InsertCatalogEntry,
   NodePlacement,
@@ -9,6 +8,7 @@ import type {
   StudioEvent,
   StudioPanelId,
 } from './index';
+import { STUDIO_PACKAGE_BOUNDARY, STUDIO_PACKAGE_NAME, STUDIO_PUBLIC_CONTRACTS } from './index';
 
 describe('@ankhorage/studio', () => {
   test('exports the package name', () => {
