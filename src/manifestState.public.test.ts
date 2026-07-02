@@ -139,30 +139,29 @@ describe('manifestState public surface', () => {
     const rootNode = manifest.screens['screen-home']?.root;
     if (!rootNode) throw new Error('Expected screen-home root node.');
 
+    const appData = { collections: {} } as never;
+    const dataBindings = {
+      'text-1': { sourceId: 'source-1', path: '$.title' },
+    } as never;
+    const dataSources = {
+      'source-1': { id: 'source-1', type: 'static', config: {} },
+    } as never;
     const reordered = reorderStudioManifestScreens(
       manifest,
       [...manifest.navigator.routes].reverse(),
     );
-    const withData = updateStudioManifestAppData(manifest, { collections: {} } as never);
-    const withBindings = updateStudioManifestDataBindings(withData, {
-      'text-1': { sourceId: 'source-1', path: '$.title' },
-    } as never);
-    const withSources = updateStudioManifestDataSources(withBindings, {
-      'source-1': { id: 'source-1', type: 'static', config: {} },
-    } as never);
+    const withData = updateStudioManifestAppData(manifest, appData);
+    const withBindings = updateStudioManifestDataBindings(withData, dataBindings);
+    const withSources = updateStudioManifestDataSources(withBindings, dataSources);
     const activeTheme = setStudioManifestActiveThemeId(withSources, 'theme-1');
     const darkTheme = setStudioManifestActiveThemeMode(activeTheme, 'dark');
     const deletedTheme = deleteStudioManifestTheme(darkTheme, 'theme-1');
 
     expect(findNodeInManifest(rootNode, 'text-1')?.id).toBe('text-1');
     expect(reordered.navigator.routes.map((route) => route.name)).toEqual(['auth', '(app)']);
-    expect(withData.data).toEqual({ collections: {} });
-    expect(withBindings.dataBindings['text-1']).toEqual({ sourceId: 'source-1', path: '$.title' });
-    expect(withSources.dataSources['source-1']).toEqual({
-      id: 'source-1',
-      type: 'static',
-      config: {},
-    });
+    expect(withData.data).toBe(appData);
+    expect(withBindings.dataBindings).toBe(dataBindings);
+    expect(withSources.dataSources).toBe(dataSources);
     expect(darkTheme.activeThemeMode).toBe('dark');
     expect(deletedTheme.activeThemeId).toBe('theme-2');
   });
