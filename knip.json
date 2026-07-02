@@ -1,10 +1,4 @@
 {
-  "entry": [
-    "src/index.ts",
-    "eslint.config.mjs"
-  ],
-  "project": [
-    "src/**/*.ts",
-    "scripts/**/*.ts"
-  ]
+  "entry": ["src/index.ts", "eslint.config.mjs"],
+  "project": ["src/**/*.ts", "scripts/**/*.ts"]
 }
