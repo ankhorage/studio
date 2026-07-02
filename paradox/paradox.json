@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.4",
+      "value": "v0.0.5",
       "color": "cb3837"
     },
     {
@@ -234,6 +234,18 @@
         "updateStudioManifestOAuthProviders",
         "updateStudioManifestTheme"
       ]
+    },
+    {
+      "path": "src/manifestSync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/manifestSync.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/manifestSync.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": ["createStudioManifestSignature", "createStudioRuntimeSyncSignature"]
     }
   ],
   "exports": [
@@ -3787,6 +3799,51 @@
         "line": 1170,
         "column": 1
       }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthoringRootVariant",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.test.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRuntimeScreenSignatures",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioRuntimeSyncSignature",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioManifestSignature",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.ts",
+        "line": 37,
+        "column": 1
+      }
     }
   ],
   "sequenceScenarios": [
@@ -3976,6 +4033,21 @@
         "fromPath": "src/manifestState.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestState.ts"
+      },
+      {
+        "fromPath": "src/manifestSync.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromPath": "src/manifestSync.test.ts",
+        "toPath": "src/manifestSync.ts",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromPath": "src/manifestSync.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/manifestSync.ts"
       }
     ],
     "calls": [
@@ -5010,6 +5082,54 @@
         "toSymbol": "removeNodeForMove",
         "callExpression": "removeNodeForMove",
         "sourcePath": "src/manifestState.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "createAuthoringRootVariant",
+        "callExpression": "createAuthoringRootVariant",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "createStudioManifestSignature",
+        "callExpression": "createStudioManifestSignature",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "createStudioRuntimeSyncSignature",
+        "callExpression": "createStudioRuntimeSyncSignature",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioRuntimeSyncSignature",
+        "toSymbol": "createRuntimeScreenSignatures",
+        "callExpression": "createRuntimeScreenSignatures",
+        "sourcePath": "src/manifestSync.ts"
       }
     ],
     "typeReferences": [
