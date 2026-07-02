@@ -181,7 +181,9 @@ describe('@ankhorage/studio', () => {
       (candidate) => candidate.id === 'component:Text',
     );
 
-    expect(entry).toBeDefined();
+    if (!entry) {
+      throw new Error('Expected Text catalog entry.');
+    }
 
     const insertion = insertNodeAtPlacement({
       root,
@@ -189,14 +191,18 @@ describe('@ankhorage/studio', () => {
       componentMeta,
       makeNode: () =>
         createNodeFromCatalogEntry(
-          entry!,
+          entry,
           componentMeta,
           (prefix) => `${prefix?.toLowerCase() ?? 'node'}-created`,
         ),
     });
 
-    expect(insertion?.insertedNodeId).toBe('text-created');
-    expect(findNodeById(insertion!.root, 'text-created')?.props).toEqual({ children: 'Text' });
+    if (!insertion) {
+      throw new Error('Expected catalog entry insertion to succeed.');
+    }
+
+    expect(insertion.insertedNodeId).toBe('text-created');
+    expect(findNodeById(insertion.root, 'text-created')?.props).toEqual({ children: 'Text' });
   });
 
   test('moves a node to a resolved placement', () => {
@@ -208,9 +214,13 @@ describe('@ankhorage/studio', () => {
       componentMeta,
     });
 
-    expect(movement?.movedNodeId).toBe('text-a');
-    expect(findNodeById(movement!.root, 'section-a')?.children).toEqual([]);
-    expect(findNodeById(movement!.root, 'section-b')?.children?.[0]?.id).toBe('text-a');
+    if (!movement) {
+      throw new Error('Expected node movement to succeed.');
+    }
+
+    expect(movement.movedNodeId).toBe('text-a');
+    expect(findNodeById(movement.root, 'section-a')?.children).toEqual([]);
+    expect(findNodeById(movement.root, 'section-b')?.children?.[0]?.id).toBe('text-a');
   });
 
   test('updates node props and clones empty screen templates with new ids', () => {
