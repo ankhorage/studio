@@ -21,11 +21,11 @@ import {
   pathToKey,
   removeScreenIdFromRoutes,
   reorderStudioManifestScreens,
+  type ScreenRouteEntry,
+  type ScreenRouteGroup,
   setStudioManifestActiveThemeId,
   setStudioManifestActiveThemeMode,
   toCanonicalRoutePattern,
-  type ScreenRouteEntry,
-  type ScreenRouteGroup,
   updateNavigatorAtPath,
   updateStudioManifestAppData,
   updateStudioManifestDataBindings,
@@ -66,10 +66,7 @@ function createManifest(): StudioManifest {
     data: {},
     dataBindings: {},
     dataSources: {},
-    themes: [
-      createDefaultThemeConfig(0, 'theme-1'),
-      createDefaultThemeConfig(1, 'theme-2'),
-    ],
+    themes: [createDefaultThemeConfig(0, 'theme-1'), createDefaultThemeConfig(1, 'theme-2')],
     activeThemeId: 'theme-2',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
@@ -142,7 +139,10 @@ describe('manifestState public surface', () => {
     const rootNode = manifest.screens['screen-home']?.root;
     if (!rootNode) throw new Error('Expected screen-home root node.');
 
-    const reordered = reorderStudioManifestScreens(manifest, [...manifest.navigator.routes].reverse());
+    const reordered = reorderStudioManifestScreens(
+      manifest,
+      [...manifest.navigator.routes].reverse(),
+    );
     const withData = updateStudioManifestAppData(manifest, { collections: {} } as never);
     const withBindings = updateStudioManifestDataBindings(withData, {
       'text-1': { sourceId: 'source-1', path: '$.title' },

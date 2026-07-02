@@ -23,7 +23,11 @@ import {
 } from './manifestState';
 
 const componentMeta: StudioComponentMetaRegistry = {
-  Screen: { category: 'layout', allowedChildren: ['Section', 'Text', 'Button'], directManifestNode: true },
+  Screen: {
+    category: 'layout',
+    allowedChildren: ['Section', 'Text', 'Button'],
+    directManifestNode: true,
+  },
   Section: { category: 'layout', allowedChildren: ['Text', 'Button'], directManifestNode: true },
   Text: { category: 'component', allowedChildren: [], directManifestNode: true },
   Button: { category: 'component', allowedChildren: [], directManifestNode: true },
@@ -99,7 +103,9 @@ describe('manifestState', () => {
     const first = createManifest();
     const second = { ...first, data: { fingerprintProbe: true } } as StudioManifest;
 
-    expect(createStudioManifestFingerprint(first)).not.toBe(createStudioManifestFingerprint(second));
+    expect(createStudioManifestFingerprint(first)).not.toBe(
+      createStudioManifestFingerprint(second),
+    );
   });
 
   test('updates, inserts, deletes, and moves nodes', () => {
@@ -132,7 +138,12 @@ describe('manifestState', () => {
     });
     expect(moved?.movedNodeId).toBe('button-1');
 
-    const reordered = moveStudioManifestNode(moved?.manifest ?? updated, 'screen-home', 'text-1', 'down');
+    const reordered = moveStudioManifestNode(
+      moved?.manifest ?? updated,
+      'screen-home',
+      'text-1',
+      'down',
+    );
     const deleted = deleteStudioManifestNode(reordered, 'screen-home', 'text-1');
     expect(JSON.stringify(resolveActiveRootNode(deleted, 'screen-home'))).not.toContain('text-1');
     expect(deleted.dataBindings['text-1']).toBeUndefined();
@@ -145,10 +156,19 @@ describe('manifestState', () => {
       return `${prefix.toLowerCase()}-${idIndex}`;
     };
     const manifest = createManifest();
-    const added = addStudioManifestScreen({ manifest, name: 'New Screen', activeScreenId: 'screen-home', createId });
+    const added = addStudioManifestScreen({
+      manifest,
+      name: 'New Screen',
+      activeScreenId: 'screen-home',
+      createId,
+    });
 
     expect(added.activeScreenId).toBe('screen-1');
-    expect(added.manifest.navigator.routes.map((route) => route.name)).toEqual(['home', 'about', 'new-screen']);
+    expect(added.manifest.navigator.routes.map((route) => route.name)).toEqual([
+      'home',
+      'about',
+      'new-screen',
+    ]);
 
     const deleted = deleteStudioManifestScreen(added.manifest, 'screen-home', 'screen-home');
     expect(deleted.activeScreenId).toBe('screen-about');
