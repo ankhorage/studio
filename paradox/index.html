@@ -229,6 +229,18 @@
                 <small>57 functions</small>
               </button>
             </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/manifestSync.test.ts">
+                src/manifestSync.test.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/manifestSync.ts">
+                src/manifestSync.ts
+                <small>3 functions</small>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -239,7 +251,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>8</strong><span class="muted">modules</span></div>
+              <div><strong>10</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -392,6 +404,30 @@
                 <code>updateStudioManifestNode</code>,
                 <code>updateStudioManifestOAuthProviders</code>,
                 <code>updateStudioManifestTheme</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestSync.test.ts src/index.ts src/manifestSync.ts"
+            >
+              <h3>src/manifestSync.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/index.ts</code>,
+                <code>src/manifestSync.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestSync.ts src/index.ts createStudioManifestSignature createStudioRuntimeSyncSignature"
+            >
+              <h3>src/manifestSync.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>createStudioManifestSignature</code>,
+                <code>createStudioRuntimeSyncSignature</code>
               </p>
             </article>
           </section>
@@ -3257,6 +3293,13 @@
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_manifestState_ts
                 module_src_manifestState_ts --&gt; module_src_index_ts
+                module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestSync_test_ts
+                module_src_manifestSync_test_ts --&gt; module_src_index_ts
+                module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
+                module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestSync_ts
+                module_src_manifestSync_ts --&gt; module_src_index_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3288,6 +3331,13 @@ graph TD
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_manifestState_ts
   module_src_manifestState_ts --&gt; module_src_index_ts
+  module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestSync_test_ts
+  module_src_manifestSync_test_ts --&gt; module_src_index_ts
+  module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
+  module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestSync_ts
+  module_src_manifestSync_ts --&gt; module_src_index_ts
 </pre>
               </details>
             </article>
@@ -3306,14 +3356,18 @@ graph TD
                 module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
-                module_src_index_test_ts --&gt; module_src_index_ts
-                module_src_manifestState_public_test_ts --&gt; module_src_index_ts
-                module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
-                module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
-                module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
-                module_src_manifestState_test_ts --&gt; module_src_index_ts
-                module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
-                module_src_manifestState_ts --&gt; module_src_index_ts
+                module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+                module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;] module_src_index_test_ts
+                --&gt; module_src_index_ts module_src_manifestState_public_test_ts --&gt;
+                module_src_index_ts module_src_manifestState_public_test_ts --&gt;
+                module_src_manifestState_ts module_src_manifestState_routes_test_ts --&gt;
+                module_src_index_ts module_src_manifestState_routes_test_ts --&gt;
+                module_src_manifestState_ts module_src_manifestState_test_ts --&gt;
+                module_src_index_ts module_src_manifestState_test_ts --&gt;
+                module_src_manifestState_ts module_src_manifestState_ts --&gt; module_src_index_ts
+                module_src_manifestSync_test_ts --&gt; module_src_index_ts
+                module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
+                module_src_manifestSync_ts --&gt; module_src_index_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3327,6 +3381,8 @@ graph LR
   module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
+  module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+  module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
@@ -3335,6 +3391,9 @@ graph LR
   module_src_manifestState_test_ts --&gt; module_src_index_ts
   module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_ts --&gt; module_src_index_ts
+  module_src_manifestSync_test_ts --&gt; module_src_index_ts
+  module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
+  module_src_manifestSync_ts --&gt; module_src_index_ts
 </pre>
               </details>
             </article>
@@ -3350,6 +3409,8 @@ graph LR
                 module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
+                module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+                module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
                 export_ACTION_REGISTRY export_ActionDefinition[&quot;ActionDefinition&quot;]
                 module_src_index_ts --&gt; export_ActionDefinition export_ActionDefinition -.-&gt;
@@ -3550,6 +3611,8 @@ graph LR
   module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
+  module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
+  module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
   module_src_index_ts --&gt; export_ACTION_REGISTRY
   export_ActionDefinition[&quot;ActionDefinition&quot;]
@@ -4672,6 +4735,52 @@ sequenceDiagram
             <article class="item" data-search="isStyleRecord src/manifestState.ts ">
               <h3>isStyleRecord</h3>
               <p class="muted"><code>src/manifestState.ts:1170:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-manifestsync-test-ts"
+          class="view"
+          data-view="src/manifestSync.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/manifestSync.test.ts</h2>
+            <article class="item" data-search="createManifest src/manifestSync.test.ts ">
+              <h3>createManifest</h3>
+              <p class="muted"><code>src/manifestSync.test.ts:6:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createAuthoringRootVariant src/manifestSync.test.ts "
+            >
+              <h3>createAuthoringRootVariant</h3>
+              <p class="muted"><code>src/manifestSync.test.ts:41:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section id="view-src-manifestsync-ts" class="view" data-view="src/manifestSync.ts" hidden>
+          <section class="panel">
+            <h2>src/manifestSync.ts</h2>
+            <article class="item" data-search="createRuntimeScreenSignatures src/manifestSync.ts ">
+              <h3>createRuntimeScreenSignatures</h3>
+              <p class="muted"><code>src/manifestSync.ts:9:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createStudioRuntimeSyncSignature src/manifestSync.ts "
+            >
+              <h3>createStudioRuntimeSyncSignature</h3>
+              <p class="muted"><code>src/manifestSync.ts:24:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createStudioManifestSignature src/manifestSync.ts ">
+              <h3>createStudioManifestSignature</h3>
+              <p class="muted"><code>src/manifestSync.ts:37:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
