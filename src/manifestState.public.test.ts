@@ -1,4 +1,4 @@
-import type { RouteDefinition, UiNode } from '@ankhorage/contracts';
+import type { RouteDefinition } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioManifest } from './index';
@@ -139,7 +139,9 @@ describe('manifestState public surface', () => {
 
   test('exports manifest and node helpers', () => {
     const manifest = createManifest();
-    const rootNode = manifest.screens['screen-home']?.root as UiNode;
+    const rootNode = manifest.screens['screen-home']?.root;
+    if (!rootNode) throw new Error('Expected screen-home root node.');
+
     const reordered = reorderStudioManifestScreens(manifest, [...manifest.navigator.routes].reverse());
     const withData = updateStudioManifestAppData(manifest, { collections: {} } as never);
     const withBindings = updateStudioManifestDataBindings(withData, {
