@@ -3,5 +3,7 @@ sequenceDiagram
   participant participant_visit as visit
   participant_validateInsertRecipe->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
+  participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_validateInsertRecipe: return

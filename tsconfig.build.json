@@ -10,6 +10,6 @@
     "sourceMap": true,
     "tsBuildInfoFile": "tsconfig.tsbuildinfo"
   },
-  "include": ["src/index.ts"],
+  "include": ["src/index.ts", "src/manifestState.ts"],
   "exclude": ["src/**/*.test.ts"]
 }
