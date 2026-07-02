@@ -1,5 +1,5 @@
 ---
-"@ankhorage/studio": "patch"
+'@ankhorage/studio': patch
 ---
 
 Bootstrap the standalone Studio package scaffold.
