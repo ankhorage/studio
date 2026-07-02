@@ -2,11 +2,13 @@
 
 Standalone Studio package for Ankhorage authoring surfaces.
 
-This repository is the extraction target for the Studio code currently living in `ankhorage4/packages/studio`.
+This repository is the extraction target for the Studio code currently living in
+`ankhorage4/packages/studio`.
 
 ## Ownership
 
-`@ankhorage/studio` owns Studio authoring and product contracts. Later extraction slices may move Studio-specific UI and Studio-specific commands here.
+`@ankhorage/studio` owns Studio authoring and product contracts. Later extraction slices may
+move Studio-specific UI and Studio-specific commands here.
 
 ## Consumes
 
@@ -28,11 +30,14 @@ This package must not own:
 - template catalog content;
 - root command bus behavior.
 
-Those responsibilities belong to `@ankhorage/runtime`, `@ankhorage/expo-runtime`, `@ankhorage/templates`, and `@ankhorage/ankh`.
+Those responsibilities belong to `@ankhorage/runtime`, `@ankhorage/expo-runtime`,
+`@ankhorage/templates`, and `@ankhorage/ankh`.
 
 ## Current scope
 
-This initial package bootstrap intentionally does not move product UI from `ankhorage4` yet. It provides the standalone package skeleton, public boundary docs, and validation scripts for staged extraction.
+This initial package bootstrap intentionally does not move product UI from `ankhorage4` yet. It
+provides the standalone package skeleton, public boundary docs, and validation scripts for staged
+extraction.
 
 ## Validation
 
