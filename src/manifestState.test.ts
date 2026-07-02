@@ -146,7 +146,7 @@ describe('manifestState', () => {
     );
     const deleted = deleteStudioManifestNode(reordered, 'screen-home', 'text-1');
     expect(JSON.stringify(resolveActiveRootNode(deleted, 'screen-home'))).not.toContain('text-1');
-    expect(deleted.dataBindings['text-1']).toBeUndefined();
+    expect(deleted.dataBindings?.['text-1']).toBeUndefined();
   });
 
   test('adds and deletes screens', () => {
