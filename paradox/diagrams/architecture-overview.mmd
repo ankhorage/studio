@@ -10,6 +10,10 @@ graph TD
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts["src/index.ts"]
+  module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_manifestState_public_test_ts
+  module_src_manifestState_public_test_ts --> module_src_index_ts
+  module_src_manifestState_public_test_ts --> module_src_manifestState_ts
   module_src_manifestState_test_ts["src/manifestState.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestState_test_ts
   module_src_manifestState_test_ts --> module_src_index_ts

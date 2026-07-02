@@ -208,6 +208,16 @@
               </button>
             </li>
             <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/manifestState.public.test.ts"
+              >
+                src/manifestState.public.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/manifestState.test.ts">
                 src/manifestState.test.ts
                 <small>2 functions</small>
@@ -229,7 +239,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>6</strong><span class="muted">modules</span></div>
+              <div><strong>7</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -305,6 +315,18 @@
                 <code>updateNodeInTree</code>, <code>validateInsertRecipe</code>,
                 <code>validateNodePlacement</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestState.public.test.ts src/index.ts src/manifestState.ts"
+            >
+              <h3>src/manifestState.public.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/index.ts</code>,
+                <code>src/manifestState.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -3208,6 +3230,10 @@
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_index_test_ts module_src_index_test_ts --&gt; module_src_index_ts
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_manifestState_test_ts
                 module_src_manifestState_test_ts --&gt; module_src_index_ts
@@ -3231,6 +3257,10 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_index_test_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
+  module_src_manifestState_public_test_ts --&gt; module_src_index_ts
+  module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_manifestState_test_ts
   module_src_manifestState_test_ts --&gt; module_src_index_ts
@@ -3252,11 +3282,15 @@ graph TD
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
-                module_src_index_test_ts --&gt; module_src_index_ts module_src_manifestState_test_ts
-                --&gt; module_src_index_ts module_src_manifestState_test_ts --&gt;
-                module_src_manifestState_ts module_src_manifestState_ts --&gt; module_src_index_ts
+                module_src_index_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_ts --&gt; module_src_index_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3266,9 +3300,12 @@ graph LR
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   module_src_index_test_ts --&gt; module_src_index_ts
+  module_src_manifestState_public_test_ts --&gt; module_src_index_ts
+  module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_test_ts --&gt; module_src_index_ts
   module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_ts --&gt; module_src_index_ts
@@ -3283,6 +3320,7 @@ graph LR
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
@@ -3481,6 +3519,7 @@ graph LR
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
@@ -4244,6 +4283,21 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-manifeststate-public-test-ts"
+          class="view"
+          data-view="src/manifestState.public.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/manifestState.public.test.ts</h2>
+            <article class="item" data-search="createManifest src/manifestState.public.test.ts ">
+              <h3>createManifest</h3>
+              <p class="muted"><code>src/manifestState.public.test.ts:51:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-manifeststate-test-ts"
           class="view"
           data-view="src/manifestState.test.ts"
@@ -4253,12 +4307,12 @@ sequenceDiagram
             <h2>src/manifestState.test.ts</h2>
             <article class="item" data-search="createManifest src/manifestState.test.ts ">
               <h3>createManifest</h3>
-              <p class="muted"><code>src/manifestState.test.ts:50:1</code></p>
+              <p class="muted"><code>src/manifestState.test.ts:36:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="makeIdFactory src/manifestState.test.ts ">
-              <h3>makeIdFactory</h3>
-              <p class="muted"><code>src/manifestState.test.ts:118:1</code></p>
+            <article class="item" data-search="createId src/manifestState.test.ts ">
+              <h3>createId</h3>
+              <p class="muted"><code>src/manifestState.test.ts:154:11</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -4576,7 +4630,7 @@ sequenceDiagram
             </article>
             <article class="item" data-search="adjustMovePlacement src/manifestState.ts ">
               <h3>adjustMovePlacement</h3>
-              <p class="muted"><code>src/manifestState.ts:1131:1</code></p>
+              <p class="muted"><code>src/manifestState.ts:1134:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -4584,12 +4638,12 @@ sequenceDiagram
               data-search="normalizeNavigatorAfterRouteUpdate src/manifestState.ts "
             >
               <h3>normalizeNavigatorAfterRouteUpdate</h3>
-              <p class="muted"><code>src/manifestState.ts:1146:1</code></p>
+              <p class="muted"><code>src/manifestState.ts:1149:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStyleRecord src/manifestState.ts ">
               <h3>isStyleRecord</h3>
-              <p class="muted"><code>src/manifestState.ts:1167:1</code></p>
+              <p class="muted"><code>src/manifestState.ts:1170:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

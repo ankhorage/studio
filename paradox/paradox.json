@@ -162,6 +162,12 @@
       ]
     },
     {
+      "path": "src/manifestState.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/manifestState.ts"],
+      "exports": []
+    },
+    {
       "path": "src/manifestState.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/index.ts", "src/manifestState.ts"],
@@ -3240,18 +3246,27 @@
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/manifestState.test.ts",
-        "line": 50,
+        "filePath": "src/manifestState.public.test.ts",
+        "line": 51,
         "column": 1
       }
     },
     {
-      "name": "makeIdFactory",
+      "name": "createManifest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 118,
+        "line": 36,
         "column": 1
+      }
+    },
+    {
+      "name": "createId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestState.test.ts",
+        "line": 154,
+        "column": 11
       }
     },
     {
@@ -3745,7 +3760,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1131,
+        "line": 1134,
         "column": 1
       }
     },
@@ -3754,7 +3769,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1146,
+        "line": 1149,
         "column": 1
       }
     },
@@ -3763,7 +3778,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1167,
+        "line": 1170,
         "column": 1
       }
     }
@@ -3920,6 +3935,16 @@
         "fromPath": "src/index.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromPath": "src/manifestState.public.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromPath": "src/manifestState.public.test.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/manifestState.public.test.ts"
       },
       {
         "fromPath": "src/manifestState.test.ts",
@@ -4269,6 +4294,180 @@
         "sourcePath": "src/index.ts"
       },
       {
+        "fromSymbol": "createManifest",
+        "toSymbol": "createDefaultThemeConfig",
+        "callExpression": "createDefaultThemeConfig",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "generateManifestStateId",
+        "callExpression": "generateManifestStateId",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "createDefaultThemeConfig",
+        "callExpression": "createDefaultThemeConfig",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "collectScreenRouteEntries",
+        "callExpression": "collectScreenRouteEntries",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "groupScreenRouteEntries",
+        "callExpression": "groupScreenRouteEntries",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "insertRouteAtParentPath",
+        "callExpression": "insertRouteAtParentPath",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "updateNavigatorAtPath",
+        "callExpression": "updateNavigatorAtPath",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "pathToKey",
+        "callExpression": "pathToKey",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "isRouteGroupSegment",
+        "callExpression": "isRouteGroupSegment",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "getPrimaryNavigatorPath",
+        "callExpression": "getPrimaryNavigatorPath",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "findParentPathForScreenId",
+        "callExpression": "findParentPathForScreenId",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "findRoutesAtParentPath",
+        "callExpression": "findRoutesAtParentPath",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "findNavigatorAtPath",
+        "callExpression": "findNavigatorAtPath",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "removeScreenIdFromRoutes",
+        "callExpression": "removeScreenIdFromRoutes",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "makeUniqueSiblingRouteName",
+        "callExpression": "makeUniqueSiblingRouteName",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "toCanonicalRoutePattern",
+        "callExpression": "toCanonicalRoutePattern",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "makeUniqueRouteNameForParent",
+        "callExpression": "makeUniqueRouteNameForParent",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "reorderStudioManifestScreens",
+        "callExpression": "reorderStudioManifestScreens",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "updateStudioManifestAppData",
+        "callExpression": "updateStudioManifestAppData",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "updateStudioManifestDataBindings",
+        "callExpression": "updateStudioManifestDataBindings",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "updateStudioManifestDataSources",
+        "callExpression": "updateStudioManifestDataSources",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "setStudioManifestActiveThemeId",
+        "callExpression": "setStudioManifestActiveThemeId",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "setStudioManifestActiveThemeMode",
+        "callExpression": "setStudioManifestActiveThemeMode",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "deleteStudioManifestTheme",
+        "callExpression": "deleteStudioManifestTheme",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
         "fromSymbol": "src/manifestState.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -4288,14 +4487,14 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
+        "toSymbol": "resolveActiveRootNode",
+        "callExpression": "resolveActiveRootNode",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "listScreenIdsInRouteOrder",
-        "callExpression": "listScreenIdsInRouteOrder",
+        "toSymbol": "expect",
+        "callExpression": "expect",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
@@ -4306,26 +4505,8 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "resolveActiveRootNode",
-        "callExpression": "resolveActiveRootNode",
-        "sourcePath": "src/manifestState.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.test.ts",
         "toSymbol": "resolveSafeSelectedNodeId",
         "callExpression": "resolveSafeSelectedNodeId",
-        "sourcePath": "src/manifestState.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "findScreenIdForNode",
-        "callExpression": "findScreenIdForNode",
-        "sourcePath": "src/manifestState.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "updateStudioManifestNode",
-        "callExpression": "updateStudioManifestNode",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
@@ -4336,8 +4517,8 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "deleteStudioManifestNode",
-        "callExpression": "deleteStudioManifestNode",
+        "toSymbol": "updateStudioManifestNode",
+        "callExpression": "updateStudioManifestNode",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
@@ -4360,14 +4541,14 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "addStudioManifestScreen",
-        "callExpression": "addStudioManifestScreen",
+        "toSymbol": "deleteStudioManifestNode",
+        "callExpression": "deleteStudioManifestNode",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "makeIdFactory",
-        "callExpression": "makeIdFactory",
+        "toSymbol": "addStudioManifestScreen",
+        "callExpression": "addStudioManifestScreen",
         "sourcePath": "src/manifestState.test.ts"
       },
       {
