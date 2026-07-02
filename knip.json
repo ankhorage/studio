@@ -1,20 +1,10 @@
 {
-  "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/index.ts", "scripts/check-docs.ts"],
-  "project": ["src/**/*.ts", "scripts/**/*.ts", "eslint.config.mjs"],
-  "ignore": ["dist/**", "node_modules/**"],
-  "ignoreBinaries": [
-    "ankhorage-eslint",
-    "ankhorage-knip",
-    "ankhorage-prettier",
-    "changeset",
-    "tsc"
+  "entry": [
+    "src/index.ts",
+    "eslint.config.mjs"
   ],
-  "ignoreDependencies": [
-    "@ankhorage/devtools",
-    "@changesets/cli",
-    "@types/bun",
-    "@types/node",
-    "typescript"
+  "project": [
+    "src/**/*.ts",
+    "scripts/**/*.ts"
   ]
 }
