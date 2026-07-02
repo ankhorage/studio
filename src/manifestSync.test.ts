@@ -41,37 +41,32 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
   } as unknown as StudioManifest;
 }
 
+function createAuthoringRootVariant(manifest: StudioManifest): StudioManifest['screens'] {
+  const homeScreen = manifest.screens['screen-home'];
+  if (!homeScreen) throw new Error('Expected screen-home fixture.');
+
+  return {
+    'screen-home': {
+      ...homeScreen,
+      root: {
+        ...homeScreen.root,
+        props: { changedOnlyInAuthoring: true },
+      },
+    },
+  };
+}
+
 describe('manifestSync', () => {
   test('creates full Studio manifest signatures for draft persistence', () => {
     const first = createManifest();
-    const second = createManifest({
-      screens: {
-        'screen-home': {
-          ...first.screens['screen-home'],
-          root: {
-            ...first.screens['screen-home'].root,
-            props: { changedOnlyInAuthoring: true },
-          },
-        },
-      },
-    });
+    const second = createManifest({ screens: createAuthoringRootVariant(first) });
 
     expect(createStudioManifestSignature(first)).not.toBe(createStudioManifestSignature(second));
   });
 
   test('creates runtime signatures from runtime-relevant manifest fields', () => {
     const first = createManifest();
-    const second = createManifest({
-      screens: {
-        'screen-home': {
-          ...first.screens['screen-home'],
-          root: {
-            ...first.screens['screen-home'].root,
-            props: { changedOnlyInAuthoring: true },
-          },
-        },
-      },
-    });
+    const second = createManifest({ screens: createAuthoringRootVariant(first) });
 
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });
