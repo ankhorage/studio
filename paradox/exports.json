@@ -1,5 +1,23 @@
 [
   {
+    "name": "ACTION_REGISTRY",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 304,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "ActionDefinition",
     "description": null,
     "isReadme": false,
@@ -8,7 +26,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 212,
+      "line": 218,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -54,6 +72,286 @@
     "structuredRows": []
   },
   {
+    "name": "addNodeToTree",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 526,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: \"append\" | \"prepend\"; }) => UiNode",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: \"append\" | \"prepend\"; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "buildInsertCatalogEntries",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1238,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "InsertRecipe", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) => InsertCatalogEntry[]",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "InsertCatalogEntry[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "canAcceptChild",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 685,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) => boolean",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "boolean",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "cloneWithNewIds",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 451,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioIdGenerator"],
+    "signatures": [
+      {
+        "label": "(node: UiNode, createId?: StudioIdGenerator) => UiNode",
+        "parameters": [
+          {
+            "name": "createId",
+            "type": "StudioIdGenerator",
+            "required": false,
+            "description": null
+          },
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createNodeFromCatalogEntry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1157,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry", "StudioIdGenerator"],
+    "signatures": [
+      {
+        "label": "(entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) => UiNode",
+        "parameters": [
+          {
+            "name": "componentMeta",
+            "type": "StudioComponentMetaRegistry",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "createId",
+            "type": "StudioIdGenerator",
+            "required": false,
+            "description": null
+          },
+          {
+            "name": "entry",
+            "type": "InsertCatalogEntry",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "findNodeById",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 468,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(root: UiNode, id: string) => UiNode | null",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "root",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "generateStudioId",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 444,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(prefix?: string | undefined) => string",
+        "parameters": [
+          {
+            "name": "prefix",
+            "type": "string | undefined",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "string",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "getInsertCatalogCategoryLabel",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1083,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(category: string) => string",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "string",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "string",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "InsertCatalogComponentEntry",
     "description": null,
     "isReadme": false,
@@ -62,7 +360,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 190,
+      "line": 196,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -151,7 +449,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 172,
+      "line": 178,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -191,7 +489,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 149,
+      "line": 155,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -209,7 +507,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 200,
+      "line": 206,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -227,7 +525,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 178,
+      "line": 184,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -314,7 +612,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 146,
+      "line": 152,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -332,7 +630,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 147,
+      "line": 153,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -350,7 +648,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 195,
+      "line": 201,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -436,6 +734,118 @@
     "structuredRows": []
   },
   {
+    "name": "insertNodeAtPlacement",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 915,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertNodeAtPlacementArgs", "InsertNodeAtPlacementResult"],
+    "signatures": [
+      {
+        "label": "(args: InsertNodeAtPlacementArgs) => InsertNodeAtPlacementResult | null",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "InsertNodeAtPlacementArgs",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "InsertNodeAtPlacementResult | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "InsertNodeAtPlacementArgs",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 858,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "componentMeta",
+        "kind": "property",
+        "type": "StudioComponentMetaRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "makeNode",
+        "kind": "property",
+        "type": "() => UiNode",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "placement",
+        "kind": "property",
+        "type": "NodePlacement",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "root",
+        "kind": "property",
+        "type": "UiNode",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "InsertNodeAtPlacementResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 865,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "insertedNodeId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "root",
+        "kind": "property",
+        "type": "UiNode",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "InsertRecipe",
     "description": null,
     "isReadme": false,
@@ -444,7 +854,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 157,
+      "line": 163,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -498,7 +908,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 165,
+      "line": 171,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -545,7 +955,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 152,
+      "line": 158,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -578,7 +988,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 220,
+      "line": 226,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -617,6 +1027,162 @@
     "structuredRows": []
   },
   {
+    "name": "moveNodeInTree",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 559,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(root: UiNode, nodeId: string, direction: \"up\" | \"down\") => UiNode",
+        "parameters": [
+          {
+            "name": "direction",
+            "type": "\"up\" | \"down\"",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "nodeId",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "root",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "moveNodeToPlacement",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 983,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["MoveNodeToPlacementArgs", "MoveNodeToPlacementResult"],
+    "signatures": [
+      {
+        "label": "(args: MoveNodeToPlacementArgs) => MoveNodeToPlacementResult | null",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "MoveNodeToPlacementArgs",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "MoveNodeToPlacementResult | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "MoveNodeToPlacementArgs",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 942,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "StudioComponentMetaRegistry"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "componentMeta",
+        "kind": "property",
+        "type": "StudioComponentMetaRegistry",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "nodeId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "placement",
+        "kind": "property",
+        "type": "NodePlacement",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "root",
+        "kind": "property",
+        "type": "UiNode",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "MoveNodeToPlacementResult",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 949,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "movedNodeId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "root",
+        "kind": "property",
+        "type": "UiNode",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "NodePlacement",
     "description": null,
     "isReadme": false,
@@ -625,7 +1191,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 108,
+      "line": 114,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -672,7 +1238,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 115,
+      "line": 121,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -690,7 +1256,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 127,
+      "line": 133,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -723,7 +1289,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 106,
+      "line": 112,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -741,7 +1307,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 139,
+      "line": 145,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -759,7 +1325,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 132,
+      "line": 138,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -767,6 +1333,183 @@
     "signatures": [],
     "members": [],
     "structuredRows": []
+  },
+  {
+    "name": "removeNodeFromTree",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 508,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(root: UiNode, nodeId: string) => UiNode | null",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "root",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveDefaultInsertPlacement",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 813,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementResolutionResult", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementResolutionResult",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "PlacementResolutionResult",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveInsertCatalogEntries",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1280,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertCatalogEntry", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) => InsertCatalogEntry[]",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "InsertCatalogEntry[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveInsertPlacement",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 752,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["PlacementKind", "PlacementResolutionResult", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) => PlacementResolutionResult",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "PlacementResolutionResult",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "STUDIO_INSERT_RECIPES",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1050,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": [
+      {
+        "values": {
+          "id": "screen-section",
+          "label": "Screen section",
+          "description": "A screen section with a starter heading.",
+          "category": "recipe"
+        }
+      },
+      {
+        "values": {
+          "id": "panel-stack",
+          "label": "Panel stack",
+          "description": "Panel with a stack starter.",
+          "category": "recipe"
+        }
+      },
+      {
+        "values": {
+          "id": "card-heading",
+          "label": "Card heading",
+          "description": "Card with a headline.",
+          "category": "recipe"
+        }
+      }
+    ]
   },
   {
     "name": "STUDIO_PACKAGE_BOUNDARY",
@@ -813,7 +1556,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 50,
+      "line": 51,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -831,7 +1574,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 204,
+      "line": 210,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -871,7 +1614,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 202,
+      "line": 208,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -889,7 +1632,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 210,
+      "line": 216,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -907,7 +1650,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 73,
+      "line": 79,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -925,7 +1668,105 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 229,
+      "line": 251,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioComponentBlueprint",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 235,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "defaultProps",
+        "kind": "property",
+        "type": "Record<string, unknown> | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioComponentMeta",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 240,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioComponentBlueprint"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "allowedChildren",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "blueprint",
+        "kind": "property",
+        "type": "StudioComponentBlueprint | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "category",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "directManifestNode",
+        "kind": "property",
+        "type": "boolean | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioComponentMetaRegistry",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 247,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -943,7 +1784,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 245,
+      "line": 267,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1304,7 +2145,25 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 238,
+      "line": 260,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioIdGenerator",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 249,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1322,7 +2181,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 68,
+      "line": 74,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1340,7 +2199,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 76,
+      "line": 82,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1358,7 +2217,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 70,
+      "line": 76,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1376,7 +2235,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 67,
+      "line": 73,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1394,7 +2253,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 65,
+      "line": 71,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1452,7 +2311,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 72,
+      "line": 78,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1470,7 +2329,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 63,
+      "line": 69,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1488,7 +2347,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 61,
+      "line": 67,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1506,7 +2365,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 71,
+      "line": 77,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1524,7 +2383,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 66,
+      "line": 72,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1542,7 +2401,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 87,
+      "line": 93,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1596,7 +2455,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 64,
+      "line": 70,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1614,7 +2473,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 95,
+      "line": 101,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1689,12 +2548,144 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 82,
+      "line": 88,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
     "relatedSymbols": [],
     "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "TPL_SCREEN_EMPTY",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 396,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "updateNodeInTree",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 480,
+      "column": 14
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(root: UiNode, id: string, newProps: Record<string, unknown>) => UiNode",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "newProps",
+            "type": "Record<string, unknown>",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "root",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "validateInsertRecipe",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 1100,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["InsertRecipe", "InsertRecipeIssue", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) => InsertRecipeIssue | null",
+        "parameters": [
+          {
+            "name": "componentMeta",
+            "type": "StudioComponentMetaRegistry",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "recipe",
+            "type": "InsertRecipe",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "InsertRecipeIssue | null",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "validateNodePlacement",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/index.ts",
+    "sourceLocation": {
+      "filePath": "src/index.ts",
+      "line": 697,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["NodePlacement", "PlacementValidationResult", "StudioComponentMetaRegistry"],
+    "signatures": [
+      {
+        "label": "(args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementValidationResult",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "PlacementValidationResult",
+        "returnDescription": null
+      }
+    ],
     "members": [],
     "structuredRows": []
   }

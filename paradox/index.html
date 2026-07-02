@@ -195,6 +195,18 @@
                 <small>Overview, CLI, public API, diagrams</small>
               </button>
             </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/index.test.ts">
+                src/index.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/index.ts">
+                src/index.ts
+                <small>33 functions</small>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -203,7 +215,7 @@
           <section class="panel">
             <h2>Package overview</h2>
             <div class="summary">
-              <div><strong>44</strong><span class="muted">public exports</span></div>
+              <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
               <div><strong>4</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
@@ -236,34 +248,50 @@
             </article>
             <article
               class="item"
-              data-search="src/index.ts ActionDefinition InsertCatalogComponentEntry InsertCatalogDisabledReason InsertCatalogDisabledReasonCode InsertCatalogEntry InsertCatalogEntryBase InsertCatalogEntryKind InsertCatalogEntryStatus InsertCatalogRecipeEntry InsertRecipe InsertRecipeIssue InsertRecipeNode ModuleDefinition NodePlacement PlacementFailureCode PlacementFailureReason PlacementKind PlacementResolutionResult PlacementValidationResult STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME STUDIO_PUBLIC_CONTRACTS StudioActionPayloadField StudioActionPayloadPrimitive StudioActionPayloadSchema StudioAdminRoutePath StudioCommand StudioContextValue StudioEvent StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPackageBoundary StudioPanelId StudioProjectId StudioPublicContract StudioSaveStatus StudioScreenId StudioSelectionState StudioSessionId StudioSessionState ThemeUpdates"
+              data-search="src/index.ts ACTION_REGISTRY ActionDefinition addNodeToTree buildInsertCatalogEntries canAcceptChild cloneWithNewIds createNodeFromCatalogEntry findNodeById generateStudioId getInsertCatalogCategoryLabel InsertCatalogComponentEntry InsertCatalogDisabledReason InsertCatalogDisabledReasonCode InsertCatalogEntry InsertCatalogEntryBase InsertCatalogEntryKind InsertCatalogEntryStatus InsertCatalogRecipeEntry insertNodeAtPlacement InsertNodeAtPlacementArgs InsertNodeAtPlacementResult InsertRecipe InsertRecipeIssue InsertRecipeNode ModuleDefinition moveNodeInTree moveNodeToPlacement MoveNodeToPlacementArgs MoveNodeToPlacementResult NodePlacement PlacementFailureCode PlacementFailureReason PlacementKind PlacementResolutionResult PlacementValidationResult removeNodeFromTree resolveDefaultInsertPlacement resolveInsertCatalogEntries resolveInsertPlacement STUDIO_INSERT_RECIPES STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME STUDIO_PUBLIC_CONTRACTS StudioActionPayloadField StudioActionPayloadPrimitive StudioActionPayloadSchema StudioAdminRoutePath StudioCommand StudioComponentBlueprint StudioComponentMeta StudioComponentMetaRegistry StudioContextValue StudioEvent StudioIdGenerator StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPackageBoundary StudioPanelId StudioProjectId StudioPublicContract StudioSaveStatus StudioScreenId StudioSelectionState StudioSessionId StudioSessionState ThemeUpdates TPL_SCREEN_EMPTY updateNodeInTree validateInsertRecipe validateNodePlacement"
             >
               <h3>src/index.ts</h3>
               <p class="muted">Configured entrypoint</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>ActionDefinition</code>,
+                <strong>Exports:</strong> <code>ACTION_REGISTRY</code>,
+                <code>ActionDefinition</code>, <code>addNodeToTree</code>,
+                <code>buildInsertCatalogEntries</code>, <code>canAcceptChild</code>,
+                <code>cloneWithNewIds</code>, <code>createNodeFromCatalogEntry</code>,
+                <code>findNodeById</code>, <code>generateStudioId</code>,
+                <code>getInsertCatalogCategoryLabel</code>,
                 <code>InsertCatalogComponentEntry</code>, <code>InsertCatalogDisabledReason</code>,
                 <code>InsertCatalogDisabledReasonCode</code>, <code>InsertCatalogEntry</code>,
                 <code>InsertCatalogEntryBase</code>, <code>InsertCatalogEntryKind</code>,
                 <code>InsertCatalogEntryStatus</code>, <code>InsertCatalogRecipeEntry</code>,
-                <code>InsertRecipe</code>, <code>InsertRecipeIssue</code>,
-                <code>InsertRecipeNode</code>, <code>ModuleDefinition</code>,
-                <code>NodePlacement</code>, <code>PlacementFailureCode</code>,
-                <code>PlacementFailureReason</code>, <code>PlacementKind</code>,
-                <code>PlacementResolutionResult</code>, <code>PlacementValidationResult</code>,
-                <code>STUDIO_PACKAGE_BOUNDARY</code>, <code>STUDIO_PACKAGE_NAME</code>,
-                <code>STUDIO_PUBLIC_CONTRACTS</code>, <code>StudioActionPayloadField</code>,
-                <code>StudioActionPayloadPrimitive</code>, <code>StudioActionPayloadSchema</code>,
-                <code>StudioAdminRoutePath</code>, <code>StudioCommand</code>,
+                <code>insertNodeAtPlacement</code>, <code>InsertNodeAtPlacementArgs</code>,
+                <code>InsertNodeAtPlacementResult</code>, <code>InsertRecipe</code>,
+                <code>InsertRecipeIssue</code>, <code>InsertRecipeNode</code>,
+                <code>ModuleDefinition</code>, <code>moveNodeInTree</code>,
+                <code>moveNodeToPlacement</code>, <code>MoveNodeToPlacementArgs</code>,
+                <code>MoveNodeToPlacementResult</code>, <code>NodePlacement</code>,
+                <code>PlacementFailureCode</code>, <code>PlacementFailureReason</code>,
+                <code>PlacementKind</code>, <code>PlacementResolutionResult</code>,
+                <code>PlacementValidationResult</code>, <code>removeNodeFromTree</code>,
+                <code>resolveDefaultInsertPlacement</code>,
+                <code>resolveInsertCatalogEntries</code>, <code>resolveInsertPlacement</code>,
+                <code>STUDIO_INSERT_RECIPES</code>, <code>STUDIO_PACKAGE_BOUNDARY</code>,
+                <code>STUDIO_PACKAGE_NAME</code>, <code>STUDIO_PUBLIC_CONTRACTS</code>,
+                <code>StudioActionPayloadField</code>, <code>StudioActionPayloadPrimitive</code>,
+                <code>StudioActionPayloadSchema</code>, <code>StudioAdminRoutePath</code>,
+                <code>StudioCommand</code>, <code>StudioComponentBlueprint</code>,
+                <code>StudioComponentMeta</code>, <code>StudioComponentMetaRegistry</code>,
                 <code>StudioContextValue</code>, <code>StudioEvent</code>,
-                <code>StudioLocale</code>, <code>StudioManifest</code>, <code>StudioMode</code>,
-                <code>StudioModuleId</code>, <code>StudioNodeId</code>,
-                <code>StudioPackageBoundary</code>, <code>StudioPanelId</code>,
-                <code>StudioProjectId</code>, <code>StudioPublicContract</code>,
-                <code>StudioSaveStatus</code>, <code>StudioScreenId</code>,
-                <code>StudioSelectionState</code>, <code>StudioSessionId</code>,
-                <code>StudioSessionState</code>, <code>ThemeUpdates</code>
+                <code>StudioIdGenerator</code>, <code>StudioLocale</code>,
+                <code>StudioManifest</code>, <code>StudioMode</code>, <code>StudioModuleId</code>,
+                <code>StudioNodeId</code>, <code>StudioPackageBoundary</code>,
+                <code>StudioPanelId</code>, <code>StudioProjectId</code>,
+                <code>StudioPublicContract</code>, <code>StudioSaveStatus</code>,
+                <code>StudioScreenId</code>, <code>StudioSelectionState</code>,
+                <code>StudioSessionId</code>, <code>StudioSessionState</code>,
+                <code>ThemeUpdates</code>, <code>TPL_SCREEN_EMPTY</code>,
+                <code>updateNodeInTree</code>, <code>validateInsertRecipe</code>,
+                <code>validateNodePlacement</code>
               </p>
             </article>
           </section>
@@ -274,11 +302,22 @@
               <h3>src/index.ts</h3>
               <article
                 class="item"
+                id="symbol-action-registry"
+                data-search="ACTION_REGISTRY value src/index.ts "
+              >
+                <h4>ACTION_REGISTRY</h4>
+                <p class="muted">value • <code>src/index.ts:304:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
                 id="symbol-actiondefinition"
                 data-search="ActionDefinition type src/index.ts  StudioActionPayloadSchema"
               >
                 <h4>ActionDefinition</h4>
-                <p class="muted">type • <code>src/index.ts:212:1</code></p>
+                <p class="muted">type • <code>src/index.ts:218:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -339,11 +378,356 @@
               </article>
               <article
                 class="item"
+                id="symbol-addnodetotree"
+                data-search='addNodeToTree value src/index.ts  StudioComponentMetaRegistry (args: { root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: "append" | "prepend"; }) =&gt; UiNode'
+              >
+                <h4>addNodeToTree</h4>
+                <p class="muted">value • <code>src/index.ts:526:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: &quot;append&quot; | &quot;prepend&quot;; }) =&gt; UiNode</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ root: UiNode; targetId: string; newNode: UiNode; componentMeta:
+                            StudioComponentMetaRegistry; mode?: &quot;append&quot; |
+                            &quot;prepend&quot;; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-buildinsertcatalogentries"
+                data-search="buildInsertCatalogEntries function src/index.ts  InsertCatalogEntry InsertRecipe StudioComponentMetaRegistry (args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) =&gt; InsertCatalogEntry[]"
+              >
+                <h4>buildInsertCatalogEntries</h4>
+                <p class="muted">function • <code>src/index.ts:1238:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogEntry</li>
+                    <li class="chip">InsertRecipe</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) =&gt; InsertCatalogEntry[]</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ componentMeta: StudioComponentMetaRegistry; recipes?: readonly
+                            InsertRecipe[]; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>InsertCatalogEntry[]</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-canacceptchild"
+                data-search="canAcceptChild function src/index.ts  StudioComponentMetaRegistry (args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; boolean"
+              >
+                <h4>canAcceptChild</h4>
+                <p class="muted">function • <code>src/index.ts:685:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; boolean</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ parentType: string; childType: string; componentMeta:
+                            StudioComponentMetaRegistry; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>boolean</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-clonewithnewids"
+                data-search="cloneWithNewIds value src/index.ts  StudioIdGenerator (node: UiNode, createId?: StudioIdGenerator) =&gt; UiNode"
+              >
+                <h4>cloneWithNewIds</h4>
+                <p class="muted">value • <code>src/index.ts:451:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioIdGenerator</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(node: UiNode, createId?: StudioIdGenerator) =&gt; UiNode</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>createId</code></td>
+                        <td><code>StudioIdGenerator</code></td>
+                        <td>no</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>node</code></td>
+                        <td><code>UiNode</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-createnodefromcatalogentry"
+                data-search="createNodeFromCatalogEntry function src/index.ts  InsertCatalogEntry StudioComponentMetaRegistry StudioIdGenerator (entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) =&gt; UiNode"
+              >
+                <h4>createNodeFromCatalogEntry</h4>
+                <p class="muted">function • <code>src/index.ts:1157:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogEntry</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                    <li class="chip">StudioIdGenerator</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) =&gt; UiNode</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>componentMeta</code></td>
+                        <td><code>StudioComponentMetaRegistry</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>createId</code></td>
+                        <td><code>StudioIdGenerator</code></td>
+                        <td>no</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>entry</code></td>
+                        <td><code>InsertCatalogEntry</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-findnodebyid"
+                data-search="findNodeById value src/index.ts  (root: UiNode, id: string) =&gt; UiNode | null"
+              >
+                <h4>findNodeById</h4>
+                <p class="muted">value • <code>src/index.ts:468:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(root: UiNode, id: string) =&gt; UiNode | null</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>id</code></td>
+                        <td><code>string</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>root</code></td>
+                        <td><code>UiNode</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode | null</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-generatestudioid"
+                data-search="generateStudioId value src/index.ts  (prefix?: string | undefined) =&gt; string"
+              >
+                <h4>generateStudioId</h4>
+                <p class="muted">value • <code>src/index.ts:444:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(prefix?: string | undefined) =&gt; string</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>prefix</code></td>
+                        <td><code>string | undefined</code></td>
+                        <td>no</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>string</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-getinsertcatalogcategorylabel"
+                data-search="getInsertCatalogCategoryLabel function src/index.ts  (category: string) =&gt; string"
+              >
+                <h4>getInsertCatalogCategoryLabel</h4>
+                <p class="muted">function • <code>src/index.ts:1083:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(category: string) =&gt; string</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>category</code></td>
+                        <td><code>string</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>string</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
                 id="symbol-insertcatalogcomponententry"
                 data-search="InsertCatalogComponentEntry type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryStatus NodePlacement"
               >
                 <h4>InsertCatalogComponentEntry</h4>
-                <p class="muted">type • <code>src/index.ts:190:1</code></p>
+                <p class="muted">type • <code>src/index.ts:196:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -445,7 +829,7 @@
                 data-search="InsertCatalogDisabledReason type src/index.ts  InsertCatalogDisabledReasonCode InsertRecipeIssue"
               >
                 <h4>InsertCatalogDisabledReason</h4>
-                <p class="muted">type • <code>src/index.ts:172:1</code></p>
+                <p class="muted">type • <code>src/index.ts:178:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -497,7 +881,7 @@
                 data-search="InsertCatalogDisabledReasonCode unknown src/index.ts "
               >
                 <h4>InsertCatalogDisabledReasonCode</h4>
-                <p class="muted">unknown • <code>src/index.ts:149:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:155:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -508,7 +892,7 @@
                 data-search="InsertCatalogEntry unknown src/index.ts "
               >
                 <h4>InsertCatalogEntry</h4>
-                <p class="muted">unknown • <code>src/index.ts:200:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:206:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -519,7 +903,7 @@
                 data-search="InsertCatalogEntryBase type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryKind InsertCatalogEntryStatus NodePlacement"
               >
                 <h4>InsertCatalogEntryBase</h4>
-                <p class="muted">type • <code>src/index.ts:178:1</code></p>
+                <p class="muted">type • <code>src/index.ts:184:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -615,7 +999,7 @@
                 data-search="InsertCatalogEntryKind unknown src/index.ts "
               >
                 <h4>InsertCatalogEntryKind</h4>
-                <p class="muted">unknown • <code>src/index.ts:146:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:152:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -626,7 +1010,7 @@
                 data-search="InsertCatalogEntryStatus unknown src/index.ts "
               >
                 <h4>InsertCatalogEntryStatus</h4>
-                <p class="muted">unknown • <code>src/index.ts:147:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:153:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -637,7 +1021,7 @@
                 data-search="InsertCatalogRecipeEntry type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryStatus InsertRecipe NodePlacement"
               >
                 <h4>InsertCatalogRecipeEntry</h4>
-                <p class="muted">type • <code>src/index.ts:195:1</code></p>
+                <p class="muted">type • <code>src/index.ts:201:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -736,11 +1120,150 @@
               </article>
               <article
                 class="item"
+                id="symbol-insertnodeatplacement"
+                data-search="insertNodeAtPlacement function src/index.ts  InsertNodeAtPlacementArgs InsertNodeAtPlacementResult (args: InsertNodeAtPlacementArgs) =&gt; InsertNodeAtPlacementResult | null"
+              >
+                <h4>insertNodeAtPlacement</h4>
+                <p class="muted">function • <code>src/index.ts:915:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertNodeAtPlacementArgs</li>
+                    <li class="chip">InsertNodeAtPlacementResult</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: InsertNodeAtPlacementArgs) =&gt; InsertNodeAtPlacementResult | null</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td><code>InsertNodeAtPlacementArgs</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>InsertNodeAtPlacementResult | null</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertnodeatplacementargs"
+                data-search="InsertNodeAtPlacementArgs type src/index.ts  NodePlacement StudioComponentMetaRegistry"
+              >
+                <h4>InsertNodeAtPlacementArgs</h4>
+                <p class="muted">type • <code>src/index.ts:858:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">NodePlacement</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>componentMeta</code></td>
+                      <td>property</td>
+                      <td><code>StudioComponentMetaRegistry</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>makeNode</code></td>
+                      <td>property</td>
+                      <td><code>() =&gt; UiNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>placement</code></td>
+                      <td>property</td>
+                      <td><code>NodePlacement</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>root</code></td>
+                      <td>property</td>
+                      <td><code>UiNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertnodeatplacementresult"
+                data-search="InsertNodeAtPlacementResult type src/index.ts "
+              >
+                <h4>InsertNodeAtPlacementResult</h4>
+                <p class="muted">type • <code>src/index.ts:865:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>insertedNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>root</code></td>
+                      <td>property</td>
+                      <td><code>UiNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
                 id="symbol-insertrecipe"
                 data-search="InsertRecipe type src/index.ts  InsertRecipeNode"
               >
                 <h4>InsertRecipe</h4>
-                <p class="muted">type • <code>src/index.ts:157:1</code></p>
+                <p class="muted">type • <code>src/index.ts:163:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -805,7 +1328,7 @@
                 data-search="InsertRecipeIssue type src/index.ts "
               >
                 <h4>InsertRecipeIssue</h4>
-                <p class="muted">type • <code>src/index.ts:165:1</code></p>
+                <p class="muted">type • <code>src/index.ts:171:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -858,7 +1381,7 @@
                 data-search="InsertRecipeNode type src/index.ts "
               >
                 <h4>InsertRecipeNode</h4>
-                <p class="muted">type • <code>src/index.ts:152:1</code></p>
+                <p class="muted">type • <code>src/index.ts:158:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -897,7 +1420,7 @@
                 data-search="ModuleDefinition type src/index.ts "
               >
                 <h4>ModuleDefinition</h4>
-                <p class="muted">type • <code>src/index.ts:220:1</code></p>
+                <p class="muted">type • <code>src/index.ts:226:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -946,11 +1469,196 @@
               </article>
               <article
                 class="item"
+                id="symbol-movenodeintree"
+                data-search='moveNodeInTree value src/index.ts  (root: UiNode, nodeId: string, direction: "up" | "down") =&gt; UiNode'
+              >
+                <h4>moveNodeInTree</h4>
+                <p class="muted">value • <code>src/index.ts:559:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(root: UiNode, nodeId: string, direction: &quot;up&quot; | &quot;down&quot;) =&gt; UiNode</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>direction</code></td>
+                        <td><code>&quot;up&quot; | &quot;down&quot;</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>nodeId</code></td>
+                        <td><code>string</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>root</code></td>
+                        <td><code>UiNode</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-movenodetoplacement"
+                data-search="moveNodeToPlacement function src/index.ts  MoveNodeToPlacementArgs MoveNodeToPlacementResult (args: MoveNodeToPlacementArgs) =&gt; MoveNodeToPlacementResult | null"
+              >
+                <h4>moveNodeToPlacement</h4>
+                <p class="muted">function • <code>src/index.ts:983:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">MoveNodeToPlacementArgs</li>
+                    <li class="chip">MoveNodeToPlacementResult</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(args: MoveNodeToPlacementArgs) =&gt; MoveNodeToPlacementResult | null</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td><code>MoveNodeToPlacementArgs</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>MoveNodeToPlacementResult | null</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-movenodetoplacementargs"
+                data-search="MoveNodeToPlacementArgs type src/index.ts  NodePlacement StudioComponentMetaRegistry"
+              >
+                <h4>MoveNodeToPlacementArgs</h4>
+                <p class="muted">type • <code>src/index.ts:942:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">NodePlacement</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>componentMeta</code></td>
+                      <td>property</td>
+                      <td><code>StudioComponentMetaRegistry</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>nodeId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>placement</code></td>
+                      <td>property</td>
+                      <td><code>NodePlacement</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>root</code></td>
+                      <td>property</td>
+                      <td><code>UiNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-movenodetoplacementresult"
+                data-search="MoveNodeToPlacementResult type src/index.ts "
+              >
+                <h4>MoveNodeToPlacementResult</h4>
+                <p class="muted">type • <code>src/index.ts:949:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>movedNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>root</code></td>
+                      <td>property</td>
+                      <td><code>UiNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
                 id="symbol-nodeplacement"
                 data-search="NodePlacement type src/index.ts  PlacementKind"
               >
                 <h4>NodePlacement</h4>
-                <p class="muted">type • <code>src/index.ts:108:1</code></p>
+                <p class="muted">type • <code>src/index.ts:114:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1008,7 +1716,7 @@
                 data-search="PlacementFailureCode unknown src/index.ts "
               >
                 <h4>PlacementFailureCode</h4>
-                <p class="muted">unknown • <code>src/index.ts:115:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:121:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1019,7 +1727,7 @@
                 data-search="PlacementFailureReason type src/index.ts  PlacementFailureCode"
               >
                 <h4>PlacementFailureReason</h4>
-                <p class="muted">type • <code>src/index.ts:127:1</code></p>
+                <p class="muted">type • <code>src/index.ts:133:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1063,7 +1771,7 @@
                 data-search="PlacementKind unknown src/index.ts "
               >
                 <h4>PlacementKind</h4>
-                <p class="muted">unknown • <code>src/index.ts:106:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:112:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1074,7 +1782,7 @@
                 data-search="PlacementResolutionResult unknown src/index.ts "
               >
                 <h4>PlacementResolutionResult</h4>
-                <p class="muted">unknown • <code>src/index.ts:139:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:145:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1085,7 +1793,198 @@
                 data-search="PlacementValidationResult unknown src/index.ts "
               >
                 <h4>PlacementValidationResult</h4>
-                <p class="muted">unknown • <code>src/index.ts:132:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:138:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-removenodefromtree"
+                data-search="removeNodeFromTree value src/index.ts  (root: UiNode, nodeId: string) =&gt; UiNode | null"
+              >
+                <h4>removeNodeFromTree</h4>
+                <p class="muted">value • <code>src/index.ts:508:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>(root: UiNode, nodeId: string) =&gt; UiNode | null</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>nodeId</code></td>
+                        <td><code>string</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>root</code></td>
+                        <td><code>UiNode</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode | null</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-resolvedefaultinsertplacement"
+                data-search="resolveDefaultInsertPlacement function src/index.ts  PlacementResolutionResult StudioComponentMetaRegistry (args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementResolutionResult"
+              >
+                <h4>resolveDefaultInsertPlacement</h4>
+                <p class="muted">function • <code>src/index.ts:813:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">PlacementResolutionResult</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementResolutionResult</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ root: UiNode; selectedNodeId: string | null; childType: string;
+                            componentMeta: StudioComponentMetaRegistry; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>PlacementResolutionResult</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-resolveinsertcatalogentries"
+                data-search="resolveInsertCatalogEntries function src/index.ts  InsertCatalogEntry StudioComponentMetaRegistry (args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) =&gt; InsertCatalogEntry[]"
+              >
+                <h4>resolveInsertCatalogEntries</h4>
+                <p class="muted">function • <code>src/index.ts:1280:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogEntry</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) =&gt; InsertCatalogEntry[]</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ entries: readonly InsertCatalogEntry[]; root: UiNode | null;
+                            selectedNodeId: string | null; componentMeta:
+                            StudioComponentMetaRegistry; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>InsertCatalogEntry[]</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-resolveinsertplacement"
+                data-search="resolveInsertPlacement function src/index.ts  PlacementKind PlacementResolutionResult StudioComponentMetaRegistry (args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) =&gt; PlacementResolutionResult"
+              >
+                <h4>resolveInsertPlacement</h4>
+                <p class="muted">function • <code>src/index.ts:752:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">PlacementKind</li>
+                    <li class="chip">PlacementResolutionResult</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) =&gt; PlacementResolutionResult</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ root: UiNode; targetNodeId: string; childType: string; componentMeta:
+                            StudioComponentMetaRegistry; kind: PlacementKind; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>PlacementResolutionResult</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studio-insert-recipes"
+                data-search="STUDIO_INSERT_RECIPES value src/index.ts "
+              >
+                <h4>STUDIO_INSERT_RECIPES</h4>
+                <p class="muted">value • <code>src/index.ts:1050:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1118,7 +2017,7 @@
                 data-search="STUDIO_PUBLIC_CONTRACTS value src/index.ts "
               >
                 <h4>STUDIO_PUBLIC_CONTRACTS</h4>
-                <p class="muted">value • <code>src/index.ts:50:14</code></p>
+                <p class="muted">value • <code>src/index.ts:51:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1129,7 +2028,7 @@
                 data-search="StudioActionPayloadField type src/index.ts  StudioActionPayloadPrimitive"
               >
                 <h4>StudioActionPayloadField</h4>
-                <p class="muted">type • <code>src/index.ts:204:1</code></p>
+                <p class="muted">type • <code>src/index.ts:210:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1180,7 +2079,7 @@
                 data-search="StudioActionPayloadPrimitive unknown src/index.ts "
               >
                 <h4>StudioActionPayloadPrimitive</h4>
-                <p class="muted">unknown • <code>src/index.ts:202:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:208:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1191,7 +2090,7 @@
                 data-search="StudioActionPayloadSchema unknown src/index.ts "
               >
                 <h4>StudioActionPayloadSchema</h4>
-                <p class="muted">unknown • <code>src/index.ts:210:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:216:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1202,7 +2101,7 @@
                 data-search="StudioAdminRoutePath unknown src/index.ts "
               >
                 <h4>StudioAdminRoutePath</h4>
-                <p class="muted">unknown • <code>src/index.ts:73:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:79:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1213,7 +2112,115 @@
                 data-search="StudioCommand unknown src/index.ts "
               >
                 <h4>StudioCommand</h4>
-                <p class="muted">unknown • <code>src/index.ts:229:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:251:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiocomponentblueprint"
+                data-search="StudioComponentBlueprint type src/index.ts "
+              >
+                <h4>StudioComponentBlueprint</h4>
+                <p class="muted">type • <code>src/index.ts:235:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>defaultProps</code></td>
+                      <td>property</td>
+                      <td><code>Record&lt;string, unknown&gt; | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiocomponentmeta"
+                data-search="StudioComponentMeta type src/index.ts  StudioComponentBlueprint"
+              >
+                <h4>StudioComponentMeta</h4>
+                <p class="muted">type • <code>src/index.ts:240:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioComponentBlueprint</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>allowedChildren</code></td>
+                      <td>property</td>
+                      <td><code>readonly string[]</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>blueprint</code></td>
+                      <td>property</td>
+                      <td><code>StudioComponentBlueprint | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>directManifestNode</code></td>
+                      <td>property</td>
+                      <td><code>boolean | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiocomponentmetaregistry"
+                data-search="StudioComponentMetaRegistry unknown src/index.ts "
+              >
+                <h4>StudioComponentMetaRegistry</h4>
+                <p class="muted">unknown • <code>src/index.ts:247:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1224,7 +2231,7 @@
                 data-search="StudioContextValue type src/index.ts  InsertCatalogEntry NodePlacement StudioAdminRoutePath StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPanelId StudioSaveStatus StudioScreenId ThemeUpdates"
               >
                 <h4>StudioContextValue</h4>
-                <p class="muted">type • <code>src/index.ts:245:1</code></p>
+                <p class="muted">type • <code>src/index.ts:267:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1611,7 +2618,18 @@
                 data-search="StudioEvent unknown src/index.ts "
               >
                 <h4>StudioEvent</h4>
-                <p class="muted">unknown • <code>src/index.ts:238:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:260:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioidgenerator"
+                data-search="StudioIdGenerator unknown src/index.ts "
+              >
+                <h4>StudioIdGenerator</h4>
+                <p class="muted">unknown • <code>src/index.ts:249:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1622,7 +2640,7 @@
                 data-search="StudioLocale unknown src/index.ts "
               >
                 <h4>StudioLocale</h4>
-                <p class="muted">unknown • <code>src/index.ts:68:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:74:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1633,7 +2651,7 @@
                 data-search="StudioManifest unknown src/index.ts "
               >
                 <h4>StudioManifest</h4>
-                <p class="muted">unknown • <code>src/index.ts:76:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:82:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1644,7 +2662,7 @@
                 data-search="StudioMode unknown src/index.ts "
               >
                 <h4>StudioMode</h4>
-                <p class="muted">unknown • <code>src/index.ts:70:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:76:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1655,7 +2673,7 @@
                 data-search="StudioModuleId unknown src/index.ts "
               >
                 <h4>StudioModuleId</h4>
-                <p class="muted">unknown • <code>src/index.ts:67:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:73:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1666,7 +2684,7 @@
                 data-search="StudioNodeId unknown src/index.ts "
               >
                 <h4>StudioNodeId</h4>
-                <p class="muted">unknown • <code>src/index.ts:65:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:71:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1723,7 +2741,7 @@
                 data-search="StudioPanelId unknown src/index.ts "
               >
                 <h4>StudioPanelId</h4>
-                <p class="muted">unknown • <code>src/index.ts:72:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:78:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1734,7 +2752,7 @@
                 data-search="StudioProjectId unknown src/index.ts "
               >
                 <h4>StudioProjectId</h4>
-                <p class="muted">unknown • <code>src/index.ts:63:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:69:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1745,7 +2763,7 @@
                 data-search="StudioPublicContract unknown src/index.ts "
               >
                 <h4>StudioPublicContract</h4>
-                <p class="muted">unknown • <code>src/index.ts:61:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:67:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1756,7 +2774,7 @@
                 data-search="StudioSaveStatus unknown src/index.ts "
               >
                 <h4>StudioSaveStatus</h4>
-                <p class="muted">unknown • <code>src/index.ts:71:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:77:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1767,7 +2785,7 @@
                 data-search="StudioScreenId unknown src/index.ts "
               >
                 <h4>StudioScreenId</h4>
-                <p class="muted">unknown • <code>src/index.ts:66:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:72:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1778,7 +2796,7 @@
                 data-search="StudioSelectionState type src/index.ts  StudioAdminRoutePath StudioPanelId"
               >
                 <h4>StudioSelectionState</h4>
-                <p class="muted">type • <code>src/index.ts:87:1</code></p>
+                <p class="muted">type • <code>src/index.ts:93:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1844,7 +2862,7 @@
                 data-search="StudioSessionId unknown src/index.ts "
               >
                 <h4>StudioSessionId</h4>
-                <p class="muted">unknown • <code>src/index.ts:64:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:70:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1855,7 +2873,7 @@
                 data-search="StudioSessionState type src/index.ts  StudioMode StudioSaveStatus"
               >
                 <h4>StudioSessionState</h4>
-                <p class="muted">type • <code>src/index.ts:95:1</code></p>
+                <p class="muted">type • <code>src/index.ts:101:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -1942,10 +2960,163 @@
                 data-search="ThemeUpdates unknown src/index.ts "
               >
                 <h4>ThemeUpdates</h4>
-                <p class="muted">unknown • <code>src/index.ts:82:1</code></p>
+                <p class="muted">unknown • <code>src/index.ts:88:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-tpl-screen-empty"
+                data-search="TPL_SCREEN_EMPTY value src/index.ts "
+              >
+                <h4>TPL_SCREEN_EMPTY</h4>
+                <p class="muted">value • <code>src/index.ts:396:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-updatenodeintree"
+                data-search="updateNodeInTree value src/index.ts  (root: UiNode, id: string, newProps: Record&lt;string, unknown&gt;) =&gt; UiNode"
+              >
+                <h4>updateNodeInTree</h4>
+                <p class="muted">value • <code>src/index.ts:480:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(root: UiNode, id: string, newProps: Record&lt;string, unknown&gt;) =&gt; UiNode</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>id</code></td>
+                        <td><code>string</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>newProps</code></td>
+                        <td><code>Record&lt;string, unknown&gt;</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>root</code></td>
+                        <td><code>UiNode</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>UiNode</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-validateinsertrecipe"
+                data-search="validateInsertRecipe function src/index.ts  InsertRecipe InsertRecipeIssue StudioComponentMetaRegistry (recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) =&gt; InsertRecipeIssue | null"
+              >
+                <h4>validateInsertRecipe</h4>
+                <p class="muted">function • <code>src/index.ts:1100:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertRecipe</li>
+                    <li class="chip">InsertRecipeIssue</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) =&gt; InsertRecipeIssue | null</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>componentMeta</code></td>
+                        <td><code>StudioComponentMetaRegistry</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><code>recipe</code></td>
+                        <td><code>InsertRecipe</code></td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>InsertRecipeIssue | null</code></p>
+                </div>
+              </article>
+              <article
+                class="item"
+                id="symbol-validatenodeplacement"
+                data-search="validateNodePlacement function src/index.ts  NodePlacement PlacementValidationResult StudioComponentMetaRegistry (args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementValidationResult"
+              >
+                <h4>validateNodePlacement</h4>
+                <p class="muted">function • <code>src/index.ts:697:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">NodePlacement</li>
+                    <li class="chip">PlacementValidationResult</li>
+                    <li class="chip">StudioComponentMetaRegistry</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5>Signature</h5>
+                  <pre>
+(args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementValidationResult</pre>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Required</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>args</code></td>
+                        <td>
+                          <code
+                            >{ root: UiNode; placement: NodePlacement; childType: string;
+                            componentMeta: StudioComponentMetaRegistry; }</code
+                          >
+                        </td>
+                        <td>yes</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Returns:</strong> <code>PlacementValidationResult</code></p>
+                </div>
               </article>
             </section>
           </section>
@@ -2023,9 +3194,32 @@ graph LR
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
-                export_ActionDefinition[&quot;ActionDefinition&quot;] module_src_index_ts --&gt;
-                export_ActionDefinition export_ActionDefinition -.-&gt;
-                export_StudioActionPayloadSchema
+                export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
+                export_ACTION_REGISTRY export_ActionDefinition[&quot;ActionDefinition&quot;]
+                module_src_index_ts --&gt; export_ActionDefinition export_ActionDefinition -.-&gt;
+                export_StudioActionPayloadSchema export_addNodeToTree[&quot;addNodeToTree&quot;]
+                module_src_index_ts --&gt; export_addNodeToTree export_addNodeToTree -.-&gt;
+                export_StudioComponentMetaRegistry
+                export_buildInsertCatalogEntries[&quot;buildInsertCatalogEntries&quot;]
+                module_src_index_ts --&gt; export_buildInsertCatalogEntries
+                export_buildInsertCatalogEntries -.-&gt; export_InsertCatalogEntry
+                export_buildInsertCatalogEntries -.-&gt; export_InsertRecipe
+                export_buildInsertCatalogEntries -.-&gt; export_StudioComponentMetaRegistry
+                export_canAcceptChild[&quot;canAcceptChild&quot;] module_src_index_ts --&gt;
+                export_canAcceptChild export_canAcceptChild -.-&gt;
+                export_StudioComponentMetaRegistry
+                export_cloneWithNewIds[&quot;cloneWithNewIds&quot;] module_src_index_ts --&gt;
+                export_cloneWithNewIds export_cloneWithNewIds -.-&gt; export_StudioIdGenerator
+                export_createNodeFromCatalogEntry[&quot;createNodeFromCatalogEntry&quot;]
+                module_src_index_ts --&gt; export_createNodeFromCatalogEntry
+                export_createNodeFromCatalogEntry -.-&gt; export_InsertCatalogEntry
+                export_createNodeFromCatalogEntry -.-&gt; export_StudioComponentMetaRegistry
+                export_createNodeFromCatalogEntry -.-&gt; export_StudioIdGenerator
+                export_findNodeById[&quot;findNodeById&quot;] module_src_index_ts --&gt;
+                export_findNodeById export_generateStudioId[&quot;generateStudioId&quot;]
+                module_src_index_ts --&gt; export_generateStudioId
+                export_getInsertCatalogCategoryLabel[&quot;getInsertCatalogCategoryLabel&quot;]
+                module_src_index_ts --&gt; export_getInsertCatalogCategoryLabel
                 export_InsertCatalogComponentEntry[&quot;InsertCatalogComponentEntry&quot;]
                 module_src_index_ts --&gt; export_InsertCatalogComponentEntry
                 export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogDisabledReason
@@ -2055,16 +3249,38 @@ graph LR
                 export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogEntryStatus
                 export_InsertCatalogRecipeEntry -.-&gt; export_InsertRecipe
                 export_InsertCatalogRecipeEntry -.-&gt; export_NodePlacement
+                export_insertNodeAtPlacement[&quot;insertNodeAtPlacement&quot;] module_src_index_ts
+                --&gt; export_insertNodeAtPlacement export_insertNodeAtPlacement -.-&gt;
+                export_InsertNodeAtPlacementArgs export_insertNodeAtPlacement -.-&gt;
+                export_InsertNodeAtPlacementResult
+                export_InsertNodeAtPlacementArgs[&quot;InsertNodeAtPlacementArgs&quot;]
+                module_src_index_ts --&gt; export_InsertNodeAtPlacementArgs
+                export_InsertNodeAtPlacementArgs -.-&gt; export_NodePlacement
+                export_InsertNodeAtPlacementArgs -.-&gt; export_StudioComponentMetaRegistry
+                export_InsertNodeAtPlacementResult[&quot;InsertNodeAtPlacementResult&quot;]
+                module_src_index_ts --&gt; export_InsertNodeAtPlacementResult
                 export_InsertRecipe[&quot;InsertRecipe&quot;] module_src_index_ts --&gt;
                 export_InsertRecipe export_InsertRecipe -.-&gt; export_InsertRecipeNode
                 export_InsertRecipeIssue[&quot;InsertRecipeIssue&quot;] module_src_index_ts --&gt;
                 export_InsertRecipeIssue export_InsertRecipeNode[&quot;InsertRecipeNode&quot;]
                 module_src_index_ts --&gt; export_InsertRecipeNode
                 export_ModuleDefinition[&quot;ModuleDefinition&quot;] module_src_index_ts --&gt;
-                export_ModuleDefinition export_NodePlacement[&quot;NodePlacement&quot;]
-                module_src_index_ts --&gt; export_NodePlacement export_NodePlacement -.-&gt;
-                export_PlacementKind export_PlacementFailureCode[&quot;PlacementFailureCode&quot;]
-                module_src_index_ts --&gt; export_PlacementFailureCode
+                export_ModuleDefinition export_moveNodeInTree[&quot;moveNodeInTree&quot;]
+                module_src_index_ts --&gt; export_moveNodeInTree
+                export_moveNodeToPlacement[&quot;moveNodeToPlacement&quot;] module_src_index_ts
+                --&gt; export_moveNodeToPlacement export_moveNodeToPlacement -.-&gt;
+                export_MoveNodeToPlacementArgs export_moveNodeToPlacement -.-&gt;
+                export_MoveNodeToPlacementResult
+                export_MoveNodeToPlacementArgs[&quot;MoveNodeToPlacementArgs&quot;]
+                module_src_index_ts --&gt; export_MoveNodeToPlacementArgs
+                export_MoveNodeToPlacementArgs -.-&gt; export_NodePlacement
+                export_MoveNodeToPlacementArgs -.-&gt; export_StudioComponentMetaRegistry
+                export_MoveNodeToPlacementResult[&quot;MoveNodeToPlacementResult&quot;]
+                module_src_index_ts --&gt; export_MoveNodeToPlacementResult
+                export_NodePlacement[&quot;NodePlacement&quot;] module_src_index_ts --&gt;
+                export_NodePlacement export_NodePlacement -.-&gt; export_PlacementKind
+                export_PlacementFailureCode[&quot;PlacementFailureCode&quot;] module_src_index_ts
+                --&gt; export_PlacementFailureCode
                 export_PlacementFailureReason[&quot;PlacementFailureReason&quot;]
                 module_src_index_ts --&gt; export_PlacementFailureReason
                 export_PlacementFailureReason -.-&gt; export_PlacementFailureCode
@@ -2074,6 +3290,23 @@ graph LR
                 module_src_index_ts --&gt; export_PlacementResolutionResult
                 export_PlacementValidationResult[&quot;PlacementValidationResult&quot;]
                 module_src_index_ts --&gt; export_PlacementValidationResult
+                export_removeNodeFromTree[&quot;removeNodeFromTree&quot;] module_src_index_ts --&gt;
+                export_removeNodeFromTree
+                export_resolveDefaultInsertPlacement[&quot;resolveDefaultInsertPlacement&quot;]
+                module_src_index_ts --&gt; export_resolveDefaultInsertPlacement
+                export_resolveDefaultInsertPlacement -.-&gt; export_PlacementResolutionResult
+                export_resolveDefaultInsertPlacement -.-&gt; export_StudioComponentMetaRegistry
+                export_resolveInsertCatalogEntries[&quot;resolveInsertCatalogEntries&quot;]
+                module_src_index_ts --&gt; export_resolveInsertCatalogEntries
+                export_resolveInsertCatalogEntries -.-&gt; export_InsertCatalogEntry
+                export_resolveInsertCatalogEntries -.-&gt; export_StudioComponentMetaRegistry
+                export_resolveInsertPlacement[&quot;resolveInsertPlacement&quot;]
+                module_src_index_ts --&gt; export_resolveInsertPlacement
+                export_resolveInsertPlacement -.-&gt; export_PlacementKind
+                export_resolveInsertPlacement -.-&gt; export_PlacementResolutionResult
+                export_resolveInsertPlacement -.-&gt; export_StudioComponentMetaRegistry
+                export_STUDIO_INSERT_RECIPES[&quot;STUDIO_INSERT_RECIPES&quot;] module_src_index_ts
+                --&gt; export_STUDIO_INSERT_RECIPES
                 export_STUDIO_PACKAGE_BOUNDARY[&quot;STUDIO_PACKAGE_BOUNDARY&quot;]
                 module_src_index_ts --&gt; export_STUDIO_PACKAGE_BOUNDARY
                 export_STUDIO_PACKAGE_NAME[&quot;STUDIO_PACKAGE_NAME&quot;] module_src_index_ts
@@ -2090,6 +3323,13 @@ graph LR
                 export_StudioAdminRoutePath[&quot;StudioAdminRoutePath&quot;] module_src_index_ts
                 --&gt; export_StudioAdminRoutePath export_StudioCommand[&quot;StudioCommand&quot;]
                 module_src_index_ts --&gt; export_StudioCommand
+                export_StudioComponentBlueprint[&quot;StudioComponentBlueprint&quot;]
+                module_src_index_ts --&gt; export_StudioComponentBlueprint
+                export_StudioComponentMeta[&quot;StudioComponentMeta&quot;] module_src_index_ts
+                --&gt; export_StudioComponentMeta export_StudioComponentMeta -.-&gt;
+                export_StudioComponentBlueprint
+                export_StudioComponentMetaRegistry[&quot;StudioComponentMetaRegistry&quot;]
+                module_src_index_ts --&gt; export_StudioComponentMetaRegistry
                 export_StudioContextValue[&quot;StudioContextValue&quot;] module_src_index_ts --&gt;
                 export_StudioContextValue export_StudioContextValue -.-&gt;
                 export_InsertCatalogEntry export_StudioContextValue -.-&gt; export_NodePlacement
@@ -2101,8 +3341,10 @@ graph LR
                 export_StudioContextValue -.-&gt; export_StudioSaveStatus export_StudioContextValue
                 -.-&gt; export_StudioScreenId export_StudioContextValue -.-&gt; export_ThemeUpdates
                 export_StudioEvent[&quot;StudioEvent&quot;] module_src_index_ts --&gt;
-                export_StudioEvent export_StudioLocale[&quot;StudioLocale&quot;] module_src_index_ts
-                --&gt; export_StudioLocale export_StudioManifest[&quot;StudioManifest&quot;]
+                export_StudioEvent export_StudioIdGenerator[&quot;StudioIdGenerator&quot;]
+                module_src_index_ts --&gt; export_StudioIdGenerator
+                export_StudioLocale[&quot;StudioLocale&quot;] module_src_index_ts --&gt;
+                export_StudioLocale export_StudioManifest[&quot;StudioManifest&quot;]
                 module_src_index_ts --&gt; export_StudioManifest
                 export_StudioMode[&quot;StudioMode&quot;] module_src_index_ts --&gt;
                 export_StudioMode export_StudioModuleId[&quot;StudioModuleId&quot;]
@@ -2126,7 +3368,19 @@ graph LR
                 module_src_index_ts --&gt; export_StudioSessionState export_StudioSessionState
                 -.-&gt; export_StudioMode export_StudioSessionState -.-&gt; export_StudioSaveStatus
                 export_ThemeUpdates[&quot;ThemeUpdates&quot;] module_src_index_ts --&gt;
-                export_ThemeUpdates
+                export_ThemeUpdates export_TPL_SCREEN_EMPTY[&quot;TPL_SCREEN_EMPTY&quot;]
+                module_src_index_ts --&gt; export_TPL_SCREEN_EMPTY
+                export_updateNodeInTree[&quot;updateNodeInTree&quot;] module_src_index_ts --&gt;
+                export_updateNodeInTree
+                export_validateInsertRecipe[&quot;validateInsertRecipe&quot;] module_src_index_ts
+                --&gt; export_validateInsertRecipe export_validateInsertRecipe -.-&gt;
+                export_InsertRecipe export_validateInsertRecipe -.-&gt; export_InsertRecipeIssue
+                export_validateInsertRecipe -.-&gt; export_StudioComponentMetaRegistry
+                export_validateNodePlacement[&quot;validateNodePlacement&quot;] module_src_index_ts
+                --&gt; export_validateNodePlacement export_validateNodePlacement -.-&gt;
+                export_NodePlacement export_validateNodePlacement -.-&gt;
+                export_PlacementValidationResult export_validateNodePlacement -.-&gt;
+                export_StudioComponentMetaRegistry
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -2136,9 +3390,36 @@ graph LR
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
+  module_src_index_ts --&gt; export_ACTION_REGISTRY
   export_ActionDefinition[&quot;ActionDefinition&quot;]
   module_src_index_ts --&gt; export_ActionDefinition
   export_ActionDefinition -.-&gt; export_StudioActionPayloadSchema
+  export_addNodeToTree[&quot;addNodeToTree&quot;]
+  module_src_index_ts --&gt; export_addNodeToTree
+  export_addNodeToTree -.-&gt; export_StudioComponentMetaRegistry
+  export_buildInsertCatalogEntries[&quot;buildInsertCatalogEntries&quot;]
+  module_src_index_ts --&gt; export_buildInsertCatalogEntries
+  export_buildInsertCatalogEntries -.-&gt; export_InsertCatalogEntry
+  export_buildInsertCatalogEntries -.-&gt; export_InsertRecipe
+  export_buildInsertCatalogEntries -.-&gt; export_StudioComponentMetaRegistry
+  export_canAcceptChild[&quot;canAcceptChild&quot;]
+  module_src_index_ts --&gt; export_canAcceptChild
+  export_canAcceptChild -.-&gt; export_StudioComponentMetaRegistry
+  export_cloneWithNewIds[&quot;cloneWithNewIds&quot;]
+  module_src_index_ts --&gt; export_cloneWithNewIds
+  export_cloneWithNewIds -.-&gt; export_StudioIdGenerator
+  export_createNodeFromCatalogEntry[&quot;createNodeFromCatalogEntry&quot;]
+  module_src_index_ts --&gt; export_createNodeFromCatalogEntry
+  export_createNodeFromCatalogEntry -.-&gt; export_InsertCatalogEntry
+  export_createNodeFromCatalogEntry -.-&gt; export_StudioComponentMetaRegistry
+  export_createNodeFromCatalogEntry -.-&gt; export_StudioIdGenerator
+  export_findNodeById[&quot;findNodeById&quot;]
+  module_src_index_ts --&gt; export_findNodeById
+  export_generateStudioId[&quot;generateStudioId&quot;]
+  module_src_index_ts --&gt; export_generateStudioId
+  export_getInsertCatalogCategoryLabel[&quot;getInsertCatalogCategoryLabel&quot;]
+  module_src_index_ts --&gt; export_getInsertCatalogCategoryLabel
   export_InsertCatalogComponentEntry[&quot;InsertCatalogComponentEntry&quot;]
   module_src_index_ts --&gt; export_InsertCatalogComponentEntry
   export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogDisabledReason
@@ -2168,6 +3449,16 @@ graph LR
   export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogEntryStatus
   export_InsertCatalogRecipeEntry -.-&gt; export_InsertRecipe
   export_InsertCatalogRecipeEntry -.-&gt; export_NodePlacement
+  export_insertNodeAtPlacement[&quot;insertNodeAtPlacement&quot;]
+  module_src_index_ts --&gt; export_insertNodeAtPlacement
+  export_insertNodeAtPlacement -.-&gt; export_InsertNodeAtPlacementArgs
+  export_insertNodeAtPlacement -.-&gt; export_InsertNodeAtPlacementResult
+  export_InsertNodeAtPlacementArgs[&quot;InsertNodeAtPlacementArgs&quot;]
+  module_src_index_ts --&gt; export_InsertNodeAtPlacementArgs
+  export_InsertNodeAtPlacementArgs -.-&gt; export_NodePlacement
+  export_InsertNodeAtPlacementArgs -.-&gt; export_StudioComponentMetaRegistry
+  export_InsertNodeAtPlacementResult[&quot;InsertNodeAtPlacementResult&quot;]
+  module_src_index_ts --&gt; export_InsertNodeAtPlacementResult
   export_InsertRecipe[&quot;InsertRecipe&quot;]
   module_src_index_ts --&gt; export_InsertRecipe
   export_InsertRecipe -.-&gt; export_InsertRecipeNode
@@ -2177,6 +3468,18 @@ graph LR
   module_src_index_ts --&gt; export_InsertRecipeNode
   export_ModuleDefinition[&quot;ModuleDefinition&quot;]
   module_src_index_ts --&gt; export_ModuleDefinition
+  export_moveNodeInTree[&quot;moveNodeInTree&quot;]
+  module_src_index_ts --&gt; export_moveNodeInTree
+  export_moveNodeToPlacement[&quot;moveNodeToPlacement&quot;]
+  module_src_index_ts --&gt; export_moveNodeToPlacement
+  export_moveNodeToPlacement -.-&gt; export_MoveNodeToPlacementArgs
+  export_moveNodeToPlacement -.-&gt; export_MoveNodeToPlacementResult
+  export_MoveNodeToPlacementArgs[&quot;MoveNodeToPlacementArgs&quot;]
+  module_src_index_ts --&gt; export_MoveNodeToPlacementArgs
+  export_MoveNodeToPlacementArgs -.-&gt; export_NodePlacement
+  export_MoveNodeToPlacementArgs -.-&gt; export_StudioComponentMetaRegistry
+  export_MoveNodeToPlacementResult[&quot;MoveNodeToPlacementResult&quot;]
+  module_src_index_ts --&gt; export_MoveNodeToPlacementResult
   export_NodePlacement[&quot;NodePlacement&quot;]
   module_src_index_ts --&gt; export_NodePlacement
   export_NodePlacement -.-&gt; export_PlacementKind
@@ -2191,6 +3494,23 @@ graph LR
   module_src_index_ts --&gt; export_PlacementResolutionResult
   export_PlacementValidationResult[&quot;PlacementValidationResult&quot;]
   module_src_index_ts --&gt; export_PlacementValidationResult
+  export_removeNodeFromTree[&quot;removeNodeFromTree&quot;]
+  module_src_index_ts --&gt; export_removeNodeFromTree
+  export_resolveDefaultInsertPlacement[&quot;resolveDefaultInsertPlacement&quot;]
+  module_src_index_ts --&gt; export_resolveDefaultInsertPlacement
+  export_resolveDefaultInsertPlacement -.-&gt; export_PlacementResolutionResult
+  export_resolveDefaultInsertPlacement -.-&gt; export_StudioComponentMetaRegistry
+  export_resolveInsertCatalogEntries[&quot;resolveInsertCatalogEntries&quot;]
+  module_src_index_ts --&gt; export_resolveInsertCatalogEntries
+  export_resolveInsertCatalogEntries -.-&gt; export_InsertCatalogEntry
+  export_resolveInsertCatalogEntries -.-&gt; export_StudioComponentMetaRegistry
+  export_resolveInsertPlacement[&quot;resolveInsertPlacement&quot;]
+  module_src_index_ts --&gt; export_resolveInsertPlacement
+  export_resolveInsertPlacement -.-&gt; export_PlacementKind
+  export_resolveInsertPlacement -.-&gt; export_PlacementResolutionResult
+  export_resolveInsertPlacement -.-&gt; export_StudioComponentMetaRegistry
+  export_STUDIO_INSERT_RECIPES[&quot;STUDIO_INSERT_RECIPES&quot;]
+  module_src_index_ts --&gt; export_STUDIO_INSERT_RECIPES
   export_STUDIO_PACKAGE_BOUNDARY[&quot;STUDIO_PACKAGE_BOUNDARY&quot;]
   module_src_index_ts --&gt; export_STUDIO_PACKAGE_BOUNDARY
   export_STUDIO_PACKAGE_NAME[&quot;STUDIO_PACKAGE_NAME&quot;]
@@ -2208,6 +3528,13 @@ graph LR
   module_src_index_ts --&gt; export_StudioAdminRoutePath
   export_StudioCommand[&quot;StudioCommand&quot;]
   module_src_index_ts --&gt; export_StudioCommand
+  export_StudioComponentBlueprint[&quot;StudioComponentBlueprint&quot;]
+  module_src_index_ts --&gt; export_StudioComponentBlueprint
+  export_StudioComponentMeta[&quot;StudioComponentMeta&quot;]
+  module_src_index_ts --&gt; export_StudioComponentMeta
+  export_StudioComponentMeta -.-&gt; export_StudioComponentBlueprint
+  export_StudioComponentMetaRegistry[&quot;StudioComponentMetaRegistry&quot;]
+  module_src_index_ts --&gt; export_StudioComponentMetaRegistry
   export_StudioContextValue[&quot;StudioContextValue&quot;]
   module_src_index_ts --&gt; export_StudioContextValue
   export_StudioContextValue -.-&gt; export_InsertCatalogEntry
@@ -2224,6 +3551,8 @@ graph LR
   export_StudioContextValue -.-&gt; export_ThemeUpdates
   export_StudioEvent[&quot;StudioEvent&quot;]
   module_src_index_ts --&gt; export_StudioEvent
+  export_StudioIdGenerator[&quot;StudioIdGenerator&quot;]
+  module_src_index_ts --&gt; export_StudioIdGenerator
   export_StudioLocale[&quot;StudioLocale&quot;]
   module_src_index_ts --&gt; export_StudioLocale
   export_StudioManifest[&quot;StudioManifest&quot;]
@@ -2258,8 +3587,546 @@ graph LR
   export_StudioSessionState -.-&gt; export_StudioSaveStatus
   export_ThemeUpdates[&quot;ThemeUpdates&quot;]
   module_src_index_ts --&gt; export_ThemeUpdates
+  export_TPL_SCREEN_EMPTY[&quot;TPL_SCREEN_EMPTY&quot;]
+  module_src_index_ts --&gt; export_TPL_SCREEN_EMPTY
+  export_updateNodeInTree[&quot;updateNodeInTree&quot;]
+  module_src_index_ts --&gt; export_updateNodeInTree
+  export_validateInsertRecipe[&quot;validateInsertRecipe&quot;]
+  module_src_index_ts --&gt; export_validateInsertRecipe
+  export_validateInsertRecipe -.-&gt; export_InsertRecipe
+  export_validateInsertRecipe -.-&gt; export_InsertRecipeIssue
+  export_validateInsertRecipe -.-&gt; export_StudioComponentMetaRegistry
+  export_validateNodePlacement[&quot;validateNodePlacement&quot;]
+  module_src_index_ts --&gt; export_validateNodePlacement
+  export_validateNodePlacement -.-&gt; export_NodePlacement
+  export_validateNodePlacement -.-&gt; export_PlacementValidationResult
+  export_validateNodePlacement -.-&gt; export_StudioComponentMetaRegistry
 </pre>
               </details>
+            </article>
+            <article
+              class="item"
+              data-search="addNodeToTree sequence diagrams/sequences/add-node-to-tree.mmd"
+            >
+              <h3>addNodeToTree sequence</h3>
+              <p class="muted"><code>diagrams/sequences/add-node-to-tree.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_addNodeToTree as addNodeToTree participant
+                participant_canAcceptChild as canAcceptChild
+                participant_addNodeToTree-&gt;&gt;participant_canAcceptChild: canAcceptChild()
+                participant_canAcceptChild--&gt;&gt;participant_addNodeToTree: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_addNodeToTree as addNodeToTree
+  participant participant_canAcceptChild as canAcceptChild
+  participant_addNodeToTree-&gt;&gt;participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild--&gt;&gt;participant_addNodeToTree: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="buildInsertCatalogEntries sequence diagrams/sequences/build-insert-catalog-entries.mmd"
+            >
+              <h3>buildInsertCatalogEntries sequence</h3>
+              <p class="muted"><code>diagrams/sequences/build-insert-catalog-entries.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_buildInsertCatalogEntries as
+                buildInsertCatalogEntries participant participant_createComponentEntry as
+                createComponentEntry
+                participant_buildInsertCatalogEntries-&gt;&gt;participant_createComponentEntry:
+                createComponentEntry()
+                participant_createComponentEntry--&gt;&gt;participant_buildInsertCatalogEntries:
+                return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_buildInsertCatalogEntries as buildInsertCatalogEntries
+  participant participant_createComponentEntry as createComponentEntry
+  participant_buildInsertCatalogEntries-&gt;&gt;participant_createComponentEntry: createComponentEntry()
+  participant_createComponentEntry--&gt;&gt;participant_buildInsertCatalogEntries: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="cloneWithNewIds sequence diagrams/sequences/clone-with-new-ids.mmd"
+            >
+              <h3>cloneWithNewIds sequence</h3>
+              <p class="muted"><code>diagrams/sequences/clone-with-new-ids.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_cloneWithNewIds as cloneWithNewIds
+                participant participant_createId as createId
+                participant_cloneWithNewIds-&gt;&gt;participant_createId: createId()
+                participant_createId--&gt;&gt;participant_cloneWithNewIds: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_cloneWithNewIds as cloneWithNewIds
+  participant participant_createId as createId
+  participant_cloneWithNewIds-&gt;&gt;participant_createId: createId()
+  participant_createId--&gt;&gt;participant_cloneWithNewIds: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="createNodeFromCatalogEntry sequence diagrams/sequences/create-node-from-catalog-entry.mmd"
+            >
+              <h3>createNodeFromCatalogEntry sequence</h3>
+              <p class="muted">
+                <code>diagrams/sequences/create-node-from-catalog-entry.mmd</code>
+              </p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_buildNode as buildNode participant
+                participant_createId as createId participant participant_createNodeFromCatalogEntry
+                as createNodeFromCatalogEntry participant participant_createNodeFromRecipe as
+                createNodeFromRecipe
+                participant_createNodeFromCatalogEntry-&gt;&gt;participant_createNodeFromRecipe:
+                createNodeFromRecipe()
+                participant_createNodeFromRecipe-&gt;&gt;participant_buildNode: buildNode()
+                participant_buildNode-&gt;&gt;participant_createId: createId()
+                participant_createId--&gt;&gt;participant_buildNode: return
+                participant_buildNode--&gt;&gt;participant_createNodeFromRecipe: return
+                participant_createNodeFromRecipe--&gt;&gt;participant_createNodeFromCatalogEntry:
+                return participant_createNodeFromCatalogEntry-&gt;&gt;participant_createId:
+                createId() participant_createId--&gt;&gt;participant_createNodeFromCatalogEntry:
+                return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_buildNode as buildNode
+  participant participant_createId as createId
+  participant participant_createNodeFromCatalogEntry as createNodeFromCatalogEntry
+  participant participant_createNodeFromRecipe as createNodeFromRecipe
+  participant_createNodeFromCatalogEntry-&gt;&gt;participant_createNodeFromRecipe: createNodeFromRecipe()
+  participant_createNodeFromRecipe-&gt;&gt;participant_buildNode: buildNode()
+  participant_buildNode-&gt;&gt;participant_createId: createId()
+  participant_createId--&gt;&gt;participant_buildNode: return
+  participant_buildNode--&gt;&gt;participant_createNodeFromRecipe: return
+  participant_createNodeFromRecipe--&gt;&gt;participant_createNodeFromCatalogEntry: return
+  participant_createNodeFromCatalogEntry-&gt;&gt;participant_createId: createId()
+  participant_createId--&gt;&gt;participant_createNodeFromCatalogEntry: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="findNodeById sequence diagrams/sequences/find-node-by-id.mmd"
+            >
+              <h3>findNodeById sequence</h3>
+              <p class="muted"><code>diagrams/sequences/find-node-by-id.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_findNodeById as findNodeById
+                participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById--&gt;&gt;participant_findNodeById: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_findNodeById as findNodeById
+  participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById--&gt;&gt;participant_findNodeById: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="resolveDefaultInsertPlacement sequence diagrams/sequences/resolve-default-insert-placement.mmd"
+            >
+              <h3>resolveDefaultInsertPlacement sequence</h3>
+              <p class="muted">
+                <code>diagrams/sequences/resolve-default-insert-placement.mmd</code>
+              </p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_canAcceptChild as canAcceptChild participant
+                participant_findNodeById as findNodeById participant participant_findNodeWithParent
+                as findNodeWithParent participant participant_resolveDefaultInsertPlacement as
+                resolveDefaultInsertPlacement participant participant_resolveInsertPlacement as
+                resolveInsertPlacement participant participant_validateNodePlacement as
+                validateNodePlacement participant participant_visit as visit
+                participant_resolveDefaultInsertPlacement-&gt;&gt;participant_resolveInsertPlacement:
+                resolveInsertPlacement()
+                participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent:
+                findNodeWithParent() participant_findNodeWithParent-&gt;&gt;participant_visit:
+                visit() participant_visit-&gt;&gt;participant_visit: visit()
+                participant_visit--&gt;&gt;participant_visit: return
+                participant_visit--&gt;&gt;participant_findNodeWithParent: return
+                participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
+                participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement:
+                validateNodePlacement()
+                participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById--&gt;&gt;participant_findNodeById: return
+                participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+                participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild:
+                canAcceptChild()
+                participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+                participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement:
+                return
+                participant_resolveInsertPlacement--&gt;&gt;participant_resolveDefaultInsertPlacement:
+                return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_canAcceptChild as canAcceptChild
+  participant participant_findNodeById as findNodeById
+  participant participant_findNodeWithParent as findNodeWithParent
+  participant participant_resolveDefaultInsertPlacement as resolveDefaultInsertPlacement
+  participant participant_resolveInsertPlacement as resolveInsertPlacement
+  participant participant_validateNodePlacement as validateNodePlacement
+  participant participant_visit as visit
+  participant_resolveDefaultInsertPlacement-&gt;&gt;participant_resolveInsertPlacement: resolveInsertPlacement()
+  participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent: findNodeWithParent()
+  participant_findNodeWithParent-&gt;&gt;participant_visit: visit()
+  participant_visit-&gt;&gt;participant_visit: visit()
+  participant_visit--&gt;&gt;participant_visit: return
+  participant_visit--&gt;&gt;participant_findNodeWithParent: return
+  participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
+  participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement: validateNodePlacement()
+  participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById--&gt;&gt;participant_findNodeById: return
+  participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+  participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+  participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement: return
+  participant_resolveInsertPlacement--&gt;&gt;participant_resolveDefaultInsertPlacement: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="resolveInsertPlacement sequence diagrams/sequences/resolve-insert-placement.mmd"
+            >
+              <h3>resolveInsertPlacement sequence</h3>
+              <p class="muted"><code>diagrams/sequences/resolve-insert-placement.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_canAcceptChild as canAcceptChild participant
+                participant_findNodeById as findNodeById participant participant_findNodeWithParent
+                as findNodeWithParent participant participant_resolveInsertPlacement as
+                resolveInsertPlacement participant participant_validateNodePlacement as
+                validateNodePlacement participant participant_visit as visit
+                participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent:
+                findNodeWithParent() participant_findNodeWithParent-&gt;&gt;participant_visit:
+                visit() participant_visit-&gt;&gt;participant_visit: visit()
+                participant_visit--&gt;&gt;participant_visit: return
+                participant_visit--&gt;&gt;participant_findNodeWithParent: return
+                participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
+                participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement:
+                validateNodePlacement()
+                participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById--&gt;&gt;participant_findNodeById: return
+                participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+                participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild:
+                canAcceptChild()
+                participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+                participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement:
+                return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_canAcceptChild as canAcceptChild
+  participant participant_findNodeById as findNodeById
+  participant participant_findNodeWithParent as findNodeWithParent
+  participant participant_resolveInsertPlacement as resolveInsertPlacement
+  participant participant_validateNodePlacement as validateNodePlacement
+  participant participant_visit as visit
+  participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent: findNodeWithParent()
+  participant_findNodeWithParent-&gt;&gt;participant_visit: visit()
+  participant_visit-&gt;&gt;participant_visit: visit()
+  participant_visit--&gt;&gt;participant_visit: return
+  participant_visit--&gt;&gt;participant_findNodeWithParent: return
+  participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
+  participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement: validateNodePlacement()
+  participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById--&gt;&gt;participant_findNodeById: return
+  participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+  participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+  participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="updateNodeInTree sequence diagrams/sequences/update-node-in-tree.mmd"
+            >
+              <h3>updateNodeInTree sequence</h3>
+              <p class="muted"><code>diagrams/sequences/update-node-in-tree.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_isStyleRecord as isStyleRecord participant
+                participant_updateNodeInTree as updateNodeInTree
+                participant_updateNodeInTree-&gt;&gt;participant_isStyleRecord: isStyleRecord()
+                participant_isStyleRecord--&gt;&gt;participant_updateNodeInTree: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_isStyleRecord as isStyleRecord
+  participant participant_updateNodeInTree as updateNodeInTree
+  participant_updateNodeInTree-&gt;&gt;participant_isStyleRecord: isStyleRecord()
+  participant_isStyleRecord--&gt;&gt;participant_updateNodeInTree: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="validateInsertRecipe sequence diagrams/sequences/validate-insert-recipe.mmd"
+            >
+              <h3>validateInsertRecipe sequence</h3>
+              <p class="muted"><code>diagrams/sequences/validate-insert-recipe.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_validateInsertRecipe as validateInsertRecipe
+                participant participant_visit as visit
+                participant_validateInsertRecipe-&gt;&gt;participant_visit: visit()
+                participant_visit-&gt;&gt;participant_visit: visit()
+                participant_visit--&gt;&gt;participant_visit: return
+                participant_visit--&gt;&gt;participant_validateInsertRecipe: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_validateInsertRecipe as validateInsertRecipe
+  participant participant_visit as visit
+  participant_validateInsertRecipe-&gt;&gt;participant_visit: visit()
+  participant_visit-&gt;&gt;participant_visit: visit()
+  participant_visit--&gt;&gt;participant_visit: return
+  participant_visit--&gt;&gt;participant_validateInsertRecipe: return
+</pre>
+              </details>
+            </article>
+            <article
+              class="item"
+              data-search="validateNodePlacement sequence diagrams/sequences/validate-node-placement.mmd"
+            >
+              <h3>validateNodePlacement sequence</h3>
+              <p class="muted"><code>diagrams/sequences/validate-node-placement.mmd</code></p>
+              <div class="mermaid">
+                sequenceDiagram participant participant_canAcceptChild as canAcceptChild participant
+                participant_findNodeById as findNodeById participant
+                participant_validateNodePlacement as validateNodePlacement
+                participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+                participant_findNodeById--&gt;&gt;participant_findNodeById: return
+                participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+                participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild:
+                canAcceptChild()
+                participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+              </div>
+              <details>
+                <summary>View Mermaid source</summary>
+                <pre>
+sequenceDiagram
+  participant participant_canAcceptChild as canAcceptChild
+  participant participant_findNodeById as findNodeById
+  participant participant_validateNodePlacement as validateNodePlacement
+  participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
+  participant_findNodeById--&gt;&gt;participant_findNodeById: return
+  participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
+  participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
+</pre>
+              </details>
+            </article>
+          </section>
+        </section>
+        <section id="view-src-index-test-ts" class="view" data-view="src/index.test.ts" hidden>
+          <section class="panel">
+            <h2>src/index.test.ts</h2>
+            <article class="item" data-search="createRoot src/index.test.ts ">
+              <h3>createRoot</h3>
+              <p class="muted"><code>src/index.test.ts:49:7</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section id="view-src-index-ts" class="view" data-view="src/index.ts" hidden>
+          <section class="panel">
+            <h2>src/index.ts</h2>
+            <article class="item" data-search="generateStudioId src/index.ts ">
+              <h3>generateStudioId</h3>
+              <p class="muted"><code>src/index.ts:444:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="cloneWithNewIds src/index.ts ">
+              <h3>cloneWithNewIds</h3>
+              <p class="muted"><code>src/index.ts:451:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="findNodeById src/index.ts ">
+              <h3>findNodeById</h3>
+              <p class="muted"><code>src/index.ts:468:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="updateNodeInTree src/index.ts ">
+              <h3>updateNodeInTree</h3>
+              <p class="muted"><code>src/index.ts:480:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="removeNodeFromTree src/index.ts ">
+              <h3>removeNodeFromTree</h3>
+              <p class="muted"><code>src/index.ts:508:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="addNodeToTree src/index.ts ">
+              <h3>addNodeToTree</h3>
+              <p class="muted"><code>src/index.ts:526:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="moveNodeInTree src/index.ts ">
+              <h3>moveNodeInTree</h3>
+              <p class="muted"><code>src/index.ts:559:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="findNodeWithParent src/index.ts ">
+              <h3>findNodeWithParent</h3>
+              <p class="muted"><code>src/index.ts:595:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="visit src/index.ts ">
+              <h3>visit</h3>
+              <p class="muted"><code>src/index.ts:600:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isDescendantNode src/index.ts ">
+              <h3>isDescendantNode</h3>
+              <p class="muted"><code>src/index.ts:619:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="removeNodeForMove src/index.ts ">
+              <h3>removeNodeForMove</h3>
+              <p class="muted"><code>src/index.ts:630:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="canAcceptChild src/index.ts ">
+              <h3>canAcceptChild</h3>
+              <p class="muted"><code>src/index.ts:685:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="validateNodePlacement src/index.ts ">
+              <h3>validateNodePlacement</h3>
+              <p class="muted"><code>src/index.ts:697:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveInsertPlacement src/index.ts ">
+              <h3>resolveInsertPlacement</h3>
+              <p class="muted"><code>src/index.ts:752:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveDefaultInsertPlacement src/index.ts ">
+              <h3>resolveDefaultInsertPlacement</h3>
+              <p class="muted"><code>src/index.ts:813:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="insertChildAtIndex src/index.ts ">
+              <h3>insertChildAtIndex</h3>
+              <p class="muted"><code>src/index.ts:870:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="insertNodeAtPlacement src/index.ts ">
+              <h3>insertNodeAtPlacement</h3>
+              <p class="muted"><code>src/index.ts:915:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="getAdjustedMovePlacement src/index.ts ">
+              <h3>getAdjustedMovePlacement</h3>
+              <p class="muted"><code>src/index.ts:954:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="moveNodeToPlacement src/index.ts ">
+              <h3>moveNodeToPlacement</h3>
+              <p class="muted"><code>src/index.ts:983:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="getInsertCatalogCategoryLabel src/index.ts ">
+              <h3>getInsertCatalogCategoryLabel</h3>
+              <p class="muted"><code>src/index.ts:1083:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveCategoryOrder src/index.ts ">
+              <h3>resolveCategoryOrder</h3>
+              <p class="muted"><code>src/index.ts:1087:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="describeInsertRecipeIssue src/index.ts ">
+              <h3>describeInsertRecipeIssue</h3>
+              <p class="muted"><code>src/index.ts:1092:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="validateInsertRecipe src/index.ts ">
+              <h3>validateInsertRecipe</h3>
+              <p class="muted"><code>src/index.ts:1100:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="visit src/index.ts ">
+              <h3>visit</h3>
+              <p class="muted"><code>src/index.ts:1104:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createNodeFromRecipe src/index.ts ">
+              <h3>createNodeFromRecipe</h3>
+              <p class="muted"><code>src/index.ts:1137:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="buildNode src/index.ts ">
+              <h3>buildNode</h3>
+              <p class="muted"><code>src/index.ts:1142:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createNodeFromCatalogEntry src/index.ts ">
+              <h3>createNodeFromCatalogEntry</h3>
+              <p class="muted"><code>src/index.ts:1157:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createComponentEntry src/index.ts ">
+              <h3>createComponentEntry</h3>
+              <p class="muted"><code>src/index.ts:1177:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createRecipeEntry src/index.ts ">
+              <h3>createRecipeEntry</h3>
+              <p class="muted"><code>src/index.ts:1200:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="buildInsertCatalogEntries src/index.ts ">
+              <h3>buildInsertCatalogEntries</h3>
+              <p class="muted"><code>src/index.ts:1238:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolvePlacementForEntry src/index.ts ">
+              <h3>resolvePlacementForEntry</h3>
+              <p class="muted"><code>src/index.ts:1264:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveInsertCatalogEntries src/index.ts ">
+              <h3>resolveInsertCatalogEntries</h3>
+              <p class="muted"><code>src/index.ts:1280:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isStyleRecord src/index.ts ">
+              <h3>isStyleRecord</h3>
+              <p class="muted"><code>src/index.ts:1329:1</code></p>
+              <p class="empty">No description available.</p>
             </article>
           </section>
         </section>

@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_addNodeToTree as addNodeToTree
+  participant participant_canAcceptChild as canAcceptChild
+  participant_addNodeToTree->>participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild-->>participant_addNodeToTree: return

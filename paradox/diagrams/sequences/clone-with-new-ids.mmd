@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_cloneWithNewIds as cloneWithNewIds
+  participant participant_createId as createId
+  participant_cloneWithNewIds->>participant_createId: createId()
+  participant_createId-->>participant_cloneWithNewIds: return
