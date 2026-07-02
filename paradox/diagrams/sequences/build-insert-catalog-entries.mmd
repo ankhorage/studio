@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_buildInsertCatalogEntries as buildInsertCatalogEntries
+  participant participant_createComponentEntry as createComponentEntry
+  participant_buildInsertCatalogEntries->>participant_createComponentEntry: createComponentEntry()
+  participant_createComponentEntry-->>participant_buildInsertCatalogEntries: return

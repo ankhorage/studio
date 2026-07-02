@@ -3,9 +3,36 @@ graph LR
   module_paradox_config_ts["paradox.config.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
+  export_ACTION_REGISTRY["ACTION_REGISTRY"]
+  module_src_index_ts --> export_ACTION_REGISTRY
   export_ActionDefinition["ActionDefinition"]
   module_src_index_ts --> export_ActionDefinition
   export_ActionDefinition -.-> export_StudioActionPayloadSchema
+  export_addNodeToTree["addNodeToTree"]
+  module_src_index_ts --> export_addNodeToTree
+  export_addNodeToTree -.-> export_StudioComponentMetaRegistry
+  export_buildInsertCatalogEntries["buildInsertCatalogEntries"]
+  module_src_index_ts --> export_buildInsertCatalogEntries
+  export_buildInsertCatalogEntries -.-> export_InsertCatalogEntry
+  export_buildInsertCatalogEntries -.-> export_InsertRecipe
+  export_buildInsertCatalogEntries -.-> export_StudioComponentMetaRegistry
+  export_canAcceptChild["canAcceptChild"]
+  module_src_index_ts --> export_canAcceptChild
+  export_canAcceptChild -.-> export_StudioComponentMetaRegistry
+  export_cloneWithNewIds["cloneWithNewIds"]
+  module_src_index_ts --> export_cloneWithNewIds
+  export_cloneWithNewIds -.-> export_StudioIdGenerator
+  export_createNodeFromCatalogEntry["createNodeFromCatalogEntry"]
+  module_src_index_ts --> export_createNodeFromCatalogEntry
+  export_createNodeFromCatalogEntry -.-> export_InsertCatalogEntry
+  export_createNodeFromCatalogEntry -.-> export_StudioComponentMetaRegistry
+  export_createNodeFromCatalogEntry -.-> export_StudioIdGenerator
+  export_findNodeById["findNodeById"]
+  module_src_index_ts --> export_findNodeById
+  export_generateStudioId["generateStudioId"]
+  module_src_index_ts --> export_generateStudioId
+  export_getInsertCatalogCategoryLabel["getInsertCatalogCategoryLabel"]
+  module_src_index_ts --> export_getInsertCatalogCategoryLabel
   export_InsertCatalogComponentEntry["InsertCatalogComponentEntry"]
   module_src_index_ts --> export_InsertCatalogComponentEntry
   export_InsertCatalogComponentEntry -.-> export_InsertCatalogDisabledReason
@@ -35,6 +62,16 @@ graph LR
   export_InsertCatalogRecipeEntry -.-> export_InsertCatalogEntryStatus
   export_InsertCatalogRecipeEntry -.-> export_InsertRecipe
   export_InsertCatalogRecipeEntry -.-> export_NodePlacement
+  export_insertNodeAtPlacement["insertNodeAtPlacement"]
+  module_src_index_ts --> export_insertNodeAtPlacement
+  export_insertNodeAtPlacement -.-> export_InsertNodeAtPlacementArgs
+  export_insertNodeAtPlacement -.-> export_InsertNodeAtPlacementResult
+  export_InsertNodeAtPlacementArgs["InsertNodeAtPlacementArgs"]
+  module_src_index_ts --> export_InsertNodeAtPlacementArgs
+  export_InsertNodeAtPlacementArgs -.-> export_NodePlacement
+  export_InsertNodeAtPlacementArgs -.-> export_StudioComponentMetaRegistry
+  export_InsertNodeAtPlacementResult["InsertNodeAtPlacementResult"]
+  module_src_index_ts --> export_InsertNodeAtPlacementResult
   export_InsertRecipe["InsertRecipe"]
   module_src_index_ts --> export_InsertRecipe
   export_InsertRecipe -.-> export_InsertRecipeNode
@@ -44,6 +81,18 @@ graph LR
   module_src_index_ts --> export_InsertRecipeNode
   export_ModuleDefinition["ModuleDefinition"]
   module_src_index_ts --> export_ModuleDefinition
+  export_moveNodeInTree["moveNodeInTree"]
+  module_src_index_ts --> export_moveNodeInTree
+  export_moveNodeToPlacement["moveNodeToPlacement"]
+  module_src_index_ts --> export_moveNodeToPlacement
+  export_moveNodeToPlacement -.-> export_MoveNodeToPlacementArgs
+  export_moveNodeToPlacement -.-> export_MoveNodeToPlacementResult
+  export_MoveNodeToPlacementArgs["MoveNodeToPlacementArgs"]
+  module_src_index_ts --> export_MoveNodeToPlacementArgs
+  export_MoveNodeToPlacementArgs -.-> export_NodePlacement
+  export_MoveNodeToPlacementArgs -.-> export_StudioComponentMetaRegistry
+  export_MoveNodeToPlacementResult["MoveNodeToPlacementResult"]
+  module_src_index_ts --> export_MoveNodeToPlacementResult
   export_NodePlacement["NodePlacement"]
   module_src_index_ts --> export_NodePlacement
   export_NodePlacement -.-> export_PlacementKind
@@ -58,6 +107,23 @@ graph LR
   module_src_index_ts --> export_PlacementResolutionResult
   export_PlacementValidationResult["PlacementValidationResult"]
   module_src_index_ts --> export_PlacementValidationResult
+  export_removeNodeFromTree["removeNodeFromTree"]
+  module_src_index_ts --> export_removeNodeFromTree
+  export_resolveDefaultInsertPlacement["resolveDefaultInsertPlacement"]
+  module_src_index_ts --> export_resolveDefaultInsertPlacement
+  export_resolveDefaultInsertPlacement -.-> export_PlacementResolutionResult
+  export_resolveDefaultInsertPlacement -.-> export_StudioComponentMetaRegistry
+  export_resolveInsertCatalogEntries["resolveInsertCatalogEntries"]
+  module_src_index_ts --> export_resolveInsertCatalogEntries
+  export_resolveInsertCatalogEntries -.-> export_InsertCatalogEntry
+  export_resolveInsertCatalogEntries -.-> export_StudioComponentMetaRegistry
+  export_resolveInsertPlacement["resolveInsertPlacement"]
+  module_src_index_ts --> export_resolveInsertPlacement
+  export_resolveInsertPlacement -.-> export_PlacementKind
+  export_resolveInsertPlacement -.-> export_PlacementResolutionResult
+  export_resolveInsertPlacement -.-> export_StudioComponentMetaRegistry
+  export_STUDIO_INSERT_RECIPES["STUDIO_INSERT_RECIPES"]
+  module_src_index_ts --> export_STUDIO_INSERT_RECIPES
   export_STUDIO_PACKAGE_BOUNDARY["STUDIO_PACKAGE_BOUNDARY"]
   module_src_index_ts --> export_STUDIO_PACKAGE_BOUNDARY
   export_STUDIO_PACKAGE_NAME["STUDIO_PACKAGE_NAME"]
@@ -75,6 +141,13 @@ graph LR
   module_src_index_ts --> export_StudioAdminRoutePath
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
+  export_StudioComponentBlueprint["StudioComponentBlueprint"]
+  module_src_index_ts --> export_StudioComponentBlueprint
+  export_StudioComponentMeta["StudioComponentMeta"]
+  module_src_index_ts --> export_StudioComponentMeta
+  export_StudioComponentMeta -.-> export_StudioComponentBlueprint
+  export_StudioComponentMetaRegistry["StudioComponentMetaRegistry"]
+  module_src_index_ts --> export_StudioComponentMetaRegistry
   export_StudioContextValue["StudioContextValue"]
   module_src_index_ts --> export_StudioContextValue
   export_StudioContextValue -.-> export_InsertCatalogEntry
@@ -91,6 +164,8 @@ graph LR
   export_StudioContextValue -.-> export_ThemeUpdates
   export_StudioEvent["StudioEvent"]
   module_src_index_ts --> export_StudioEvent
+  export_StudioIdGenerator["StudioIdGenerator"]
+  module_src_index_ts --> export_StudioIdGenerator
   export_StudioLocale["StudioLocale"]
   module_src_index_ts --> export_StudioLocale
   export_StudioManifest["StudioManifest"]
@@ -125,3 +200,17 @@ graph LR
   export_StudioSessionState -.-> export_StudioSaveStatus
   export_ThemeUpdates["ThemeUpdates"]
   module_src_index_ts --> export_ThemeUpdates
+  export_TPL_SCREEN_EMPTY["TPL_SCREEN_EMPTY"]
+  module_src_index_ts --> export_TPL_SCREEN_EMPTY
+  export_updateNodeInTree["updateNodeInTree"]
+  module_src_index_ts --> export_updateNodeInTree
+  export_validateInsertRecipe["validateInsertRecipe"]
+  module_src_index_ts --> export_validateInsertRecipe
+  export_validateInsertRecipe -.-> export_InsertRecipe
+  export_validateInsertRecipe -.-> export_InsertRecipeIssue
+  export_validateInsertRecipe -.-> export_StudioComponentMetaRegistry
+  export_validateNodePlacement["validateNodePlacement"]
+  module_src_index_ts --> export_validateNodePlacement
+  export_validateNodePlacement -.-> export_NodePlacement
+  export_validateNodePlacement -.-> export_PlacementValidationResult
+  export_validateNodePlacement -.-> export_StudioComponentMetaRegistry

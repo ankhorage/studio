@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant participant_buildNode as buildNode
+  participant participant_createId as createId
+  participant participant_createNodeFromCatalogEntry as createNodeFromCatalogEntry
+  participant participant_createNodeFromRecipe as createNodeFromRecipe
+  participant_createNodeFromCatalogEntry->>participant_createNodeFromRecipe: createNodeFromRecipe()
+  participant_createNodeFromRecipe->>participant_buildNode: buildNode()
+  participant_buildNode->>participant_createId: createId()
+  participant_createId-->>participant_buildNode: return
+  participant_buildNode-->>participant_createNodeFromRecipe: return
+  participant_createNodeFromRecipe-->>participant_createNodeFromCatalogEntry: return
+  participant_createNodeFromCatalogEntry->>participant_createId: createId()
+  participant_createId-->>participant_createNodeFromCatalogEntry: return

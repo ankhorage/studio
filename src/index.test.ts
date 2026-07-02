@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'bun:test';
-
 import type { UiNode } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import {
   ACTION_REGISTRY,
@@ -15,9 +14,9 @@ import {
   STUDIO_PACKAGE_BOUNDARY,
   STUDIO_PACKAGE_NAME,
   STUDIO_PUBLIC_CONTRACTS,
+  type StudioComponentMetaRegistry,
   TPL_SCREEN_EMPTY,
   updateNodeInTree,
-  type StudioComponentMetaRegistry,
 } from './index';
 
 const componentMeta: StudioComponentMetaRegistry = {

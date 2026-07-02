@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant participant_canAcceptChild as canAcceptChild
+  participant participant_findNodeById as findNodeById
+  participant participant_validateNodePlacement as validateNodePlacement
+  participant_validateNodePlacement->>participant_findNodeById: findNodeById()
+  participant_findNodeById->>participant_findNodeById: findNodeById()
+  participant_findNodeById-->>participant_findNodeById: return
+  participant_findNodeById-->>participant_validateNodePlacement: return
+  participant_validateNodePlacement->>participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild-->>participant_validateNodePlacement: return

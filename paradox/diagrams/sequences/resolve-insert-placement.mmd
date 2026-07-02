@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant participant_canAcceptChild as canAcceptChild
+  participant participant_findNodeById as findNodeById
+  participant participant_findNodeWithParent as findNodeWithParent
+  participant participant_resolveInsertPlacement as resolveInsertPlacement
+  participant participant_validateNodePlacement as validateNodePlacement
+  participant participant_visit as visit
+  participant_resolveInsertPlacement->>participant_findNodeWithParent: findNodeWithParent()
+  participant_findNodeWithParent->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
+  participant_visit-->>participant_visit: return
+  participant_visit-->>participant_findNodeWithParent: return
+  participant_findNodeWithParent-->>participant_resolveInsertPlacement: return
+  participant_resolveInsertPlacement->>participant_validateNodePlacement: validateNodePlacement()
+  participant_validateNodePlacement->>participant_findNodeById: findNodeById()
+  participant_findNodeById->>participant_findNodeById: findNodeById()
+  participant_findNodeById-->>participant_findNodeById: return
+  participant_findNodeById-->>participant_validateNodePlacement: return
+  participant_validateNodePlacement->>participant_canAcceptChild: canAcceptChild()
+  participant_canAcceptChild-->>participant_validateNodePlacement: return
+  participant_validateNodePlacement-->>participant_resolveInsertPlacement: return

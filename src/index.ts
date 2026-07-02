@@ -556,11 +556,7 @@ export const addNodeToTree = (args: {
   return hasChanged ? { ...root, children: nextChildren } : root;
 };
 
-export const moveNodeInTree = (
-  root: UiNode,
-  nodeId: string,
-  direction: 'up' | 'down',
-): UiNode => {
+export const moveNodeInTree = (root: UiNode, nodeId: string, direction: 'up' | 'down'): UiNode => {
   if (root.id === nodeId || !root.children) return root;
 
   const index = root.children.findIndex((child) => child.id === nodeId);
@@ -583,7 +579,9 @@ export const moveNodeInTree = (
   }
 
   const nextChildren = root.children.map((child) => moveNodeInTree(child, nodeId, direction));
-  const hasChanged = nextChildren.some((child, childIndex) => child !== root.children?.[childIndex]);
+  const hasChanged = nextChildren.some(
+    (child, childIndex) => child !== root.children?.[childIndex],
+  );
 
   return hasChanged ? { ...root, children: nextChildren } : root;
 };
