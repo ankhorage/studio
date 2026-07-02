@@ -239,7 +239,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>7</strong><span class="muted">modules</span></div>
+              <div><strong>8</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -321,6 +321,18 @@
               data-search="src/manifestState.public.test.ts src/index.ts src/manifestState.ts"
             >
               <h3>src/manifestState.public.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/index.ts</code>,
+                <code>src/manifestState.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestState.routes.test.ts src/index.ts src/manifestState.ts"
+            >
+              <h3>src/manifestState.routes.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/index.ts</code>,
@@ -3234,6 +3246,10 @@
                 package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
                 module_src_manifestState_public_test_ts --&gt; module_src_index_ts
                 module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestState_routes_test_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_manifestState_test_ts
                 module_src_manifestState_test_ts --&gt; module_src_index_ts
@@ -3261,6 +3277,10 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+  module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestState_routes_test_ts
+  module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
+  module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_manifestState_test_ts
   module_src_manifestState_test_ts --&gt; module_src_index_ts
@@ -3283,11 +3303,14 @@ graph TD
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+                module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 module_src_index_test_ts --&gt; module_src_index_ts
                 module_src_manifestState_public_test_ts --&gt; module_src_index_ts
                 module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
                 module_src_manifestState_test_ts --&gt; module_src_index_ts
                 module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
                 module_src_manifestState_ts --&gt; module_src_index_ts
@@ -3301,11 +3324,14 @@ graph LR
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+  module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+  module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
+  module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_test_ts --&gt; module_src_index_ts
   module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_ts --&gt; module_src_index_ts
@@ -3321,6 +3347,7 @@ graph LR
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+                module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
@@ -3520,6 +3547,7 @@ graph LR
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
+  module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]

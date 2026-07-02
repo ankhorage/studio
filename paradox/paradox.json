@@ -168,6 +168,12 @@
       "exports": []
     },
     {
+      "path": "src/manifestState.routes.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/manifestState.ts"],
+      "exports": []
+    },
+    {
       "path": "src/manifestState.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/index.ts", "src/manifestState.ts"],
@@ -3947,6 +3953,16 @@
         "sourcePath": "src/manifestState.public.test.ts"
       },
       {
+        "fromPath": "src/manifestState.routes.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
+        "fromPath": "src/manifestState.routes.test.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
         "fromPath": "src/manifestState.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestState.test.ts"
@@ -4466,6 +4482,36 @@
         "toSymbol": "findNodeInManifest",
         "callExpression": "findNodeInManifest",
         "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.routes.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.routes.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.routes.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.routes.test.ts",
+        "toSymbol": "listScreenIdsInRouteOrder",
+        "callExpression": "listScreenIdsInRouteOrder",
+        "sourcePath": "src/manifestState.routes.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.routes.test.ts",
+        "toSymbol": "findScreenIdForNode",
+        "callExpression": "findScreenIdForNode",
+        "sourcePath": "src/manifestState.routes.test.ts"
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
