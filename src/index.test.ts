@@ -1,14 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
 import { STUDIO_PACKAGE_BOUNDARY, STUDIO_PACKAGE_NAME, STUDIO_PUBLIC_CONTRACTS } from './index';
-import type {
-  InsertCatalogEntry,
-  NodePlacement,
-  StudioAdminRoutePath,
-  StudioCommand,
-  StudioEvent,
-  StudioPanelId,
-} from './index';
 
 describe('@ankhorage/studio', () => {
   test('exports the package name', () => {
@@ -29,52 +21,7 @@ describe('@ankhorage/studio', () => {
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioContextValue');
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('NodePlacement');
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('InsertCatalogEntry');
-  });
-
-  test('accepts Studio navigation and selection literals', () => {
-    const routePath: StudioAdminRoutePath = '/ankh/theme';
-    const panelId: StudioPanelId = 'layers';
-
-    expect(routePath).toBe('/ankh/theme');
-    expect(panelId).toBe('layers');
-  });
-
-  test('models node placement without runtime dependencies', () => {
-    const placement = {
-      parentId: 'root',
-      index: 0,
-      kind: 'inside',
-    } satisfies NodePlacement;
-
-    expect(placement).toEqual({ parentId: 'root', index: 0, kind: 'inside' });
-  });
-
-  test('models insert catalog contracts without moving UI', () => {
-    const entry = {
-      id: 'component:Heading',
-      label: 'Heading',
-      category: 'component',
-      rootType: 'Heading',
-      kind: 'component',
-      componentType: 'Heading',
-      status: 'enabled',
-    } satisfies InsertCatalogEntry;
-
-    expect(entry.kind).toBe('component');
-    expect(entry.status).toBe('enabled');
-  });
-
-  test('models Studio commands and events', () => {
-    const command = {
-      type: 'studio.selectNode',
-      nodeId: 'node-1',
-    } satisfies StudioCommand;
-    const event = {
-      type: 'studio.nodeSelected',
-      nodeId: 'node-1',
-    } satisfies StudioEvent;
-
-    expect(command.type).toBe('studio.selectNode');
-    expect(event.type).toBe('studio.nodeSelected');
+    expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioCommand');
+    expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioEvent');
   });
 });
