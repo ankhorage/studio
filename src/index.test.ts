@@ -8,12 +8,14 @@ describe('@ankhorage/studio', () => {
   });
 
   test('documents the package boundary', () => {
-    expect(STUDIO_PACKAGE_BOUNDARY.owns).toContain('Studio authoring contracts');
-    expect(STUDIO_PACKAGE_BOUNDARY.owns).toContain('Studio command and event contracts');
-    expect(STUDIO_PACKAGE_BOUNDARY.consumes).toContain('@ankhorage/contracts');
-    expect(STUDIO_PACKAGE_BOUNDARY.consumes).toContain('@ankhorage/runtime');
-    expect(STUDIO_PACKAGE_BOUNDARY.doesNotOwn).toContain('Expo runtime planning');
-    expect(STUDIO_PACKAGE_BOUNDARY.doesNotOwn).toContain('React Native UI components');
+    const { consumes, doesNotOwn, owns } = STUDIO_PACKAGE_BOUNDARY;
+
+    expect(owns).toContain('Studio authoring contracts');
+    expect(owns).toContain('Studio command and event contracts');
+    expect(consumes).toContain('@ankhorage/contracts');
+    expect(consumes).toContain('@ankhorage/runtime');
+    expect(doesNotOwn).toContain('Expo runtime planning');
+    expect(doesNotOwn).toContain('React Native UI components');
   });
 
   test('lists useful public contract exports', () => {
