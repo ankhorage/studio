@@ -1,0 +1,59 @@
+{
+  "name": "@ankhorage/studio",
+  "version": "0.0.1",
+  "description": "Studio authoring package for Ankhorage apps",
+  "license": "MIT",
+  "homepage": "https://github.com/ankhorage/studio#readme",
+  "bugs": {
+    "url": "https://github.com/ankhorage/studio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankhorage/studio.git"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "type-check": "bun run typecheck",
+    "lint": "ankhorage-eslint . --max-warnings=0",
+    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
+    "format": "ankhorage-prettier --write .",
+    "format:check": "ankhorage-prettier --check .",
+    "knip": "ankhorage-knip",
+    "test": "bun test",
+    "docs": "bun scripts/check-docs.ts",
+    "changeset": "changeset",
+    "changeset:status": "changeset status --since=origin/main",
+    "version-packages": "changeset version"
+  },
+  "keywords": [
+    "ankhorage",
+    "studio",
+    "authoring",
+    "react-native",
+    "app-builder"
+  ],
+  "devDependencies": {
+    "@ankhorage/devtools": "^1.1.0",
+    "@changesets/cli": "^2.31.0",
+    "@types/bun": "^1.3.13",
+    "@types/node": "^25.6.0",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "bun@1.3.13"
+}
