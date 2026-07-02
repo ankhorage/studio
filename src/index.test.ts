@@ -1,15 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 
-import {
-  STUDIO_PACKAGE_BOUNDARY,
-  STUDIO_PACKAGE_NAME,
-  STUDIO_PUBLIC_CONTRACTS,
-  type InsertCatalogEntry,
-  type NodePlacement,
-  type StudioAdminRoutePath,
-  type StudioCommand,
-  type StudioEvent,
-  type StudioPanelId,
+import { STUDIO_PACKAGE_BOUNDARY, STUDIO_PACKAGE_NAME, STUDIO_PUBLIC_CONTRACTS } from './index';
+import type {
+  InsertCatalogEntry,
+  NodePlacement,
+  StudioAdminRoutePath,
+  StudioCommand,
+  StudioEvent,
+  StudioPanelId,
 } from './index';
 
 describe('@ankhorage/studio', () => {
