@@ -203,7 +203,7 @@
           <section class="panel">
             <h2>Package overview</h2>
             <div class="summary">
-              <div><strong>3</strong><span class="muted">public exports</span></div>
+              <div><strong>44</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
               <div><strong>4</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
@@ -236,14 +236,34 @@
             </article>
             <article
               class="item"
-              data-search="src/index.ts STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME StudioPackageBoundary"
+              data-search="src/index.ts ActionDefinition InsertCatalogComponentEntry InsertCatalogDisabledReason InsertCatalogDisabledReasonCode InsertCatalogEntry InsertCatalogEntryBase InsertCatalogEntryKind InsertCatalogEntryStatus InsertCatalogRecipeEntry InsertRecipe InsertRecipeIssue InsertRecipeNode ModuleDefinition NodePlacement PlacementFailureCode PlacementFailureReason PlacementKind PlacementResolutionResult PlacementValidationResult STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME STUDIO_PUBLIC_CONTRACTS StudioActionPayloadField StudioActionPayloadPrimitive StudioActionPayloadSchema StudioAdminRoutePath StudioCommand StudioContextValue StudioEvent StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPackageBoundary StudioPanelId StudioProjectId StudioPublicContract StudioSaveStatus StudioScreenId StudioSelectionState StudioSessionId StudioSessionState ThemeUpdates"
             >
               <h3>src/index.ts</h3>
               <p class="muted">Configured entrypoint</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>STUDIO_PACKAGE_BOUNDARY</code>,
-                <code>STUDIO_PACKAGE_NAME</code>, <code>StudioPackageBoundary</code>
+                <strong>Exports:</strong> <code>ActionDefinition</code>,
+                <code>InsertCatalogComponentEntry</code>, <code>InsertCatalogDisabledReason</code>,
+                <code>InsertCatalogDisabledReasonCode</code>, <code>InsertCatalogEntry</code>,
+                <code>InsertCatalogEntryBase</code>, <code>InsertCatalogEntryKind</code>,
+                <code>InsertCatalogEntryStatus</code>, <code>InsertCatalogRecipeEntry</code>,
+                <code>InsertRecipe</code>, <code>InsertRecipeIssue</code>,
+                <code>InsertRecipeNode</code>, <code>ModuleDefinition</code>,
+                <code>NodePlacement</code>, <code>PlacementFailureCode</code>,
+                <code>PlacementFailureReason</code>, <code>PlacementKind</code>,
+                <code>PlacementResolutionResult</code>, <code>PlacementValidationResult</code>,
+                <code>STUDIO_PACKAGE_BOUNDARY</code>, <code>STUDIO_PACKAGE_NAME</code>,
+                <code>STUDIO_PUBLIC_CONTRACTS</code>, <code>StudioActionPayloadField</code>,
+                <code>StudioActionPayloadPrimitive</code>, <code>StudioActionPayloadSchema</code>,
+                <code>StudioAdminRoutePath</code>, <code>StudioCommand</code>,
+                <code>StudioContextValue</code>, <code>StudioEvent</code>,
+                <code>StudioLocale</code>, <code>StudioManifest</code>, <code>StudioMode</code>,
+                <code>StudioModuleId</code>, <code>StudioNodeId</code>,
+                <code>StudioPackageBoundary</code>, <code>StudioPanelId</code>,
+                <code>StudioProjectId</code>, <code>StudioPublicContract</code>,
+                <code>StudioSaveStatus</code>, <code>StudioScreenId</code>,
+                <code>StudioSelectionState</code>, <code>StudioSessionId</code>,
+                <code>StudioSessionState</code>, <code>ThemeUpdates</code>
               </p>
             </article>
           </section>
@@ -254,11 +274,829 @@
               <h3>src/index.ts</h3>
               <article
                 class="item"
+                id="symbol-actiondefinition"
+                data-search="ActionDefinition type src/index.ts  StudioActionPayloadSchema"
+              >
+                <h4>ActionDefinition</h4>
+                <p class="muted">type • <code>src/index.ts:212:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioActionPayloadSchema</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>payloadSchema</code></td>
+                      <td>property</td>
+                      <td><code>StudioActionPayloadSchema | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>requiresPayload</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>type</code></td>
+                      <td>property</td>
+                      <td><code>ActionType</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogcomponententry"
+                data-search="InsertCatalogComponentEntry type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryStatus NodePlacement"
+              >
+                <h4>InsertCatalogComponentEntry</h4>
+                <p class="muted">type • <code>src/index.ts:190:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogDisabledReason</li>
+                    <li class="chip">InsertCatalogEntryStatus</li>
+                    <li class="chip">NodePlacement</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>componentType</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>disabledReason</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogDisabledReason | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>kind</code></td>
+                      <td>property</td>
+                      <td><code>&quot;component&quot;</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>placement</code></td>
+                      <td>property</td>
+                      <td><code>NodePlacement | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>rootType</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>status</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogEntryStatus</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogdisabledreason"
+                data-search="InsertCatalogDisabledReason type src/index.ts  InsertCatalogDisabledReasonCode InsertRecipeIssue"
+              >
+                <h4>InsertCatalogDisabledReason</h4>
+                <p class="muted">type • <code>src/index.ts:172:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogDisabledReasonCode</li>
+                    <li class="chip">InsertRecipeIssue</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>code</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogDisabledReasonCode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>detail</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>issue</code></td>
+                      <td>property</td>
+                      <td><code>InsertRecipeIssue | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogdisabledreasoncode"
+                data-search="InsertCatalogDisabledReasonCode unknown src/index.ts "
+              >
+                <h4>InsertCatalogDisabledReasonCode</h4>
+                <p class="muted">unknown • <code>src/index.ts:149:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogentry"
+                data-search="InsertCatalogEntry unknown src/index.ts "
+              >
+                <h4>InsertCatalogEntry</h4>
+                <p class="muted">unknown • <code>src/index.ts:200:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogentrybase"
+                data-search="InsertCatalogEntryBase type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryKind InsertCatalogEntryStatus NodePlacement"
+              >
+                <h4>InsertCatalogEntryBase</h4>
+                <p class="muted">type • <code>src/index.ts:178:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogDisabledReason</li>
+                    <li class="chip">InsertCatalogEntryKind</li>
+                    <li class="chip">InsertCatalogEntryStatus</li>
+                    <li class="chip">NodePlacement</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>disabledReason</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogDisabledReason | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>kind</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogEntryKind</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>placement</code></td>
+                      <td>property</td>
+                      <td><code>NodePlacement | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>rootType</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>status</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogEntryStatus</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogentrykind"
+                data-search="InsertCatalogEntryKind unknown src/index.ts "
+              >
+                <h4>InsertCatalogEntryKind</h4>
+                <p class="muted">unknown • <code>src/index.ts:146:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogentrystatus"
+                data-search="InsertCatalogEntryStatus unknown src/index.ts "
+              >
+                <h4>InsertCatalogEntryStatus</h4>
+                <p class="muted">unknown • <code>src/index.ts:147:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertcatalogrecipeentry"
+                data-search="InsertCatalogRecipeEntry type src/index.ts  InsertCatalogDisabledReason InsertCatalogEntryStatus InsertRecipe NodePlacement"
+              >
+                <h4>InsertCatalogRecipeEntry</h4>
+                <p class="muted">type • <code>src/index.ts:195:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogDisabledReason</li>
+                    <li class="chip">InsertCatalogEntryStatus</li>
+                    <li class="chip">InsertRecipe</li>
+                    <li class="chip">NodePlacement</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>disabledReason</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogDisabledReason | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>kind</code></td>
+                      <td>property</td>
+                      <td><code>&quot;recipe&quot;</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>placement</code></td>
+                      <td>property</td>
+                      <td><code>NodePlacement | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>recipe</code></td>
+                      <td>property</td>
+                      <td><code>InsertRecipe</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>rootType</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>status</code></td>
+                      <td>property</td>
+                      <td><code>InsertCatalogEntryStatus</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertrecipe"
+                data-search="InsertRecipe type src/index.ts  InsertRecipeNode"
+              >
+                <h4>InsertRecipe</h4>
+                <p class="muted">type • <code>src/index.ts:157:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertRecipeNode</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>category</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>root</code></td>
+                      <td>property</td>
+                      <td><code>InsertRecipeNode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertrecipeissue"
+                data-search="InsertRecipeIssue type src/index.ts "
+              >
+                <h4>InsertRecipeIssue</h4>
+                <p class="muted">type • <code>src/index.ts:165:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>childType</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>code</code></td>
+                      <td>property</td>
+                      <td><code>&quot;child-not-allowed&quot; | &quot;missing-meta&quot;</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>nodeType</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>path</code></td>
+                      <td>property</td>
+                      <td><code>string[]</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-insertrecipenode"
+                data-search="InsertRecipeNode type src/index.ts "
+              >
+                <h4>InsertRecipeNode</h4>
+                <p class="muted">type • <code>src/index.ts:152:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>children</code></td>
+                      <td>property</td>
+                      <td><code>InsertRecipeNode[] | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>type</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-moduledefinition"
+                data-search="ModuleDefinition type src/index.ts "
+              >
+                <h4>ModuleDefinition</h4>
+                <p class="muted">type • <code>src/index.ts:220:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>description</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>id</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>name</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>ui</code></td>
+                      <td>property</td>
+                      <td><code>{ modal?: { title: string; }; } | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-nodeplacement"
+                data-search="NodePlacement type src/index.ts  PlacementKind"
+              >
+                <h4>NodePlacement</h4>
+                <p class="muted">type • <code>src/index.ts:108:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">PlacementKind</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>index</code></td>
+                      <td>property</td>
+                      <td><code>number</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>kind</code></td>
+                      <td>property</td>
+                      <td><code>PlacementKind</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>parentId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>referenceId</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-placementfailurecode"
+                data-search="PlacementFailureCode unknown src/index.ts "
+              >
+                <h4>PlacementFailureCode</h4>
+                <p class="muted">unknown • <code>src/index.ts:115:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-placementfailurereason"
+                data-search="PlacementFailureReason type src/index.ts  PlacementFailureCode"
+              >
+                <h4>PlacementFailureReason</h4>
+                <p class="muted">type • <code>src/index.ts:127:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">PlacementFailureCode</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>code</code></td>
+                      <td>property</td>
+                      <td><code>PlacementFailureCode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>message</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-placementkind"
+                data-search="PlacementKind unknown src/index.ts "
+              >
+                <h4>PlacementKind</h4>
+                <p class="muted">unknown • <code>src/index.ts:106:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-placementresolutionresult"
+                data-search="PlacementResolutionResult unknown src/index.ts "
+              >
+                <h4>PlacementResolutionResult</h4>
+                <p class="muted">unknown • <code>src/index.ts:139:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-placementvalidationresult"
+                data-search="PlacementValidationResult unknown src/index.ts "
+              >
+                <h4>PlacementValidationResult</h4>
+                <p class="muted">unknown • <code>src/index.ts:132:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
                 id="symbol-studio-package-boundary"
                 data-search="STUDIO_PACKAGE_BOUNDARY value src/index.ts "
               >
                 <h4>STUDIO_PACKAGE_BOUNDARY</h4>
-                <p class="muted">value • <code>src/index.ts:9:14</code></p>
+                <p class="muted">value • <code>src/index.ts:23:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -269,7 +1107,566 @@
                 data-search="STUDIO_PACKAGE_NAME value src/index.ts "
               >
                 <h4>STUDIO_PACKAGE_NAME</h4>
-                <p class="muted">value • <code>src/index.ts:1:14</code></p>
+                <p class="muted">value • <code>src/index.ts:15:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studio-public-contracts"
+                data-search="STUDIO_PUBLIC_CONTRACTS value src/index.ts "
+              >
+                <h4>STUDIO_PUBLIC_CONTRACTS</h4>
+                <p class="muted">value • <code>src/index.ts:50:14</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioactionpayloadfield"
+                data-search="StudioActionPayloadField type src/index.ts  StudioActionPayloadPrimitive"
+              >
+                <h4>StudioActionPayloadField</h4>
+                <p class="muted">type • <code>src/index.ts:204:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioActionPayloadPrimitive</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>label</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>required</code></td>
+                      <td>property</td>
+                      <td><code>boolean | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>type</code></td>
+                      <td>property</td>
+                      <td><code>StudioActionPayloadPrimitive</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioactionpayloadprimitive"
+                data-search="StudioActionPayloadPrimitive unknown src/index.ts "
+              >
+                <h4>StudioActionPayloadPrimitive</h4>
+                <p class="muted">unknown • <code>src/index.ts:202:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioactionpayloadschema"
+                data-search="StudioActionPayloadSchema unknown src/index.ts "
+              >
+                <h4>StudioActionPayloadSchema</h4>
+                <p class="muted">unknown • <code>src/index.ts:210:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioadminroutepath"
+                data-search="StudioAdminRoutePath unknown src/index.ts "
+              >
+                <h4>StudioAdminRoutePath</h4>
+                <p class="muted">unknown • <code>src/index.ts:73:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiocommand"
+                data-search="StudioCommand unknown src/index.ts "
+              >
+                <h4>StudioCommand</h4>
+                <p class="muted">unknown • <code>src/index.ts:229:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiocontextvalue"
+                data-search="StudioContextValue type src/index.ts  InsertCatalogEntry NodePlacement StudioAdminRoutePath StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPanelId StudioSaveStatus StudioScreenId ThemeUpdates"
+              >
+                <h4>StudioContextValue</h4>
+                <p class="muted">type • <code>src/index.ts:245:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">InsertCatalogEntry</li>
+                    <li class="chip">NodePlacement</li>
+                    <li class="chip">StudioAdminRoutePath</li>
+                    <li class="chip">StudioLocale</li>
+                    <li class="chip">StudioManifest</li>
+                    <li class="chip">StudioMode</li>
+                    <li class="chip">StudioModuleId</li>
+                    <li class="chip">StudioNodeId</li>
+                    <li class="chip">StudioPanelId</li>
+                    <li class="chip">StudioSaveStatus</li>
+                    <li class="chip">StudioScreenId</li>
+                    <li class="chip">ThemeUpdates</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>activeAdminRoutePath</code></td>
+                      <td>property</td>
+                      <td><code>StudioAdminRoutePath</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activeCanvasDragNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activeLocale</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activePanelId</code></td>
+                      <td>property</td>
+                      <td><code>StudioPanelId | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activeScreenId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>addScreen</code></td>
+                      <td>property</td>
+                      <td><code>(name: string) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>addTheme</code></td>
+                      <td>property</td>
+                      <td><code>() =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>deleteNode</code></td>
+                      <td>property</td>
+                      <td><code>(id: StudioNodeId) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>deleteScreen</code></td>
+                      <td>property</td>
+                      <td><code>(id: StudioScreenId) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>deleteTheme</code></td>
+                      <td>property</td>
+                      <td><code>(id: string) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>error</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>findNode</code></td>
+                      <td>property</td>
+                      <td><code>(root: UiNode, id: StudioNodeId) =&gt; UiNode | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>insertFromCatalogEntry</code></td>
+                      <td>property</td>
+                      <td><code>(entry: InsertCatalogEntry) =&gt; boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>isLoading</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>manifest</code></td>
+                      <td>property</td>
+                      <td><code>StudioManifest | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>moveNode</code></td>
+                      <td>property</td>
+                      <td>
+                        <code
+                          >(id: StudioNodeId, direction: &quot;up&quot; | &quot;down&quot;) =&gt;
+                          void</code
+                        >
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>moveNodeToPlacement</code></td>
+                      <td>property</td>
+                      <td>
+                        <code>(nodeId: StudioNodeId, placement: NodePlacement) =&gt; boolean</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>previewMode</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>projectId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>refetchManifest</code></td>
+                      <td>property</td>
+                      <td><code>() =&gt; Promise&lt;void&gt;</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>reloadDictionaries</code></td>
+                      <td>property</td>
+                      <td><code>() =&gt; Promise&lt;void&gt;</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>reorderScreens</code></td>
+                      <td>property</td>
+                      <td><code>(newRoutes: RouteDefinition[]) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>rootNode</code></td>
+                      <td>property</td>
+                      <td><code>UiNode | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>saveStatus</code></td>
+                      <td>property</td>
+                      <td><code>StudioSaveStatus</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>selectedNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>selectNode</code></td>
+                      <td>property</td>
+                      <td><code>(id: StudioNodeId | null) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>sessionId</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveAdminRoutePath</code></td>
+                      <td>property</td>
+                      <td><code>(routePath: StudioAdminRoutePath) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveCanvasDragNodeId</code></td>
+                      <td>property</td>
+                      <td><code>(nodeId: StudioNodeId | null) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveLocale</code></td>
+                      <td>property</td>
+                      <td><code>(locale: StudioLocale) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActivePanelId</code></td>
+                      <td>property</td>
+                      <td><code>(panelId: StudioPanelId | null) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveScreenId</code></td>
+                      <td>property</td>
+                      <td><code>(id: StudioScreenId) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveThemeId</code></td>
+                      <td>property</td>
+                      <td><code>(id: string) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setActiveThemeMode</code></td>
+                      <td>property</td>
+                      <td><code>(mode: StudioMode) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setNavigatorInitialRoute</code></td>
+                      <td>property</td>
+                      <td><code>(routeName: string) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setNavigatorType</code></td>
+                      <td>property</td>
+                      <td><code>(type: NavigatorType) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>setStudioMode</code></td>
+                      <td>property</td>
+                      <td><code>(mode: StudioMode) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>studioMode</code></td>
+                      <td>property</td>
+                      <td><code>StudioMode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>t</code></td>
+                      <td>property</td>
+                      <td><code>(key: string) =&gt; string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>togglePreviewMode</code></td>
+                      <td>property</td>
+                      <td><code>() =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateAppData</code></td>
+                      <td>property</td>
+                      <td><code>(data: AppDataManifest) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateDataBindings</code></td>
+                      <td>property</td>
+                      <td><code>(dataBindings: ComponentDataBindingRegistry) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateDataSources</code></td>
+                      <td>property</td>
+                      <td><code>(dataSources: DataSourceRegistry) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateModuleConfig</code></td>
+                      <td>property</td>
+                      <td>
+                        <code
+                          >(moduleId: StudioModuleId, config: Record&lt;string, unknown&gt;) =&gt;
+                          void</code
+                        >
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateNode</code></td>
+                      <td>property</td>
+                      <td>
+                        <code
+                          >(nodeId: StudioNodeId, props: Record&lt;string, unknown&gt;) =&gt;
+                          void</code
+                        >
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateOAuthProviders</code></td>
+                      <td>property</td>
+                      <td><code>(providers: AuthOAuthProviderConfig[]) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>updateTheme</code></td>
+                      <td>property</td>
+                      <td><code>(id: string, updates: ThemeUpdates) =&gt; void</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioevent"
+                data-search="StudioEvent unknown src/index.ts "
+              >
+                <h4>StudioEvent</h4>
+                <p class="muted">unknown • <code>src/index.ts:238:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiolocale"
+                data-search="StudioLocale unknown src/index.ts "
+              >
+                <h4>StudioLocale</h4>
+                <p class="muted">unknown • <code>src/index.ts:68:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiomanifest"
+                data-search="StudioManifest unknown src/index.ts "
+              >
+                <h4>StudioManifest</h4>
+                <p class="muted">unknown • <code>src/index.ts:76:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiomode"
+                data-search="StudioMode unknown src/index.ts "
+              >
+                <h4>StudioMode</h4>
+                <p class="muted">unknown • <code>src/index.ts:70:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiomoduleid"
+                data-search="StudioModuleId unknown src/index.ts "
+              >
+                <h4>StudioModuleId</h4>
+                <p class="muted">unknown • <code>src/index.ts:67:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studionodeid"
+                data-search="StudioNodeId unknown src/index.ts "
+              >
+                <h4>StudioNodeId</h4>
+                <p class="muted">unknown • <code>src/index.ts:65:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -280,7 +1677,7 @@
                 data-search="StudioPackageBoundary type src/index.ts "
               >
                 <h4>StudioPackageBoundary</h4>
-                <p class="muted">type • <code>src/index.ts:3:1</code></p>
+                <p class="muted">type • <code>src/index.ts:17:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -319,6 +1716,236 @@
                     </tr>
                   </tbody>
                 </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiopanelid"
+                data-search="StudioPanelId unknown src/index.ts "
+              >
+                <h4>StudioPanelId</h4>
+                <p class="muted">unknown • <code>src/index.ts:72:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioprojectid"
+                data-search="StudioProjectId unknown src/index.ts "
+              >
+                <h4>StudioProjectId</h4>
+                <p class="muted">unknown • <code>src/index.ts:63:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiopubliccontract"
+                data-search="StudioPublicContract unknown src/index.ts "
+              >
+                <h4>StudioPublicContract</h4>
+                <p class="muted">unknown • <code>src/index.ts:61:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiosavestatus"
+                data-search="StudioSaveStatus unknown src/index.ts "
+              >
+                <h4>StudioSaveStatus</h4>
+                <p class="muted">unknown • <code>src/index.ts:71:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioscreenid"
+                data-search="StudioScreenId unknown src/index.ts "
+              >
+                <h4>StudioScreenId</h4>
+                <p class="muted">unknown • <code>src/index.ts:66:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studioselectionstate"
+                data-search="StudioSelectionState type src/index.ts  StudioAdminRoutePath StudioPanelId"
+              >
+                <h4>StudioSelectionState</h4>
+                <p class="muted">type • <code>src/index.ts:87:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioAdminRoutePath</li>
+                    <li class="chip">StudioPanelId</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>activeAdminRoutePath</code></td>
+                      <td>property</td>
+                      <td><code>StudioAdminRoutePath</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activeCanvasDragNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activePanelId</code></td>
+                      <td>property</td>
+                      <td><code>StudioPanelId | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>activeScreenId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>selectedNodeId</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiosessionid"
+                data-search="StudioSessionId unknown src/index.ts "
+              >
+                <h4>StudioSessionId</h4>
+                <p class="muted">unknown • <code>src/index.ts:64:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+              </article>
+              <article
+                class="item"
+                id="symbol-studiosessionstate"
+                data-search="StudioSessionState type src/index.ts  StudioMode StudioSaveStatus"
+              >
+                <h4>StudioSessionState</h4>
+                <p class="muted">type • <code>src/index.ts:95:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div>
+                  <strong>Related symbols:</strong>
+                  <ul class="chips">
+                    <li class="chip">StudioMode</li>
+                    <li class="chip">StudioSaveStatus</li>
+                  </ul>
+                </div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Member</th>
+                      <th>Kind</th>
+                      <th>Type</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>activeLocale</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>error</code></td>
+                      <td>property</td>
+                      <td><code>string | null</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>isLoading</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>previewMode</code></td>
+                      <td>property</td>
+                      <td><code>boolean</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>projectId</code></td>
+                      <td>property</td>
+                      <td><code>string</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>saveStatus</code></td>
+                      <td>property</td>
+                      <td><code>StudioSaveStatus</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>sessionId</code></td>
+                      <td>property</td>
+                      <td><code>string | undefined</code></td>
+                      <td>no</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>studioMode</code></td>
+                      <td>property</td>
+                      <td><code>StudioMode</code></td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+              <article
+                class="item"
+                id="symbol-themeupdates"
+                data-search="ThemeUpdates unknown src/index.ts "
+              >
+                <h4>ThemeUpdates</h4>
+                <p class="muted">unknown • <code>src/index.ts:82:1</code></p>
+
+                <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+                <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
               </article>
             </section>
           </section>
@@ -396,12 +2023,110 @@ graph LR
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                export_ActionDefinition[&quot;ActionDefinition&quot;] module_src_index_ts --&gt;
+                export_ActionDefinition export_ActionDefinition -.-&gt;
+                export_StudioActionPayloadSchema
+                export_InsertCatalogComponentEntry[&quot;InsertCatalogComponentEntry&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogComponentEntry
+                export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogDisabledReason
+                export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogEntryStatus
+                export_InsertCatalogComponentEntry -.-&gt; export_NodePlacement
+                export_InsertCatalogDisabledReason[&quot;InsertCatalogDisabledReason&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogDisabledReason
+                export_InsertCatalogDisabledReason -.-&gt; export_InsertCatalogDisabledReasonCode
+                export_InsertCatalogDisabledReason -.-&gt; export_InsertRecipeIssue
+                export_InsertCatalogDisabledReasonCode[&quot;InsertCatalogDisabledReasonCode&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogDisabledReasonCode
+                export_InsertCatalogEntry[&quot;InsertCatalogEntry&quot;] module_src_index_ts --&gt;
+                export_InsertCatalogEntry
+                export_InsertCatalogEntryBase[&quot;InsertCatalogEntryBase&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogEntryBase
+                export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogDisabledReason
+                export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogEntryKind
+                export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogEntryStatus
+                export_InsertCatalogEntryBase -.-&gt; export_NodePlacement
+                export_InsertCatalogEntryKind[&quot;InsertCatalogEntryKind&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogEntryKind
+                export_InsertCatalogEntryStatus[&quot;InsertCatalogEntryStatus&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogEntryStatus
+                export_InsertCatalogRecipeEntry[&quot;InsertCatalogRecipeEntry&quot;]
+                module_src_index_ts --&gt; export_InsertCatalogRecipeEntry
+                export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogDisabledReason
+                export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogEntryStatus
+                export_InsertCatalogRecipeEntry -.-&gt; export_InsertRecipe
+                export_InsertCatalogRecipeEntry -.-&gt; export_NodePlacement
+                export_InsertRecipe[&quot;InsertRecipe&quot;] module_src_index_ts --&gt;
+                export_InsertRecipe export_InsertRecipe -.-&gt; export_InsertRecipeNode
+                export_InsertRecipeIssue[&quot;InsertRecipeIssue&quot;] module_src_index_ts --&gt;
+                export_InsertRecipeIssue export_InsertRecipeNode[&quot;InsertRecipeNode&quot;]
+                module_src_index_ts --&gt; export_InsertRecipeNode
+                export_ModuleDefinition[&quot;ModuleDefinition&quot;] module_src_index_ts --&gt;
+                export_ModuleDefinition export_NodePlacement[&quot;NodePlacement&quot;]
+                module_src_index_ts --&gt; export_NodePlacement export_NodePlacement -.-&gt;
+                export_PlacementKind export_PlacementFailureCode[&quot;PlacementFailureCode&quot;]
+                module_src_index_ts --&gt; export_PlacementFailureCode
+                export_PlacementFailureReason[&quot;PlacementFailureReason&quot;]
+                module_src_index_ts --&gt; export_PlacementFailureReason
+                export_PlacementFailureReason -.-&gt; export_PlacementFailureCode
+                export_PlacementKind[&quot;PlacementKind&quot;] module_src_index_ts --&gt;
+                export_PlacementKind
+                export_PlacementResolutionResult[&quot;PlacementResolutionResult&quot;]
+                module_src_index_ts --&gt; export_PlacementResolutionResult
+                export_PlacementValidationResult[&quot;PlacementValidationResult&quot;]
+                module_src_index_ts --&gt; export_PlacementValidationResult
                 export_STUDIO_PACKAGE_BOUNDARY[&quot;STUDIO_PACKAGE_BOUNDARY&quot;]
                 module_src_index_ts --&gt; export_STUDIO_PACKAGE_BOUNDARY
                 export_STUDIO_PACKAGE_NAME[&quot;STUDIO_PACKAGE_NAME&quot;] module_src_index_ts
                 --&gt; export_STUDIO_PACKAGE_NAME
-                export_StudioPackageBoundary[&quot;StudioPackageBoundary&quot;] module_src_index_ts
-                --&gt; export_StudioPackageBoundary
+                export_STUDIO_PUBLIC_CONTRACTS[&quot;STUDIO_PUBLIC_CONTRACTS&quot;]
+                module_src_index_ts --&gt; export_STUDIO_PUBLIC_CONTRACTS
+                export_StudioActionPayloadField[&quot;StudioActionPayloadField&quot;]
+                module_src_index_ts --&gt; export_StudioActionPayloadField
+                export_StudioActionPayloadField -.-&gt; export_StudioActionPayloadPrimitive
+                export_StudioActionPayloadPrimitive[&quot;StudioActionPayloadPrimitive&quot;]
+                module_src_index_ts --&gt; export_StudioActionPayloadPrimitive
+                export_StudioActionPayloadSchema[&quot;StudioActionPayloadSchema&quot;]
+                module_src_index_ts --&gt; export_StudioActionPayloadSchema
+                export_StudioAdminRoutePath[&quot;StudioAdminRoutePath&quot;] module_src_index_ts
+                --&gt; export_StudioAdminRoutePath export_StudioCommand[&quot;StudioCommand&quot;]
+                module_src_index_ts --&gt; export_StudioCommand
+                export_StudioContextValue[&quot;StudioContextValue&quot;] module_src_index_ts --&gt;
+                export_StudioContextValue export_StudioContextValue -.-&gt;
+                export_InsertCatalogEntry export_StudioContextValue -.-&gt; export_NodePlacement
+                export_StudioContextValue -.-&gt; export_StudioAdminRoutePath
+                export_StudioContextValue -.-&gt; export_StudioLocale export_StudioContextValue
+                -.-&gt; export_StudioManifest export_StudioContextValue -.-&gt; export_StudioMode
+                export_StudioContextValue -.-&gt; export_StudioModuleId export_StudioContextValue
+                -.-&gt; export_StudioNodeId export_StudioContextValue -.-&gt; export_StudioPanelId
+                export_StudioContextValue -.-&gt; export_StudioSaveStatus export_StudioContextValue
+                -.-&gt; export_StudioScreenId export_StudioContextValue -.-&gt; export_ThemeUpdates
+                export_StudioEvent[&quot;StudioEvent&quot;] module_src_index_ts --&gt;
+                export_StudioEvent export_StudioLocale[&quot;StudioLocale&quot;] module_src_index_ts
+                --&gt; export_StudioLocale export_StudioManifest[&quot;StudioManifest&quot;]
+                module_src_index_ts --&gt; export_StudioManifest
+                export_StudioMode[&quot;StudioMode&quot;] module_src_index_ts --&gt;
+                export_StudioMode export_StudioModuleId[&quot;StudioModuleId&quot;]
+                module_src_index_ts --&gt; export_StudioModuleId
+                export_StudioNodeId[&quot;StudioNodeId&quot;] module_src_index_ts --&gt;
+                export_StudioNodeId export_StudioPackageBoundary[&quot;StudioPackageBoundary&quot;]
+                module_src_index_ts --&gt; export_StudioPackageBoundary
+                export_StudioPanelId[&quot;StudioPanelId&quot;] module_src_index_ts --&gt;
+                export_StudioPanelId export_StudioProjectId[&quot;StudioProjectId&quot;]
+                module_src_index_ts --&gt; export_StudioProjectId
+                export_StudioPublicContract[&quot;StudioPublicContract&quot;] module_src_index_ts
+                --&gt; export_StudioPublicContract
+                export_StudioSaveStatus[&quot;StudioSaveStatus&quot;] module_src_index_ts --&gt;
+                export_StudioSaveStatus export_StudioScreenId[&quot;StudioScreenId&quot;]
+                module_src_index_ts --&gt; export_StudioScreenId
+                export_StudioSelectionState[&quot;StudioSelectionState&quot;] module_src_index_ts
+                --&gt; export_StudioSelectionState export_StudioSelectionState -.-&gt;
+                export_StudioAdminRoutePath export_StudioSelectionState -.-&gt; export_StudioPanelId
+                export_StudioSessionId[&quot;StudioSessionId&quot;] module_src_index_ts --&gt;
+                export_StudioSessionId export_StudioSessionState[&quot;StudioSessionState&quot;]
+                module_src_index_ts --&gt; export_StudioSessionState export_StudioSessionState
+                -.-&gt; export_StudioMode export_StudioSessionState -.-&gt; export_StudioSaveStatus
+                export_ThemeUpdates[&quot;ThemeUpdates&quot;] module_src_index_ts --&gt;
+                export_ThemeUpdates
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -411,12 +2136,128 @@ graph LR
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  export_ActionDefinition[&quot;ActionDefinition&quot;]
+  module_src_index_ts --&gt; export_ActionDefinition
+  export_ActionDefinition -.-&gt; export_StudioActionPayloadSchema
+  export_InsertCatalogComponentEntry[&quot;InsertCatalogComponentEntry&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogComponentEntry
+  export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogDisabledReason
+  export_InsertCatalogComponentEntry -.-&gt; export_InsertCatalogEntryStatus
+  export_InsertCatalogComponentEntry -.-&gt; export_NodePlacement
+  export_InsertCatalogDisabledReason[&quot;InsertCatalogDisabledReason&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogDisabledReason
+  export_InsertCatalogDisabledReason -.-&gt; export_InsertCatalogDisabledReasonCode
+  export_InsertCatalogDisabledReason -.-&gt; export_InsertRecipeIssue
+  export_InsertCatalogDisabledReasonCode[&quot;InsertCatalogDisabledReasonCode&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogDisabledReasonCode
+  export_InsertCatalogEntry[&quot;InsertCatalogEntry&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogEntry
+  export_InsertCatalogEntryBase[&quot;InsertCatalogEntryBase&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogEntryBase
+  export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogDisabledReason
+  export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogEntryKind
+  export_InsertCatalogEntryBase -.-&gt; export_InsertCatalogEntryStatus
+  export_InsertCatalogEntryBase -.-&gt; export_NodePlacement
+  export_InsertCatalogEntryKind[&quot;InsertCatalogEntryKind&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogEntryKind
+  export_InsertCatalogEntryStatus[&quot;InsertCatalogEntryStatus&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogEntryStatus
+  export_InsertCatalogRecipeEntry[&quot;InsertCatalogRecipeEntry&quot;]
+  module_src_index_ts --&gt; export_InsertCatalogRecipeEntry
+  export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogDisabledReason
+  export_InsertCatalogRecipeEntry -.-&gt; export_InsertCatalogEntryStatus
+  export_InsertCatalogRecipeEntry -.-&gt; export_InsertRecipe
+  export_InsertCatalogRecipeEntry -.-&gt; export_NodePlacement
+  export_InsertRecipe[&quot;InsertRecipe&quot;]
+  module_src_index_ts --&gt; export_InsertRecipe
+  export_InsertRecipe -.-&gt; export_InsertRecipeNode
+  export_InsertRecipeIssue[&quot;InsertRecipeIssue&quot;]
+  module_src_index_ts --&gt; export_InsertRecipeIssue
+  export_InsertRecipeNode[&quot;InsertRecipeNode&quot;]
+  module_src_index_ts --&gt; export_InsertRecipeNode
+  export_ModuleDefinition[&quot;ModuleDefinition&quot;]
+  module_src_index_ts --&gt; export_ModuleDefinition
+  export_NodePlacement[&quot;NodePlacement&quot;]
+  module_src_index_ts --&gt; export_NodePlacement
+  export_NodePlacement -.-&gt; export_PlacementKind
+  export_PlacementFailureCode[&quot;PlacementFailureCode&quot;]
+  module_src_index_ts --&gt; export_PlacementFailureCode
+  export_PlacementFailureReason[&quot;PlacementFailureReason&quot;]
+  module_src_index_ts --&gt; export_PlacementFailureReason
+  export_PlacementFailureReason -.-&gt; export_PlacementFailureCode
+  export_PlacementKind[&quot;PlacementKind&quot;]
+  module_src_index_ts --&gt; export_PlacementKind
+  export_PlacementResolutionResult[&quot;PlacementResolutionResult&quot;]
+  module_src_index_ts --&gt; export_PlacementResolutionResult
+  export_PlacementValidationResult[&quot;PlacementValidationResult&quot;]
+  module_src_index_ts --&gt; export_PlacementValidationResult
   export_STUDIO_PACKAGE_BOUNDARY[&quot;STUDIO_PACKAGE_BOUNDARY&quot;]
   module_src_index_ts --&gt; export_STUDIO_PACKAGE_BOUNDARY
   export_STUDIO_PACKAGE_NAME[&quot;STUDIO_PACKAGE_NAME&quot;]
   module_src_index_ts --&gt; export_STUDIO_PACKAGE_NAME
+  export_STUDIO_PUBLIC_CONTRACTS[&quot;STUDIO_PUBLIC_CONTRACTS&quot;]
+  module_src_index_ts --&gt; export_STUDIO_PUBLIC_CONTRACTS
+  export_StudioActionPayloadField[&quot;StudioActionPayloadField&quot;]
+  module_src_index_ts --&gt; export_StudioActionPayloadField
+  export_StudioActionPayloadField -.-&gt; export_StudioActionPayloadPrimitive
+  export_StudioActionPayloadPrimitive[&quot;StudioActionPayloadPrimitive&quot;]
+  module_src_index_ts --&gt; export_StudioActionPayloadPrimitive
+  export_StudioActionPayloadSchema[&quot;StudioActionPayloadSchema&quot;]
+  module_src_index_ts --&gt; export_StudioActionPayloadSchema
+  export_StudioAdminRoutePath[&quot;StudioAdminRoutePath&quot;]
+  module_src_index_ts --&gt; export_StudioAdminRoutePath
+  export_StudioCommand[&quot;StudioCommand&quot;]
+  module_src_index_ts --&gt; export_StudioCommand
+  export_StudioContextValue[&quot;StudioContextValue&quot;]
+  module_src_index_ts --&gt; export_StudioContextValue
+  export_StudioContextValue -.-&gt; export_InsertCatalogEntry
+  export_StudioContextValue -.-&gt; export_NodePlacement
+  export_StudioContextValue -.-&gt; export_StudioAdminRoutePath
+  export_StudioContextValue -.-&gt; export_StudioLocale
+  export_StudioContextValue -.-&gt; export_StudioManifest
+  export_StudioContextValue -.-&gt; export_StudioMode
+  export_StudioContextValue -.-&gt; export_StudioModuleId
+  export_StudioContextValue -.-&gt; export_StudioNodeId
+  export_StudioContextValue -.-&gt; export_StudioPanelId
+  export_StudioContextValue -.-&gt; export_StudioSaveStatus
+  export_StudioContextValue -.-&gt; export_StudioScreenId
+  export_StudioContextValue -.-&gt; export_ThemeUpdates
+  export_StudioEvent[&quot;StudioEvent&quot;]
+  module_src_index_ts --&gt; export_StudioEvent
+  export_StudioLocale[&quot;StudioLocale&quot;]
+  module_src_index_ts --&gt; export_StudioLocale
+  export_StudioManifest[&quot;StudioManifest&quot;]
+  module_src_index_ts --&gt; export_StudioManifest
+  export_StudioMode[&quot;StudioMode&quot;]
+  module_src_index_ts --&gt; export_StudioMode
+  export_StudioModuleId[&quot;StudioModuleId&quot;]
+  module_src_index_ts --&gt; export_StudioModuleId
+  export_StudioNodeId[&quot;StudioNodeId&quot;]
+  module_src_index_ts --&gt; export_StudioNodeId
   export_StudioPackageBoundary[&quot;StudioPackageBoundary&quot;]
   module_src_index_ts --&gt; export_StudioPackageBoundary
+  export_StudioPanelId[&quot;StudioPanelId&quot;]
+  module_src_index_ts --&gt; export_StudioPanelId
+  export_StudioProjectId[&quot;StudioProjectId&quot;]
+  module_src_index_ts --&gt; export_StudioProjectId
+  export_StudioPublicContract[&quot;StudioPublicContract&quot;]
+  module_src_index_ts --&gt; export_StudioPublicContract
+  export_StudioSaveStatus[&quot;StudioSaveStatus&quot;]
+  module_src_index_ts --&gt; export_StudioSaveStatus
+  export_StudioScreenId[&quot;StudioScreenId&quot;]
+  module_src_index_ts --&gt; export_StudioScreenId
+  export_StudioSelectionState[&quot;StudioSelectionState&quot;]
+  module_src_index_ts --&gt; export_StudioSelectionState
+  export_StudioSelectionState -.-&gt; export_StudioAdminRoutePath
+  export_StudioSelectionState -.-&gt; export_StudioPanelId
+  export_StudioSessionId[&quot;StudioSessionId&quot;]
+  module_src_index_ts --&gt; export_StudioSessionId
+  export_StudioSessionState[&quot;StudioSessionState&quot;]
+  module_src_index_ts --&gt; export_StudioSessionState
+  export_StudioSessionState -.-&gt; export_StudioMode
+  export_StudioSessionState -.-&gt; export_StudioSaveStatus
+  export_ThemeUpdates[&quot;ThemeUpdates&quot;]
+  module_src_index_ts --&gt; export_ThemeUpdates
 </pre>
               </details>
             </article>

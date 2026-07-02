@@ -3,9 +3,125 @@ graph LR
   module_paradox_config_ts["paradox.config.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
+  export_ActionDefinition["ActionDefinition"]
+  module_src_index_ts --> export_ActionDefinition
+  export_ActionDefinition -.-> export_StudioActionPayloadSchema
+  export_InsertCatalogComponentEntry["InsertCatalogComponentEntry"]
+  module_src_index_ts --> export_InsertCatalogComponentEntry
+  export_InsertCatalogComponentEntry -.-> export_InsertCatalogDisabledReason
+  export_InsertCatalogComponentEntry -.-> export_InsertCatalogEntryStatus
+  export_InsertCatalogComponentEntry -.-> export_NodePlacement
+  export_InsertCatalogDisabledReason["InsertCatalogDisabledReason"]
+  module_src_index_ts --> export_InsertCatalogDisabledReason
+  export_InsertCatalogDisabledReason -.-> export_InsertCatalogDisabledReasonCode
+  export_InsertCatalogDisabledReason -.-> export_InsertRecipeIssue
+  export_InsertCatalogDisabledReasonCode["InsertCatalogDisabledReasonCode"]
+  module_src_index_ts --> export_InsertCatalogDisabledReasonCode
+  export_InsertCatalogEntry["InsertCatalogEntry"]
+  module_src_index_ts --> export_InsertCatalogEntry
+  export_InsertCatalogEntryBase["InsertCatalogEntryBase"]
+  module_src_index_ts --> export_InsertCatalogEntryBase
+  export_InsertCatalogEntryBase -.-> export_InsertCatalogDisabledReason
+  export_InsertCatalogEntryBase -.-> export_InsertCatalogEntryKind
+  export_InsertCatalogEntryBase -.-> export_InsertCatalogEntryStatus
+  export_InsertCatalogEntryBase -.-> export_NodePlacement
+  export_InsertCatalogEntryKind["InsertCatalogEntryKind"]
+  module_src_index_ts --> export_InsertCatalogEntryKind
+  export_InsertCatalogEntryStatus["InsertCatalogEntryStatus"]
+  module_src_index_ts --> export_InsertCatalogEntryStatus
+  export_InsertCatalogRecipeEntry["InsertCatalogRecipeEntry"]
+  module_src_index_ts --> export_InsertCatalogRecipeEntry
+  export_InsertCatalogRecipeEntry -.-> export_InsertCatalogDisabledReason
+  export_InsertCatalogRecipeEntry -.-> export_InsertCatalogEntryStatus
+  export_InsertCatalogRecipeEntry -.-> export_InsertRecipe
+  export_InsertCatalogRecipeEntry -.-> export_NodePlacement
+  export_InsertRecipe["InsertRecipe"]
+  module_src_index_ts --> export_InsertRecipe
+  export_InsertRecipe -.-> export_InsertRecipeNode
+  export_InsertRecipeIssue["InsertRecipeIssue"]
+  module_src_index_ts --> export_InsertRecipeIssue
+  export_InsertRecipeNode["InsertRecipeNode"]
+  module_src_index_ts --> export_InsertRecipeNode
+  export_ModuleDefinition["ModuleDefinition"]
+  module_src_index_ts --> export_ModuleDefinition
+  export_NodePlacement["NodePlacement"]
+  module_src_index_ts --> export_NodePlacement
+  export_NodePlacement -.-> export_PlacementKind
+  export_PlacementFailureCode["PlacementFailureCode"]
+  module_src_index_ts --> export_PlacementFailureCode
+  export_PlacementFailureReason["PlacementFailureReason"]
+  module_src_index_ts --> export_PlacementFailureReason
+  export_PlacementFailureReason -.-> export_PlacementFailureCode
+  export_PlacementKind["PlacementKind"]
+  module_src_index_ts --> export_PlacementKind
+  export_PlacementResolutionResult["PlacementResolutionResult"]
+  module_src_index_ts --> export_PlacementResolutionResult
+  export_PlacementValidationResult["PlacementValidationResult"]
+  module_src_index_ts --> export_PlacementValidationResult
   export_STUDIO_PACKAGE_BOUNDARY["STUDIO_PACKAGE_BOUNDARY"]
   module_src_index_ts --> export_STUDIO_PACKAGE_BOUNDARY
   export_STUDIO_PACKAGE_NAME["STUDIO_PACKAGE_NAME"]
   module_src_index_ts --> export_STUDIO_PACKAGE_NAME
+  export_STUDIO_PUBLIC_CONTRACTS["STUDIO_PUBLIC_CONTRACTS"]
+  module_src_index_ts --> export_STUDIO_PUBLIC_CONTRACTS
+  export_StudioActionPayloadField["StudioActionPayloadField"]
+  module_src_index_ts --> export_StudioActionPayloadField
+  export_StudioActionPayloadField -.-> export_StudioActionPayloadPrimitive
+  export_StudioActionPayloadPrimitive["StudioActionPayloadPrimitive"]
+  module_src_index_ts --> export_StudioActionPayloadPrimitive
+  export_StudioActionPayloadSchema["StudioActionPayloadSchema"]
+  module_src_index_ts --> export_StudioActionPayloadSchema
+  export_StudioAdminRoutePath["StudioAdminRoutePath"]
+  module_src_index_ts --> export_StudioAdminRoutePath
+  export_StudioCommand["StudioCommand"]
+  module_src_index_ts --> export_StudioCommand
+  export_StudioContextValue["StudioContextValue"]
+  module_src_index_ts --> export_StudioContextValue
+  export_StudioContextValue -.-> export_InsertCatalogEntry
+  export_StudioContextValue -.-> export_NodePlacement
+  export_StudioContextValue -.-> export_StudioAdminRoutePath
+  export_StudioContextValue -.-> export_StudioLocale
+  export_StudioContextValue -.-> export_StudioManifest
+  export_StudioContextValue -.-> export_StudioMode
+  export_StudioContextValue -.-> export_StudioModuleId
+  export_StudioContextValue -.-> export_StudioNodeId
+  export_StudioContextValue -.-> export_StudioPanelId
+  export_StudioContextValue -.-> export_StudioSaveStatus
+  export_StudioContextValue -.-> export_StudioScreenId
+  export_StudioContextValue -.-> export_ThemeUpdates
+  export_StudioEvent["StudioEvent"]
+  module_src_index_ts --> export_StudioEvent
+  export_StudioLocale["StudioLocale"]
+  module_src_index_ts --> export_StudioLocale
+  export_StudioManifest["StudioManifest"]
+  module_src_index_ts --> export_StudioManifest
+  export_StudioMode["StudioMode"]
+  module_src_index_ts --> export_StudioMode
+  export_StudioModuleId["StudioModuleId"]
+  module_src_index_ts --> export_StudioModuleId
+  export_StudioNodeId["StudioNodeId"]
+  module_src_index_ts --> export_StudioNodeId
   export_StudioPackageBoundary["StudioPackageBoundary"]
   module_src_index_ts --> export_StudioPackageBoundary
+  export_StudioPanelId["StudioPanelId"]
+  module_src_index_ts --> export_StudioPanelId
+  export_StudioProjectId["StudioProjectId"]
+  module_src_index_ts --> export_StudioProjectId
+  export_StudioPublicContract["StudioPublicContract"]
+  module_src_index_ts --> export_StudioPublicContract
+  export_StudioSaveStatus["StudioSaveStatus"]
+  module_src_index_ts --> export_StudioSaveStatus
+  export_StudioScreenId["StudioScreenId"]
+  module_src_index_ts --> export_StudioScreenId
+  export_StudioSelectionState["StudioSelectionState"]
+  module_src_index_ts --> export_StudioSelectionState
+  export_StudioSelectionState -.-> export_StudioAdminRoutePath
+  export_StudioSelectionState -.-> export_StudioPanelId
+  export_StudioSessionId["StudioSessionId"]
+  module_src_index_ts --> export_StudioSessionId
+  export_StudioSessionState["StudioSessionState"]
+  module_src_index_ts --> export_StudioSessionState
+  export_StudioSessionState -.-> export_StudioMode
+  export_StudioSessionState -.-> export_StudioSaveStatus
+  export_ThemeUpdates["ThemeUpdates"]
+  module_src_index_ts --> export_ThemeUpdates

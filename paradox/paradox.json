@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.1",
+      "value": "v0.0.3",
       "color": "cb3837"
     },
     {
@@ -85,10 +85,828 @@
       "path": "src/index.ts",
       "isEntrypoint": true,
       "dependencies": [],
-      "exports": ["STUDIO_PACKAGE_BOUNDARY", "STUDIO_PACKAGE_NAME", "StudioPackageBoundary"]
+      "exports": [
+        "ActionDefinition",
+        "InsertCatalogComponentEntry",
+        "InsertCatalogDisabledReason",
+        "InsertCatalogDisabledReasonCode",
+        "InsertCatalogEntry",
+        "InsertCatalogEntryBase",
+        "InsertCatalogEntryKind",
+        "InsertCatalogEntryStatus",
+        "InsertCatalogRecipeEntry",
+        "InsertRecipe",
+        "InsertRecipeIssue",
+        "InsertRecipeNode",
+        "ModuleDefinition",
+        "NodePlacement",
+        "PlacementFailureCode",
+        "PlacementFailureReason",
+        "PlacementKind",
+        "PlacementResolutionResult",
+        "PlacementValidationResult",
+        "STUDIO_PACKAGE_BOUNDARY",
+        "STUDIO_PACKAGE_NAME",
+        "STUDIO_PUBLIC_CONTRACTS",
+        "StudioActionPayloadField",
+        "StudioActionPayloadPrimitive",
+        "StudioActionPayloadSchema",
+        "StudioAdminRoutePath",
+        "StudioCommand",
+        "StudioContextValue",
+        "StudioEvent",
+        "StudioLocale",
+        "StudioManifest",
+        "StudioMode",
+        "StudioModuleId",
+        "StudioNodeId",
+        "StudioPackageBoundary",
+        "StudioPanelId",
+        "StudioProjectId",
+        "StudioPublicContract",
+        "StudioSaveStatus",
+        "StudioScreenId",
+        "StudioSelectionState",
+        "StudioSessionId",
+        "StudioSessionState",
+        "ThemeUpdates"
+      ]
     }
   ],
   "exports": [
+    {
+      "name": "ActionDefinition",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 212,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioActionPayloadSchema"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "payloadSchema",
+          "kind": "property",
+          "type": "StudioActionPayloadSchema | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "requiresPayload",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "type",
+          "kind": "property",
+          "type": "ActionType",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogComponentEntry",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 190,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [
+        "InsertCatalogDisabledReason",
+        "InsertCatalogEntryStatus",
+        "NodePlacement"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "category",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "componentType",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "disabledReason",
+          "kind": "property",
+          "type": "InsertCatalogDisabledReason | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "\"component\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "placement",
+          "kind": "property",
+          "type": "NodePlacement | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "rootType",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "status",
+          "kind": "property",
+          "type": "InsertCatalogEntryStatus",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogDisabledReason",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 172,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertCatalogDisabledReasonCode", "InsertRecipeIssue"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "InsertCatalogDisabledReasonCode",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "detail",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "issue",
+          "kind": "property",
+          "type": "InsertRecipeIssue | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogDisabledReasonCode",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 149,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogEntry",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 200,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogEntryBase",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 178,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [
+        "InsertCatalogDisabledReason",
+        "InsertCatalogEntryKind",
+        "InsertCatalogEntryStatus",
+        "NodePlacement"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "category",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "disabledReason",
+          "kind": "property",
+          "type": "InsertCatalogDisabledReason | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "InsertCatalogEntryKind",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "placement",
+          "kind": "property",
+          "type": "NodePlacement | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "rootType",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "status",
+          "kind": "property",
+          "type": "InsertCatalogEntryStatus",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogEntryKind",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 146,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogEntryStatus",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 147,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertCatalogRecipeEntry",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 195,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [
+        "InsertCatalogDisabledReason",
+        "InsertCatalogEntryStatus",
+        "InsertRecipe",
+        "NodePlacement"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "category",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "disabledReason",
+          "kind": "property",
+          "type": "InsertCatalogDisabledReason | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "\"recipe\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "placement",
+          "kind": "property",
+          "type": "NodePlacement | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "recipe",
+          "kind": "property",
+          "type": "InsertRecipe",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "rootType",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "status",
+          "kind": "property",
+          "type": "InsertCatalogEntryStatus",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertRecipe",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 157,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["InsertRecipeNode"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "category",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "root",
+          "kind": "property",
+          "type": "InsertRecipeNode",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertRecipeIssue",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 165,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "childType",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "\"child-not-allowed\" | \"missing-meta\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "nodeType",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "path",
+          "kind": "property",
+          "type": "string[]",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "InsertRecipeNode",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 152,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "children",
+          "kind": "property",
+          "type": "InsertRecipeNode[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "type",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "ModuleDefinition",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 220,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "description",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "id",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "ui",
+          "kind": "property",
+          "type": "{ modal?: { title: string; }; } | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "NodePlacement",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 108,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["PlacementKind"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "index",
+          "kind": "property",
+          "type": "number",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "PlacementKind",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "parentId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "referenceId",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "PlacementFailureCode",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 115,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "PlacementFailureReason",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 127,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["PlacementFailureCode"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "PlacementFailureCode",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "PlacementKind",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 106,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "PlacementResolutionResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 139,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "PlacementValidationResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 132,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
     {
       "name": "STUDIO_PACKAGE_BOUNDARY",
       "description": null,
@@ -98,7 +916,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 9,
+        "line": 23,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -116,8 +934,607 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1,
+        "line": 15,
         "column": 14
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "STUDIO_PUBLIC_CONTRACTS",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 50,
+        "column": 14
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioActionPayloadField",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 204,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioActionPayloadPrimitive"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "required",
+          "kind": "property",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "type",
+          "kind": "property",
+          "type": "StudioActionPayloadPrimitive",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioActionPayloadPrimitive",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 202,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioActionPayloadSchema",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 210,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioAdminRoutePath",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 73,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioCommand",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 229,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioContextValue",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 245,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [
+        "InsertCatalogEntry",
+        "NodePlacement",
+        "StudioAdminRoutePath",
+        "StudioLocale",
+        "StudioManifest",
+        "StudioMode",
+        "StudioModuleId",
+        "StudioNodeId",
+        "StudioPanelId",
+        "StudioSaveStatus",
+        "StudioScreenId",
+        "ThemeUpdates"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "activeAdminRoutePath",
+          "kind": "property",
+          "type": "StudioAdminRoutePath",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activeCanvasDragNodeId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activeLocale",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activePanelId",
+          "kind": "property",
+          "type": "StudioPanelId | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activeScreenId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "addScreen",
+          "kind": "property",
+          "type": "(name: string) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "addTheme",
+          "kind": "property",
+          "type": "() => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "deleteNode",
+          "kind": "property",
+          "type": "(id: StudioNodeId) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "deleteScreen",
+          "kind": "property",
+          "type": "(id: StudioScreenId) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "deleteTheme",
+          "kind": "property",
+          "type": "(id: string) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "error",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "findNode",
+          "kind": "property",
+          "type": "(root: UiNode, id: StudioNodeId) => UiNode | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "insertFromCatalogEntry",
+          "kind": "property",
+          "type": "(entry: InsertCatalogEntry) => boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "isLoading",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "manifest",
+          "kind": "property",
+          "type": "StudioManifest | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "moveNode",
+          "kind": "property",
+          "type": "(id: StudioNodeId, direction: \"up\" | \"down\") => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "moveNodeToPlacement",
+          "kind": "property",
+          "type": "(nodeId: StudioNodeId, placement: NodePlacement) => boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "previewMode",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "projectId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "refetchManifest",
+          "kind": "property",
+          "type": "() => Promise<void>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "reloadDictionaries",
+          "kind": "property",
+          "type": "() => Promise<void>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "reorderScreens",
+          "kind": "property",
+          "type": "(newRoutes: RouteDefinition[]) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "rootNode",
+          "kind": "property",
+          "type": "UiNode | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "saveStatus",
+          "kind": "property",
+          "type": "StudioSaveStatus",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "selectedNodeId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "selectNode",
+          "kind": "property",
+          "type": "(id: StudioNodeId | null) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "sessionId",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "setActiveAdminRoutePath",
+          "kind": "property",
+          "type": "(routePath: StudioAdminRoutePath) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActiveCanvasDragNodeId",
+          "kind": "property",
+          "type": "(nodeId: StudioNodeId | null) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActiveLocale",
+          "kind": "property",
+          "type": "(locale: StudioLocale) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActivePanelId",
+          "kind": "property",
+          "type": "(panelId: StudioPanelId | null) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActiveScreenId",
+          "kind": "property",
+          "type": "(id: StudioScreenId) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActiveThemeId",
+          "kind": "property",
+          "type": "(id: string) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setActiveThemeMode",
+          "kind": "property",
+          "type": "(mode: StudioMode) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setNavigatorInitialRoute",
+          "kind": "property",
+          "type": "(routeName: string) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setNavigatorType",
+          "kind": "property",
+          "type": "(type: NavigatorType) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setStudioMode",
+          "kind": "property",
+          "type": "(mode: StudioMode) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "studioMode",
+          "kind": "property",
+          "type": "StudioMode",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "t",
+          "kind": "property",
+          "type": "(key: string) => string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "togglePreviewMode",
+          "kind": "property",
+          "type": "() => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateAppData",
+          "kind": "property",
+          "type": "(data: AppDataManifest) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateDataBindings",
+          "kind": "property",
+          "type": "(dataBindings: ComponentDataBindingRegistry) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateDataSources",
+          "kind": "property",
+          "type": "(dataSources: DataSourceRegistry) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateModuleConfig",
+          "kind": "property",
+          "type": "(moduleId: StudioModuleId, config: Record<string, unknown>) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateNode",
+          "kind": "property",
+          "type": "(nodeId: StudioNodeId, props: Record<string, unknown>) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateOAuthProviders",
+          "kind": "property",
+          "type": "(providers: AuthOAuthProviderConfig[]) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "updateTheme",
+          "kind": "property",
+          "type": "(id: string, updates: ThemeUpdates) => void",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioEvent",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 238,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioLocale",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 68,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioManifest",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 76,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMode",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 70,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioModuleId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 67,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioNodeId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 65,
+        "column": 1
       },
       "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
@@ -134,7 +1551,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 3,
+        "line": 17,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -163,6 +1580,261 @@
           "description": null
         }
       ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioPanelId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 72,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioProjectId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 63,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioPublicContract",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 61,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioSaveStatus",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 71,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioScreenId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 66,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioSelectionState",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 87,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioAdminRoutePath", "StudioPanelId"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "activeAdminRoutePath",
+          "kind": "property",
+          "type": "StudioAdminRoutePath",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activeCanvasDragNodeId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activePanelId",
+          "kind": "property",
+          "type": "StudioPanelId | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "activeScreenId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "selectedNodeId",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioSessionId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 64,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioSessionState",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 95,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMode", "StudioSaveStatus"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "activeLocale",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "error",
+          "kind": "property",
+          "type": "string | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "isLoading",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "previewMode",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "projectId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "saveStatus",
+          "kind": "property",
+          "type": "StudioSaveStatus",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "sessionId",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "studioMode",
+          "kind": "property",
+          "type": "StudioMode",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "ThemeUpdates",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 82,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
       "structuredRows": []
     }
   ],
@@ -209,7 +1881,218 @@
         "sourcePath": "src/index.test.ts"
       }
     ],
-    "typeReferences": [],
+    "typeReferences": [
+      {
+        "fromSymbol": "StudioSelectionState",
+        "toType": "StudioAdminRoutePath",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioSelectionState",
+        "toType": "StudioPanelId",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioSessionState",
+        "toType": "StudioMode",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioSessionState",
+        "toType": "StudioSaveStatus",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "NodePlacement",
+        "toType": "PlacementKind",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "PlacementFailureReason",
+        "toType": "PlacementFailureCode",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertRecipe",
+        "toType": "InsertRecipeNode",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogDisabledReason",
+        "toType": "InsertCatalogDisabledReasonCode",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogDisabledReason",
+        "toType": "InsertRecipeIssue",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogEntryBase",
+        "toType": "InsertCatalogDisabledReason",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogEntryBase",
+        "toType": "InsertCatalogEntryKind",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogEntryBase",
+        "toType": "InsertCatalogEntryStatus",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogEntryBase",
+        "toType": "NodePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogComponentEntry",
+        "toType": "InsertCatalogDisabledReason",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogComponentEntry",
+        "toType": "InsertCatalogEntryStatus",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogComponentEntry",
+        "toType": "NodePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogRecipeEntry",
+        "toType": "InsertCatalogDisabledReason",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogRecipeEntry",
+        "toType": "InsertCatalogEntryStatus",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogRecipeEntry",
+        "toType": "InsertRecipe",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "InsertCatalogRecipeEntry",
+        "toType": "NodePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioActionPayloadField",
+        "toType": "StudioActionPayloadPrimitive",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "ActionDefinition",
+        "toType": "ActionType",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "ActionDefinition",
+        "toType": "StudioActionPayloadSchema",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "AppDataManifest",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "AuthOAuthProviderConfig",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "ComponentDataBindingRegistry",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "DataSourceRegistry",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "InsertCatalogEntry",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "NavigatorType",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "NodePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "RouteDefinition",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioAdminRoutePath",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioLocale",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioManifest",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioMode",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioModuleId",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioNodeId",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioPanelId",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioSaveStatus",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioScreenId",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "ThemeUpdates",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "UiNode",
+        "sourcePath": "src/index.ts"
+      }
+    ],
     "componentComposition": []
   }
 }
