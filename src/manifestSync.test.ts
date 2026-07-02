@@ -1,10 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioManifest } from './index';
-import {
-  createStudioManifestSignature,
-  createStudioRuntimeSyncSignature,
-} from './manifestSync';
+import { createStudioManifestSignature, createStudioRuntimeSyncSignature } from './manifestSync';
 
 function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest {
   return {
@@ -72,8 +69,8 @@ describe('manifestSync', () => {
   });
 
   test('normalizes plugin order in runtime signatures', () => {
-    const first = createManifest({ infra: { modulesConfig: {}, plugins: ['b', 'a'] } as never });
-    const second = createManifest({ infra: { modulesConfig: {}, plugins: ['a', 'b'] } as never });
+    const first = createManifest({ infra: { modulesConfig: {}, plugins: ['b', 'a'] } });
+    const second = createManifest({ infra: { modulesConfig: {}, plugins: ['a', 'b'] } });
 
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });
