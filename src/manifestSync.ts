@@ -30,7 +30,7 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
     dataSources: manifest.dataSources ?? {},
     authFlow: manifest.settings.authFlow,
     auth: manifest.infra.auth ?? null,
-    plugins: [...manifest.infra.plugins].sort(),
+    plugins: [...(manifest.infra.plugins ?? [])].sort(),
   });
 }
 
