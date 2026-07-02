@@ -31,6 +31,10 @@
     "./manifestState": {
       "types": "./dist/manifestState.d.ts",
       "import": "./dist/manifestState.js"
+    },
+    "./manifestSync": {
+      "types": "./dist/manifestSync.d.ts",
+      "import": "./dist/manifestSync.js"
     }
   },
   "scripts": {
