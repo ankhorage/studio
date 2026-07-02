@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.4
+
+### Patch Changes
+
+- 930fafe: Move package-neutral Studio authoring model helpers into the standalone Studio package, including action definitions, component metadata contracts, empty screen template, tree helpers, placement resolution, and insert catalog helpers.
+
 ## 0.0.3
 
 ### Patch Changes
