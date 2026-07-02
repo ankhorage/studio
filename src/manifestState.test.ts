@@ -1,4 +1,4 @@
-import type { RouteDefinition, UiNode } from '@ankhorage/contracts';
+import type { UiNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import type { NodePlacement, StudioComponentMetaRegistry, StudioManifest } from './index';
@@ -133,9 +133,9 @@ describe('manifestState', () => {
     ]);
     expect(resolveInitialActiveScreenId(manifest)).toBe('screen-home');
     expect(resolveActiveRootNode(manifest, 'screen-home')?.id).toBe('root-home');
-    expect(resolveSafeSelectedNodeId(resolveActiveRootNode(manifest, 'screen-home'), 'text-1')).toBe(
-      'text-1',
-    );
+    expect(
+      resolveSafeSelectedNodeId(resolveActiveRootNode(manifest, 'screen-home'), 'text-1'),
+    ).toBe('text-1');
     expect(resolveSafeSelectedNodeId(resolveActiveRootNode(manifest, 'screen-home'), 'ghost')).toBe(
       null,
     );
@@ -146,7 +146,9 @@ describe('manifestState', () => {
     const first = createManifest();
     const second = updateStudioManifestNode(first, 'screen-home', 'text-1', { children: 'Hi' });
 
-    expect(createStudioManifestFingerprint(first)).not.toBe(createStudioManifestFingerprint(second));
+    expect(createStudioManifestFingerprint(first)).not.toBe(
+      createStudioManifestFingerprint(second),
+    );
   });
 
   test('updates and deletes nodes in a screen manifest', () => {
@@ -177,8 +179,8 @@ describe('manifestState', () => {
     });
 
     expect(inserted?.insertedNodeId).toBe('text-2');
-    const children = resolveActiveRootNode(inserted?.manifest ?? manifest, 'screen-home')?.children?.[0]
-      ?.children;
+    const children = resolveActiveRootNode(inserted?.manifest ?? manifest, 'screen-home')
+      ?.children?.[0]?.children;
     expect(children?.map((child) => child.id)).toEqual(['text-1', 'text-2', 'button-1']);
 
     const moved = moveStudioManifestNodeToPlacement({
@@ -188,12 +190,18 @@ describe('manifestState', () => {
       placement: { parentId: 'section-1', index: 0, kind: 'before', referenceId: 'text-1' },
       componentMeta,
     });
-    const movedChildren = resolveActiveRootNode(moved?.manifest ?? manifest, 'screen-home')?.children?.[0]
-      ?.children;
+    const movedChildren = resolveActiveRootNode(moved?.manifest ?? manifest, 'screen-home')
+      ?.children?.[0]?.children;
     expect(movedChildren?.map((child) => child.id)).toEqual(['button-1', 'text-1', 'text-2']);
 
-    const reordered = moveStudioManifestNode(moved?.manifest ?? manifest, 'screen-home', 'text-1', 'down');
-    const reorderedChildren = resolveActiveRootNode(reordered, 'screen-home')?.children?.[0]?.children;
+    const reordered = moveStudioManifestNode(
+      moved?.manifest ?? manifest,
+      'screen-home',
+      'text-1',
+      'down',
+    );
+    const reorderedChildren = resolveActiveRootNode(reordered, 'screen-home')?.children?.[0]
+      ?.children;
     expect(reorderedChildren?.map((child) => child.id)).toEqual(['button-1', 'text-2', 'text-1']);
   });
 
@@ -222,14 +230,14 @@ describe('manifestState', () => {
     const deleted = deleteStudioManifestScreen(added.manifest, 'screen-home', 'screen-home');
     expect(deleted.activeScreenId).toBe('screen-about');
     expect(deleted.manifest.screens['screen-home']).toBeUndefined();
-    expect(deleted.manifest.navigator.routes.some((route) => route.screenId === 'screen-home')).toBe(
-      false,
-    );
+    expect(
+      deleted.manifest.navigator.routes.some((route) => route.screenId === 'screen-home'),
+    ).toBe(false);
   });
 
   test('updates navigator, theme, module config, and OAuth provider state', () => {
     const manifest = createManifest();
-    const drawer = setStudioManifestNavigatorType(manifest, 'drawer' as never);
+    const drawer = setStudioManifestNavigatorType(manifest, 'drawer');
     expect(drawer.navigator.type).toBe('drawer');
 
     const initialRoute = setStudioManifestNavigatorInitialRoute(drawer, 'about');

@@ -210,10 +210,7 @@ export function resolveSafeSelectedNodeId(
   return findNodeInManifest(rootNode, selectedNodeId) ? selectedNodeId : null;
 }
 
-export function findScreenIdForNode(
-  manifest: StudioManifest,
-  nodeId: string,
-): string | null {
+export function findScreenIdForNode(manifest: StudioManifest, nodeId: string): string | null {
   for (const [screenId, screen] of Object.entries(manifest.screens)) {
     if (findNodeInManifest(screen.root, nodeId)) {
       return screenId;
@@ -313,7 +310,8 @@ export function insertStudioManifestNodeAtPlacement(args: {
   if (!activeScreenId) return null;
   const screen = manifest.screens[activeScreenId];
   if (!screen) return null;
-  if (!validateManifestNodePlacement(screen.root, placement, newNode.type, componentMeta)) return null;
+  if (!validateManifestNodePlacement(screen.root, placement, newNode.type, componentMeta))
+    return null;
 
   const insertion = insertChildAtIndex({
     node: screen.root,
@@ -468,7 +466,9 @@ export function deleteStudioManifestTheme(
 
   const themes = manifest.themes.filter((theme) => theme.id !== themeId);
   const activeThemeId =
-    manifest.activeThemeId === themeId ? (themes[0]?.id ?? manifest.activeThemeId) : manifest.activeThemeId;
+    manifest.activeThemeId === themeId
+      ? (themes[0]?.id ?? manifest.activeThemeId)
+      : manifest.activeThemeId;
 
   return { ...manifest, themes, activeThemeId };
 }
@@ -594,7 +594,12 @@ export function findParentPathForScreenId(
     const routePath = [...routePathPrefix, route.name];
     if (route.screenId === screenId) return parentPath;
     if (route.navigator?.routes.length) {
-      const nested = findParentPathForScreenId(route.navigator.routes, screenId, routePath, routePath);
+      const nested = findParentPathForScreenId(
+        route.navigator.routes,
+        screenId,
+        routePath,
+        routePath,
+      );
       if (nested) return nested;
     }
   }
@@ -728,7 +733,9 @@ export function addStudioManifestScreen(args: {
     : null;
   const fallbackParentPath = getPrimaryNavigatorPath(manifest.navigator.routes);
   const activeParentRoutes =
-    activeParentPath !== null ? findRoutesAtParentPath(manifest.navigator.routes, activeParentPath) : null;
+    activeParentPath !== null
+      ? findRoutesAtParentPath(manifest.navigator.routes, activeParentPath)
+      : null;
   const parentPath = activeParentPath && activeParentRoutes ? activeParentPath : fallbackParentPath;
   const siblingRoutes = findRoutesAtParentPath(manifest.navigator.routes, parentPath) ?? [];
 
@@ -965,7 +972,9 @@ function removeNodeFromManifestTree(root: UiNode, nodeId: string): UiNode | null
     return { ...root, children: filteredChildren };
   }
 
-  const nextChildren = root.children.map((child) => removeNodeFromManifestTree(child, nodeId) ?? child);
+  const nextChildren = root.children.map(
+    (child) => removeNodeFromManifestTree(child, nodeId) ?? child,
+  );
   const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
@@ -988,8 +997,12 @@ function moveNodeInManifestTree(root: UiNode, nodeId: string, direction: 'up' | 
     return { ...root, children: nextChildren };
   }
 
-  const nextChildren = root.children.map((child) => moveNodeInManifestTree(child, nodeId, direction));
-  const hasChanged = nextChildren.some((child, childIndex) => child !== root.children?.[childIndex]);
+  const nextChildren = root.children.map((child) =>
+    moveNodeInManifestTree(child, nodeId, direction),
+  );
+  const hasChanged = nextChildren.some(
+    (child, childIndex) => child !== root.children?.[childIndex],
+  );
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
 
@@ -1059,9 +1072,13 @@ function insertChildAtIndex(args: {
 
   if (!node.children?.length) return { node, inserted: false };
 
-  const results = node.children.map((child) => insertChildAtIndex({ node: child, parentId, index, newNode }));
+  const results = node.children.map((child) =>
+    insertChildAtIndex({ node: child, parentId, index, newNode }),
+  );
   const inserted = results.some((result) => result.inserted);
-  return inserted ? { node: { ...node, children: results.map((result) => result.node) }, inserted } : { node, inserted };
+  return inserted
+    ? { node: { ...node, children: results.map((result) => result.node) }, inserted }
+    : { node, inserted };
 }
 
 function isDescendantNode(node: UiNode, descendantId: string): boolean {
@@ -1111,7 +1128,10 @@ function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
   return { node: { ...node, children: nextChildren }, removedNode };
 }
 
-function adjustMovePlacement(args: { source: NodeWithParent; placement: NodePlacement }): NodePlacement | null {
+function adjustMovePlacement(args: {
+  source: NodeWithParent;
+  placement: NodePlacement;
+}): NodePlacement | null {
   const { source, placement } = args;
   if (!source.parent) return null;
   if (placement.referenceId === source.node.id) return null;
