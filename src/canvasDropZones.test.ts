@@ -10,9 +10,9 @@ import {
 import type { StudioComponentMetaRegistry } from './index';
 
 const componentMeta: StudioComponentMetaRegistry = {
-  Screen: { allowedChildren: ['Container', 'Text'] },
-  Container: { allowedChildren: ['Text'] },
-  Text: { allowedChildren: [] },
+  Screen: { category: 'layout', allowedChildren: ['Container', 'Text'] },
+  Container: { category: 'layout', allowedChildren: ['Text'] },
+  Text: { category: 'content', allowedChildren: [] },
 };
 
 function buildRoot(): UiNode {
