@@ -1,8 +1,5 @@
+import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { PlacementKind } from './index';
-import type {
-  CanvasDropZoneResolution,
-  ValidCanvasDropZoneResolution,
-} from './canvasDropZones';
 
 export interface StudioCanvasDragPayload {
   kind: 'studio-canvas-node';

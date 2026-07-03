@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { CanvasDropZoneResolution } from './canvasDropZones';
 import {
   createStudioCanvasDragPayload,
   isStudioCanvasDragPayload,
   isValidCanvasDropZone,
   resolveCanvasDropZoneSlots,
 } from './canvasDragModel';
+import type { CanvasDropZoneResolution } from './canvasDropZones';
 
 const VALID_INSIDE_ZONE: CanvasDropZoneResolution = {
   kind: 'inside',

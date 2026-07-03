@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { CanvasDropZoneSlots, StudioCanvasDragPayload } from './canvasDragModel';
 import {
   createStudioCanvasDragPayload,
@@ -8,6 +7,7 @@ import {
   isValidCanvasDropZone,
   resolveCanvasDropZoneSlots,
 } from './canvasDragModel';
+import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 
 describe('canvas drag model public exports', () => {
   test('types and helpers are usable from the public module', () => {
