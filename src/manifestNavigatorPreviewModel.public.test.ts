@@ -27,11 +27,12 @@ describe('manifest navigator preview model public exports', () => {
       message: 'message',
       routeName: 'index',
     };
-    const model: Pick<ManifestNavigatorPreviewModel, 'navigator' | 'routeMap' | 'iconDiagnostics'> = {
-      navigator,
-      routeMap,
-      iconDiagnostics: [diagnostic],
-    };
+    const model: Pick<ManifestNavigatorPreviewModel, 'navigator' | 'routeMap' | 'iconDiagnostics'> =
+      {
+        navigator,
+        routeMap,
+        iconDiagnostics: [diagnostic],
+      };
 
     expect(model.routeMap.index?.label).toBe('Index');
     expect(resolveLeafScreenIdForRoute(route)).toBe('screen-index');

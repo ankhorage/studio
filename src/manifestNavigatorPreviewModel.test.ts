@@ -51,7 +51,11 @@ describe('manifest navigator preview model', () => {
           type: 'tabs',
           initialRouteName: 'home',
           routes: [
-            { name: 'home', screenId: 'home', icon: { name: 'home-outline', provider: 'Ionicons' } },
+            {
+              name: 'home',
+              screenId: 'home',
+              icon: { name: 'home-outline', provider: 'Ionicons' },
+            },
             { name: 'settings', screenId: 'settings' },
             { name: 'sign-in', screenId: 'sign-in' },
             { name: 'hidden', screenId: 'hidden', hideInTabBar: true },
