@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.12
+
+### Patch Changes
+
+- 85c9d97: Add `@ankhorage/studio/canvasDragModel` for package-neutral Studio canvas movement payload and placement slot helpers.
+
 ## 0.0.11
 
 ### Patch Changes
