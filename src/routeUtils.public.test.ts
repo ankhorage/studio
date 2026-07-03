@@ -102,8 +102,8 @@ describe('routeUtils public exports', () => {
       'screen-3',
     );
     expect(toCanonicalRoutePattern(['(app)', 'shop', 'index'])).toBe('/shop');
-    expect(makeUniqueRouteNameForParent('shop', [{ name: 'shop' }], ['(app)'], new Set(['/shop']))).toBe(
-      'shop-2',
-    );
+    expect(
+      makeUniqueRouteNameForParent('shop', [{ name: 'shop' }], ['(app)'], new Set(['/shop'])),
+    ).toBe('shop-2');
   });
 });
