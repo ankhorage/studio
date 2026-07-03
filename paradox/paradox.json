@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.6",
+      "value": "v0.0.7",
       "color": "cb3837"
     },
     {
@@ -74,6 +74,23 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["default"]
+    },
+    {
+      "path": "src/canvasDropZones.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/canvasDropZones.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "CanvasDropZoneResolution",
+        "getValidCanvasDropZones",
+        "resolveCanvasDropZones",
+        "ValidCanvasDropZoneResolution"
+      ]
     },
     {
       "path": "src/index.test.ts",
@@ -2992,6 +3009,33 @@
   "components": [],
   "sourceFunctions": [
     {
+      "name": "buildRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDropZones.test.ts",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDropZones",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDropZones.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "getValidCanvasDropZones",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDropZones.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
       "name": "createRoot",
       "description": null,
       "sourceLocation": {
@@ -4077,6 +4121,21 @@
   "graphs": {
     "imports": [
       {
+        "fromPath": "src/canvasDropZones.test.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDropZones.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDropZones.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/canvasDropZones.ts"
+      },
+      {
         "fromPath": "src/index.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/index.test.ts"
@@ -4159,6 +4218,48 @@
         "toSymbol": "defineParadoxConfig",
         "callExpression": "defineParadoxConfig",
         "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "resolveCanvasDropZones",
+        "callExpression": "resolveCanvasDropZones",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "buildRoot",
+        "callExpression": "buildRoot",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "getValidCanvasDropZones",
+        "callExpression": "getValidCanvasDropZones",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/canvasDropZones.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.ts",
+        "toSymbol": "resolveInsertPlacement",
+        "callExpression": "resolveInsertPlacement",
+        "sourcePath": "src/canvasDropZones.ts"
       },
       {
         "fromSymbol": "src/index.test.ts",

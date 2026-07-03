@@ -1,6 +1,8 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
+  module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
@@ -12,6 +14,9 @@ graph LR
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
   module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
   module_src_routeUtils_ts["src/routeUtils.ts"]
+  module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDropZones_test_ts --> module_src_index_ts
+  module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_manifestState_ts

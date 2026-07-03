@@ -10,6 +10,12 @@
     "sourceMap": true,
     "tsBuildInfoFile": "tsconfig.tsbuildinfo"
   },
-  "include": ["src/index.ts", "src/manifestState.ts", "src/manifestSync.ts", "src/routeUtils.ts"],
+  "include": [
+    "src/index.ts",
+    "src/canvasDropZones.ts",
+    "src/manifestState.ts",
+    "src/manifestSync.ts",
+    "src/routeUtils.ts"
+  ],
   "exclude": ["src/**/*.test.ts"]
 }

@@ -6,6 +6,13 @@ graph TD
   package__ankhorage_studio -.-> module_knip_config_ts
   module_paradox_config_ts["paradox.config.ts"]
   package__ankhorage_studio -.-> module_paradox_config_ts
+  module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
+  package__ankhorage_studio -.-> module_src_canvasDropZones_test_ts
+  module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDropZones_test_ts --> module_src_index_ts
+  module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
+  package__ankhorage_studio -.-> module_src_canvasDropZones_ts
+  module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_index_test_ts["src/index.test.ts"]
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
