@@ -16,8 +16,7 @@ interface InvalidCanvasDropZoneResolution {
 }
 
 export type CanvasDropZoneResolution =
-  | ValidCanvasDropZoneResolution
-  | InvalidCanvasDropZoneResolution;
+  ValidCanvasDropZoneResolution | InvalidCanvasDropZoneResolution;
 
 const DROP_ZONE_KINDS: readonly PlacementKind[] = ['before', 'inside', 'after'];
 
