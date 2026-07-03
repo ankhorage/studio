@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.10
+
+### Patch Changes
+
+- ec30070: Add `@ankhorage/studio/localizationConfig` for package-neutral Studio localization config parsing helpers.
+
 ## 0.0.9
 
 ### Patch Changes
