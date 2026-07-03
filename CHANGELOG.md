@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.8
+
+### Patch Changes
+
+- f40f293: Add `@ankhorage/studio/canvasDropZones` for package-neutral Studio canvas drop-zone resolution helpers.
+
 ## 0.0.7
 
 ### Patch Changes
