@@ -32,6 +32,10 @@
       "types": "./dist/canvasDropZones.d.ts",
       "import": "./dist/canvasDropZones.js"
     },
+    "./insertModalModel": {
+      "types": "./dist/insertModalModel.d.ts",
+      "import": "./dist/insertModalModel.js"
+    },
     "./localizationConfig": {
       "types": "./dist/localizationConfig.d.ts",
       "import": "./dist/localizationConfig.js"
