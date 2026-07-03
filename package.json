@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/studio",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",

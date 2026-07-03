@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.11
+
+### Patch Changes
+
+- be06ee0: Add `@ankhorage/studio/insertModalModel` for package-neutral Studio insert modal model helpers.
+
 ## 0.0.10
 
 ### Patch Changes
