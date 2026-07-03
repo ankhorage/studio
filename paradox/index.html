@@ -196,6 +196,18 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/canvasDropZones.test.ts">
+                src/canvasDropZones.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/canvasDropZones.ts">
+                src/canvasDropZones.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/index.test.ts">
                 src/index.test.ts
                 <small>1 function</small>
@@ -269,7 +281,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>13</strong><span class="muted">modules</span></div>
+              <div><strong>15</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -291,6 +303,31 @@
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>default</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/canvasDropZones.test.ts src/canvasDropZones.ts src/index.ts"
+            >
+              <h3>src/canvasDropZones.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/canvasDropZones.ts</code>,
+                <code>src/index.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/canvasDropZones.ts src/index.ts CanvasDropZoneResolution getValidCanvasDropZones resolveCanvasDropZones ValidCanvasDropZoneResolution"
+            >
+              <h3>src/canvasDropZones.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>CanvasDropZoneResolution</code>,
+                <code>getValidCanvasDropZones</code>, <code>resolveCanvasDropZones</code>,
+                <code>ValidCanvasDropZoneResolution</code>
+              </p>
             </article>
             <article class="item" data-search="src/index.test.ts src/index.ts">
               <h3>src/index.test.ts</h3>
@@ -3325,6 +3362,13 @@
                 package__ankhorage_studio -.-&gt; module_knip_config_ts
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_paradox_config_ts
+                module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_canvasDropZones_test_ts
+                module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
+                module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
+                module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_canvasDropZones_ts
+                module_src_canvasDropZones_ts --&gt; module_src_index_ts
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_index_test_ts module_src_index_test_ts --&gt; module_src_index_ts
                 module_src_index_ts[&quot;src/index.ts&quot;]
@@ -3370,6 +3414,13 @@ graph TD
   package__ankhorage_studio -.-&gt; module_knip_config_ts
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
   package__ankhorage_studio -.-&gt; module_paradox_config_ts
+  module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_canvasDropZones_test_ts
+  module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
+  module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
+  module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_canvasDropZones_ts
+  module_src_canvasDropZones_ts --&gt; module_src_index_ts
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_index_test_ts
   module_src_index_test_ts --&gt; module_src_index_ts
@@ -3416,6 +3467,8 @@ graph TD
               <div class="mermaid">
                 graph LR module_knip_config_ts[&quot;knip.config.ts&quot;]
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
+                module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+                module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
@@ -3426,7 +3479,10 @@ graph TD
                 module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
                 module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
                 module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
-                module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;] module_src_index_test_ts
+                module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
+                module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
+                module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
+                module_src_canvasDropZones_ts --&gt; module_src_index_ts module_src_index_test_ts
                 --&gt; module_src_index_ts module_src_manifestState_public_test_ts --&gt;
                 module_src_index_ts module_src_manifestState_public_test_ts --&gt;
                 module_src_manifestState_ts module_src_manifestState_routes_test_ts --&gt;
@@ -3446,6 +3502,8 @@ graph TD
 graph LR
   module_knip_config_ts[&quot;knip.config.ts&quot;]
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
+  module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+  module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
@@ -3457,6 +3515,9 @@ graph LR
   module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
   module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
   module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
+  module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
+  module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
+  module_src_canvasDropZones_ts --&gt; module_src_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
@@ -3479,6 +3540,8 @@ graph LR
               <div class="mermaid">
                 graph LR module_knip_config_ts[&quot;knip.config.ts&quot;]
                 module_paradox_config_ts[&quot;paradox.config.ts&quot;]
+                module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+                module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
@@ -3684,6 +3747,8 @@ graph LR
 graph LR
   module_knip_config_ts[&quot;knip.config.ts&quot;]
   module_paradox_config_ts[&quot;paradox.config.ts&quot;]
+  module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
+  module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
@@ -4272,6 +4337,41 @@ sequenceDiagram
   participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
 </pre>
               </details>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-canvasdropzones-test-ts"
+          class="view"
+          data-view="src/canvasDropZones.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/canvasDropZones.test.ts</h2>
+            <article class="item" data-search="buildRoot src/canvasDropZones.test.ts ">
+              <h3>buildRoot</h3>
+              <p class="muted"><code>src/canvasDropZones.test.ts:18:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-canvasdropzones-ts"
+          class="view"
+          data-view="src/canvasDropZones.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/canvasDropZones.ts</h2>
+            <article class="item" data-search="resolveCanvasDropZones src/canvasDropZones.ts ">
+              <h3>resolveCanvasDropZones</h3>
+              <p class="muted"><code>src/canvasDropZones.ts:23:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="getValidCanvasDropZones src/canvasDropZones.ts ">
+              <h3>getValidCanvasDropZones</h3>
+              <p class="muted"><code>src/canvasDropZones.ts:64:1</code></p>
+              <p class="empty">No description available.</p>
             </article>
           </section>
         </section>

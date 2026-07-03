@@ -5,10 +5,7 @@
 ## Import
 
 ```ts
-import {
-  resolveCanvasDropZones,
-  getValidCanvasDropZones,
-} from '@ankhorage/studio/canvasDropZones';
+import { resolveCanvasDropZones, getValidCanvasDropZones } from '@ankhorage/studio/canvasDropZones';
 ```
 
 ## Owned here
