@@ -13,6 +13,7 @@
   "include": [
     "src/index.ts",
     "src/canvasDropZones.ts",
+    "src/localizationConfig.ts",
     "src/manifestNavigatorPreviewModel.ts",
     "src/manifestState.ts",
     "src/manifestSync.ts",

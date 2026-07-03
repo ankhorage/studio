@@ -32,6 +32,10 @@
       "types": "./dist/canvasDropZones.d.ts",
       "import": "./dist/canvasDropZones.js"
     },
+    "./localizationConfig": {
+      "types": "./dist/localizationConfig.d.ts",
+      "import": "./dist/localizationConfig.js"
+    },
     "./manifestNavigatorPreviewModel": {
       "types": "./dist/manifestNavigatorPreviewModel.d.ts",
       "import": "./dist/manifestNavigatorPreviewModel.js"
