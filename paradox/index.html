@@ -223,6 +223,26 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/manifestNavigatorPreviewModel.test.ts"
+              >
+                src/manifestNavigatorPreviewModel.test.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/manifestNavigatorPreviewModel.ts"
+              >
+                src/manifestNavigatorPreviewModel.ts
+                <small>13 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/manifestState.public.test.ts"
               >
                 src/manifestState.public.test.ts
@@ -281,7 +301,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>15</strong><span class="muted">modules</span></div>
+              <div><strong>18</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -381,6 +401,44 @@
                 <code>ThemeUpdates</code>, <code>TPL_SCREEN_EMPTY</code>,
                 <code>updateNodeInTree</code>, <code>validateInsertRecipe</code>,
                 <code>validateNodePlacement</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestNavigatorPreviewModel.public.test.ts src/manifestNavigatorPreviewModel.ts"
+            >
+              <h3>src/manifestNavigatorPreviewModel.public.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/manifestNavigatorPreviewModel.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestNavigatorPreviewModel.test.ts src/manifestNavigatorPreviewModel.ts"
+            >
+              <h3>src/manifestNavigatorPreviewModel.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/manifestNavigatorPreviewModel.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/manifestNavigatorPreviewModel.ts src/routeUtils.ts buildManifestNavigatorPreviewModel ManifestNavigatorPreviewModel PreviewNavigationDiagnostic PreviewNavigationRoute resolveLeafScreenIdForChromeRouteName resolveLeafScreenIdForRoute StudioNavigationRouteMap StudioNavigationRouteMapEntry"
+            >
+              <h3>src/manifestNavigatorPreviewModel.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/routeUtils.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>buildManifestNavigatorPreviewModel</code>,
+                <code>ManifestNavigatorPreviewModel</code>,
+                <code>PreviewNavigationDiagnostic</code>, <code>PreviewNavigationRoute</code>,
+                <code>resolveLeafScreenIdForChromeRouteName</code>,
+                <code>resolveLeafScreenIdForRoute</code>, <code>StudioNavigationRouteMap</code>,
+                <code>StudioNavigationRouteMapEntry</code>
               </p>
             </article>
             <article
@@ -3372,6 +3430,18 @@
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_index_test_ts module_src_index_test_ts --&gt; module_src_index_ts
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_manifestNavigatorPreviewModel_public_test_ts
+                module_src_manifestNavigatorPreviewModel_public_test_ts --&gt;
+                module_src_manifestNavigatorPreviewModel_ts
+                module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestNavigatorPreviewModel_test_ts
+                module_src_manifestNavigatorPreviewModel_test_ts --&gt;
+                module_src_manifestNavigatorPreviewModel_ts
+                module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_manifestNavigatorPreviewModel_ts
+                module_src_manifestNavigatorPreviewModel_ts --&gt; module_src_routeUtils_ts
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
                 module_src_manifestState_public_test_ts --&gt; module_src_index_ts
@@ -3425,6 +3495,15 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_index_test_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestNavigatorPreviewModel_public_test_ts
+  module_src_manifestNavigatorPreviewModel_public_test_ts --&gt; module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestNavigatorPreviewModel_test_ts
+  module_src_manifestNavigatorPreviewModel_test_ts --&gt; module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_ts --&gt; module_src_routeUtils_ts
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_manifestState_public_test_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
@@ -3471,6 +3550,9 @@ graph TD
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
                 module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
@@ -3483,13 +3565,18 @@ graph TD
                 module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
                 module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
                 module_src_canvasDropZones_ts --&gt; module_src_index_ts module_src_index_test_ts
-                --&gt; module_src_index_ts module_src_manifestState_public_test_ts --&gt;
-                module_src_index_ts module_src_manifestState_public_test_ts --&gt;
-                module_src_manifestState_ts module_src_manifestState_routes_test_ts --&gt;
-                module_src_index_ts module_src_manifestState_routes_test_ts --&gt;
-                module_src_manifestState_ts module_src_manifestState_test_ts --&gt;
-                module_src_index_ts module_src_manifestState_test_ts --&gt;
-                module_src_manifestState_ts module_src_manifestState_ts --&gt; module_src_index_ts
+                --&gt; module_src_index_ts module_src_manifestNavigatorPreviewModel_public_test_ts
+                --&gt; module_src_manifestNavigatorPreviewModel_ts
+                module_src_manifestNavigatorPreviewModel_test_ts --&gt;
+                module_src_manifestNavigatorPreviewModel_ts
+                module_src_manifestNavigatorPreviewModel_ts --&gt; module_src_routeUtils_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_routes_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_test_ts --&gt; module_src_index_ts
+                module_src_manifestState_test_ts --&gt; module_src_manifestState_ts
+                module_src_manifestState_ts --&gt; module_src_index_ts
                 module_src_manifestSync_test_ts --&gt; module_src_index_ts
                 module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
                 module_src_manifestSync_ts --&gt; module_src_index_ts
@@ -3506,6 +3593,9 @@ graph LR
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
   module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
@@ -3519,6 +3609,9 @@ graph LR
   module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
   module_src_canvasDropZones_ts --&gt; module_src_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
+  module_src_manifestNavigatorPreviewModel_public_test_ts --&gt; module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_test_ts --&gt; module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_ts --&gt; module_src_routeUtils_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
   module_src_manifestState_routes_test_ts --&gt; module_src_index_ts
@@ -3544,6 +3637,9 @@ graph LR
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
                 module_src_index_ts[&quot;src/index.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+                module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
                 module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
                 module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
@@ -3751,6 +3847,9 @@ graph LR
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
   module_src_index_ts[&quot;src/index.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_public_test_ts[&quot;src/manifestNavigatorPreviewModel.public.test.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_test_ts[&quot;src/manifestNavigatorPreviewModel.test.ts&quot;]
+  module_src_manifestNavigatorPreviewModel_ts[&quot;src/manifestNavigatorPreviewModel.ts&quot;]
   module_src_manifestState_public_test_ts[&quot;src/manifestState.public.test.ts&quot;]
   module_src_manifestState_routes_test_ts[&quot;src/manifestState.routes.test.ts&quot;]
   module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
@@ -4551,6 +4650,140 @@ sequenceDiagram
             <article class="item" data-search="isStyleRecord src/index.ts ">
               <h3>isStyleRecord</h3>
               <p class="muted"><code>src/index.ts:1329:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-manifestnavigatorpreviewmodel-test-ts"
+          class="view"
+          data-view="src/manifestNavigatorPreviewModel.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/manifestNavigatorPreviewModel.test.ts</h2>
+            <article class="item" data-search="screen src/manifestNavigatorPreviewModel.test.ts ">
+              <h3>screen</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.test.ts:10:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="manifest src/manifestNavigatorPreviewModel.test.ts ">
+              <h3>manifest</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.test.ts:14:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-manifestnavigatorpreviewmodel-ts"
+          class="view"
+          data-view="src/manifestNavigatorPreviewModel.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/manifestNavigatorPreviewModel.ts</h2>
+            <article
+              class="item"
+              data-search="normalizeAuthFlowPathToRouteName src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>normalizeAuthFlowPathToRouteName</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:42:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="collectAuthFlowRouteNames src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>collectAuthFlowRouteNames</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:47:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveRouteLabelString src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveRouteLabelString</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:70:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolvePrimaryNavigator src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolvePrimaryNavigator</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:75:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveVisibleChromeRoutes src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveVisibleChromeRoutes</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:80:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveInitialVisibleRouteName src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveInitialVisibleRouteName</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:98:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveActiveChromeRouteName src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveActiveChromeRouteName</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:113:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveLeafScreenIdForRoute src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveLeafScreenIdForRoute</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:132:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveLeafScreenIdForChromeRouteName src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolveLeafScreenIdForChromeRouteName</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:146:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="normalizeExpoIconProvider src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>normalizeExpoIconProvider</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:179:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolvePreviewIconDiagnostics src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>resolvePreviewIconDiagnostics</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:185:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="buildStudioRouteMap src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>buildStudioRouteMap</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:215:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="buildManifestNavigatorPreviewModel src/manifestNavigatorPreviewModel.ts "
+            >
+              <h3>buildManifestNavigatorPreviewModel</h3>
+              <p class="muted"><code>src/manifestNavigatorPreviewModel.ts:241:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

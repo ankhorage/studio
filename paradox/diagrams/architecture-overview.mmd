@@ -17,6 +17,15 @@ graph TD
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts["src/index.ts"]
+  module_src_manifestNavigatorPreviewModel_public_test_ts["src/manifestNavigatorPreviewModel.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_manifestNavigatorPreviewModel_public_test_ts
+  module_src_manifestNavigatorPreviewModel_public_test_ts --> module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_test_ts["src/manifestNavigatorPreviewModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_manifestNavigatorPreviewModel_test_ts
+  module_src_manifestNavigatorPreviewModel_test_ts --> module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_ts["src/manifestNavigatorPreviewModel.ts"]
+  package__ankhorage_studio -.-> module_src_manifestNavigatorPreviewModel_ts
+  module_src_manifestNavigatorPreviewModel_ts --> module_src_routeUtils_ts
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestState_public_test_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
