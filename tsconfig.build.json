@@ -12,6 +12,7 @@
   },
   "include": [
     "src/index.ts",
+    "src/canvasDragModel.ts",
     "src/canvasDropZones.ts",
     "src/insertModalModel.ts",
     "src/localizationConfig.ts",
