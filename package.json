@@ -28,6 +28,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./canvasDropZones": {
+      "types": "./dist/canvasDropZones.d.ts",
+      "import": "./dist/canvasDropZones.js"
+    },
     "./manifestState": {
       "types": "./dist/manifestState.d.ts",
       "import": "./dist/manifestState.js"
