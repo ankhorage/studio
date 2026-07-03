@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.7",
+      "value": "v0.0.8",
       "color": "cb3837"
     },
     {
@@ -176,6 +176,33 @@
         "updateNodeInTree",
         "validateInsertRecipe",
         "validateNodePlacement"
+      ]
+    },
+    {
+      "path": "src/manifestNavigatorPreviewModel.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/manifestNavigatorPreviewModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/manifestNavigatorPreviewModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/manifestNavigatorPreviewModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/manifestNavigatorPreviewModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/routeUtils.ts"],
+      "exports": [
+        "buildManifestNavigatorPreviewModel",
+        "ManifestNavigatorPreviewModel",
+        "PreviewNavigationDiagnostic",
+        "PreviewNavigationRoute",
+        "resolveLeafScreenIdForChromeRouteName",
+        "resolveLeafScreenIdForRoute",
+        "StudioNavigationRouteMap",
+        "StudioNavigationRouteMapEntry"
       ]
     },
     {
@@ -3342,6 +3369,141 @@
       }
     },
     {
+      "name": "screen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.test.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "manifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.test.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeAuthFlowPathToRouteName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectAuthFlowRouteNames",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveRouteLabelString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePrimaryNavigator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 75,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveVisibleChromeRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 80,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveInitialVisibleRouteName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 98,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveActiveChromeRouteName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 113,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveLeafScreenIdForRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveLeafScreenIdForChromeRouteName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeExpoIconProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePreviewIconDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "buildStudioRouteMap",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 215,
+        "column": 1
+      }
+    },
+    {
+      "name": "buildManifestNavigatorPreviewModel",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestNavigatorPreviewModel.ts",
+        "line": 241,
+        "column": 1
+      }
+    },
+    {
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
@@ -4141,6 +4303,21 @@
         "sourcePath": "src/index.test.ts"
       },
       {
+        "fromPath": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toPath": "src/manifestNavigatorPreviewModel.ts",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromPath": "src/manifestNavigatorPreviewModel.test.ts",
+        "toPath": "src/manifestNavigatorPreviewModel.ts",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromPath": "src/manifestNavigatorPreviewModel.ts",
+        "toPath": "src/routeUtils.ts",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
         "fromPath": "src/manifestState.public.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestState.public.test.ts"
@@ -4578,6 +4755,186 @@
         "toSymbol": "resolvePlacementForEntry",
         "callExpression": "resolvePlacementForEntry",
         "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toSymbol": "resolveLeafScreenIdForRoute",
+        "callExpression": "resolveLeafScreenIdForRoute",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
+        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
+        "callExpression": "resolveLeafScreenIdForChromeRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "buildManifestNavigatorPreviewModel",
+        "callExpression": "buildManifestNavigatorPreviewModel",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "manifest",
+        "callExpression": "manifest",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "screen",
+        "callExpression": "screen",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "resolveLeafScreenIdForRoute",
+        "callExpression": "resolveLeafScreenIdForRoute",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
+        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
+        "callExpression": "resolveLeafScreenIdForChromeRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "collectAuthFlowRouteNames",
+        "toSymbol": "normalizeAuthFlowPathToRouteName",
+        "callExpression": "normalizeAuthFlowPathToRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolvePrimaryNavigator",
+        "toSymbol": "getPrimaryNavigatorPath",
+        "callExpression": "getPrimaryNavigatorPath",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolvePrimaryNavigator",
+        "toSymbol": "findNavigatorAtPath",
+        "callExpression": "findNavigatorAtPath",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolveVisibleChromeRoutes",
+        "toSymbol": "collectAuthFlowRouteNames",
+        "callExpression": "collectAuthFlowRouteNames",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "src/manifestNavigatorPreviewModel.ts",
+        "toSymbol": "resolveRouteLabelString",
+        "callExpression": "resolveRouteLabelString",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolveActiveChromeRouteName",
+        "toSymbol": "collectScreenRouteEntries",
+        "callExpression": "collectScreenRouteEntries",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolveActiveChromeRouteName",
+        "toSymbol": "resolveInitialVisibleRouteName",
+        "callExpression": "resolveInitialVisibleRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolveLeafScreenIdForRoute",
+        "toSymbol": "resolveLeafScreenIdForRoute",
+        "callExpression": "resolveLeafScreenIdForRoute",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolveLeafScreenIdForChromeRouteName",
+        "toSymbol": "resolveLeafScreenIdForRoute",
+        "callExpression": "resolveLeafScreenIdForRoute",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "resolvePreviewIconDiagnostics",
+        "toSymbol": "normalizeExpoIconProvider",
+        "callExpression": "normalizeExpoIconProvider",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildStudioRouteMap",
+        "toSymbol": "resolveRouteLabelString",
+        "callExpression": "resolveRouteLabelString",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "resolvePrimaryNavigator",
+        "callExpression": "resolvePrimaryNavigator",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "resolveVisibleChromeRoutes",
+        "callExpression": "resolveVisibleChromeRoutes",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "resolveActiveChromeRouteName",
+        "callExpression": "resolveActiveChromeRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
+        "callExpression": "resolveLeafScreenIdForChromeRouteName",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "buildStudioRouteMap",
+        "callExpression": "buildStudioRouteMap",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
+      },
+      {
+        "fromSymbol": "buildManifestNavigatorPreviewModel",
+        "toSymbol": "resolvePreviewIconDiagnostics",
+        "callExpression": "resolvePreviewIconDiagnostics",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
       },
       {
         "fromSymbol": "createManifest",
