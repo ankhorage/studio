@@ -6,6 +6,18 @@ graph TD
   package__ankhorage_studio -.-> module_knip_config_ts
   module_paradox_config_ts["paradox.config.ts"]
   package__ankhorage_studio -.-> module_paradox_config_ts
+  module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_canvasDragModel_public_test_ts
+  module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
+  module_src_canvasDragModel_public_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_test_ts["src/canvasDragModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_canvasDragModel_test_ts
+  module_src_canvasDragModel_test_ts --> module_src_canvasDragModel_ts
+  module_src_canvasDragModel_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_ts["src/canvasDragModel.ts"]
+  package__ankhorage_studio -.-> module_src_canvasDragModel_ts
+  module_src_canvasDragModel_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_ts --> module_src_index_ts
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDropZones_test_ts
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
@@ -17,6 +29,25 @@ graph TD
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts["src/index.ts"]
+  module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_insertModalModel_public_test_ts
+  module_src_insertModalModel_public_test_ts --> module_src_index_ts
+  module_src_insertModalModel_public_test_ts --> module_src_insertModalModel_ts
+  module_src_insertModalModel_test_ts["src/insertModalModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_insertModalModel_test_ts
+  module_src_insertModalModel_test_ts --> module_src_index_ts
+  module_src_insertModalModel_test_ts --> module_src_insertModalModel_ts
+  module_src_insertModalModel_ts["src/insertModalModel.ts"]
+  package__ankhorage_studio -.-> module_src_insertModalModel_ts
+  module_src_insertModalModel_ts --> module_src_index_ts
+  module_src_localizationConfig_public_test_ts["src/localizationConfig.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_localizationConfig_public_test_ts
+  module_src_localizationConfig_public_test_ts --> module_src_localizationConfig_ts
+  module_src_localizationConfig_test_ts["src/localizationConfig.test.ts"]
+  package__ankhorage_studio -.-> module_src_localizationConfig_test_ts
+  module_src_localizationConfig_test_ts --> module_src_localizationConfig_ts
+  module_src_localizationConfig_ts["src/localizationConfig.ts"]
+  package__ankhorage_studio -.-> module_src_localizationConfig_ts
   module_src_manifestNavigatorPreviewModel_public_test_ts["src/manifestNavigatorPreviewModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestNavigatorPreviewModel_public_test_ts
   module_src_manifestNavigatorPreviewModel_public_test_ts --> module_src_manifestNavigatorPreviewModel_ts
