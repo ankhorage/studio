@@ -4,24 +4,62 @@
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",
-  "bugs": { "url": "https://github.com/ankhorage/studio/issues" },
-  "repository": { "type": "git", "url": "git+https://github.com/ankhorage/studio.git" },
-  "publishConfig": { "access": "public" },
+  "bugs": {
+    "url": "https://github.com/ankhorage/studio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankhorage/studio.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./canvasDragModel": { "types": "./dist/canvasDragModel.d.ts", "import": "./dist/canvasDragModel.js" },
-    "./canvasDropZones": { "types": "./dist/canvasDropZones.d.ts", "import": "./dist/canvasDropZones.js" },
-    "./insertModalModel": { "types": "./dist/insertModalModel.d.ts", "import": "./dist/insertModalModel.js" },
-    "./localizationConfig": { "types": "./dist/localizationConfig.d.ts", "import": "./dist/localizationConfig.js" },
-    "./manifestNavigatorPreviewModel": { "types": "./dist/manifestNavigatorPreviewModel.d.ts", "import": "./dist/manifestNavigatorPreviewModel.js" },
-    "./manifestState": { "types": "./dist/manifestState.d.ts", "import": "./dist/manifestState.js" },
-    "./manifestSync": { "types": "./dist/manifestSync.d.ts", "import": "./dist/manifestSync.js" },
-    "./routeUtils": { "types": "./dist/routeUtils.d.ts", "import": "./dist/routeUtils.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./canvas\u0044ragModel": {
+      "types": "./dist/canvas\u0044ragModel.d.ts",
+      "import": "./dist/canvas\u0044ragModel.js"
+    },
+    "./canvasDropZones": {
+      "types": "./dist/canvasDropZones.d.ts",
+      "import": "./dist/canvasDropZones.js"
+    },
+    "./insertModalModel": {
+      "types": "./dist/insertModalModel.d.ts",
+      "import": "./dist/insertModalModel.js"
+    },
+    "./localizationConfig": {
+      "types": "./dist/localizationConfig.d.ts",
+      "import": "./dist/localizationConfig.js"
+    },
+    "./manifestNavigatorPreviewModel": {
+      "types": "./dist/manifestNavigatorPreviewModel.d.ts",
+      "import": "./dist/manifestNavigatorPreviewModel.js"
+    },
+    "./manifestState": {
+      "types": "./dist/manifestState.d.ts",
+      "import": "./dist/manifestState.js"
+    },
+    "./manifestSync": {
+      "types": "./dist/manifestSync.d.ts",
+      "import": "./dist/manifestSync.js"
+    },
+    "./routeUtils": {
+      "types": "./dist/routeUtils.d.ts",
+      "import": "./dist/routeUtils.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -38,8 +76,16 @@
     "changeset:status": "changeset status --since=origin/main",
     "version-packages": "changeset version"
   },
-  "keywords": ["ankhorage", "studio", "authoring", "react-native", "app-builder"],
-  "dependencies": { "@ankhorage/contracts": "^1.19.1" },
+  "keywords": [
+    "ankhorage",
+    "studio",
+    "authoring",
+    "react-native",
+    "app-builder"
+  ],
+  "dependencies": {
+    "@ankhorage/contracts": "^1.19.1"
+  },
   "devDependencies": {
     "@ankhorage/devtools": "^1.1.0",
     "@ankhorage/paradox": "^0.1.10",
