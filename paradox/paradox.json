@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.8",
+      "value": "v0.0.11",
       "color": "cb3837"
     },
     {
@@ -74,6 +74,31 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["default"]
+    },
+    {
+      "path": "src/canvasDragModel.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/canvasDragModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/canvasDragModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
+      "exports": [
+        "CanvasDropZoneSlots",
+        "createStudioCanvasDragPayload",
+        "isStudioCanvasDragPayload",
+        "isValidCanvasDropZone",
+        "resolveCanvasDropZoneSlots",
+        "StudioCanvasDragPayload"
+      ]
     },
     {
       "path": "src/canvasDropZones.test.ts",
@@ -176,6 +201,53 @@
         "updateNodeInTree",
         "validateInsertRecipe",
         "validateNodePlacement"
+      ]
+    },
+    {
+      "path": "src/insertModalModel.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/insertModalModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/insertModalModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "filterInsertCatalogEntries",
+        "getPlacementHint",
+        "groupInsertEntries",
+        "InsertCategoryGroup",
+        "resolveNodeLabel"
+      ]
+    },
+    {
+      "path": "src/localizationConfig.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/localizationConfig.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/localizationConfig.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/localizationConfig.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/localizationConfig.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "isStringArray",
+        "isStringRecord",
+        "readLocalizationConfig",
+        "StudioLocalizationConfig"
       ]
     },
     {
@@ -3036,6 +3108,51 @@
   "components": [],
   "sourceFunctions": [
     {
+      "name": "createStudioCanvasDragPayload",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStudioCanvasDragPayload",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "isValidCanvasDropZone",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDropZoneSlots",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "findDropZoneByKind",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
       "name": "buildRoot",
       "description": null,
       "sourceLocation": {
@@ -3365,6 +3482,87 @@
       "sourceLocation": {
         "filePath": "src/index.ts",
         "line": 1329,
+        "column": 1
+      }
+    },
+    {
+      "name": "findNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/insertModalModel.test.ts",
+        "line": 73,
+        "column": 11
+      }
+    },
+    {
+      "name": "filterInsertCatalogEntries",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/insertModalModel.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "groupInsertEntries",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/insertModalModel.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveNodeLabel",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/insertModalModel.ts",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "getPlacementHint",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/insertModalModel.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationConfig.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationConfig.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStringRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationConfig.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "readLocalizationConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationConfig.ts",
+        "line": 17,
         "column": 1
       }
     },
@@ -4283,6 +4481,36 @@
   "graphs": {
     "imports": [
       {
+        "fromPath": "src/canvasDragModel.public.test.ts",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDragModel.public.test.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDragModel.test.ts",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDragModel.test.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromPath": "src/canvasDragModel.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/canvasDragModel.ts"
+      },
+      {
+        "fromPath": "src/canvasDragModel.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/canvasDragModel.ts"
+      },
+      {
         "fromPath": "src/canvasDropZones.test.ts",
         "toPath": "src/canvasDropZones.ts",
         "sourcePath": "src/canvasDropZones.test.ts"
@@ -4301,6 +4529,41 @@
         "fromPath": "src/index.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromPath": "src/insertModalModel.public.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromPath": "src/insertModalModel.public.test.ts",
+        "toPath": "src/insertModalModel.ts",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromPath": "src/insertModalModel.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromPath": "src/insertModalModel.test.ts",
+        "toPath": "src/insertModalModel.ts",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromPath": "src/insertModalModel.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/insertModalModel.ts"
+      },
+      {
+        "fromPath": "src/localizationConfig.public.test.ts",
+        "toPath": "src/localizationConfig.ts",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromPath": "src/localizationConfig.test.ts",
+        "toPath": "src/localizationConfig.ts",
+        "sourcePath": "src/localizationConfig.test.ts"
       },
       {
         "fromPath": "src/manifestNavigatorPreviewModel.public.test.ts",
@@ -4395,6 +4658,96 @@
         "toSymbol": "defineParadoxConfig",
         "callExpression": "defineParadoxConfig",
         "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "createStudioCanvasDragPayload",
+        "callExpression": "createStudioCanvasDragPayload",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "isValidCanvasDropZone",
+        "callExpression": "isValidCanvasDropZone",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "resolveCanvasDropZoneSlots",
+        "callExpression": "resolveCanvasDropZoneSlots",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "isStudioCanvasDragPayload",
+        "callExpression": "isStudioCanvasDragPayload",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "createStudioCanvasDragPayload",
+        "callExpression": "createStudioCanvasDragPayload",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "isStudioCanvasDragPayload",
+        "callExpression": "isStudioCanvasDragPayload",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "isValidCanvasDropZone",
+        "callExpression": "isValidCanvasDropZone",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "resolveCanvasDropZoneSlots",
+        "callExpression": "resolveCanvasDropZoneSlots",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "resolveCanvasDropZoneSlots",
+        "toSymbol": "findDropZoneByKind",
+        "callExpression": "findDropZoneByKind",
+        "sourcePath": "src/canvasDragModel.ts"
       },
       {
         "fromSymbol": "src/canvasDropZones.test.ts",
@@ -4755,6 +5108,198 @@
         "toSymbol": "resolvePlacementForEntry",
         "callExpression": "resolvePlacementForEntry",
         "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "groupInsertEntries",
+        "callExpression": "groupInsertEntries",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "filterInsertCatalogEntries",
+        "callExpression": "filterInsertCatalogEntries",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.public.test.ts",
+        "toSymbol": "getPlacementHint",
+        "callExpression": "getPlacementHint",
+        "sourcePath": "src/insertModalModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "filterInsertCatalogEntries",
+        "callExpression": "filterInsertCatalogEntries",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "groupInsertEntries",
+        "callExpression": "groupInsertEntries",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/insertModalModel.test.ts",
+        "toSymbol": "getPlacementHint",
+        "callExpression": "getPlacementHint",
+        "sourcePath": "src/insertModalModel.test.ts"
+      },
+      {
+        "fromSymbol": "groupInsertEntries",
+        "toSymbol": "getCategoryLabel",
+        "callExpression": "getCategoryLabel",
+        "sourcePath": "src/insertModalModel.ts"
+      },
+      {
+        "fromSymbol": "getPlacementHint",
+        "toSymbol": "findNode",
+        "callExpression": "findNode",
+        "sourcePath": "src/insertModalModel.ts"
+      },
+      {
+        "fromSymbol": "getPlacementHint",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/insertModalModel.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "isStringRecord",
+        "callExpression": "isStringRecord",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.public.test.ts",
+        "toSymbol": "readLocalizationConfig",
+        "callExpression": "readLocalizationConfig",
+        "sourcePath": "src/localizationConfig.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "isStringRecord",
+        "callExpression": "isStringRecord",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationConfig.test.ts",
+        "toSymbol": "readLocalizationConfig",
+        "callExpression": "readLocalizationConfig",
+        "sourcePath": "src/localizationConfig.test.ts"
+      },
+      {
+        "fromSymbol": "isStringRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/localizationConfig.ts"
+      },
+      {
+        "fromSymbol": "readLocalizationConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/localizationConfig.ts"
+      },
+      {
+        "fromSymbol": "readLocalizationConfig",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/localizationConfig.ts"
       },
       {
         "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",

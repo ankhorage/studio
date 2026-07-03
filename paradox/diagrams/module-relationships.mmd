@@ -1,10 +1,19 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
+  module_src_canvasDragModel_test_ts["src/canvasDragModel.test.ts"]
+  module_src_canvasDragModel_ts["src/canvasDragModel.ts"]
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
+  module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
+  module_src_insertModalModel_test_ts["src/insertModalModel.test.ts"]
+  module_src_insertModalModel_ts["src/insertModalModel.ts"]
+  module_src_localizationConfig_public_test_ts["src/localizationConfig.public.test.ts"]
+  module_src_localizationConfig_test_ts["src/localizationConfig.test.ts"]
+  module_src_localizationConfig_ts["src/localizationConfig.ts"]
   module_src_manifestNavigatorPreviewModel_public_test_ts["src/manifestNavigatorPreviewModel.public.test.ts"]
   module_src_manifestNavigatorPreviewModel_test_ts["src/manifestNavigatorPreviewModel.test.ts"]
   module_src_manifestNavigatorPreviewModel_ts["src/manifestNavigatorPreviewModel.ts"]
@@ -17,10 +26,23 @@ graph LR
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
   module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
   module_src_routeUtils_ts["src/routeUtils.ts"]
+  module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
+  module_src_canvasDragModel_public_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_test_ts --> module_src_canvasDragModel_ts
+  module_src_canvasDragModel_test_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_ts --> module_src_canvasDropZones_ts
+  module_src_canvasDragModel_ts --> module_src_index_ts
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_index_test_ts --> module_src_index_ts
+  module_src_insertModalModel_public_test_ts --> module_src_index_ts
+  module_src_insertModalModel_public_test_ts --> module_src_insertModalModel_ts
+  module_src_insertModalModel_test_ts --> module_src_index_ts
+  module_src_insertModalModel_test_ts --> module_src_insertModalModel_ts
+  module_src_insertModalModel_ts --> module_src_index_ts
+  module_src_localizationConfig_public_test_ts --> module_src_localizationConfig_ts
+  module_src_localizationConfig_test_ts --> module_src_localizationConfig_ts
   module_src_manifestNavigatorPreviewModel_public_test_ts --> module_src_manifestNavigatorPreviewModel_ts
   module_src_manifestNavigatorPreviewModel_test_ts --> module_src_manifestNavigatorPreviewModel_ts
   module_src_manifestNavigatorPreviewModel_ts --> module_src_routeUtils_ts

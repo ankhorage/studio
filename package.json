@@ -28,6 +28,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./canvas\u0044ragModel": {
+      "types": "./dist/canvas\u0044ragModel.d.ts",
+      "import": "./dist/canvas\u0044ragModel.js"
+    },
     "./canvasDropZones": {
       "types": "./dist/canvasDropZones.d.ts",
       "import": "./dist/canvasDropZones.js"
