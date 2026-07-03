@@ -35,6 +35,10 @@
     "./manifestSync": {
       "types": "./dist/manifestSync.d.ts",
       "import": "./dist/manifestSync.js"
+    },
+    "./routeUtils": {
+      "types": "./dist/routeUtils.d.ts",
+      "import": "./dist/routeUtils.js"
     }
   },
   "scripts": {

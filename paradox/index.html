@@ -241,6 +241,24 @@
                 <small>3 functions</small>
               </button>
             </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/routeUtils.public.test.ts">
+                src/routeUtils.public.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/routeUtils.test.ts">
+                src/routeUtils.test.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/routeUtils.ts">
+                src/routeUtils.ts
+                <small>2 functions</small>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -251,7 +269,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>10</strong><span class="muted">modules</span></div>
+              <div><strong>13</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -428,6 +446,38 @@
               <p>
                 <strong>Exports:</strong> <code>createStudioManifestSignature</code>,
                 <code>createStudioRuntimeSyncSignature</code>
+              </p>
+            </article>
+            <article class="item" data-search="src/routeUtils.public.test.ts src/routeUtils.ts">
+              <h3>src/routeUtils.public.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/routeUtils.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article class="item" data-search="src/routeUtils.test.ts src/routeUtils.ts">
+              <h3>src/routeUtils.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/routeUtils.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/routeUtils.ts collectScreenRouteEntries findNavigatorAtPath findParentPathForScreenId findRoutesAtParentPath getPrimaryNavigatorPath groupScreenRouteEntries insertRouteAtParentPath isRouteGroupSegment listScreenIdsInRouteOrder makeUniqueRouteNameForParent makeUniqueSiblingRouteName pathToKey removeScreenIdFromRoutes reorderLeafRoutesWithinParent ScreenRouteEntry ScreenRouteGroup toCanonicalRoutePattern updateNavigatorAtPath"
+            >
+              <h3>src/routeUtils.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>collectScreenRouteEntries</code>,
+                <code>findNavigatorAtPath</code>, <code>findParentPathForScreenId</code>,
+                <code>findRoutesAtParentPath</code>, <code>getPrimaryNavigatorPath</code>,
+                <code>groupScreenRouteEntries</code>, <code>insertRouteAtParentPath</code>,
+                <code>isRouteGroupSegment</code>, <code>listScreenIdsInRouteOrder</code>,
+                <code>makeUniqueRouteNameForParent</code>, <code>makeUniqueSiblingRouteName</code>,
+                <code>pathToKey</code>, <code>removeScreenIdFromRoutes</code>,
+                <code>reorderLeafRoutesWithinParent</code>, <code>ScreenRouteEntry</code>,
+                <code>ScreenRouteGroup</code>, <code>toCanonicalRoutePattern</code>,
+                <code>updateNavigatorAtPath</code>
               </p>
             </article>
           </section>
@@ -3300,6 +3350,14 @@
                 module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_manifestSync_ts
                 module_src_manifestSync_ts --&gt; module_src_index_ts
+                module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_routeUtils_public_test_ts
+                module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
+                module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_routeUtils_test_ts
+                module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+                module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;] package__ankhorage_studio
+                -.-&gt; module_src_routeUtils_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3338,6 +3396,14 @@ graph TD
   module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_manifestSync_ts
   module_src_manifestSync_ts --&gt; module_src_index_ts
+  module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_routeUtils_public_test_ts
+  module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
+  module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_routeUtils_test_ts
+  module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+  module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_routeUtils_ts
 </pre>
               </details>
             </article>
@@ -3357,7 +3423,10 @@ graph TD
                 module_src_manifestState_test_ts[&quot;src/manifestState.test.ts&quot;]
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
-                module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;] module_src_index_test_ts
+                module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+                module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+                module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+                module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;] module_src_index_test_ts
                 --&gt; module_src_index_ts module_src_manifestState_public_test_ts --&gt;
                 module_src_index_ts module_src_manifestState_public_test_ts --&gt;
                 module_src_manifestState_ts module_src_manifestState_routes_test_ts --&gt;
@@ -3368,6 +3437,8 @@ graph TD
                 module_src_manifestSync_test_ts --&gt; module_src_index_ts
                 module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
                 module_src_manifestSync_ts --&gt; module_src_index_ts
+                module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
+                module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -3383,6 +3454,9 @@ graph LR
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
   module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+  module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+  module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+  module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_index_ts
   module_src_manifestState_public_test_ts --&gt; module_src_manifestState_ts
@@ -3394,6 +3468,8 @@ graph LR
   module_src_manifestSync_test_ts --&gt; module_src_index_ts
   module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
   module_src_manifestSync_ts --&gt; module_src_index_ts
+  module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
+  module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
 </pre>
               </details>
             </article>
@@ -3411,6 +3487,9 @@ graph LR
                 module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
                 module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
                 module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+                module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+                module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+                module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
                 export_ACTION_REGISTRY export_ActionDefinition[&quot;ActionDefinition&quot;]
                 module_src_index_ts --&gt; export_ActionDefinition export_ActionDefinition -.-&gt;
@@ -3613,6 +3692,9 @@ graph LR
   module_src_manifestState_ts[&quot;src/manifestState.ts&quot;]
   module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
   module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
+  module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
+  module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
+  module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
   module_src_index_ts --&gt; export_ACTION_REGISTRY
   export_ActionDefinition[&quot;ActionDefinition&quot;]
@@ -4781,6 +4863,56 @@ sequenceDiagram
             <article class="item" data-search="createStudioManifestSignature src/manifestSync.ts ">
               <h3>createStudioManifestSignature</h3>
               <p class="muted"><code>src/manifestSync.ts:37:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-routeutils-public-test-ts"
+          class="view"
+          data-view="src/routeUtils.public.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/routeUtils.public.test.ts</h2>
+            <article class="item" data-search="buildRoutes src/routeUtils.public.test.ts ">
+              <h3>buildRoutes</h3>
+              <p class="muted"><code>src/routeUtils.public.test.ts:23:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-routeutils-test-ts"
+          class="view"
+          data-view="src/routeUtils.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/routeUtils.test.ts</h2>
+            <article class="item" data-search="buildRoutes src/routeUtils.test.ts ">
+              <h3>buildRoutes</h3>
+              <p class="muted"><code>src/routeUtils.test.ts:11:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="rootRouteNames src/routeUtils.test.ts ">
+              <h3>rootRouteNames</h3>
+              <p class="muted"><code>src/routeUtils.test.ts:64:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section id="view-src-routeutils-ts" class="view" data-view="src/routeUtils.ts" hidden>
+          <section class="panel">
+            <h2>src/routeUtils.ts</h2>
+            <article class="item" data-search="reorderLeafRoutesWithinParent src/routeUtils.ts ">
+              <h3>reorderLeafRoutesWithinParent</h3>
+              <p class="muted"><code>src/routeUtils.ts:22:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="reorderMatchingRoutes src/routeUtils.ts ">
+              <h3>reorderMatchingRoutes</h3>
+              <p class="muted"><code>src/routeUtils.ts:48:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.5",
+      "value": "v0.0.6",
       "color": "cb3837"
     },
     {
@@ -246,6 +246,43 @@
       "isEntrypoint": false,
       "dependencies": ["src/index.ts"],
       "exports": ["createStudioManifestSignature", "createStudioRuntimeSyncSignature"]
+    },
+    {
+      "path": "src/routeUtils.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/routeUtils.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/routeUtils.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/routeUtils.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/routeUtils.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "collectScreenRouteEntries",
+        "findNavigatorAtPath",
+        "findParentPathForScreenId",
+        "findRoutesAtParentPath",
+        "getPrimaryNavigatorPath",
+        "groupScreenRouteEntries",
+        "insertRouteAtParentPath",
+        "isRouteGroupSegment",
+        "listScreenIdsInRouteOrder",
+        "makeUniqueRouteNameForParent",
+        "makeUniqueSiblingRouteName",
+        "pathToKey",
+        "removeScreenIdFromRoutes",
+        "reorderLeafRoutesWithinParent",
+        "ScreenRouteEntry",
+        "ScreenRouteGroup",
+        "toCanonicalRoutePattern",
+        "updateNavigatorAtPath"
+      ]
     }
   ],
   "exports": [
@@ -3844,6 +3881,51 @@
         "line": 37,
         "column": 1
       }
+    },
+    {
+      "name": "buildRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.public.test.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "buildRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.test.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "rootRouteNames",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.test.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "reorderLeafRoutesWithinParent",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "reorderMatchingRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 48,
+        "column": 1
+      }
     }
   ],
   "sequenceScenarios": [
@@ -4048,6 +4130,21 @@
         "fromPath": "src/manifestSync.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromPath": "src/routeUtils.public.test.ts",
+        "toPath": "src/routeUtils.ts",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromPath": "src/routeUtils.test.ts",
+        "toPath": "src/routeUtils.ts",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromPath": "src/routeUtils.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/routeUtils.ts"
       }
     ],
     "calls": [
@@ -5130,6 +5227,186 @@
         "toSymbol": "createRuntimeScreenSignatures",
         "callExpression": "createRuntimeScreenSignatures",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "buildRoutes",
+        "callExpression": "buildRoutes",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "collectScreenRouteEntries",
+        "callExpression": "collectScreenRouteEntries",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "groupScreenRouteEntries",
+        "callExpression": "groupScreenRouteEntries",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "pathToKey",
+        "callExpression": "pathToKey",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "isRouteGroupSegment",
+        "callExpression": "isRouteGroupSegment",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "listScreenIdsInRouteOrder",
+        "callExpression": "listScreenIdsInRouteOrder",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "findParentPathForScreenId",
+        "callExpression": "findParentPathForScreenId",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "findRoutesAtParentPath",
+        "callExpression": "findRoutesAtParentPath",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "getPrimaryNavigatorPath",
+        "callExpression": "getPrimaryNavigatorPath",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "findNavigatorAtPath",
+        "callExpression": "findNavigatorAtPath",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "updateNavigatorAtPath",
+        "callExpression": "updateNavigatorAtPath",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "insertRouteAtParentPath",
+        "callExpression": "insertRouteAtParentPath",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "removeScreenIdFromRoutes",
+        "callExpression": "removeScreenIdFromRoutes",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "makeUniqueSiblingRouteName",
+        "callExpression": "makeUniqueSiblingRouteName",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "toCanonicalRoutePattern",
+        "callExpression": "toCanonicalRoutePattern",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "makeUniqueRouteNameForParent",
+        "callExpression": "makeUniqueRouteNameForParent",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "collectScreenRouteEntries",
+        "callExpression": "collectScreenRouteEntries",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "buildRoutes",
+        "callExpression": "buildRoutes",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "listScreenIdsInRouteOrder",
+        "callExpression": "listScreenIdsInRouteOrder",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "reorderLeafRoutesWithinParent",
+        "callExpression": "reorderLeafRoutesWithinParent",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "findRoutesAtParentPath",
+        "callExpression": "findRoutesAtParentPath",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "rootRouteNames",
+        "callExpression": "rootRouteNames",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "reorderLeafRoutesWithinParent",
+        "toSymbol": "reorderMatchingRoutes",
+        "callExpression": "reorderMatchingRoutes",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.ts",
+        "toSymbol": "reorderLeafRoutesWithinParent",
+        "callExpression": "reorderLeafRoutesWithinParent",
+        "sourcePath": "src/routeUtils.ts"
       }
     ],
     "typeReferences": [

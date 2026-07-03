@@ -32,3 +32,11 @@ graph TD
   module_src_manifestSync_ts["src/manifestSync.ts"]
   package__ankhorage_studio -.-> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
+  module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_routeUtils_public_test_ts
+  module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
+  module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
+  package__ankhorage_studio -.-> module_src_routeUtils_test_ts
+  module_src_routeUtils_test_ts --> module_src_routeUtils_ts
+  module_src_routeUtils_ts["src/routeUtils.ts"]
+  package__ankhorage_studio -.-> module_src_routeUtils_ts

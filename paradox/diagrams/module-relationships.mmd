@@ -9,6 +9,9 @@ graph LR
   module_src_manifestState_ts["src/manifestState.ts"]
   module_src_manifestSync_test_ts["src/manifestSync.test.ts"]
   module_src_manifestSync_ts["src/manifestSync.ts"]
+  module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
+  module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
+  module_src_routeUtils_ts["src/routeUtils.ts"]
   module_src_index_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_manifestState_ts
@@ -20,3 +23,5 @@ graph LR
   module_src_manifestSync_test_ts --> module_src_index_ts
   module_src_manifestSync_test_ts --> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
+  module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
+  module_src_routeUtils_test_ts --> module_src_routeUtils_ts
