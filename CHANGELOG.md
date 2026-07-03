@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.9
+
+### Patch Changes
+
+- b11234d: Add `@ankhorage/studio/manifestNavigatorPreviewModel` for package-neutral manifest navigation preview modeling.
+
 ## 0.0.8
 
 ### Patch Changes
