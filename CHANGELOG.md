@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.7
+
+### Patch Changes
+
+- 7cb7b38: Add `@ankhorage/studio/routeUtils` as a package-neutral route-tree helper subpath, including leaf-route reordering within a selected parent path.
+
 ## 0.0.6
 
 ### Patch Changes
