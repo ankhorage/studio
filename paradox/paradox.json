@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.11",
+      "value": "v0.0.13",
       "color": "cb3837"
     },
     {
@@ -251,6 +251,28 @@
       ]
     },
     {
+      "path": "src/localizationPanelModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/localizationPanelModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/localizationPanelModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "collectTranslatableFields",
+        "createLocaleAddConfig",
+        "createLocaleRemoveConfig",
+        "createLocalizationKeyFromText",
+        "filterTranslatableFields",
+        "TranslatableComponentMeta",
+        "TranslatableComponentMetaField",
+        "TranslatableComponentMetaRegistry",
+        "TranslatableFieldRef"
+      ]
+    },
+    {
       "path": "src/manifestNavigatorPreviewModel.public.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/manifestNavigatorPreviewModel.ts"],
@@ -398,6 +420,82 @@
         "ScreenRouteGroup",
         "toCanonicalRoutePattern",
         "updateNavigatorAtPath"
+      ]
+    },
+    {
+      "path": "src/runtimeDiagnosticsModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtimeDiagnosticsModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtimeDiagnosticsModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "areRuntimeDiagnosticsEqual",
+        "formatRuntimeDiagnostic",
+        "formatRuntimeDiagnostics",
+        "resolveRuntimeDiagnosticsNoticeColor",
+        "RuntimeDiagnosticsNoticeColor"
+      ]
+    },
+    {
+      "path": "src/runtimeLocalization.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtimeLocalization.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtimeLocalization.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtimeLocalization.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtimeLocalization.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioLocalizationActionHandlers",
+        "createStudioLocalizationNodePropsResolver",
+        "getSetLanguageLocale",
+        "resolveLocalizedPropValue",
+        "STUDIO_LOCALIZED_PROP_PAIRS",
+        "StudioLocalizedPropPair",
+        "StudioRuntimeActionHandlerContext",
+        "StudioRuntimeActionHandlers",
+        "StudioRuntimeNodePropsResolver",
+        "StudioRuntimeNodePropsResolverContext"
+      ]
+    },
+    {
+      "path": "src/studioAdminRouteModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/studioAdminRouteModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/studioAdminRouteModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "createStudioAdminRouteRenderState",
+        "createStudioPropertiesRoutePath",
+        "openStudioAdminRoute",
+        "resolveStudioAdminRoutePath",
+        "resolveStudioPropertiesNodeId",
+        "StudioAdminRouteRenderState"
+      ]
+    },
+    {
+      "path": "src/studioSelectionModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioSelectionProviderProps",
+        "CreateStudioSelectionProviderPropsArgs",
+        "StudioSelectionProviderAdapterProps"
       ]
     }
   ],
@@ -3567,6 +3665,60 @@
       }
     },
     {
+      "name": "collectTranslatableFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "traverse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 38,
+        "column": 3
+      }
+    },
+    {
+      "name": "createLocalizationKeyFromText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "filterTranslatableFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLocaleAddConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLocaleRemoveConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/localizationPanelModel.ts",
+        "line": 128,
+        "column": 1
+      }
+    },
+    {
       "name": "screen",
       "description": null,
       "sourceLocation": {
@@ -4330,6 +4482,150 @@
         "line": 48,
         "column": 1
       }
+    },
+    {
+      "name": "formatRuntimeDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeDiagnosticsModel.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatRuntimeDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeDiagnosticsModel.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveRuntimeDiagnosticsNoticeColor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeDiagnosticsModel.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "areRuntimeDiagnosticsEqual",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeDiagnosticsModel.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNonEmptyString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasOwnProp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveLocalizedPropValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioLocalizationNodePropsResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "getSetLanguageLocale",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioLocalizationActionHandlers",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtimeLocalization.ts",
+        "line": 113,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioAdminRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioPropertiesNodeId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioAdminRouteRenderState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "openStudioAdminRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioPropertiesRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioSelectionProviderProps",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 16,
+        "column": 1
+      }
     }
   ],
   "sequenceScenarios": [
@@ -4566,6 +4862,11 @@
         "sourcePath": "src/localizationConfig.test.ts"
       },
       {
+        "fromPath": "src/localizationPanelModel.test.ts",
+        "toPath": "src/localizationPanelModel.ts",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
         "fromPath": "src/manifestNavigatorPreviewModel.public.test.ts",
         "toPath": "src/manifestNavigatorPreviewModel.ts",
         "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
@@ -4644,6 +4945,31 @@
         "fromPath": "src/routeUtils.ts",
         "toPath": "src/manifestState.ts",
         "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromPath": "src/runtimeDiagnosticsModel.test.ts",
+        "toPath": "src/runtimeDiagnosticsModel.ts",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromPath": "src/runtimeLocalization.public.test.ts",
+        "toPath": "src/runtimeLocalization.ts",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromPath": "src/runtimeLocalization.test.ts",
+        "toPath": "src/runtimeLocalization.ts",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromPath": "src/studioAdminRouteModel.test.ts",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromPath": "src/studioAdminRouteModel.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/studioAdminRouteModel.ts"
       }
     ],
     "calls": [
@@ -5300,6 +5626,66 @@
         "toSymbol": "isStringArray",
         "callExpression": "isStringArray",
         "sourcePath": "src/localizationConfig.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "collectTranslatableFields",
+        "callExpression": "collectTranslatableFields",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "createLocalizationKeyFromText",
+        "callExpression": "createLocalizationKeyFromText",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "filterTranslatableFields",
+        "callExpression": "filterTranslatableFields",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "createLocaleAddConfig",
+        "callExpression": "createLocaleAddConfig",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.test.ts",
+        "toSymbol": "createLocaleRemoveConfig",
+        "callExpression": "createLocaleRemoveConfig",
+        "sourcePath": "src/localizationPanelModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/localizationPanelModel.ts",
+        "toSymbol": "traverse",
+        "callExpression": "traverse",
+        "sourcePath": "src/localizationPanelModel.ts"
+      },
+      {
+        "fromSymbol": "collectTranslatableFields",
+        "toSymbol": "traverse",
+        "callExpression": "traverse",
+        "sourcePath": "src/localizationPanelModel.ts"
       },
       {
         "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
@@ -6410,6 +6796,258 @@
         "toSymbol": "reorderLeafRoutesWithinParent",
         "callExpression": "reorderLeafRoutesWithinParent",
         "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "formatRuntimeDiagnostic",
+        "callExpression": "formatRuntimeDiagnostic",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "formatRuntimeDiagnostics",
+        "callExpression": "formatRuntimeDiagnostics",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "resolveRuntimeDiagnosticsNoticeColor",
+        "callExpression": "resolveRuntimeDiagnosticsNoticeColor",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeDiagnosticsModel.test.ts",
+        "toSymbol": "areRuntimeDiagnosticsEqual",
+        "callExpression": "areRuntimeDiagnosticsEqual",
+        "sourcePath": "src/runtimeDiagnosticsModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "createStudioLocalizationNodePropsResolver",
+        "callExpression": "createStudioLocalizationNodePropsResolver",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "createStudioLocalizationActionHandlers",
+        "callExpression": "createStudioLocalizationActionHandlers",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "resolveLocalizedPropValue",
+        "callExpression": "resolveLocalizedPropValue",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "resolver",
+        "callExpression": "resolver",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.public.test.ts",
+        "toSymbol": "getSetLanguageLocale",
+        "callExpression": "getSetLanguageLocale",
+        "sourcePath": "src/runtimeLocalization.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "resolveLocalizedPropValue",
+        "callExpression": "resolveLocalizedPropValue",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "createStudioLocalizationNodePropsResolver",
+        "callExpression": "createStudioLocalizationNodePropsResolver",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "resolver",
+        "callExpression": "resolver",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "getSetLanguageLocale",
+        "callExpression": "getSetLanguageLocale",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.test.ts",
+        "toSymbol": "createStudioLocalizationActionHandlers",
+        "callExpression": "createStudioLocalizationActionHandlers",
+        "sourcePath": "src/runtimeLocalization.test.ts"
+      },
+      {
+        "fromSymbol": "resolveLocalizedPropValue",
+        "toSymbol": "isNonEmptyString",
+        "callExpression": "isNonEmptyString",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "resolveLocalizedPropValue",
+        "toSymbol": "translate",
+        "callExpression": "translate",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "resolveLocalizedPropValue",
+        "toSymbol": "hasOwnProp",
+        "callExpression": "hasOwnProp",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "src/runtimeLocalization.ts",
+        "toSymbol": "resolveLocalizedPropValue",
+        "callExpression": "resolveLocalizedPropValue",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "setLanguage",
+        "toSymbol": "getSetLanguageLocale",
+        "callExpression": "getSetLanguageLocale",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "setLanguage",
+        "toSymbol": "setActiveLocale",
+        "callExpression": "setActiveLocale",
+        "sourcePath": "src/runtimeLocalization.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioAdminRoutePath",
+        "callExpression": "resolveStudioAdminRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioAdminRouteRenderState",
+        "callExpression": "createStudioAdminRouteRenderState",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioPropertiesRoutePath",
+        "callExpression": "createStudioPropertiesRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "openStudioAdminRoute",
+        "callExpression": "openStudioAdminRoute",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRouteRenderState",
+        "toSymbol": "resolveStudioAdminRoutePath",
+        "callExpression": "resolveStudioAdminRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRouteRenderState",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "openStudioAdminRoute",
+        "toSymbol": "setActivePanelId",
+        "callExpression": "args.setActivePanelId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "openStudioAdminRoute",
+        "toSymbol": "pushRoute",
+        "callExpression": "args.pushRoute",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.ts",
+        "toSymbol": "selectNode",
+        "callExpression": "selectNode",
+        "sourcePath": "src/studioSelectionModel.ts"
       }
     ],
     "typeReferences": [
