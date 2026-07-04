@@ -19,7 +19,8 @@
     "src/manifestNavigatorPreviewModel.ts",
     "src/manifestState.ts",
     "src/manifestSync.ts",
-    "src/routeUtils.ts"
+    "src/routeUtils.ts",
+    "src/runtimeLocalization.ts"
   ],
   "exclude": ["src/**/*.test.ts"]
 }
