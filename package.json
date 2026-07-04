@@ -44,6 +44,10 @@
       "types": "./dist/localizationConfig.d.ts",
       "import": "./dist/localizationConfig.js"
     },
+    "./localizationPanelModel": {
+      "types": "./dist/localizationPanelModel.d.ts",
+      "import": "./dist/localizationPanelModel.js"
+    },
     "./manifestNavigatorPreviewModel": {
       "types": "./dist/manifestNavigatorPreviewModel.d.ts",
       "import": "./dist/manifestNavigatorPreviewModel.js"
@@ -60,9 +64,21 @@
       "types": "./dist/routeUtils.d.ts",
       "import": "./dist/routeUtils.js"
     },
+    "./runtimeDiagnosticsModel": {
+      "types": "./dist/runtimeDiagnosticsModel.d.ts",
+      "import": "./dist/runtimeDiagnosticsModel.js"
+    },
     "./runtimeLocalization": {
       "types": "./dist/runtimeLocalization.d.ts",
       "import": "./dist/runtimeLocalization.js"
+    },
+    "./studioAdminRouteModel": {
+      "types": "./dist/studioAdminRouteModel.d.ts",
+      "import": "./dist/studioAdminRouteModel.js"
+    },
+    "./studioSelectionModel": {
+      "types": "./dist/studioSelectionModel.d.ts",
+      "import": "./dist/studioSelectionModel.js"
     }
   },
   "scripts": {
