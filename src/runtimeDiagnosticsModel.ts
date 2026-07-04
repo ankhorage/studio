@@ -28,8 +28,10 @@ export function areRuntimeDiagnosticsEqual(
 
   return left.every((diagnostic, index) => {
     const other = right[index];
+    if (!other) return false;
+
     return (
-      diagnostic.code === other?.code &&
+      diagnostic.code === other.code &&
       diagnostic.message === other.message &&
       diagnostic.severity === other.severity &&
       diagnostic.dataSourceId === other.dataSourceId &&
