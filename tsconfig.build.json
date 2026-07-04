@@ -16,11 +16,15 @@
     "src/canvasDropZones.ts",
     "src/insertModalModel.ts",
     "src/localizationConfig.ts",
+    "src/localizationPanelModel.ts",
     "src/manifestNavigatorPreviewModel.ts",
     "src/manifestState.ts",
     "src/manifestSync.ts",
     "src/routeUtils.ts",
-    "src/runtimeLocalization.ts"
+    "src/runtimeDiagnosticsModel.ts",
+    "src/runtimeLocalization.ts",
+    "src/studioAdminRouteModel.ts",
+    "src/studioSelectionModel.ts"
   ],
   "exclude": ["src/**/*.test.ts"]
 }
