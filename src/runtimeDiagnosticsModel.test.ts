@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'bun:test';
-
 import type { DataSourceDiagnostic } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import {
   areRuntimeDiagnosticsEqual,

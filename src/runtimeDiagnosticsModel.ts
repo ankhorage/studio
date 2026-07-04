@@ -13,9 +13,7 @@ export function formatRuntimeDiagnostics(diagnostics: readonly DataSourceDiagnos
 export function resolveRuntimeDiagnosticsNoticeColor(
   diagnostics: readonly DataSourceDiagnostic[],
 ): RuntimeDiagnosticsNoticeColor {
-  return diagnostics.some((diagnostic) => diagnostic.severity === 'error')
-    ? 'danger'
-    : 'warning';
+  return diagnostics.some((diagnostic) => diagnostic.severity === 'error') ? 'danger' : 'warning';
 }
 
 export function areRuntimeDiagnosticsEqual(

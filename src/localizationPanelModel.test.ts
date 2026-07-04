@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'bun:test';
-
 import type { UiNode } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import {
   collectTranslatableFields,
@@ -56,7 +55,11 @@ describe('localizationPanelModel', () => {
   });
 
   test('filters missing translatable fields', () => {
-    const fields = collectTranslatableFields({ root: ROOT_NODE, componentMeta: META, screenId: 'home' });
+    const fields = collectTranslatableFields({
+      root: ROOT_NODE,
+      componentMeta: META,
+      screenId: 'home',
+    });
 
     expect(
       filterTranslatableFields({

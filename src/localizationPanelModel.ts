@@ -22,7 +22,10 @@ export interface TranslatableComponentMeta {
   };
 }
 
-export type TranslatableComponentMetaRegistry = Record<string, TranslatableComponentMeta | undefined>;
+export type TranslatableComponentMetaRegistry = Record<
+  string,
+  TranslatableComponentMeta | undefined
+>;
 
 export function collectTranslatableFields(args: {
   root: UiNode;
@@ -133,7 +136,9 @@ export function createLocaleRemoveConfig(args: {
 
   const nextLocales = args.locales.filter((locale) => locale !== args.localeToRemove);
   const nextDefaultLocale =
-    args.defaultLocale === args.localeToRemove ? (nextLocales[0] ?? args.defaultLocale) : args.defaultLocale;
+    args.defaultLocale === args.localeToRemove
+      ? (nextLocales[0] ?? args.defaultLocale)
+      : args.defaultLocale;
 
   return { nextLocales, nextDefaultLocale };
 }

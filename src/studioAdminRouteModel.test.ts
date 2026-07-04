@@ -39,7 +39,7 @@ describe('studioAdminRouteModel', () => {
   test('creates properties route paths and opens admin routes', () => {
     expect(createStudioPropertiesRoutePath('node 1')).toBe('/ankh/properties/node%201');
 
-    const panelIds: Array<string | null> = [];
+    const panelIds: (string | null)[] = [];
     const routes: string[] = [];
     openStudioAdminRoute({
       next: '/ankh/theme',
