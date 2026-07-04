@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.14
+
+### Patch Changes
+
+- 8f3100e: Add consolidated package-neutral Studio model helpers for diagnostics display data, admin route state, selection state, and localization panel behavior.
+
 ## 0.0.13
 
 ### Patch Changes
