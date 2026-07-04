@@ -1,5 +1,3 @@
-import type { RuntimeActionHandlers, RuntimeNodePropsResolver } from '@ankhorage/runtime';
-
 export const STUDIO_LOCALIZED_PROP_PAIRS = [
   ['i18nKey', 'text'],
   ['titleI18nKey', 'title'],
@@ -13,6 +11,25 @@ export const STUDIO_LOCALIZED_PROP_PAIRS = [
 ] as const;
 
 export type StudioLocalizedPropPair = (typeof STUDIO_LOCALIZED_PROP_PAIRS)[number];
+
+export interface StudioRuntimeNodePropsResolverContext {
+  node: { id: string; type: string };
+  props: Record<string, unknown>;
+}
+
+export type StudioRuntimeNodePropsResolver = (
+  context: StudioRuntimeNodePropsResolverContext,
+) => Record<string, unknown>;
+
+export interface StudioRuntimeActionHandlerContext {
+  action: unknown;
+  context: StudioRuntimeNodePropsResolverContext;
+}
+
+export type StudioRuntimeActionHandlers = Record<
+  string,
+  (context: StudioRuntimeActionHandlerContext) => void
+>;
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.length > 0;
@@ -49,8 +66,8 @@ export function resolveLocalizedPropValue(args: {
 
 export function createStudioLocalizationNodePropsResolver(
   translate: (key: string) => string,
-): RuntimeNodePropsResolver {
-  return ({ props }) => {
+): StudioRuntimeNodePropsResolver {
+  return ({ props }: StudioRuntimeNodePropsResolverContext) => {
     let resolvedProps: Record<string, unknown> | undefined;
 
     for (const [keyProp, targetProp] of STUDIO_LOCALIZED_PROP_PAIRS) {
@@ -65,8 +82,9 @@ export function createStudioLocalizationNodePropsResolver(
         continue;
       }
 
-      resolvedProps ??= { ...props };
-      resolvedProps[targetProp] = localizedValue;
+      const nextProps = resolvedProps ?? { ...props };
+      nextProps[targetProp] = localizedValue;
+      resolvedProps = nextProps;
     }
 
     return resolvedProps ?? props;
@@ -94,9 +112,9 @@ export function getSetLanguageLocale(action: unknown): string | undefined {
 
 export function createStudioLocalizationActionHandlers(
   setActiveLocale: (locale: string) => void,
-): RuntimeActionHandlers {
+): StudioRuntimeActionHandlers {
   return {
-    setLanguage: ({ action }) => {
+    setLanguage: ({ action }: StudioRuntimeActionHandlerContext) => {
       const locale = getSetLanguageLocale(action);
       if (locale !== undefined) {
         setActiveLocale(locale);
