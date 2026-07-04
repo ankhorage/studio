@@ -19,7 +19,7 @@ describe('studioSelectionModel', () => {
   });
 
   test('maps edit mode selection changes', () => {
-    const calls: Array<string | null> = [];
+    const calls: (string | null)[] = [];
     const props = createStudioSelectionProviderProps({
       previewMode: false,
       selectedNodeId: 'node-1',

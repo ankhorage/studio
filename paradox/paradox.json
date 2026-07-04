@@ -489,6 +489,12 @@
       ]
     },
     {
+      "path": "src/studioSelectionModel.knip.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/studioSelectionModel.ts"],
+      "exports": []
+    },
+    {
       "path": "src/studioSelectionModel.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/studioSelectionModel.ts"],
@@ -4978,6 +4984,11 @@
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
+        "fromPath": "src/studioSelectionModel.knip.test.ts",
+        "toPath": "src/studioSelectionModel.ts",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
+      },
+      {
         "fromPath": "src/studioSelectionModel.test.ts",
         "toPath": "src/studioSelectionModel.ts",
         "sourcePath": "src/studioSelectionModel.test.ts"
@@ -7053,6 +7064,36 @@
         "toSymbol": "pushRoute",
         "callExpression": "args.pushRoute",
         "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.knip.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.knip.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.knip.test.ts",
+        "toSymbol": "createStudioSelectionProviderProps",
+        "callExpression": "createStudioSelectionProviderProps",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.knip.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.knip.test.ts",
+        "toSymbol": "handleChange",
+        "callExpression": "handleChange",
+        "sourcePath": "src/studioSelectionModel.knip.test.ts"
       },
       {
         "fromSymbol": "src/studioSelectionModel.test.ts",

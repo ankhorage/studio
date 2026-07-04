@@ -355,7 +355,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>38</strong><span class="muted">modules</span></div>
+              <div><strong>39</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -842,6 +842,15 @@
                 <code>resolveStudioAdminRoutePath</code>,
                 <code>resolveStudioPropertiesNodeId</code>, <code>StudioAdminRouteRenderState</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/studioSelectionModel.knip.test.ts src/studioSelectionModel.ts"
+            >
+              <h3>src/studioSelectionModel.knip.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/studioSelectionModel.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -3820,6 +3829,10 @@
                 module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_studioAdminRouteModel_ts
                 module_src_studioAdminRouteModel_ts --&gt; module_src_index_ts
+                module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_knip_test_ts
+                module_src_studioSelectionModel_knip_test_ts --&gt;
+                module_src_studioSelectionModel_ts
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_test_ts
                 module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
@@ -3942,6 +3955,9 @@ graph TD
   module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --&gt; module_src_index_ts
+  module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_knip_test_ts
+  module_src_studioSelectionModel_knip_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_test_ts
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
@@ -3993,6 +4009,7 @@ graph TD
                 module_src_runtimeLocalization_ts[&quot;src/runtimeLocalization.ts&quot;]
                 module_src_studioAdminRouteModel_test_ts[&quot;src/studioAdminRouteModel.test.ts&quot;]
                 module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
+                module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDragModel_ts
@@ -4035,7 +4052,8 @@ graph TD
                 --&gt; module_src_runtimeLocalization_ts module_src_runtimeLocalization_test_ts
                 --&gt; module_src_runtimeLocalization_ts module_src_studioAdminRouteModel_test_ts
                 --&gt; module_src_studioAdminRouteModel_ts module_src_studioAdminRouteModel_ts
-                --&gt; module_src_index_ts module_src_studioSelectionModel_test_ts --&gt;
+                --&gt; module_src_index_ts module_src_studioSelectionModel_knip_test_ts --&gt;
+                module_src_studioSelectionModel_ts module_src_studioSelectionModel_test_ts --&gt;
                 module_src_studioSelectionModel_ts
               </div>
               <details>
@@ -4078,6 +4096,7 @@ graph LR
   module_src_runtimeLocalization_ts[&quot;src/runtimeLocalization.ts&quot;]
   module_src_studioAdminRouteModel_test_ts[&quot;src/studioAdminRouteModel.test.ts&quot;]
   module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
+  module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDragModel_ts
@@ -4118,6 +4137,7 @@ graph LR
   module_src_runtimeLocalization_test_ts --&gt; module_src_runtimeLocalization_ts
   module_src_studioAdminRouteModel_test_ts --&gt; module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --&gt; module_src_index_ts
+  module_src_studioSelectionModel_knip_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
 </pre>
               </details>
@@ -4162,6 +4182,7 @@ graph LR
                 module_src_runtimeLocalization_ts[&quot;src/runtimeLocalization.ts&quot;]
                 module_src_studioAdminRouteModel_test_ts[&quot;src/studioAdminRouteModel.test.ts&quot;]
                 module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
+                module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
@@ -4392,6 +4413,7 @@ graph LR
   module_src_runtimeLocalization_ts[&quot;src/runtimeLocalization.ts&quot;]
   module_src_studioAdminRouteModel_test_ts[&quot;src/studioAdminRouteModel.test.ts&quot;]
   module_src_studioAdminRouteModel_ts[&quot;src/studioAdminRouteModel.ts&quot;]
+  module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
