@@ -1,6 +1,10 @@
 import type { UiNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
+import type {
+  TranslatableComponentMeta,
+  TranslatableComponentMetaField,
+} from './localizationPanelModel';
 import {
   collectTranslatableFields,
   createLocaleAddConfig,
@@ -23,12 +27,19 @@ const ROOT_NODE: UiNode = {
   ],
 };
 
-const META = {
-  Text: {
-    i18n: {
-      fields: [{ keyProp: 'i18nKey', defaultTextProp: 'text' }],
-    },
+const FIELD: TranslatableComponentMetaField = {
+  keyProp: 'i18nKey',
+  defaultTextProp: 'text',
+};
+
+const TEXT_META: TranslatableComponentMeta = {
+  i18n: {
+    fields: [FIELD],
   },
+};
+
+const META = {
+  Text: TEXT_META,
 };
 
 describe('localizationPanelModel', () => {
