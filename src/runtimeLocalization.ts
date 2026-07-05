@@ -1,3 +1,8 @@
+import type {
+  RuntimeNodePropsResolver,
+  RuntimeResolveNodePropsArgs,
+} from '@ankhorage/contracts/runtime';
+
 export const STUDIO_LOCALIZED_PROP_PAIRS = [
   ['i18nKey', 'text'],
   ['titleI18nKey', 'title'],
@@ -11,19 +16,12 @@ export const STUDIO_LOCALIZED_PROP_PAIRS = [
 ] as const;
 
 export type StudioLocalizedPropPair = (typeof STUDIO_LOCALIZED_PROP_PAIRS)[number];
-
-export interface StudioRuntimeNodePropsResolverContext {
-  node: { id: string; type: string };
-  props: Record<string, unknown>;
-}
-
-export type StudioRuntimeNodePropsResolver = (
-  context: StudioRuntimeNodePropsResolverContext,
-) => Record<string, unknown>;
+export type StudioRuntimeNodePropsResolver = RuntimeNodePropsResolver;
+export type StudioRuntimeNodePropsResolverContext = RuntimeResolveNodePropsArgs;
 
 export interface StudioRuntimeActionHandlerContext {
   action: unknown;
-  context: StudioRuntimeNodePropsResolverContext;
+  context: RuntimeResolveNodePropsArgs;
 }
 
 export type StudioRuntimeActionHandlers = Record<
@@ -66,8 +64,8 @@ export function resolveLocalizedPropValue(args: {
 
 export function createStudioLocalizationNodePropsResolver(
   translate: (key: string) => string,
-): StudioRuntimeNodePropsResolver {
-  return ({ props }: StudioRuntimeNodePropsResolverContext) => {
+): RuntimeNodePropsResolver {
+  return ({ props }: RuntimeResolveNodePropsArgs) => {
     let resolvedProps: Record<string, unknown> | undefined;
 
     for (const [keyProp, targetProp] of STUDIO_LOCALIZED_PROP_PAIRS) {
