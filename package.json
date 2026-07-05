@@ -104,7 +104,7 @@
     "app-builder"
   ],
   "dependencies": {
-    "@ankhorage/contracts": "^1.19.1"
+    "@ankhorage/contracts": "^1.19.2"
   },
   "devDependencies": {
     "@ankhorage/devtools": "^1.1.0",
