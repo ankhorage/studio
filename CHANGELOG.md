@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.15
+
+### Patch Changes
+
+- 570117d: Consume shared runtime node-props resolver contracts from `@ankhorage/contracts/runtime` in runtime localization helpers.
+
 ## 0.0.14
 
 ### Patch Changes
