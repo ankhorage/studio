@@ -2,14 +2,8 @@ import React, { type ReactNode, useMemo, useState } from 'react';
 
 import {
   findNodeById,
-  type AppDataManifest,
-  type AuthOAuthProviderConfig,
-  type ComponentDataBindingRegistry,
-  type DataSourceRegistry,
   type InsertCatalogEntry,
-  type NavigatorType,
   type NodePlacement,
-  type RouteDefinition,
   type StudioAdminRoutePath,
   type StudioContextValue,
   type StudioManifest,
@@ -19,9 +13,16 @@ import {
   type StudioPanelId,
   type StudioScreenId,
   type ThemeUpdates,
-  type UiNode,
 } from '../index';
 import { StudioContext } from './StudioContext';
+
+type UiNode = import('@ankhorage/contracts').UiNode;
+type AppDataManifest = import('@ankhorage/contracts').AppDataManifest;
+type AuthOAuthProviderConfig = import('@ankhorage/contracts').AuthOAuthProviderConfig;
+type ComponentDataBindingRegistry = import('@ankhorage/contracts').ComponentDataBindingRegistry;
+type DataSourceRegistry = import('@ankhorage/contracts').DataSourceRegistry;
+type NavigatorType = import('@ankhorage/contracts').NavigatorType;
+type RouteDefinition = import('@ankhorage/contracts').RouteDefinition;
 
 export interface StudioProviderProps {
   children: ReactNode;
@@ -46,7 +47,8 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
   const [activeLocale, setActiveLocale] = useState('en');
 
   const rootNode = useMemo<UiNode | null>(() => {
-    const route = manifest?.routes.find((candidate) => candidate.id === activeScreenId) ?? manifest?.routes[0];
+    const routes = manifest?.routes as Array<{ id?: string; root?: UiNode }> | undefined;
+    const route = routes?.find((candidate) => candidate.id === activeScreenId) ?? routes?.[0];
     return route?.root ?? null;
   }, [activeScreenId, manifest]);
 
@@ -72,10 +74,8 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
       setActiveCanvasDragNodeId,
       updateNode: noop,
       updateAppData: (data: AppDataManifest) => setManifest((current) => (current ? { ...current, data } : current)),
-      updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
-        setManifest((current) => (current ? { ...current, dataBindings } : current)),
-      updateDataSources: (dataSources: DataSourceRegistry) =>
-        setManifest((current) => (current ? { ...current, dataSources } : current)),
+      updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => setManifest((current) => (current ? { ...current, dataBindings } : current)),
+      updateDataSources: (dataSources: DataSourceRegistry) => setManifest((current) => (current ? { ...current, dataSources } : current)),
       deleteNode: noop,
       insertFromCatalogEntry: (_entry: InsertCatalogEntry) => false,
       moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
@@ -101,19 +101,7 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
       reloadDictionaries: noopAsync,
       refetchManifest: noopAsync,
     }),
-    [
-      activeAdminRoutePath,
-      activeCanvasDragNodeId,
-      activeLocale,
-      activePanelId,
-      activeScreenId,
-      manifest,
-      previewMode,
-      projectId,
-      rootNode,
-      selectedNodeId,
-      studioMode,
-    ],
+    [activeAdminRoutePath, activeCanvasDragNodeId, activeLocale, activePanelId, activeScreenId, manifest, previewMode, projectId, rootNode, selectedNodeId, studioMode],
   );
 
   return React.createElement(StudioContext.Provider, { value }, children);
