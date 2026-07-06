@@ -42,6 +42,15 @@ graph TD
   module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_core_constants_ts["src/core/constants.ts"]
   package__ankhorage_studio -.-> module_src_core_constants_ts
+  module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
+  package__ankhorage_studio -.-> module_src_core_StudioContext_ts
+  module_src_core_StudioContext_ts --> module_src_index_ts
+  module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
+  package__ankhorage_studio -.-> module_src_core_studioPackageBoundary_ts
+  module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
+  package__ankhorage_studio -.-> module_src_core_StudioProvider_ts
+  module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
+  module_src_core_StudioProvider_ts --> module_src_index_ts
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
@@ -161,3 +170,11 @@ graph TD
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
   package__ankhorage_studio -.-> module_src_studioSelectionModel_ts
+  module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
+  package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
+  module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
+  package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_ts
+  module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
+  package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
+  module_src_utils_treeUtils_ts --> module_src_index_ts

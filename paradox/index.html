@@ -232,6 +232,18 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/core/StudioContext.ts">
+                src/core/StudioContext.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/core/StudioProvider.ts">
+                src/core/StudioProvider.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/hooks/useProjects.ts">
                 src/hooks/useProjects.ts
                 <small>16 functions</small>
@@ -439,6 +451,22 @@
                 <small>1 function</small>
               </button>
             </li>
+            <li>
+              <button class="nav-button" type="button" data-target="src/ui/AnkhStudio.ts">
+                src/ui/AnkhStudio.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/ui/useStudioAppBarAugmentation.ts"
+              >
+                src/ui/useStudioAppBarAugmentation.ts
+                <small>1 function</small>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -449,7 +477,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>52</strong><span class="muted">modules</span></div>
+              <div><strong>58</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -574,6 +602,43 @@
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>API_BASE</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/core/StudioContext.ts src/index.ts StudioAdminRoutePath StudioContext StudioContextType StudioPanelId ThemeUpdates useStudio"
+            >
+              <h3>src/core/StudioContext.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>StudioAdminRoutePath</code>,
+                <code>StudioContext</code>, <code>StudioContextType</code>,
+                <code>StudioPanelId</code>, <code>ThemeUpdates</code>, <code>useStudio</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/core/studioPackageBoundary.ts STANDALONE_STUDIO_PACKAGE_NAME"
+            >
+              <h3>src/core/studioPackageBoundary.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>STANDALONE_STUDIO_PACKAGE_NAME</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/core/StudioProvider.ts src/core/StudioContext.ts src/index.ts StudioProvider StudioProviderProps"
+            >
+              <h3>src/core/StudioProvider.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
+                <code>src/index.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>StudioProvider</code>,
+                <code>StudioProviderProps</code>
+              </p>
             </article>
             <article
               class="item"
@@ -1102,6 +1167,40 @@
                 <strong>Exports:</strong> <code>createStudioSelectionProviderProps</code>,
                 <code>CreateStudioSelectionProviderPropsArgs</code>,
                 <code>StudioSelectionProviderAdapterProps</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/AnkhStudio.ts src/core/StudioContext.ts AnkhStudio AnkhStudioProps"
+            >
+              <h3>src/ui/AnkhStudio.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code></p>
+              <p><strong>Exports:</strong> <code>AnkhStudio</code>, <code>AnkhStudioProps</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/useStudioAppBarAugmentation.ts StudioAppBarAugmentation useStudioAppBarAugmentation"
+            >
+              <h3>src/ui/useStudioAppBarAugmentation.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>StudioAppBarAugmentation</code>,
+                <code>useStudioAppBarAugmentation</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/utils/treeUtils.ts src/index.ts addNodeToTree cloneWithNewIds findNodeById moveNodeInTree removeNodeFromTree updateNodeInTree"
+            >
+              <h3>src/utils/treeUtils.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/index.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>addNodeToTree</code>, <code>cloneWithNewIds</code>,
+                <code>findNodeById</code>, <code>moveNodeInTree</code>,
+                <code>removeNodeFromTree</code>, <code>updateNodeInTree</code>
               </p>
             </article>
           </section>
@@ -3987,6 +4086,15 @@
                 module_src_canvasDropZones_ts --&gt; module_src_index_ts
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_constants_ts
+                module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_StudioContext_ts
+                module_src_core_StudioContext_ts --&gt; module_src_index_ts
+                module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_studioPackageBoundary_ts
+                module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_index_ts
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
                 module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
@@ -4117,6 +4225,14 @@
                 module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_ts
+                module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
+                module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
+                module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
+                module_src_utils_treeUtils_ts --&gt; module_src_index_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -4165,6 +4281,15 @@ graph TD
   module_src_canvasDropZones_ts --&gt; module_src_index_ts
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_constants_ts
+  module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_StudioContext_ts
+  module_src_core_StudioContext_ts --&gt; module_src_index_ts
+  module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_studioPackageBoundary_ts
+  module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
@@ -4284,6 +4409,14 @@ graph TD
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_studioSelectionModel_ts
+  module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
+  module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
+  module_src_utils_treeUtils_ts --&gt; module_src_index_ts
 </pre>
               </details>
             </article>
@@ -4305,6 +4438,9 @@ graph TD
                 module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
+                module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+                module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+                module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
                 module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
@@ -4346,6 +4482,9 @@ graph TD
                 module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
+                module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+                module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
                 module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
                 module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
@@ -4366,6 +4505,9 @@ graph TD
                 module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
                 module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
                 module_src_canvasDropZones_ts --&gt; module_src_index_ts
+                module_src_core_StudioContext_ts --&gt; module_src_index_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_index_ts
                 module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
                 module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
                 module_src_hooks_useTemplateSummaries_ts --&gt;
@@ -4409,7 +4551,9 @@ graph TD
                 --&gt; module_src_studioAdminRouteModel_ts module_src_studioAdminRouteModel_ts
                 --&gt; module_src_index_ts module_src_studioSelectionModel_knip_test_ts --&gt;
                 module_src_studioSelectionModel_ts module_src_studioSelectionModel_test_ts --&gt;
-                module_src_studioSelectionModel_ts
+                module_src_studioSelectionModel_ts module_src_ui_AnkhStudio_ts --&gt;
+                module_src_core_StudioContext_ts module_src_utils_treeUtils_ts --&gt;
+                module_src_index_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -4426,6 +4570,9 @@ graph LR
   module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
+  module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+  module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+  module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
@@ -4467,6 +4614,9 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
+  module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+  module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
@@ -4485,6 +4635,9 @@ graph LR
   module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
   module_src_canvasDropZones_ts --&gt; module_src_index_ts
+  module_src_core_StudioContext_ts --&gt; module_src_index_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_modules_dashboard_types_ts
@@ -4523,6 +4676,8 @@ graph LR
   module_src_studioAdminRouteModel_ts --&gt; module_src_index_ts
   module_src_studioSelectionModel_knip_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
+  module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_utils_treeUtils_ts --&gt; module_src_index_ts
 </pre>
               </details>
             </article>
@@ -4541,6 +4696,9 @@ graph LR
                 module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
+                module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+                module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+                module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
                 module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
                 module_src_index_test_ts[&quot;src/index.test.ts&quot;]
@@ -4582,6 +4740,9 @@ graph LR
                 module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
+                module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+                module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
                 export_ACTION_REGISTRY export_ActionDefinition[&quot;ActionDefinition&quot;]
                 module_src_index_ts --&gt; export_ActionDefinition export_ActionDefinition -.-&gt;
@@ -4785,6 +4946,9 @@ graph LR
   module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
+  module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
+  module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+  module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
   module_src_index_test_ts[&quot;src/index.test.ts&quot;]
@@ -4826,6 +4990,9 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts[&quot;src/studioSelectionModel.knip.test.ts&quot;]
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
+  module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
+  module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
   module_src_index_ts --&gt; export_ACTION_REGISTRY
   export_ActionDefinition[&quot;ActionDefinition&quot;]
@@ -5583,6 +5750,51 @@ sequenceDiagram
             <article class="item" data-search="getApiBase src/core/constants.ts ">
               <h3>getApiBase</h3>
               <p class="muted"><code>src/core/constants.ts:3:7</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-core-studiocontext-ts"
+          class="view"
+          data-view="src/core/StudioContext.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/core/StudioContext.ts</h2>
+            <article class="item" data-search="useStudio src/core/StudioContext.ts ">
+              <h3>useStudio</h3>
+              <p class="muted"><code>src/core/StudioContext.ts:10:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-core-studioprovider-ts"
+          class="view"
+          data-view="src/core/StudioProvider.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/core/StudioProvider.ts</h2>
+            <article class="item" data-search="noop src/core/StudioProvider.ts ">
+              <h3>noop</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:34:7</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
+              <h3>noopAsync</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:35:7</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
+              <h3>resolveActiveRootNode</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:37:7</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
+              <h3>StudioProvider</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:60:14</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -6945,6 +7157,39 @@ sequenceDiagram
             >
               <h3>createStudioSelectionProviderProps</h3>
               <p class="muted"><code>src/studioSelectionModel.ts:16:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-ankhstudio-ts"
+          class="view"
+          data-view="src/ui/AnkhStudio.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/AnkhStudio.ts</h2>
+            <article class="item" data-search="AnkhStudio src/ui/AnkhStudio.ts ">
+              <h3>AnkhStudio</h3>
+              <p class="muted"><code>src/ui/AnkhStudio.ts:11:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-usestudioappbaraugmentation-ts"
+          class="view"
+          data-view="src/ui/useStudioAppBarAugmentation.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/useStudioAppBarAugmentation.ts</h2>
+            <article
+              class="item"
+              data-search="useStudioAppBarAugmentation src/ui/useStudioAppBarAugmentation.ts "
+            >
+              <h3>useStudioAppBarAugmentation</h3>
+              <p class="muted"><code>src/ui/useStudioAppBarAugmentation.ts:10:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
