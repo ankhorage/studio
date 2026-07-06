@@ -36,6 +36,38 @@
       "types": "./dist/app/index.d.ts",
       "import": "./dist/app/index.js"
     },
+    "./dnd": {
+      "types": "./dist/dnd/index.d.ts",
+      "import": "./dist/dnd/index.js"
+    },
+    "./dnd/primitives": {
+      "types": "./dist/dnd/primitives.d.ts",
+      "import": "./dist/dnd/primitives.js"
+    },
+    "./dnd/state": {
+      "types": "./dist/dnd/state.d.ts",
+      "import": "./dist/dnd/state.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    },
+    "./runtime/actionSuppression": {
+      "types": "./dist/runtime/actionSuppression.d.ts",
+      "import": "./dist/runtime/actionSuppression.js"
+    },
+    "./runtime/localizationPreview": {
+      "types": "./dist/runtime/localizationPreview.d.ts",
+      "import": "./dist/runtime/localizationPreview.js"
+    },
+    "./runtime/previewRegistry": {
+      "types": "./dist/runtime/previewRegistry.d.ts",
+      "import": "./dist/runtime/previewRegistry.js"
+    },
+    "./runtime/previewRuntimeConfig": {
+      "types": "./dist/runtime/previewRuntimeConfig.d.ts",
+      "import": "./dist/runtime/previewRuntimeConfig.js"
+    },
     "./core/StudioContext": {
       "types": "./dist/core/StudioContext.d.ts",
       "import": "./dist/core/StudioContext.js"
@@ -139,6 +171,8 @@
   ],
   "dependencies": {
     "@ankhorage/contracts": "^1.19.2",
+    "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
+    "@ankhorage/runtime": "^0.2.1",
     "@ankhorage/zora": "^2.8.1"
   },
   "peerDependencies": {
