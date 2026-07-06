@@ -1,5 +1,4 @@
 ---
-"@ankhorage/studio": patch
 ---
 
-Define Studio product repo app workspace rules.
+Empty changeset for Studio app workspace bootstrap.
