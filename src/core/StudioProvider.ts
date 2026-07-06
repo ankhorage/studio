@@ -1,3 +1,12 @@
+import type {
+  AppDataManifest,
+  AuthOAuthProviderConfig,
+  ComponentDataBindingRegistry,
+  DataSourceRegistry,
+  NavigatorType,
+  RouteDefinition,
+  UiNode,
+} from '@ankhorage/contracts';
 import React, { type ReactNode, useMemo, useState } from 'react';
 
 import {
@@ -16,24 +25,14 @@ import {
 } from '../index';
 import { StudioContext } from './StudioContext';
 
-type UiNode = import('@ankhorage/contracts').UiNode;
-type AppDataManifest = import('@ankhorage/contracts').AppDataManifest;
-type AuthOAuthProviderConfig = import('@ankhorage/contracts').AuthOAuthProviderConfig;
-type ComponentDataBindingRegistry = import('@ankhorage/contracts').ComponentDataBindingRegistry;
-type DataSourceRegistry = import('@ankhorage/contracts').DataSourceRegistry;
-type NavigatorType = import('@ankhorage/contracts').NavigatorType;
-type RouteDefinition = import('@ankhorage/contracts').RouteDefinition;
-
 export interface StudioProviderProps {
   children: ReactNode;
   projectId: string;
   initialManifest?: StudioManifest | null;
 }
 
-function noop() {}
-function noopAsync() {
-  return Promise.resolve();
-}
+const noop = () => undefined;
+const noopAsync = () => Promise.resolve();
 
 const resolveActiveRootNode = (
   manifest: StudioManifest | null,
@@ -110,17 +109,17 @@ export const StudioProvider = ({
       moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
       addScreen: noop,
       deleteScreen: noop,
-      setNavigatorType: (_type: NavigatorType) => {},
+      setNavigatorType: (_type: NavigatorType) => undefined,
       setNavigatorInitialRoute: noop,
       addTheme: noop,
-      updateTheme: (_id: string, _updates: ThemeUpdates) => {},
+      updateTheme: (_id: string, _updates: ThemeUpdates) => undefined,
       deleteTheme: noop,
       setActiveThemeId: noop,
       setActiveThemeMode: setStudioMode,
-      updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) => {},
-      updateOAuthProviders: (_providers: AuthOAuthProviderConfig[]) => {},
+      updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) => undefined,
+      updateOAuthProviders: (_providers: AuthOAuthProviderConfig[]) => undefined,
       moveNode: noop,
-      reorderScreens: (_newRoutes: RouteDefinition[]) => {},
+      reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
       setActiveScreenId,
       findNode: findNodeById,
       setStudioMode,
