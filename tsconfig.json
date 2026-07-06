@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
@@ -13,8 +13,9 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "baseUrl": ".",
-    "types": ["bun", "node"]
+    "types": ["bun", "node"],
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts", "knip.config.ts", "paradox.config.ts"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "knip.config.ts", "paradox.config.ts"],
+  "exclude": ["dist", "node_modules", "apps/studio/node_modules", "apps/studio/dist"]
 }
