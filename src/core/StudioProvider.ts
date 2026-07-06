@@ -58,7 +58,11 @@ const resolveActiveRootNode = (
   return manifest.screens[screenId]?.root ?? null;
 };
 
-export const StudioProvider = ({ children, projectId, initialManifest = null }: StudioProviderProps) => {
+export const StudioProvider = ({
+  children,
+  projectId,
+  initialManifest = null,
+}: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
   const [activeAdminRoutePath, setActiveAdminRoutePath] = useState<StudioAdminRoutePath>('/');
@@ -95,9 +99,12 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
       setActiveAdminRoutePath,
       setActiveCanvasDragNodeId,
       updateNode: noop,
-      updateAppData: (data: AppDataManifest) => setManifest((current) => (current ? { ...current, data } : current)),
-      updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => setManifest((current) => (current ? { ...current, dataBindings } : current)),
-      updateDataSources: (dataSources: DataSourceRegistry) => setManifest((current) => (current ? { ...current, dataSources } : current)),
+      updateAppData: (data: AppDataManifest) =>
+        setManifest((current) => (current ? { ...current, data } : current)),
+      updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
+        setManifest((current) => (current ? { ...current, dataBindings } : current)),
+      updateDataSources: (dataSources: DataSourceRegistry) =>
+        setManifest((current) => (current ? { ...current, dataSources } : current)),
       deleteNode: noop,
       insertFromCatalogEntry: (_entry: InsertCatalogEntry) => false,
       moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
@@ -123,7 +130,19 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
       reloadDictionaries: noopAsync,
       refetchManifest: noopAsync,
     }),
-    [activeAdminRoutePath, activeCanvasDragNodeId, activeLocale, activePanelId, activeScreenId, manifest, previewMode, projectId, rootNode, selectedNodeId, studioMode],
+    [
+      activeAdminRoutePath,
+      activeCanvasDragNodeId,
+      activeLocale,
+      activePanelId,
+      activeScreenId,
+      manifest,
+      previewMode,
+      projectId,
+      rootNode,
+      selectedNodeId,
+      studioMode,
+    ],
   );
 
   return React.createElement(StudioContext.Provider, { value }, children);

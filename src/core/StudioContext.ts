@@ -1,11 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type {
-  StudioAdminRoutePath,
-  StudioContextValue,
-  StudioPanelId,
-  ThemeUpdates,
-} from '../index';
+import type { StudioContextValue } from '../index';
 
 export type { StudioAdminRoutePath, StudioPanelId, ThemeUpdates } from '../index';
 export type StudioContextType = StudioContextValue;
