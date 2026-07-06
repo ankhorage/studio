@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.17
+
+### Patch Changes
+
+- 3bf0e6d: Expose the remaining Studio product internals under first-class `@ankhorage/studio` package paths.
+
 ## 0.0.16
 
 ### Patch Changes
