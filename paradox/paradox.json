@@ -152,6 +152,31 @@
       "exports": ["API_BASE"]
     },
     {
+      "path": "src/core/StudioContext.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "StudioAdminRoutePath",
+        "StudioContext",
+        "StudioContextType",
+        "StudioPanelId",
+        "ThemeUpdates",
+        "useStudio"
+      ]
+    },
+    {
+      "path": "src/core/studioPackageBoundary.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["STANDALONE_STUDIO_PACKAGE_NAME"]
+    },
+    {
+      "path": "src/core/StudioProvider.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/StudioContext.ts", "src/index.ts"],
+      "exports": ["StudioProvider", "StudioProviderProps"]
+    },
+    {
       "path": "src/hooks/useProjects.ts",
       "isEntrypoint": false,
       "dependencies": ["src/core/constants.ts"],
@@ -605,6 +630,31 @@
         "createStudioSelectionProviderProps",
         "CreateStudioSelectionProviderPropsArgs",
         "StudioSelectionProviderAdapterProps"
+      ]
+    },
+    {
+      "path": "src/ui/AnkhStudio.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/StudioContext.ts"],
+      "exports": ["AnkhStudio", "AnkhStudioProps"]
+    },
+    {
+      "path": "src/ui/useStudioAppBarAugmentation.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
+    },
+    {
+      "path": "src/utils/treeUtils.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "addNodeToTree",
+        "cloneWithNewIds",
+        "findNodeById",
+        "moveNodeInTree",
+        "removeNodeFromTree",
+        "updateNodeInTree"
       ]
     }
   ],
@@ -3522,6 +3572,51 @@
       }
     },
     {
+      "name": "useStudio",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioContext.ts",
+        "line": 10,
+        "column": 14
+      }
+    },
+    {
+      "name": "noop",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 34,
+        "column": 7
+      }
+    },
+    {
+      "name": "noopAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 35,
+        "column": 7
+      }
+    },
+    {
+      "name": "resolveActiveRootNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 37,
+        "column": 7
+      }
+    },
+    {
+      "name": "StudioProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 60,
+        "column": 14
+      }
+    },
+    {
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
@@ -5176,6 +5271,24 @@
         "line": 16,
         "column": 1
       }
+    },
+    {
+      "name": "AnkhStudio",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhStudio.ts",
+        "line": 11,
+        "column": 14
+      }
+    },
+    {
+      "name": "useStudioAppBarAugmentation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/useStudioAppBarAugmentation.ts",
+        "line": 10,
+        "column": 1
+      }
     }
   ],
   "sequenceScenarios": [
@@ -5587,6 +5700,21 @@
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
+        "fromPath": "src/core/StudioContext.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/core/StudioContext.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
         "fromPath": "src/hooks/useProjects.ts",
         "toPath": "src/core/constants.ts",
         "sourcePath": "src/hooks/useProjects.ts"
@@ -5600,6 +5728,16 @@
         "fromPath": "src/hooks/useTemplateSummaries.ts",
         "toPath": "src/modules/dashboard/types.ts",
         "sourcePath": "src/hooks/useTemplateSummaries.ts"
+      },
+      {
+        "fromPath": "src/ui/AnkhStudio.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromPath": "src/utils/treeUtils.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/utils/treeUtils.ts"
       },
       {
         "fromPath": "src/modules/dashboard/search.ts",
@@ -7988,6 +8126,60 @@
         "sourcePath": "src/core/constants.ts"
       },
       {
+        "fromSymbol": "src/core/StudioContext.ts",
+        "toSymbol": "createContext",
+        "callExpression": "createContext",
+        "sourcePath": "src/core/StudioContext.ts"
+      },
+      {
+        "fromSymbol": "useStudio",
+        "toSymbol": "useContext",
+        "callExpression": "useContext",
+        "sourcePath": "src/core/StudioContext.ts"
+      },
+      {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "resolveActiveRootNode",
+        "callExpression": "resolveActiveRootNode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "updateAppData",
+        "toSymbol": "setManifest",
+        "callExpression": "setManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "updateDataBindings",
+        "toSymbol": "setManifest",
+        "callExpression": "setManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "updateDataSources",
+        "toSymbol": "setManifest",
+        "callExpression": "setManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "togglePreviewMode",
+        "toSymbol": "setPreviewMode",
+        "callExpression": "setPreviewMode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
         "fromSymbol": "isProject",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -8202,6 +8394,12 @@
         "toSymbol": "fetchTemplates",
         "callExpression": "fetchTemplates",
         "sourcePath": "src/hooks/useTemplateSummaries.ts"
+      },
+      {
+        "fromSymbol": "AnkhStudio",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
         "fromSymbol": "promptProjectName",

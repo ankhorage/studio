@@ -36,6 +36,30 @@
       "types": "./dist/app/index.d.ts",
       "import": "./dist/app/index.js"
     },
+    "./core/StudioContext": {
+      "types": "./dist/core/StudioContext.d.ts",
+      "import": "./dist/core/StudioContext.js"
+    },
+    "./core/StudioProvider": {
+      "types": "./dist/core/StudioProvider.d.ts",
+      "import": "./dist/core/StudioProvider.js"
+    },
+    "./core/studioPackageBoundary": {
+      "types": "./dist/core/studioPackageBoundary.d.ts",
+      "import": "./dist/core/studioPackageBoundary.js"
+    },
+    "./ui/AnkhStudio": {
+      "types": "./dist/ui/AnkhStudio.d.ts",
+      "import": "./dist/ui/AnkhStudio.js"
+    },
+    "./ui/useStudioAppBarAugmentation": {
+      "types": "./dist/ui/useStudioAppBarAugmentation.d.ts",
+      "import": "./dist/ui/useStudioAppBarAugmentation.js"
+    },
+    "./utils/treeUtils": {
+      "types": "./dist/utils/treeUtils.d.ts",
+      "import": "./dist/utils/treeUtils.js"
+    },
     "./canvasDragModel": {
       "types": "./dist/canvasDragModel.d.ts",
       "import": "./dist/canvasDragModel.js"
