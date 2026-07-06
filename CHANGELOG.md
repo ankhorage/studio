@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.16
+
+### Patch Changes
+
+- 4361be0: Add the Studio product app workspace and public app entry surface.
+
 ## 0.0.15
 
 ### Patch Changes
