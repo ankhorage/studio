@@ -12,6 +12,9 @@
   },
   "include": [
     "src/index.ts",
+    "src/app/index.ts",
+    "src/app/StudioApp.ts",
+    "src/app/StudioDashboard.ts",
     "src/canvasDragModel.ts",
     "src/canvasDropZones.ts",
     "src/insertModalModel.ts",
