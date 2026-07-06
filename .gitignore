@@ -1,4 +1,19 @@
-dist/
+# Dependencies
 node_modules/
+
+# Build output
+dist/
 *.tsbuildinfo
+
+# Generated / working apps
+/apps/*
+!/apps/studio/
+!/apps/studio/**
+
+# Local Expo/build artifacts for the Studio app
+/apps/studio/.expo/
+/apps/studio/dist/
+/apps/studio/node_modules/
+
+# OS artifacts
 .DS_Store
