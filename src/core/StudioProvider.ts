@@ -116,7 +116,8 @@ export const StudioProvider = ({
       deleteTheme: noop,
       setActiveThemeId: noop,
       setActiveThemeMode: setStudioMode,
-      updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) => undefined,
+      updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
+        undefined,
       updateOAuthProviders: (_providers: AuthOAuthProviderConfig[]) => undefined,
       moveNode: noop,
       reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
