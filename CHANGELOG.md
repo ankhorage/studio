@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.18
+
+### Patch Changes
+
+- 0a33213: Add Studio-owned DnD and preview runtime composition surfaces with direct owner-package imports.
+
 ## 0.0.17
 
 ### Patch Changes
