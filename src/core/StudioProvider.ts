@@ -35,6 +35,29 @@ function noopAsync() {
   return Promise.resolve();
 }
 
+const resolveActiveRootNode = (
+  manifest: StudioManifest | null,
+  activeScreenId: StudioScreenId | null,
+): UiNode | null => {
+  if (!manifest) {
+    return null;
+  }
+
+  const route =
+    manifest.navigator.routes.find((candidate) => candidate.screenId === activeScreenId) ??
+    manifest.navigator.routes.find(
+      (candidate) => candidate.name === manifest.navigator.initialRouteName,
+    ) ??
+    manifest.navigator.routes[0];
+
+  const screenId = activeScreenId ?? route?.screenId;
+  if (!screenId) {
+    return null;
+  }
+
+  return manifest.screens[screenId]?.root ?? null;
+};
+
 export const StudioProvider = ({ children, projectId, initialManifest = null }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
@@ -46,11 +69,10 @@ export const StudioProvider = ({ children, projectId, initialManifest = null }: 
   const [previewMode, setPreviewMode] = useState(false);
   const [activeLocale, setActiveLocale] = useState('en');
 
-  const rootNode = useMemo<UiNode | null>(() => {
-    const routes = manifest?.routes as Array<{ id?: string; root?: UiNode }> | undefined;
-    const route = routes?.find((candidate) => candidate.id === activeScreenId) ?? routes?.[0];
-    return route?.root ?? null;
-  }, [activeScreenId, manifest]);
+  const rootNode = useMemo<UiNode | null>(
+    () => resolveActiveRootNode(manifest, activeScreenId),
+    [activeScreenId, manifest],
+  );
 
   const value = useMemo<StudioContextValue>(
     () => ({
