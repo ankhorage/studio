@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.15",
+      "value": "v0.0.17",
       "color": "cb3837"
     },
     {
@@ -175,6 +175,134 @@
       "isEntrypoint": false,
       "dependencies": ["src/core/StudioContext.ts", "src/index.ts"],
       "exports": ["StudioProvider", "StudioProviderProps"]
+    },
+    {
+      "path": "src/dnd/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AnimationFunction",
+        "clamp",
+        "CollisionAlgorithm",
+        "createIdleStudioDragState",
+        "Draggable",
+        "DraggableContextValue",
+        "DraggableHandleProps",
+        "DraggableProps",
+        "DraggableState",
+        "DropAlignment",
+        "DropOffset",
+        "Droppable",
+        "DroppableProps",
+        "DroppedItemsMap",
+        "DropProvider",
+        "DropProviderProps",
+        "DropProviderRef",
+        "DropSlot",
+        "HorizontalScrollDirection",
+        "HorizontalSortableItemProps",
+        "HorizontalSortableProps",
+        "HorizontalSortableRenderItemProps",
+        "listToObject",
+        "objectMove",
+        "PositionUpdateListener",
+        "ScrollDirection",
+        "setAutoScroll",
+        "setPosition",
+        "SlotsContext",
+        "SlotsContextValue",
+        "Sortable",
+        "SortableContextValue",
+        "SortableDirection",
+        "SortableHandleProps",
+        "SortableItem",
+        "SortableItemProps",
+        "SortableProps",
+        "SortableRenderItemProps",
+        "StudioDragState",
+        "useDraggable",
+        "UseDraggableOptions",
+        "UseDraggableReturn",
+        "useDroppable",
+        "UseDroppableOptions",
+        "UseDroppableReturn",
+        "UseHorizontalSortableListOptions",
+        "UseHorizontalSortableListReturn",
+        "UseHorizontalSortableOptions",
+        "UseHorizontalSortableReturn",
+        "useSortable",
+        "useSortableList",
+        "UseSortableListOptions",
+        "UseSortableListReturn",
+        "UseSortableOptions",
+        "UseSortableReturn"
+      ]
+    },
+    {
+      "path": "src/dnd/primitives.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AnimationFunction",
+        "clamp",
+        "CollisionAlgorithm",
+        "Draggable",
+        "DraggableContextValue",
+        "DraggableHandleProps",
+        "DraggableProps",
+        "DraggableState",
+        "DropAlignment",
+        "DropOffset",
+        "Droppable",
+        "DroppableProps",
+        "DroppedItemsMap",
+        "DropProvider",
+        "DropProviderProps",
+        "DropProviderRef",
+        "DropSlot",
+        "HorizontalScrollDirection",
+        "HorizontalSortableItemProps",
+        "HorizontalSortableProps",
+        "HorizontalSortableRenderItemProps",
+        "listToObject",
+        "objectMove",
+        "PositionUpdateListener",
+        "ScrollDirection",
+        "setAutoScroll",
+        "setPosition",
+        "SlotsContext",
+        "SlotsContextValue",
+        "Sortable",
+        "SortableContextValue",
+        "SortableDirection",
+        "SortableHandleProps",
+        "SortableItem",
+        "SortableItemProps",
+        "SortableProps",
+        "SortableRenderItemProps",
+        "useDraggable",
+        "UseDraggableOptions",
+        "UseDraggableReturn",
+        "useDroppable",
+        "UseDroppableOptions",
+        "UseDroppableReturn",
+        "UseHorizontalSortableListOptions",
+        "UseHorizontalSortableListReturn",
+        "UseHorizontalSortableOptions",
+        "UseHorizontalSortableReturn",
+        "useSortable",
+        "useSortableList",
+        "UseSortableListOptions",
+        "UseSortableListReturn",
+        "UseSortableOptions",
+        "UseSortableReturn"
+      ]
+    },
+    {
+      "path": "src/dnd/state.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createIdleStudioDragState", "StudioDragState"]
     },
     {
       "path": "src/hooks/useProjects.ts",
@@ -543,6 +671,55 @@
         "toCanonicalRoutePattern",
         "updateNavigatorAtPath"
       ]
+    },
+    {
+      "path": "src/runtime/actionSuppression.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createStudioActionSuppressionConfig", "shouldSuppressStudioRuntimeActions"]
+    },
+    {
+      "path": "src/runtime/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioActionSuppressionConfig",
+        "createStudioPreviewComponentRegistry",
+        "createStudioPreviewRuntimeConfig",
+        "resolveStudioLocalizationPreview",
+        "shouldSuppressStudioRuntimeActions",
+        "STUDIO_PREVIEW_COMPONENT_REGISTRY",
+        "StudioLocalizationPreview",
+        "StudioLocalizationPreviewInput",
+        "StudioPreviewRegistryOptions",
+        "StudioPreviewRuntimeConfigOptions"
+      ]
+    },
+    {
+      "path": "src/runtime/localizationPreview.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "resolveStudioLocalizationPreview",
+        "StudioLocalizationPreview",
+        "StudioLocalizationPreviewInput"
+      ]
+    },
+    {
+      "path": "src/runtime/previewRegistry.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStudioPreviewComponentRegistry",
+        "STUDIO_PREVIEW_COMPONENT_REGISTRY",
+        "StudioPreviewRegistryOptions"
+      ]
+    },
+    {
+      "path": "src/runtime/previewRuntimeConfig.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/actionSuppression.ts", "src/runtime/previewRegistry.ts"],
+      "exports": ["createStudioPreviewRuntimeConfig", "StudioPreviewRuntimeConfigOptions"]
     },
     {
       "path": "src/runtimeDiagnosticsModel.test.ts",
@@ -3617,6 +3794,15 @@
       }
     },
     {
+      "name": "createIdleStudioDragState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/dnd/state.ts",
+        "line": 6,
+        "column": 14
+      }
+    },
+    {
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
@@ -5129,6 +5315,51 @@
       }
     },
     {
+      "name": "shouldSuppressStudioRuntimeActions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/actionSuppression.ts",
+        "line": 3,
+        "column": 14
+      }
+    },
+    {
+      "name": "createStudioActionSuppressionConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/actionSuppression.ts",
+        "line": 5,
+        "column": 14
+      }
+    },
+    {
+      "name": "resolveStudioLocalizationPreview",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/localizationPreview.ts",
+        "line": 13,
+        "column": 14
+      }
+    },
+    {
+      "name": "createStudioPreviewComponentRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/previewRegistry.ts",
+        "line": 8,
+        "column": 14
+      }
+    },
+    {
+      "name": "createStudioPreviewRuntimeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/previewRuntimeConfig.ts",
+        "line": 11,
+        "column": 14
+      }
+    },
+    {
       "name": "formatRuntimeDiagnostic",
       "description": null,
       "sourceLocation": {
@@ -5715,6 +5946,16 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
+        "fromPath": "src/dnd/index.ts",
+        "toPath": "src/dnd/primitives.ts",
+        "sourcePath": "src/dnd/index.ts"
+      },
+      {
+        "fromPath": "src/dnd/index.ts",
+        "toPath": "src/dnd/state.ts",
+        "sourcePath": "src/dnd/index.ts"
+      },
+      {
         "fromPath": "src/hooks/useProjects.ts",
         "toPath": "src/core/constants.ts",
         "sourcePath": "src/hooks/useProjects.ts"
@@ -5728,6 +5969,36 @@
         "fromPath": "src/hooks/useTemplateSummaries.ts",
         "toPath": "src/modules/dashboard/types.ts",
         "sourcePath": "src/hooks/useTemplateSummaries.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/actionSuppression.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/localizationPreview.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/previewRegistry.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/previewRuntimeConfig.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/previewRuntimeConfig.ts",
+        "toPath": "src/runtime/actionSuppression.ts",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromPath": "src/runtime/previewRuntimeConfig.ts",
+        "toPath": "src/runtime/previewRegistry.ts",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
         "fromPath": "src/ui/AnkhStudio.ts",
@@ -8394,6 +8665,36 @@
         "toSymbol": "fetchTemplates",
         "callExpression": "fetchTemplates",
         "sourcePath": "src/hooks/useTemplateSummaries.ts"
+      },
+      {
+        "fromSymbol": "createStudioActionSuppressionConfig",
+        "toSymbol": "shouldSuppressStudioRuntimeActions",
+        "callExpression": "shouldSuppressStudioRuntimeActions",
+        "sourcePath": "src/runtime/actionSuppression.ts"
+      },
+      {
+        "fromSymbol": "createStudioPreviewComponentRegistry",
+        "toSymbol": "createComponentRegistry",
+        "callExpression": "createComponentRegistry",
+        "sourcePath": "src/runtime/previewRegistry.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/previewRegistry.ts",
+        "toSymbol": "createStudioPreviewComponentRegistry",
+        "callExpression": "createStudioPreviewComponentRegistry",
+        "sourcePath": "src/runtime/previewRegistry.ts"
+      },
+      {
+        "fromSymbol": "createStudioPreviewRuntimeConfig",
+        "toSymbol": "shouldSuppressStudioRuntimeActions",
+        "callExpression": "shouldSuppressStudioRuntimeActions",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromSymbol": "createStudioPreviewRuntimeConfig",
+        "toSymbol": "createStudioPreviewComponentRegistry",
+        "callExpression": "createStudioPreviewComponentRegistry",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
         "fromSymbol": "AnkhStudio",
