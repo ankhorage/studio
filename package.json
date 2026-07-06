@@ -19,6 +19,7 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "workspaces": [
+    ".",
     "apps/studio"
   ],
   "files": [
