@@ -13,7 +13,7 @@
     "lint": "expo lint"
   },
   "dependencies": {
-    "@ankhorage/studio": "workspace:*",
+    "@ankhorage/studio": "file:../..",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-picker/picker": "2.11.1",
     "babel-preset-expo": "^54.0.10",
