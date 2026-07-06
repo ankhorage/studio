@@ -1,3 +1,5 @@
+/* eslint-env commonjs */
+
 module.exports = function (api) {
   api.cache(true);
   return {
