@@ -149,7 +149,7 @@
       "path": "src/core/constants.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["API_BASE", "getApiBase"]
+      "exports": ["API_BASE"]
     },
     {
       "path": "src/hooks/useProjects.ts",
@@ -3518,7 +3518,7 @@
       "sourceLocation": {
         "filePath": "src/core/constants.ts",
         "line": 3,
-        "column": 14
+        "column": 7
       }
     },
     {
