@@ -476,6 +476,22 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/runtime/runtimeActions.ts">
+                src/runtime/runtimeActions.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/runtime/useRuntimeAction.ts"
+              >
+                src/runtime/useRuntimeAction.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/runtimeDiagnosticsModel.ts">
                 src/runtimeDiagnosticsModel.ts
                 <small>4 functions</small>
@@ -525,7 +541,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>68</strong><span class="muted">modules</span></div>
+              <div><strong>73</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1258,21 +1274,35 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/index.ts createStudioActionSuppressionConfig createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions STUDIO_PREVIEW_COMPONENT_REGISTRY StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions"
+              data-search="src/runtime/appExtensionRegistry.ts APP_EXTENSION_COMPONENT_REGISTRY"
+            >
+              <h3>src/runtime/appExtensionRegistry.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/index.ts APP_EXTENSION_COMPONENT_REGISTRY ComponentRegistry createComponentRegistry createStudioActionSuppressionConfig createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig DEFAULT_COMPONENT_REGISTRY executeRuntimeAction resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions STUDIO_PREVIEW_COMPONENT_REGISTRY StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions SURFACE_COMPONENT_REGISTRY useRuntimeAction UseRuntimeActionOptions ZORA_COMPONENT_REGISTRY"
             >
               <h3>src/runtime/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>createStudioActionSuppressionConfig</code>,
+                <strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code>,
+                <code>ComponentRegistry</code>, <code>createComponentRegistry</code>,
+                <code>createStudioActionSuppressionConfig</code>,
                 <code>createStudioPreviewComponentRegistry</code>,
                 <code>createStudioPreviewRuntimeConfig</code>,
+                <code>DEFAULT_COMPONENT_REGISTRY</code>, <code>executeRuntimeAction</code>,
                 <code>resolveStudioLocalizationPreview</code>,
                 <code>shouldSuppressStudioRuntimeActions</code>,
                 <code>STUDIO_PREVIEW_COMPONENT_REGISTRY</code>,
                 <code>StudioLocalizationPreview</code>, <code>StudioLocalizationPreviewInput</code>,
                 <code>StudioPreviewRegistryOptions</code>,
-                <code>StudioPreviewRuntimeConfigOptions</code>
+                <code>StudioPreviewRuntimeConfigOptions</code>,
+                <code>SURFACE_COMPONENT_REGISTRY</code>, <code>useRuntimeAction</code>,
+                <code>UseRuntimeActionOptions</code>, <code>ZORA_COMPONENT_REGISTRY</code>
               </p>
             </article>
             <article
@@ -1286,6 +1316,12 @@
                 <strong>Exports:</strong> <code>resolveStudioLocalizationPreview</code>,
                 <code>StudioLocalizationPreview</code>, <code>StudioLocalizationPreviewInput</code>
               </p>
+            </article>
+            <article class="item" data-search="src/runtime/overlay.test.ts">
+              <h3>src/runtime/overlay.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -1313,6 +1349,38 @@
               <p>
                 <strong>Exports:</strong> <code>createStudioPreviewRuntimeConfig</code>,
                 <code>StudioPreviewRuntimeConfigOptions</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/registry.tsx src/runtime/appExtensionRegistry.ts APP_EXTENSION_COMPONENT_REGISTRY ComponentRegistry createComponentRegistry DEFAULT_COMPONENT_REGISTRY SURFACE_COMPONENT_REGISTRY ZORA_COMPONENT_REGISTRY"
+            >
+              <h3>src/runtime/registry.tsx</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/runtime/appExtensionRegistry.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code>,
+                <code>ComponentRegistry</code>, <code>createComponentRegistry</code>,
+                <code>DEFAULT_COMPONENT_REGISTRY</code>, <code>SURFACE_COMPONENT_REGISTRY</code>,
+                <code>ZORA_COMPONENT_REGISTRY</code>
+              </p>
+            </article>
+            <article class="item" data-search="src/runtime/runtimeActions.ts executeRuntimeAction">
+              <h3>src/runtime/runtimeActions.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>executeRuntimeAction</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/useRuntimeAction.ts src/runtime/runtimeActions.ts useRuntimeAction UseRuntimeActionOptions"
+            >
+              <h3>src/runtime/useRuntimeAction.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/runtime/runtimeActions.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>useRuntimeAction</code>,
+                <code>UseRuntimeActionOptions</code>
               </p>
             </article>
             <article
@@ -4465,10 +4533,14 @@
                 -.-&gt; module_src_routeUtils_ts
                 module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_actionSuppression_ts
+                module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_index_ts
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
+                module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_overlay_test_ts
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_previewRegistry_ts
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
@@ -4476,6 +4548,14 @@
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
                 --&gt; module_src_runtime_previewRegistry_ts
+                module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
+                module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
+                module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
+                module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_useRuntimeAction_ts
+                module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtimeDiagnosticsModel_test_ts
                 module_src_runtimeDiagnosticsModel_test_ts --&gt;
@@ -4675,16 +4755,28 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_routeUtils_ts
   module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_actionSuppression_ts
+  module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_index_ts
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
+  module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_overlay_test_ts
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
+  module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
+  module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
+  module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
+  module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_useRuntimeAction_ts
+  module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtimeDiagnosticsModel_test_ts
   module_src_runtimeDiagnosticsModel_test_ts --&gt; module_src_runtimeDiagnosticsModel_ts
@@ -4781,10 +4873,15 @@ graph TD
                 module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
                 module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
                 module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
+                module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
+                module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
+                module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+                module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+                module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
                 module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
                 module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
                 module_src_runtimeLocalization_public_test_ts[&quot;src/runtimeLocalization.public.test.ts&quot;]
@@ -4859,7 +4956,9 @@ graph TD
                 module_src_routeUtils_ts module_src_routeUtils_test_ts --&gt;
                 module_src_routeUtils_ts module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
-                --&gt; module_src_runtime_previewRegistry_ts
+                --&gt; module_src_runtime_previewRegistry_ts module_src_runtime_registry_tsx --&gt;
+                module_src_runtime_appExtensionRegistry_ts module_src_runtime_useRuntimeAction_ts
+                --&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtimeDiagnosticsModel_test_ts --&gt;
                 module_src_runtimeDiagnosticsModel_ts module_src_runtimeLocalization_public_test_ts
                 --&gt; module_src_runtimeLocalization_ts module_src_runtimeLocalization_test_ts
@@ -4926,10 +5025,15 @@ graph LR
   module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
   module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
   module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
+  module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
+  module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
+  module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+  module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+  module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
   module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
   module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
   module_src_runtimeLocalization_public_test_ts[&quot;src/runtimeLocalization.public.test.ts&quot;]
@@ -4997,6 +5101,8 @@ graph LR
   module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
+  module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
+  module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --&gt; module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --&gt; module_src_runtimeLocalization_ts
   module_src_runtimeLocalization_test_ts --&gt; module_src_runtimeLocalization_ts
@@ -5064,10 +5170,15 @@ graph LR
                 module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
                 module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
                 module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
+                module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
+                module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
+                module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+                module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+                module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
                 module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
                 module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
                 module_src_runtimeLocalization_public_test_ts[&quot;src/runtimeLocalization.public.test.ts&quot;]
@@ -5324,10 +5435,15 @@ graph LR
   module_src_routeUtils_test_ts[&quot;src/routeUtils.test.ts&quot;]
   module_src_routeUtils_ts[&quot;src/routeUtils.ts&quot;]
   module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
+  module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
+  module_src_runtime_overlay_test_ts[&quot;src/runtime/overlay.test.ts&quot;]
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
+  module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
+  module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
+  module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
   module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
   module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
   module_src_runtimeLocalization_public_test_ts[&quot;src/runtimeLocalization.public.test.ts&quot;]
@@ -7514,6 +7630,36 @@ sequenceDiagram
             >
               <h3>createStudioPreviewRuntimeConfig</h3>
               <p class="muted"><code>src/runtime/previewRuntimeConfig.ts:11:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-runtime-runtimeactions-ts"
+          class="view"
+          data-view="src/runtime/runtimeActions.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/runtimeActions.ts</h2>
+            <article class="item" data-search="executeRuntimeAction src/runtime/runtimeActions.ts ">
+              <h3>executeRuntimeAction</h3>
+              <p class="muted"><code>src/runtime/runtimeActions.ts:8:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-runtime-useruntimeaction-ts"
+          class="view"
+          data-view="src/runtime/useRuntimeAction.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/useRuntimeAction.ts</h2>
+            <article class="item" data-search="useRuntimeAction src/runtime/useRuntimeAction.ts ">
+              <h3>useRuntimeAction</h3>
+              <p class="muted"><code>src/runtime/useRuntimeAction.ts:19:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

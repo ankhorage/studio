@@ -50,10 +50,15 @@ graph LR
   module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
   module_src_routeUtils_ts["src/routeUtils.ts"]
   module_src_runtime_actionSuppression_ts["src/runtime/actionSuppression.ts"]
+  module_src_runtime_appExtensionRegistry_ts["src/runtime/appExtensionRegistry.ts"]
   module_src_runtime_index_ts["src/runtime/index.ts"]
   module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
+  module_src_runtime_overlay_test_ts["src/runtime/overlay.test.ts"]
   module_src_runtime_previewRegistry_ts["src/runtime/previewRegistry.ts"]
   module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
+  module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
+  module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
+  module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
   module_src_runtimeLocalization_public_test_ts["src/runtimeLocalization.public.test.ts"]
@@ -121,6 +126,8 @@ graph LR
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
+  module_src_runtime_registry_tsx --> module_src_runtime_appExtensionRegistry_ts
+  module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts
   module_src_runtimeLocalization_test_ts --> module_src_runtimeLocalization_ts

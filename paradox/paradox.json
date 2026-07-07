@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.19",
+      "value": "v0.0.20",
       "color": "cb3837"
     },
     {
@@ -767,20 +767,35 @@
       "exports": ["createStudioActionSuppressionConfig", "shouldSuppressStudioRuntimeActions"]
     },
     {
+      "path": "src/runtime/appExtensionRegistry.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["APP_EXTENSION_COMPONENT_REGISTRY"]
+    },
+    {
       "path": "src/runtime/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
+        "APP_EXTENSION_COMPONENT_REGISTRY",
+        "ComponentRegistry",
+        "createComponentRegistry",
         "createStudioActionSuppressionConfig",
         "createStudioPreviewComponentRegistry",
         "createStudioPreviewRuntimeConfig",
+        "DEFAULT_COMPONENT_REGISTRY",
+        "executeRuntimeAction",
         "resolveStudioLocalizationPreview",
         "shouldSuppressStudioRuntimeActions",
         "STUDIO_PREVIEW_COMPONENT_REGISTRY",
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput",
         "StudioPreviewRegistryOptions",
-        "StudioPreviewRuntimeConfigOptions"
+        "StudioPreviewRuntimeConfigOptions",
+        "SURFACE_COMPONENT_REGISTRY",
+        "useRuntimeAction",
+        "UseRuntimeActionOptions",
+        "ZORA_COMPONENT_REGISTRY"
       ]
     },
     {
@@ -792,6 +807,12 @@
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput"
       ]
+    },
+    {
+      "path": "src/runtime/overlay.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "src/runtime/previewRegistry.ts",
@@ -808,6 +829,31 @@
       "isEntrypoint": false,
       "dependencies": ["src/runtime/actionSuppression.ts", "src/runtime/previewRegistry.ts"],
       "exports": ["createStudioPreviewRuntimeConfig", "StudioPreviewRuntimeConfigOptions"]
+    },
+    {
+      "path": "src/runtime/registry.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/appExtensionRegistry.ts"],
+      "exports": [
+        "APP_EXTENSION_COMPONENT_REGISTRY",
+        "ComponentRegistry",
+        "createComponentRegistry",
+        "DEFAULT_COMPONENT_REGISTRY",
+        "SURFACE_COMPONENT_REGISTRY",
+        "ZORA_COMPONENT_REGISTRY"
+      ]
+    },
+    {
+      "path": "src/runtime/runtimeActions.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["executeRuntimeAction"]
+    },
+    {
+      "path": "src/runtime/useRuntimeAction.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/runtimeActions.ts"],
+      "exports": ["useRuntimeAction", "UseRuntimeActionOptions"]
     },
     {
       "path": "src/runtimeDiagnosticsModel.test.ts",
@@ -5574,6 +5620,24 @@
       }
     },
     {
+      "name": "executeRuntimeAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeActions.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "useRuntimeAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/useRuntimeAction.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
       "name": "formatRuntimeDiagnostic",
       "description": null,
       "sourceLocation": {
@@ -6201,6 +6265,11 @@
       },
       {
         "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/appExtensionRegistry.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/localizationPreview.ts",
         "sourcePath": "src/runtime/index.ts"
       },
@@ -6215,6 +6284,21 @@
         "sourcePath": "src/runtime/index.ts"
       },
       {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/registry.tsx",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/runtimeActions.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/useRuntimeAction.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
         "fromPath": "src/runtime/previewRuntimeConfig.ts",
         "toPath": "src/runtime/actionSuppression.ts",
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
@@ -6223,6 +6307,16 @@
         "fromPath": "src/runtime/previewRuntimeConfig.ts",
         "toPath": "src/runtime/previewRegistry.ts",
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromPath": "src/runtime/registry.tsx",
+        "toPath": "src/runtime/appExtensionRegistry.ts",
+        "sourcePath": "src/runtime/registry.tsx"
+      },
+      {
+        "fromPath": "src/runtime/useRuntimeAction.ts",
+        "toPath": "src/runtime/runtimeActions.ts",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
         "fromPath": "src/ui/AnkhStudio.ts",
@@ -8993,6 +9087,36 @@
         "sourcePath": "src/runtime/actionSuppression.ts"
       },
       {
+        "fromSymbol": "src/runtime/overlay.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/runtime/overlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/overlay.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/runtime/overlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/overlay.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/overlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/overlay.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/overlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/overlay.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/overlay.test.ts"
+      },
+      {
         "fromSymbol": "createStudioPreviewComponentRegistry",
         "toSymbol": "createComponentRegistry",
         "callExpression": "createComponentRegistry",
@@ -9015,6 +9139,54 @@
         "toSymbol": "createStudioPreviewComponentRegistry",
         "callExpression": "createStudioPreviewComponentRegistry",
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/registry.tsx",
+        "toSymbol": "createComponentRegistry",
+        "callExpression": "createComponentRegistry",
+        "sourcePath": "src/runtime/registry.tsx"
+      },
+      {
+        "fromSymbol": "executeRuntimeAction",
+        "toSymbol": "executeExpoRuntimeAction",
+        "callExpression": "executeExpoRuntimeAction",
+        "sourcePath": "src/runtime/runtimeActions.ts"
+      },
+      {
+        "fromSymbol": "useRuntimeAction",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
+      },
+      {
+        "fromSymbol": "useRuntimeAction",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
+      },
+      {
+        "fromSymbol": "useRuntimeAction",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/useRuntimeAction.ts",
+        "toSymbol": "createDbPersistActionHandler",
+        "callExpression": "createDbPersistActionHandler",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
+      },
+      {
+        "fromSymbol": "useRuntimeAction",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/useRuntimeAction.ts",
+        "toSymbol": "executeRuntimeAction",
+        "callExpression": "executeRuntimeAction",
+        "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
         "fromSymbol": "AnkhStudio",
