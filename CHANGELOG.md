@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.20
+
+### Patch Changes
+
+- 04032ba: Expose Studio app exports from the package root.
+
 ## 0.0.19
 
 ### Patch Changes
