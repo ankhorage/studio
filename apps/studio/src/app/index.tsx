@@ -1,5 +1,1 @@
-import { StudioDashboard } from '@ankhorage/studio/app';
-
-const Route = StudioDashboard;
-
-export default Route;
+export { StudioDashboard as default } from '@ankhorage/studio';
