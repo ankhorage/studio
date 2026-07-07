@@ -22,8 +22,6 @@ Standalone Studio authoring package for Ankhorage apps.
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
 - [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
 - [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
-- [StudioApp sequence](././paradox/diagrams/sequences/studio-app.mmd)
-- [StudioDashboard sequence](././paradox/diagrams/sequences/studio-dashboard.mmd)
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [validateInsertRecipe sequence](././paradox/diagrams/sequences/validate-insert-recipe.mmd)
 - [validateNodePlacement sequence](././paradox/diagrams/sequences/validate-node-placement.mmd)
