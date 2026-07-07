@@ -151,17 +151,21 @@ async function requestStudioApi(
   });
 
   const text = await response.text();
-  const body = text.length > 0 ? JSON.parse(text) : null;
+  const body: unknown = text.length > 0 ? JSON.parse(text) : null;
 
   if (!response.ok) {
-    throw new Error(
-      typeof body === 'object' && body !== null && 'error' in body
-        ? String(body.error)
-        : `Studio API request failed: ${response.status}`,
-    );
+    throw new Error(getStudioApiErrorMessage(body, response.status));
   }
 
   return body;
+}
+
+function getStudioApiErrorMessage(body: unknown, status: number) {
+  if (isRecord(body) && typeof body.error === 'string') {
+    return body.error;
+  }
+
+  return `Studio API request failed: ${status}`;
 }
 
 function resolveStudioApiBase() {
@@ -199,4 +203,8 @@ function readFlag(argv: readonly string[], flag: string) {
   const index = argv.indexOf(flag);
   const value = index === -1 ? undefined : argv[index + 1];
   return value === undefined || value.trim() === '' ? null : value;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
 }
