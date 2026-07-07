@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.19
+
+### Patch Changes
+
+- d504af9: Add package command metadata.
+
 ## 0.0.18
 
 ### Patch Changes
