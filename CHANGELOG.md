@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.0.21
+
+### Patch Changes
+
+- 660a0b0: Expose the generated-app runtime overlay from the Studio runtime surface.
+
 ## 0.0.20
 
 ### Patch Changes
