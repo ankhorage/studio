@@ -151,13 +151,21 @@ async function requestStudioApi(
   });
 
   const text = await response.text();
-  const body: unknown = text.length > 0 ? JSON.parse(text) : null;
+  const body = parseStudioApiResponseBody(text);
 
   if (!response.ok) {
     throw new Error(getStudioApiErrorMessage(body, response.status));
   }
 
   return body;
+}
+
+function parseStudioApiResponseBody(text: string): unknown {
+  if (text.length === 0) {
+    return null;
+  }
+
+  return JSON.parse(text) as unknown;
 }
 
 function getStudioApiErrorMessage(body: unknown, status: number) {
