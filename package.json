@@ -60,6 +60,10 @@
       "types": "./dist/runtime/actionSuppression.d.ts",
       "import": "./dist/runtime/actionSuppression.js"
     },
+    "./runtime/appExtensionRegistry": {
+      "types": "./dist/runtime/appExtensionRegistry.d.ts",
+      "import": "./dist/runtime/appExtensionRegistry.js"
+    },
     "./runtime/localizationPreview": {
       "types": "./dist/runtime/localizationPreview.d.ts",
       "import": "./dist/runtime/localizationPreview.js"
@@ -71,6 +75,18 @@
     "./runtime/previewRuntimeConfig": {
       "types": "./dist/runtime/previewRuntimeConfig.d.ts",
       "import": "./dist/runtime/previewRuntimeConfig.js"
+    },
+    "./runtime/registry": {
+      "types": "./dist/runtime/registry.d.ts",
+      "import": "./dist/runtime/registry.js"
+    },
+    "./runtime/runtimeActions": {
+      "types": "./dist/runtime/runtimeActions.d.ts",
+      "import": "./dist/runtime/runtimeActions.js"
+    },
+    "./runtime/useRuntimeAction": {
+      "types": "./dist/runtime/useRuntimeAction.d.ts",
+      "import": "./dist/runtime/useRuntimeAction.js"
     },
     "./core/StudioContext": {
       "types": "./dist/core/StudioContext.d.ts",
@@ -187,9 +203,12 @@
   ],
   "dependencies": {
     "@ankhorage/contracts": "^1.19.2",
+    "@ankhorage/expo-runtime": "^0.0.9",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
     "@ankhorage/runtime": "^0.2.1",
-    "@ankhorage/zora": "^2.8.1"
+    "@ankhorage/zora": "^2.8.1",
+    "@ankhorage/zora-chess": "^0.1.2",
+    "@ankhorage/zora-tabletop": "^0.0.5"
   },
   "peerDependencies": {
     "@expo/vector-icons": "^15.0.3",
