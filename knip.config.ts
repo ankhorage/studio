@@ -23,7 +23,7 @@ export default createKnipConfig({
         'src/utils/treeUtils.ts',
       ],
       project: ['src/**/*.ts', 'src/**/*.tsx', 'paradox.config.ts'],
-      ignoreFiles: ['paradox.config.ts'],
+      ignoreFiles: ['paradox.config.ts', 'src/root.ts'],
     },
     'apps/studio': {
       entry: ['babel.config.js'],

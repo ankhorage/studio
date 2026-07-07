@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.18",
+      "value": "v0.0.19",
       "color": "cb3837"
     },
     {
@@ -640,6 +640,88 @@
       "isEntrypoint": false,
       "dependencies": ["src/modules/dashboard/types.ts"],
       "exports": ["TemplateCard"]
+    },
+    {
+      "path": "src/root.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ACTION_REGISTRY",
+        "ActionDefinition",
+        "addNodeToTree",
+        "buildInsertCatalogEntries",
+        "canAcceptChild",
+        "cloneWithNewIds",
+        "createNodeFromCatalogEntry",
+        "findNodeById",
+        "generateStudioId",
+        "getInsertCatalogCategoryLabel",
+        "InsertCatalogComponentEntry",
+        "InsertCatalogDisabledReason",
+        "InsertCatalogDisabledReasonCode",
+        "InsertCatalogEntry",
+        "InsertCatalogEntryBase",
+        "InsertCatalogEntryKind",
+        "InsertCatalogEntryStatus",
+        "InsertCatalogRecipeEntry",
+        "insertNodeAtPlacement",
+        "InsertNodeAtPlacementArgs",
+        "InsertNodeAtPlacementResult",
+        "InsertRecipe",
+        "InsertRecipeIssue",
+        "InsertRecipeNode",
+        "ModuleDefinition",
+        "moveNodeInTree",
+        "moveNodeToPlacement",
+        "MoveNodeToPlacementArgs",
+        "MoveNodeToPlacementResult",
+        "NodePlacement",
+        "PlacementFailureCode",
+        "PlacementFailureReason",
+        "PlacementKind",
+        "PlacementResolutionResult",
+        "PlacementValidationResult",
+        "removeNodeFromTree",
+        "resolveDefaultInsertPlacement",
+        "resolveInsertCatalogEntries",
+        "resolveInsertPlacement",
+        "STUDIO_INSERT_RECIPES",
+        "STUDIO_PACKAGE_BOUNDARY",
+        "STUDIO_PACKAGE_NAME",
+        "STUDIO_PUBLIC_CONTRACTS",
+        "StudioActionPayloadField",
+        "StudioActionPayloadPrimitive",
+        "StudioActionPayloadSchema",
+        "StudioAdminRoutePath",
+        "StudioApp",
+        "StudioCommand",
+        "StudioComponentBlueprint",
+        "StudioComponentMeta",
+        "StudioComponentMetaRegistry",
+        "StudioContextValue",
+        "StudioDashboard",
+        "StudioEvent",
+        "StudioIdGenerator",
+        "StudioLocale",
+        "StudioManifest",
+        "StudioMode",
+        "StudioModuleId",
+        "StudioNodeId",
+        "StudioPackageBoundary",
+        "StudioPanelId",
+        "StudioProjectId",
+        "StudioPublicContract",
+        "StudioSaveStatus",
+        "StudioScreenId",
+        "StudioSelectionState",
+        "StudioSessionId",
+        "StudioSessionState",
+        "ThemeUpdates",
+        "TPL_SCREEN_EMPTY",
+        "updateNodeInTree",
+        "validateInsertRecipe",
+        "validateNodePlacement"
+      ]
     },
     {
       "path": "src/routeUtils.public.test.ts",
@@ -3818,11 +3900,20 @@
       }
     },
     {
+      "name": "getStudioApiErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 163,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveStudioApiBase",
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 167,
+        "line": 171,
         "column": 1
       }
     },
@@ -3831,7 +3922,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 175,
+        "line": 179,
         "column": 1
       }
     },
@@ -3840,7 +3931,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 184,
+        "line": 188,
         "column": 1
       }
     },
@@ -3849,7 +3940,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 198,
+        "line": 202,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 208,
         "column": 1
       }
     },
@@ -5938,6 +6038,16 @@
         "fromPath": "src/manifestSync.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/app/index.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/root.ts"
       },
       {
         "fromPath": "src/routeUtils.public.test.ts",
@@ -8580,6 +8690,18 @@
         "fromSymbol": "requestStudioApi",
         "toSymbol": "resolveStudioApiBase",
         "callExpression": "resolveStudioApiBase",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "requestStudioApi",
+        "toSymbol": "getStudioApiErrorMessage",
+        "callExpression": "getStudioApiErrorMessage",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "getStudioApiErrorMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/cli/index.ts"
       },
       {
