@@ -1,6 +1,7 @@
-import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const STUDIO_COMMAND_CATEGORY = 'studio';
