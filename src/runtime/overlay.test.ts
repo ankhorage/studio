@@ -7,7 +7,6 @@ const runtimeIndexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8
 const registrySource = readFileSync(join(import.meta.dir, 'registry.tsx'), 'utf8');
 const runtimeActionSource = readFileSync(join(import.meta.dir, 'useRuntimeAction.ts'), 'utf8');
 
-
 describe('Studio runtime overlay', () => {
   it('exports the generated-app runtime overlay surface', () => {
     expect(runtimeIndexSource).toContain("export * from './appExtensionRegistry.js';");
