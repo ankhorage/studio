@@ -1,3 +1,1 @@
-import { StudioApp } from '@ankhorage/studio/app';
-
-export default StudioApp;
+export { StudioApp as default } from '@ankhorage/studio';
