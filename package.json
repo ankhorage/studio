@@ -15,8 +15,8 @@
     "access": "public"
   },
   "type": "module",
-  "main": "./dist/root.js",
-  "types": "./dist/root.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "workspaces": [
     ".",
@@ -29,8 +29,8 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/root.d.ts",
-      "import": "./dist/root.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./app": {
       "types": "./dist/app/index.d.ts",
