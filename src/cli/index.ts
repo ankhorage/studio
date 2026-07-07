@@ -151,13 +151,21 @@ async function requestStudioApi(
   });
 
   const text = await response.text();
-  const body: unknown = text.length > 0 ? JSON.parse(text) : null;
+  const body = parseStudioApiResponseBody(text);
 
   if (!response.ok) {
     throw new Error(getStudioApiErrorMessage(body, response.status));
   }
 
   return body;
+}
+
+function parseStudioApiResponseBody(text: string): unknown {
+  if (text.length === 0) {
+    return null;
+  }
+
+  return JSON.parse(text) as unknown;
 }
 
 function getStudioApiErrorMessage(body: unknown, status: number) {
@@ -168,12 +176,17 @@ function getStudioApiErrorMessage(body: unknown, status: number) {
   return `Studio API request failed: ${status}`;
 }
 
-function resolveStudioApiBase() {
+function resolveStudioApiBase(): string {
   return (
-    process.env.ANKHORAGE_STUDIO_API_URL ??
-    process.env.EXPO_PUBLIC_API_URL ??
+    readEnvString('ANKHORAGE_STUDIO_API_URL') ??
+    readEnvString('EXPO_PUBLIC_API_URL') ??
     DEFAULT_STUDIO_API_BASE
   );
+}
+
+function readEnvString(name: string): string | undefined {
+  const value: unknown = process.env[name];
+  return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 
 function requireProjectId(argv: readonly string[], command: string) {
