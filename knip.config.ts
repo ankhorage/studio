@@ -6,6 +6,7 @@ export default createKnipConfig({
       entry: [
         'src/index.ts',
         'src/app/index.ts',
+        'src/cli/index.ts',
         'src/core/StudioContext.ts',
         'src/core/StudioProvider.ts',
         'src/core/studioPackageBoundary.ts',

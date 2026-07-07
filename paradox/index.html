@@ -226,6 +226,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/cli/index.ts">
+                src/cli/index.ts
+                <small>12 functions</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/core/constants.ts">
                 src/core/constants.ts
                 <small>1 function</small>
@@ -519,7 +525,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>66</strong><span class="muted">modules</span></div>
+              <div><strong>67</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -638,6 +644,12 @@
                 <code>getValidCanvasDropZones</code>, <code>resolveCanvasDropZones</code>,
                 <code>ValidCanvasDropZoneResolution</code>
               </p>
+            </article>
+            <article class="item" data-search="src/cli/index.ts default">
+              <h3>src/cli/index.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>default</code></p>
             </article>
             <article class="item" data-search="src/core/constants.ts API_BASE">
               <h3>src/core/constants.ts</h3>
@@ -4282,6 +4294,8 @@
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_canvasDropZones_ts
                 module_src_canvasDropZones_ts --&gt; module_src_index_ts
+                module_src_cli_index_ts[&quot;src/cli/index.ts&quot;] package__ankhorage_studio
+                -.-&gt; module_src_cli_index_ts
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_constants_ts
                 module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
@@ -4496,6 +4510,8 @@ graph TD
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_canvasDropZones_ts
   module_src_canvasDropZones_ts --&gt; module_src_index_ts
+  module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_cli_index_ts
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_constants_ts
   module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
@@ -4672,6 +4688,7 @@ graph TD
                 module_src_canvasDragModel_ts[&quot;src/canvasDragModel.ts&quot;]
                 module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+                module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
                 module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
@@ -4815,6 +4832,7 @@ graph LR
   module_src_canvasDragModel_ts[&quot;src/canvasDragModel.ts&quot;]
   module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+  module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
   module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
@@ -4951,6 +4969,7 @@ graph LR
                 module_src_canvasDragModel_ts[&quot;src/canvasDragModel.ts&quot;]
                 module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
                 module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+                module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
                 module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
@@ -5209,6 +5228,7 @@ graph LR
   module_src_canvasDragModel_ts[&quot;src/canvasDragModel.ts&quot;]
   module_src_canvasDropZones_test_ts[&quot;src/canvasDropZones.test.ts&quot;]
   module_src_canvasDropZones_ts[&quot;src/canvasDropZones.ts&quot;]
+  module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
   module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
@@ -6007,6 +6027,71 @@ sequenceDiagram
             <article class="item" data-search="getValidCanvasDropZones src/canvasDropZones.ts ">
               <h3>getValidCanvasDropZones</h3>
               <p class="muted"><code>src/canvasDropZones.ts:64:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section id="view-src-cli-index-ts" class="view" data-view="src/cli/index.ts" hidden>
+          <section class="panel">
+            <h2>src/cli/index.ts</h2>
+            <article class="item" data-search="createHandler src/cli/index.ts ">
+              <h3>createHandler</h3>
+              <p class="muted"><code>src/cli/index.ts:76:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="runStudioDev src/cli/index.ts ">
+              <h3>runStudioDev</h3>
+              <p class="muted"><code>src/cli/index.ts:91:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="listProjects src/cli/index.ts ">
+              <h3>listProjects</h3>
+              <p class="muted"><code>src/cli/index.ts:103:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createProject src/cli/index.ts ">
+              <h3>createProject</h3>
+              <p class="muted"><code>src/cli/index.ts:109:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="deleteProject src/cli/index.ts ">
+              <h3>deleteProject</h3>
+              <p class="muted"><code>src/cli/index.ts:119:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="syncProject src/cli/index.ts ">
+              <h3>syncProject</h3>
+              <p class="muted"><code>src/cli/index.ts:128:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="installWorkspacePackages src/cli/index.ts ">
+              <h3>installWorkspacePackages</h3>
+              <p class="muted"><code>src/cli/index.ts:137:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="requestStudioApi src/cli/index.ts ">
+              <h3>requestStudioApi</h3>
+              <p class="muted"><code>src/cli/index.ts:143:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveStudioApiBase src/cli/index.ts ">
+              <h3>resolveStudioApiBase</h3>
+              <p class="muted"><code>src/cli/index.ts:167:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="requireProjectId src/cli/index.ts ">
+              <h3>requireProjectId</h3>
+              <p class="muted"><code>src/cli/index.ts:175:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="parseCreateProjectArgs src/cli/index.ts ">
+              <h3>parseCreateProjectArgs</h3>
+              <p class="muted"><code>src/cli/index.ts:184:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readFlag src/cli/index.ts ">
+              <h3>readFlag</h3>
+              <p class="muted"><code>src/cli/index.ts:198:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

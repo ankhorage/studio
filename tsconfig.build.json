@@ -15,6 +15,7 @@
     "src/app/index.ts",
     "src/app/StudioApp.tsx",
     "src/app/StudioDashboard.tsx",
+    "src/cli/index.ts",
     "src/core/constants.ts",
     "src/core/StudioContext.ts",
     "src/core/studioPackageBoundary.ts",
