@@ -12,6 +12,7 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+export { StudioApp, StudioDashboard } from './app/index.js';
 export const STUDIO_PACKAGE_NAME = '@ankhorage/studio' as const;
 
 export interface StudioPackageBoundary {

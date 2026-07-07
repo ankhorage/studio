@@ -45,7 +45,6 @@ graph LR
   module_src_modules_dashboard_ui_DashboardSectionHeader_tsx["src/modules/dashboard/ui/DashboardSectionHeader.tsx"]
   module_src_modules_dashboard_ui_ProjectCard_tsx["src/modules/dashboard/ui/ProjectCard.tsx"]
   module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
-  module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
   module_src_routeUtils_test_ts["src/routeUtils.test.ts"]
   module_src_routeUtils_ts["src/routeUtils.ts"]
@@ -203,6 +202,8 @@ graph LR
   module_src_index_ts --> export_StudioActionPayloadSchema
   export_StudioAdminRoutePath["StudioAdminRoutePath"]
   module_src_index_ts --> export_StudioAdminRoutePath
+  export_StudioApp["StudioApp"]
+  module_src_app_StudioApp_tsx --> export_StudioApp
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
   export_StudioComponentBlueprint["StudioComponentBlueprint"]
@@ -226,6 +227,8 @@ graph LR
   export_StudioContextValue -.-> export_StudioSaveStatus
   export_StudioContextValue -.-> export_StudioScreenId
   export_StudioContextValue -.-> export_ThemeUpdates
+  export_StudioDashboard["StudioDashboard"]
+  module_src_app_StudioDashboard_tsx --> export_StudioDashboard
   export_StudioEvent["StudioEvent"]
   module_src_index_ts --> export_StudioEvent
   export_StudioIdGenerator["StudioIdGenerator"]
