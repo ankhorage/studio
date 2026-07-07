@@ -4,6 +4,7 @@ export default createKnipConfig({
   workspaces: {
     '.': {
       entry: [
+        'src/root.ts',
         'src/index.ts',
         'src/app/index.ts',
         'src/cli/index.ts',
