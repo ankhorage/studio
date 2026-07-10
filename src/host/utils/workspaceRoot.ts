@@ -16,7 +16,7 @@ export function resolveWorkspaceRoot(fromDir: string, cwd = process.cwd()) {
 
 function findStudioWorkspaceRoot(startPath: string): string | null {
   let current = path.resolve(startPath);
-  while (true) {
+  for (;;) {
     const packageJsonPath = path.join(current, 'package.json');
     if (existsSync(packageJsonPath) && existsSync(path.join(current, 'apps'))) {
       try {
