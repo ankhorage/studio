@@ -39,6 +39,12 @@ jobs:
       - name: Typecheck Studio app consumer
         run: bun run type-check:studio
 
+      - name: Bundle Studio web app
+        run: |
+          cd apps/studio
+          bun run prepare:root-package
+          bunx expo export --platform web --output-dir "$RUNNER_TEMP/studio-web"
+
       - name: Run lint
         run: bun run lint
 

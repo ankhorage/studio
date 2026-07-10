@@ -5,4 +5,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   name: config.name ?? 'Ankhorage Studio',
   slug: config.slug ?? 'ankhorage-studio',
   plugins: [...(config.plugins ?? [])],
+  experiments: {
+    ...config.experiments,
+    autolinkingModuleResolution: true,
+  },
 });
