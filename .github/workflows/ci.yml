@@ -30,7 +30,19 @@ jobs:
         run: bun run build
 
       - name: Run lint
-        run: bun run lint
+        shell: bash
+        run: |
+          set -o pipefail
+          bun run lint 2>&1 | tee studio-host-lint.log
+
+      - name: Upload lint log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-host-lint
+          path: studio-host-lint.log
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Run format check
         run: bun run format:check
