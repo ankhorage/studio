@@ -18,6 +18,7 @@ jobs:
       github.actor != 'github-actions[bot]' &&
       github.event.pull_request.head.ref == 'agent/extract-studio-host'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out Studio branch
         uses: actions/checkout@v4
