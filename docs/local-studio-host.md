@@ -20,6 +20,14 @@ The dashboard uses the HTTP adapter. Studio CLI project commands call `ProjectMa
 
 The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, bounds command output returned by HTTP, and terminates owned port-forward processes when the host closes.
 
+## Validation
+
+```bash
+bun run test:host-smoke
+```
+
+The smoke test creates a real app from the published template catalog, synchronizes it, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.
+
 ## Troubleshooting
 
 - Port conflict: stop the process using port 3000 or set `ANKHORAGE_STUDIO_HOST_PORT` for the standalone host.
