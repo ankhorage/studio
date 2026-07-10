@@ -4,7 +4,7 @@ import path from 'node:path';
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 
 export function resolveWorkspaceRoot(fromDir: string, cwd = process.cwd()) {
-  const candidates = [cwd, fromDir];
+  const candidates = [fromDir, cwd];
   for (const candidate of candidates) {
     const resolved = findStudioWorkspaceRoot(candidate);
     if (resolved !== null) return resolved;
