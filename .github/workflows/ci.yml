@@ -40,7 +40,10 @@ jobs:
         run: bun run type-check:studio
 
       - name: Bundle Studio web app
-        run: bun run --cwd apps/studio export:web
+        run: |
+          cd apps/studio
+          bun run prepare:root-package
+          bunx expo export --platform web --output-dir "$RUNNER_TEMP/studio-web"
 
       - name: Run lint
         run: bun run lint
