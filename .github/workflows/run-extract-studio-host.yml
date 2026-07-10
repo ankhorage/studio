@@ -25,14 +25,18 @@ jobs:
           ref: agent/extract-studio-host
           fetch-depth: 0
 
-      - name: Download final ankhorage4 host source
+      - name: Download exported ankhorage4 host source
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p .migration/ankhorage4
+          mkdir -p .migration/artifact .migration/ankhorage4
           curl --fail --silent --show-error --location \
-            https://github.com/ankhorage/ankhorage4/archive/6214ac08f229307d473594bb38de2af4f57b049c.tar.gz \
-            | tar --extract --gzip --strip-components=1 --directory .migration/ankhorage4
+            'https://sdmntprpolandcentral.oaiusercontent.com/files/00000000-38c8-720a-a410-f1d3a7291107/raw?se=2026-07-10T21:58:40Z&sp=r&sv=2026-02-06&sr=b&scid=3f998ab6-5cde-57c7-8c21-ecfcdffdc2fb&skoid=d4d17077-8f33-42a9-bd8b-aa9d5eaf5320&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-07-10T05:23:33Z&ske=2026-07-12T05:23:33Z&sks=b&skv=2026-02-06&sig=oKT%2BjMYnJnbbfQJK5yL2d%2B7mLYU6xwlUS21rN4FBLkY%3D' \
+            --output .migration/studio-host-source.zip
+          unzip -q .migration/studio-host-source.zip -d .migration/artifact
+          tar --extract --gzip \
+            --file .migration/artifact/studio-host-source.tar.gz \
+            --directory .migration/ankhorage4
 
       - name: Execute extraction and formatting blocks
         shell: bash
