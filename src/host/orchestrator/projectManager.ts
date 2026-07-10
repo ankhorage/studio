@@ -65,20 +65,24 @@ export class ProjectManager {
           manifest,
         });
 
-        await runProjectInfraScript({
-          rootPath: this.rootPath,
-          projectId,
-          target: infraStatus.target,
-          script: 'down',
-        });
+        try {
+          await runProjectInfraScript({
+            rootPath: this.rootPath,
+            projectId,
+            target: infraStatus.target,
+            script: 'down',
+          });
+          infraDown = true;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          warnings.push(`Infrastructure teardown failed: ${message}`);
+        }
 
         const imageCleanup = await cleanupProjectGeneratedAppImage({
           projectPath,
           target: infraStatus.target,
         });
         warnings.push(...imageCleanup.warnings);
-
-        infraDown = true;
       }
     }
 
