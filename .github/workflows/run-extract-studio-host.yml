@@ -38,7 +38,7 @@ jobs:
             --file .migration/artifact/studio-host-source.tar.gz \
             --directory .migration/ankhorage4
 
-      - name: Execute extraction and formatting blocks
+      - name: Execute host extraction
         shell: bash
         run: |
           set -euo pipefail
@@ -63,11 +63,10 @@ jobs:
                   continue
               index += 1
 
-          if len(blocks) < 2:
-              raise SystemExit('Expected extraction and formatting run blocks.')
+          if not blocks:
+              raise SystemExit('Expected an extraction run block.')
 
-          for block in blocks[:2]:
-              subprocess.run(['bash', '-lc', block], check=True)
+          subprocess.run(['bash', '-lc', blocks[0]], check=True)
           PY
 
       - name: Commit extracted Studio host
