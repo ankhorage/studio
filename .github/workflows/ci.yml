@@ -39,6 +39,9 @@ jobs:
       - name: Typecheck Studio app consumer
         run: bun run type-check:studio
 
+      - name: Bundle Studio web app
+        run: bun run --cwd apps/studio export:web
+
       - name: Run lint
         run: bun run lint
 
