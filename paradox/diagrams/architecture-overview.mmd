@@ -42,6 +42,10 @@ graph TD
   module_src_canvasDropZones_ts --> module_src_index_ts
   module_src_cli_index_ts["src/cli/index.ts"]
   package__ankhorage_studio -.-> module_src_cli_index_ts
+  module_src_cli_index_ts --> module_src_host_createStudioHost_ts
+  module_src_cli_index_ts --> module_src_host_http_server_ts
+  module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_core_constants_ts["src/core/constants.ts"]
   package__ankhorage_studio -.-> module_src_core_constants_ts
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
@@ -66,6 +70,175 @@ graph TD
   package__ankhorage_studio -.-> module_src_hooks_useTemplateSummaries_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_modules_dashboard_types_ts
+  module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
+  package__ankhorage_studio -.-> module_src_host_createStudioHost_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_hostLifecycle_smoke_test_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_hostOwnership_test_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_security_ts["src/host/http/security.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_security_ts
+  module_src_host_http_server_ts["src/host/http/server.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_server_ts
+  module_src_host_http_server_ts --> module_src_host_http_security_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
+  module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_standalone_ts["src/host/http/standalone.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_standalone_ts
+  module_src_host_http_standalone_ts --> module_src_host_http_server_ts
+  module_src_host_index_ts["src/host/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_index_ts
+  module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_layoutGenerator_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_adapter_ts
+  module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_screen_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_auth_session_ts["src/host/layout/templates/auth/session.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_session_ts
+  module_src_host_layout_templates_auth_signOut_ts["src/host/layout/templates/auth/signOut.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_signOut_ts
+  module_src_host_layout_templates_index_ts["src/host/layout/templates/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_index_ts
+  module_src_host_layout_templates_navigation_ts["src/host/layout/templates/navigation.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_navigation_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_nestedLayout_ts["src/host/layout/templates/nestedLayout.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_nestedLayout_ts
+  module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_redirect_ts["src/host/layout/templates/redirect.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_redirect_ts
+  module_src_host_layout_templates_redirect_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_rootLayout_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_screen_ts["src/host/layout/templates/screen.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_screen_ts
+  module_src_host_layout_templates_screen_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_utils_routes_ts["src/host/layout/templates/utils/routes.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_utils_strings_ts["src/host/layout/templates/utils/strings.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_utils_escapeStringLiteral_ts["src/host/layout/utils/escapeStringLiteral.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_manifestSystem_auth_index_ts["src/host/manifestSystem/auth/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_manifestSystem_auth_index_ts
+  module_src_host_manifestSystem_auth_shared_global_auth_system_tpl_ts["src/host/manifestSystem/auth/shared/global.auth.system.tpl.ts"]
+  package__ankhorage_studio -.-> module_src_host_manifestSystem_auth_shared_global_auth_system_tpl_ts
+  module_src_host_manifestSystem_auth_shared_index_ts["src/host/manifestSystem/auth/shared/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_manifestSystem_auth_shared_index_ts
+  module_src_host_manifestSystem_auth_shared_index_ts --> module_src_host_manifestSystem_auth_shared_global_auth_system_tpl_ts
+  module_src_host_manifestSystem_auth_shared_index_ts --> module_src_host_manifestSystem_types_ts
+  module_src_host_manifestSystem_index_ts["src/host/manifestSystem/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_manifestSystem_index_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_auth_index_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_types_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
+  module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
+  package__ankhorage_studio -.-> module_src_host_manifestSystem_types_ts
+  module_src_host_modules_catalog_ts["src/host/modules/catalog.ts"]
+  package__ankhorage_studio -.-> module_src_host_modules_catalog_ts
+  module_src_host_modules_catalog_ts --> module_src_host_modules_layout_ts
+  module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
+  package__ankhorage_studio -.-> module_src_host_modules_layout_ts
+  module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
+  package__ankhorage_studio -.-> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
+  module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_ts
+  module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_infraGenerator_ts["src/host/orchestrator/infraGenerator.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_infraGenerator_ts
+  module_src_host_orchestrator_infraGenerator_ts --> module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_infraRuntime_ts["src/host/orchestrator/infraRuntime.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_orchestrator_infraRuntime_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_infraValidation_ts["src/host/orchestrator/infraValidation.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectDeletion_ts["src/host/orchestrator/projectDeletion.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectDeletion_ts
+  module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_infraGenerator_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectDeletion_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectStore_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_scaffolder_ts["src/host/orchestrator/scaffolder.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_generatedAppFiles_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_workspaceRuntime_ts
+  module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_templateRegistry_index_ts
+  module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
+  package__ankhorage_studio -.-> module_src_host_utils_requirementsInference_ts
+  module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
+  package__ankhorage_studio -.-> module_src_host_utils_trimOutput_ts
+  module_src_host_utils_workspaceRoot_ts["src/host/utils/workspaceRoot.ts"]
+  package__ankhorage_studio -.-> module_src_host_utils_workspaceRoot_ts
+  module_src_host_zoraExtensions_index_ts["src/host/zoraExtensions/index.ts"]
+  package__ankhorage_studio -.-> module_src_host_zoraExtensions_index_ts
+  module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_index_test_ts["src/index.test.ts"]
   package__ankhorage_studio -.-> module_src_index_test_ts
   module_src_index_test_ts --> module_src_index_ts

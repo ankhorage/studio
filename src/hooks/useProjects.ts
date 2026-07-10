@@ -155,7 +155,7 @@ export const useProjects = () => {
       setError(null);
     } catch (err) {
       console.error(err);
-      setError('Could not connect to CLI. Is the bridge server running?');
+      setError('Could not connect to the local Studio host. Run `ankh studio dev`.');
     } finally {
       setIsLoading(false);
     }

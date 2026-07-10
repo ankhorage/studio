@@ -19,6 +19,55 @@ graph LR
   module_src_dnd_state_ts["src/dnd/state.ts"]
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
+  module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
+  module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
+  module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
+  module_src_host_http_security_ts["src/host/http/security.ts"]
+  module_src_host_http_server_ts["src/host/http/server.ts"]
+  module_src_host_http_standalone_ts["src/host/http/standalone.ts"]
+  module_src_host_index_ts["src/host/index.ts"]
+  module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
+  module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
+  module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
+  module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
+  module_src_host_layout_templates_auth_session_ts["src/host/layout/templates/auth/session.ts"]
+  module_src_host_layout_templates_auth_signOut_ts["src/host/layout/templates/auth/signOut.ts"]
+  module_src_host_layout_templates_index_ts["src/host/layout/templates/index.ts"]
+  module_src_host_layout_templates_navigation_ts["src/host/layout/templates/navigation.ts"]
+  module_src_host_layout_templates_nestedLayout_ts["src/host/layout/templates/nestedLayout.ts"]
+  module_src_host_layout_templates_redirect_ts["src/host/layout/templates/redirect.ts"]
+  module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
+  module_src_host_layout_templates_screen_ts["src/host/layout/templates/screen.ts"]
+  module_src_host_layout_templates_utils_routes_ts["src/host/layout/templates/utils/routes.ts"]
+  module_src_host_layout_templates_utils_strings_ts["src/host/layout/templates/utils/strings.ts"]
+  module_src_host_layout_utils_escapeStringLiteral_ts["src/host/layout/utils/escapeStringLiteral.ts"]
+  module_src_host_manifestSystem_auth_index_ts["src/host/manifestSystem/auth/index.ts"]
+  module_src_host_manifestSystem_auth_shared_global_auth_system_tpl_ts["src/host/manifestSystem/auth/shared/global.auth.system.tpl.ts"]
+  module_src_host_manifestSystem_auth_shared_index_ts["src/host/manifestSystem/auth/shared/index.ts"]
+  module_src_host_manifestSystem_index_ts["src/host/manifestSystem/index.ts"]
+  module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
+  module_src_host_modules_catalog_ts["src/host/modules/catalog.ts"]
+  module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
+  module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
+  module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
+  module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
+  module_src_host_orchestrator_infraGenerator_ts["src/host/orchestrator/infraGenerator.ts"]
+  module_src_host_orchestrator_infraRuntime_ts["src/host/orchestrator/infraRuntime.ts"]
+  module_src_host_orchestrator_infraValidation_ts["src/host/orchestrator/infraValidation.ts"]
+  module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
+  module_src_host_orchestrator_projectDeletion_ts["src/host/orchestrator/projectDeletion.ts"]
+  module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
+  module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
+  module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
+  module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
+  module_src_host_orchestrator_scaffolder_ts["src/host/orchestrator/scaffolder.ts"]
+  module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
+  module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
+  module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
+  module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
+  module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
+  module_src_host_utils_workspaceRoot_ts["src/host/utils/workspaceRoot.ts"]
+  module_src_host_zoraExtensions_index_ts["src/host/zoraExtensions/index.ts"]
   module_src_index_test_ts["src/index.test.ts"]
   module_src_index_ts["src/index.ts"]
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
@@ -90,12 +139,87 @@ graph LR
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
+  module_src_cli_index_ts --> module_src_host_createStudioHost_ts
+  module_src_cli_index_ts --> module_src_host_http_server_ts
+  module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_modules_dashboard_types_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_hostOwnership_test_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_server_ts --> module_src_host_http_security_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_server_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
+  module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_standalone_ts --> module_src_host_http_server_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_navigation_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_redirect_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_screen_ts --> module_src_host_layout_templates_utils_strings_ts
+  module_src_host_layout_templates_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_manifestSystem_auth_shared_index_ts --> module_src_host_manifestSystem_auth_shared_global_auth_system_tpl_ts
+  module_src_host_manifestSystem_auth_shared_index_ts --> module_src_host_manifestSystem_types_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_auth_index_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_types_ts
+  module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
+  module_src_host_modules_catalog_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_infraGenerator_ts --> module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_infraRuntime_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_infraGenerator_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectDeletion_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectStore_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts
+  module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_manifestSystem_index_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_generatedAppFiles_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_insertModalModel_public_test_ts --> module_src_index_ts
   module_src_insertModalModel_public_test_ts --> module_src_insertModalModel_ts

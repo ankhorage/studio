@@ -2,13 +2,21 @@ sequenceDiagram
   participant participant_canAcceptChild as canAcceptChild
   participant participant_findNodeById as findNodeById
   participant participant_findNodeWithParent as findNodeWithParent
+  participant participant_normalizeRel as normalizeRel
   participant participant_resolveInsertPlacement as resolveInsertPlacement
+  participant participant_resolveRouteScreenFilePath as resolveRouteScreenFilePath
   participant participant_validateNodePlacement as validateNodePlacement
   participant participant_visit as visit
   participant_resolveInsertPlacement->>participant_findNodeWithParent: findNodeWithParent()
   participant_findNodeWithParent->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
+  participant_visit->>participant_resolveRouteScreenFilePath: resolveRouteScreenFilePath()
+  participant_resolveRouteScreenFilePath->>participant_normalizeRel: normalizeRel()
+  participant_normalizeRel-->>participant_resolveRouteScreenFilePath: return
+  participant_resolveRouteScreenFilePath-->>participant_visit: return
+  participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_findNodeWithParent: return
