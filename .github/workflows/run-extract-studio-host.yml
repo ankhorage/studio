@@ -25,12 +25,12 @@ jobs:
           ref: agent/extract-studio-host
           fetch-depth: 0
 
-      - name: Check out final ankhorage4 host source
-        uses: actions/checkout@v4
-        with:
-          repository: ankhorage/ankhorage4
-          ref: 6214ac08f229307d473594bb38de2af4f57b049c
-          path: .migration/ankhorage4
+      - name: Clone final ankhorage4 host source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none --no-checkout https://github.com/ankhorage/ankhorage4.git .migration/ankhorage4
+          git -C .migration/ankhorage4 checkout 6214ac08f229307d473594bb38de2af4f57b049c
 
       - name: Execute extraction and formatting blocks
         shell: bash
