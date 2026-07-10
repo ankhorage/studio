@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.1
+
+### Patch Changes
+
+- ad74ce0: Emit the root and host package entrypoints, build the parent Studio package before running the nested Expo app, and validate the local app consumer in CI.
+
 ## 0.1.0
 
 ### Minor Changes
