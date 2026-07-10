@@ -136,7 +136,7 @@ export async function getProjectInfrastructureStatus(args: {
   };
 }
 
-export function resolveProjectFile(projectPath: string, filePath: string): string {
+function resolveProjectFile(projectPath: string, filePath: string): string {
   const root = path.resolve(projectPath);
   const resolved = path.resolve(root, filePath);
 

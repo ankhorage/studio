@@ -46,7 +46,7 @@ const defaultCommandRunner: CommandRunner = {
   },
 };
 
-export function getSupabaseContainersForProject(args: {
+function getSupabaseContainersForProject(args: {
   projectId: string;
   containerNames: string[];
 }): string[] {

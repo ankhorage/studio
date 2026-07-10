@@ -34,7 +34,7 @@ export class InfraScriptExecutionError extends Error {
   }
 }
 
-export function resolveProjectInfraScriptPath(args: {
+function resolveProjectInfraScriptPath(args: {
   rootPath: string;
   projectId: string;
   target: string;

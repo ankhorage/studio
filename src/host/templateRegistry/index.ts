@@ -86,7 +86,7 @@ function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest 
   );
 }
 
-export const PROJECT_TEMPLATE_SUMMARIES = createTemplateSummaries();
+const PROJECT_TEMPLATE_SUMMARIES = createTemplateSummaries();
 
 export function getProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
   const summary = PROJECT_TEMPLATE_SUMMARIES.find(

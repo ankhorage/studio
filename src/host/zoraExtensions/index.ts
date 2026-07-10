@@ -78,41 +78,6 @@ export function collectZoraExtensionDependencies(
   }, {});
 }
 
-export function createZoraExtensionComponentRegistrySource(
-  extensions: readonly ZoraExtensionDefinition[],
-): string {
-  const importLines = new Set<string>();
-  const entries = extensions
-    .flatMap((extension) => {
-      for (const exportName of Object.values(extension.components)) {
-        importLines.add(`import { ${exportName} } from '${extension.packageName}';`);
-      }
-
-      return Object.entries(extension.components).map(([componentName, exportName]) => ({
-        componentName,
-        exportName,
-      }));
-    })
-    .sort((left, right) => left.componentName.localeCompare(right.componentName));
-  const imports = [...importLines].sort();
-
-  const registryEntries = entries
-    .map(({ componentName, exportName }) => `  ${formatRegistryKey(componentName)}: ${exportName},`)
-    .join('\n');
-
-  return [
-    "import type { ComponentRegistry } from './registry';",
-    imports.length > 0 ? imports.join('\n') : '',
-    '',
-    'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {',
-    registryEntries,
-    '};',
-    '',
-  ]
-    .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)
-    .join('\n');
-}
-
 function formatRegistryKey(key: string): string {
   if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key)) return key;
   return JSON.stringify(key);
