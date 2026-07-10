@@ -22,6 +22,10 @@ The HTTP routes are transport adapters only. Project generation, manifest persis
 
 The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, bounds command output returned by HTTP, and terminates owned port-forward processes when the host closes.
 
+## Public API
+
+Host consumers import the supported service boundary from `@ankhorage/studio/host`. Internal layout, manifest-system, scaffolding, and process helpers remain private implementation details.
+
 ## Validation
 
 ```bash
