@@ -14,13 +14,13 @@ Source: `src/index.ts:218:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| description | property | `string` | yes |  |
-| label | property | `string` | yes |  |
-| payloadSchema | property | `StudioActionPayloadSchema \| undefined` | no |  |
-| requiresPayload | property | `boolean` | yes |  |
-| type | property | `ActionType` | yes |  |
+| Name            | Kind     | Type                                     | Required | Description |
+| --------------- | -------- | ---------------------------------------- | -------- | ----------- |
+| description     | property | `string`                                 | yes      |             |
+| label           | property | `string`                                 | yes      |             |
+| payloadSchema   | property | `StudioActionPayloadSchema \| undefined` | no       |             |
+| requiresPayload | property | `boolean`                                | yes      |             |
+| type            | property | `ActionType`                             | yes      |             |
 
 ## addNodeToTree
 
@@ -130,18 +130,18 @@ Source: `src/index.ts:196:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| category | property | `string` | yes |  |
-| componentType | property | `string` | yes |  |
-| description | property | `string \| undefined` | no |  |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
-| id | property | `string` | yes |  |
-| kind | property | `"component"` | yes |  |
-| label | property | `string` | yes |  |
-| placement | property | `NodePlacement \| undefined` | no |  |
-| rootType | property | `string` | yes |  |
-| status | property | `InsertCatalogEntryStatus` | yes |  |
+| Name           | Kind     | Type                                       | Required | Description |
+| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
+| category       | property | `string`                                   | yes      |             |
+| componentType  | property | `string`                                   | yes      |             |
+| description    | property | `string \| undefined`                      | no       |             |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
+| id             | property | `string`                                   | yes      |             |
+| kind           | property | `"component"`                              | yes      |             |
+| label          | property | `string`                                   | yes      |             |
+| placement      | property | `NodePlacement \| undefined`               | no       |             |
+| rootType       | property | `string`                                   | yes      |             |
+| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
 
 ## InsertCatalogDisabledReason
 
@@ -151,11 +151,11 @@ Source: `src/index.ts:178:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| code | property | `InsertCatalogDisabledReasonCode` | yes |  |
-| detail | property | `string` | yes |  |
-| issue | property | `InsertRecipeIssue \| undefined` | no |  |
+| Name   | Kind     | Type                              | Required | Description |
+| ------ | -------- | --------------------------------- | -------- | ----------- |
+| code   | property | `InsertCatalogDisabledReasonCode` | yes      |             |
+| detail | property | `string`                          | yes      |             |
+| issue  | property | `InsertRecipeIssue \| undefined`  | no       |             |
 
 ## InsertCatalogDisabledReasonCode
 
@@ -177,17 +177,17 @@ Source: `src/index.ts:184:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| category | property | `string` | yes |  |
-| description | property | `string \| undefined` | no |  |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
-| id | property | `string` | yes |  |
-| kind | property | `InsertCatalogEntryKind` | yes |  |
-| label | property | `string` | yes |  |
-| placement | property | `NodePlacement \| undefined` | no |  |
-| rootType | property | `string` | yes |  |
-| status | property | `InsertCatalogEntryStatus` | yes |  |
+| Name           | Kind     | Type                                       | Required | Description |
+| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
+| category       | property | `string`                                   | yes      |             |
+| description    | property | `string \| undefined`                      | no       |             |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
+| id             | property | `string`                                   | yes      |             |
+| kind           | property | `InsertCatalogEntryKind`                   | yes      |             |
+| label          | property | `string`                                   | yes      |             |
+| placement      | property | `NodePlacement \| undefined`               | no       |             |
+| rootType       | property | `string`                                   | yes      |             |
+| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
 
 ## InsertCatalogEntryKind
 
@@ -209,18 +209,18 @@ Source: `src/index.ts:201:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| category | property | `string` | yes |  |
-| description | property | `string \| undefined` | no |  |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
-| id | property | `string` | yes |  |
-| kind | property | `"recipe"` | yes |  |
-| label | property | `string` | yes |  |
-| placement | property | `NodePlacement \| undefined` | no |  |
-| recipe | property | `InsertRecipe` | yes |  |
-| rootType | property | `string` | yes |  |
-| status | property | `InsertCatalogEntryStatus` | yes |  |
+| Name           | Kind     | Type                                       | Required | Description |
+| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
+| category       | property | `string`                                   | yes      |             |
+| description    | property | `string \| undefined`                      | no       |             |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
+| id             | property | `string`                                   | yes      |             |
+| kind           | property | `"recipe"`                                 | yes      |             |
+| label          | property | `string`                                   | yes      |             |
+| placement      | property | `NodePlacement \| undefined`               | no       |             |
+| recipe         | property | `InsertRecipe`                             | yes      |             |
+| rootType       | property | `string`                                   | yes      |             |
+| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
 
 ## insertNodeAtPlacement
 
@@ -242,12 +242,12 @@ Source: `src/index.ts:858:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| componentMeta | property | `StudioComponentMetaRegistry` | yes |  |
-| makeNode | property | `() => UiNode` | yes |  |
-| placement | property | `NodePlacement` | yes |  |
-| root | property | `UiNode` | yes |  |
+| Name          | Kind     | Type                          | Required | Description |
+| ------------- | -------- | ----------------------------- | -------- | ----------- |
+| componentMeta | property | `StudioComponentMetaRegistry` | yes      |             |
+| makeNode      | property | `() => UiNode`                | yes      |             |
+| placement     | property | `NodePlacement`               | yes      |             |
+| root          | property | `UiNode`                      | yes      |             |
 
 ## InsertNodeAtPlacementResult
 
@@ -257,10 +257,10 @@ Source: `src/index.ts:865:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| insertedNodeId | property | `string` | yes |  |
-| root | property | `UiNode` | yes |  |
+| Name           | Kind     | Type     | Required | Description |
+| -------------- | -------- | -------- | -------- | ----------- |
+| insertedNodeId | property | `string` | yes      |             |
+| root           | property | `UiNode` | yes      |             |
 
 ## InsertRecipe
 
@@ -270,13 +270,13 @@ Source: `src/index.ts:163:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| category | property | `string` | yes |  |
-| description | property | `string \| undefined` | no |  |
-| id | property | `string` | yes |  |
-| label | property | `string` | yes |  |
-| root | property | `InsertRecipeNode` | yes |  |
+| Name        | Kind     | Type                  | Required | Description |
+| ----------- | -------- | --------------------- | -------- | ----------- |
+| category    | property | `string`              | yes      |             |
+| description | property | `string \| undefined` | no       |             |
+| id          | property | `string`              | yes      |             |
+| label       | property | `string`              | yes      |             |
+| root        | property | `InsertRecipeNode`    | yes      |             |
 
 ## InsertRecipeIssue
 
@@ -286,12 +286,12 @@ Source: `src/index.ts:171:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| childType | property | `string \| undefined` | no |  |
-| code | property | `"child-not-allowed" \| "missing-meta"` | yes |  |
-| nodeType | property | `string` | yes |  |
-| path | property | `string[]` | yes |  |
+| Name      | Kind     | Type                                    | Required | Description |
+| --------- | -------- | --------------------------------------- | -------- | ----------- |
+| childType | property | `string \| undefined`                   | no       |             |
+| code      | property | `"child-not-allowed" \| "missing-meta"` | yes      |             |
+| nodeType  | property | `string`                                | yes      |             |
+| path      | property | `string[]`                              | yes      |             |
 
 ## InsertRecipeNode
 
@@ -301,10 +301,10 @@ Source: `src/index.ts:158:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| children | property | `InsertRecipeNode[] \| undefined` | no |  |
-| type | property | `string` | yes |  |
+| Name     | Kind     | Type                              | Required | Description |
+| -------- | -------- | --------------------------------- | -------- | ----------- |
+| children | property | `InsertRecipeNode[] \| undefined` | no       |             |
+| type     | property | `string`                          | yes      |             |
 
 ## ModuleDefinition
 
@@ -314,12 +314,12 @@ Source: `src/index.ts:226:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| description | property | `string` | yes |  |
-| id | property | `string` | yes |  |
-| name | property | `string` | yes |  |
-| ui | property | `{ modal?: { title: string; }; } \| undefined` | no |  |
+| Name        | Kind     | Type                                           | Required | Description |
+| ----------- | -------- | ---------------------------------------------- | -------- | ----------- |
+| description | property | `string`                                       | yes      |             |
+| id          | property | `string`                                       | yes      |             |
+| name        | property | `string`                                       | yes      |             |
+| ui          | property | `{ modal?: { title: string; }; } \| undefined` | no       |             |
 
 ## moveNodeInTree
 
@@ -355,12 +355,12 @@ Source: `src/index.ts:942:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| componentMeta | property | `StudioComponentMetaRegistry` | yes |  |
-| nodeId | property | `string` | yes |  |
-| placement | property | `NodePlacement` | yes |  |
-| root | property | `UiNode` | yes |  |
+| Name          | Kind     | Type                          | Required | Description |
+| ------------- | -------- | ----------------------------- | -------- | ----------- |
+| componentMeta | property | `StudioComponentMetaRegistry` | yes      |             |
+| nodeId        | property | `string`                      | yes      |             |
+| placement     | property | `NodePlacement`               | yes      |             |
+| root          | property | `UiNode`                      | yes      |             |
 
 ## MoveNodeToPlacementResult
 
@@ -370,10 +370,10 @@ Source: `src/index.ts:949:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| movedNodeId | property | `string` | yes |  |
-| root | property | `UiNode` | yes |  |
+| Name        | Kind     | Type     | Required | Description |
+| ----------- | -------- | -------- | -------- | ----------- |
+| movedNodeId | property | `string` | yes      |             |
+| root        | property | `UiNode` | yes      |             |
 
 ## NodePlacement
 
@@ -383,12 +383,12 @@ Source: `src/index.ts:114:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| index | property | `number` | yes |  |
-| kind | property | `PlacementKind` | yes |  |
-| parentId | property | `string` | yes |  |
-| referenceId | property | `string \| undefined` | no |  |
+| Name        | Kind     | Type                  | Required | Description |
+| ----------- | -------- | --------------------- | -------- | ----------- |
+| index       | property | `number`              | yes      |             |
+| kind        | property | `PlacementKind`       | yes      |             |
+| parentId    | property | `string`              | yes      |             |
+| referenceId | property | `string \| undefined` | no       |             |
 
 ## PlacementFailureCode
 
@@ -404,10 +404,10 @@ Source: `src/index.ts:133:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| code | property | `PlacementFailureCode` | yes |  |
-| message | property | `string` | yes |  |
+| Name    | Kind     | Type                   | Required | Description |
+| ------- | -------- | ---------------------- | -------- | ----------- |
+| code    | property | `PlacementFailureCode` | yes      |             |
+| message | property | `string`               | yes      |             |
 
 ## PlacementKind
 
@@ -482,11 +482,11 @@ Kind: `value`
 Module: `src/index.ts`
 Source: `src/index.ts:1050:14`
 
-| id | label | description | category |
-| --- | --- | --- | --- |
-| screen-section | Screen section | A screen section with a starter heading. | recipe |
-| panel-stack | Panel stack | Panel with a stack starter. | recipe |
-| card-heading | Card heading | Card with a headline. | recipe |
+| id             | label          | description                              | category |
+| -------------- | -------------- | ---------------------------------------- | -------- |
+| screen-section | Screen section | A screen section with a starter heading. | recipe   |
+| panel-stack    | Panel stack    | Panel with a stack starter.              | recipe   |
+| card-heading   | Card heading   | Card with a headline.                    | recipe   |
 
 ## STUDIO_PACKAGE_BOUNDARY
 
@@ -514,11 +514,11 @@ Source: `src/index.ts:210:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| label | property | `string` | yes |  |
-| required | property | `boolean \| undefined` | no |  |
-| type | property | `StudioActionPayloadPrimitive` | yes |  |
+| Name     | Kind     | Type                           | Required | Description |
+| -------- | -------- | ------------------------------ | -------- | ----------- |
+| label    | property | `string`                       | yes      |             |
+| required | property | `boolean \| undefined`         | no       |             |
+| type     | property | `StudioActionPayloadPrimitive` | yes      |             |
 
 ## StudioActionPayloadPrimitive
 
@@ -552,10 +552,10 @@ Source: `src/index.ts:235:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| defaultProps | property | `Record<string, unknown> \| undefined` | no |  |
-| label | property | `string \| undefined` | no |  |
+| Name         | Kind     | Type                                   | Required | Description |
+| ------------ | -------- | -------------------------------------- | -------- | ----------- |
+| defaultProps | property | `Record<string, unknown> \| undefined` | no       |             |
+| label        | property | `string \| undefined`                  | no       |             |
 
 ## StudioComponentMeta
 
@@ -565,12 +565,12 @@ Source: `src/index.ts:240:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| allowedChildren | property | `readonly string[]` | yes |  |
-| blueprint | property | `StudioComponentBlueprint \| undefined` | no |  |
-| category | property | `string` | yes |  |
-| directManifestNode | property | `boolean \| undefined` | no |  |
+| Name               | Kind     | Type                                    | Required | Description |
+| ------------------ | -------- | --------------------------------------- | -------- | ----------- |
+| allowedChildren    | property | `readonly string[]`                     | yes      |             |
+| blueprint          | property | `StudioComponentBlueprint \| undefined` | no       |             |
+| category           | property | `string`                                | yes      |             |
+| directManifestNode | property | `boolean \| undefined`                  | no       |             |
 
 ## StudioComponentMetaRegistry
 
@@ -586,55 +586,55 @@ Source: `src/index.ts:267:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| activeAdminRoutePath | property | `StudioAdminRoutePath` | yes |  |
-| activeCanvasDragNodeId | property | `string \| null` | yes |  |
-| activeLocale | property | `string` | yes |  |
-| activePanelId | property | `StudioPanelId \| null` | yes |  |
-| activeScreenId | property | `string \| null` | yes |  |
-| addScreen | property | `(name: string) => void` | yes |  |
-| addTheme | property | `() => void` | yes |  |
-| deleteNode | property | `(id: StudioNodeId) => void` | yes |  |
-| deleteScreen | property | `(id: StudioScreenId) => void` | yes |  |
-| deleteTheme | property | `(id: string) => void` | yes |  |
-| error | property | `string \| null` | yes |  |
-| findNode | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null` | yes |  |
-| insertFromCatalogEntry | property | `(entry: InsertCatalogEntry) => boolean` | yes |  |
-| isLoading | property | `boolean` | yes |  |
-| manifest | property | `StudioManifest \| null` | yes |  |
-| moveNode | property | `(id: StudioNodeId, direction: "up" \| "down") => void` | yes |  |
-| moveNodeToPlacement | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean` | yes |  |
-| previewMode | property | `boolean` | yes |  |
-| projectId | property | `string` | yes |  |
-| refetchManifest | property | `() => Promise<void>` | yes |  |
-| reloadDictionaries | property | `() => Promise<void>` | yes |  |
-| reorderScreens | property | `(newRoutes: RouteDefinition[]) => void` | yes |  |
-| rootNode | property | `UiNode \| null` | yes |  |
-| saveStatus | property | `StudioSaveStatus` | yes |  |
-| selectedNodeId | property | `string \| null` | yes |  |
-| selectNode | property | `(id: StudioNodeId \| null) => void` | yes |  |
-| sessionId | property | `string \| undefined` | no |  |
-| setActiveAdminRoutePath | property | `(routePath: StudioAdminRoutePath) => void` | yes |  |
-| setActiveCanvasDragNodeId | property | `(nodeId: StudioNodeId \| null) => void` | yes |  |
-| setActiveLocale | property | `(locale: StudioLocale) => void` | yes |  |
-| setActivePanelId | property | `(panelId: StudioPanelId \| null) => void` | yes |  |
-| setActiveScreenId | property | `(id: StudioScreenId) => void` | yes |  |
-| setActiveThemeId | property | `(id: string) => void` | yes |  |
-| setActiveThemeMode | property | `(mode: StudioMode) => void` | yes |  |
-| setNavigatorInitialRoute | property | `(routeName: string) => void` | yes |  |
-| setNavigatorType | property | `(type: NavigatorType) => void` | yes |  |
-| setStudioMode | property | `(mode: StudioMode) => void` | yes |  |
-| studioMode | property | `StudioMode` | yes |  |
-| t | property | `(key: string) => string` | yes |  |
-| togglePreviewMode | property | `() => void` | yes |  |
-| updateAppData | property | `(data: AppDataManifest) => void` | yes |  |
-| updateDataBindings | property | `(dataBindings: ComponentDataBindingRegistry) => void` | yes |  |
-| updateDataSources | property | `(dataSources: DataSourceRegistry) => void` | yes |  |
-| updateModuleConfig | property | `(moduleId: StudioModuleId, config: Record<string, unknown>) => void` | yes |  |
-| updateNode | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void` | yes |  |
-| updateOAuthProviders | property | `(providers: AuthOAuthProviderConfig[]) => void` | yes |  |
-| updateTheme | property | `(id: string, updates: ThemeUpdates) => void` | yes |  |
+| Name                      | Kind     | Type                                                                  | Required | Description |
+| ------------------------- | -------- | --------------------------------------------------------------------- | -------- | ----------- |
+| activeAdminRoutePath      | property | `StudioAdminRoutePath`                                                | yes      |             |
+| activeCanvasDragNodeId    | property | `string \| null`                                                      | yes      |             |
+| activeLocale              | property | `string`                                                              | yes      |             |
+| activePanelId             | property | `StudioPanelId \| null`                                               | yes      |             |
+| activeScreenId            | property | `string \| null`                                                      | yes      |             |
+| addScreen                 | property | `(name: string) => void`                                              | yes      |             |
+| addTheme                  | property | `() => void`                                                          | yes      |             |
+| deleteNode                | property | `(id: StudioNodeId) => void`                                          | yes      |             |
+| deleteScreen              | property | `(id: StudioScreenId) => void`                                        | yes      |             |
+| deleteTheme               | property | `(id: string) => void`                                                | yes      |             |
+| error                     | property | `string \| null`                                                      | yes      |             |
+| findNode                  | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                  | yes      |             |
+| insertFromCatalogEntry    | property | `(entry: InsertCatalogEntry) => boolean`                              | yes      |             |
+| isLoading                 | property | `boolean`                                                             | yes      |             |
+| manifest                  | property | `StudioManifest \| null`                                              | yes      |             |
+| moveNode                  | property | `(id: StudioNodeId, direction: "up" \| "down") => void`               | yes      |             |
+| moveNodeToPlacement       | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`         | yes      |             |
+| previewMode               | property | `boolean`                                                             | yes      |             |
+| projectId                 | property | `string`                                                              | yes      |             |
+| refetchManifest           | property | `() => Promise<void>`                                                 | yes      |             |
+| reloadDictionaries        | property | `() => Promise<void>`                                                 | yes      |             |
+| reorderScreens            | property | `(newRoutes: RouteDefinition[]) => void`                              | yes      |             |
+| rootNode                  | property | `UiNode \| null`                                                      | yes      |             |
+| saveStatus                | property | `StudioSaveStatus`                                                    | yes      |             |
+| selectedNodeId            | property | `string \| null`                                                      | yes      |             |
+| selectNode                | property | `(id: StudioNodeId \| null) => void`                                  | yes      |             |
+| sessionId                 | property | `string \| undefined`                                                 | no       |             |
+| setActiveAdminRoutePath   | property | `(routePath: StudioAdminRoutePath) => void`                           | yes      |             |
+| setActiveCanvasDragNodeId | property | `(nodeId: StudioNodeId \| null) => void`                              | yes      |             |
+| setActiveLocale           | property | `(locale: StudioLocale) => void`                                      | yes      |             |
+| setActivePanelId          | property | `(panelId: StudioPanelId \| null) => void`                            | yes      |             |
+| setActiveScreenId         | property | `(id: StudioScreenId) => void`                                        | yes      |             |
+| setActiveThemeId          | property | `(id: string) => void`                                                | yes      |             |
+| setActiveThemeMode        | property | `(mode: StudioMode) => void`                                          | yes      |             |
+| setNavigatorInitialRoute  | property | `(routeName: string) => void`                                         | yes      |             |
+| setNavigatorType          | property | `(type: NavigatorType) => void`                                       | yes      |             |
+| setStudioMode             | property | `(mode: StudioMode) => void`                                          | yes      |             |
+| studioMode                | property | `StudioMode`                                                          | yes      |             |
+| t                         | property | `(key: string) => string`                                             | yes      |             |
+| togglePreviewMode         | property | `() => void`                                                          | yes      |             |
+| updateAppData             | property | `(data: AppDataManifest) => void`                                     | yes      |             |
+| updateDataBindings        | property | `(dataBindings: ComponentDataBindingRegistry) => void`                | yes      |             |
+| updateDataSources         | property | `(dataSources: DataSourceRegistry) => void`                           | yes      |             |
+| updateModuleConfig        | property | `(moduleId: StudioModuleId, config: Record<string, unknown>) => void` | yes      |             |
+| updateNode                | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`      | yes      |             |
+| updateOAuthProviders      | property | `(providers: AuthOAuthProviderConfig[]) => void`                      | yes      |             |
+| updateTheme               | property | `(id: string, updates: ThemeUpdates) => void`                         | yes      |             |
 
 ## StudioEvent
 
@@ -686,11 +686,11 @@ Source: `src/index.ts:17:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| consumes | property | `readonly string[]` | yes |  |
-| doesNotOwn | property | `readonly string[]` | yes |  |
-| owns | property | `readonly string[]` | yes |  |
+| Name       | Kind     | Type                | Required | Description |
+| ---------- | -------- | ------------------- | -------- | ----------- |
+| consumes   | property | `readonly string[]` | yes      |             |
+| doesNotOwn | property | `readonly string[]` | yes      |             |
+| owns       | property | `readonly string[]` | yes      |             |
 
 ## StudioPanelId
 
@@ -730,13 +730,13 @@ Source: `src/index.ts:93:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| activeAdminRoutePath | property | `StudioAdminRoutePath` | yes |  |
-| activeCanvasDragNodeId | property | `string \| null` | yes |  |
-| activePanelId | property | `StudioPanelId \| null` | yes |  |
-| activeScreenId | property | `string \| null` | yes |  |
-| selectedNodeId | property | `string \| null` | yes |  |
+| Name                   | Kind     | Type                    | Required | Description |
+| ---------------------- | -------- | ----------------------- | -------- | ----------- |
+| activeAdminRoutePath   | property | `StudioAdminRoutePath`  | yes      |             |
+| activeCanvasDragNodeId | property | `string \| null`        | yes      |             |
+| activePanelId          | property | `StudioPanelId \| null` | yes      |             |
+| activeScreenId         | property | `string \| null`        | yes      |             |
+| selectedNodeId         | property | `string \| null`        | yes      |             |
 
 ## StudioSessionId
 
@@ -752,16 +752,16 @@ Source: `src/index.ts:101:1`
 
 ### Members
 
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| activeLocale | property | `string` | yes |  |
-| error | property | `string \| null` | yes |  |
-| isLoading | property | `boolean` | yes |  |
-| previewMode | property | `boolean` | yes |  |
-| projectId | property | `string` | yes |  |
-| saveStatus | property | `StudioSaveStatus` | yes |  |
-| sessionId | property | `string \| undefined` | no |  |
-| studioMode | property | `StudioMode` | yes |  |
+| Name         | Kind     | Type                  | Required | Description |
+| ------------ | -------- | --------------------- | -------- | ----------- |
+| activeLocale | property | `string`              | yes      |             |
+| error        | property | `string \| null`      | yes      |             |
+| isLoading    | property | `boolean`             | yes      |             |
+| previewMode  | property | `boolean`             | yes      |             |
+| projectId    | property | `string`              | yes      |             |
+| saveStatus   | property | `StudioSaveStatus`    | yes      |             |
+| sessionId    | property | `string \| undefined` | no       |             |
+| studioMode   | property | `StudioMode`          | yes      |             |
 
 ## ThemeUpdates
 
