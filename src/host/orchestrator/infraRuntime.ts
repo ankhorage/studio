@@ -139,8 +139,8 @@ export async function stopAllProjectInfraPortForwards() {
       await new Promise<void>((resolve) => {
         const timer = setTimeout(resolve, 1_000);
         child.once('close', () => {
-clearTimeout(timer);
-resolve();
+          clearTimeout(timer);
+          resolve();
         });
         child.kill('SIGTERM');
       });

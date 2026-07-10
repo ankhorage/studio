@@ -1,6 +1,6 @@
+import { stopAllProjectInfraPortForwards } from './orchestrator/infraRuntime';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { stopAllProjectInfraPortForwards } from './orchestrator/infraRuntime';
 
 export interface CreateStudioHostOptions {
   readonly workspaceRoot: string;

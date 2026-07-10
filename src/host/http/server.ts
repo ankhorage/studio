@@ -661,9 +661,7 @@ export interface StartStudioHostServerOptions {
   readonly projectRoot?: string;
 }
 
-export async function startStudioHostServer(
-  options: number | StartStudioHostServerOptions = {},
-) {
+export async function startStudioHostServer(options: number | StartStudioHostServerOptions = {}) {
   const resolvedOptions = typeof options === 'number' ? { port: options } : options;
   const projectRoot = resolvedOptions.projectRoot ?? resolveWorkspaceRoot(import.meta.dirname);
   const orchestrator = new ModuleManager(projectRoot);

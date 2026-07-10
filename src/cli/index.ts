@@ -5,8 +5,8 @@ import type { AnkhCommandHandler, AnkhRuntimeCommandProvider } from '@ankhorage/
 
 import { createStudioHost } from '../host/createStudioHost';
 import { startStudioHostServer } from '../host/http/server';
-import { resolveWorkspaceRoot } from '../host/utils/workspaceRoot';
 import type { ProjectTemplateSelection } from '../host/templateRegistry';
+import { resolveWorkspaceRoot } from '../host/utils/workspaceRoot';
 
 const STUDIO_PACKAGE_NAME = '@ankhorage/studio';
 const STUDIO_COMMAND_CATEGORY = 'studio';
@@ -22,12 +22,42 @@ const STUDIO_CAPABILITIES = [
 ] as const;
 
 const COMMANDS = [
-  { path: ['dev'], capability: 'studio.dev', summary: 'Start the local Studio host and first-party Studio app.', examples: ['ankh studio dev'] },
-  { path: ['projects', 'list'], capability: 'studio.projects.list', summary: 'List projects in the Studio workspace.', examples: ['ankh studio projects list'] },
-  { path: ['projects', 'create'], capability: 'studio.projects.create', summary: 'Create a Studio project from a template.', examples: ['ankh studio projects create --name Shop --category commerce --template blank'] },
-  { path: ['projects', 'delete'], capability: 'studio.projects.delete', summary: 'Delete a Studio project.', examples: ['ankh studio projects delete shop'] },
-  { path: ['projects', 'sync'], capability: 'studio.projects.sync', summary: 'Synchronize generated app host files.', examples: ['ankh studio projects sync shop'] },
-  { path: ['workspace', 'install'], capability: 'studio.workspace.install', summary: 'Install packages required by the Studio workspace.', examples: ['ankh studio workspace install'] },
+  {
+    path: ['dev'],
+    capability: 'studio.dev',
+    summary: 'Start the local Studio host and first-party Studio app.',
+    examples: ['ankh studio dev'],
+  },
+  {
+    path: ['projects', 'list'],
+    capability: 'studio.projects.list',
+    summary: 'List projects in the Studio workspace.',
+    examples: ['ankh studio projects list'],
+  },
+  {
+    path: ['projects', 'create'],
+    capability: 'studio.projects.create',
+    summary: 'Create a Studio project from a template.',
+    examples: ['ankh studio projects create --name Shop --category commerce --template blank'],
+  },
+  {
+    path: ['projects', 'delete'],
+    capability: 'studio.projects.delete',
+    summary: 'Delete a Studio project.',
+    examples: ['ankh studio projects delete shop'],
+  },
+  {
+    path: ['projects', 'sync'],
+    capability: 'studio.projects.sync',
+    summary: 'Synchronize generated app host files.',
+    examples: ['ankh studio projects sync shop'],
+  },
+  {
+    path: ['workspace', 'install'],
+    capability: 'studio.workspace.install',
+    summary: 'Install packages required by the Studio workspace.',
+    examples: ['ankh studio workspace install'],
+  },
 ] as const;
 
 type CommandPath = (typeof COMMANDS)[number]['path'];
@@ -175,7 +205,9 @@ function parseCreateProjectArgs(argv: readonly string[]): {
   const category = readFlag(argv, '--category');
   const templateId = readFlag(argv, '--template');
   if (name === null || category === null || templateId === null) {
-    throw new Error('Usage: ankh studio projects create --name <name> --category <category> --template <templateId>');
+    throw new Error(
+      'Usage: ankh studio projects create --name <name> --category <category> --template <templateId>',
+    );
   }
   return { name, category: category as ProjectTemplateSelection['category'], templateId };
 }

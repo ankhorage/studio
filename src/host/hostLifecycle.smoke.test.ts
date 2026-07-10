@@ -1,7 +1,8 @@
-import { expect, test } from 'bun:test';
-import { mkdtemp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+
+import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -9,11 +10,13 @@ import { getTemplateSummaries } from './templateRegistry';
 
 async function collectSourceFiles(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
-  const nested = await Promise.all(entries.map(async (entry) => {
-    const target = path.join(root, entry.name);
-    if (entry.isDirectory()) return collectSourceFiles(target);
-    return /\.(?:json|js|ts|tsx)$/u.test(entry.name) ? [target] : [];
-  }));
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const target = path.join(root, entry.name);
+      if (entry.isDirectory()) return collectSourceFiles(target);
+      return /\.(?:json|js|ts|tsx)$/u.test(entry.name) ? [target] : [];
+    }),
+  );
   return nested.flat();
 }
 
@@ -46,7 +49,9 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
     projectId: created.id,
     manifest: { ...manifest, metadata: { ...manifest.metadata, name: 'Edited Smoke App' } },
   });
-  expect((await projectManager.getStudioManifest(created.id)).metadata.name).toBe('Edited Smoke App');
+  expect((await projectManager.getStudioManifest(created.id)).metadata.name).toBe(
+    'Edited Smoke App',
+  );
 
   const generatedFiles = await collectSourceFiles(created.path);
   for (const file of generatedFiles) {
@@ -57,5 +62,7 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   expect(infrastructure).toBeDefined();
 
   await projectManager.deleteProject(created.id);
-  expect((await projectManager.listProjects()).some((project) => project.id === created.id)).toBe(false);
+  expect((await projectManager.listProjects()).some((project) => project.id === created.id)).toBe(
+    false,
+  );
 });

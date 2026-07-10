@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v0.0.20](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v0.0.21](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Standalone Studio authoring package for Ankhorage apps.
 
@@ -20,7 +20,6 @@ Standalone Studio authoring package for Ankhorage apps.
 - [cloneWithNewIds sequence](././paradox/diagrams/sequences/clone-with-new-ids.mmd)
 - [createNodeFromCatalogEntry sequence](././paradox/diagrams/sequences/create-node-from-catalog-entry.mmd)
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
-- [resolveDefaultInsertPlacement sequence](././paradox/diagrams/sequences/resolve-default-insert-placement.mmd)
 - [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [validateInsertRecipe sequence](././paradox/diagrams/sequences/validate-insert-recipe.mmd)

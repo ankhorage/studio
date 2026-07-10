@@ -181,11 +181,14 @@ async function exists(p: string) {
   }
 }
 
-
 async function writeJsonAtomic(filePath: string, value: unknown) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}
-`, 'utf8');
+  await fs.writeFile(
+    temporaryPath,
+    `${JSON.stringify(value, null, 2)}
+`,
+    'utf8',
+  );
   await fs.rename(temporaryPath, filePath);
 }

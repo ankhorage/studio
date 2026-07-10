@@ -1,10 +1,14 @@
-export { createStudioHost, type CreateStudioHostOptions, type StudioHost } from './createStudioHost';
+export {
+  createStudioHost,
+  type CreateStudioHostOptions,
+  type StudioHost,
+} from './createStudioHost';
+export { isOriginAllowed } from './http/security';
 export {
   createStudioHostServer,
   startStudioHostServer,
   type StartStudioHostServerOptions,
 } from './http/server';
-export { isOriginAllowed } from './http/security';
 export { ModuleManager } from './orchestrator/moduleManager';
 export { ProjectManager } from './orchestrator/projectManager';
 export { assertProjectId, getAppsRoot, getProjectPath } from './orchestrator/projectPaths';

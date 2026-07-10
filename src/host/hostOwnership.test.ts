@@ -1,11 +1,12 @@
-import { describe, expect, test } from 'bun:test';
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { describe, expect, test } from 'bun:test';
+
+import { isOriginAllowed } from './http/security';
 import { assertProjectId, getProjectPath } from './orchestrator/projectPaths';
 import { resolveWorkspaceRoot } from './utils/workspaceRoot';
-import { isOriginAllowed } from './http/security';
 
 describe('local Studio host ownership', () => {
   test('rejects path traversal and the reserved Studio app id', () => {
