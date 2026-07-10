@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.2
+
+### Patch Changes
+
+- 2ea1c50: Make the executable Studio app own the SDK-compatible native modules reachable through Zora, align SDK 54 autolinking resolution, and validate the real Expo web bundle in CI.
+
 ## 0.1.1
 
 ### Patch Changes
