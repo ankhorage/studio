@@ -32,7 +32,16 @@ jobs:
           bun-version: '1.3.13'
 
       - name: Refresh lockfile
-        run: bun install --no-frozen-lockfile
+        run: bun install --no-frozen-lockfile > bun-install.log 2>&1
+
+      - name: Upload Bun install output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-workspace-install
+          path: bun-install.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Commit lockfile
         run: |
