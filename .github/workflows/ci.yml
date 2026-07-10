@@ -29,6 +29,16 @@ jobs:
       - name: Run build
         run: bun run build
 
+      - name: Check package entrypoints
+        run: |
+          test -f dist/root.js
+          test -f dist/root.d.ts
+          test -f dist/host/index.js
+          test -f dist/host/index.d.ts
+
+      - name: Typecheck Studio app consumer
+        run: bun run type-check:studio
+
       - name: Run lint
         run: bun run lint
 
