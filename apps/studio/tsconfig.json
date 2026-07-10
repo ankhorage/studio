@@ -6,7 +6,8 @@
     "module": "esnext",
     "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@ankhorage/studio": ["../../dist/root.d.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

@@ -12,6 +12,7 @@ module.exports = function (api) {
           alias: {
             '@': './src',
             '@root': './',
+            '@ankhorage/studio': '../../dist/root.js',
           },
         },
       ],
