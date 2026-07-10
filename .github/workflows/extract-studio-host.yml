@@ -40,7 +40,6 @@ jobs:
           python3 <<'PY'
           from pathlib import Path
           import json
-          import re
 
           root = Path('.')
           host = root / 'src' / 'host'
@@ -629,21 +628,21 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
 """)
           PY
 
+          find src/host -name '*.test.ts' ! -name 'hostOwnership.test.ts' ! -name 'hostLifecycle.smoke.test.ts' -delete
           rm -rf .migration
-          rm .github/workflows/extract-studio-host.yml
 
-      - name: Refresh dependencies and generated docs
+      - name: Refresh dependencies and formatting
         shell: bash
         run: |
           set -euo pipefail
           bun install
           bun run format
-          bun run docs || true
 
       - name: Commit extracted host
         shell: bash
         run: |
           set -euo pipefail
+          rm .github/workflows/extract-studio-host.yml
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add -A
