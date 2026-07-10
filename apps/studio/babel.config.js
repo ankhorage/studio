@@ -1,5 +1,7 @@
 /* global module */
 
+const path = require('node:path');
+
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -12,6 +14,7 @@ module.exports = function (api) {
           alias: {
             '@': './src',
             '@root': './',
+            '@ankhorage/studio': path.resolve(__dirname, '../../dist/root.js'),
           },
         },
       ],
