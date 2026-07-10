@@ -77,8 +77,3 @@ export function collectZoraExtensionDependencies(
     };
   }, {});
 }
-
-function formatRegistryKey(key: string): string {
-  if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key)) return key;
-  return JSON.stringify(key);
-}
