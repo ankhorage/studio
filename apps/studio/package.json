@@ -4,12 +4,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "bun x tsc -p tsconfig.json",
-    "type-check": "bun x tsc -p tsconfig.json",
-    "start": "expo start",
-    "web": "expo start --web",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "prepare:root-package": "bun run --cwd ../.. build",
+    "build": "bun run prepare:root-package && bun x tsc -p tsconfig.json",
+    "type-check": "bun run prepare:root-package && bun x tsc -p tsconfig.json",
+    "start": "bun run prepare:root-package && expo start",
+    "web": "bun run prepare:root-package && expo start --web",
+    "android": "bun run prepare:root-package && expo start --android",
+    "ios": "bun run prepare:root-package && expo start --ios",
     "lint": "expo lint"
   },
   "dependencies": {
