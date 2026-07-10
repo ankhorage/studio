@@ -25,12 +25,14 @@ jobs:
           ref: agent/extract-studio-host
           fetch-depth: 0
 
-      - name: Clone final ankhorage4 host source
+      - name: Download final ankhorage4 host source
         shell: bash
         run: |
           set -euo pipefail
-          git clone --filter=blob:none --no-checkout https://github.com/ankhorage/ankhorage4.git .migration/ankhorage4
-          git -C .migration/ankhorage4 checkout 6214ac08f229307d473594bb38de2af4f57b049c
+          mkdir -p .migration/ankhorage4
+          curl --fail --silent --show-error --location \
+            https://github.com/ankhorage/ankhorage4/archive/6214ac08f229307d473594bb38de2af4f57b049c.tar.gz \
+            | tar --extract --gzip --strip-components=1 --directory .migration/ankhorage4
 
       - name: Execute extraction and formatting blocks
         shell: bash
