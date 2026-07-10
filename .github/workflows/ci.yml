@@ -39,19 +39,7 @@ jobs:
         run: bun run knip
 
       - name: Run tests
-        shell: bash
-        run: |
-          set -o pipefail
-          bun run test 2>&1 | tee studio-host-tests.log
-
-      - name: Upload test log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: studio-host-tests
-          path: studio-host-tests.log
-          if-no-files-found: ignore
-          retention-days: 1
+        run: bun run test
 
       - name: Run typecheck
         run: bun run typecheck
