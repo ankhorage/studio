@@ -1,0 +1,45 @@
+name: Capture Studio host lint
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      github.event.pull_request.head.ref == 'agent/extract-studio-host'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Studio branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/extract-studio-host
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Capture lint output
+        shell: bash
+        run: |
+          set -euo pipefail
+          bun install
+          bun run lint > studio-host-lint.log 2>&1 || true
+
+      - name: Upload lint output
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-host-lint
+          path: studio-host-lint.log
+          if-no-files-found: error
+          retention-days: 1
