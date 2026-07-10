@@ -37,7 +37,16 @@ jobs:
           test -f dist/host/index.d.ts
 
       - name: Typecheck Studio app consumer
-        run: bun run type-check:studio
+        run: bun run type-check:studio > studio-app-typecheck.log 2>&1
+
+      - name: Upload Studio app typecheck output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-app-typecheck
+          path: studio-app-typecheck.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Run lint
         run: bun run lint
