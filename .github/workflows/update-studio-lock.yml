@@ -1,0 +1,44 @@
+name: Update Studio workspace lockfile
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: write
+
+jobs:
+  update-lock:
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      github.event.pull_request.head.ref == 'agent/fix-local-studio-package-resolution'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout hotfix branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/fix-local-studio-package-resolution
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Refresh lockfile
+        run: bun install --no-frozen-lockfile
+
+      - name: Commit lockfile
+        run: |
+          rm .github/workflows/update-studio-lock.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add bun.lock .github/workflows/update-studio-lock.yml
+          git commit -m "Link Studio app through the workspace"
+          git push origin HEAD:agent/fix-local-studio-package-resolution
