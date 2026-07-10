@@ -1,0 +1,103 @@
+name: Fix Studio host lifecycle behavior
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: >-
+      github.actor != 'github-actions[bot]' &&
+      github.event.pull_request.head.ref == 'agent/extract-studio-host'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Studio branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/extract-studio-host
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Fix lifecycle behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          workspace = Path('src/host/utils/workspaceRoot.ts')
+          text = workspace.read_text()
+          old = '  const candidates = [cwd, fromDir];'
+          new = '  const candidates = [fromDir, cwd];'
+          if old not in text:
+              raise SystemExit('Could not locate workspace candidate order.')
+          workspace.write_text(text.replace(old, new, 1))
+
+          manager = Path('src/host/orchestrator/projectManager.ts')
+          text = manager.read_text()
+          old = """        await runProjectInfraScript({
+          rootPath: this.rootPath,
+          projectId,
+          target: infraStatus.target,
+          script: 'down',
+        });
+
+        const imageCleanup = await cleanupProjectGeneratedAppImage({
+          projectPath,
+          target: infraStatus.target,
+        });
+        warnings.push(...imageCleanup.warnings);
+
+        infraDown = true;
+"""
+          new = """        try {
+          await runProjectInfraScript({
+            rootPath: this.rootPath,
+            projectId,
+            target: infraStatus.target,
+            script: 'down',
+          });
+          infraDown = true;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          warnings.push(`Infrastructure teardown failed: ${message}`);
+        }
+
+        const imageCleanup = await cleanupProjectGeneratedAppImage({
+          projectPath,
+          target: infraStatus.target,
+        });
+        warnings.push(...imageCleanup.warnings);
+"""
+          if old not in text:
+              raise SystemExit('Could not locate project infrastructure teardown block.')
+          manager.write_text(text.replace(old, new, 1))
+          PY
+
+          bun install
+          bun run format
+          bun test src/host/hostOwnership.test.ts src/host/hostLifecycle.smoke.test.ts
+
+      - name: Commit lifecycle fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/capture-studio-host-tests.yml
+          rm .github/workflows/fix-studio-host-lifecycle-tests.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Make Studio host cleanup resilient"
+          git push origin HEAD:agent/extract-studio-host
