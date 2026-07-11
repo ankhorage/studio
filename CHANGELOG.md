@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.3.0
+
+### Minor Changes
+
+- bf89543: Add metadata-only authentication and project-secret administration screens backed by the canonical server-side secret bridge.
+
 ## 0.2.0
 
 ### Minor Changes
