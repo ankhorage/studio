@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.5
+
+### Patch Changes
+
+- 7d7d517: Initialize generated Studio development layouts with the runtime manifest so auth routes can mount and redirect.
+
 ## 0.1.4
 
 ### Patch Changes
