@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.4
+
+### Patch Changes
+
+- 6ffa28e: Include generated apps in workspace installs and export the Studio runtime symbols consumed by generated layouts.
+
 ## 0.1.3
 
 ### Patch Changes
