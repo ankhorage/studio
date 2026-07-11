@@ -419,13 +419,13 @@ const shouldMountAppHeader = ${
   return `
 ${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
 
+${moduleLevelDeclarations}
+
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 const runtimeComponentRegistry = {
   ...ZORA_COMPONENT_REGISTRY,
   ...APP_EXTENSION_COMPONENT_REGISTRY,
 };
-
-${moduleLevelDeclarations}
 
 function resolveZoraProviderTheme(theme: AppManifest['themes'][number]) {
   return {
