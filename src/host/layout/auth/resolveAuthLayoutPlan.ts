@@ -1,4 +1,9 @@
-import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import {
+  type AppManifest,
+  type NavigatorSpec,
+  resolveAuthFlow,
+  type RouteDefinition,
+} from '@ankhorage/contracts';
 import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
@@ -59,10 +64,11 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     return createDisabledPlan();
   }
 
-  const signInRoute = manifest.settings.authFlow.signInRoute.trim();
-  const signUpRoute = manifest.settings.authFlow.signUpRoute?.trim() ?? '';
-  const signOutRoute = manifest.settings.authFlow.signOutRoute?.trim() ?? '';
-  const postSignInRoute = manifest.settings.authFlow.postSignInRoute.trim();
+  const flow = resolveAuthFlow(auth.flow);
+  const signInRoute = flow.signInRoute.trim();
+  const signUpRoute = flow.signUpRoute?.trim() ?? '';
+  const signOutRoute = flow.signOutRoute?.trim() ?? '';
+  const postSignInRoute = flow.postSignInRoute.trim();
   if (!signInRoute || !signUpRoute || !signOutRoute || !postSignInRoute) {
     return createDisabledPlan();
   }
@@ -76,7 +82,12 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     return createDisabledPlan();
   }
 
-  const publicRoutes = collectPublicRoutes(manifest, signInRouteName, signUpRouteName);
+  const publicRoutes = collectPublicRoutes(
+    manifest,
+    flow.unauthorizedRoute,
+    signInRouteName,
+    signUpRouteName,
+  );
   const groupedNavigators = getGroupedAuthNavigators(manifest);
   const hasSignOutRoute = groupedNavigators
     ? groupedNavigators.appNavigator.routes.some((route) => route.name === signOutRouteName)
@@ -328,7 +339,6 @@ function partitionRootNavigatorForAuth(
     includeAuthSignOutRoute,
     signOutRouteName,
   );
-
   const authNavigator: NavigatorSpec = {
     type: 'stack',
     initialRouteName: signInRoute,
@@ -357,11 +367,12 @@ function buildGeneratedAuthRoute(args: {
 
 function collectPublicRoutes(
   manifest: AppManifest,
+  unauthorizedRoute: string | undefined,
   signInRouteName: string,
   signUpRouteName: string,
 ): string[] {
   const unauthorizedRouteName = authFlowPathToRouteName(
-    manifest.settings.authFlow.unauthorizedRoute?.trim() ?? signInRouteName,
+    unauthorizedRoute?.trim() ?? signInRouteName,
   );
   const publicRoutes = new Set<string>([
     signInRouteName,

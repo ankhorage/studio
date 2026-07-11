@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.0.21",
+      "value": "v0.1.5",
       "color": "cb3837"
     },
     {
@@ -102,6 +102,12 @@
         "src/modules/dashboard/ui/TemplateCard.tsx"
       ],
       "exports": ["StudioDashboard"]
+    },
+    {
+      "path": "src/authFlowContract.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "src/canvasDragModel.public.test.ts",
@@ -418,6 +424,12 @@
       ]
     },
     {
+      "path": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/auth/resolveAuthLayoutPlan.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -504,6 +516,12 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/utils/escapeStringLiteral.ts"],
       "exports": ["getIndexRedirectRouteTsx"]
+    },
+    {
+      "path": "src/host/layout/templates/rootLayout.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/templates/rootLayout.ts"],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/rootLayout.ts",
@@ -622,7 +640,6 @@
         "getProjectInfrastructureStatus",
         "InfraStatusResult",
         "InfraSyncResult",
-        "resolveProjectFile",
         "syncProjectInfrastructure"
       ]
     },
@@ -635,7 +652,6 @@
         "InfraLifecycleScript",
         "InfraScriptExecutionError",
         "InfraScriptOutput",
-        "resolveProjectInfraScriptPath",
         "runProjectInfraScript",
         "runProjectInfraScriptCapture",
         "stopAllProjectInfraPortForwards"
@@ -665,7 +681,6 @@
       "exports": [
         "cleanupProjectGeneratedAppImage",
         "CommandRunner",
-        "getSupabaseContainersForProject",
         "ProjectGeneratedAppImageCleanupResult",
         "ProjectSupabaseCleanupResult",
         "stopProjectSupabaseContainers"
@@ -753,7 +768,6 @@
       "exports": [
         "getProjectTemplate",
         "getTemplateSummaries",
-        "PROJECT_TEMPLATE_SUMMARIES",
         "ProjectTemplateSelection",
         "ProjectTemplateSummary"
       ]
@@ -782,7 +796,6 @@
       "dependencies": ["src/host/templateRegistry/index.ts"],
       "exports": [
         "collectZoraExtensionDependencies",
-        "createZoraExtensionComponentRegistrySource",
         "mergeZoraExtensions",
         "resolveZoraExtensionsForTemplateSelection",
         "resolveZoraExtensionsFromDependencies",
@@ -1100,6 +1113,12 @@
       "exports": ["TemplateCard"]
     },
     {
+      "path": "src/root.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
       "path": "src/root.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -1107,6 +1126,7 @@
         "ACTION_REGISTRY",
         "ActionDefinition",
         "addNodeToTree",
+        "AnkhStudio",
         "buildInsertCatalogEntries",
         "canAcceptChild",
         "cloneWithNewIds",
@@ -1168,6 +1188,7 @@
         "StudioPackageBoundary",
         "StudioPanelId",
         "StudioProjectId",
+        "StudioProvider",
         "StudioPublicContract",
         "StudioSaveStatus",
         "StudioScreenId",
@@ -1177,6 +1198,8 @@
         "ThemeUpdates",
         "TPL_SCREEN_EMPTY",
         "updateNodeInTree",
+        "useStudio",
+        "useStudioAppBarAugmentation",
         "validateInsertRecipe",
         "validateNodePlacement"
       ]
@@ -4260,6 +4283,15 @@
       }
     },
     {
+      "name": "collectFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authFlowContract.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioCanvasDragPayload",
       "description": null,
       "sourceLocation": {
@@ -4809,11 +4841,20 @@
       }
     },
     {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveAuthLayoutPlan",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 55,
+        "line": 60,
         "column": 1
       }
     },
@@ -4822,7 +4863,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 141,
+        "line": 152,
         "column": 1
       }
     },
@@ -4831,7 +4872,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 150,
+        "line": 161,
         "column": 1
       }
     },
@@ -4840,7 +4881,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 176,
+        "line": 187,
         "column": 1
       }
     },
@@ -4849,7 +4890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 187,
+        "line": 198,
         "column": 9
       }
     },
@@ -4858,7 +4899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 214,
+        "line": 225,
         "column": 1
       }
     },
@@ -4867,7 +4908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 221,
+        "line": 232,
         "column": 1
       }
     },
@@ -4876,7 +4917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 241,
+        "line": 252,
         "column": 1
       }
     },
@@ -4885,7 +4926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 265,
+        "line": 276,
         "column": 1
       }
     },
@@ -4894,7 +4935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 285,
+        "line": 296,
         "column": 1
       }
     },
@@ -4903,7 +4944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 312,
+        "line": 323,
         "column": 1
       }
     },
@@ -4912,7 +4953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 341,
+        "line": 351,
         "column": 1
       }
     },
@@ -4921,7 +4962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 358,
+        "line": 368,
         "column": 1
       }
     },
@@ -4930,7 +4971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 372,
+        "line": 383,
         "column": 9
       }
     },
@@ -4939,7 +4980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 391,
+        "line": 402,
         "column": 1
       }
     },
@@ -4948,7 +4989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 405,
+        "line": 416,
         "column": 1
       }
     },
@@ -4957,7 +4998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 409,
+        "line": 420,
         "column": 1
       }
     },
@@ -6046,7 +6087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 462,
+        "line": 466,
         "column": 1
       }
     },
@@ -6055,7 +6096,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 471,
+        "line": 475,
         "column": 1
       }
     },
@@ -6064,7 +6105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 482,
+        "line": 486,
         "column": 1
       }
     },
@@ -6073,7 +6114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 491,
+        "line": 495,
         "column": 1
       }
     },
@@ -6082,7 +6123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 500,
+        "line": 504,
         "column": 1
       }
     },
@@ -6524,24 +6565,6 @@
       "sourceLocation": {
         "filePath": "src/host/zoraExtensions/index.ts",
         "line": 70,
-        "column": 1
-      }
-    },
-    {
-      "name": "createZoraExtensionComponentRegistrySource",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 81,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatRegistryKey",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 116,
         "column": 1
       }
     },
@@ -6991,7 +7014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.test.ts",
-        "line": 10,
+        "line": 25,
         "column": 1
       }
     },
@@ -7000,7 +7023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.test.ts",
-        "line": 14,
+        "line": 29,
         "column": 1
       }
     },
@@ -7009,7 +7032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 42,
+        "line": 48,
         "column": 1
       }
     },
@@ -7018,7 +7041,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 47,
+        "line": 53,
         "column": 1
       }
     },
@@ -7027,7 +7050,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 70,
+        "line": 76,
         "column": 1
       }
     },
@@ -7036,7 +7059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 75,
+        "line": 81,
         "column": 1
       }
     },
@@ -7045,7 +7068,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 80,
+        "line": 86,
         "column": 1
       }
     },
@@ -7054,7 +7077,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 98,
+        "line": 104,
         "column": 1
       }
     },
@@ -7063,7 +7086,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 113,
+        "line": 119,
         "column": 1
       }
     },
@@ -7072,7 +7095,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 132,
+        "line": 138,
         "column": 1
       }
     },
@@ -7081,7 +7104,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 146,
+        "line": 152,
         "column": 1
       }
     },
@@ -7090,7 +7113,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 179,
+        "line": 185,
         "column": 1
       }
     },
@@ -7099,7 +7122,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 185,
+        "line": 191,
         "column": 1
       }
     },
@@ -7108,7 +7131,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 215,
+        "line": 221,
         "column": 1
       }
     },
@@ -7117,7 +7140,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 241,
+        "line": 247,
         "column": 1
       }
     },
@@ -7680,6 +7703,15 @@
       }
     },
     {
+      "name": "createAuthInfra",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestSync.test.ts",
+        "line": 72,
+        "column": 11
+      }
+    },
+    {
       "name": "createRuntimeScreenSignatures",
       "description": null,
       "sourceLocation": {
@@ -7702,7 +7734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestSync.ts",
-        "line": 37,
+        "line": 36,
         "column": 1
       }
     },
@@ -8413,7 +8445,27 @@
       },
       {
         "fromPath": "src/root.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/core/StudioProvider.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
         "toPath": "src/index.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/ui/AnkhStudio.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/ui/useStudioAppBarAugmentation.ts",
         "sourcePath": "src/root.ts"
       },
       {
@@ -8987,6 +9039,11 @@
         "sourcePath": "src/modules/dashboard/templates.ts"
       },
       {
+        "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
         "fromPath": "src/host/layout/templates/index.ts",
         "toPath": "src/host/layout/templates/rootLayout.ts",
         "sourcePath": "src/host/layout/templates/index.ts"
@@ -9050,6 +9107,11 @@
         "fromPath": "src/host/layout/templates/redirect.ts",
         "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
         "sourcePath": "src/host/layout/templates/redirect.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/rootLayout.test.ts",
+        "toPath": "src/host/layout/templates/rootLayout.ts",
+        "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/rootLayout.ts",
@@ -9134,6 +9196,66 @@
         "toSymbol": "defineParadoxConfig",
         "callExpression": "defineParadoxConfig",
         "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "collectFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "collectFiles",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "collectFiles",
+        "toSymbol": "collectFiles",
+        "callExpression": "collectFiles",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "collectFiles",
+        "callExpression": "collectFiles",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "basename",
+        "callExpression": "basename",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authFlowContract.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/authFlowContract.test.ts"
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
@@ -9914,6 +10036,12 @@
         "toSymbol": "resolveLeafScreenIdForChromeRouteName",
         "callExpression": "resolveLeafScreenIdForChromeRouteName",
         "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
+      },
+      {
+        "fromSymbol": "collectAuthFlowRouteNames",
+        "toSymbol": "resolveAuthFlow",
+        "callExpression": "resolveAuthFlow",
+        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
       },
       {
         "fromSymbol": "collectAuthFlowRouteNames",
@@ -10762,10 +10890,28 @@
         "sourcePath": "src/manifestSync.test.ts"
       },
       {
+        "fromSymbol": "src/manifestSync.test.ts",
+        "toSymbol": "createAuthInfra",
+        "callExpression": "createAuthInfra",
+        "sourcePath": "src/manifestSync.test.ts"
+      },
+      {
         "fromSymbol": "createStudioRuntimeSyncSignature",
         "toSymbol": "createRuntimeScreenSignatures",
         "callExpression": "createRuntimeScreenSignatures",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromSymbol": "src/root.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/root.test.ts"
+      },
+      {
+        "fromSymbol": "src/root.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/root.test.ts"
       },
       {
         "fromSymbol": "src/routeUtils.public.test.ts",
@@ -15142,12 +15288,6 @@
         "sourcePath": "src/host/utils/workspaceRoot.ts"
       },
       {
-        "fromSymbol": "src/host/zoraExtensions/index.ts",
-        "toSymbol": "formatRegistryKey",
-        "callExpression": "formatRegistryKey",
-        "sourcePath": "src/host/zoraExtensions/index.ts"
-      },
-      {
         "fromSymbol": "promptProjectName",
         "toSymbol": "isWeb",
         "callExpression": "isWeb",
@@ -15190,9 +15330,45 @@
         "sourcePath": "src/modules/dashboard/search.ts"
       },
       {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "resolveAuthLayoutPlan",
+        "callExpression": "resolveAuthLayoutPlan",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
         "fromSymbol": "resolveAuthLayoutPlan",
         "toSymbol": "createDisabledPlan",
         "callExpression": "createDisabledPlan",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveAuthLayoutPlan",
+        "toSymbol": "resolveAuthFlow",
+        "callExpression": "resolveAuthFlow",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -15554,6 +15730,24 @@
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
         "sourcePath": "src/host/layout/templates/redirect.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/rootLayout.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/rootLayout.test.ts",
+        "toSymbol": "getRootLayoutTsx",
+        "callExpression": "getRootLayoutTsx",
+        "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/rootLayout.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/rootLayout.ts",

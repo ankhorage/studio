@@ -68,6 +68,26 @@ describe('manifestSync', () => {
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });
 
+  test('tracks canonical infra auth flow changes in runtime signatures', () => {
+    const createAuthInfra = (signInRoute: string): StudioManifest['infra'] => ({
+      auth: {
+        scope: 'global',
+        provider: 'supabase',
+        flow: {
+          signInRoute,
+          postSignInRoute: '/',
+        },
+      },
+      plugins: [],
+    });
+    const first = createManifest({ infra: createAuthInfra('sign-in') });
+    const second = createManifest({ infra: createAuthInfra('login') });
+
+    expect(createStudioRuntimeSyncSignature(first)).not.toBe(
+      createStudioRuntimeSyncSignature(second),
+    );
+  });
+
   test('normalizes plugin order in runtime signatures', () => {
     const first = createManifest({ infra: { modulesConfig: {}, plugins: ['b', 'a'] } });
     const second = createManifest({ infra: { modulesConfig: {}, plugins: ['a', 'b'] } });

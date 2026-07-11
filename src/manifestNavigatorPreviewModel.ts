@@ -1,4 +1,10 @@
-import type { AppManifest, IconSpec, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import {
+  type AppManifest,
+  type IconSpec,
+  type NavigatorSpec,
+  resolveAuthFlow,
+  type RouteDefinition,
+} from '@ankhorage/contracts';
 
 import {
   collectScreenRouteEntries,
@@ -45,7 +51,7 @@ function normalizeAuthFlowPathToRouteName(routePath: string): string {
 }
 
 function collectAuthFlowRouteNames(manifest: AppManifest): Set<string> {
-  const flow = manifest.settings.authFlow;
+  const flow = resolveAuthFlow(manifest.infra.auth?.flow);
   const routeNames = new Set<string>();
 
   const candidates: (string | undefined)[] = [
