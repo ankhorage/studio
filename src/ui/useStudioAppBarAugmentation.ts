@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import { useStudio } from '../core/StudioContext';
 import { StudioAdminOverlay, type StudioPhase2AdminRoute } from './StudioAdminOverlay';
+import { StudioAuthSettingsOverlay } from './StudioAuthSettingsOverlay';
 
 export interface StudioAppBarAugmentation {
   appMode?: unknown;
@@ -46,14 +47,21 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
     }),
   );
 
-  const overlay = activeRoute
-    ? React.createElement(StudioAdminOverlay, {
-        route: activeRoute,
-        projectId: studio.projectId,
-        manifest: studio.manifest,
-        onClose: closeOverlay,
-      })
-    : null;
+  const overlay =
+    activeRoute === '/ankh/auth'
+      ? React.createElement(StudioAuthSettingsOverlay, {
+          projectId: studio.projectId,
+          manifest: studio.manifest,
+          onClose: closeOverlay,
+        })
+      : activeRoute === '/ankh/secrets'
+        ? React.createElement(StudioAdminOverlay, {
+            route: activeRoute,
+            projectId: studio.projectId,
+            manifest: studio.manifest,
+            onClose: closeOverlay,
+          })
+        : null;
 
   return {
     actions,
