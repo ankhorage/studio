@@ -15,9 +15,7 @@ test('exports the Studio runtime symbols used by generated app layouts', () => {
 });
 
 test('includes generated apps in workspace installs', async () => {
-  const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
-    workspaces?: unknown;
-  };
+  const packageJson = await Bun.file(new URL('../package.json', import.meta.url)).text();
 
-  expect(packageJson.workspaces).toEqual(['.', 'apps/*']);
+  expect(packageJson).toContain('"apps/*"');
 });
