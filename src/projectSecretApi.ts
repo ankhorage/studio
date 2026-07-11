@@ -1,8 +1,6 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
 import type { SecretMetadata, SecretPayload } from '@ankhorage/contracts/secrets';
 
-import { API_BASE } from './core/constants';
-
 const FORBIDDEN_SECRET_RESPONSE_KEYS = new Set([
   'clientSecret',
   'payload',
@@ -217,6 +215,7 @@ async function requestJson(
   init?: RequestInit,
   allowStructuredFailure = false,
 ): Promise<unknown> {
+  const { API_BASE } = await import('./core/constants');
   const response = await fetch(`${API_BASE}${path}`, init);
   const value = await readJson(response);
 
