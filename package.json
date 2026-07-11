@@ -208,7 +208,7 @@
     "app-builder"
   ],
   "dependencies": {
-    "@ankhorage/contracts": "^2.0.0",
+    "@ankhorage/contracts": "^2.1.0",
     "@ankhorage/expo-runtime": "^0.0.10",
     "@ankhorage/infra": "^0.3.7",
     "@ankhorage/orchestrator": "^0.2.4",
