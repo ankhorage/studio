@@ -3,6 +3,11 @@ export {
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
+export {
+  ProjectAuthService,
+  type ProjectAuthSettingsResult,
+} from './auth/projectAuthService';
+export { registerProjectAuthRoutes } from './http/authRoutes';
 export { registerProjectSecretRoutes } from './http/secretRoutes';
 export { isOriginAllowed } from './http/security';
 export {
@@ -10,6 +15,7 @@ export {
   startStudioHostServer,
   type StartStudioHostServerOptions,
 } from './http/server';
+export { startStudioHostServerWithSecrets } from './http/serverWithSecrets';
 export { ModuleManager } from './orchestrator/moduleManager';
 export { ProjectManager } from './orchestrator/projectManager';
 export { assertProjectId, getAppsRoot, getProjectPath } from './orchestrator/projectPaths';
