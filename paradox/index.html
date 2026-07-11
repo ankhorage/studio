@@ -894,6 +894,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/projectSecretApi.ts">
+                src/projectSecretApi.ts
+                <small>19 functions</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/routeUtils.public.test.ts">
                 src/routeUtils.public.test.ts
                 <small>1 function</small>
@@ -994,6 +1000,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/ui/StudioAdminOverlay.tsx">
+                src/ui/StudioAdminOverlay.tsx
+                <small>15 functions</small>
+              </button>
+            </li>
+            <li>
               <button
                 class="nav-button"
                 type="button"
@@ -1013,7 +1025,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>133</strong><span class="muted">modules</span></div>
+              <div><strong>136</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2407,6 +2419,36 @@
               <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
               <p><strong>Exports:</strong> <code>TemplateCard</code></p>
             </article>
+            <article
+              class="item"
+              data-search="src/projectSecretApi.test.ts src/projectSecretApi.ts"
+            >
+              <h3>src/projectSecretApi.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/projectSecretApi.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/projectSecretApi.ts src/core/constants.ts configureProjectOAuthProvider ConfigureProjectOAuthProviderInput ConfigureProjectOAuthProviderResponse createProjectSecret listProjectSecrets parseConfigureProjectOAuthProviderResponse parseProjectSecretListResponse parseProjectSecretMetadataResponse parseProjectSecretRemoveResponse ProjectSecretApiError ProjectSecretCreateInput ProjectSecretRemoveInput ProjectSecretReplaceInput removeProjectSecret replaceProjectSecret"
+            >
+              <h3>src/projectSecretApi.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>configureProjectOAuthProvider</code>,
+                <code>ConfigureProjectOAuthProviderInput</code>,
+                <code>ConfigureProjectOAuthProviderResponse</code>,
+                <code>createProjectSecret</code>, <code>listProjectSecrets</code>,
+                <code>parseConfigureProjectOAuthProviderResponse</code>,
+                <code>parseProjectSecretListResponse</code>,
+                <code>parseProjectSecretMetadataResponse</code>,
+                <code>parseProjectSecretRemoveResponse</code>, <code>ProjectSecretApiError</code>,
+                <code>ProjectSecretCreateInput</code>, <code>ProjectSecretRemoveInput</code>,
+                <code>ProjectSecretReplaceInput</code>, <code>removeProjectSecret</code>,
+                <code>replaceProjectSecret</code>
+              </p>
+            </article>
             <article class="item" data-search="src/root.test.ts">
               <h3>src/root.test.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2743,11 +2785,26 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/useStudioAppBarAugmentation.ts StudioAppBarAugmentation useStudioAppBarAugmentation"
+              data-search="src/ui/StudioAdminOverlay.tsx src/projectSecretApi.ts StudioAdminOverlay StudioAdminOverlayProps StudioPhase2AdminRoute"
+            >
+              <h3>src/ui/StudioAdminOverlay.tsx</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/projectSecretApi.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>StudioAdminOverlay</code>,
+                <code>StudioAdminOverlayProps</code>, <code>StudioPhase2AdminRoute</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/useStudioAppBarAugmentation.ts src/core/StudioContext.ts src/ui/StudioAdminOverlay.tsx StudioAppBarAugmentation useStudioAppBarAugmentation"
             >
               <h3>src/ui/useStudioAppBarAugmentation.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
+                <code>src/ui/StudioAdminOverlay.tsx</code>
+              </p>
               <p>
                 <strong>Exports:</strong> <code>StudioAppBarAugmentation</code>,
                 <code>useStudioAppBarAugmentation</code>
@@ -6041,6 +6098,12 @@
                 package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
                 module_src_modules_dashboard_ui_TemplateCard_tsx --&gt;
                 module_src_modules_dashboard_types_ts
+                module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_projectSecretApi_test_ts
+                module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
+                module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_projectSecretApi_ts
+                module_src_projectSecretApi_ts --&gt; module_src_core_constants_ts
                 module_src_root_test_ts[&quot;src/root.test.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_root_test_ts module_src_root_ts[&quot;src/root.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_root_ts
@@ -6110,8 +6173,14 @@
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
                 module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_tsx
+                module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_ui_StudioAdminOverlay_tsx
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
                 module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -6472,6 +6541,12 @@ graph TD
   module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
+  module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_projectSecretApi_test_ts
+  module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts --&gt; module_src_core_constants_ts
   module_src_root_test_ts[&quot;src/root.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_root_test_ts
   module_src_root_ts[&quot;src/root.ts&quot;]
@@ -6538,8 +6613,13 @@ graph TD
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_tsx
+  module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioAdminOverlay_tsx
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -6658,6 +6738,8 @@ graph TD
                 module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
                 module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
                 module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
+                module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+                module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
                 module_src_root_test_ts[&quot;src/root.test.ts&quot;]
                 module_src_root_ts[&quot;src/root.ts&quot;]
                 module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
@@ -6684,6 +6766,7 @@ graph TD
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
@@ -6890,7 +6973,9 @@ graph TD
                 module_src_modules_dashboard_ui_ProjectCard_tsx --&gt;
                 module_src_modules_dashboard_types_ts
                 module_src_modules_dashboard_ui_TemplateCard_tsx --&gt;
-                module_src_modules_dashboard_types_ts module_src_routeUtils_public_test_ts --&gt;
+                module_src_modules_dashboard_types_ts module_src_projectSecretApi_test_ts --&gt;
+                module_src_projectSecretApi_ts module_src_projectSecretApi_ts --&gt;
+                module_src_core_constants_ts module_src_routeUtils_public_test_ts --&gt;
                 module_src_routeUtils_ts module_src_routeUtils_test_ts --&gt;
                 module_src_routeUtils_ts module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
@@ -6905,7 +6990,10 @@ graph TD
                 --&gt; module_src_index_ts module_src_studioSelectionModel_knip_test_ts --&gt;
                 module_src_studioSelectionModel_ts module_src_studioSelectionModel_test_ts --&gt;
                 module_src_studioSelectionModel_ts module_src_ui_AnkhStudio_ts --&gt;
-                module_src_core_StudioContext_ts module_src_utils_treeUtils_ts --&gt;
+                module_src_core_StudioContext_ts module_src_ui_StudioAdminOverlay_tsx --&gt;
+                module_src_projectSecretApi_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_ui_StudioAdminOverlay_tsx module_src_utils_treeUtils_ts --&gt;
                 module_src_index_ts
               </div>
               <details>
@@ -7017,6 +7105,8 @@ graph LR
   module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
   module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
   module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
+  module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+  module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
   module_src_root_test_ts[&quot;src/root.test.ts&quot;]
   module_src_root_ts[&quot;src/root.ts&quot;]
   module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
@@ -7043,6 +7133,7 @@ graph LR
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
@@ -7185,6 +7276,8 @@ graph LR
   module_src_modules_dashboard_templates_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_ProjectCard_tsx --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
+  module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts --&gt; module_src_core_constants_ts
   module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
   module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
@@ -7199,6 +7292,9 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioAdminOverlay_tsx
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
 </pre>
               </details>
@@ -7312,6 +7408,8 @@ graph LR
                 module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
                 module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
                 module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
+                module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+                module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
                 module_src_root_test_ts[&quot;src/root.test.ts&quot;]
                 module_src_root_ts[&quot;src/root.ts&quot;]
                 module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
@@ -7338,6 +7436,7 @@ graph LR
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;] module_src_index_ts --&gt;
@@ -7637,6 +7736,8 @@ graph LR
   module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
   module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
   module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
+  module_src_projectSecretApi_test_ts[&quot;src/projectSecretApi.test.ts&quot;]
+  module_src_projectSecretApi_ts[&quot;src/projectSecretApi.ts&quot;]
   module_src_root_test_ts[&quot;src/root.test.ts&quot;]
   module_src_root_ts[&quot;src/root.ts&quot;]
   module_src_routeUtils_public_test_ts[&quot;src/routeUtils.public.test.ts&quot;]
@@ -7663,6 +7764,7 @@ graph LR
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   export_ACTION_REGISTRY[&quot;ACTION_REGISTRY&quot;]
@@ -11887,6 +11989,126 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-projectsecretapi-ts"
+          class="view"
+          data-view="src/projectSecretApi.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/projectSecretApi.ts</h2>
+            <article class="item" data-search="listProjectSecrets src/projectSecretApi.ts ">
+              <h3>listProjectSecrets</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:78:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createProjectSecret src/projectSecretApi.ts ">
+              <h3>createProjectSecret</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:95:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="replaceProjectSecret src/projectSecretApi.ts ">
+              <h3>replaceProjectSecret</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:112:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="removeProjectSecret src/projectSecretApi.ts ">
+              <h3>removeProjectSecret</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:127:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="configureProjectOAuthProvider src/projectSecretApi.ts "
+            >
+              <h3>configureProjectOAuthProvider</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:136:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseProjectSecretListResponse src/projectSecretApi.ts "
+            >
+              <h3>parseProjectSecretListResponse</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:159:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseProjectSecretMetadataResponse src/projectSecretApi.ts "
+            >
+              <h3>parseProjectSecretMetadataResponse</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:167:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseProjectSecretRemoveResponse src/projectSecretApi.ts "
+            >
+              <h3>parseProjectSecretRemoveResponse</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:175:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseConfigureProjectOAuthProviderResponse src/projectSecretApi.ts "
+            >
+              <h3>parseConfigureProjectOAuthProviderResponse</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:182:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="requestJson src/projectSecretApi.ts ">
+              <h3>requestJson</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:215:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readJson src/projectSecretApi.ts ">
+              <h3>readJson</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:236:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="parseHttpError src/projectSecretApi.ts ">
+              <h3>parseHttpError</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:248:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readResult src/projectSecretApi.ts ">
+              <h3>readResult</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:266:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="parseSecretMetadata src/projectSecretApi.ts ">
+              <h3>parseSecretMetadata</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:274:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="parseError src/projectSecretApi.ts ">
+              <h3>parseError</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:311:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createQuery src/projectSecretApi.ts ">
+              <h3>createQuery</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:319:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="asRecord src/projectSecretApi.ts ">
+              <h3>asRecord</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:329:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isStringArray src/projectSecretApi.ts ">
+              <h3>isStringArray</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:335:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createInvalidResponseError src/projectSecretApi.ts ">
+              <h3>createInvalidResponseError</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:339:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-routeutils-public-test-ts"
           class="view"
           data-view="src/routeUtils.public.test.ts"
@@ -12218,6 +12440,91 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-ui-studioadminoverlay-tsx"
+          class="view"
+          data-view="src/ui/StudioAdminOverlay.tsx"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/StudioAdminOverlay.tsx</h2>
+            <article class="item" data-search="createField src/ui/StudioAdminOverlay.tsx ">
+              <h3>createField</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:48:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="StudioAdminOverlay src/ui/StudioAdminOverlay.tsx ">
+              <h3>StudioAdminOverlay</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:52:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="SecretsAdmin src/ui/StudioAdminOverlay.tsx ">
+              <h3>SecretsAdmin</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:91:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="AuthAdmin src/ui/StudioAdminOverlay.tsx ">
+              <h3>AuthAdmin</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:304:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="useSecretInventory src/ui/StudioAdminOverlay.tsx ">
+              <h3>useSecretInventory</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:481:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="Card src/ui/StudioAdminOverlay.tsx ">
+              <h3>Card</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:505:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="Field src/ui/StudioAdminOverlay.tsx ">
+              <h3>Field</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:520:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="Input src/ui/StudioAdminOverlay.tsx ">
+              <h3>Input</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:531:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="InventoryRow src/ui/StudioAdminOverlay.tsx ">
+              <h3>InventoryRow</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:550:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="ProviderTab src/ui/StudioAdminOverlay.tsx ">
+              <h3>ProviderTab</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:577:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="PrimaryButton src/ui/StudioAdminOverlay.tsx ">
+              <h3>PrimaryButton</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:601:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="SecondaryButton src/ui/StudioAdminOverlay.tsx ">
+              <h3>SecondaryButton</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:624:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="KeyValue src/ui/StudioAdminOverlay.tsx ">
+              <h3>KeyValue</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:647:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="Message src/ui/StudioAdminOverlay.tsx ">
+              <h3>Message</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:660:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="toMessage src/ui/StudioAdminOverlay.tsx ">
+              <h3>toMessage</h3>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:669:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-ui-usestudioappbaraugmentation-ts"
           class="view"
           data-view="src/ui/useStudioAppBarAugmentation.ts"
@@ -12230,7 +12537,7 @@ sequenceDiagram
               data-search="useStudioAppBarAugmentation src/ui/useStudioAppBarAugmentation.ts "
             >
               <h3>useStudioAppBarAugmentation</h3>
-              <p class="muted"><code>src/ui/useStudioAppBarAugmentation.ts:10:1</code></p>
+              <p class="muted"><code>src/ui/useStudioAppBarAugmentation.ts:14:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

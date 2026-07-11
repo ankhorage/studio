@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.1.6",
+      "value": "v0.2.0",
       "color": "cb3837"
     },
     {
@@ -1184,6 +1184,34 @@
       "exports": ["TemplateCard"]
     },
     {
+      "path": "src/projectSecretApi.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectSecretApi.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/projectSecretApi.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/constants.ts"],
+      "exports": [
+        "configureProjectOAuthProvider",
+        "ConfigureProjectOAuthProviderInput",
+        "ConfigureProjectOAuthProviderResponse",
+        "createProjectSecret",
+        "listProjectSecrets",
+        "parseConfigureProjectOAuthProviderResponse",
+        "parseProjectSecretListResponse",
+        "parseProjectSecretMetadataResponse",
+        "parseProjectSecretRemoveResponse",
+        "ProjectSecretApiError",
+        "ProjectSecretCreateInput",
+        "ProjectSecretRemoveInput",
+        "ProjectSecretReplaceInput",
+        "removeProjectSecret",
+        "replaceProjectSecret"
+      ]
+    },
+    {
       "path": "src/root.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -1503,9 +1531,15 @@
       "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
+      "path": "src/ui/StudioAdminOverlay.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectSecretApi.ts"],
+      "exports": ["StudioAdminOverlay", "StudioAdminOverlayProps", "StudioPhase2AdminRoute"]
+    },
+    {
       "path": "src/ui/useStudioAppBarAugmentation.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/core/StudioContext.ts", "src/ui/StudioAdminOverlay.tsx"],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
     {
@@ -8135,6 +8169,177 @@
       }
     },
     {
+      "name": "listProjectSecrets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectSecret",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "replaceProjectSecret",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeProjectSecret",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "configureProjectOAuthProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 136,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectSecretListResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 159,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectSecretMetadataResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 167,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectSecretRemoveResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseConfigureProjectOAuthProviderResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 215,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 236,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseHttpError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 248,
+        "column": 1
+      }
+    },
+    {
+      "name": "readResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 266,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseSecretMetadata",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 274,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 311,
+        "column": 1
+      }
+    },
+    {
+      "name": "createQuery",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 319,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 335,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInvalidResponseError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectSecretApi.ts",
+        "line": 339,
+        "column": 1
+      }
+    },
+    {
       "name": "buildRoutes",
       "description": null,
       "sourceLocation": {
@@ -8396,11 +8601,146 @@
       }
     },
     {
+      "name": "createField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioAdminOverlay",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecretsAdmin",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "AuthAdmin",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 304,
+        "column": 1
+      }
+    },
+    {
+      "name": "useSecretInventory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 481,
+        "column": 1
+      }
+    },
+    {
+      "name": "Card",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 505,
+        "column": 1
+      }
+    },
+    {
+      "name": "Field",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 520,
+        "column": 1
+      }
+    },
+    {
+      "name": "Input",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 531,
+        "column": 1
+      }
+    },
+    {
+      "name": "InventoryRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 550,
+        "column": 1
+      }
+    },
+    {
+      "name": "ProviderTab",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 577,
+        "column": 1
+      }
+    },
+    {
+      "name": "PrimaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 601,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecondaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 624,
+        "column": 1
+      }
+    },
+    {
+      "name": "KeyValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 647,
+        "column": 1
+      }
+    },
+    {
+      "name": "Message",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 660,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAdminOverlay.tsx",
+        "line": 669,
+        "column": 1
+      }
+    },
+    {
       "name": "useStudioAppBarAugmentation",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 10,
+        "line": 14,
         "column": 1
       }
     }
@@ -8707,6 +9047,16 @@
         "fromPath": "src/manifestSync.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromPath": "src/projectSecretApi.test.ts",
+        "toPath": "src/projectSecretApi.ts",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectSecretApi.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/projectSecretApi.ts"
       },
       {
         "fromPath": "src/root.ts",
@@ -9077,6 +9427,21 @@
         "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromPath": "src/ui/StudioAdminOverlay.tsx",
+        "toPath": "src/projectSecretApi.ts",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/ui/StudioAdminOverlay.tsx",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
         "fromPath": "src/utils/treeUtils.ts",
@@ -11257,6 +11622,246 @@
         "sourcePath": "src/manifestSync.ts"
       },
       {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "parseProjectSecretListResponse",
+        "callExpression": "parseProjectSecretListResponse",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "parseProjectSecretMetadataResponse",
+        "callExpression": "parseProjectSecretMetadataResponse",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectSecretApi.test.ts",
+        "toSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "callExpression": "parseConfigureProjectOAuthProviderResponse",
+        "sourcePath": "src/projectSecretApi.test.ts"
+      },
+      {
+        "fromSymbol": "listProjectSecrets",
+        "toSymbol": "createQuery",
+        "callExpression": "createQuery",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "listProjectSecrets",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "listProjectSecrets",
+        "toSymbol": "parseProjectSecretListResponse",
+        "callExpression": "parseProjectSecretListResponse",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "createProjectSecret",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "createProjectSecret",
+        "toSymbol": "parseProjectSecretMetadataResponse",
+        "callExpression": "parseProjectSecretMetadataResponse",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "replaceProjectSecret",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "replaceProjectSecret",
+        "toSymbol": "parseProjectSecretMetadataResponse",
+        "callExpression": "parseProjectSecretMetadataResponse",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "removeProjectSecret",
+        "toSymbol": "createQuery",
+        "callExpression": "createQuery",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "removeProjectSecret",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "removeProjectSecret",
+        "toSymbol": "parseProjectSecretRemoveResponse",
+        "callExpression": "parseProjectSecretRemoveResponse",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "configureProjectOAuthProvider",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "configureProjectOAuthProvider",
+        "toSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "callExpression": "parseConfigureProjectOAuthProviderResponse",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretListResponse",
+        "toSymbol": "readResult",
+        "callExpression": "readResult",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretListResponse",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretMetadataResponse",
+        "toSymbol": "readResult",
+        "callExpression": "readResult",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretMetadataResponse",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretMetadataResponse",
+        "toSymbol": "parseSecretMetadata",
+        "callExpression": "parseSecretMetadata",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretRemoveResponse",
+        "toSymbol": "readResult",
+        "callExpression": "readResult",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectSecretRemoveResponse",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "toSymbol": "parseSecretMetadata",
+        "callExpression": "parseSecretMetadata",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseConfigureProjectOAuthProviderResponse",
+        "toSymbol": "parseError",
+        "callExpression": "parseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "parseHttpError",
+        "callExpression": "parseHttpError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseHttpError",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "readResult",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "readResult",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseSecretMetadata",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseSecretMetadata",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseSecretMetadata",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseError",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
+        "fromSymbol": "parseError",
+        "toSymbol": "createInvalidResponseError",
+        "callExpression": "createInvalidResponseError",
+        "sourcePath": "src/projectSecretApi.ts"
+      },
+      {
         "fromSymbol": "src/root.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -12773,6 +13378,366 @@
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
         "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromSymbol": "StudioAdminOverlay",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdmin",
+        "toSymbol": "useSecretInventory",
+        "callExpression": "useSecretInventory",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdmin",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdmin",
+        "toSymbol": "createField",
+        "callExpression": "createField",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdmin",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setRef",
+        "callExpression": "setRef",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setKind",
+        "callExpression": "setKind",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setProvider",
+        "callExpression": "setProvider",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setFields",
+        "callExpression": "setFields",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "createField",
+        "callExpression": "createField",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setReplaceTarget",
+        "callExpression": "setReplaceTarget",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setEnvironment",
+        "callExpression": "setEnvironment",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setSaving",
+        "callExpression": "setSaving",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "replaceProjectSecret",
+        "callExpression": "replaceProjectSecret",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "createProjectSecret",
+        "callExpression": "createProjectSecret",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "refresh",
+        "callExpression": "inventory.refresh",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "resetDraft",
+        "callExpression": "resetDraft",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "onPress",
+        "toSymbol": "removeProjectSecret",
+        "callExpression": "removeProjectSecret",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "updateField",
+        "callExpression": "updateField",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "save",
+        "callExpression": "save",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "beginRotation",
+        "callExpression": "beginRotation",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "confirmRemove",
+        "callExpression": "confirmRemove",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdmin",
+        "toSymbol": "useSecretInventory",
+        "callExpression": "useSecretInventory",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdmin",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdmin",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdmin",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setEnabled",
+        "callExpression": "setEnabled",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setLabel",
+        "callExpression": "setLabel",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setScopes",
+        "callExpression": "setScopes",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setCallbackRoute",
+        "callExpression": "setCallbackRoute",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setValues",
+        "callExpression": "setValues",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdmin",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "configureProjectOAuthProvider",
+        "callExpression": "configureProjectOAuthProvider",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setProviderId",
+        "callExpression": "setProviderId",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setItems",
+        "callExpression": "setItems",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "listProjectSecrets",
+        "callExpression": "listProjectSecrets",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Card",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "InventoryRow",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "ProviderTab",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "ProviderTab",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Message",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setActivePanelId",
+        "callExpression": "studio.setActivePanelId",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setActiveRoute",
+        "callExpression": "setActiveRoute",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "onPress",
+        "toSymbol": "openRoute",
+        "callExpression": "openRoute",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
         "fromSymbol": "src/host/http/secretRoutes.ts",

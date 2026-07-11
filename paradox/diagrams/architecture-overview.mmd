@@ -351,6 +351,12 @@ graph TD
   module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
   package__ankhorage_studio -.-> module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_modules_dashboard_ui_TemplateCard_tsx --> module_src_modules_dashboard_types_ts
+  module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
+  package__ankhorage_studio -.-> module_src_projectSecretApi_test_ts
+  module_src_projectSecretApi_test_ts --> module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts["src/projectSecretApi.ts"]
+  package__ankhorage_studio -.-> module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts --> module_src_core_constants_ts
   module_src_root_test_ts["src/root.test.ts"]
   package__ankhorage_studio -.-> module_src_root_test_ts
   module_src_root_ts["src/root.ts"]
@@ -417,8 +423,13 @@ graph TD
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_StudioAdminOverlay_tsx
+  module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAdminOverlay_tsx
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts
