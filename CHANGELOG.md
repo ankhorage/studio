@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.6
+
+### Patch Changes
+
+- 8a18002: Read and generate authentication routes only from `infra.auth.flow`, use the contracts resolver for defaults, and prevent `settings.authFlow` from returning.
+
 ## 0.1.5
 
 ### Patch Changes
