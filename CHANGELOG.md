@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.2.0
+
+### Minor Changes
+
+- fa50959: Add the canonical server-only Supabase Vault secret boundary, metadata-only project secret APIs, safe OAuth credential/manifest orchestration, and the `/ankh/secrets` admin route foundation.
+
 ## 0.1.6
 
 ### Patch Changes
