@@ -31,8 +31,8 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
     statement: string,
     parameters: readonly unknown[] = [],
   ): Promise<SupabaseVaultQueryResult<TRow>> => {
-    const rows = await sql.unsafe(statement, [...parameters]);
-    return { rows: rows as readonly TRow[] };
+    const rawRows: unknown = await sql.unsafe(statement, [...parameters]);
+    return { rows: assertRows<TRow>(rawRows) };
   };
 
   return {
@@ -46,8 +46,8 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
             statement: string,
             parameters: readonly unknown[] = [],
           ): Promise<SupabaseVaultQueryResult<TRow>> {
-            const rows = await transaction.unsafe(statement, [...parameters]);
-            return { rows: rows as readonly TRow[] };
+            const rawRows: unknown = await transaction.unsafe(statement, [...parameters]);
+            return { rows: assertRows<TRow>(rawRows) };
           },
         }),
       );
@@ -56,4 +56,12 @@ export function createBunSupabaseVaultClient(databaseUrl: string): BunSupabaseVa
       return sql.close({ timeout: 5 });
     },
   };
+}
+
+function assertRows<TRow extends Record<string, unknown>>(value: unknown): readonly TRow[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Supabase Vault query returned an unexpected result shape.');
+  }
+
+  return value as readonly TRow[];
 }
