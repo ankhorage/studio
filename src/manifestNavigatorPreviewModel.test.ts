@@ -1,4 +1,9 @@
-import type { AppManifest, RouteDefinition, ScreenSpec } from '@ankhorage/contracts';
+import type {
+  AppManifest,
+  AuthFlowConfig,
+  RouteDefinition,
+  ScreenSpec,
+} from '@ankhorage/contracts';
 import { describe, expect, it } from 'bun:test';
 
 import {
@@ -7,6 +12,16 @@ import {
   resolveLeafScreenIdForRoute,
 } from './manifestNavigatorPreviewModel';
 
+const TEST_AUTH_FLOW: AuthFlowConfig = {
+  signInRoute: '/sign-in',
+  signUpRoute: '/sign-up',
+  signOutRoute: '/sign-out',
+  forgotPasswordRoute: '/forgot-password',
+  otpRoute: '/otp',
+  unauthorizedRoute: '/sign-in',
+  postSignInRoute: '/home',
+};
+
 function screen(id: string, title: string): ScreenSpec {
   return { id, name: title, title, root: { id: `${id}-root`, type: 'Page' } };
 }
@@ -14,25 +29,26 @@ function screen(id: string, title: string): ScreenSpec {
 function manifest(args: {
   navigator: AppManifest['navigator'];
   screens: Record<string, ScreenSpec>;
+  flow?: AuthFlowConfig | null;
 }): AppManifest {
+  const flow = args.flow === null ? undefined : (args.flow ?? TEST_AUTH_FLOW);
+
   return {
     metadata: { name: 'Test', slug: 'test', version: '1.0.0', themeId: 'default' },
     themes: [],
     activeThemeId: 'default',
-    infra: { plugins: [] },
+    infra: {
+      auth: {
+        scope: 'global',
+        provider: 'supabase',
+        ...(flow ? { flow } : {}),
+      },
+      plugins: [],
+    },
     navigator: args.navigator,
     screens: args.screens,
     settings: {
       localization: { defaultLocale: 'en', locales: ['en'] },
-      authFlow: {
-        signInRoute: '/sign-in',
-        signUpRoute: '/sign-up',
-        signOutRoute: '/sign-out',
-        forgotPasswordRoute: '/forgot-password',
-        otpRoute: '/otp',
-        unauthorizedRoute: '/sign-in',
-        postSignInRoute: '/home',
-      },
     },
   };
 }
@@ -69,6 +85,28 @@ describe('manifest navigator preview model', () => {
     expect(model.activeRouteName).toBe('settings');
     expect(model.routeMap.home?.label).toBe('Home');
     expect(model.routeMap.home?.icon).toEqual({ name: 'home-outline', provider: 'Ionicons' });
+  });
+
+  it('uses the contract default when infra auth has no explicit flow', () => {
+    const model = buildManifestNavigatorPreviewModel({
+      manifest: manifest({
+        flow: null,
+        screens: {
+          home: screen('home', 'Home'),
+          signIn: screen('sign-in', 'Sign In'),
+        },
+        navigator: {
+          type: 'tabs',
+          initialRouteName: 'home',
+          routes: [
+            { name: 'home', screenId: 'home' },
+            { name: 'sign-in', screenId: 'sign-in' },
+          ],
+        },
+      }),
+    });
+
+    expect(model.visibleRoutes.map((route) => route.name)).toEqual(['home']);
   });
 
   it('resolves leaf screen ids through nested navigators', () => {
