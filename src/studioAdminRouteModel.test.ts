@@ -11,6 +11,8 @@ import {
 describe('studioAdminRouteModel', () => {
   test('resolves admin route paths', () => {
     expect(resolveStudioAdminRoutePath('/ankh/apis')).toBe('/ankh/apis');
+    expect(resolveStudioAdminRoutePath('/ankh/auth')).toBe('/ankh/auth');
+    expect(resolveStudioAdminRoutePath('/ankh/secrets')).toBe('/ankh/secrets');
     expect(resolveStudioAdminRoutePath('/ankh/properties/node-1')).toBe('/ankh/properties');
     expect(resolveStudioAdminRoutePath('/app')).toBeNull();
   });
@@ -42,12 +44,12 @@ describe('studioAdminRouteModel', () => {
     const panelIds: (string | null)[] = [];
     const routes: string[] = [];
     openStudioAdminRoute({
-      next: '/ankh/theme',
+      next: '/ankh/secrets',
       setActivePanelId: (panelId) => panelIds.push(panelId),
       pushRoute: (routePath) => routes.push(routePath),
     });
 
     expect(panelIds).toEqual([null]);
-    expect(routes).toEqual(['/ankh/theme']);
+    expect(routes).toEqual(['/ankh/secrets']);
   });
 });
