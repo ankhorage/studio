@@ -34,7 +34,6 @@ const ZORA_COMPONENT_REGISTRY = {};`,
   expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
 });
 
-
 test('initializes the Studio provider with the runtime manifest', () => {
   const generated = getRootLayoutTsx({
     manifest: {
