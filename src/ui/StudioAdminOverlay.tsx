@@ -321,7 +321,8 @@ function AuthAdmin(props: { readonly projectId: string; readonly manifest: AppMa
   const metadata = inventory.items.find((item) => item.ref === credentialsRef);
   const requiredFields = definition?.secretFields.map((field) => field.name) ?? [];
   const configured =
-    metadata !== undefined && requiredFields.every((name) => metadata.configuredFields.includes(name));
+    metadata !== undefined &&
+    requiredFields.every((name) => metadata.configuredFields.includes(name));
 
   useEffect(() => {
     const currentDefinition = getSupabaseOAuthProviderDefinition(providerId);
@@ -459,7 +460,9 @@ function AuthAdmin(props: { readonly projectId: string; readonly manifest: AppMa
               secureTextEntry={field.secret}
               autoCapitalize="none"
               placeholder={configured ? 'Enter complete replacement value' : field.label}
-              onChangeText={(value) => setValues((current) => ({ ...current, [field.name]: value }))}
+              onChangeText={(value) =>
+                setValues((current) => ({ ...current, [field.name]: value }))
+              }
             />
           </Field>
         ))}

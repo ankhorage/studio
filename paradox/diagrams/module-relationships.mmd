@@ -104,6 +104,8 @@ graph LR
   module_src_modules_dashboard_ui_DashboardSectionHeader_tsx["src/modules/dashboard/ui/DashboardSectionHeader.tsx"]
   module_src_modules_dashboard_ui_ProjectCard_tsx["src/modules/dashboard/ui/ProjectCard.tsx"]
   module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
+  module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
+  module_src_projectSecretApi_ts["src/projectSecretApi.ts"]
   module_src_root_test_ts["src/root.test.ts"]
   module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
@@ -130,6 +132,7 @@ graph LR
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
+  module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   module_src_app_StudioDashboard_tsx --> module_src_hooks_useProjects_ts
@@ -272,6 +275,8 @@ graph LR
   module_src_modules_dashboard_templates_ts --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_ProjectCard_tsx --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_TemplateCard_tsx --> module_src_modules_dashboard_types_ts
+  module_src_projectSecretApi_test_ts --> module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts --> module_src_core_constants_ts
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
@@ -286,4 +291,7 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAdminOverlay_tsx
   module_src_utils_treeUtils_ts --> module_src_index_ts
