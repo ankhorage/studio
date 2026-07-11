@@ -47,13 +47,11 @@ describe('ProjectAuthService', () => {
   test('writes validated settings to the editable manifest draft', async () => {
     const saved: AppManifest[] = [];
     const manager = {
-      getStudioManifest: async () => {
-        throw new Error('No draft');
-      },
-      getProjectManifest: async () => createManifest(),
-      saveStudioManifest: async ({ manifest }: { projectId: string; manifest: AppManifest }) => {
+      getStudioManifest: () => Promise.reject(new Error('No draft')),
+      getProjectManifest: () => Promise.resolve(createManifest()),
+      saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {
         saved.push(manifest);
-        return { success: true };
+        return Promise.resolve({ success: true });
       },
     } satisfies ConstructorParameters<typeof ProjectAuthService>[0];
 
@@ -68,11 +66,11 @@ describe('ProjectAuthService', () => {
   test('does not write a manifest when inline secrets are submitted', async () => {
     let saveCount = 0;
     const manager = {
-      getStudioManifest: async () => createManifest(),
-      getProjectManifest: async () => createManifest(),
-      saveStudioManifest: async () => {
+      getStudioManifest: () => Promise.resolve(createManifest()),
+      getProjectManifest: () => Promise.resolve(createManifest()),
+      saveStudioManifest: () => {
         saveCount += 1;
-        return { success: true };
+        return Promise.resolve({ success: true });
       },
     } satisfies ConstructorParameters<typeof ProjectAuthService>[0];
 

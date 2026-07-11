@@ -45,7 +45,7 @@ export function parseProjectAuthSettingsResponse(
   expectedState: 'loaded' | 'saved',
 ): StudioAuthSettings | null {
   const record = asRecord(value);
-  if (!record || record.ok !== true || record.state !== expectedState) {
+  if (record?.ok !== true || record?.state !== expectedState) {
     throw invalidResponse('Project auth response was invalid.');
   }
   if (record.data === null && expectedState === 'loaded') return null;

@@ -487,10 +487,18 @@ function readStringArray(
   label: string,
   allowed?: ReadonlySet<string>,
 ): ValidationResult<string[]> {
-  if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {
+  if (!Array.isArray(value)) {
     return invalid(`${label} must be a string array.`);
   }
-  const normalized = [...new Set(value.map((entry) => entry.trim()).filter(Boolean))];
+  const entries: string[] = [];
+  for (const entry of value as readonly unknown[]) {
+    if (typeof entry !== 'string') {
+      return invalid(`${label} must be a string array.`);
+    }
+    const normalizedEntry = entry.trim();
+    if (normalizedEntry) entries.push(normalizedEntry);
+  }
+  const normalized = [...new Set(entries)];
   if (allowed && normalized.some((entry) => !allowed.has(entry))) {
     return invalid(`${label} contains an unsupported value.`);
   }

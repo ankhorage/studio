@@ -1,22 +1,8 @@
 $ ankhorage-eslint . --fix --max-warnings=0
 
-/home/runner/work/studio/studio/src/authSettings.ts
-  493:55  error  Unsafe return of a value of type `any`                                  @typescript-eslint/no-unsafe-return
-  493:55  error  Unsafe call of an `any` typed value                                     @typescript-eslint/no-unsafe-call
-  493:61  error  Unsafe member access .trim on an `any` value                            @typescript-eslint/no-unsafe-member-access
-  494:58  error  Unsafe argument of type `any` assigned to a parameter of type `string`  @typescript-eslint/no-unsafe-argument
-
-/home/runner/work/studio/studio/src/host/auth/projectAuthService.test.ts
-  50:7  error  Async method 'getStudioManifest' has no 'await' expression   @typescript-eslint/require-await
-  53:7  error  Async method 'getProjectManifest' has no 'await' expression  @typescript-eslint/require-await
-  54:7  error  Async method 'saveStudioManifest' has no 'await' expression  @typescript-eslint/require-await
-  71:7  error  Async method 'getStudioManifest' has no 'await' expression   @typescript-eslint/require-await
-  72:7  error  Async method 'getProjectManifest' has no 'await' expression  @typescript-eslint/require-await
-  73:7  error  Async method 'saveStudioManifest' has no 'await' expression  @typescript-eslint/require-await
-
 /home/runner/work/studio/studio/src/projectAuthApi.ts
-  48:7  error  Prefer using an optional chain expression instead, as it's more concise and easier to read  @typescript-eslint/prefer-optional-chain
+  48:36  error  Unnecessary optional chain on a non-nullish value  @typescript-eslint/no-unnecessary-condition
 
-✖ 11 problems (11 errors, 0 warnings)
+✖ 1 problem (1 error, 0 warnings)
 
 error: script "lint:fix" exited with code 1
