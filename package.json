@@ -20,7 +20,7 @@
   "sideEffects": false,
   "workspaces": [
     ".",
-    "apps/studio"
+    "apps/*"
   ],
   "files": [
     "dist",
