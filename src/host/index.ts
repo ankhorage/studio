@@ -9,9 +9,22 @@ export {
   startStudioHostServer,
   type StartStudioHostServerOptions,
 } from './http/server';
+export { registerProjectSecretRoutes } from './http/secretRoutes';
 export { ModuleManager } from './orchestrator/moduleManager';
 export { ProjectManager } from './orchestrator/projectManager';
 export { assertProjectId, getAppsRoot, getProjectPath } from './orchestrator/projectPaths';
 export { ProjectStore, type ProjectSummary } from './orchestrator/projectStore';
+export {
+  createBunSupabaseVaultClient,
+  type BunSupabaseVaultClient,
+} from './secrets/bunSupabaseVaultClient';
+export {
+  configureManifestOAuthProvider,
+  type ConfigureOAuthProviderInput,
+  type ConfigureOAuthProviderResult,
+  ProjectSecretService,
+  type ProjectSecretServiceOptions,
+} from './secrets/projectSecretService';
+export { resolveProjectSecretDatabaseUrl } from './secrets/resolveProjectSecretDatabaseUrl';
 export { getProjectTemplate, getTemplateSummaries } from './templateRegistry';
 export { resolveWorkspaceRoot } from './utils/workspaceRoot';
