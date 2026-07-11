@@ -1,4 +1,4 @@
-import { startStudioHostServer } from './server';
+import { startStudioHostServerWithSecrets } from './serverWithSecrets';
 
 const rawPortValue: unknown = process.env.ANKHORAGE_STUDIO_HOST_PORT;
 const portValue = typeof rawPortValue === 'string' ? rawPortValue : undefined;
@@ -7,4 +7,4 @@ if (!Number.isInteger(port) || port < 1 || port > 65_535) {
   throw new Error(`Invalid ANKHORAGE_STUDIO_HOST_PORT: ${portValue}`);
 }
 
-await startStudioHostServer({ port, host: '127.0.0.1' });
+await startStudioHostServerWithSecrets({ port, host: '127.0.0.1' });

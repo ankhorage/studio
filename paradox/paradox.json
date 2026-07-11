@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.1.5",
+      "value": "v0.1.6",
       "color": "cb3837"
     },
     {
@@ -373,6 +373,15 @@
       "exports": []
     },
     {
+      "path": "src/host/http/secretRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/projectSecretService.ts"
+      ],
+      "exports": ["registerProjectSecretRoutes"]
+    },
+    {
       "path": "src/host/http/security.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -394,9 +403,21 @@
       "exports": ["createStudioHostServer", "startStudioHostServer", "StartStudioHostServerOptions"]
     },
     {
+      "path": "src/host/http/serverWithSecrets.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/http/secretRoutes.ts",
+        "src/host/http/server.ts",
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/utils/workspaceRoot.ts"
+      ],
+      "exports": ["startStudioHostServerWithSecrets"]
+    },
+    {
       "path": "src/host/http/standalone.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/http/server.ts"],
+      "dependencies": ["src/host/http/serverWithSecrets.ts"],
       "exports": []
     },
     {
@@ -405,6 +426,11 @@
       "dependencies": [],
       "exports": [
         "assertProjectId",
+        "BunSupabaseVaultClient",
+        "configureManifestOAuthProvider",
+        "ConfigureOAuthProviderInput",
+        "ConfigureOAuthProviderResult",
+        "createBunSupabaseVaultClient",
         "createStudioHost",
         "CreateStudioHostOptions",
         "createStudioHostServer",
@@ -415,8 +441,12 @@
         "isOriginAllowed",
         "ModuleManager",
         "ProjectManager",
+        "ProjectSecretService",
+        "ProjectSecretServiceOptions",
         "ProjectStore",
         "ProjectSummary",
+        "registerProjectSecretRoutes",
+        "resolveProjectSecretDatabaseUrl",
         "resolveWorkspaceRoot",
         "startStudioHostServer",
         "StartStudioHostServerOptions",
@@ -760,6 +790,47 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["runWorkspaceInstall"]
+    },
+    {
+      "path": "src/host/secrets/bunSupabaseVaultClient.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["BunSupabaseVaultClient", "createBunSupabaseVaultClient"]
+    },
+    {
+      "path": "src/host/secrets/projectSecretService.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/secrets/projectSecretService.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/secrets/projectSecretService.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts",
+        "src/host/secrets/bunSupabaseVaultClient.ts",
+        "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+      ],
+      "exports": [
+        "configureManifestOAuthProvider",
+        "ConfigureOAuthProviderInput",
+        "ConfigureOAuthProviderResult",
+        "ProjectSecretService",
+        "ProjectSecretServiceOptions"
+      ]
+    },
+    {
+      "path": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/secrets/resolveProjectSecretDatabaseUrl.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["resolveProjectSecretDatabaseUrl", "ResolveProjectSecretDatabaseUrlInput"]
     },
     {
       "path": "src/host/templateRegistry/index.ts",
@@ -1399,7 +1470,8 @@
         "openStudioAdminRoute",
         "resolveStudioAdminRoutePath",
         "resolveStudioPropertiesNodeId",
-        "StudioAdminRouteRenderState"
+        "StudioAdminRouteRenderState",
+        "StudioResolvedAdminRoutePath"
       ]
     },
     {
@@ -4760,6 +4832,69 @@
       }
     },
     {
+      "name": "registerProjectSecretRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "sendSecretResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 161,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveErrorStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 174,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOptionalString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 192,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSecretPayload",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/secretRoutes.ts",
+        "line": 205,
+        "column": 1
+      }
+    },
+    {
       "name": "isOriginAllowed",
       "description": null,
       "sourceLocation": {
@@ -4837,6 +4972,15 @@
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
         "line": 678,
+        "column": 1
+      }
+    },
+    {
+      "name": "startStudioHostServerWithSecrets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/serverWithSecrets.ts",
+        "line": 10,
         "column": 1
       }
     },
@@ -6404,6 +6548,132 @@
         "filePath": "src/host/orchestrator/workspaceRuntime.ts",
         "line": 38,
         "column": 11
+      }
+    },
+    {
+      "name": "createBunSupabaseVaultClient",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "query",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "line": 30,
+        "column": 9
+      }
+    },
+    {
+      "name": "assertRows",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "line": 61,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "configureManifestOAuthProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.ts",
+        "line": 304,
+        "column": 1
+      }
+    },
+    {
+      "name": "createScope",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.ts",
+        "line": 345,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeScopes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.ts",
+        "line": 352,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeOptionalText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.ts",
+        "line": 356,
+        "column": 1
+      }
+    },
+    {
+      "name": "toPublicError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.ts",
+        "line": 362,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectSecretDatabaseUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "readFirstValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "readEnvFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMissingFileError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "line": 76,
+        "column": 1
       }
     },
     {
@@ -8067,7 +8337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 14,
+        "line": 16,
         "column": 1
       }
     },
@@ -8076,7 +8346,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 22,
+        "line": 24,
         "column": 1
       }
     },
@@ -8085,7 +8355,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 39,
+        "line": 41,
         "column": 1
       }
     },
@@ -8094,7 +8364,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 55,
+        "line": 57,
         "column": 1
       }
     },
@@ -8103,7 +8373,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 64,
+        "line": 66,
         "column": 1
       }
     },
@@ -8685,6 +8955,11 @@
       },
       {
         "fromPath": "src/host/index.ts",
+        "toPath": "src/host/http/secretRoutes.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
         "toPath": "src/host/http/security.ts",
         "sourcePath": "src/host/index.ts"
       },
@@ -8711,6 +8986,21 @@
       {
         "fromPath": "src/host/index.ts",
         "toPath": "src/host/orchestrator/projectStore.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
         "sourcePath": "src/host/index.ts"
       },
       {
@@ -8794,6 +9084,16 @@
         "sourcePath": "src/utils/treeUtils.ts"
       },
       {
+        "fromPath": "src/host/http/secretRoutes.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/secretRoutes.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/orchestrator/infraRuntime.ts",
         "sourcePath": "src/host/http/server.ts"
@@ -8834,8 +9134,33 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
-        "fromPath": "src/host/http/standalone.ts",
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/utils/workspaceRoot.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/http/secretRoutes.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
         "toPath": "src/host/http/server.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/standalone.ts",
+        "toPath": "src/host/http/serverWithSecrets.ts",
         "sourcePath": "src/host/http/standalone.ts"
       },
       {
@@ -9022,6 +9347,36 @@
         "fromPath": "src/host/orchestrator/scaffolder.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/projectSecretService.test.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/projectSecretService.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/projectSecretService.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/projectSecretService.ts",
+        "toPath": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/projectSecretService.ts",
+        "toPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
       },
       {
         "fromPath": "src/host/zoraExtensions/index.ts",
@@ -12420,6 +12775,84 @@
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "sendSecretResult",
+        "callExpression": "sendSecretResult",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "list",
+        "callExpression": "service.list",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "getMetadata",
+        "callExpression": "service.getMetadata",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "readSecretPayload",
+        "callExpression": "readSecretPayload",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "create",
+        "callExpression": "service.create",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "readOptionalString",
+        "callExpression": "readOptionalString",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "replace",
+        "callExpression": "service.replace",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "remove",
+        "callExpression": "service.remove",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "configureOAuthProvider",
+        "callExpression": "service.configureOAuthProvider",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/secretRoutes.ts",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "sendSecretResult",
+        "toSymbol": "resolveErrorStatus",
+        "callExpression": "resolveErrorStatus",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
+        "fromSymbol": "readSecretPayload",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/host/http/secretRoutes.ts"
+      },
+      {
         "fromSymbol": "readSimpleEnvMap",
         "toSymbol": "exists",
         "callExpression": "exists",
@@ -12684,9 +13117,27 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
+        "fromSymbol": "startStudioHostServerWithSecrets",
+        "toSymbol": "resolveWorkspaceRoot",
+        "callExpression": "resolveWorkspaceRoot",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromSymbol": "startStudioHostServerWithSecrets",
+        "toSymbol": "createStudioHostServer",
+        "callExpression": "createStudioHostServer",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromSymbol": "startStudioHostServerWithSecrets",
+        "toSymbol": "registerProjectSecretRoutes",
+        "callExpression": "registerProjectSecretRoutes",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
         "fromSymbol": "src/host/http/standalone.ts",
-        "toSymbol": "startStudioHostServer",
-        "callExpression": "startStudioHostServer",
+        "toSymbol": "startStudioHostServerWithSecrets",
+        "callExpression": "startStudioHostServerWithSecrets",
         "sourcePath": "src/host/http/standalone.ts"
       },
       {
@@ -15196,6 +15647,276 @@
         "toSymbol": "reject",
         "callExpression": "reject",
         "sourcePath": "src/host/orchestrator/workspaceRuntime.ts"
+      },
+      {
+        "fromSymbol": "query",
+        "toSymbol": "assertRows",
+        "callExpression": "assertRows",
+        "sourcePath": "src/host/secrets/bunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/bunSupabaseVaultClient.ts",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/secrets/bunSupabaseVaultClient.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
+        "toSymbol": "configureManifestOAuthProvider",
+        "callExpression": "configureManifestOAuthProvider",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.ts",
+        "toSymbol": "resolveProjectSecretDatabaseUrl",
+        "callExpression": "resolveProjectSecretDatabaseUrl",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "list",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/projectSecretService.ts",
+        "toSymbol": "createScope",
+        "callExpression": "createScope",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "getMetadata",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "create",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "replace",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "remove",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "validateSupabaseOAuthSecretPayload",
+        "callExpression": "validateSupabaseOAuthSecretPayload",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "toPublicError",
+        "callExpression": "toPublicError",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "normalizeSecretRef",
+        "callExpression": "normalizeSecretRef",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "createScope",
+        "callExpression": "createScope",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "configureManifestOAuthProvider",
+        "callExpression": "configureManifestOAuthProvider",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "normalizeOptionalText",
+        "callExpression": "normalizeOptionalText",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "normalizeScopes",
+        "callExpression": "normalizeScopes",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureOAuthProvider",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "this.projectManager.saveStudioManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "this.projectManager.getStudioManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "resolveDatabaseUrl",
+        "callExpression": "this.resolveDatabaseUrl",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "createClient",
+        "callExpression": "this.createClient",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "createInfraSecretStoreAdapter",
+        "callExpression": "createInfraSecretStoreAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
+        "toSymbol": "close",
+        "callExpression": "client?.close",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "configureManifestOAuthProvider",
+        "toSymbol": "normalizeOptionalText",
+        "callExpression": "normalizeOptionalText",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "createScope",
+        "toSymbol": "normalizeOptionalText",
+        "callExpression": "normalizeOptionalText",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "createProjectRoot",
+        "callExpression": "createProjectRoot",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "resolveProjectSecretDatabaseUrl",
+        "callExpression": "resolveProjectSecretDatabaseUrl",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectSecretDatabaseUrl",
+        "toSymbol": "readFirstValue",
+        "callExpression": "readFirstValue",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectSecretDatabaseUrl",
+        "toSymbol": "readEnvFile",
+        "callExpression": "readEnvFile",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+      },
+      {
+        "fromSymbol": "readEnvFile",
+        "toSymbol": "isMissingFileError",
+        "callExpression": "isMissingFileError",
+        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
       },
       {
         "fromSymbol": "createTemplateManifest",
