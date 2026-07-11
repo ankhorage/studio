@@ -355,7 +355,8 @@ function normalizeScopes(scopes: readonly string[]): string[] {
 
 function normalizeOptionalText(value: string | undefined): string | undefined {
   const normalized = value?.trim();
-  return normalized ? normalized : undefined;
+  if (!normalized) return undefined;
+  return normalized;
 }
 
 function toPublicError(error: { readonly code: string; readonly message: string }) {
