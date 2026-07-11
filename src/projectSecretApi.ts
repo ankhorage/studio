@@ -86,7 +86,9 @@ export async function listProjectSecrets(input: {
     kind: input.kind,
     provider: input.provider,
   });
-  const value = await requestJson(`/projects/${encodeURIComponent(input.projectId)}/secrets${query}`);
+  const value = await requestJson(
+    `/projects/${encodeURIComponent(input.projectId)}/secrets${query}`,
+  );
   return parseProjectSecretListResponse(value);
 }
 
@@ -197,10 +199,7 @@ export function parseConfigureProjectOAuthProviderResponse(
     };
   }
 
-  if (
-    record.state !== 'secret_write_failed' &&
-    record.state !== 'secret_saved_manifest_failed'
-  ) {
+  if (record.state !== 'secret_write_failed' && record.state !== 'secret_saved_manifest_failed') {
     throw createInvalidResponseError('OAuth configuration response was invalid.');
   }
 
@@ -209,9 +208,7 @@ export function parseConfigureProjectOAuthProviderResponse(
     state: record.state,
     error: parseError(record.error),
     ...(record.metadata === undefined ? {} : { metadata: parseSecretMetadata(record.metadata) }),
-    ...(typeof record.credentialsRef === 'string'
-      ? { credentialsRef: record.credentialsRef }
-      : {}),
+    ...(typeof record.credentialsRef === 'string' ? { credentialsRef: record.credentialsRef } : {}),
   };
 }
 

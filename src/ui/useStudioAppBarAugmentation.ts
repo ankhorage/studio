@@ -2,10 +2,7 @@ import { IconButton } from '@ankhorage/zora';
 import React, { useCallback, useState } from 'react';
 
 import { useStudio } from '../core/StudioContext';
-import {
-  StudioAdminOverlay,
-  type StudioPhase2AdminRoute,
-} from './StudioAdminOverlay';
+import { StudioAdminOverlay, type StudioPhase2AdminRoute } from './StudioAdminOverlay';
 
 export interface StudioAppBarAugmentation {
   appMode?: unknown;
@@ -18,10 +15,13 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const studio = useStudio();
   const [activeRoute, setActiveRoute] = useState<StudioPhase2AdminRoute | null>(null);
 
-  const openRoute = useCallback((route: StudioPhase2AdminRoute) => {
-    studio.setActivePanelId(null);
-    setActiveRoute(route);
-  }, [studio]);
+  const openRoute = useCallback(
+    (route: StudioPhase2AdminRoute) => {
+      studio.setActivePanelId(null);
+      setActiveRoute(route);
+    },
+    [studio],
+  );
 
   const closeOverlay = useCallback(() => {
     setActiveRoute(null);
