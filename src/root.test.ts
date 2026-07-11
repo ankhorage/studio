@@ -1,0 +1,18 @@
+import { expect, test } from 'bun:test';
+
+test('exports the Studio runtime symbols used by generated app layouts', async () => {
+  const rootSource = await Bun.file(new URL('./root.ts', import.meta.url)).text();
+
+  expect(rootSource).toContain("export { useStudio } from './core/StudioContext.js';");
+  expect(rootSource).toContain("export { StudioProvider } from './core/StudioProvider.js';");
+  expect(rootSource).toContain("export { AnkhStudio } from './ui/AnkhStudio.js';");
+  expect(rootSource).toContain(
+    "export { useStudioAppBarAugmentation } from './ui/useStudioAppBarAugmentation.js';",
+  );
+});
+
+test('includes generated apps in workspace installs', async () => {
+  const packageJson = await Bun.file(new URL('../package.json', import.meta.url)).text();
+
+  expect(packageJson).toContain('"apps/*"');
+});
