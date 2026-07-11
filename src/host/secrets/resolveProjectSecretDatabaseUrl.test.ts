@@ -22,16 +22,15 @@ async function createProjectRoot(): Promise<string> {
 describe('resolveProjectSecretDatabaseUrl', () => {
   test('prefers trusted Studio host configuration', async () => {
     const projectPath = await createProjectRoot();
+    const result = await resolveProjectSecretDatabaseUrl({
+      projectPath,
+      processEnvironment: {
+        ANKH_SECRET_STORE_DATABASE_URL: 'postgres://host-config',
+        DATABASE_URL: 'postgres://generic',
+      },
+    });
 
-    await expect(
-      resolveProjectSecretDatabaseUrl({
-        projectPath,
-        processEnvironment: {
-          ANKH_SECRET_STORE_DATABASE_URL: 'postgres://host-config',
-          DATABASE_URL: 'postgres://generic',
-        },
-      }),
-    ).resolves.toBe('postgres://host-config');
+    expect(result).toBe('postgres://host-config');
   });
 
   test('reads generated untracked project environment values', async () => {
@@ -44,16 +43,27 @@ describe('resolveProjectSecretDatabaseUrl', () => {
       'utf8',
     );
 
-    await expect(
-      resolveProjectSecretDatabaseUrl({ projectPath, processEnvironment: {} }),
-    ).resolves.toBe('postgres://project-local');
+    const result = await resolveProjectSecretDatabaseUrl({
+      projectPath,
+      processEnvironment: {},
+    });
+
+    expect(result).toBe('postgres://project-local');
   });
 
   test('does not invent a plaintext fallback', async () => {
     const projectPath = await createProjectRoot();
+    let error: unknown;
 
-    await expect(
-      resolveProjectSecretDatabaseUrl({ projectPath, processEnvironment: {} }),
-    ).rejects.toThrow('Supabase Vault database access is not configured');
+    try {
+      await resolveProjectSecretDatabaseUrl({ projectPath, processEnvironment: {} });
+    } catch (caught) {
+      error = caught;
+    }
+
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toContain(
+      'Supabase Vault database access is not configured',
+    );
   });
 });
