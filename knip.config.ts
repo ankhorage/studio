@@ -4,6 +4,7 @@ export default createKnipConfig({
   workspaces: {
     '.': {
       entry: [
+        'src/root.ts',
         'src/index.ts',
         'src/app/index.ts',
         'src/cli/index.ts',
@@ -28,7 +29,7 @@ export default createKnipConfig({
         'src/utils/treeUtils.ts',
       ],
       project: ['src/**/*.ts', 'src/**/*.tsx', 'paradox.config.ts'],
-      ignoreFiles: ['paradox.config.ts', 'src/root.ts'],
+      ignoreFiles: ['paradox.config.ts'],
     },
     'apps/studio': {
       entry: ['babel.config.js'],
