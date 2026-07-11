@@ -70,8 +70,6 @@ describe('resolveAuthLayoutPlan', () => {
     expect(plan.signOutRouteName).toBe('logout');
     expect(plan.postSignInRouteName).toBe('dashboard');
     expect(plan.publicRoutes).toContain('login');
-    expect(plan.authNavigator.routes.map((route) => route.name)).toEqual(
-      expect.arrayContaining(['login', 'register']),
-    );
+    expect(plan.authNavigator.routes.map((route) => route.name)).toEqual(['login', 'register']);
   });
 });
