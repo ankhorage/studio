@@ -33,3 +33,37 @@ const ZORA_COMPONENT_REGISTRY = {};`,
   expect(registryDeclarationIndex).toBeGreaterThanOrEqual(0);
   expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
 });
+
+
+test('initializes the Studio provider with the runtime manifest', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+    authRuntime: {
+      signInRoute: 'sign-in',
+      signInRouteName: 'sign-in',
+      signUpRoute: 'sign-up',
+      signUpRouteName: 'sign-up',
+      postSignInRoute: 'products',
+      publicRoutes: ['sign-in', 'sign-up'],
+    },
+  });
+
+  expect(generated).toContain('initialManifest={runtimeManifest}');
+});
