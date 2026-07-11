@@ -1,9 +1,0 @@
-$ ankhorage-eslint . --max-warnings=0
-
-/home/runner/work/studio/studio/src/root.test.ts
-  3:9  error  Replace `⏎··AnkhStudio,⏎··StudioProvider,⏎··useStudio,⏎··useStudioAppBarAugmentation,⏎` with `·AnkhStudio,·StudioProvider,·useStudio,·useStudioAppBarAugmentation·`  prettier/prettier
-
-✖ 1 problem (1 error, 0 warnings)
-  1 error and 0 warnings potentially fixable with the `--fix` option.
-
-error: script "lint" exited with code 1
