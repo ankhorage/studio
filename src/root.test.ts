@@ -1,11 +1,6 @@
 import { expect, test } from 'bun:test';
 
-import {
-  AnkhStudio,
-  StudioProvider,
-  useStudio,
-  useStudioAppBarAugmentation,
-} from './root';
+import { AnkhStudio, StudioProvider, useStudio, useStudioAppBarAugmentation } from './root';
 
 test('exports the Studio runtime symbols used by generated app layouts', () => {
   expect(typeof StudioProvider).toBe('function');
