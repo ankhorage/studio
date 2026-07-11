@@ -1,8 +1,8 @@
 import {
-  DEFAULT_AUTH_FLOW,
   type AppManifest,
   type AuthOAuthProviderConfig,
   type AuthOAuthProviderId,
+  DEFAULT_AUTH_FLOW,
 } from '@ankhorage/contracts';
 import {
   normalizeSecretRef,
@@ -20,9 +20,12 @@ import {
   validateSupabaseOAuthSecretPayload,
 } from '@ankhorage/supabase-auth';
 
-import { ProjectManager } from '../orchestrator/projectManager';
+import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
-import { createBunSupabaseVaultClient, type BunSupabaseVaultClient } from './bunSupabaseVaultClient';
+import {
+  type BunSupabaseVaultClient,
+  createBunSupabaseVaultClient,
+} from './bunSupabaseVaultClient';
 import { resolveProjectSecretDatabaseUrl } from './resolveProjectSecretDatabaseUrl';
 
 export interface ProjectSecretServiceOptions {
@@ -173,9 +176,7 @@ export class ProjectSecretService {
       };
     }
 
-    const refResult = normalizeSecretRef(
-      input.credentialsRef ?? `auth/oauth/${definition.id}`,
-    );
+    const refResult = normalizeSecretRef(input.credentialsRef ?? `auth/oauth/${definition.id}`);
     if (!refResult.ok) {
       return {
         ok: false,

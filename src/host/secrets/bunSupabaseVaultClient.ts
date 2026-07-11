@@ -1,10 +1,9 @@
-import { SQL } from 'bun';
-
 import type {
   SupabaseVaultQueryResult,
   SupabaseVaultSqlClient,
   SupabaseVaultSqlExecutor,
 } from '@ankhorage/supabase-vault';
+import { SQL } from 'bun';
 
 export interface BunSupabaseVaultClient extends SupabaseVaultSqlClient {
   close(): Promise<void>;

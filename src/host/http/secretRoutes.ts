@@ -1,7 +1,7 @@
 import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
-import { ProjectManager } from '../orchestrator/projectManager';
+import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
 export function registerProjectSecretRoutes(
@@ -85,7 +85,8 @@ export function registerProjectSecretRoutes(
       return reply.status(400).send({
         error: {
           code: 'invalid_payload',
-          message: 'Secret replacement requires ref and a complete non-empty string payload object.',
+          message:
+            'Secret replacement requires ref and a complete non-empty string payload object.',
         },
       });
     }
@@ -198,7 +199,9 @@ function readSecretPayload(value: unknown): SecretPayload | null {
   const entries = Object.entries(record);
   if (
     entries.length === 0 ||
-    entries.some(([field, fieldValue]) => !field.trim() || typeof fieldValue !== 'string' || !fieldValue)
+    entries.some(
+      ([field, fieldValue]) => !field.trim() || typeof fieldValue !== 'string' || !fieldValue,
+    )
   ) {
     return null;
   }
