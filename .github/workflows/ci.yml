@@ -30,24 +30,91 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Capture targeted Phase 2 auth lint fixes and diagnostics
+      - name: Apply targeted Phase 2 auth lint corrections
         if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
         run: |
-          set +e
-          bun run lint:fix > .phase2-auth-lint.txt 2>&1
-          echo $? > .phase2-auth-lint-status.txt
-          exit 0
+          python <<'PY'
+          from pathlib import Path
 
-      - name: Commit targeted Phase 2 auth lint results
+          path = Path('src/authSettings.ts')
+          content = path.read_text()
+          old = """  if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {
+            return invalid(`${label} must be a string array.`);
+          }
+          const normalized = [...new Set(value.map((entry) => entry.trim()).filter(Boolean))];
+          """
+          new = """  if (!Array.isArray(value)) {
+            return invalid(`${label} must be a string array.`);
+          }
+          const entries: string[] = [];
+          for (const entry of value as readonly unknown[]) {
+            if (typeof entry !== 'string') {
+              return invalid(`${label} must be a string array.`);
+            }
+            const normalizedEntry = entry.trim();
+            if (normalizedEntry) entries.push(normalizedEntry);
+          }
+          const normalized = [...new Set(entries)];
+          """
+          if old not in content:
+            raise SystemExit('authSettings readStringArray target not found')
+          path.write_text(content.replace(old, new))
+
+          path = Path('src/projectAuthApi.ts')
+          content = path.read_text()
+          old = "if (!record || record.ok !== true || record.state !== expectedState) {"
+          new = "if (record?.ok !== true || record?.state !== expectedState) {"
+          if old not in content:
+            raise SystemExit('projectAuthApi optional-chain target not found')
+          path.write_text(content.replace(old, new))
+
+          path = Path('src/host/auth/projectAuthService.test.ts')
+          content = path.read_text()
+          replacements = {
+            """      getStudioManifest: async () => {
+                throw new Error('No draft');
+              },
+            """: """      getStudioManifest: () => Promise.reject(new Error('No draft')),
+            """,
+            "      getProjectManifest: async () => createManifest(),": "      getProjectManifest: () => Promise.resolve(createManifest()),",
+            """      saveStudioManifest: async ({ manifest }: { projectId: string; manifest: AppManifest }) => {
+                saved.push(manifest);
+                return { success: true };
+              },
+            """: """      saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {
+                saved.push(manifest);
+                return Promise.resolve({ success: true });
+              },
+            """,
+            "      getStudioManifest: async () => createManifest(),": "      getStudioManifest: () => Promise.resolve(createManifest()),",
+            """      saveStudioManifest: async () => {
+                saveCount += 1;
+                return { success: true };
+              },
+            """: """      saveStudioManifest: () => {
+                saveCount += 1;
+                return Promise.resolve({ success: true });
+              },
+            """,
+          }
+          for old, new in replacements.items():
+            if old not in content:
+              raise SystemExit(f'projectAuthService test target not found: {old!r}')
+            content = content.replace(old, new)
+          path.write_text(content)
+          PY
+          bun run lint:fix
+
+      - name: Commit targeted Phase 2 auth lint corrections
         if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add .phase2-auth-lint.txt .phase2-auth-lint-status.txt src/authSettings.ts src/authSettings.test.ts src/projectAuthApi.ts src/projectAuthApi.test.ts src/host/auth/projectAuthService.ts src/host/auth/projectAuthService.test.ts src/host/http/authRoutes.ts src/host/http/serverWithSecrets.ts src/host/index.ts src/ui/StudioAuthSettingsOverlay.tsx src/ui/useStudioAppBarAugmentation.ts
+          git add src/authSettings.ts src/projectAuthApi.ts src/host/auth/projectAuthService.test.ts
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "chore: capture Phase 2 auth lint results"
+          git commit -m "chore: fix Phase 2 auth lint errors"
           git push origin HEAD:${GITHUB_HEAD_REF}
 
       - name: Run build
