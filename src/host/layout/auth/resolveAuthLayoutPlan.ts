@@ -1,7 +1,7 @@
 import {
-  resolveAuthFlow,
   type AppManifest,
   type NavigatorSpec,
+  resolveAuthFlow,
   type RouteDefinition,
 } from '@ankhorage/contracts';
 import path from 'path';
