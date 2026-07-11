@@ -1,0 +1,7 @@
+$ ankhorage-knip
+Unused exports (2)
+StudioApp        src/root.ts:1:10
+StudioDashboard  src/root.ts:1:21
+Configuration hints (1)
+src/root.ts    knip.config.ts  Remove from ignoreFiles
+error: script "knip" exited with code 1
