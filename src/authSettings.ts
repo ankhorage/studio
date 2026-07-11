@@ -1,9 +1,6 @@
 import { DEFAULT_AUTH_FLOW, type AppManifest } from '@ankhorage/contracts';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
-import {
-  getSupabaseOAuthProviderDefinition,
-  type SupabaseOAuthProviderId,
-} from '@ankhorage/supabase-auth';
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
 type ManifestAuth = NonNullable<AppManifest['infra']['auth']>;
 type ManifestFlow = NonNullable<ManifestAuth['flow']>;
@@ -12,6 +9,13 @@ type ManifestSignUp = NonNullable<ManifestAuth['signUp']>;
 type ManifestOAuth = NonNullable<ManifestAuth['oauth']>;
 type ManifestOAuthProvider = ManifestOAuth['providers'][number];
 type ManifestProfile = NonNullable<ManifestAuth['profile']>;
+type ValidationError = {
+  readonly code: 'invalid_config';
+  readonly message: string;
+};
+type ValidationResult<T> =
+  | { readonly ok: true; readonly data: T }
+  | { readonly ok: false; readonly error: ValidationError };
 
 export interface StudioAuthSettings {
   readonly scope: ManifestAuth['scope'];
@@ -23,15 +27,7 @@ export interface StudioAuthSettings {
   readonly profile?: ManifestProfile;
 }
 
-export type StudioAuthSettingsValidationResult =
-  | { readonly ok: true; readonly data: StudioAuthSettings }
-  | {
-      readonly ok: false;
-      readonly error: {
-        readonly code: 'invalid_config';
-        readonly message: string;
-      };
-    };
+export type StudioAuthSettingsValidationResult = ValidationResult<StudioAuthSettings>;
 
 const AUTH_SCOPES = new Set(['global', 'none', 'integrated']);
 const AUTH_IDENTIFIERS = new Set(['email', 'phone', 'username']);
@@ -185,7 +181,10 @@ export function validateStudioAuthSettings(value: unknown): StudioAuthSettingsVa
   }
 
   const record = asRecord(value);
-  if (!record || !hasOnlyKeys(record, ['scope', 'provider', 'flow', 'signIn', 'signUp', 'oauth', 'profile'])) {
+  if (
+    !record ||
+    !hasOnlyKeys(record, ['scope', 'provider', 'flow', 'signIn', 'signUp', 'oauth', 'profile'])
+  ) {
     return invalid('Auth configuration contains unsupported fields.');
   }
 
@@ -207,21 +206,18 @@ export function validateStudioAuthSettings(value: unknown): StudioAuthSettingsVa
   const profile = record.profile === undefined ? undefined : parseProfile(record.profile);
   if (profile && !profile.ok) return profile;
 
-  return {
-    ok: true,
-    data: {
-      scope: record.scope as ManifestAuth['scope'],
-      provider: 'supabase',
-      flow: flow.data,
-      signIn: signIn.data,
-      ...(signUp ? { signUp: signUp.data } : {}),
-      ...(oauth ? { oauth: oauth.data } : {}),
-      ...(profile ? { profile: profile.data } : {}),
-    },
-  };
+  return success({
+    scope: record.scope as ManifestAuth['scope'],
+    provider: 'supabase',
+    flow: flow.data,
+    signIn: signIn.data,
+    ...(signUp ? { signUp: signUp.data } : {}),
+    ...(oauth ? { oauth: oauth.data } : {}),
+    ...(profile ? { profile: profile.data } : {}),
+  });
 }
 
-function parseFlow(value: unknown): StudioAuthSettingsValidationResult & { data?: ManifestFlow } {
+function parseFlow(value: unknown): ValidationResult<ManifestFlow> {
   const record = asRecord(value);
   const keys = [
     'signInRoute',
@@ -232,7 +228,9 @@ function parseFlow(value: unknown): StudioAuthSettingsValidationResult & { data?
     'postSignInRoute',
     'unauthorizedRoute',
   ];
-  if (!record || !hasOnlyKeys(record, keys)) return invalid('Auth flow contains unsupported fields.');
+  if (!record || !hasOnlyKeys(record, keys)) {
+    return invalid('Auth flow contains unsupported fields.');
+  }
 
   const signInRoute = readRoute(record.signInRoute, 'signInRoute');
   if (!signInRoute.ok) return signInRoute;
@@ -246,7 +244,7 @@ function parseFlow(value: unknown): StudioAuthSettingsValidationResult & { data?
     'otpRoute',
     'unauthorizedRoute',
   ] as const;
-  const parsed: Record<string, string> = {};
+  const parsed: Partial<ManifestFlow> = {};
   for (const key of optionalRoutes) {
     if (record[key] === undefined) continue;
     const route = readRoute(record[key], key);
@@ -254,17 +252,14 @@ function parseFlow(value: unknown): StudioAuthSettingsValidationResult & { data?
     parsed[key] = route.data;
   }
 
-  return {
-    ok: true,
-    data: {
-      signInRoute: signInRoute.data,
-      postSignInRoute: postSignInRoute.data,
-      ...parsed,
-    },
-  } as StudioAuthSettingsValidationResult & { data: ManifestFlow };
+  return success({
+    signInRoute: signInRoute.data,
+    postSignInRoute: postSignInRoute.data,
+    ...parsed,
+  });
 }
 
-function parseSignIn(value: unknown): StudioAuthSettingsValidationResult & { data?: ManifestSignIn } {
+function parseSignIn(value: unknown): ValidationResult<ManifestSignIn> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['identifiers'])) {
     return invalid('Sign-in configuration contains unsupported fields.');
@@ -272,20 +267,19 @@ function parseSignIn(value: unknown): StudioAuthSettingsValidationResult & { dat
   const identifiers = readStringArray(record.identifiers, 'Sign-in identifiers', AUTH_IDENTIFIERS);
   if (!identifiers.ok) return identifiers;
   if (identifiers.data.length === 0) return invalid('At least one sign-in identifier is required.');
-  return {
-    ok: true,
-    data: { identifiers: identifiers.data as ManifestSignIn['identifiers'] },
-  } as StudioAuthSettingsValidationResult & { data: ManifestSignIn };
+  return success({ identifiers: identifiers.data as ManifestSignIn['identifiers'] });
 }
 
-function parseSignUp(value: unknown): StudioAuthSettingsValidationResult & { data?: ManifestSignUp } {
+function parseSignUp(value: unknown): ValidationResult<ManifestSignUp> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['requiredFields', 'optionalFields', 'signUpPolicy'])) {
     return invalid('Sign-up configuration contains unsupported fields.');
   }
   const required = readStringArray(record.requiredFields, 'Required sign-up fields', AUTH_SIGN_UP_FIELDS);
   if (!required.ok) return required;
-  if (required.data.length === 0) return invalid('Enabled sign-up requires at least one required field.');
+  if (required.data.length === 0) {
+    return invalid('Enabled sign-up requires at least one required field.');
+  }
   const optional =
     record.optionalFields === undefined
       ? undefined
@@ -298,19 +292,16 @@ function parseSignUp(value: unknown): StudioAuthSettingsValidationResult & { dat
     return invalid('Sign-up policy must be autoSignIn or requireVerification.');
   }
 
-  return {
-    ok: true,
-    data: {
-      requiredFields: required.data as ManifestSignUp['requiredFields'],
-      ...(optional ? { optionalFields: optional.data as ManifestSignUp['optionalFields'] } : {}),
-      ...(typeof record.signUpPolicy === 'string'
-        ? { signUpPolicy: record.signUpPolicy as NonNullable<ManifestSignUp['signUpPolicy']> }
-        : {}),
-    },
-  } as StudioAuthSettingsValidationResult & { data: ManifestSignUp };
+  return success({
+    requiredFields: required.data as ManifestSignUp['requiredFields'],
+    ...(optional ? { optionalFields: optional.data as ManifestSignUp['optionalFields'] } : {}),
+    ...(typeof record.signUpPolicy === 'string'
+      ? { signUpPolicy: record.signUpPolicy as NonNullable<ManifestSignUp['signUpPolicy']> }
+      : {}),
+  });
 }
 
-function parseOAuth(value: unknown): StudioAuthSettingsValidationResult & { data?: ManifestOAuth } {
+function parseOAuth(value: unknown): ValidationResult<ManifestOAuth> {
   const record = asRecord(value);
   if (!record || !hasOnlyKeys(record, ['enabled', 'callbackRoute', 'providers'])) {
     return invalid('OAuth configuration contains unsupported fields.');
@@ -323,8 +314,8 @@ function parseOAuth(value: unknown): StudioAuthSettingsValidationResult & { data
   const providers: ManifestOAuthProvider[] = [];
   const providerIds = new Set<string>();
   const credentialRefs = new Map<string, string>();
-  for (const value of record.providers) {
-    const provider = parseOAuthProvider(value);
+  for (const providerValue of record.providers) {
+    const provider = parseOAuthProvider(providerValue);
     if (!provider.ok) return provider;
     if (providerIds.has(provider.data.id)) {
       return invalid(`OAuth provider "${provider.data.id}" is configured more than once.`);
@@ -333,22 +324,19 @@ function parseOAuth(value: unknown): StudioAuthSettingsValidationResult & { data
     if (provider.data.credentialsRef) {
       const owner = credentialRefs.get(provider.data.credentialsRef);
       if (owner && owner !== provider.data.id) {
-        return invalid(`Secret reference "${provider.data.credentialsRef}" is shared by incompatible providers.`);
+        return invalid(
+          `Secret reference "${provider.data.credentialsRef}" is shared by incompatible providers.`,
+        );
       }
       credentialRefs.set(provider.data.credentialsRef, provider.data.id);
     }
     providers.push(provider.data);
   }
 
-  return {
-    ok: true,
-    data: { enabled: record.enabled, callbackRoute: callbackRoute.data, providers },
-  } as StudioAuthSettingsValidationResult & { data: ManifestOAuth };
+  return success({ enabled: record.enabled, callbackRoute: callbackRoute.data, providers });
 }
 
-function parseOAuthProvider(
-  value: unknown,
-): StudioAuthSettingsValidationResult & { data?: ManifestOAuthProvider } {
+function parseOAuthProvider(value: unknown): ValidationResult<ManifestOAuthProvider> {
   const record = asRecord(value);
   if (
     !record ||
@@ -398,35 +386,32 @@ function parseOAuthProvider(
     return invalid(`Enabled OAuth provider "${record.id}" requires credentialsRef.`);
   }
 
-  return {
-    ok: true,
-    data: {
-      id: definition.id as SupabaseOAuthProviderId,
-      ...(typeof record.label === 'string' && record.label.trim()
-        ? { label: record.label.trim() }
-        : {}),
-      ...(typeof record.enabled === 'boolean' ? { enabled: record.enabled } : {}),
-      ...(scopes ? { scopes: scopes.data } : {}),
-      ...(typeof record.redirectTo === 'string' && record.redirectTo.trim()
-        ? { redirectTo: record.redirectTo.trim() }
-        : {}),
-      ...(queryParams.data ? { queryParams: queryParams.data } : {}),
-      ...(icon.data ? { icon: icon.data } : {}),
-      ...(credentialsRef ? { credentialsRef } : {}),
-    },
-  } as StudioAuthSettingsValidationResult & { data: ManifestOAuthProvider };
+  return success({
+    id: definition.id,
+    ...(typeof record.label === 'string' && record.label.trim()
+      ? { label: record.label.trim() }
+      : {}),
+    ...(typeof record.enabled === 'boolean' ? { enabled: record.enabled } : {}),
+    ...(scopes ? { scopes: scopes.data } : {}),
+    ...(typeof record.redirectTo === 'string' && record.redirectTo.trim()
+      ? { redirectTo: record.redirectTo.trim() }
+      : {}),
+    ...(queryParams.data ? { queryParams: queryParams.data } : {}),
+    ...(icon.data ? { icon: icon.data } : {}),
+    ...(credentialsRef ? { credentialsRef } : {}),
+  });
 }
 
-function parseProfile(value: unknown): StudioAuthSettingsValidationResult & { data?: ManifestProfile } {
+function parseProfile(value: unknown): ValidationResult<ManifestProfile> {
   const record = asRecord(value);
-  if (!record || !hasOnlyKeys(record, ['fields', 'table', 'primaryKey', 'createStrategy', 'updateStrategy'])) {
+  if (
+    !record ||
+    !hasOnlyKeys(record, ['fields', 'table', 'primaryKey', 'createStrategy', 'updateStrategy'])
+  ) {
     return invalid('Profile configuration contains unsupported fields.');
   }
   const fields = readStringArray(record.fields, 'Profile fields', AUTH_PROFILE_FIELDS);
   if (!fields.ok) return fields;
-  if (fields.data.some((field) => field.toLowerCase() === 'role')) {
-    return invalid('Profile configuration cannot add a role field in Phase 2.');
-  }
   if (record.table !== undefined) {
     if (typeof record.table !== 'string' || !record.table.trim()) {
       return invalid('Profile table must be a non-empty string.');
@@ -451,20 +436,17 @@ function parseProfile(value: unknown): StudioAuthSettingsValidationResult & { da
     return invalid('Profile updateStrategy must be api or app.');
   }
 
-  return {
-    ok: true,
-    data: {
-      fields: fields.data,
-      ...(typeof record.table === 'string' ? { table: record.table.trim() } : {}),
-      ...(record.primaryKey === 'authUserId' ? { primaryKey: 'authUserId' as const } : {}),
-      ...(typeof record.createStrategy === 'string'
-        ? { createStrategy: record.createStrategy as NonNullable<ManifestProfile['createStrategy']> }
-        : {}),
-      ...(typeof record.updateStrategy === 'string'
-        ? { updateStrategy: record.updateStrategy as NonNullable<ManifestProfile['updateStrategy']> }
-        : {}),
-    },
-  } as StudioAuthSettingsValidationResult & { data: ManifestProfile };
+  return success({
+    fields: fields.data as ManifestProfile['fields'],
+    ...(typeof record.table === 'string' ? { table: record.table.trim() } : {}),
+    ...(record.primaryKey === 'authUserId' ? { primaryKey: 'authUserId' as const } : {}),
+    ...(typeof record.createStrategy === 'string'
+      ? { createStrategy: record.createStrategy as NonNullable<ManifestProfile['createStrategy']> }
+      : {}),
+    ...(typeof record.updateStrategy === 'string'
+      ? { updateStrategy: record.updateStrategy as NonNullable<ManifestProfile['updateStrategy']> }
+      : {}),
+  });
 }
 
 function cloneOAuthProvider(provider: ManifestOAuthProvider): ManifestOAuthProvider {
@@ -476,34 +458,29 @@ function cloneOAuthProvider(provider: ManifestOAuthProvider): ManifestOAuthProvi
   };
 }
 
-function readRoute(
-  value: unknown,
-  field: string,
-): StudioAuthSettingsValidationResult & { data?: string } {
+function readRoute(value: unknown, field: string): ValidationResult<string> {
   if (typeof value !== 'string') return invalid(`${field} must be a string.`);
   const route = value.trim();
   if (!route || route.includes('://') || route.includes('?') || route.includes('#')) {
     return invalid(`${field} must be an application route without URL, query, or hash syntax.`);
   }
-  return { ok: true, data: route } as StudioAuthSettingsValidationResult & { data: string };
+  return success(route);
 }
 
-function readCallbackRoute(
-  value: unknown,
-): StudioAuthSettingsValidationResult & { data?: string } {
+function readCallbackRoute(value: unknown): ValidationResult<string> {
   if (typeof value !== 'string') return invalid('OAuth callbackRoute must be a string.');
   const route = value.trim();
   if (!route.startsWith('/') || route.includes('://') || route.includes('?') || route.includes('#')) {
     return invalid('OAuth callbackRoute must be an absolute app path without query or hash syntax.');
   }
-  return { ok: true, data: route } as StudioAuthSettingsValidationResult & { data: string };
+  return success(route);
 }
 
 function readStringArray(
   value: unknown,
   label: string,
   allowed?: ReadonlySet<string>,
-): StudioAuthSettingsValidationResult & { data?: string[] } {
+): ValidationResult<string[]> {
   if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {
     return invalid(`${label} must be a string array.`);
   }
@@ -511,38 +488,33 @@ function readStringArray(
   if (allowed && normalized.some((entry) => !allowed.has(entry))) {
     return invalid(`${label} contains an unsupported value.`);
   }
-  return { ok: true, data: normalized } as StudioAuthSettingsValidationResult & { data: string[] };
+  return success(normalized);
 }
 
 function readOptionalStringRecord(
   value: unknown,
   label: string,
-): StudioAuthSettingsValidationResult & { data?: Record<string, string> | undefined } {
-  if (value === undefined) {
-    return { ok: true, data: undefined } as StudioAuthSettingsValidationResult & {
-      data: undefined;
-    };
-  }
+): ValidationResult<Record<string, string> | undefined> {
+  if (value === undefined) return success(undefined);
   const record = asRecord(value);
   if (!record || Object.values(record).some((entry) => typeof entry !== 'string')) {
     return invalid(`${label} must contain only string values.`);
   }
-  return {
-    ok: true,
-    data: Object.fromEntries(Object.entries(record).map(([key, entry]) => [key, String(entry)])),
-  } as StudioAuthSettingsValidationResult & { data: Record<string, string> };
+  return success(
+    Object.fromEntries(Object.entries(record).map(([key, entry]) => [key, String(entry)])),
+  );
 }
 
 function readOptionalIcon(
   value: unknown,
-): StudioAuthSettingsValidationResult & { data?: ManifestOAuthProvider['icon'] | undefined } {
-  if (value === undefined) {
-    return { ok: true, data: undefined } as StudioAuthSettingsValidationResult & {
-      data: undefined;
-    };
-  }
+): ValidationResult<ManifestOAuthProvider['icon'] | undefined> {
+  if (value === undefined) return success(undefined);
   const record = asRecord(value);
-  if (!record || !hasOnlyKeys(record, ['name', 'provider', 'size', 'color']) || typeof record.name !== 'string') {
+  if (
+    !record ||
+    !hasOnlyKeys(record, ['name', 'provider', 'size', 'color']) ||
+    typeof record.name !== 'string'
+  ) {
     return invalid('OAuth provider icon is invalid.');
   }
   if (record.provider !== undefined && typeof record.provider !== 'string') {
@@ -554,17 +526,14 @@ function readOptionalIcon(
   if (record.color !== undefined && typeof record.color !== 'string') {
     return invalid('OAuth provider icon color must be a string.');
   }
-  return {
-    ok: true,
-    data: {
-      name: record.name,
-      ...(typeof record.provider === 'string' ? { provider: record.provider } : {}),
-      ...(typeof record.size === 'string' || typeof record.size === 'number'
-        ? { size: record.size }
-        : {}),
-      ...(typeof record.color === 'string' ? { color: record.color } : {}),
-    },
-  } as StudioAuthSettingsValidationResult & { data: NonNullable<ManifestOAuthProvider['icon']> };
+  return success({
+    name: record.name,
+    ...(typeof record.provider === 'string' ? { provider: record.provider } : {}),
+    ...(typeof record.size === 'string' || typeof record.size === 'number'
+      ? { size: record.size }
+      : {}),
+    ...(typeof record.color === 'string' ? { color: record.color } : {}),
+  });
 }
 
 function findForbiddenInlineSecretPath(value: unknown, parent = ''): string | null {
@@ -598,6 +567,10 @@ function asRecord(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
-function invalid(message: string): StudioAuthSettingsValidationResult {
+function success<T>(data: T): ValidationResult<T> {
+  return { ok: true, data };
+}
+
+function invalid(message: string): { readonly ok: false; readonly error: ValidationError } {
   return { ok: false, error: { code: 'invalid_config', message } };
 }
