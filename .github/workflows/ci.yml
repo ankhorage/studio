@@ -30,20 +30,24 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Apply targeted Phase 2 auth lint fixes
+      - name: Capture targeted Phase 2 auth lint fixes and diagnostics
         if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
-        run: bun run lint:fix
+        run: |
+          set +e
+          bun run lint:fix > .phase2-auth-lint.txt 2>&1
+          echo $? > .phase2-auth-lint-status.txt
+          exit 0
 
-      - name: Commit targeted Phase 2 auth lint fixes
+      - name: Commit targeted Phase 2 auth lint results
         if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add src/authSettings.ts src/authSettings.test.ts src/projectAuthApi.ts src/projectAuthApi.test.ts src/host/auth/projectAuthService.ts src/host/auth/projectAuthService.test.ts src/host/http/authRoutes.ts src/host/http/serverWithSecrets.ts src/host/index.ts src/ui/StudioAuthSettingsOverlay.tsx src/ui/useStudioAppBarAugmentation.ts
+          git add .phase2-auth-lint.txt .phase2-auth-lint-status.txt src/authSettings.ts src/authSettings.test.ts src/projectAuthApi.ts src/projectAuthApi.test.ts src/host/auth/projectAuthService.ts src/host/auth/projectAuthService.test.ts src/host/http/authRoutes.ts src/host/http/serverWithSecrets.ts src/host/index.ts src/ui/StudioAuthSettingsOverlay.tsx src/ui/useStudioAppBarAugmentation.ts
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "chore: autofix Phase 2 auth"
+          git commit -m "chore: capture Phase 2 auth lint results"
           git push origin HEAD:${GITHUB_HEAD_REF}
 
       - name: Run build
