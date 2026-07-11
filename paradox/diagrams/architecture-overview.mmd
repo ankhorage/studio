@@ -21,6 +21,8 @@ graph TD
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_ProjectCard_tsx
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_TemplateCard_tsx
+  module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
+  package__ankhorage_studio -.-> module_src_authFlowContract_test_ts
   module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDragModel_public_test_ts
   module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
@@ -102,6 +104,9 @@ graph TD
   module_src_host_http_standalone_ts --> module_src_host_http_server_ts
   module_src_host_index_ts["src/host/index.ts"]
   package__ankhorage_studio -.-> module_src_host_index_ts
+  module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts["src/host/layout/auth/resolveAuthLayoutPlan.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts
+  module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
@@ -132,6 +137,9 @@ graph TD
   module_src_host_layout_templates_redirect_ts["src/host/layout/templates/redirect.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_redirect_ts
   module_src_host_layout_templates_redirect_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_test_ts["src/host/layout/templates/rootLayout.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_rootLayout_test_ts
+  module_src_host_layout_templates_rootLayout_test_ts --> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts
@@ -316,6 +324,8 @@ graph TD
   module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
   package__ankhorage_studio -.-> module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_modules_dashboard_ui_TemplateCard_tsx --> module_src_modules_dashboard_types_ts
+  module_src_root_test_ts["src/root.test.ts"]
+  package__ankhorage_studio -.-> module_src_root_test_ts
   module_src_root_ts["src/root.ts"]
   package__ankhorage_studio -.-> module_src_root_ts
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
