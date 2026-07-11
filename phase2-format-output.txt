@@ -1,0 +1,11 @@
+$ ankhorage-prettier --check .
+Checking formatting...
+[[31merror[39m] .github/workflows/finalize-phase2-secret-bridge.yml: SyntaxError: Implicit map keys need to be followed by map values (33:3)
+[[31merror[39m]   31 |           index_text = index_path.read_text()
+[[31merror[39m]   32 |           old_route = """export type StudioAdminRoutePath =
+[[31merror[39m] > 33 |   '/' | '/ankh/apis' | '/ankh/auth' | '/ankh/properties' | '/ankh/theme';"""
+[[31merror[39m]      |   ^^^
+[[31merror[39m]   34 |           new_route = """export type StudioAdminRoutePath =
+[[31merror[39m]   35 |   | '/'
+[[31merror[39m]   36 |   | '/ankh/apis'
+Error occurred when checking code style in the above file.
