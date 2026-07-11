@@ -214,7 +214,7 @@ export class ProjectSecretService {
     const nextManifest = configureManifestOAuthProvider(manifest, {
       provider: {
         id: definition.id,
-        label: input.label?.trim() || definition.label,
+        label: normalizeOptionalText(input.label) ?? definition.label,
         enabled: input.enabled ?? true,
         scopes: normalizeScopes(input.scopes ?? definition.defaultScopes),
         credentialsRef: refResult.data,
@@ -310,8 +310,11 @@ export function configureManifestOAuthProvider(
 ): AppManifest {
   const currentAuth = manifest.infra.auth;
   const currentOAuth = currentAuth?.oauth;
+  const existingCallbackRoute = currentOAuth ? currentOAuth.callbackRoute : undefined;
   const callbackRoute =
-    input.callbackRoute?.trim() || currentOAuth?.callbackRoute?.trim() || '/auth/callback';
+    normalizeOptionalText(input.callbackRoute) ??
+    normalizeOptionalText(existingCallbackRoute) ??
+    '/auth/callback';
   const providers = [...(currentOAuth?.providers ?? [])];
   const existingIndex = providers.findIndex((provider) => provider.id === input.provider.id);
 
@@ -340,11 +343,19 @@ export function configureManifestOAuthProvider(
 }
 
 function createScope(projectId: string, environment = 'local') {
-  return { projectId, environment: environment.trim() || 'local' };
+  return {
+    projectId,
+    environment: normalizeOptionalText(environment) ?? 'local',
+  };
 }
 
 function normalizeScopes(scopes: readonly string[]): string[] {
   return [...new Set(scopes.map((scope) => scope.trim()).filter(Boolean))];
+}
+
+function normalizeOptionalText(value: string | undefined): string | undefined {
+  const normalized = value?.trim();
+  return normalized ? normalized : undefined;
 }
 
 function toPublicError(error: { readonly code: string; readonly message: string }) {
