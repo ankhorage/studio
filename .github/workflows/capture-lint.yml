@@ -1,0 +1,31 @@
+name: Capture lint
+
+on:
+  push:
+    branches:
+      - agent/fix-generated-app-workspace-runtime
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/fix-generated-app-workspace-runtime
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install --frozen-lockfile
+      - name: Capture lint output
+        run: bun run lint > lint-output.txt 2>&1 || true
+      - name: Commit diagnostic and remove workflow
+        run: |
+          rm .github/workflows/capture-lint.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lint-output.txt .github/workflows/capture-lint.yml
+          git commit -m "Capture lint diagnostic [skip ci]"
+          git push
