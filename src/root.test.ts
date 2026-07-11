@@ -1,12 +1,14 @@
 import { expect, test } from 'bun:test';
 
-import { AnkhStudio, StudioProvider, useStudio, useStudioAppBarAugmentation } from './root';
+test('exports the Studio runtime symbols used by generated app layouts', async () => {
+  const rootSource = await Bun.file(new URL('./root.ts', import.meta.url)).text();
 
-test('exports the Studio runtime symbols used by generated app layouts', () => {
-  expect(typeof StudioProvider).toBe('function');
-  expect(typeof AnkhStudio).toBe('function');
-  expect(typeof useStudio).toBe('function');
-  expect(typeof useStudioAppBarAugmentation).toBe('function');
+  expect(rootSource).toContain("export { useStudio } from './core/StudioContext.js';");
+  expect(rootSource).toContain("export { StudioProvider } from './core/StudioProvider.js';");
+  expect(rootSource).toContain("export { AnkhStudio } from './ui/AnkhStudio.js';");
+  expect(rootSource).toContain(
+    "export { useStudioAppBarAugmentation } from './ui/useStudioAppBarAugmentation.js';",
+  );
 });
 
 test('includes generated apps in workspace installs', async () => {
