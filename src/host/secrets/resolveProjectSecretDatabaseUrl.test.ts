@@ -62,8 +62,6 @@ describe('resolveProjectSecretDatabaseUrl', () => {
     }
 
     expect(error).toBeInstanceOf(Error);
-    expect((error as Error).message).toContain(
-      'Supabase Vault database access is not configured',
-    );
+    expect((error as Error).message).toContain('Supabase Vault database access is not configured');
   });
 });

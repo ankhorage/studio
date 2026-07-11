@@ -294,6 +294,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/host/http/secretRoutes.ts">
+                src/host/http/secretRoutes.ts
+                <small>7 functions</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/host/http/security.ts">
                 src/host/http/security.ts
                 <small>1 function</small>
@@ -303,6 +309,16 @@
               <button class="nav-button" type="button" data-target="src/host/http/server.ts">
                 src/host/http/server.ts
                 <small>8 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/http/serverWithSecrets.ts"
+              >
+                src/host/http/serverWithSecrets.ts
+                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -635,6 +651,56 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/secrets/bunSupabaseVaultClient.ts"
+              >
+                src/host/secrets/bunSupabaseVaultClient.ts
+                <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/projectSecretService.test.ts"
+              >
+                src/host/secrets/projectSecretService.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/projectSecretService.ts"
+              >
+                src/host/secrets/projectSecretService.ts
+                <small>5 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+              >
+                src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+              >
+                src/host/secrets/resolveProjectSecretDatabaseUrl.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/templateRegistry/index.ts"
               >
                 src/host/templateRegistry/index.ts
@@ -947,7 +1013,7 @@
             <div class="summary">
               <div><strong>73</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>126</strong><span class="muted">modules</span></div>
+              <div><strong>133</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1284,6 +1350,18 @@
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
+            <article
+              class="item"
+              data-search="src/host/http/secretRoutes.ts src/host/orchestrator/projectManager.ts src/host/secrets/projectSecretService.ts registerProjectSecretRoutes"
+            >
+              <h3>src/host/http/secretRoutes.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/secrets/projectSecretService.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <code>registerProjectSecretRoutes</code></p>
+            </article>
             <article class="item" data-search="src/host/http/security.ts isOriginAllowed">
               <h3>src/host/http/security.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1311,27 +1389,50 @@
                 <code>startStudioHostServer</code>, <code>StartStudioHostServerOptions</code>
               </p>
             </article>
-            <article class="item" data-search="src/host/http/standalone.ts src/host/http/server.ts">
+            <article
+              class="item"
+              data-search="src/host/http/serverWithSecrets.ts src/host/http/secretRoutes.ts src/host/http/server.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/utils/workspaceRoot.ts startStudioHostServerWithSecrets"
+            >
+              <h3>src/host/http/serverWithSecrets.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/http/secretRoutes.ts</code>,
+                <code>src/host/http/server.ts</code>,
+                <code>src/host/orchestrator/moduleManager.ts</code>,
+                <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/utils/workspaceRoot.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <code>startStudioHostServerWithSecrets</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/http/standalone.ts src/host/http/serverWithSecrets.ts"
+            >
               <h3>src/host/http/standalone.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/host/http/server.ts</code></p>
+              <p><strong>Dependencies:</strong> <code>src/host/http/serverWithSecrets.ts</code></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
-              data-search="src/host/index.ts assertProjectId createStudioHost CreateStudioHostOptions createStudioHostServer getAppsRoot getProjectPath getProjectTemplate getTemplateSummaries isOriginAllowed ModuleManager ProjectManager ProjectStore ProjectSummary resolveWorkspaceRoot startStudioHostServer StartStudioHostServerOptions StudioHost"
+              data-search="src/host/index.ts assertProjectId BunSupabaseVaultClient configureManifestOAuthProvider ConfigureOAuthProviderInput ConfigureOAuthProviderResult createBunSupabaseVaultClient createStudioHost CreateStudioHostOptions createStudioHostServer getAppsRoot getProjectPath getProjectTemplate getTemplateSummaries isOriginAllowed ModuleManager ProjectManager ProjectSecretService ProjectSecretServiceOptions ProjectStore ProjectSummary registerProjectSecretRoutes resolveProjectSecretDatabaseUrl resolveWorkspaceRoot startStudioHostServer StartStudioHostServerOptions StudioHost"
             >
               <h3>src/host/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
                 <strong>Exports:</strong> <code>assertProjectId</code>,
-                <code>createStudioHost</code>, <code>CreateStudioHostOptions</code>,
-                <code>createStudioHostServer</code>, <code>getAppsRoot</code>,
-                <code>getProjectPath</code>, <code>getProjectTemplate</code>,
-                <code>getTemplateSummaries</code>, <code>isOriginAllowed</code>,
-                <code>ModuleManager</code>, <code>ProjectManager</code>, <code>ProjectStore</code>,
-                <code>ProjectSummary</code>, <code>resolveWorkspaceRoot</code>,
+                <code>BunSupabaseVaultClient</code>, <code>configureManifestOAuthProvider</code>,
+                <code>ConfigureOAuthProviderInput</code>, <code>ConfigureOAuthProviderResult</code>,
+                <code>createBunSupabaseVaultClient</code>, <code>createStudioHost</code>,
+                <code>CreateStudioHostOptions</code>, <code>createStudioHostServer</code>,
+                <code>getAppsRoot</code>, <code>getProjectPath</code>,
+                <code>getProjectTemplate</code>, <code>getTemplateSummaries</code>,
+                <code>isOriginAllowed</code>, <code>ModuleManager</code>,
+                <code>ProjectManager</code>, <code>ProjectSecretService</code>,
+                <code>ProjectSecretServiceOptions</code>, <code>ProjectStore</code>,
+                <code>ProjectSummary</code>, <code>registerProjectSecretRoutes</code>,
+                <code>resolveProjectSecretDatabaseUrl</code>, <code>resolveWorkspaceRoot</code>,
                 <code>startStudioHostServer</code>, <code>StartStudioHostServerOptions</code>,
                 <code>StudioHost</code>
               </p>
@@ -1823,6 +1924,71 @@
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>runWorkspaceInstall</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/bunSupabaseVaultClient.ts BunSupabaseVaultClient createBunSupabaseVaultClient"
+            >
+              <h3>src/host/secrets/bunSupabaseVaultClient.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>BunSupabaseVaultClient</code>,
+                <code>createBunSupabaseVaultClient</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/projectSecretService.test.ts src/host/secrets/projectSecretService.ts"
+            >
+              <h3>src/host/secrets/projectSecretService.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/secrets/projectSecretService.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/projectSecretService.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/secrets/bunSupabaseVaultClient.ts src/host/secrets/resolveProjectSecretDatabaseUrl.ts configureManifestOAuthProvider ConfigureOAuthProviderInput ConfigureOAuthProviderResult ProjectSecretService ProjectSecretServiceOptions"
+            >
+              <h3>src/host/secrets/projectSecretService.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/orchestrator/projectPaths.ts</code>,
+                <code>src/host/secrets/bunSupabaseVaultClient.ts</code>,
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>configureManifestOAuthProvider</code>,
+                <code>ConfigureOAuthProviderInput</code>, <code>ConfigureOAuthProviderResult</code>,
+                <code>ProjectSecretService</code>, <code>ProjectSecretServiceOptions</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+            >
+              <h3>src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/resolveProjectSecretDatabaseUrl.ts resolveProjectSecretDatabaseUrl ResolveProjectSecretDatabaseUrlInput"
+            >
+              <h3>src/host/secrets/resolveProjectSecretDatabaseUrl.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>resolveProjectSecretDatabaseUrl</code>,
+                <code>ResolveProjectSecretDatabaseUrlInput</code>
+              </p>
             </article>
             <article
               class="item"
@@ -2522,7 +2688,7 @@
             </article>
             <article
               class="item"
-              data-search="src/studioAdminRouteModel.ts src/index.ts createStudioAdminRouteRenderState createStudioPropertiesRoutePath openStudioAdminRoute resolveStudioAdminRoutePath resolveStudioPropertiesNodeId StudioAdminRouteRenderState"
+              data-search="src/studioAdminRouteModel.ts src/index.ts createStudioAdminRouteRenderState createStudioPropertiesRoutePath openStudioAdminRoute resolveStudioAdminRoutePath resolveStudioPropertiesNodeId StudioAdminRouteRenderState StudioResolvedAdminRoutePath"
             >
               <h3>src/studioAdminRouteModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2531,7 +2697,8 @@
                 <strong>Exports:</strong> <code>createStudioAdminRouteRenderState</code>,
                 <code>createStudioPropertiesRoutePath</code>, <code>openStudioAdminRoute</code>,
                 <code>resolveStudioAdminRoutePath</code>,
-                <code>resolveStudioPropertiesNodeId</code>, <code>StudioAdminRouteRenderState</code>
+                <code>resolveStudioPropertiesNodeId</code>,
+                <code>StudioAdminRouteRenderState</code>, <code>StudioResolvedAdminRoutePath</code>
               </p>
             </article>
             <article
@@ -5534,6 +5701,11 @@
                 module_src_host_hostOwnership_test_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts module_src_host_hostOwnership_test_ts
                 --&gt; module_src_host_utils_workspaceRoot_ts
+                module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_http_secretRoutes_ts
+                module_src_host_http_secretRoutes_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts module_src_host_http_secretRoutes_ts
+                --&gt; module_src_host_secrets_projectSecretService_ts
                 module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_http_security_ts
                 module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
@@ -5547,9 +5719,19 @@
                 --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
                 --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
                 module_src_host_utils_workspaceRoot_ts
+                module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
+                module_src_host_http_secretRoutes_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_server_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
+                module_src_host_utils_workspaceRoot_ts
                 module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_http_standalone_ts
-                module_src_host_http_standalone_ts --&gt; module_src_host_http_server_ts
+                module_src_host_http_standalone_ts --&gt; module_src_host_http_serverWithSecrets_ts
                 module_src_host_index_ts[&quot;src/host/index.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_host_index_ts
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -5738,6 +5920,31 @@
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_workspaceRuntime_ts
+                module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_secrets_bunSupabaseVaultClient_ts
+                module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_secrets_projectSecretService_test_ts
+                module_src_host_secrets_projectSecretService_test_ts --&gt;
+                module_src_host_secrets_projectSecretService_ts
+                module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_secrets_projectSecretService_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_orchestrator_projectPaths_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_secrets_bunSupabaseVaultClient_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -6001,6 +6208,10 @@ graph TD
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_http_security_ts
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_secretRoutes_ts
+  module_src_host_http_secretRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_security_ts
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
@@ -6013,9 +6224,16 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_secretRoutes_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_utils_workspaceRoot_ts
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_standalone_ts
-  module_src_host_http_standalone_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_standalone_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_index_ts[&quot;src/host/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_index_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -6150,6 +6368,22 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_workspaceRuntime_ts
+  module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_bunSupabaseVaultClient_ts
+  module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_projectSecretService_test_ts
+  module_src_host_secrets_projectSecretService_test_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_secrets_bunSupabaseVaultClient_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -6343,8 +6577,10 @@ graph TD
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
                 module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
                 module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
+                module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
                 module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
                 module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
+                module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
                 module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
                 module_src_host_index_ts[&quot;src/host/index.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -6386,6 +6622,11 @@ graph TD
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
                 module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
+                module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+                module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+                module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -6487,16 +6728,27 @@ graph TD
                 module_src_host_templateRegistry_index_ts module_src_host_hostOwnership_test_ts
                 --&gt; module_src_host_http_security_ts module_src_host_hostOwnership_test_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts module_src_host_hostOwnership_test_ts
-                --&gt; module_src_host_utils_workspaceRoot_ts module_src_host_http_server_ts --&gt;
-                module_src_host_http_security_ts module_src_host_http_server_ts --&gt;
+                --&gt; module_src_host_utils_workspaceRoot_ts module_src_host_http_secretRoutes_ts
+                --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_http_secretRoutes_ts --&gt;
+                module_src_host_secrets_projectSecretService_ts module_src_host_http_server_ts
+                --&gt; module_src_host_http_security_ts module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_infraRuntime_ts module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
                 --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
                 --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
+                module_src_host_utils_workspaceRoot_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_secretRoutes_ts
+                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
+                module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_http_serverWithSecrets_ts --&gt;
                 module_src_host_utils_workspaceRoot_ts module_src_host_http_standalone_ts --&gt;
-                module_src_host_http_server_ts
+                module_src_host_http_serverWithSecrets_ts
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --&gt;
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts
                 module_src_host_layout_layoutGenerator_ts --&gt;
@@ -6593,8 +6845,21 @@ graph TD
                 module_src_host_orchestrator_templates_ts module_src_host_orchestrator_scaffolder_ts
                 --&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_scaffolder_ts --&gt;
-                module_src_host_zoraExtensions_index_ts module_src_host_zoraExtensions_index_ts
-                --&gt; module_src_host_templateRegistry_index_ts module_src_index_test_ts --&gt;
+                module_src_host_zoraExtensions_index_ts
+                module_src_host_secrets_projectSecretService_test_ts --&gt;
+                module_src_host_secrets_projectSecretService_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_orchestrator_projectPaths_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_secrets_bunSupabaseVaultClient_ts
+                module_src_host_secrets_projectSecretService_ts --&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt;
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_zoraExtensions_index_ts --&gt;
+                module_src_host_templateRegistry_index_ts module_src_index_test_ts --&gt;
                 module_src_index_ts module_src_insertModalModel_public_test_ts --&gt;
                 module_src_index_ts module_src_insertModalModel_public_test_ts --&gt;
                 module_src_insertModalModel_ts module_src_insertModalModel_test_ts --&gt;
@@ -6671,8 +6936,10 @@ graph LR
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
   module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
   module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
+  module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
+  module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
   module_src_host_index_ts[&quot;src/host/index.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -6714,6 +6981,11 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
   module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
+  module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+  module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+  module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -6810,6 +7082,8 @@ graph LR
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_http_security_ts
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_hostOwnership_test_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_secretRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_security_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -6818,7 +7092,12 @@ graph LR
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
-  module_src_host_http_standalone_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_secretRoutes_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_standalone_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_index_ts
@@ -6873,6 +7152,12 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_secrets_projectSecretService_test_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_secrets_bunSupabaseVaultClient_ts
+  module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_zoraExtensions_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_insertModalModel_public_test_ts --&gt; module_src_index_ts
@@ -6946,8 +7231,10 @@ graph LR
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
                 module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
                 module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
+                module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
                 module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
                 module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
+                module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
                 module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
                 module_src_host_index_ts[&quot;src/host/index.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -6989,6 +7276,11 @@ graph LR
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
                 module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
+                module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+                module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+                module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+                module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -7264,8 +7556,10 @@ graph LR
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
   module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
   module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
+  module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
   module_src_host_http_security_ts[&quot;src/host/http/security.ts&quot;]
   module_src_host_http_server_ts[&quot;src/host/http/server.ts&quot;]
+  module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   module_src_host_http_standalone_ts[&quot;src/host/http/standalone.ts&quot;]
   module_src_host_index_ts[&quot;src/host/index.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
@@ -7307,6 +7601,11 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
   module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
+  module_src_host_secrets_bunSupabaseVaultClient_ts[&quot;src/host/secrets/bunSupabaseVaultClient.ts&quot;]
+  module_src_host_secrets_projectSecretService_test_ts[&quot;src/host/secrets/projectSecretService.test.ts&quot;]
+  module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
+  module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -8413,6 +8712,54 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-http-secretroutes-ts"
+          class="view"
+          data-view="src/host/http/secretRoutes.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/http/secretRoutes.ts</h2>
+            <article
+              class="item"
+              data-search="registerProjectSecretRoutes src/host/http/secretRoutes.ts "
+            >
+              <h3>registerProjectSecretRoutes</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:7:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="sendSecretResult src/host/http/secretRoutes.ts ">
+              <h3>sendSecretResult</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:161:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveErrorStatus src/host/http/secretRoutes.ts ">
+              <h3>resolveErrorStatus</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:174:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="asRecord src/host/http/secretRoutes.ts ">
+              <h3>asRecord</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:182:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readOptionalString src/host/http/secretRoutes.ts ">
+              <h3>readOptionalString</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:188:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readStringArray src/host/http/secretRoutes.ts ">
+              <h3>readStringArray</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:192:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readSecretPayload src/host/http/secretRoutes.ts ">
+              <h3>readSecretPayload</h3>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:205:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-http-security-ts"
           class="view"
           data-view="src/host/http/security.ts"
@@ -8479,6 +8826,24 @@ sequenceDiagram
             >
               <h3>formatRuntimeOutputForResponse</h3>
               <p class="muted"><code>src/host/http/server.ts:678:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-http-serverwithsecrets-ts"
+          class="view"
+          data-view="src/host/http/serverWithSecrets.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/http/serverWithSecrets.ts</h2>
+            <article
+              class="item"
+              data-search="startStudioHostServerWithSecrets src/host/http/serverWithSecrets.ts "
+            >
+              <h3>startStudioHostServerWithSecrets</h3>
+              <p class="muted"><code>src/host/http/serverWithSecrets.ts:10:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -10148,6 +10513,175 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-secrets-bunsupabasevaultclient-ts"
+          class="view"
+          data-view="src/host/secrets/bunSupabaseVaultClient.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/bunSupabaseVaultClient.ts</h2>
+            <article
+              class="item"
+              data-search="createBunSupabaseVaultClient src/host/secrets/bunSupabaseVaultClient.ts "
+            >
+              <h3>createBunSupabaseVaultClient</h3>
+              <p class="muted"><code>src/host/secrets/bunSupabaseVaultClient.ts:18:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="query src/host/secrets/bunSupabaseVaultClient.ts ">
+              <h3>query</h3>
+              <p class="muted"><code>src/host/secrets/bunSupabaseVaultClient.ts:30:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="assertRows src/host/secrets/bunSupabaseVaultClient.ts "
+            >
+              <h3>assertRows</h3>
+              <p class="muted"><code>src/host/secrets/bunSupabaseVaultClient.ts:61:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-projectsecretservice-test-ts"
+          class="view"
+          data-view="src/host/secrets/projectSecretService.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/projectSecretService.test.ts</h2>
+            <article
+              class="item"
+              data-search="createManifest src/host/secrets/projectSecretService.test.ts "
+            >
+              <h3>createManifest</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.test.ts:6:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-projectsecretservice-ts"
+          class="view"
+          data-view="src/host/secrets/projectSecretService.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/projectSecretService.ts</h2>
+            <article
+              class="item"
+              data-search="configureManifestOAuthProvider src/host/secrets/projectSecretService.ts "
+            >
+              <h3>configureManifestOAuthProvider</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:304:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createScope src/host/secrets/projectSecretService.ts "
+            >
+              <h3>createScope</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:345:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="normalizeScopes src/host/secrets/projectSecretService.ts "
+            >
+              <h3>normalizeScopes</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:352:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="normalizeOptionalText src/host/secrets/projectSecretService.ts "
+            >
+              <h3>normalizeOptionalText</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:356:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="toPublicError src/host/secrets/projectSecretService.ts "
+            >
+              <h3>toPublicError</h3>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:362:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-resolveprojectsecretdatabaseurl-test-ts"
+          class="view"
+          data-view="src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts</h2>
+            <article
+              class="item"
+              data-search="createProjectRoot src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts "
+            >
+              <h3>createProjectRoot</h3>
+              <p class="muted">
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts:16:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-resolveprojectsecretdatabaseurl-ts"
+          class="view"
+          data-view="src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/resolveProjectSecretDatabaseUrl.ts</h2>
+            <article
+              class="item"
+              data-search="resolveProjectSecretDatabaseUrl src/host/secrets/resolveProjectSecretDatabaseUrl.ts "
+            >
+              <h3>resolveProjectSecretDatabaseUrl</h3>
+              <p class="muted">
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts:23:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readFirstValue src/host/secrets/resolveProjectSecretDatabaseUrl.ts "
+            >
+              <h3>readFirstValue</h3>
+              <p class="muted">
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts:40:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readEnvFile src/host/secrets/resolveProjectSecretDatabaseUrl.ts "
+            >
+              <h3>readEnvFile</h3>
+              <p class="muted">
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts:49:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isMissingFileError src/host/secrets/resolveProjectSecretDatabaseUrl.ts "
+            >
+              <h3>isMissingFileError</h3>
+              <p class="muted">
+                <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts:76:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-templateregistry-index-ts"
           class="view"
           data-view="src/host/templateRegistry/index.ts"
@@ -11616,7 +12150,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRoutePath src/studioAdminRouteModel.ts "
             >
               <h3>resolveStudioAdminRoutePath</h3>
-              <p class="muted"><code>src/studioAdminRouteModel.ts:14:1</code></p>
+              <p class="muted"><code>src/studioAdminRouteModel.ts:16:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11624,7 +12158,7 @@ sequenceDiagram
               data-search="resolveStudioPropertiesNodeId src/studioAdminRouteModel.ts "
             >
               <h3>resolveStudioPropertiesNodeId</h3>
-              <p class="muted"><code>src/studioAdminRouteModel.ts:22:1</code></p>
+              <p class="muted"><code>src/studioAdminRouteModel.ts:24:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11632,12 +12166,12 @@ sequenceDiagram
               data-search="createStudioAdminRouteRenderState src/studioAdminRouteModel.ts "
             >
               <h3>createStudioAdminRouteRenderState</h3>
-              <p class="muted"><code>src/studioAdminRouteModel.ts:39:1</code></p>
+              <p class="muted"><code>src/studioAdminRouteModel.ts:41:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="openStudioAdminRoute src/studioAdminRouteModel.ts ">
               <h3>openStudioAdminRoute</h3>
-              <p class="muted"><code>src/studioAdminRouteModel.ts:55:1</code></p>
+              <p class="muted"><code>src/studioAdminRouteModel.ts:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11645,7 +12179,7 @@ sequenceDiagram
               data-search="createStudioPropertiesRoutePath src/studioAdminRouteModel.ts "
             >
               <h3>createStudioPropertiesRoutePath</h3>
-              <p class="muted"><code>src/studioAdminRouteModel.ts:64:1</code></p>
+              <p class="muted"><code>src/studioAdminRouteModel.ts:66:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

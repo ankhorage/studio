@@ -1,8 +1,8 @@
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
-import { createStudioHostServer, type StartStudioHostServerOptions } from './server';
 import { registerProjectSecretRoutes } from './secretRoutes';
+import { createStudioHostServer, type StartStudioHostServerOptions } from './server';
 
 /**
  * Starts the Studio host with the Phase 2 metadata-only secret bridge registered.
