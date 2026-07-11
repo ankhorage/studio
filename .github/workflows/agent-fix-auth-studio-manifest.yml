@@ -1,0 +1,89 @@
+name: Apply generated auth Studio manifest fix
+
+on:
+  push:
+    branches:
+      - agent/fix-auth-studio-manifest
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/fix-auth-studio-manifest
+      - name: Apply focused fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          template_path = Path('src/host/layout/templates/rootLayout.ts')
+          template = template_path.read_text()
+          old = '      <StudioProvider projectId={ankhConfig.metadata.slug}>'
+          new = '''      <StudioProvider
+                  projectId={ankhConfig.metadata.slug}
+                  initialManifest={runtimeManifest}
+                >'''
+          if template.count(old) != 1:
+              raise SystemExit(f'Expected exactly one StudioProvider template match, found {template.count(old)}')
+          template_path.write_text(template.replace(old, new))
+
+          test_path = Path('src/host/layout/templates/rootLayout.test.ts')
+          test_source = test_path.read_text()
+          test_name = 'initializes the Studio provider with the runtime manifest'
+          if test_name not in test_source:
+              test_source += '''
+
+          test('initializes the Studio provider with the runtime manifest', () => {
+            const generated = getRootLayoutTsx({
+              manifest: {
+                navigator: {
+                  initialRouteName: 'index',
+                },
+              } as unknown as AppManifest,
+              mutations: [],
+              allImports: '',
+              allHooks: '',
+              innerNavigation: {
+                declarations: '',
+                jsx: '<></>',
+                usesTheme: false,
+                usesIcon: false,
+                usesZoraTabBar: false,
+                usesZoraDrawerContent: false,
+                usesZoraNavigationRouteMap: false,
+              },
+              includeStudio: true,
+              authRuntime: {
+                signInRoute: 'sign-in',
+                signInRouteName: 'sign-in',
+                signUpRoute: 'sign-up',
+                signUpRouteName: 'sign-up',
+                postSignInRoute: 'products',
+                publicRoutes: ['sign-in', 'sign-up'],
+              },
+            });
+
+            expect(generated).toContain('initialManifest={runtimeManifest}');
+          });
+          '''
+              test_path.write_text(test_source)
+
+          Path('.changeset/bright-geese-sign.md').write_text('''---
+          '@ankhorage/studio': patch
+          ---
+
+          Initialize generated Studio development layouts with the runtime manifest so auth routes can mount and redirect.
+          ''')
+          PY
+
+          rm .github/workflows/agent-fix-auth-studio-manifest.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/host/layout/templates/rootLayout.ts src/host/layout/templates/rootLayout.test.ts .changeset/bright-geese-sign.md .github/workflows/agent-fix-auth-studio-manifest.yml
+          git commit -m "Fix generated auth Studio manifest"
+          git push
