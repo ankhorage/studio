@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.1.3
+
+### Patch Changes
+
+- 57493ab: Declare generated runtime registries before composing the generated app component registry.
+
 ## 0.1.2
 
 ### Patch Changes
