@@ -398,7 +398,10 @@ const shouldMountAppHeader = ${
     ? `if (__DEV__) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StudioProvider projectId={ankhConfig.metadata.slug}>
+      <StudioProvider
+        projectId={ankhConfig.metadata.slug}
+        initialManifest={runtimeManifest}
+      >
         <StudioShell
           output={output}
           activeTheme={activeTheme}
