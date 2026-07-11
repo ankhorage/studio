@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'bun:test';
 import type { AppManifest } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import {
   applyStudioAuthSettings,
@@ -158,10 +158,7 @@ describe('authSettings', () => {
         ...validSettings,
         oauth: {
           ...validSettings.oauth,
-          providers: [
-            validSettings.oauth.providers[0],
-            { ...validSettings.oauth.providers[0] },
-          ],
+          providers: [validSettings.oauth.providers[0], { ...validSettings.oauth.providers[0] }],
         },
       }).ok,
     ).toBe(false);

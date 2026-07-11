@@ -1,12 +1,9 @@
+export { ProjectAuthService, type ProjectAuthSettingsResult } from './auth/projectAuthService';
 export {
   createStudioHost,
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
-export {
-  ProjectAuthService,
-  type ProjectAuthSettingsResult,
-} from './auth/projectAuthService';
 export { registerProjectAuthRoutes } from './http/authRoutes';
 export { registerProjectSecretRoutes } from './http/secretRoutes';
 export { isOriginAllowed } from './http/security';

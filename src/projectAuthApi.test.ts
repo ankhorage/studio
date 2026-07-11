@@ -29,16 +29,18 @@ const config = {
 
 describe('projectAuthApi', () => {
   test('parses loaded and saved canonical auth settings', () => {
-    expect(parseProjectAuthSettingsResponse({ ok: true, state: 'loaded', data: config }, 'loaded')).toEqual(
-      config,
-    );
-    expect(parseProjectAuthSettingsResponse({ ok: true, state: 'saved', data: config }, 'saved')).toEqual(
-      config,
-    );
+    expect(
+      parseProjectAuthSettingsResponse({ ok: true, state: 'loaded', data: config }, 'loaded'),
+    ).toEqual(config);
+    expect(
+      parseProjectAuthSettingsResponse({ ok: true, state: 'saved', data: config }, 'saved'),
+    ).toEqual(config);
   });
 
   test('allows an unconfigured project only for loaded responses', () => {
-    expect(parseProjectAuthSettingsResponse({ ok: true, state: 'loaded', data: null }, 'loaded')).toBeNull();
+    expect(
+      parseProjectAuthSettingsResponse({ ok: true, state: 'loaded', data: null }, 'loaded'),
+    ).toBeNull();
     expect(() =>
       parseProjectAuthSettingsResponse({ ok: true, state: 'saved', data: null }, 'saved'),
     ).toThrow('invalid');

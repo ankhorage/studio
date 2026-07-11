@@ -1,10 +1,10 @@
-import type { ProjectManager } from '../orchestrator/projectManager';
 import {
   applyStudioAuthSettings,
   readStudioAuthSettings,
   type StudioAuthSettings,
   validateStudioAuthSettings,
 } from '../../authSettings';
+import type { ProjectManager } from '../orchestrator/projectManager';
 
 export type ProjectAuthSettingsResult =
   | {

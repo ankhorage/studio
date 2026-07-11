@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'bun:test';
 import type { AppManifest } from '@ankhorage/contracts';
+import { describe, expect, test } from 'bun:test';
 
 import { ProjectAuthService } from './projectAuthService';
 

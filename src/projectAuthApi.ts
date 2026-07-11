@@ -13,7 +13,9 @@ export class ProjectAuthApiError extends Error {
   }
 }
 
-export async function getProjectAuthSettings(projectId: string): Promise<StudioAuthSettings | null> {
+export async function getProjectAuthSettings(
+  projectId: string,
+): Promise<StudioAuthSettings | null> {
   const value = await requestJson(`/projects/${encodeURIComponent(projectId)}/auth/config`);
   return parseProjectAuthSettingsResponse(value, 'loaded');
 }

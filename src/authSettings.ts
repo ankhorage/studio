@@ -1,4 +1,4 @@
-import { DEFAULT_AUTH_FLOW, type AppManifest } from '@ankhorage/contracts';
+import { type AppManifest, DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import { normalizeSecretRef } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
@@ -9,13 +9,12 @@ type ManifestSignUp = NonNullable<ManifestAuth['signUp']>;
 type ManifestOAuth = NonNullable<ManifestAuth['oauth']>;
 type ManifestOAuthProvider = ManifestOAuth['providers'][number];
 type ManifestProfile = NonNullable<ManifestAuth['profile']>;
-type ValidationError = {
+interface ValidationError {
   readonly code: 'invalid_config';
   readonly message: string;
-};
+}
 type ValidationResult<T> =
-  | { readonly ok: true; readonly data: T }
-  | { readonly ok: false; readonly error: ValidationError };
+  { readonly ok: true; readonly data: T } | { readonly ok: false; readonly error: ValidationError };
 
 export interface StudioAuthSettings {
   readonly scope: ManifestAuth['scope'];
@@ -68,7 +67,7 @@ const FORBIDDEN_INLINE_SECRET_KEYS = new Set([
 ]);
 
 export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSettings | null {
-  const auth = manifest.infra.auth;
+  const { auth } = manifest.infra;
   if (!auth) return null;
 
   return {
@@ -102,12 +101,8 @@ export function readStudioAuthSettings(manifest: AppManifest): StudioAuthSetting
             fields: [...auth.profile.fields],
             ...(auth.profile.table ? { table: auth.profile.table } : {}),
             ...(auth.profile.primaryKey ? { primaryKey: auth.profile.primaryKey } : {}),
-            ...(auth.profile.createStrategy
-              ? { createStrategy: auth.profile.createStrategy }
-              : {}),
-            ...(auth.profile.updateStrategy
-              ? { updateStrategy: auth.profile.updateStrategy }
-              : {}),
+            ...(auth.profile.createStrategy ? { createStrategy: auth.profile.createStrategy } : {}),
+            ...(auth.profile.updateStrategy ? { updateStrategy: auth.profile.updateStrategy } : {}),
           },
         }
       : {}),
@@ -156,9 +151,7 @@ export function applyStudioAuthSettings(
               profile: {
                 fields: [...settings.profile.fields],
                 ...(settings.profile.table ? { table: settings.profile.table } : {}),
-                ...(settings.profile.primaryKey
-                  ? { primaryKey: settings.profile.primaryKey }
-                  : {}),
+                ...(settings.profile.primaryKey ? { primaryKey: settings.profile.primaryKey } : {}),
                 ...(settings.profile.createStrategy
                   ? { createStrategy: settings.profile.createStrategy }
                   : {}),
@@ -275,7 +268,11 @@ function parseSignUp(value: unknown): ValidationResult<ManifestSignUp> {
   if (!record || !hasOnlyKeys(record, ['requiredFields', 'optionalFields', 'signUpPolicy'])) {
     return invalid('Sign-up configuration contains unsupported fields.');
   }
-  const required = readStringArray(record.requiredFields, 'Required sign-up fields', AUTH_SIGN_UP_FIELDS);
+  const required = readStringArray(
+    record.requiredFields,
+    'Required sign-up fields',
+    AUTH_SIGN_UP_FIELDS,
+  );
   if (!required.ok) return required;
   if (required.data.length === 0) {
     return invalid('Enabled sign-up requires at least one required field.');
@@ -293,8 +290,8 @@ function parseSignUp(value: unknown): ValidationResult<ManifestSignUp> {
   }
 
   return success({
-    requiredFields: required.data as ManifestSignUp['requiredFields'],
-    ...(optional ? { optionalFields: optional.data as ManifestSignUp['optionalFields'] } : {}),
+    requiredFields: required.data,
+    ...(optional ? { optionalFields: optional.data } : {}),
     ...(typeof record.signUpPolicy === 'string'
       ? { signUpPolicy: record.signUpPolicy as NonNullable<ManifestSignUp['signUpPolicy']> }
       : {}),
@@ -425,19 +422,21 @@ function parseProfile(value: unknown): ValidationResult<ManifestProfile> {
   }
   if (
     record.createStrategy !== undefined &&
-    (typeof record.createStrategy !== 'string' || !PROFILE_CREATE_STRATEGIES.has(record.createStrategy))
+    (typeof record.createStrategy !== 'string' ||
+      !PROFILE_CREATE_STRATEGIES.has(record.createStrategy))
   ) {
     return invalid('Profile createStrategy must be trigger, api, or app.');
   }
   if (
     record.updateStrategy !== undefined &&
-    (typeof record.updateStrategy !== 'string' || !PROFILE_UPDATE_STRATEGIES.has(record.updateStrategy))
+    (typeof record.updateStrategy !== 'string' ||
+      !PROFILE_UPDATE_STRATEGIES.has(record.updateStrategy))
   ) {
     return invalid('Profile updateStrategy must be api or app.');
   }
 
   return success({
-    fields: fields.data as ManifestProfile['fields'],
+    fields: fields.data,
     ...(typeof record.table === 'string' ? { table: record.table.trim() } : {}),
     ...(record.primaryKey === 'authUserId' ? { primaryKey: 'authUserId' as const } : {}),
     ...(typeof record.createStrategy === 'string'
@@ -470,8 +469,15 @@ function readRoute(value: unknown, field: string): ValidationResult<string> {
 function readCallbackRoute(value: unknown): ValidationResult<string> {
   if (typeof value !== 'string') return invalid('OAuth callbackRoute must be a string.');
   const route = value.trim();
-  if (!route.startsWith('/') || route.includes('://') || route.includes('?') || route.includes('#')) {
-    return invalid('OAuth callbackRoute must be an absolute app path without query or hash syntax.');
+  if (
+    !route.startsWith('/') ||
+    route.includes('://') ||
+    route.includes('?') ||
+    route.includes('#')
+  ) {
+    return invalid(
+      'OAuth callbackRoute must be an absolute app path without query or hash syntax.',
+    );
   }
   return success(route);
 }
@@ -520,7 +526,11 @@ function readOptionalIcon(
   if (record.provider !== undefined && typeof record.provider !== 'string') {
     return invalid('OAuth provider icon provider must be a string.');
   }
-  if (record.size !== undefined && typeof record.size !== 'string' && typeof record.size !== 'number') {
+  if (
+    record.size !== undefined &&
+    typeof record.size !== 'string' &&
+    typeof record.size !== 'number'
+  ) {
     return invalid('OAuth provider icon size must be a string or number.');
   }
   if (record.color !== undefined && typeof record.color !== 'string') {
