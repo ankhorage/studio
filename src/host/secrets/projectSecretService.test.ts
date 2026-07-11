@@ -6,10 +6,10 @@ import { configureManifestOAuthProvider } from './projectSecretService';
 function createManifest(): AppManifest {
   return {
     metadata: {
-      id: 'app',
       name: 'App',
+      slug: 'app',
       version: '1.0.0',
-      category: 'other',
+      themeId: 'default',
     },
     settings: {
       localization: {
@@ -21,21 +21,26 @@ function createManifest(): AppManifest {
       secretStore: {
         provider: 'supabase-vault',
       },
-      deployment: {
-        target: 'minikube',
-        monitoring: false,
-      },
       plugins: [],
     },
     navigator: {
       type: 'stack',
-      initialRoute: 'index',
-      routes: [],
+      initialRouteName: 'index',
+      routes: [{ name: 'index', screenId: 'index' }],
     },
-    screens: {},
+    screens: {
+      index: {
+        id: 'index',
+        name: 'Index',
+        root: {
+          id: 'index-root',
+          type: 'Page',
+        },
+      },
+    },
     themes: [],
     activeThemeId: 'default',
-  } as AppManifest;
+  };
 }
 
 describe('configureManifestOAuthProvider', () => {
@@ -52,7 +57,7 @@ describe('configureManifestOAuthProvider', () => {
     });
 
     expect(next.infra.auth?.authorization).toBeUndefined();
-    expect(next.infra.auth?.flow.signInRoute).toBe('sign-in');
+    expect(next.infra.auth?.flow?.signInRoute).toBe('sign-in');
     expect(next.infra.auth?.oauth).toEqual({
       enabled: true,
       callbackRoute: '/auth/callback',
