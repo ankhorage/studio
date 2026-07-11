@@ -1,8 +1,10 @@
 import type { StudioAdminRoutePath, StudioPanelId } from './index';
 
+export type StudioResolvedAdminRoutePath = StudioAdminRoutePath | '/ankh/secrets';
+
 export interface StudioAdminRouteRenderState {
-  routeAdminPath: StudioAdminRoutePath | null;
-  resolvedAdminRoutePath: StudioAdminRoutePath;
+  routeAdminPath: StudioResolvedAdminRoutePath | null;
+  resolvedAdminRoutePath: StudioResolvedAdminRoutePath;
   propertiesNodeId: string | null;
   shouldRenderAppContent: true;
   shouldRenderAdminOverlay: boolean;
@@ -11,7 +13,7 @@ export interface StudioAdminRouteRenderState {
 const ADMIN_ROUTE_PATHS = ['/ankh/apis', '/ankh/auth', '/ankh/secrets', '/ankh/theme'] as const;
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
 
-export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
+export function resolveStudioAdminRoutePath(pathname: string): StudioResolvedAdminRoutePath | null {
   if (pathname.startsWith(PROPERTIES_ROUTE_PREFIX)) {
     return '/ankh/properties';
   }
@@ -53,9 +55,9 @@ export function createStudioAdminRouteRenderState(args: {
 }
 
 export function openStudioAdminRoute(args: {
-  next: Exclude<StudioAdminRoutePath, '/'>;
+  next: Exclude<StudioResolvedAdminRoutePath, '/'>;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
-  pushRoute: (routePath: Exclude<StudioAdminRoutePath, '/'>) => void;
+  pushRoute: (routePath: Exclude<StudioResolvedAdminRoutePath, '/'>) => void;
 }): void {
   args.setActivePanelId(null);
   args.pushRoute(args.next);
