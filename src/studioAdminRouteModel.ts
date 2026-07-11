@@ -8,7 +8,7 @@ export interface StudioAdminRouteRenderState {
   shouldRenderAdminOverlay: boolean;
 }
 
-const ADMIN_ROUTE_PATHS = ['/ankh/apis', '/ankh/auth', '/ankh/theme'] as const;
+const ADMIN_ROUTE_PATHS = ['/ankh/apis', '/ankh/auth', '/ankh/secrets', '/ankh/theme'] as const;
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
 
 export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
