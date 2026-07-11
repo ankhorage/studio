@@ -38,27 +38,27 @@ jobs:
 
           path = Path('src/authSettings.ts')
           content = path.read_text()
-          old = """  if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {
-            return invalid(`${label} must be a string array.`);
-          }
-          const normalized = [...new Set(value.map((entry) => entry.trim()).filter(Boolean))];
-          """
-          new = """  if (!Array.isArray(value)) {
-            return invalid(`${label} must be a string array.`);
-          }
-          const entries: string[] = [];
-          for (const entry of value as readonly unknown[]) {
-            if (typeof entry !== 'string') {
-              return invalid(`${label} must be a string array.`);
-            }
-            const normalizedEntry = entry.trim();
-            if (normalizedEntry) entries.push(normalizedEntry);
-          }
-          const normalized = [...new Set(entries)];
-          """
-          if old not in content:
+          start_marker = "  if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {"
+          end_marker = "  if (allowed && normalized.some((entry) => !allowed.has(entry))) {"
+          start = content.find(start_marker)
+          end = content.find(end_marker, start)
+          if start < 0 or end < 0:
             raise SystemExit('authSettings readStringArray target not found')
-          path.write_text(content.replace(old, new))
+          replacement = (
+              "  if (!Array.isArray(value)) {\n"
+              "    return invalid(`${label} must be a string array.`);\n"
+              "  }\n"
+              "  const entries: string[] = [];\n"
+              "  for (const entry of value as readonly unknown[]) {\n"
+              "    if (typeof entry !== 'string') {\n"
+              "      return invalid(`${label} must be a string array.`);\n"
+              "    }\n"
+              "    const normalizedEntry = entry.trim();\n"
+              "    if (normalizedEntry) entries.push(normalizedEntry);\n"
+              "  }\n"
+              "  const normalized = [...new Set(entries)];\n"
+          )
+          path.write_text(content[:start] + replacement + content[end:])
 
           path = Path('src/projectAuthApi.ts')
           content = path.read_text()
@@ -66,41 +66,31 @@ jobs:
           new = "if (record?.ok !== true || record?.state !== expectedState) {"
           if old not in content:
             raise SystemExit('projectAuthApi optional-chain target not found')
-          path.write_text(content.replace(old, new))
+          path.write_text(content.replace(old, new, 1))
 
           path = Path('src/host/auth/projectAuthService.test.ts')
           content = path.read_text()
-          replacements = {
-            """      getStudioManifest: async () => {
-                throw new Error('No draft');
-              },
-            """: """      getStudioManifest: () => Promise.reject(new Error('No draft')),
-            """,
-            "      getProjectManifest: async () => createManifest(),": "      getProjectManifest: () => Promise.resolve(createManifest()),",
-            """      saveStudioManifest: async ({ manifest }: { projectId: string; manifest: AppManifest }) => {
-                saved.push(manifest);
-                return { success: true };
-              },
-            """: """      saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {
-                saved.push(manifest);
-                return Promise.resolve({ success: true });
-              },
-            """,
-            "      getStudioManifest: async () => createManifest(),": "      getStudioManifest: () => Promise.resolve(createManifest()),",
-            """      saveStudioManifest: async () => {
-                saveCount += 1;
-                return { success: true };
-              },
-            """: """      saveStudioManifest: () => {
-                saveCount += 1;
-                return Promise.resolve({ success: true });
-              },
-            """,
-          }
-          for old, new in replacements.items():
+          replacements = [
+              (
+                  "      getStudioManifest: async () => {\n        throw new Error('No draft');\n      },",
+                  "      getStudioManifest: () => Promise.reject(new Error('No draft')),")
+              ,(
+                  "      getProjectManifest: async () => createManifest(),",
+                  "      getProjectManifest: () => Promise.resolve(createManifest()),")
+              ,(
+                  "      saveStudioManifest: async ({ manifest }: { projectId: string; manifest: AppManifest }) => {\n        saved.push(manifest);\n        return { success: true };\n      },",
+                  "      saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {\n        saved.push(manifest);\n        return Promise.resolve({ success: true });\n      },")
+              ,(
+                  "      getStudioManifest: async () => createManifest(),",
+                  "      getStudioManifest: () => Promise.resolve(createManifest()),")
+              ,(
+                  "      saveStudioManifest: async () => {\n        saveCount += 1;\n        return { success: true };\n      },",
+                  "      saveStudioManifest: () => {\n        saveCount += 1;\n        return Promise.resolve({ success: true });\n      },")
+          ]
+          for old, new in replacements:
             if old not in content:
               raise SystemExit(f'projectAuthService test target not found: {old!r}')
-            content = content.replace(old, new)
+            content = content.replace(old, new, 1)
           path.write_text(content)
           PY
           bun run lint:fix
