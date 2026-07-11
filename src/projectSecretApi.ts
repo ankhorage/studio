@@ -172,7 +172,7 @@ export function parseProjectSecretMetadataResponse(value: unknown): SecretMetada
   return parseSecretMetadata(result.data);
 }
 
-export function parseProjectSecretRemoveResponse(value: unknown): void {
+function parseProjectSecretRemoveResponse(value: unknown): void {
   const result = readResult(value);
   if (!result.ok) {
     throw createInvalidResponseError('Secret removal response was invalid.');
