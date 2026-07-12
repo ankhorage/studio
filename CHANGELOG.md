@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.4.0
+
+### Minor Changes
+
+- 7c1b230: Add canonical authentication settings validation, host APIs, and Studio controls for auth methods, routes, OAuth activation, provider state, and profile configuration.
+
 ## 0.3.0
 
 ### Minor Changes
