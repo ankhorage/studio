@@ -29,7 +29,16 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Format generated documentation
-        run: ankhorage-prettier --write README.md paradox
+        run: ./node_modules/.bin/ankhorage-prettier --write README.md paradox
+
+      - name: Restrict formatting scope
+        run: |
+          unexpected="$(git diff --name-only | grep -Ev '^(README\.md|paradox/)' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Formatter changed files outside README.md and paradox/:"
+            echo "$unexpected"
+            exit 1
+          fi
 
       - name: Run build
         run: |
