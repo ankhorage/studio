@@ -8,6 +8,7 @@ export function getAuthOAuthRuntimeTs(args: AuthOAuthLayoutPlan) {
   return `import type {
   AuthOAuthCompletionResult,
   AuthOAuthProviderId,
+  AuthOAuthTransportCancellationReason,
 } from '@ankhorage/contracts/auth';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
@@ -87,11 +88,21 @@ async function runOAuthAuthorization(
     };
   }
 
-  await writeTransportAttempt({
-    attemptId: started.data.attemptId,
-    provider: started.data.provider,
-    redirectUri: started.data.redirectUri,
-  });
+  try {
+    await writeTransportAttempt({
+      attemptId: started.data.attemptId,
+      provider: started.data.provider,
+      redirectUri: started.data.redirectUri,
+    });
+  } catch {
+    await cancelOAuthAttempt(started.data.attemptId, 'user_cancelled');
+    await clearTransportAttempt();
+    return {
+      status: 'error',
+      message: 'The OAuth authorization attempt could not be persisted.',
+      recoverable: true,
+    };
+  }
 
   let browserResult: WebBrowser.WebBrowserAuthSessionResult;
   try {
@@ -100,6 +111,7 @@ async function runOAuthAuthorization(
       started.data.redirectUri,
     );
   } catch {
+    await cancelOAuthAttempt(started.data.attemptId, 'browser_dismissed');
     await clearTransportAttempt();
     return {
       status: 'error',
@@ -200,6 +212,22 @@ function toTransportOutcome(
   };
 }
 
+async function cancelOAuthAttempt(
+  attemptId: string,
+  reason: AuthOAuthTransportCancellationReason,
+): Promise<void> {
+  const oauth = authAdapter.oauth;
+  if (!oauth) return;
+  try {
+    await oauth.completeAuthorization({
+      attemptId,
+      response: { type: 'cancelled', reason },
+    });
+  } catch {
+    // Best-effort cleanup must not replace the original transport error.
+  }
+}
+
 async function writeTransportAttempt(attempt: StoredTransportAttempt): Promise<void> {
   await authSessionStorage.setItem(OAUTH_TRANSPORT_ATTEMPT_KEY, JSON.stringify(attempt));
 }
@@ -228,7 +256,11 @@ async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
 }
 
 async function clearTransportAttempt(): Promise<void> {
-  await authSessionStorage.removeItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
+  try {
+    await authSessionStorage.removeItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
+  } catch {
+    // Cleanup failures are intentionally not surfaced with persisted state.
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
