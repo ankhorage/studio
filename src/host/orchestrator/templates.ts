@@ -42,6 +42,7 @@ const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
     'fun',
     'if',
     'implements',
+    'import',
     'in',
     'int',
     'interface',
@@ -53,6 +54,7 @@ const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
     'null',
     'object',
     'open',
+    'operator',
     'out',
     'override',
     'package',
@@ -70,6 +72,7 @@ const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
     'synchronized',
     'this',
     'throw',
+    'throws',
     'transient',
     'true',
     'try',
@@ -97,13 +100,17 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
   const nextIndent = '  '.repeat(indentLevel + 1);
 
   if (Array.isArray(value)) {
-    if (value.length === 0) return '[]';
+    if (value.length === 0) {
+      return '[]';
+    }
+
     if (
       value.every((entry) => ['string', 'number', 'boolean'].includes(typeof entry)) &&
       value.length <= 3
     ) {
       return `[${value.map((entry) => serializeJsValue(entry)).join(', ')}]`;
     }
+
     return `[\n${value
       .map((entry) => `${nextIndent}${serializeJsValue(entry, indentLevel + 1)}`)
       .join(',\n')}\n${indent}]`;
@@ -111,7 +118,10 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
 
   if (value && typeof value === 'object') {
     const entries = Object.entries(value as Record<string, unknown>);
-    if (entries.length === 0) return '{}';
+    if (entries.length === 0) {
+      return '{}';
+    }
+
     return `{\n${entries
       .map(([key, entryValue]) => {
         const serializedKey = /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(key) ? key : JSON.stringify(key);
@@ -120,14 +130,20 @@ function serializeJsValue(value: unknown, indentLevel = 0): string {
       .join(',\n')},\n${indent}}`;
   }
 
-  if (typeof value === 'string') return serializeStringLiteral(value);
+  if (typeof value === 'string') {
+    return serializeStringLiteral(value);
+  }
+
   return String(value);
 }
 
 function serializeSplashScreenPlugin(
   splashScreen: SplashScreenSpec | null | undefined,
 ): string | null {
-  if (splashScreen == null) return null;
+  if (splashScreen == null) {
+    return null;
+  }
+
   const serializedConfig = serializeJsValue(splashScreen, 3);
   return `[
       'expo-splash-screen',
@@ -136,7 +152,10 @@ function serializeSplashScreenPlugin(
 }
 
 function serializeRuntimePlugin(plugin: ExpoRuntimeConfigPluginOutput): string {
-  if (typeof plugin === 'string') return serializeJsValue(plugin);
+  if (typeof plugin === 'string') {
+    return serializeJsValue(plugin);
+  }
+
   const [name, options] = plugin;
   const serializedOptions = serializeJsValue(options, 3);
   return `[
@@ -153,8 +172,14 @@ function serializePluginsWithRuntimePlan(args: {
     serializeRuntimePlugin,
   );
   const splashPlugin = serializeSplashScreenPlugin(args.splashScreen);
-  if (splashPlugin !== null) entries.push(splashPlugin);
-  if (entries.length === 0) return '[...(config.plugins ?? [])]';
+  if (splashPlugin !== null) {
+    entries.push(splashPlugin);
+  }
+
+  if (entries.length === 0) {
+    return '[...(config.plugins ?? [])]';
+  }
+
   return `[
     ...(config.plugins ?? []),
     ${entries.join(',\n    ')},
@@ -165,6 +190,7 @@ function createNativeIdentifierSegment(bundleSuffix: string): string {
   const sanitized = bundleSuffix.replace(/[^A-Za-z0-9_]/g, '').toLowerCase();
   const ensuredValue = sanitized.length > 0 ? sanitized : 'app';
   const leadingLetterSegment = /^[a-z]/u.test(ensuredValue) ? ensuredValue : `app${ensuredValue}`;
+
   return RESERVED_NATIVE_IDENTIFIER_SEGMENTS.has(leadingLetterSegment)
     ? `app${leadingLetterSegment}`
     : leadingLetterSegment;
@@ -186,6 +212,7 @@ function serializeAndroidConfig(args: {
   const permissions = resolveExpoRuntimeNativeOutput(args.runtimePlan).androidPermissions;
   const extraLines =
     permissions.length > 0 ? `\n    permissions: ${serializeJsValue(permissions, 2)},` : '';
+
   return `{
     ...config.android,${extraLines}
     package: ${serializeStringLiteral(createNativeApplicationId(args.bundleSuffix))},
@@ -205,7 +232,7 @@ export function getAppConfigTs({
   splashScreen?: SplashScreenSpec | null;
   runtimePlan?: ExpoRuntimePlan;
 }) {
-  return `import type { ConfigContext, ExpoConfig } from 'expo/config';
+  const appConfigTs = `import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -225,13 +252,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
 });
 `;
+  return appConfigTs;
 }
 
 export function getMetroConfigJs() {
-  return `const { getDefaultConfig } = require('expo/metro-config');
+  const metroConfigJs = `const { getDefaultConfig } = require('expo/metro-config');
 
 module.exports = getDefaultConfig(__dirname);
 `;
+  return metroConfigJs;
 }
 
 export function getBabelConfigJs() {
@@ -383,9 +412,33 @@ import { ExpoRoot } from 'expo-router';
 
 function App() {
   const ctx = require.context('./src/app');
+
   return <ExpoRoot context={ctx} />;
 }
 
 registerRootComponent(App);
 `;
+}
+
+export function getTsConfigJson() {
+  const tsConfigJson = `{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-native",
+    "outDir": "dist",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "types": ["node"],
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@root/*": ["./*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}
+`;
+  return tsConfigJson;
 }
