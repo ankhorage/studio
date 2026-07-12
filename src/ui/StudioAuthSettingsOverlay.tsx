@@ -11,7 +11,7 @@ import {
 } from '@ankhorage/supabase-auth';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -55,7 +55,7 @@ interface RecoverableOAuthPartialFailure {
   readonly providerId: SupabaseOAuthProviderId;
   readonly credentialsRef: string;
   readonly configuredFields: readonly string[];
-  readonly intendedOAuth: NonNullable<StudioAuthSettings['oauth']>;
+  readonly intendedProvider: AuthOAuthProviderConfig;
 }
 
 export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
@@ -125,10 +125,32 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
     setSaving(true);
     setMessage(null);
     try {
-      const nextDraft = linkRecoverableOAuthCredentials(draft, partialFailure);
-      const saved = await saveProjectAuthSettings({ projectId, config: nextDraft });
-      setDraft(saved);
-      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
+      const persisted = (await getProjectAuthSettings(projectId)) ?? createDefaultSettings();
+      const persistedOAuth = persisted.oauth ?? createDefaultOAuth();
+      await saveProjectAuthSettings({
+        projectId,
+        config: {
+          ...persisted,
+          oauth: {
+            ...persistedOAuth,
+            providers: upsertProvider(
+              persistedOAuth.providers,
+              partialFailure.intendedProvider,
+            ),
+          },
+        },
+      });
+      setDraft((current) => {
+        const currentOAuth = current.oauth ?? createDefaultOAuth();
+        return {
+          ...current,
+          oauth: {
+            ...currentOAuth,
+            providers: upsertProvider(currentOAuth.providers, partialFailure.intendedProvider),
+          },
+        };
+      });
+      await refreshHealth();
       setPartialFailure(null);
       setMessage(`Linked ${partialFailure.credentialsRef} to the provider configuration.`);
     } catch (error) {
@@ -136,7 +158,7 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
     } finally {
       setSaving(false);
     }
-  }, [draft, partialFailure, projectId]);
+  }, [partialFailure, projectId, refreshHealth]);
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
@@ -368,7 +390,6 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               key={providerId}
               projectId={projectId}
               providerId={providerId}
-              authScope={draft.scope}
               oauth={oauth}
               providerHealth={health?.providers.find(
                 (provider) => provider.providerId === providerId,
@@ -551,7 +572,6 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
-  readonly authScope: StudioAuthSettings['scope'];
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
   readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (
@@ -641,13 +661,10 @@ function OAuthProviderSetting(props: {
         projectId: props.projectId,
         providerId: props.providerId as AuthOAuthProviderId,
         environment: 'local',
-        authScope: props.authScope,
-        oauthEnabled: props.oauth.enabled,
         credentialsRef,
         enabled,
         label: current?.label ?? definition.label,
         scopes: current?.scopes ?? definition.defaultScopes,
-        callbackRoute: props.oauth.callbackRoute,
         payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
       });
 
@@ -669,11 +686,10 @@ function OAuthProviderSetting(props: {
           providerId: props.providerId,
           credentialsRef: result.credentialsRef,
           configuredFields: result.metadata.configuredFields,
-          intendedOAuth: mergeOAuthProviderCredentialsRef(
-            intendedOAuth,
-            intendedProvider,
-            result.credentialsRef,
-          ),
+          intendedProvider: {
+            ...intendedProvider,
+            credentialsRef: result.credentialsRef,
+          },
         });
         return;
       }
@@ -759,16 +775,6 @@ function upsertProvider(
   return providers.map((candidate, candidateIndex) =>
     candidateIndex === index ? provider : candidate,
   );
-}
-
-function linkRecoverableOAuthCredentials(
-  settings: StudioAuthSettings,
-  failure: RecoverableOAuthPartialFailure,
-): StudioAuthSettings {
-  return {
-    ...settings,
-    oauth: failure.intendedOAuth,
-  };
 }
 
 function updateFlow(
