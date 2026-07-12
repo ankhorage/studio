@@ -253,7 +253,7 @@
     "expo-linear-gradient": "~15.0.8"
   },
   "devDependencies": {
-    "@ankhorage/ankh": "^0.6.3",
+    "@ankhorage/ankh": "^0.7.0",
     "@ankhorage/devtools": "^1.2.1",
     "@ankhorage/paradox": "^0.1.10",
     "@changesets/cli": "^2.31.0",
