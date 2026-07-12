@@ -33,7 +33,7 @@ jobs:
       - name: Format Phase 2 auth files
         if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
         run: |
-          ankhorage-prettier --write \
+          ./node_modules/.bin/ankhorage-prettier --write \
             .changeset/phase2-auth-settings.md \
             src/authSettings.test.ts \
             src/authSettings.ts \
