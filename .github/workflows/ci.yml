@@ -78,6 +78,11 @@ jobs:
             echo "No typecheck script found; skipping."
           fi
 
+      - name: Verify generated documentation
+        run: |
+          bun run docs
+          git diff --exit-code -- README.md paradox
+
       - name: Check changesets
         if: github.event_name == 'pull_request'
         run: |
