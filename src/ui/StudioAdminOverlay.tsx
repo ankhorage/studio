@@ -33,6 +33,11 @@ interface SecretFieldDraft {
   readonly value: string;
 }
 
+type UsageLookupState =
+  | { readonly status: 'loading' }
+  | { readonly status: 'loaded'; readonly summary: ProjectSecretUsageSummary }
+  | { readonly status: 'error'; readonly message: string };
+
 let nextFieldId = 1;
 
 function createField(name = ''): SecretFieldDraft {
@@ -72,14 +77,15 @@ export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
 }
 
 function SecretsAdmin({ projectId }: { readonly projectId: string }) {
-  const inventory = useSecretInventory(projectId);
+  const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
+  const inventory = useSecretInventory(projectId, inventoryEnvironment);
   const [environment, setEnvironment] = useState('local');
   const [ref, setRef] = useState('');
   const [kind, setKind] = useState('api-key');
   const [provider, setProvider] = useState('');
   const [kindFilter, setKindFilter] = useState('All');
   const [providerFilter, setProviderFilter] = useState('All');
-  const [usageByKey, setUsageByKey] = useState<Record<string, ProjectSecretUsageSummary>>({});
+  const [usageByKey, setUsageByKey] = useState<Record<string, UsageLookupState>>({});
   const [fields, setFields] = useState<SecretFieldDraft[]>([createField('value')]);
   const [replaceTarget, setReplaceTarget] = useState<SecretMetadata | null>(null);
   const [pendingDelete, setPendingDelete] = useState<{
@@ -114,6 +120,11 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
 
   useEffect(() => {
     let cancelled = false;
+    setUsageByKey(
+      Object.fromEntries(
+        inventory.items.map((item) => [secretInventoryKey(item), { status: 'loading' }]),
+      ),
+    );
     void (async () => {
       const entries = await Promise.all(
         inventory.items.map(async (item) => {
@@ -123,9 +134,12 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
               environment: item.scope.environment,
               ref: item.ref,
             });
-            return [secretInventoryKey(item), summary] as const;
-          } catch {
-            return [secretInventoryKey(item), { ref: item.ref, usages: [] }] as const;
+            return [secretInventoryKey(item), { status: 'loaded', summary }] as const;
+          } catch (error) {
+            return [
+              secretInventoryKey(item),
+              { status: 'error', message: toMessage(error) },
+            ] as const;
           }
         }),
       );
@@ -212,11 +226,17 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
 
   const confirmRemove = useCallback(
     async (metadata: SecretMetadata) => {
-      const usageSummary = await getProjectSecretUsages({
-        projectId,
-        environment: metadata.scope.environment,
-        ref: metadata.ref,
-      });
+      let usageSummary;
+      try {
+        usageSummary = await getProjectSecretUsages({
+          projectId,
+          environment: metadata.scope.environment,
+          ref: metadata.ref,
+        });
+      } catch (error) {
+        setMessage(`Secret usage is unavailable. ${toMessage(error)}`);
+        return;
+      }
 
       if (usageSummary.usages.length > 0) {
         setPendingDelete({ metadata, usageSummary, confirmation: '' });
@@ -353,6 +373,15 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
         </Text>
         <View style={styles.columns}>
           <View style={styles.column}>
+            <Field label="Environment filter">
+              <Input
+                value={inventoryEnvironment}
+                autoCapitalize="none"
+                onChangeText={setInventoryEnvironment}
+              />
+            </Field>
+          </View>
+          <View style={styles.column}>
             <Text variant="bodySmall" weight="semiBold">
               Kind
             </Text>
@@ -375,14 +404,14 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
           <InventoryRow
             key={`${metadata.scope.environment}:${metadata.ref}`}
             metadata={metadata}
-            usageSummary={usageByKey[secretInventoryKey(metadata)]}
+            usageState={usageByKey[secretInventoryKey(metadata)]}
             onRotate={() => beginRotation(metadata)}
             onRemove={() => void confirmRemove(metadata)}
           />
         ))}
         {!inventory.loading && inventory.items.length === 0 ? (
           <Text color="neutral" emphasis="muted">
-            No local project secrets configured.
+            No project secrets configured for this environment.
           </Text>
         ) : null}
         {!inventory.loading && inventory.items.length > 0 && filteredItems.length === 0 ? (
@@ -432,7 +461,7 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
   );
 }
 
-function useSecretInventory(projectId: string) {
+function useSecretInventory(projectId: string, environment: string) {
   const [items, setItems] = useState<readonly SecretMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -440,14 +469,14 @@ function useSecretInventory(projectId: string) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      setItems(await listProjectSecrets({ projectId, environment: 'local' }));
+      setItems(await listProjectSecrets({ projectId, environment }));
       setError(null);
     } catch (caught) {
       setError(toMessage(caught));
     } finally {
       setLoading(false);
     }
-  }, [projectId]);
+  }, [environment, projectId]);
 
   useEffect(() => {
     void refresh();
@@ -503,14 +532,15 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
 
 function InventoryRow(props: {
   readonly metadata: SecretMetadata;
-  readonly usageSummary: ProjectSecretUsageSummary | undefined;
+  readonly usageState: UsageLookupState | undefined;
   readonly onRotate: () => void;
   readonly onRemove: () => void;
 }) {
   const { theme } = useZoraTheme();
   const { metadata } = props;
   const [expanded, setExpanded] = useState(false);
-  const usageCount = props.usageSummary?.usages.length ?? 0;
+  const usageSummary = props.usageState?.status === 'loaded' ? props.usageState.summary : null;
+  const usageCount = usageSummary?.usages.length ?? 0;
   return (
     <View style={[styles.inventoryRow, { borderColor: theme.colors.border }]}>
       <View style={styles.grow}>
@@ -522,17 +552,33 @@ function InventoryRow(props: {
         <Text color="neutral" emphasis="muted" variant="caption">
           Fields: {metadata.configuredFields.join(', ') || 'none'}
         </Text>
-        <Text color={usageCount > 0 ? 'warning' : 'neutral'} emphasis="muted" variant="caption">
-          Usage count: {props.usageSummary ? usageCount : 'loading'}
-        </Text>
+        {props.usageState?.status === 'loaded' ? (
+          <Text color={usageCount > 0 ? 'warning' : 'neutral'} emphasis="muted" variant="caption">
+            Usage count: {usageCount}
+          </Text>
+        ) : props.usageState?.status === 'error' ? (
+          <Text color="warning" emphasis="muted" variant="caption">
+            Usage unavailable: {props.usageState.message}
+          </Text>
+        ) : (
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Usage loading
+          </Text>
+        )}
         <Text color="neutral" emphasis="muted" variant="caption">
           Created: {metadata.createdAt} · Updated: {metadata.updatedAt}
         </Text>
-        <Text color={usageCount > 0 ? 'warning' : 'success'} variant="caption">
-          {usageCount > 0 ? 'Referenced by project configuration' : 'No detected references'}
-        </Text>
-        {expanded && props.usageSummary
-          ? props.usageSummary.usages.map((usage) => (
+        {props.usageState?.status === 'loaded' ? (
+          <Text color={usageCount > 0 ? 'warning' : 'success'} variant="caption">
+            {usageCount > 0 ? 'Referenced by project configuration' : 'No detected references'}
+          </Text>
+        ) : (
+          <Text color="warning" variant="caption">
+            Reference status unavailable
+          </Text>
+        )}
+        {expanded && usageSummary
+          ? usageSummary.usages.map((usage) => (
               <View key={`${usage.path}:${usage.label}`} style={styles.usageRow}>
                 <Text weight="semiBold">{usage.label}</Text>
                 <Text color="neutral" emphasis="muted" variant="caption">

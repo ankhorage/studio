@@ -4,6 +4,7 @@ import {
   configureProjectOAuthProvider,
   type ConfigureProjectOAuthProviderInput,
   parseConfigureProjectOAuthProviderResponse,
+  parseProjectSecretHttpErrorResponse,
   parseProjectSecretListResponse,
   parseProjectSecretMetadataResponse,
   parseProjectSecretUsageSummaryResponse,
@@ -53,6 +54,44 @@ describe('projectSecretApi', () => {
       expect(error).toBeInstanceOf(ProjectSecretApiError);
       expect(error instanceof Error ? error.message : '').not.toContain(sentinel);
     }
+  });
+
+  test('rejects raw secret fields in non-2xx error responses before exposing data', () => {
+    const sentinel = 'sentinel-phase2-secret-do-not-leak';
+
+    try {
+      throw parseProjectSecretHttpErrorResponse(
+        {
+          ok: false,
+          error: { code: 'secret_in_use', message: 'The secret is referenced.' },
+          data: { nested: { payload: { clientSecret: sentinel } } },
+        },
+        409,
+      );
+    } catch (error) {
+      expect(error).toBeInstanceOf(ProjectSecretApiError);
+      expect(error instanceof Error ? error.message : '').toContain(
+        'Raw secret-shaped response field',
+      );
+      expect(error instanceof Error ? error.message : '').not.toContain(sentinel);
+      expect(error instanceof ProjectSecretApiError ? error.data : undefined).toBeUndefined();
+    }
+
+    const safeError = parseProjectSecretHttpErrorResponse(
+      {
+        ok: false,
+        error: { code: 'secret_in_use', message: 'The secret is referenced.' },
+        data: {
+          ref: 'auth/oauth/google',
+          usages: [],
+        },
+      },
+      409,
+    );
+    expect(safeError.data).toEqual({
+      ref: 'auth/oauth/google',
+      usages: [],
+    });
   });
 
   test('parses metadata-only usage summaries', () => {

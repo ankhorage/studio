@@ -281,6 +281,14 @@ async function readJson(response: Response): Promise<unknown> {
 }
 
 function parseHttpError(value: unknown, status: number): ProjectSecretApiError {
+  return parseProjectSecretHttpErrorResponse(value, status);
+}
+
+export function parseProjectSecretHttpErrorResponse(
+  value: unknown,
+  status: number,
+): ProjectSecretApiError {
+  rejectRawSecretResponse(value, 'Secret error response was invalid.');
   const record = asRecord(value);
   const errorRecord = asRecord(record?.error);
   const data = record?.data;
