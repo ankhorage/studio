@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.2.0",
+      "value": "v0.3.0",
       "color": "cb3837"
     },
     {
@@ -108,6 +108,24 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": []
+    },
+    {
+      "path": "src/authSettings.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/authSettings.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/authSettings.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "applyStudioAuthSettings",
+        "readStudioAuthSettings",
+        "StudioAuthSettings",
+        "StudioAuthSettingsValidationResult",
+        "validateStudioAuthSettings"
+      ]
     },
     {
       "path": "src/canvasDragModel.public.test.ts",
@@ -343,6 +361,18 @@
       "exports": ["useTemplateSummaries"]
     },
     {
+      "path": "src/host/auth/projectAuthService.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/auth/projectAuthService.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/auth/projectAuthService.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/authSettings.ts", "src/host/orchestrator/projectManager.ts"],
+      "exports": ["ProjectAuthService", "ProjectAuthSettingsResult"]
+    },
+    {
       "path": "src/host/createStudioHost.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -371,6 +401,15 @@
         "src/host/utils/workspaceRoot.ts"
       ],
       "exports": []
+    },
+    {
+      "path": "src/host/http/authRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/auth/projectAuthService.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": ["registerProjectAuthRoutes"]
     },
     {
       "path": "src/host/http/secretRoutes.ts",
@@ -406,6 +445,7 @@
       "path": "src/host/http/serverWithSecrets.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/http/authRoutes.ts",
         "src/host/http/secretRoutes.ts",
         "src/host/http/server.ts",
         "src/host/orchestrator/moduleManager.ts",
@@ -440,16 +480,20 @@
         "getTemplateSummaries",
         "isOriginAllowed",
         "ModuleManager",
+        "ProjectAuthService",
+        "ProjectAuthSettingsResult",
         "ProjectManager",
         "ProjectSecretService",
         "ProjectSecretServiceOptions",
         "ProjectStore",
         "ProjectSummary",
+        "registerProjectAuthRoutes",
         "registerProjectSecretRoutes",
         "resolveProjectSecretDatabaseUrl",
         "resolveWorkspaceRoot",
         "startStudioHostServer",
         "StartStudioHostServerOptions",
+        "startStudioHostServerWithSecrets",
         "StudioHost"
       ]
     },
@@ -1184,6 +1228,23 @@
       "exports": ["TemplateCard"]
     },
     {
+      "path": "src/projectAuthApi.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/authSettings.ts", "src/projectAuthApi.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/projectAuthApi.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/authSettings.ts"],
+      "exports": [
+        "getProjectAuthSettings",
+        "parseProjectAuthSettingsResponse",
+        "ProjectAuthApiError",
+        "saveProjectAuthSettings"
+      ]
+    },
+    {
       "path": "src/projectSecretApi.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/projectSecretApi.ts"],
@@ -1192,7 +1253,7 @@
     {
       "path": "src/projectSecretApi.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/constants.ts"],
+      "dependencies": [],
       "exports": [
         "configureProjectOAuthProvider",
         "ConfigureProjectOAuthProviderInput",
@@ -1202,7 +1263,6 @@
         "parseConfigureProjectOAuthProviderResponse",
         "parseProjectSecretListResponse",
         "parseProjectSecretMetadataResponse",
-        "parseProjectSecretRemoveResponse",
         "ProjectSecretApiError",
         "ProjectSecretCreateInput",
         "ProjectSecretRemoveInput",
@@ -1537,9 +1597,23 @@
       "exports": ["StudioAdminOverlay", "StudioAdminOverlayProps", "StudioPhase2AdminRoute"]
     },
     {
+      "path": "src/ui/StudioAuthSettingsOverlay.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/authSettings.ts",
+        "src/projectAuthApi.ts",
+        "src/ui/StudioAdminOverlay.tsx"
+      ],
+      "exports": ["StudioAuthSettingsOverlay", "StudioAuthSettingsOverlayProps"]
+    },
+    {
       "path": "src/ui/useStudioAppBarAugmentation.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/StudioContext.ts", "src/ui/StudioAdminOverlay.tsx"],
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/ui/StudioAdminOverlay.tsx",
+        "src/ui/StudioAuthSettingsOverlay.tsx"
+      ],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
     {
@@ -4398,6 +4472,195 @@
       }
     },
     {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.test.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStudioAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyStudioAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateStudioAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseFlow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseSignIn",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 255,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseSignUp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 266,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 301,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseOAuthProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 336,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProfile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 402,
+        "column": 1
+      }
+    },
+    {
+      "name": "cloneOAuthProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 451,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 460,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCallbackRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 469,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 485,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOptionalStringRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 508,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOptionalIcon",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 522,
+        "column": 1
+      }
+    },
+    {
+      "name": "findForbiddenInlineSecretPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 557,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasOnlyKeys",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 577,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 582,
+        "column": 1
+      }
+    },
+    {
+      "name": "success",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 588,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalid",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/authSettings.ts",
+        "line": 592,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioCanvasDragPayload",
       "description": null,
       "sourceLocation": {
@@ -4848,6 +5111,15 @@
       }
     },
     {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/auth/projectAuthService.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioHost",
       "description": null,
       "sourceLocation": {
@@ -4862,6 +5134,33 @@
       "sourceLocation": {
         "filePath": "src/host/hostLifecycle.smoke.test.ts",
         "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerProjectAuthRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/authRoutes.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "sendProjectAuthResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/authRoutes.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/authRoutes.ts",
+        "line": 41,
         "column": 1
       }
     },
@@ -5014,7 +5313,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/serverWithSecrets.ts",
-        "line": 10,
+        "line": 11,
         "column": 1
       }
     },
@@ -8169,11 +8468,83 @@
       }
     },
     {
+      "name": "getProjectAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "saveProjectAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectAuthSettingsResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseHttpError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
       "name": "listProjectSecrets",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 78,
+        "line": 76,
         "column": 1
       }
     },
@@ -8182,7 +8553,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 95,
+        "line": 93,
         "column": 1
       }
     },
@@ -8191,7 +8562,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 112,
+        "line": 110,
         "column": 1
       }
     },
@@ -8200,7 +8571,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 127,
+        "line": 125,
         "column": 1
       }
     },
@@ -8209,7 +8580,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 136,
+        "line": 134,
         "column": 1
       }
     },
@@ -8218,7 +8589,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 159,
+        "line": 157,
         "column": 1
       }
     },
@@ -8227,7 +8598,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 167,
+        "line": 165,
         "column": 1
       }
     },
@@ -8236,7 +8607,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 175,
+        "line": 173,
         "column": 1
       }
     },
@@ -8245,7 +8616,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 182,
+        "line": 180,
         "column": 1
       }
     },
@@ -8254,7 +8625,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 215,
+        "line": 213,
         "column": 1
       }
     },
@@ -8263,7 +8634,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 236,
+        "line": 235,
         "column": 1
       }
     },
@@ -8272,7 +8643,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 248,
+        "line": 247,
         "column": 1
       }
     },
@@ -8281,7 +8652,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 266,
+        "line": 265,
         "column": 1
       }
     },
@@ -8290,7 +8661,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 274,
+        "line": 273,
         "column": 1
       }
     },
@@ -8299,7 +8670,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 311,
+        "line": 310,
         "column": 1
       }
     },
@@ -8308,7 +8679,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 319,
+        "line": 318,
         "column": 1
       }
     },
@@ -8317,7 +8688,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 329,
+        "line": 328,
         "column": 1
       }
     },
@@ -8326,7 +8697,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 335,
+        "line": 334,
         "column": 1
       }
     },
@@ -8335,7 +8706,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectSecretApi.ts",
-        "line": 339,
+        "line": 338,
         "column": 1
       }
     },
@@ -8641,7 +9012,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 481,
+        "line": 484,
         "column": 1
       }
     },
@@ -8650,7 +9021,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 505,
+        "line": 508,
         "column": 1
       }
     },
@@ -8659,7 +9030,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 520,
+        "line": 523,
         "column": 1
       }
     },
@@ -8668,7 +9039,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 531,
+        "line": 534,
         "column": 1
       }
     },
@@ -8677,7 +9048,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 550,
+        "line": 553,
         "column": 1
       }
     },
@@ -8686,7 +9057,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 577,
+        "line": 580,
         "column": 1
       }
     },
@@ -8695,7 +9066,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 601,
+        "line": 604,
         "column": 1
       }
     },
@@ -8704,7 +9075,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 624,
+        "line": 627,
         "column": 1
       }
     },
@@ -8713,7 +9084,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 647,
+        "line": 650,
         "column": 1
       }
     },
@@ -8722,7 +9093,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 660,
+        "line": 663,
         "column": 1
       }
     },
@@ -8731,7 +9102,205 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 669,
+        "line": 672,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioAuthSettingsOverlay",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "OAuthProviderSetting",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 468,
+        "column": 1
+      }
+    },
+    {
+      "name": "setEnabled",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 481,
+        "column": 9
+      }
+    },
+    {
+      "name": "upsertProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 520,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateFlow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 531,
+        "column": 1
+      }
+    },
+    {
+      "name": "omitSignUp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 538,
+        "column": 1
+      }
+    },
+    {
+      "name": "omitProfile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 543,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 548,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 558,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFallbackManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 566,
+        "column": 1
+      }
+    },
+    {
+      "name": "splitList",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 578,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 589,
+        "column": 1
+      }
+    },
+    {
+      "name": "Card",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 594,
+        "column": 1
+      }
+    },
+    {
+      "name": "Field",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 609,
+        "column": 1
+      }
+    },
+    {
+      "name": "RouteField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 620,
+        "column": 1
+      }
+    },
+    {
+      "name": "Input",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 632,
+        "column": 1
+      }
+    },
+    {
+      "name": "SwitchSetting",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 651,
+        "column": 1
+      }
+    },
+    {
+      "name": "Choice",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 670,
+        "column": 1
+      }
+    },
+    {
+      "name": "KeyValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 694,
+        "column": 1
+      }
+    },
+    {
+      "name": "PrimaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 705,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecondaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 728,
+        "column": 1
+      }
+    },
+    {
+      "name": "Message",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "line": 740,
         "column": 1
       }
     },
@@ -8740,7 +9309,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 14,
+        "line": 15,
         "column": 1
       }
     }
@@ -8893,6 +9462,11 @@
   ],
   "graphs": {
     "imports": [
+      {
+        "fromPath": "src/authSettings.test.ts",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/authSettings.test.ts"
+      },
       {
         "fromPath": "src/canvasDragModel.public.test.ts",
         "toPath": "src/canvasDragModel.ts",
@@ -9049,14 +9623,24 @@
         "sourcePath": "src/manifestSync.ts"
       },
       {
+        "fromPath": "src/projectAuthApi.test.ts",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectAuthApi.test.ts",
+        "toPath": "src/projectAuthApi.ts",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectAuthApi.ts",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
         "fromPath": "src/projectSecretApi.test.ts",
         "toPath": "src/projectSecretApi.ts",
         "sourcePath": "src/projectSecretApi.test.ts"
-      },
-      {
-        "fromPath": "src/projectSecretApi.ts",
-        "toPath": "src/core/constants.ts",
-        "sourcePath": "src/projectSecretApi.ts"
       },
       {
         "fromPath": "src/root.ts",
@@ -9300,7 +9884,17 @@
       },
       {
         "fromPath": "src/host/index.ts",
+        "toPath": "src/host/auth/projectAuthService.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
         "toPath": "src/host/createStudioHost.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/http/authRoutes.ts",
         "sourcePath": "src/host/index.ts"
       },
       {
@@ -9316,6 +9910,11 @@
       {
         "fromPath": "src/host/index.ts",
         "toPath": "src/host/http/server.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/http/serverWithSecrets.ts",
         "sourcePath": "src/host/index.ts"
       },
       {
@@ -9434,6 +10033,21 @@
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
+        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toPath": "src/projectAuthApi.ts",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toPath": "src/ui/StudioAdminOverlay.tsx",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -9444,9 +10058,39 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
         "fromPath": "src/utils/treeUtils.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/utils/treeUtils.ts"
+      },
+      {
+        "fromPath": "src/host/auth/projectAuthService.test.ts",
+        "toPath": "src/host/auth/projectAuthService.ts",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromPath": "src/host/auth/projectAuthService.ts",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromPath": "src/host/auth/projectAuthService.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromPath": "src/host/http/authRoutes.ts",
+        "toPath": "src/host/auth/projectAuthService.ts",
+        "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/authRoutes.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/authRoutes.ts"
       },
       {
         "fromPath": "src/host/http/secretRoutes.ts",
@@ -9511,6 +10155,11 @@
       {
         "fromPath": "src/host/http/serverWithSecrets.ts",
         "toPath": "src/host/utils/workspaceRoot.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/http/authRoutes.ts",
         "sourcePath": "src/host/http/serverWithSecrets.ts"
       },
       {
@@ -9976,6 +10625,408 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/authFlowContract.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "validateStudioAuthSettings",
+        "callExpression": "validateStudioAuthSettings",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "applyStudioAuthSettings",
+        "callExpression": "applyStudioAuthSettings",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "src/authSettings.test.ts",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "findForbiddenInlineSecretPath",
+        "callExpression": "findForbiddenInlineSecretPath",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "parseFlow",
+        "callExpression": "parseFlow",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "parseSignIn",
+        "callExpression": "parseSignIn",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "parseSignUp",
+        "callExpression": "parseSignUp",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "parseOAuth",
+        "callExpression": "parseOAuth",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "parseProfile",
+        "callExpression": "parseProfile",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "validateStudioAuthSettings",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseFlow",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseFlow",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseFlow",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseFlow",
+        "toSymbol": "readRoute",
+        "callExpression": "readRoute",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseFlow",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignIn",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignIn",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignIn",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignIn",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignIn",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignUp",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignUp",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignUp",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignUp",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseSignUp",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "readCallbackRoute",
+        "callExpression": "readCallbackRoute",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "parseOAuthProvider",
+        "callExpression": "parseOAuthProvider",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuth",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "readOptionalStringRecord",
+        "callExpression": "readOptionalStringRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "readOptionalIcon",
+        "callExpression": "readOptionalIcon",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "normalizeSecretRef",
+        "callExpression": "normalizeSecretRef",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseOAuthProvider",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseProfile",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseProfile",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseProfile",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseProfile",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "parseProfile",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readRoute",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readRoute",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readCallbackRoute",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readCallbackRoute",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readStringArray",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readStringArray",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalStringRecord",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalStringRecord",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalStringRecord",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalIcon",
+        "toSymbol": "success",
+        "callExpression": "success",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalIcon",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalIcon",
+        "toSymbol": "hasOnlyKeys",
+        "callExpression": "hasOnlyKeys",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "readOptionalIcon",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "findForbiddenInlineSecretPath",
+        "toSymbol": "findForbiddenInlineSecretPath",
+        "callExpression": "findForbiddenInlineSecretPath",
+        "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "findForbiddenInlineSecretPath",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/authSettings.ts"
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
@@ -11620,6 +12671,90 @@
         "toSymbol": "createRuntimeScreenSignatures",
         "callExpression": "createRuntimeScreenSignatures",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromSymbol": "src/projectAuthApi.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectAuthApi.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectAuthApi.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectAuthApi.test.ts",
+        "toSymbol": "parseProjectAuthSettingsResponse",
+        "callExpression": "parseProjectAuthSettingsResponse",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
+        "fromSymbol": "getProjectAuthSettings",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "getProjectAuthSettings",
+        "toSymbol": "parseProjectAuthSettingsResponse",
+        "callExpression": "parseProjectAuthSettingsResponse",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "saveProjectAuthSettings",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "saveProjectAuthSettings",
+        "toSymbol": "parseProjectAuthSettingsResponse",
+        "callExpression": "parseProjectAuthSettingsResponse",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectAuthSettingsResponse",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectAuthSettingsResponse",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectAuthSettingsResponse",
+        "toSymbol": "validateStudioAuthSettings",
+        "callExpression": "validateStudioAuthSettings",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "parseHttpError",
+        "callExpression": "parseHttpError",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseHttpError",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectAuthApi.ts"
       },
       {
         "fromSymbol": "src/projectSecretApi.test.ts",
@@ -13704,6 +14839,204 @@
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
+        "fromSymbol": "StudioAuthSettingsOverlay",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioAuthSettingsOverlay",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "createFallbackManifest",
+        "callExpression": "createFallbackManifest",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "createDefaultSettings",
+        "callExpression": "createDefaultSettings",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioAuthSettingsOverlay",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "getProjectAuthSettings",
+        "callExpression": "getProjectAuthSettings",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioAuthSettingsOverlay",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "reload",
+        "callExpression": "reload",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "setSaving",
+        "callExpression": "setSaving",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "saveProjectAuthSettings",
+        "callExpression": "saveProjectAuthSettings",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "setManageCredentials",
+        "callExpression": "setManageCredentials",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioAuthSettingsOverlay",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "omitSignUp",
+        "callExpression": "omitSignUp",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "splitList",
+        "callExpression": "splitList",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "updateFlow",
+        "callExpression": "updateFlow",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "omitProfile",
+        "callExpression": "omitProfile",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "save",
+        "callExpression": "save",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "OAuthProviderSetting",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "setEnabled",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "setEnabled",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "updateFlow",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "createDefaultSettings",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Card",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "Choice",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
         "fromSymbol": "useStudioAppBarAugmentation",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
@@ -13738,6 +15071,120 @@
         "toSymbol": "openRoute",
         "callExpression": "openRoute",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/host/auth/projectAuthService.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/auth/projectAuthService.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "getProjectManifest",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/auth/projectAuthService.test.ts",
+        "toSymbol": "configure",
+        "callExpression": "new ProjectAuthService(manager).configure",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/auth/projectAuthService.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "getStudioManifest",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/auth/projectAuthService.test.ts"
+      },
+      {
+        "fromSymbol": "get",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "get",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "configure",
+        "toSymbol": "validateStudioAuthSettings",
+        "callExpression": "validateStudioAuthSettings",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "configure",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "configure",
+        "toSymbol": "applyStudioAuthSettings",
+        "callExpression": "applyStudioAuthSettings",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "configure",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "this.projectManager.saveStudioManifest",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "configure",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "this.projectManager.getStudioManifest",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
+        "sourcePath": "src/host/auth/projectAuthService.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/authRoutes.ts",
+        "toSymbol": "sendProjectAuthResult",
+        "callExpression": "sendProjectAuthResult",
+        "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/authRoutes.ts",
+        "toSymbol": "get",
+        "callExpression": "service.get",
+        "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/authRoutes.ts",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/authRoutes.ts",
+        "toSymbol": "configure",
+        "callExpression": "service.configure",
+        "sourcePath": "src/host/http/authRoutes.ts"
       },
       {
         "fromSymbol": "src/host/http/secretRoutes.ts",
@@ -14091,6 +15538,12 @@
         "fromSymbol": "startStudioHostServerWithSecrets",
         "toSymbol": "createStudioHostServer",
         "callExpression": "createStudioHostServer",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromSymbol": "startStudioHostServerWithSecrets",
+        "toSymbol": "registerProjectAuthRoutes",
+        "callExpression": "registerProjectAuthRoutes",
         "sourcePath": "src/host/http/serverWithSecrets.ts"
       },
       {

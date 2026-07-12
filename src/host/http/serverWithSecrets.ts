@@ -1,11 +1,12 @@
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
+import { registerProjectAuthRoutes } from './authRoutes';
 import { registerProjectSecretRoutes } from './secretRoutes';
 import { createStudioHostServer, type StartStudioHostServerOptions } from './server';
 
 /**
- * Starts the Studio host with the Phase 2 metadata-only secret bridge registered.
+ * Starts the Studio host with the Phase 2 auth and metadata-only secret bridges registered.
  */
 export async function startStudioHostServerWithSecrets(
   options: number | StartStudioHostServerOptions = {},
@@ -16,6 +17,7 @@ export async function startStudioHostServerWithSecrets(
   const projectManager = new ProjectManager(projectRoot);
   const fastify = await createStudioHostServer({ projectManager, orchestrator, projectRoot });
 
+  registerProjectAuthRoutes(fastify, { projectManager });
   registerProjectSecretRoutes(fastify, {
     projectManager,
     workspaceRoot: projectRoot,
