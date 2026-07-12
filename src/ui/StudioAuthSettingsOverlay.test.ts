@@ -12,10 +12,22 @@ test('auth settings keeps provider-specific OAuth credential orchestration', () 
   expect(source).toContain('configureProjectOAuthProvider');
   expect(source).toContain('definition.secretFields.map');
   expect(source).toContain("state: 'secret_saved_manifest_failed'");
-  expect(source).toContain('intendedOAuth');
-  expect(source).toContain('authScope: props.authScope');
-  expect(source).toContain('oauthEnabled: props.oauth.enabled');
+  expect(source).toContain('intendedProvider');
   expect(source).toContain('Retry manifest link');
+});
+
+test('credential writes do not submit unsaved global auth or OAuth state', () => {
+  expect(source).not.toContain('authScope: props.authScope');
+  expect(source).not.toContain('oauthEnabled: props.oauth.enabled');
+  expect(source).not.toContain('callbackRoute: props.oauth.callbackRoute');
+});
+
+test('partial-failure retry persists only the intended provider against current server state', () => {
+  expect(source).toContain('const persisted = (await getProjectAuthSettings(projectId))');
+  expect(source).toContain('partialFailure.intendedProvider');
+  expect(source).toContain('persistedOAuth.providers');
+  expect(source).toContain('setDraft((current) => {');
+  expect(source).not.toContain('linkRecoverableOAuthCredentials');
 });
 
 test('credential saves preserve unrelated draft edits instead of reloading settings', () => {
