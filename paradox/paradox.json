@@ -7443,7 +7443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 271,
+        "line": 288,
         "column": 1
       }
     },
@@ -7452,7 +7452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 420,
+        "line": 417,
         "column": 1
       }
     },
@@ -7461,7 +7461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 464,
+        "line": 452,
         "column": 1
       }
     },
@@ -7470,7 +7470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 471,
+        "line": 459,
         "column": 1
       }
     },
@@ -7479,7 +7479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 475,
+        "line": 463,
         "column": 1
       }
     },
@@ -7488,7 +7488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 481,
+        "line": 469,
         "column": 1
       }
     },
@@ -9846,7 +9846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 489,
+        "line": 498,
         "column": 1
       }
     },
@@ -9855,7 +9855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 504,
+        "line": 513,
         "column": 1
       }
     },
@@ -9864,7 +9864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 515,
+        "line": 524,
         "column": 1
       }
     },
@@ -9873,7 +9873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 534,
+        "line": 543,
         "column": 1
       }
     },
@@ -9882,7 +9882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 608,
+        "line": 617,
         "column": 1
       }
     },
@@ -9891,7 +9891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 636,
+        "line": 645,
         "column": 1
       }
     },
@@ -9900,7 +9900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 656,
+        "line": 665,
         "column": 1
       }
     },
@@ -9909,7 +9909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 683,
+        "line": 692,
         "column": 1
       }
     },
@@ -9918,7 +9918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 692,
+        "line": 701,
         "column": 1
       }
     },
@@ -9927,7 +9927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 697,
+        "line": 706,
         "column": 1
       }
     },
@@ -9936,7 +9936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 701,
+        "line": 710,
         "column": 1
       }
     },
@@ -9945,7 +9945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 705,
+        "line": 714,
         "column": 1
       }
     },
@@ -9963,7 +9963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 551,
+        "line": 569,
         "column": 1
       }
     },
@@ -9972,7 +9972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 581,
+        "line": 598,
         "column": 9
       }
     },
@@ -9981,7 +9981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 607,
+        "line": 624,
         "column": 9
       }
     },
@@ -9990,7 +9990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 739,
+        "line": 752,
         "column": 1
       }
     },
@@ -9999,16 +9999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 753,
-        "column": 1
-      }
-    },
-    {
-      "name": "linkRecoverableOAuthCredentials",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 764,
+        "line": 766,
         "column": 1
       }
     },
@@ -10017,7 +10008,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 774,
+        "line": 777,
         "column": 1
       }
     },
@@ -10026,7 +10017,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 781,
+        "line": 784,
         "column": 1
       }
     },
@@ -10035,7 +10026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 786,
+        "line": 789,
         "column": 1
       }
     },
@@ -10044,7 +10035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 791,
+        "line": 794,
         "column": 1
       }
     },
@@ -10053,7 +10044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 801,
+        "line": 804,
         "column": 1
       }
     },
@@ -10062,7 +10053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 809,
+        "line": 812,
         "column": 1
       }
     },
@@ -10071,7 +10062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 821,
+        "line": 824,
         "column": 1
       }
     },
@@ -10080,7 +10071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 832,
+        "line": 835,
         "column": 1
       }
     },
@@ -10089,7 +10080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 837,
+        "line": 840,
         "column": 1
       }
     },
@@ -10098,7 +10089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 897,
+        "line": 900,
         "column": 1
       }
     },
@@ -10107,7 +10098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 904,
+        "line": 907,
         "column": 1
       }
     },
@@ -10116,7 +10107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 912,
+        "line": 915,
         "column": 1
       }
     },
@@ -10125,7 +10116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 919,
+        "line": 922,
         "column": 1
       }
     },
@@ -10134,7 +10125,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 925,
+        "line": 928,
         "column": 1
       }
     },
@@ -10143,7 +10134,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 940,
+        "line": 943,
         "column": 1
       }
     },
@@ -10152,7 +10143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 951,
+        "line": 954,
         "column": 1
       }
     },
@@ -10161,7 +10152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 963,
+        "line": 966,
         "column": 1
       }
     },
@@ -10170,7 +10161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 982,
+        "line": 985,
         "column": 1
       }
     },
@@ -10179,7 +10170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1001,
+        "line": 1004,
         "column": 1
       }
     },
@@ -10188,7 +10179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1025,
+        "line": 1028,
         "column": 1
       }
     },
@@ -10197,7 +10188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1036,
+        "line": 1039,
         "column": 1
       }
     },
@@ -10206,7 +10197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1059,
+        "line": 1062,
         "column": 1
       }
     },
@@ -10215,7 +10206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1071,
+        "line": 1074,
         "column": 1
       }
     },
@@ -16229,14 +16220,14 @@
       },
       {
         "fromSymbol": "useSecretInventory",
-        "toSymbol": "useCallback",
-        "callExpression": "useCallback",
+        "toSymbol": "useRef",
+        "callExpression": "useRef",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setLoading",
-        "callExpression": "setLoading",
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
@@ -16247,14 +16238,20 @@
       },
       {
         "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "listProjectSecrets",
-        "callExpression": "listProjectSecrets",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
         "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
         "toSymbol": "setError",
         "callExpression": "setError",
+        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
+        "toSymbol": "listProjectSecrets",
+        "callExpression": "listProjectSecrets",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
@@ -16469,8 +16466,20 @@
       },
       {
         "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "linkRecoverableOAuthCredentials",
-        "callExpression": "linkRecoverableOAuthCredentials",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toSymbol": "refreshHealth",
+        "callExpression": "refreshHealth",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
@@ -16495,18 +16504,6 @@
         "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
         "toSymbol": "updateFlow",
         "callExpression": "updateFlow",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "createDefaultOAuth",
-        "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "refreshHealth",
-        "callExpression": "refreshHealth",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
