@@ -1,10 +1,7 @@
-import type { GeneratedOAuthProviderPlan } from '../../auth/resolveAuthLayoutPlan';
+import type { AuthOAuthLayoutPlan } from '../../auth/resolveAuthLayoutPlan';
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
-export function getAuthOAuthRuntimeTs(args: {
-  callbackRoute: string;
-  providers: readonly GeneratedOAuthProviderPlan[];
-}) {
+export function getAuthOAuthRuntimeTs(args: AuthOAuthLayoutPlan) {
   const callbackRoute = escapeStringLiteral(args.callbackRoute);
   const providers = JSON.stringify(args.providers);
 
@@ -165,7 +162,7 @@ export async function completeOAuthCallback(
 }
 
 function resolveOAuthRedirectUri(): string {
-  const callbackPath = OAUTH_CALLBACK_ROUTE.replace(/^\\/+/, '');
+  const callbackPath = OAUTH_CALLBACK_ROUTE.replace(/^\/+/, '');
   if (Platform.OS === 'web') {
     const location = Reflect.get(globalThis, 'location');
     if (
