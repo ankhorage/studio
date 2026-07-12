@@ -12,6 +12,7 @@ graph LR
   module_src_canvasDragModel_ts["src/canvasDragModel.ts"]
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
+  module_src_cli_index_ts["src/cli/index.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
@@ -176,6 +177,10 @@ graph LR
   module_src_canvasDropZones_test_ts --> module_src_canvasDropZones_ts
   module_src_canvasDropZones_test_ts --> module_src_index_ts
   module_src_canvasDropZones_ts --> module_src_index_ts
+  module_src_cli_index_ts --> module_src_host_createStudioHost_ts
+  module_src_cli_index_ts --> module_src_host_http_server_ts
+  module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
+  module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts

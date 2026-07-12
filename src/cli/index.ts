@@ -1,17 +1,3 @@
-/***
-  Start Studio
-  
-  @usage
-  @readme
-  
-  ```ts
-  // 1. Start DEV server at localhost:8081
-  bun run dev
-
-  // 2. Start Studio in new terminal tab
-  cd apps/studio && bun start
-  ```
-*/
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

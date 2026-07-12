@@ -6,9 +6,6 @@ export default defineParadoxConfig({
   docs: {
     title: '@ankhorage/studio',
     description: 'Standalone Studio authoring package for Ankhorage apps.',
-    usage: {
-      entrypoints: ['src/cli/index.ts'],
-    },
   },
 
   package: {
