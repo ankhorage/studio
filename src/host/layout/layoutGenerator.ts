@@ -15,6 +15,8 @@ import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
   getAuthAdapterTs,
+  getAuthOAuthCallbackTsx,
+  getAuthOAuthRuntimeTs,
   getAuthScreenTsx,
   getAuthSessionTs,
   getIndexRedirectRouteTsx,
@@ -158,6 +160,7 @@ export class LayoutGenerator {
               title: authScreenPlan.authMode === 'signUp' ? 'Sign up' : 'Sign in',
               signInRoute: authLayoutPlan.signInRoute,
               signUpRoute: authLayoutPlan.signUpRoute,
+              postSignInRoute: authLayoutPlan.postSignInRoute,
               signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
               signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
                 'email',
@@ -165,6 +168,7 @@ export class LayoutGenerator {
               ],
               signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
               signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+              oauthProviders: authLayoutPlan.oauth?.providers,
             }),
           });
           return;
@@ -269,6 +273,7 @@ export class LayoutGenerator {
       `import { Stack, usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useCallback, useEffect, useMemo, useState } from 'react';`,
+      `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       `
@@ -398,13 +403,24 @@ import { authAdapter } from '@/auth/adapter';`,
       case 'adapter':
         return getAuthAdapterTs({
           localSupabaseUrl: resolveGeneratedLocalSupabaseUrl(manifest),
+          oauthProviders: authLayoutPlan.oauth?.providers.map((provider) => provider.id),
         });
       case 'session':
         return getAuthSessionTs();
+      case 'oauth-runtime':
+        if (!authLayoutPlan.oauth) {
+          throw new Error('OAuth runtime generation requires an OAuth layout plan.');
+        }
+        return getAuthOAuthRuntimeTs(authLayoutPlan.oauth);
+      case 'oauth-callback':
+        return getAuthOAuthCallbackTsx({
+          signInRoute: authLayoutPlan.signInRoute,
+          postSignInRoute: authLayoutPlan.postSignInRoute,
+        });
       case 'sign-out':
         return getSignOutScreenTsx();
       default:
-        return getAuthSessionTs();
+        throw new Error(`Unsupported generated auth file kind: ${filePlan.kind}`);
     }
   }
 

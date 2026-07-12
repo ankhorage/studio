@@ -1,5 +1,6 @@
 interface AuthAdapterTemplateOptions {
   readonly localSupabaseUrl?: string;
+  readonly oauthProviders?: readonly ('google' | 'apple')[];
 }
 
 const DEFAULT_LOCAL_SUPABASE_ANON_KEY =
@@ -7,6 +8,7 @@ const DEFAULT_LOCAL_SUPABASE_ANON_KEY =
 
 export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const localSupabaseUrl = options.localSupabaseUrl ?? '';
+  const oauthProviders = JSON.stringify(options.oauthProviders ?? []);
 
   return `import type { AuthAdapter, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
 import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';
@@ -16,6 +18,7 @@ import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
 const generatedLocalSupabaseUrl = '${localSupabaseUrl}';
 const generatedLocalSupabaseAnonKey =
   '${DEFAULT_LOCAL_SUPABASE_ANON_KEY}';
+const generatedOAuthProviders = ${oauthProviders} as const;
 
 function readEnv(name: string): string | undefined {
   const maybeProcess: unknown = 'process' in globalThis ? globalThis.process : undefined;
@@ -68,6 +71,9 @@ export const authAdapter: AuthAdapter =
         anonKey: supabaseAnonKey,
         storage: authSessionStorage,
         storageKey: AUTH_SESSION_STORAGE_KEY,
+        ...(generatedOAuthProviders.length > 0
+          ? { oauthProviders: generatedOAuthProviders }
+          : {}),
       })
     : createMissingSupabaseAuthAdapter();
 

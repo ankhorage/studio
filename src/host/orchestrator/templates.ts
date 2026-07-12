@@ -9,6 +9,10 @@ import {
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
+const CONTRACTS_VERSION = '^3.0.0';
+const SUPABASE_AUTH_VERSION = '^1.0.0';
+const EXPO_SECURE_STORE_VERSION = '~15.0.8';
+const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 
 const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
   [
@@ -314,11 +318,17 @@ export function getPackageJson(args: {
       'format:check': 'ankhorage-prettier --check .',
     },
     dependencies: {
-      '@ankhorage/contracts': 'latest',
+      '@ankhorage/contracts': CONTRACTS_VERSION,
       '@ankhorage/data-sources': 'latest',
       '@ankhorage/runtime': '^0.2.0',
       '@ankhorage/studio': 'latest',
-      ...(authProvider === 'supabase' ? { '@ankhorage/supabase-auth': 'latest' } : {}),
+      ...(authProvider === 'supabase'
+        ? {
+            '@ankhorage/supabase-auth': SUPABASE_AUTH_VERSION,
+            'expo-secure-store': EXPO_SECURE_STORE_VERSION,
+            'expo-web-browser': EXPO_WEB_BROWSER_VERSION,
+          }
+        : {}),
       ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),
       '@ankhorage/zora': 'latest',
       ...runtimeDependencies,

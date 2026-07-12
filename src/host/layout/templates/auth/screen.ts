@@ -1,3 +1,4 @@
+import type { GeneratedOAuthProviderPlan } from '../../auth/resolveAuthLayoutPlan';
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 import { toSafeComponentName } from '../utils/strings';
@@ -15,10 +16,12 @@ export function getAuthScreenTsx(args: {
   title?: string;
   signInRoute: string;
   signUpRoute: string;
+  postSignInRoute: string;
   signInIdentifiers: string[];
   signUpRequiredFields: string[];
   signUpOptionalFields: string[];
   signUpPolicy: 'autoSignIn' | 'requireVerification';
+  oauthProviders?: readonly GeneratedOAuthProviderPlan[];
 }) {
   const {
     initialMode,
@@ -26,23 +29,86 @@ export function getAuthScreenTsx(args: {
     title,
     signInRoute,
     signUpRoute,
+    postSignInRoute,
     signInIdentifiers,
     signUpRequiredFields,
     signUpOptionalFields,
     signUpPolicy,
+    oauthProviders = [],
   } = args;
   const safeName = toSafeComponentName(screenName);
+  const oauthEnabled = oauthProviders.length > 0;
+  const postSignInTarget = routeNameToGroupedHref(postSignInRoute, 'app');
   const signUpSessionMessage =
     signUpPolicy === 'autoSignIn'
-      ? `        setStoredAuthSession(result.data);`
-      : `        clearStoredAuthSession();
+      ? `        await setStoredAuthSession(result.data);
+        router.replace(POST_SIGN_IN_ROUTE);`
+      : `        await clearStoredAuthSession();
         router.replace(SIGN_IN_ROUTE);`;
+  const oauthImport = oauthEnabled
+    ? `import {
+  generatedOAuthProviderItems,
+  startOAuthAuthorization,
+} from '@/auth/oauth';\n`
+    : '';
+  const oauthState = oauthEnabled
+    ? `  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);\n`
+    : '';
+  const oauthHandler = oauthEnabled
+    ? `
+  async function handleOAuthProviderPress(providerId: string) {
+    if (loading || oauthLoadingProvider !== null) return;
+    setError(null);
+    setInfo(null);
+    setOAuthLoadingProvider(providerId);
+    try {
+      const outcome = await startOAuthAuthorization(providerId);
+      if (outcome.status === 'authenticated') {
+        router.replace(POST_SIGN_IN_ROUTE);
+        return;
+      }
+      if (outcome.status === 'cancelled') {
+        setInfo(outcome.message);
+        return;
+      }
+      setError(outcome.message);
+    } catch (caught) {
+      setError(getErrorMessage(caught));
+    } finally {
+      setOAuthLoadingProvider(null);
+    }
+  }
+`
+    : '';
+  const oauthJsx = oauthEnabled
+    ? `
+          <OAuthProviderList
+            disabled={loading}
+            onProviderPress={handleOAuthProviderPress}
+            providers={generatedOAuthProviderItems.map((provider) => ({
+              ...provider,
+              disabled:
+                oauthLoadingProvider !== null && oauthLoadingProvider !== provider.id,
+              loading: oauthLoadingProvider === provider.id,
+            }))}
+          />
+          <View style={styles.separatorRow}>
+            <View style={[styles.separatorLine, { backgroundColor: theme.colors.border }]} />
+            <Text emphasis="muted" variant="bodySmall">
+              or continue with password
+            </Text>
+            <View style={[styles.separatorLine, { backgroundColor: theme.colors.border }]} />
+          </View>
+`
+    : '';
+  const zoraOAuthImport = oauthEnabled ? '  OAuthProviderList,\n' : '';
+  const formLoading = oauthEnabled ? 'loading || oauthLoadingProvider !== null' : 'loading';
 
   return `import type { AppManifest } from '@ankhorage/contracts';
 import type { AuthIdentifier, AuthSession } from '@ankhorage/contracts/auth';
 import {
   type AuthIdentifierKind,
-  SignInForm,
+${zoraOAuthImport}  SignInForm,
   type SignInFormValues,
   SignUpForm,
   type SignUpFormField,
@@ -50,20 +116,21 @@ import {
   Text,
   useZoraTheme,
 } from '@ankhorage/zora';
+import { ManifestProvider } from '@ankhorage/runtime';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { authAdapter } from '@/auth/adapter';
-import { clearStoredAuthSession, setStoredAuthSession } from '@/auth/session';
-import { ManifestProvider } from '@ankhorage/runtime';
+${oauthImport}import { clearStoredAuthSession, setStoredAuthSession } from '@/auth/session';
 
 const SIGN_IN_IDENTIFIERS: string[] = ${serializeStringArrayLiteral(signInIdentifiers)};
 const SIGN_UP_REQUIRED_FIELDS: string[] = ${serializeStringArrayLiteral(signUpRequiredFields)};
 const SIGN_UP_OPTIONAL_FIELDS: string[] = ${serializeStringArrayLiteral(signUpOptionalFields)};
 const SIGN_IN_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signInRoute, 'auth'))}';
 const SIGN_UP_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signUpRoute, 'auth'))}';
+const POST_SIGN_IN_ROUTE = '${escapeStringLiteral(postSignInTarget)}';
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 const authScreenOptions = {
   title: '${escapeStringLiteral(title ?? screenName)}',
@@ -81,14 +148,8 @@ interface AuthSubmitValues {
 }
 
 function getErrorMessage(caught: unknown): string {
-  if (caught instanceof Error) {
-    return caught.message;
-  }
-
-  if (typeof caught === 'string') {
-    return caught;
-  }
-
+  if (caught instanceof Error) return caught.message;
+  if (typeof caught === 'string') return caught;
   return 'Unknown auth error';
 }
 
@@ -98,7 +159,7 @@ export default function ${safeName}Screen() {
 
   const [mode, setMode] = useState<AuthMode>('${initialMode}');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+${oauthState}  const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
 
   const identifierField = useMemo(() => resolveIdentifierFieldDefinition(SIGN_IN_IDENTIFIERS), []);
@@ -148,7 +209,7 @@ export default function ${safeName}Screen() {
       displayName: getFormValue(values, 'displayName'),
     });
   }
-
+${oauthHandler}
   async function submitAuthForm(values: AuthSubmitValues) {
     const { mode, identifier, password, firstName, lastName, displayName } = values;
 
@@ -212,7 +273,8 @@ export default function ${safeName}Screen() {
           return;
         }
 
-        setStoredAuthSession(result.data);
+        await setStoredAuthSession(result.data);
+        router.replace(POST_SIGN_IN_ROUTE);
         return;
       }
 
@@ -271,13 +333,13 @@ ${signUpSessionMessage}
           <Text emphasis="muted" variant="bodySmall">
             {identifierField.helper}
           </Text>
-
+${oauthJsx}
           {mode === 'signIn' ? (
             <SignInForm
               error={error}
               identifierLabel={identifierField.label}
               identifiers={authIdentifiers}
-              loading={loading}
+              loading={${formLoading}}
               onSignUp={showSignUp}
               onSubmit={handleSignInSubmit}
               signUpLabel="Need an account? Sign up"
@@ -287,7 +349,7 @@ ${signUpSessionMessage}
             <SignUpForm
               error={error}
               fields={signUpFields}
-              loading={loading}
+              loading={${formLoading}}
               onSignIn={showSignIn}
               onSubmit={handleSignUpSubmit}
               signInLabel="Already have an account? Sign in"
@@ -315,6 +377,15 @@ const styles = StyleSheet.create({
     padding: 24,
     width: '100%',
   },
+  separatorLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+  },
+  separatorRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 12,
+  },
 });
 
 function buildAuthIdentifierInput(
@@ -327,11 +398,9 @@ function buildAuthIdentifierInput(
   if (resolvedIdentifiers.includes('email') && isEmail(normalizedIdentifier)) {
     return { kind: 'email' as const, value: normalizedIdentifier };
   }
-
   if (resolvedIdentifiers.includes('phone') && isPhone(normalizedIdentifier)) {
     return { kind: 'phone' as const, value: normalizedIdentifier };
   }
-
   if (resolvedIdentifiers.includes('username') && isUsername(normalizedIdentifier)) {
     return { kind: 'username' as const, value: normalizedIdentifier };
   }
@@ -343,28 +412,17 @@ function buildAuthIdentifierInput(
 function buildSignUpProfile(args: { firstName: string; lastName: string; displayName: string }) {
   const { firstName, lastName, displayName } = args;
   const profile: Record<string, string> = {};
-
   if (firstName.trim()) profile.firstName = firstName.trim();
   if (lastName.trim()) profile.lastName = lastName.trim();
   if (displayName.trim()) profile.displayName = displayName.trim();
-
   return Object.keys(profile).length > 0 ? profile : undefined;
 }
 
 function isAuthSession(value: unknown): value is AuthSession {
-  if (!isRecord(value)) {
-    return false;
-  }
-
+  if (!isRecord(value)) return false;
   const { accessToken, user } = value;
-  if (typeof accessToken !== 'string' || accessToken.length === 0) {
-    return false;
-  }
-
-  if (!isRecord(user)) {
-    return false;
-  }
-
+  if (typeof accessToken !== 'string' || accessToken.length === 0) return false;
+  if (!isRecord(user)) return false;
   const { id: userId } = user;
   return typeof userId === 'string' && userId.length > 0;
 }
@@ -413,7 +471,6 @@ function buildSignUpFields(args: {
       required: hasConfiguredSignUpField(requiredFields, 'firstname'),
     });
   }
-
   if (hasConfiguredSignUpField(configuredFields, 'lastname')) {
     fields.push({
       name: 'lastName',
@@ -422,7 +479,6 @@ function buildSignUpFields(args: {
       required: hasConfiguredSignUpField(requiredFields, 'lastname'),
     });
   }
-
   if (hasConfiguredSignUpField(configuredFields, 'displayname')) {
     fields.push({
       name: 'displayName',
@@ -431,7 +487,6 @@ function buildSignUpFields(args: {
       required: hasConfiguredSignUpField(requiredFields, 'displayname'),
     });
   }
-
   return fields;
 }
 
@@ -441,14 +496,12 @@ function hasConfiguredSignUpField(fields: string[], field: string): boolean {
 
 function resolveAuthIdentifiers(identifiers: string[]): AuthIdentifierKind[] {
   const resolved: AuthIdentifierKind[] = [];
-
   for (const identifier of identifiers) {
     const normalized = identifier.trim().toLowerCase();
     if (isAuthIdentifierKind(normalized) && !resolved.includes(normalized)) {
       resolved.push(normalized);
     }
   }
-
   return resolved.length > 0 ? resolved : ['email'];
 }
 
@@ -471,7 +524,6 @@ function resolveIdentifierFieldDefinition(identifiers: string[]) {
       keyboardType: 'email-address' as const,
     };
   }
-
   if (supportsPhone && !supportsEmail && !supportsUsername) {
     return {
       label: 'Phone',
@@ -481,7 +533,6 @@ function resolveIdentifierFieldDefinition(identifiers: string[]) {
       keyboardType: 'phone-pad' as const,
     };
   }
-
   if (supportsUsername && !supportsEmail && !supportsPhone) {
     return {
       label: 'Username',
@@ -491,7 +542,6 @@ function resolveIdentifierFieldDefinition(identifiers: string[]) {
       keyboardType: 'default' as const,
     };
   }
-
   return {
     label: supportsUsername ? 'Identifier' : 'Email or phone',
     placeholder: 'Email or phone',
@@ -504,31 +554,15 @@ function resolveIdentifierFieldDefinition(identifiers: string[]) {
 function validateIdentifier(identifier: string, identifiers: string[]): string | null {
   const normalizedIdentifier = identifier.trim();
   const set = new Set(identifiers.map((entry) => entry.trim().toLowerCase()));
-  const supportsEmail = set.has('email');
-  const supportsPhone = set.has('phone');
-  const supportsUsername = set.has('username');
-
-  const matchesEmail = isEmail(normalizedIdentifier);
-  const matchesPhone = isPhone(normalizedIdentifier);
-  const matchesUsername = isUsername(normalizedIdentifier);
-
   const allowed: { label: string; matches: boolean }[] = [];
-  if (supportsEmail) allowed.push({ label: 'email address', matches: matchesEmail });
-  if (supportsPhone) allowed.push({ label: 'phone number', matches: matchesPhone });
-  if (supportsUsername) allowed.push({ label: 'username', matches: matchesUsername });
-
-  if (allowed.length === 0 || allowed.some((entry) => entry.matches)) {
-    return null;
-  }
-
+  if (set.has('email')) allowed.push({ label: 'email address', matches: isEmail(normalizedIdentifier) });
+  if (set.has('phone')) allowed.push({ label: 'phone number', matches: isPhone(normalizedIdentifier) });
+  if (set.has('username')) allowed.push({ label: 'username', matches: isUsername(normalizedIdentifier) });
+  if (allowed.length === 0 || allowed.some((entry) => entry.matches)) return null;
   if (allowed.length === 1 && allowed[0]?.label === 'username') {
     return 'Username must be at least 3 characters and use letters, numbers, dot, underscore, or dash.';
   }
-
-  if (allowed.length === 1) {
-    return 'Use a valid ' + (allowed[0]?.label ?? 'identifier') + '.';
-  }
-
+  if (allowed.length === 1) return 'Use a valid ' + (allowed[0]?.label ?? 'identifier') + '.';
   if (allowed.length === 2) {
     return (
       'Use a valid ' +
@@ -538,7 +572,6 @@ function validateIdentifier(identifier: string, identifiers: string[]): string |
       '.'
     );
   }
-
   return (
     'Use a valid ' +
     (allowed[0]?.label ?? 'identifier') +
@@ -560,7 +593,6 @@ function validateSignUpInput(args: {
 }): string | null {
   const { identifier, password, requiredFields, firstName, lastName, displayName } = args;
   const missing: string[] = [];
-
   for (const field of requiredFields) {
     const normalized = field.trim().toLowerCase();
     switch (normalized) {
@@ -585,12 +617,7 @@ function validateSignUpInput(args: {
         break;
     }
   }
-
-  if (missing.length > 0) {
-    return 'Complete required fields: ' + missing.join(', ') + '.';
-  }
-
-  return null;
+  return missing.length > 0 ? 'Complete required fields: ' + missing.join(', ') + '.' : null;
 }
 
 function fieldLabel(normalized: string): string {
@@ -609,20 +636,14 @@ function fieldLabel(normalized: string): string {
 function isEmail(value: string): boolean {
   const normalized = value.trim();
   if (normalized.length === 0 || normalized.length > 254) return false;
-
   const atIndex = normalized.indexOf('@');
   if (atIndex <= 0 || atIndex !== normalized.lastIndexOf('@')) return false;
-
   const localPart = normalized.slice(0, atIndex);
   const domainPart = normalized.slice(atIndex + 1);
   if (localPart.length > 64 || domainPart.length === 0) return false;
-
   if (!/^[A-Za-z0-9.!#$%&'*+/=?^_\`{|}~-]+$/.test(localPart)) return false;
   if (!/^[A-Za-z0-9.-]+$/.test(domainPart)) return false;
-  if (domainPart.startsWith('.') || domainPart.endsWith('.') || domainPart.includes('..')) {
-    return false;
-  }
-
+  if (domainPart.startsWith('.') || domainPart.endsWith('.') || domainPart.includes('..')) return false;
   const labels = domainPart.split('.');
   const [topLevelDomain] = labels.slice(-1);
   if (labels.length < 2) return false;
@@ -635,10 +656,7 @@ function isEmail(value: string): boolean {
         label.endsWith('-') ||
         !/^[A-Za-z0-9-]+$/.test(label),
     )
-  ) {
-    return false;
-  }
-
+  ) return false;
   return (topLevelDomain ?? '').length >= 2;
 }
 
@@ -646,19 +664,11 @@ function isPhone(value: string): boolean {
   const normalized = value.trim();
   if (normalized.length === 0) return false;
   if (!/^[+()\\d\\s.-]+$/.test(normalized)) return false;
-
   const digitCount = (normalized.match(/\\d/g) ?? []).length;
   if (digitCount < 7 || digitCount > 15) return false;
-
   const plusCount = (normalized.match(/\\+/g) ?? []).length;
-  if (plusCount > 1) return false;
-  if (plusCount === 1 && !normalized.startsWith('+')) return false;
-
-  const openParenCount = (normalized.match(/\\(/g) ?? []).length;
-  const closeParenCount = (normalized.match(/\\)/g) ?? []).length;
-  if (openParenCount !== closeParenCount) return false;
-
-  return true;
+  if (plusCount > 1 || (plusCount === 1 && !normalized.startsWith('+'))) return false;
+  return (normalized.match(/\\(/g) ?? []).length === (normalized.match(/\\)/g) ?? []).length;
 }
 
 function isUsername(value: string): boolean {

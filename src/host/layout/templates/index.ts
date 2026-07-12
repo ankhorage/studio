@@ -6,5 +6,7 @@ export type { BuiltNavigatorJsx } from './navigation';
 export { getAuthSessionTs } from './auth/session';
 export { getSignOutScreenTsx } from './auth/signOut';
 export { getAuthAdapterTs } from './auth/adapter';
+export { getAuthOAuthCallbackTsx } from './auth/callback';
+export { getAuthOAuthRuntimeTs } from './auth/oauth';
 export { getAuthScreenTsx } from './auth/screen';
 export { getIndexRedirectRouteTsx } from './redirect';

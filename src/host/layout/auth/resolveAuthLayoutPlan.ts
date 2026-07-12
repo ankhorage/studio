@@ -1,13 +1,17 @@
 import {
   type AppManifest,
+  type AuthOAuthProviderConfig,
+  type IconSpec,
   type NavigatorSpec,
   resolveAuthFlow,
   type RouteDefinition,
 } from '@ankhorage/contracts';
+import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
 const AUTH_ADAPTER_FILE_PATH = 'src/auth/adapter.ts';
+const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
 const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
 const DEFAULT_SIGN_IN_SCREEN_ID = 'screen-auth-sign-in';
@@ -20,7 +24,8 @@ export interface ResolveAuthLayoutPlanInput {
   manifest: AppManifest;
 }
 
-type AuthGeneratedFileKind = 'adapter' | 'session' | 'sign-out' | 'auth-screen';
+type AuthGeneratedFileKind =
+  'adapter' | 'session' | 'sign-out' | 'auth-screen' | 'oauth-runtime' | 'oauth-callback';
 
 export interface AuthGeneratedFilePlan {
   path: string;
@@ -28,6 +33,21 @@ export interface AuthGeneratedFilePlan {
   routeName?: string;
   screenId?: string;
   authMode?: 'signIn' | 'signUp';
+}
+
+export interface GeneratedOAuthProviderPlan {
+  id: 'google' | 'apple';
+  label: string;
+  scopes: string[];
+  queryParams: Record<string, string>;
+  icon?: IconSpec;
+}
+
+export interface AuthOAuthLayoutPlan {
+  callbackRoute: string;
+  callbackRouteName: string;
+  callbackTopLevelRouteName: string;
+  providers: GeneratedOAuthProviderPlan[];
 }
 
 interface BaseAuthLayoutPlan {
@@ -51,6 +71,7 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   signOutRouteName: string;
   postSignInRoute: string;
   postSignInRouteName: string;
+  oauth?: AuthOAuthLayoutPlan;
   appNavigator: NavigatorSpec;
   authNavigator: NavigatorSpec;
 }
@@ -82,11 +103,13 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     return createDisabledPlan();
   }
 
+  const oauth = resolveOAuthLayoutPlan(auth.oauth);
   const publicRoutes = collectPublicRoutes(
     manifest,
     flow.unauthorizedRoute,
     signInRouteName,
     signUpRouteName,
+    oauth?.callbackTopLevelRouteName,
   );
   const groupedNavigators = getGroupedAuthNavigators(manifest);
   const hasSignOutRoute = groupedNavigators
@@ -132,10 +155,11 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     signOutRouteName,
     postSignInRoute,
     postSignInRouteName,
+    ...(oauth ? { oauth } : {}),
     publicRoutes,
     appNavigator: partitionedNavigators.appNavigator,
     authNavigator,
-    generatedFiles: buildGeneratedFilePlans(includeSignOutRoute, signOutRouteName),
+    generatedFiles: buildGeneratedFilePlans(includeSignOutRoute, signOutRouteName, oauth),
     authScreenFiles: [
       ...collectAuthScreenFiles(partitionedNavigators.appNavigator, '(app)', {
         signInRouteName,
@@ -147,6 +171,84 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
       }),
     ],
   };
+}
+
+function resolveOAuthLayoutPlan(
+  oauth: AppManifest['infra']['auth'] extends infer _Auth
+    ? NonNullable<AppManifest['infra']['auth']>['oauth']
+    : never,
+): AuthOAuthLayoutPlan | undefined {
+  if (oauth?.enabled !== true) {
+    return undefined;
+  }
+
+  const callbackRoute = normalizeCanonicalCallbackRoute(oauth.callbackRoute);
+  const enabledProviders = oauth.providers.filter((provider) => provider.enabled === true);
+  if (enabledProviders.length === 0) {
+    throw new Error('OAuth is enabled but no provider is enabled.');
+  }
+
+  const providers = enabledProviders.map(resolveGeneratedOAuthProvider);
+  const callbackRouteName = authFlowPathToRouteName(callbackRoute);
+  const [callbackTopLevelRouteName = callbackRouteName] = callbackRouteName.split('/');
+
+  return {
+    callbackRoute,
+    callbackRouteName,
+    callbackTopLevelRouteName,
+    providers,
+  };
+}
+
+function resolveGeneratedOAuthProvider(
+  provider: AuthOAuthProviderConfig,
+): GeneratedOAuthProviderPlan {
+  const definition = getSupabaseOAuthProviderDefinition(provider.id);
+  if (definition === null) {
+    throw new Error(`OAuth provider "${provider.id}" is not supported by Supabase Auth.`);
+  }
+
+  const credentialsRef = provider.credentialsRef?.trim() ?? '';
+  if (credentialsRef.length === 0) {
+    throw new Error(`OAuth provider "${provider.id}" is enabled but has no credentials reference.`);
+  }
+
+  const scopes = uniqueNonEmpty(provider.scopes ?? definition.defaultScopes);
+  const configuredLabel = provider.label?.trim();
+  const queryParams = Object.fromEntries(
+    Object.entries(provider.queryParams ?? {})
+      .map(([key, value]) => [key.trim(), value.trim()] as const)
+      .filter(([key]) => key.length > 0),
+  );
+
+  return {
+    id: definition.id,
+    label:
+      configuredLabel === undefined || configuredLabel.length === 0
+        ? `Continue with ${definition.label}`
+        : configuredLabel,
+    scopes,
+    queryParams,
+    ...(provider.icon ? { icon: provider.icon } : {}),
+  };
+}
+
+function normalizeCanonicalCallbackRoute(route: string): string {
+  const normalized = route.trim().replace(/^\/+/, '').replace(/\/+$/, '');
+  const segments = normalized.split('/').filter(Boolean);
+  if (
+    normalized.length === 0 ||
+    normalized.includes('?') ||
+    normalized.includes('#') ||
+    segments.some((segment) => segment === '.' || segment === '..')
+  ) {
+    throw new Error('OAuth callbackRoute must be a canonical relative application route.');
+  }
+  return segments.join('/');
+}
+
+function uniqueNonEmpty(values: readonly string[]): string[] {
+  return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
 function createDisabledPlan(): DisabledAuthLayoutPlan {
@@ -161,6 +263,7 @@ function createDisabledPlan(): DisabledAuthLayoutPlan {
 function buildGeneratedFilePlans(
   includeSignOutRoute: boolean,
   signOutRouteName: string,
+  oauth: AuthOAuthLayoutPlan | undefined,
 ): AuthGeneratedFilePlan[] {
   const generatedFiles: AuthGeneratedFilePlan[] = [
     {
@@ -172,6 +275,20 @@ function buildGeneratedFilePlans(
       kind: 'session',
     },
   ];
+
+  if (oauth) {
+    generatedFiles.push(
+      {
+        path: AUTH_OAUTH_RUNTIME_FILE_PATH,
+        kind: 'oauth-runtime',
+      },
+      {
+        path: normalizeRel(path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`)),
+        kind: 'oauth-callback',
+        routeName: oauth.callbackRouteName,
+      },
+    );
+  }
 
   if (includeSignOutRoute) {
     generatedFiles.push({
@@ -370,6 +487,7 @@ function collectPublicRoutes(
   unauthorizedRoute: string | undefined,
   signInRouteName: string,
   signUpRouteName: string,
+  oauthCallbackTopLevelRouteName: string | undefined,
 ): string[] {
   const unauthorizedRouteName = authFlowPathToRouteName(
     unauthorizedRoute?.trim() ?? signInRouteName,
@@ -379,6 +497,9 @@ function collectPublicRoutes(
     signUpRouteName,
     unauthorizedRouteName || signInRouteName,
   ]);
+  if (oauthCallbackTopLevelRouteName) {
+    publicRoutes.add(oauthCallbackTopLevelRouteName);
+  }
 
   const visit = (routes: RouteDefinition[]) => {
     for (const route of routes) {
