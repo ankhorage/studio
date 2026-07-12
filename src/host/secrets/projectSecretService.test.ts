@@ -161,6 +161,64 @@ describe('ProjectSecretService guarded removal', () => {
     expect(transactionCount).toBe(1);
     expect(manifest.infra.auth?.oauth?.providers[0]?.credentialsRef).toBe('auth/oauth/google');
   });
+
+  test('normalizes refs before usage checks and removal', async () => {
+    let transactionCount = 0;
+    const manifest = configureManifestOAuthProvider(createManifest(), {
+      provider: {
+        id: 'google',
+        enabled: true,
+        credentialsRef: 'auth/oauth/google',
+      },
+    });
+    const service = new ProjectSecretService({
+      workspaceRoot: '/tmp',
+      projectManager: {
+        getStudioManifest: () => Promise.resolve(manifest),
+        getProjectManifest: () => Promise.resolve(manifest),
+      } as never,
+      resolveDatabaseUrl: () => Promise.resolve('postgres://local'),
+      createClient: () =>
+        ({
+          query: () => Promise.resolve({ rows: [] }),
+          transaction: (operation: (executor: { query: typeof fakeQuery }) => Promise<unknown>) => {
+            transactionCount += 1;
+            return operation({ query: fakeQuery });
+          },
+          close: () => Promise.resolve(),
+        }) as never,
+    });
+
+    expect(
+      await service.getUsages({
+        projectId: 'demo',
+        environment: 'local',
+        ref: ' /auth//oauth/google/ ',
+      }),
+    ).toEqual({
+      ref: 'auth/oauth/google',
+      usages: [
+        {
+          ref: 'auth/oauth/google',
+          path: 'infra.auth.oauth.providers[google].credentialsRef',
+          category: 'oauth-provider',
+          label: 'Google OAuth provider',
+          ownerId: 'google',
+          breaksWhenMissing: true,
+        },
+      ],
+    });
+
+    const blocked = await service.removeGuarded({
+      projectId: 'demo',
+      environment: 'local',
+      ref: ' /auth//oauth/google/ ',
+    });
+
+    expect(blocked.ok).toBe(false);
+    expect(blocked.ok ? undefined : blocked.error.code).toBe('secret_in_use');
+    expect(transactionCount).toBe(0);
+  });
 });
 
 function fakeQuery(sql: string) {

@@ -77,6 +77,16 @@ export type ProjectSecretRemoveResult =
       readonly data?: ProjectSecretUsageSummary;
     };
 
+export class ProjectSecretUsageError extends Error {
+  readonly code: string;
+
+  constructor(args: { readonly code: string; readonly message: string }) {
+    super(args.message);
+    this.name = 'ProjectSecretUsageError';
+    this.code = args.code;
+  }
+}
+
 export class ProjectSecretService {
   private readonly projectManager: ProjectManager;
   private readonly workspaceRoot: string;
@@ -172,8 +182,13 @@ export class ProjectSecretService {
     readonly environment?: string;
     readonly ref: string;
   }): Promise<ProjectSecretUsageSummary> {
+    const refResult = normalizeSecretRef(input.ref);
+    if (!refResult.ok) {
+      throw new ProjectSecretUsageError(refResult.error);
+    }
+
     const manifest = await this.readEditableManifest(input.projectId);
-    return findProjectSecretUsages({ manifest, ref: input.ref });
+    return findProjectSecretUsages({ manifest, ref: refResult.data });
   }
 
   async removeGuarded(input: {
@@ -183,6 +198,13 @@ export class ProjectSecretService {
     readonly confirmBrokenReferences?: boolean;
   }): Promise<ProjectSecretRemoveResult> {
     let client: BunSupabaseVaultClient | null = null;
+    const refResult = normalizeSecretRef(input.ref);
+    if (!refResult.ok) {
+      return {
+        ok: false,
+        error: toPublicError(refResult.error),
+      };
+    }
 
     try {
       const manifest = await this.readEditableManifest(input.projectId);
@@ -206,7 +228,7 @@ export class ProjectSecretService {
         };
       }
 
-      const usages = findProjectSecretUsages({ manifest, ref: input.ref });
+      const usages = findProjectSecretUsages({ manifest, ref: refResult.data });
       if (usages.usages.length > 0 && input.confirmBrokenReferences !== true) {
         return {
           ok: false,
@@ -220,7 +242,7 @@ export class ProjectSecretService {
 
       const removeResult = await adapter.remove({
         scope: createScope(input.projectId, input.environment),
-        ref: input.ref,
+        ref: refResult.data,
       });
       if (!removeResult.ok) return removeResult;
 

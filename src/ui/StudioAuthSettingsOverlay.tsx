@@ -54,6 +54,7 @@ interface RecoverableOAuthPartialFailure {
   readonly providerId: SupabaseOAuthProviderId;
   readonly credentialsRef: string;
   readonly configuredFields: readonly string[];
+  readonly intendedOAuth: NonNullable<StudioAuthSettings['oauth']>;
 }
 
 export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
@@ -550,14 +551,23 @@ function OAuthProviderSetting(props: {
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
-  const configured = props.providerHealth?.status === 'configured';
+  const requiredFields =
+    props.providerHealth?.requiredFields ??
+    definition?.secretFields.map((field) => field.name) ??
+    [];
+  const configuredFields = props.providerHealth?.configuredFields ?? [];
+  const credentialsComplete =
+    definition !== null &&
+    Boolean(current?.credentialsRef) &&
+    requiredFields.length > 0 &&
+    requiredFields.every((field) => configuredFields.includes(field));
   const enabled = current?.enabled === true;
   const [credentialValues, setCredentialValues] = useState<Record<string, string>>({});
   const [savingCredentials, setSavingCredentials] = useState(false);
   const [credentialMessage, setCredentialMessage] = useState<string | null>(null);
 
   const setEnabled = (nextEnabled: boolean) => {
-    if (nextEnabled && !configured) {
+    if (nextEnabled && !credentialsComplete) {
       props.onChange(
         props.oauth,
         `Complete ${definition?.label ?? props.providerId} credentials before enabling the provider.`,
@@ -599,6 +609,19 @@ function OAuthProviderSetting(props: {
     }
 
     const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
+    const intendedProvider = {
+      ...(current ?? {
+        id: props.providerId,
+        label: definition.label,
+        scopes: [...definition.defaultScopes],
+      }),
+      enabled,
+      credentialsRef,
+    };
+    const intendedOAuth = {
+      ...props.oauth,
+      providers: upsertProvider(props.oauth.providers, intendedProvider),
+    };
     setSavingCredentials(true);
     setCredentialMessage(null);
     try {
@@ -629,6 +652,13 @@ function OAuthProviderSetting(props: {
           providerId: props.providerId,
           credentialsRef: result.credentialsRef,
           configuredFields: result.metadata.configuredFields,
+          intendedOAuth: {
+            ...intendedOAuth,
+            providers: upsertProvider(intendedOAuth.providers, {
+              ...intendedProvider,
+              credentialsRef: result.credentialsRef,
+            }),
+          },
         });
         return;
       }
@@ -647,7 +677,11 @@ function OAuthProviderSetting(props: {
       <View style={styles.providerRow}>
         <View style={styles.grow}>
           <Text weight="semiBold">{definition?.label ?? props.providerId}</Text>
-          <Text color={configured ? 'success' : 'warning'} emphasis="muted" variant="caption">
+          <Text
+            color={credentialsComplete ? 'success' : 'warning'}
+            emphasis="muted"
+            variant="caption"
+          >
             {formatProviderHealthStatus(props.providerHealth?.status ?? 'missing')}
             {current?.credentialsRef ? `: ${current.credentialsRef}` : ''}
           </Text>
@@ -664,7 +698,7 @@ function OAuthProviderSetting(props: {
             value={credentialValues[field.name] ?? ''}
             secureTextEntry={field.secret}
             autoCapitalize="none"
-            placeholder={configured ? 'Enter complete replacement value' : field.label}
+            placeholder={credentialsComplete ? 'Enter complete replacement value' : field.label}
             onChangeText={(value) =>
               setCredentialValues((currentValues) => ({
                 ...currentValues,
@@ -677,7 +711,7 @@ function OAuthProviderSetting(props: {
 
       <View style={styles.actions}>
         <PrimaryButton
-          label={configured ? 'Replace credentials' : 'Save credentials'}
+          label={credentialsComplete ? 'Replace credentials' : 'Save credentials'}
           loading={savingCredentials}
           onPress={() => void saveCredentials()}
         />
@@ -702,26 +736,9 @@ function linkRecoverableOAuthCredentials(
   settings: StudioAuthSettings,
   failure: RecoverableOAuthPartialFailure,
 ): StudioAuthSettings {
-  const oauth = settings.oauth ?? createDefaultOAuth();
-  const definition = getSupabaseOAuthProviderDefinition(failure.providerId);
-  const current = oauth.providers.find((provider) => provider.id === failure.providerId);
-  const provider = {
-    ...(current ?? {
-      id: failure.providerId,
-      label: definition?.label ?? failure.providerId,
-      enabled: true,
-      scopes: [...(definition?.defaultScopes ?? [])],
-    }),
-    credentialsRef: failure.credentialsRef,
-  };
-
   return {
     ...settings,
-    oauth: {
-      ...oauth,
-      enabled: true,
-      providers: upsertProvider(oauth.providers, provider),
-    },
+    oauth: failure.intendedOAuth,
   };
 }
 

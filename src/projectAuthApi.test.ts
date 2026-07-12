@@ -1,7 +1,12 @@
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioAuthSettings } from './authSettings';
-import { parseProjectAuthHealthResponse, parseProjectAuthSettingsResponse } from './projectAuthApi';
+import {
+  parseProjectAuthHealthResponse,
+  parseProjectAuthHttpErrorResponse,
+  parseProjectAuthSettingsResponse,
+  ProjectAuthApiError,
+} from './projectAuthApi';
 
 const config = {
   scope: 'global',
@@ -105,5 +110,26 @@ describe('projectAuthApi', () => {
         },
       }),
     ).toThrow('privateKey');
+  });
+
+  test('rejects raw secret fields in non-2xx auth responses', () => {
+    const sentinel = 'sentinel-phase2-secret-do-not-leak';
+
+    try {
+      throw parseProjectAuthHttpErrorResponse(
+        {
+          ok: false,
+          error: { code: 'invalid_config', message: 'Auth request failed.' },
+          data: { nested: { payload: { token: sentinel } } },
+        },
+        400,
+      );
+    } catch (error) {
+      expect(error).toBeInstanceOf(ProjectAuthApiError);
+      expect(error instanceof Error ? error.message : '').toContain(
+        'Raw secret-shaped response field',
+      );
+      expect(error instanceof Error ? error.message : '').not.toContain(sentinel);
+    }
   });
 });

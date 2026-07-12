@@ -2,7 +2,7 @@ import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secr
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
-import { ProjectSecretService } from '../secrets/projectSecretService';
+import { ProjectSecretService, ProjectSecretUsageError } from '../secrets/projectSecretService';
 
 export function registerProjectSecretRoutes(
   fastify: FastifyInstance,
@@ -70,12 +70,15 @@ export function registerProjectSecretRoutes(
           ref: query.ref,
         }),
       };
-    } catch {
-      return reply.status(500).send({
+    } catch (error) {
+      const invalidReference = error instanceof ProjectSecretUsageError;
+      return reply.status(invalidReference ? 400 : 500).send({
         ok: false,
         error: {
-          code: 'manifest_read_failed',
-          message: 'The project manifest could not be loaded for secret usage analysis.',
+          code: invalidReference ? error.code : 'manifest_read_failed',
+          message: invalidReference
+            ? error.message
+            : 'The project manifest could not be loaded for secret usage analysis.',
         },
       });
     }

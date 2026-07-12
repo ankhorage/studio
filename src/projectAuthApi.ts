@@ -106,6 +106,14 @@ async function readJson(response: Response): Promise<unknown> {
 }
 
 function parseHttpError(value: unknown, status: number): ProjectAuthApiError {
+  return parseProjectAuthHttpErrorResponse(value, status);
+}
+
+export function parseProjectAuthHttpErrorResponse(
+  value: unknown,
+  status: number,
+): ProjectAuthApiError {
+  rejectRawSecretResponse(value, 'Project auth error response was invalid.');
   const record = asRecord(value);
   const error = asRecord(record?.error);
   return new ProjectAuthApiError({
