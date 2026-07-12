@@ -215,7 +215,7 @@ useEffect(() => {
   const mountController = new AbortController();
 
   void (async () => {
-    bootstrapAuthSession();
+    await bootstrapAuthSession();
     await refreshAuthSessionIfNeeded(authAdapter);
     if (mountController.signal.aborted) return;
     setIsAuthRuntimeReady(true);
@@ -231,6 +231,17 @@ useEffect(() => {
   return subscribeToAuthSessionChanges(() => {
     setAuthSessionVersion((value) => value + 1);
   });
+}, []);
+
+useEffect(() => {
+  const subscription = AppState.addEventListener('change', (nextState) => {
+    if (nextState !== 'active') return;
+    void refreshAuthSessionIfNeeded(authAdapter).catch(() => undefined);
+  });
+
+  return () => {
+    subscription.remove();
+  };
 }, []);
 
 useEffect(() => {
