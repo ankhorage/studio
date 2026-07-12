@@ -25,12 +25,7 @@ export interface ResolveAuthLayoutPlanInput {
 }
 
 type AuthGeneratedFileKind =
-  | 'adapter'
-  | 'session'
-  | 'sign-out'
-  | 'auth-screen'
-  | 'oauth-runtime'
-  | 'oauth-callback';
+  'adapter' | 'session' | 'sign-out' | 'auth-screen' | 'oauth-runtime' | 'oauth-callback';
 
 export interface AuthGeneratedFilePlan {
   path: string;
@@ -219,6 +214,7 @@ function resolveGeneratedOAuthProvider(
   }
 
   const scopes = uniqueNonEmpty(provider.scopes ?? definition.defaultScopes);
+  const configuredLabel = provider.label?.trim();
   const queryParams = Object.fromEntries(
     Object.entries(provider.queryParams ?? {})
       .map(([key, value]) => [key.trim(), value.trim()] as const)
@@ -227,7 +223,10 @@ function resolveGeneratedOAuthProvider(
 
   return {
     id: definition.id,
-    label: provider.label?.trim() || `Continue with ${definition.label}`,
+    label:
+      configuredLabel === undefined || configuredLabel.length === 0
+        ? `Continue with ${definition.label}`
+        : configuredLabel,
     scopes,
     queryParams,
     ...(provider.icon ? { icon: provider.icon } : {}),
@@ -284,9 +283,7 @@ function buildGeneratedFilePlans(
         kind: 'oauth-runtime',
       },
       {
-        path: normalizeRel(
-          path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`),
-        ),
+        path: normalizeRel(path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`)),
         kind: 'oauth-callback',
         routeName: oauth.callbackRouteName,
       },
