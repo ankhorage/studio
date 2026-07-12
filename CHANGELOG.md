@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.5.0
+
+### Minor Changes
+
+- fe5263a: Complete Phase 2 auth and secret administration with URL-backed admin routes, auth health metadata, schema-aware secret usage detection, and guarded secret deletion.
+
 ## 0.4.0
 
 ### Minor Changes
