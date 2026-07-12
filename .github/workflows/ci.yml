@@ -8,9 +8,6 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -20,7 +17,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -29,95 +25,6 @@ jobs:
 
       - name: Install dependencies
         run: bun install
-
-      - name: Apply regex-based Phase 2 auth corrections
-        if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
-        run: |
-          python <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path('src/authSettings.ts')
-          content = path.read_text()
-          start_marker = "  if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {"
-          end_marker = "  if (allowed && normalized.some((entry) => !allowed.has(entry))) {"
-          start = content.find(start_marker)
-          end = content.find(end_marker, start)
-          if start >= 0 and end >= 0:
-            replacement = (
-                "  if (!Array.isArray(value)) {\n"
-                "    return invalid(`${label} must be a string array.`);\n"
-                "  }\n"
-                "  const entries: string[] = [];\n"
-                "  for (const entry of value as readonly unknown[]) {\n"
-                "    if (typeof entry !== 'string') {\n"
-                "      return invalid(`${label} must be a string array.`);\n"
-                "    }\n"
-                "    const normalizedEntry = entry.trim();\n"
-                "    if (normalizedEntry) entries.push(normalizedEntry);\n"
-                "  }\n"
-                "  const normalized = [...new Set(entries)];\n"
-            )
-            content = content[:start] + replacement + content[end:]
-          path.write_text(content)
-
-          path = Path('src/projectAuthApi.ts')
-          content = path.read_text().replace(
-              "if (!record || record.ok !== true || record.state !== expectedState) {",
-              "if (record?.ok !== true || record?.state !== expectedState) {",
-              1,
-          )
-          path.write_text(content)
-
-          path = Path('src/host/auth/projectAuthService.test.ts')
-          content = path.read_text()
-          content = re.sub(
-              r"getStudioManifest:\s*async\s*\(\)\s*=>\s*\{\s*throw new Error\('No draft'\);\s*\},",
-              "getStudioManifest: () => Promise.reject(new Error('No draft')) ,",
-              content,
-              count=1,
-          )
-          content = re.sub(
-              r"getProjectManifest:\s*async\s*\(\)\s*=>\s*createManifest\(\),",
-              "getProjectManifest: () => Promise.resolve(createManifest()),",
-              content,
-          )
-          content = re.sub(
-              r"saveStudioManifest:\s*async\s*\(\{ manifest \}: \{ projectId: string; manifest: AppManifest \}\)\s*=>\s*\{\s*saved\.push\(manifest\);\s*return \{ success: true \};\s*\},",
-              "saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {\n        saved.push(manifest);\n        return Promise.resolve({ success: true });\n      },",
-              content,
-              count=1,
-          )
-          content = re.sub(
-              r"getStudioManifest:\s*async\s*\(\)\s*=>\s*createManifest\(\),",
-              "getStudioManifest: () => Promise.resolve(createManifest()),",
-              content,
-              count=1,
-          )
-          content = re.sub(
-              r"saveStudioManifest:\s*async\s*\(\)\s*=>\s*\{\s*saveCount \+= 1;\s*return \{ success: true \};\s*\},",
-              "saveStudioManifest: () => {\n        saveCount += 1;\n        return Promise.resolve({ success: true });\n      },",
-              content,
-              count=1,
-          )
-          path.write_text(content)
-          PY
-          set +e
-          bun run lint:fix > .phase2-auth-lint.txt 2>&1
-          echo $? > .phase2-auth-lint-status.txt
-          exit 0
-
-      - name: Commit Phase 2 auth corrections and diagnostics
-        if: github.event_name == 'pull_request' && github.head_ref == 'phase2/auth-settings'
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add .phase2-auth-lint.txt .phase2-auth-lint-status.txt src/authSettings.ts src/projectAuthApi.ts src/host/auth/projectAuthService.test.ts
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m "chore: apply Phase 2 auth lint corrections"
-          git push origin HEAD:${GITHUB_HEAD_REF}
 
       - name: Run build
         run: bun run build
