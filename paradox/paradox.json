@@ -1230,7 +1230,7 @@
     {
       "path": "src/projectAuthApi.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/projectAuthApi.ts"],
+      "dependencies": ["src/authSettings.ts", "src/projectAuthApi.ts"],
       "exports": []
     },
     {
@@ -9621,6 +9621,11 @@
         "fromPath": "src/manifestSync.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromPath": "src/projectAuthApi.test.ts",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/projectAuthApi.test.ts"
       },
       {
         "fromPath": "src/projectAuthApi.test.ts",

@@ -2521,10 +2521,16 @@
               <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
               <p><strong>Exports:</strong> <code>TemplateCard</code></p>
             </article>
-            <article class="item" data-search="src/projectAuthApi.test.ts src/projectAuthApi.ts">
+            <article
+              class="item"
+              data-search="src/projectAuthApi.test.ts src/authSettings.ts src/projectAuthApi.ts"
+            >
               <h3>src/projectAuthApi.test.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/projectAuthApi.ts</code></p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/authSettings.ts</code>,
+                <code>src/projectAuthApi.ts</code>
+              </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
@@ -6256,6 +6262,7 @@
                 module_src_modules_dashboard_types_ts
                 module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectAuthApi_test_ts
+                module_src_projectAuthApi_test_ts --&gt; module_src_authSettings_ts
                 module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
                 module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectAuthApi_ts
@@ -6728,6 +6735,7 @@ graph TD
   module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectAuthApi_test_ts
+  module_src_projectAuthApi_test_ts --&gt; module_src_authSettings_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectAuthApi_ts
@@ -7188,6 +7196,7 @@ graph TD
                 module_src_modules_dashboard_types_ts
                 module_src_modules_dashboard_ui_TemplateCard_tsx --&gt;
                 module_src_modules_dashboard_types_ts module_src_projectAuthApi_test_ts --&gt;
+                module_src_authSettings_ts module_src_projectAuthApi_test_ts --&gt;
                 module_src_projectAuthApi_ts module_src_projectAuthApi_ts --&gt;
                 module_src_authSettings_ts module_src_projectSecretApi_test_ts --&gt;
                 module_src_projectSecretApi_ts module_src_routeUtils_public_test_ts --&gt;
@@ -7511,6 +7520,7 @@ graph LR
   module_src_modules_dashboard_templates_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_ProjectCard_tsx --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
+  module_src_projectAuthApi_test_ts --&gt; module_src_authSettings_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --&gt; module_src_authSettings_ts
   module_src_projectSecretApi_test_ts --&gt; module_src_projectSecretApi_ts
