@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.5.1",
+      "value": "v0.6.0",
       "color": "cb3837"
     },
     {
@@ -524,7 +524,9 @@
       "exports": [
         "AuthGeneratedFilePlan",
         "AuthLayoutPlan",
+        "AuthOAuthLayoutPlan",
         "EnabledAuthLayoutPlan",
+        "GeneratedOAuthProviderPlan",
         "resolveAuthLayoutPlan",
         "ResolveAuthLayoutPlanInput"
       ]
@@ -552,9 +554,28 @@
       "exports": ["getAuthAdapterTs"]
     },
     {
+      "path": "src/host/layout/templates/auth/callback.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/layout/templates/utils/routes.ts",
+        "src/host/layout/utils/escapeStringLiteral.ts"
+      ],
+      "exports": ["getAuthOAuthCallbackTsx"]
+    },
+    {
+      "path": "src/host/layout/templates/auth/oauth.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "src/host/layout/utils/escapeStringLiteral.ts"
+      ],
+      "exports": ["getAuthOAuthRuntimeTs"]
+    },
+    {
       "path": "src/host/layout/templates/auth/screen.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/layout/auth/resolveAuthLayoutPlan.ts",
         "src/host/layout/templates/utils/routes.ts",
         "src/host/layout/templates/utils/strings.ts",
         "src/host/layout/utils/escapeStringLiteral.ts"
@@ -581,6 +602,8 @@
         "buildNavigatorJsx",
         "BuiltNavigatorJsx",
         "getAuthAdapterTs",
+        "getAuthOAuthCallbackTsx",
+        "getAuthOAuthRuntimeTs",
         "getAuthScreenTsx",
         "getAuthSessionTs",
         "getIndexRedirectRouteTsx",
@@ -715,6 +738,16 @@
       "exports": ["LocalFsTargetAdapter"]
     },
     {
+      "path": "src/host/oauthFixtureConsumer.smoke.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/generatedAppFiles.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/zoraExtensions/index.ts"],
@@ -831,6 +864,12 @@
         "src/host/zoraExtensions/index.ts"
       ],
       "exports": ["ProjectScaffolder"]
+    },
+    {
+      "path": "src/host/orchestrator/templates.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/templates.ts"],
+      "exports": []
     },
     {
       "path": "src/host/orchestrator/templates.ts",
@@ -5837,11 +5876,56 @@
       }
     },
     {
+      "name": "createOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveAuthLayoutPlan",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 60,
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveOAuthLayoutPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 176,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveGeneratedOAuthProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 203,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeCanonicalCallbackRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 236,
+        "column": 1
+      }
+    },
+    {
+      "name": "uniqueNonEmpty",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 250,
         "column": 1
       }
     },
@@ -5850,7 +5934,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 152,
+        "line": 254,
         "column": 1
       }
     },
@@ -5859,7 +5943,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 161,
+        "line": 263,
         "column": 1
       }
     },
@@ -5868,7 +5952,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 187,
+        "line": 304,
         "column": 1
       }
     },
@@ -5877,7 +5961,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 198,
+        "line": 315,
         "column": 9
       }
     },
@@ -5886,7 +5970,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 225,
+        "line": 342,
         "column": 1
       }
     },
@@ -5895,7 +5979,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 232,
+        "line": 349,
         "column": 1
       }
     },
@@ -5904,7 +5988,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 252,
+        "line": 369,
         "column": 1
       }
     },
@@ -5913,7 +5997,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 276,
+        "line": 393,
         "column": 1
       }
     },
@@ -5922,7 +6006,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 296,
+        "line": 413,
         "column": 1
       }
     },
@@ -5931,7 +6015,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 323,
+        "line": 440,
         "column": 1
       }
     },
@@ -5940,7 +6024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 351,
+        "line": 468,
         "column": 1
       }
     },
@@ -5949,7 +6033,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 368,
+        "line": 485,
         "column": 1
       }
     },
@@ -5958,7 +6042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 383,
+        "line": 504,
         "column": 9
       }
     },
@@ -5967,7 +6051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 402,
+        "line": 523,
         "column": 1
       }
     },
@@ -5976,7 +6060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 416,
+        "line": 537,
         "column": 1
       }
     },
@@ -5985,7 +6069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 420,
+        "line": 541,
         "column": 1
       }
     },
@@ -5999,11 +6083,20 @@
       }
     },
     {
+      "name": "createOAuthManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.test.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
       "name": "getPackageOwnedRuntimeImports",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 43,
+        "line": 45,
         "column": 1
       }
     },
@@ -6012,7 +6105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 58,
+        "line": 60,
         "column": 1
       }
     },
@@ -6021,7 +6114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 69,
+        "line": 71,
         "column": 1
       }
     },
@@ -6030,7 +6123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 92,
+        "line": 94,
         "column": 11
       }
     },
@@ -6039,7 +6132,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 123,
+        "line": 125,
         "column": 11
       }
     },
@@ -6048,7 +6141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 420,
+        "line": 436,
         "column": 1
       }
     },
@@ -6057,7 +6150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 431,
+        "line": 447,
         "column": 1
       }
     },
@@ -6066,7 +6159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 447,
+        "line": 463,
         "column": 1
       }
     },
@@ -6075,7 +6168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 451,
+        "line": 467,
         "column": 1
       }
     },
@@ -6084,7 +6177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 495,
+        "line": 511,
         "column": 1
       }
     },
@@ -6093,7 +6186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 503,
+        "line": 519,
         "column": 1
       }
     },
@@ -6102,7 +6195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 508,
+        "line": 524,
         "column": 1
       }
     },
@@ -6111,7 +6204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 521,
+        "line": 537,
         "column": 1
       }
     },
@@ -6120,7 +6213,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 527,
+        "line": 543,
         "column": 1
       }
     },
@@ -6129,7 +6222,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 541,
+        "line": 557,
         "column": 1
       }
     },
@@ -6138,7 +6231,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 545,
+        "line": 561,
         "column": 1
       }
     },
@@ -6147,7 +6240,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 553,
+        "line": 569,
         "column": 1
       }
     },
@@ -6156,7 +6249,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 558,
+        "line": 574,
         "column": 1
       }
     },
@@ -6165,7 +6258,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/auth/adapter.ts",
-        "line": 8,
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "getAuthOAuthCallbackTsx",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/templates/auth/callback.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "getAuthOAuthRuntimeTs",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/templates/auth/oauth.ts",
+        "line": 4,
         "column": 1
       }
     },
@@ -6174,7 +6285,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/auth/screen.ts",
-        "line": 8,
+        "line": 9,
         "column": 1
       }
     },
@@ -6183,7 +6294,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/auth/screen.ts",
-        "line": 12,
+        "line": 13,
         "column": 1
       }
     },
@@ -6544,6 +6655,24 @@
       "sourceLocation": {
         "filePath": "src/host/modules/runtime/LocalFsTargetAdapter.ts",
         "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectRelativeFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "line": 31,
         "column": 1
       }
     },
@@ -7218,7 +7347,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 86,
+        "line": 90,
         "column": 1
       }
     },
@@ -7227,7 +7356,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 94,
+        "line": 98,
         "column": 1
       }
     },
@@ -7236,7 +7365,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 136,
+        "line": 140,
         "column": 1
       }
     },
@@ -7245,7 +7374,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 150,
+        "line": 154,
         "column": 1
       }
     },
@@ -7254,7 +7383,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 163,
+        "line": 167,
         "column": 1
       }
     },
@@ -7263,7 +7392,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 185,
+        "line": 189,
         "column": 1
       }
     },
@@ -7272,7 +7401,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 195,
+        "line": 199,
         "column": 1
       }
     },
@@ -7281,7 +7410,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 199,
+        "line": 203,
         "column": 1
       }
     },
@@ -7290,7 +7419,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 204,
+        "line": 208,
         "column": 1
       }
     },
@@ -7299,7 +7428,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 218,
+        "line": 222,
         "column": 1
       }
     },
@@ -7308,7 +7437,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 254,
+        "line": 258,
         "column": 1
       }
     },
@@ -7317,7 +7446,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 262,
+        "line": 266,
         "column": 1
       }
     },
@@ -7326,7 +7455,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 286,
+        "line": 290,
         "column": 1
       }
     },
@@ -7335,7 +7464,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 369,
+        "line": 379,
         "column": 1
       }
     },
@@ -7344,7 +7473,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 393,
+        "line": 403,
         "column": 1
       }
     },
@@ -7353,7 +7482,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 398,
+        "line": 408,
         "column": 1
       }
     },
@@ -7362,7 +7491,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 413,
+        "line": 423,
         "column": 1
       }
     },
@@ -10939,6 +11068,21 @@
         "sourcePath": "src/host/index.ts"
       },
       {
+        "fromPath": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
         "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/actionSuppression.ts",
         "sourcePath": "src/runtime/index.ts"
@@ -11384,6 +11528,11 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/templates.test.ts",
+        "toPath": "src/host/orchestrator/templates.ts",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
         "toPath": "src/host/secrets/projectSecretService.ts",
         "sourcePath": "src/host/secrets/projectSecretService.test.ts"
@@ -11475,6 +11624,16 @@
       },
       {
         "fromPath": "src/host/layout/templates/index.ts",
+        "toPath": "src/host/layout/templates/auth/callback.ts",
+        "sourcePath": "src/host/layout/templates/index.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/index.ts",
+        "toPath": "src/host/layout/templates/auth/oauth.ts",
+        "sourcePath": "src/host/layout/templates/index.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/index.ts",
         "toPath": "src/host/layout/templates/auth/screen.ts",
         "sourcePath": "src/host/layout/templates/index.ts"
       },
@@ -11552,6 +11711,31 @@
         "fromPath": "src/modules/dashboard/ui/TemplateCard.tsx",
         "toPath": "src/modules/dashboard/types.ts",
         "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/callback.ts",
+        "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
+        "sourcePath": "src/host/layout/templates/auth/callback.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/callback.ts",
+        "toPath": "src/host/layout/templates/utils/routes.ts",
+        "sourcePath": "src/host/layout/templates/auth/callback.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/oauth.ts",
+        "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "sourcePath": "src/host/layout/templates/auth/oauth.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/oauth.ts",
+        "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
+        "sourcePath": "src/host/layout/templates/auth/oauth.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/screen.ts",
+        "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "sourcePath": "src/host/layout/templates/auth/screen.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/screen.ts",
@@ -15865,6 +16049,114 @@
         "sourcePath": "src/host/hostOwnership.test.ts"
       },
       {
+        "fromSymbol": "collectRelativeFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "collectRelativeFiles",
+        "callExpression": "collectRelativeFiles",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readProjectFile",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "getTemplateSummaries",
+        "callExpression": "getTemplateSummaries",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "createProject",
+        "callExpression": "projectManager.createProject",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "generateModuleRegistry",
+        "callExpression": "moduleManager.generateModuleRegistry",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "createOAuthFixtureManifest",
+        "callExpression": "createOAuthFixtureManifest",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "projectManager.saveStudioManifest",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "syncProject",
+        "callExpression": "moduleManager.syncProject",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "projectManager.getProjectManifest",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "readProjectFile",
+        "callExpression": "readProjectFile",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
         "fromSymbol": "createStudioActionSuppressionConfig",
         "toSymbol": "shouldSuppressStudioRuntimeActions",
         "callExpression": "shouldSuppressStudioRuntimeActions",
@@ -17311,6 +17603,12 @@
         "sourcePath": "src/host/http/standalone.ts"
       },
       {
+        "fromSymbol": "createOAuthManifest",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -17338,6 +17636,12 @@
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "createOAuthManifest",
+        "callExpression": "createOAuthManifest",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
@@ -17536,6 +17840,18 @@
         "fromSymbol": "getGeneratedAuthFileContent",
         "toSymbol": "getAuthSessionTs",
         "callExpression": "getAuthSessionTs",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getGeneratedAuthFileContent",
+        "toSymbol": "getAuthOAuthRuntimeTs",
+        "callExpression": "getAuthOAuthRuntimeTs",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getGeneratedAuthFileContent",
+        "toSymbol": "getAuthOAuthCallbackTsx",
+        "callExpression": "getAuthOAuthCallbackTsx",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -19681,6 +19997,36 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getAppConfigTs",
+        "callExpression": "getAppConfigTs",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/templates.ts",
         "toSymbol": "serializeJsValue",
         "callExpression": "serializeJsValue",
@@ -20377,6 +20723,12 @@
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
       },
       {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "createOAuth",
+        "callExpression": "createOAuth",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
         "fromSymbol": "resolveAuthLayoutPlan",
         "toSymbol": "createDisabledPlan",
         "callExpression": "createDisabledPlan",
@@ -20392,6 +20744,12 @@
         "fromSymbol": "resolveAuthLayoutPlan",
         "toSymbol": "authFlowPathToRouteName",
         "callExpression": "authFlowPathToRouteName",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveAuthLayoutPlan",
+        "toSymbol": "resolveOAuthLayoutPlan",
+        "callExpression": "resolveOAuthLayoutPlan",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -20434,6 +20792,36 @@
         "fromSymbol": "resolveAuthLayoutPlan",
         "toSymbol": "collectAuthScreenFiles",
         "callExpression": "collectAuthScreenFiles",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveOAuthLayoutPlan",
+        "toSymbol": "normalizeCanonicalCallbackRoute",
+        "callExpression": "normalizeCanonicalCallbackRoute",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveOAuthLayoutPlan",
+        "toSymbol": "authFlowPathToRouteName",
+        "callExpression": "authFlowPathToRouteName",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedOAuthProvider",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedOAuthProvider",
+        "toSymbol": "uniqueNonEmpty",
+        "callExpression": "uniqueNonEmpty",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "buildGeneratedFilePlans",
+        "toSymbol": "normalizeRel",
+        "callExpression": "normalizeRel",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -20875,6 +21263,24 @@
         "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
       },
       {
+        "fromSymbol": "getAuthOAuthCallbackTsx",
+        "toSymbol": "escapeStringLiteral",
+        "callExpression": "escapeStringLiteral",
+        "sourcePath": "src/host/layout/templates/auth/callback.ts"
+      },
+      {
+        "fromSymbol": "getAuthOAuthCallbackTsx",
+        "toSymbol": "routeNameToGroupedHref",
+        "callExpression": "routeNameToGroupedHref",
+        "sourcePath": "src/host/layout/templates/auth/callback.ts"
+      },
+      {
+        "fromSymbol": "getAuthOAuthRuntimeTs",
+        "toSymbol": "escapeStringLiteral",
+        "callExpression": "escapeStringLiteral",
+        "sourcePath": "src/host/layout/templates/auth/oauth.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/templates/auth/screen.ts",
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
@@ -20888,6 +21294,12 @@
       },
       {
         "fromSymbol": "getAuthScreenTsx",
+        "toSymbol": "routeNameToGroupedHref",
+        "callExpression": "routeNameToGroupedHref",
+        "sourcePath": "src/host/layout/templates/auth/screen.ts"
+      },
+      {
+        "fromSymbol": "getAuthScreenTsx",
         "toSymbol": "serializeStringArrayLiteral",
         "callExpression": "serializeStringArrayLiteral",
         "sourcePath": "src/host/layout/templates/auth/screen.ts"
@@ -20896,12 +21308,6 @@
         "fromSymbol": "getAuthScreenTsx",
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
-        "sourcePath": "src/host/layout/templates/auth/screen.ts"
-      },
-      {
-        "fromSymbol": "getAuthScreenTsx",
-        "toSymbol": "routeNameToGroupedHref",
-        "callExpression": "routeNameToGroupedHref",
         "sourcePath": "src/host/layout/templates/auth/screen.ts"
       }
     ],
