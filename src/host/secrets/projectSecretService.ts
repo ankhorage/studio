@@ -20,6 +20,7 @@ import {
   validateSupabaseOAuthSecretPayload,
 } from '@ankhorage/supabase-auth';
 
+import { findProjectSecretUsages, type ProjectSecretUsageSummary } from '../../projectSecretUsage';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import {
@@ -40,6 +41,8 @@ export interface ConfigureOAuthProviderInput {
   readonly environment?: string;
   readonly providerId: AuthOAuthProviderId;
   readonly payload: SecretPayload;
+  readonly authScope?: NonNullable<AppManifest['infra']['auth']>['scope'];
+  readonly oauthEnabled?: boolean;
   readonly credentialsRef?: string;
   readonly enabled?: boolean;
   readonly label?: string;
@@ -61,6 +64,30 @@ export type ConfigureOAuthProviderResult =
       readonly metadata?: SecretMetadata;
       readonly credentialsRef?: string;
     };
+
+export type ProjectSecretRemoveResult =
+  | {
+      readonly ok: true;
+      readonly data: ProjectSecretUsageSummary;
+    }
+  | {
+      readonly ok: false;
+      readonly error: {
+        readonly code: string;
+        readonly message: string;
+      };
+      readonly data?: ProjectSecretUsageSummary;
+    };
+
+export class ProjectSecretUsageError extends Error {
+  readonly code: string;
+
+  constructor(args: { readonly code: string; readonly message: string }) {
+    super(args.message);
+    this.name = 'ProjectSecretUsageError';
+    this.code = args.code;
+  }
+}
 
 export class ProjectSecretService {
   private readonly projectManager: ProjectManager;
@@ -152,6 +179,90 @@ export class ProjectSecretService {
     );
   }
 
+  async getUsages(input: {
+    readonly projectId: string;
+    readonly environment?: string;
+    readonly ref: string;
+  }): Promise<ProjectSecretUsageSummary> {
+    const refResult = normalizeSecretRef(input.ref);
+    if (!refResult.ok) {
+      throw new ProjectSecretUsageError(refResult.error);
+    }
+
+    const manifest = await this.readEditableManifest(input.projectId);
+    return findProjectSecretUsages({ manifest, ref: refResult.data });
+  }
+
+  async removeGuarded(input: {
+    readonly projectId: string;
+    readonly environment?: string;
+    readonly ref: string;
+    readonly confirmBrokenReferences?: boolean;
+  }): Promise<ProjectSecretRemoveResult> {
+    let client: BunSupabaseVaultClient | null = null;
+    const refResult = normalizeSecretRef(input.ref);
+    if (!refResult.ok) {
+      return {
+        ok: false,
+        error: toPublicError(refResult.error),
+      };
+    }
+
+    try {
+      const manifest = await this.readEditableManifest(input.projectId);
+      const projectPath = getProjectPath(this.workspaceRoot, input.projectId);
+      const databaseUrl = await this.resolveDatabaseUrl(projectPath);
+      client = this.createClient(databaseUrl);
+      const adapter = createInfraSecretStoreAdapter({
+        manifest: manifest.infra,
+        providers: {
+          supabaseVault: { client },
+        },
+      });
+
+      if (!adapter) {
+        return {
+          ok: false,
+          error: {
+            code: 'invalid_config',
+            message: 'This project does not configure infra.secretStore.provider.',
+          },
+        };
+      }
+
+      const usages = findProjectSecretUsages({ manifest, ref: refResult.data });
+      if (usages.usages.length > 0 && input.confirmBrokenReferences !== true) {
+        return {
+          ok: false,
+          error: {
+            code: 'secret_in_use',
+            message: 'The secret is referenced by the current project configuration.',
+          },
+          data: usages,
+        };
+      }
+
+      const removeResult = await adapter.remove({
+        scope: createScope(input.projectId, input.environment),
+        ref: refResult.data,
+      });
+      if (!removeResult.ok) return removeResult;
+
+      return { ok: true, data: usages };
+    } catch {
+      return {
+        ok: false,
+        error: {
+          code: 'unavailable',
+          message:
+            'The project secret store is unavailable. Verify local Supabase is running and the trusted database URL is configured.',
+        },
+      };
+    } finally {
+      await client?.close();
+    }
+  }
+
   async configureOAuthProvider(
     input: ConfigureOAuthProviderInput,
   ): Promise<ConfigureOAuthProviderResult> {
@@ -215,11 +326,10 @@ export class ProjectSecretService {
       provider: {
         id: definition.id,
         label: normalizeOptionalText(input.label) ?? definition.label,
-        enabled: input.enabled ?? true,
+        enabled: input.enabled ?? false,
         scopes: normalizeScopes(input.scopes ?? definition.defaultScopes),
         credentialsRef: refResult.data,
       },
-      callbackRoute: input.callbackRoute,
     });
 
     try {
@@ -259,7 +369,10 @@ export class ProjectSecretService {
 
   private async withAdapter<TResult>(
     projectId: string,
-    operation: (adapter: SecretStoreAdapter) => Promise<SecretStoreResult<TResult>>,
+    operation: (
+      adapter: SecretStoreAdapter,
+      manifest: AppManifest,
+    ) => Promise<SecretStoreResult<TResult>>,
   ): Promise<SecretStoreResult<TResult>> {
     let client: BunSupabaseVaultClient | null = null;
 
@@ -285,7 +398,7 @@ export class ProjectSecretService {
         };
       }
 
-      return await operation(adapter);
+      return await operation(adapter, manifest);
     } catch {
       return {
         ok: false,
@@ -305,16 +418,10 @@ export function configureManifestOAuthProvider(
   manifest: AppManifest,
   input: {
     readonly provider: AuthOAuthProviderConfig;
-    readonly callbackRoute?: string;
   },
 ): AppManifest {
   const currentAuth = manifest.infra.auth;
   const currentOAuth = currentAuth?.oauth;
-  const existingCallbackRoute = currentOAuth ? currentOAuth.callbackRoute : undefined;
-  const callbackRoute =
-    normalizeOptionalText(input.callbackRoute) ??
-    normalizeOptionalText(existingCallbackRoute) ??
-    '/auth/callback';
   const providers = [...(currentOAuth?.providers ?? [])];
   const existingIndex = providers.findIndex((provider) => provider.id === input.provider.id);
 
@@ -328,13 +435,13 @@ export function configureManifestOAuthProvider(
       auth: {
         ...(currentAuth ?? {
           provider: 'supabase',
-          scope: 'global',
+          scope: 'none',
           flow: { ...DEFAULT_AUTH_FLOW },
           signIn: { identifiers: ['email'] },
         }),
         oauth: {
-          enabled: true,
-          callbackRoute,
+          enabled: currentOAuth?.enabled ?? false,
+          callbackRoute: normalizeOptionalText(currentOAuth?.callbackRoute) ?? '/auth/callback',
           providers,
         },
       },

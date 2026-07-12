@@ -2,7 +2,7 @@ import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secr
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
-import { ProjectSecretService } from '../secrets/projectSecretService';
+import { ProjectSecretService, ProjectSecretUsageError } from '../secrets/projectSecretService';
 
 export function registerProjectSecretRoutes(
   fastify: FastifyInstance,
@@ -49,6 +49,39 @@ export function registerProjectSecretRoutes(
         ref: query.ref,
       }),
     );
+  });
+
+  fastify.get('/api/projects/:id/secrets/usages', async (request: FastifyRequest, reply) => {
+    const { id } = request.params as { id: string };
+    const query = request.query as { environment?: string; ref?: unknown };
+    if (typeof query.ref !== 'string' || query.ref.trim().length === 0) {
+      return reply.status(400).send({
+        ok: false,
+        error: { code: 'invalid_reference', message: 'A secret ref query parameter is required.' },
+      });
+    }
+
+    try {
+      return {
+        ok: true,
+        data: await service.getUsages({
+          projectId: id,
+          environment: query.environment,
+          ref: query.ref,
+        }),
+      };
+    } catch (error) {
+      const invalidReference = error instanceof ProjectSecretUsageError;
+      return reply.status(invalidReference ? 400 : 500).send({
+        ok: false,
+        error: {
+          code: invalidReference ? error.code : 'manifest_read_failed',
+          message: invalidReference
+            ? error.message
+            : 'The project manifest could not be loaded for secret usage analysis.',
+        },
+      });
+    }
   });
 
   fastify.post('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
@@ -104,19 +137,24 @@ export function registerProjectSecretRoutes(
 
   fastify.delete('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
-    const query = request.query as { environment?: string; ref?: unknown };
+    const query = request.query as {
+      environment?: string;
+      ref?: unknown;
+      confirmBrokenReferences?: unknown;
+    };
     if (typeof query.ref !== 'string' || query.ref.trim().length === 0) {
       return reply.status(400).send({
         error: { code: 'invalid_reference', message: 'A secret ref query parameter is required.' },
       });
     }
 
-    return sendSecretResult(
+    return sendSecretRemoveResult(
       reply,
-      await service.remove({
+      await service.removeGuarded({
         projectId: id,
         environment: query.environment,
         ref: query.ref,
+        confirmBrokenReferences: query.confirmBrokenReferences === 'true',
       }),
     );
   });
@@ -141,6 +179,8 @@ export function registerProjectSecretRoutes(
         providerId,
         payload,
         environment: readOptionalString(body.environment),
+        authScope: readAuthScope(body.authScope),
+        oauthEnabled: typeof body.oauthEnabled === 'boolean' ? body.oauthEnabled : undefined,
         credentialsRef: readOptionalString(body.credentialsRef),
         enabled: typeof body.enabled === 'boolean' ? body.enabled : undefined,
         label: readOptionalString(body.label),
@@ -171,6 +211,24 @@ function sendSecretResult<TData>(reply: FastifyReply, result: SecretStoreResult<
   });
 }
 
+function sendSecretRemoveResult(
+  reply: FastifyReply,
+  result: Awaited<ReturnType<ProjectSecretService['removeGuarded']>>,
+) {
+  if (result.ok) return result;
+
+  const status =
+    result.error.code === 'secret_in_use' ? 409 : resolveErrorStatus(result.error.code);
+  return reply.status(status).send({
+    ok: false,
+    error: {
+      code: result.error.code,
+      message: result.error.message,
+    },
+    ...(result.data ? { data: result.data } : {}),
+  });
+}
+
 function resolveErrorStatus(code: string): number {
   if (code === 'not_found') return 404;
   if (code === 'conflict') return 409;
@@ -187,6 +245,10 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
+}
+
+function readAuthScope(value: unknown): 'global' | 'none' | 'integrated' | undefined {
+  return value === 'global' || value === 'none' || value === 'integrated' ? value : undefined;
 }
 
 function readStringArray(value: unknown): string[] | undefined {

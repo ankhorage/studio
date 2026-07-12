@@ -1,11 +1,17 @@
-import { DEFAULT_AUTH_FLOW, type AppManifest } from '@ankhorage/contracts';
+import {
+  DEFAULT_AUTH_FLOW,
+  type AppManifest,
+  type AuthOAuthProviderConfig,
+  type AuthOAuthProviderId,
+} from '@ankhorage/contracts';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
   type SupabaseOAuthProviderId,
 } from '@ankhorage/supabase-auth';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -18,12 +24,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
+import type { ProjectAuthHealth } from '../projectAuthHealth';
 import {
+  getProjectAuthHealth,
   getProjectAuthSettings,
   ProjectAuthApiError,
   saveProjectAuthSettings,
 } from '../projectAuthApi';
-import { StudioAdminOverlay } from './StudioAdminOverlay';
+import { configureProjectOAuthProvider } from '../projectSecretApi';
 
 export interface StudioAuthSettingsOverlayProps {
   readonly projectId: string;
@@ -42,22 +50,37 @@ const PROFILE_FIELDS = [
   'avatarUrl',
 ] as const;
 
+interface RecoverableOAuthPartialFailure {
+  readonly state: 'secret_saved_manifest_failed';
+  readonly providerId: SupabaseOAuthProviderId;
+  readonly credentialsRef: string;
+  readonly configuredFields: readonly string[];
+  readonly intendedProvider: AuthOAuthProviderConfig;
+}
+
 export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
   const { projectId, manifest, onClose } = props;
   const { theme } = useZoraTheme();
+  const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
   );
+  const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [manageCredentials, setManageCredentials] = useState(false);
+  const [partialFailure, setPartialFailure] = useState<RecoverableOAuthPartialFailure | null>(null);
 
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      const loaded = await getProjectAuthSettings(projectId);
+      const [loaded, loadedHealth] = await Promise.all([
+        getProjectAuthSettings(projectId),
+        getProjectAuthHealth({ projectId, environment: 'local' }),
+      ]);
       setDraft(loaded ?? createDefaultSettings());
+      setHealth(loadedHealth);
+      setPartialFailure(null);
       setMessage(null);
     } catch (error) {
       const local = manifest ? readStudioAuthSettings(manifest) : null;
@@ -72,12 +95,22 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
     void reload();
   }, [reload]);
 
+  const refreshHealth = useCallback(async () => {
+    try {
+      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
+    } catch (error) {
+      setMessage(toMessage(error));
+    }
+  }, [projectId]);
+
   const save = useCallback(async () => {
     setSaving(true);
     setMessage(null);
     try {
       const saved = await saveProjectAuthSettings({ projectId, config: draft });
       setDraft(saved);
+      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
+      setPartialFailure(null);
       setMessage('Authentication configuration saved to the Studio manifest draft.');
     } catch (error) {
       setMessage(toMessage(error));
@@ -86,21 +119,43 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
     }
   }, [draft, projectId]);
 
-  const closeCredentialManager = useCallback(() => {
-    setManageCredentials(false);
-    void reload();
-  }, [reload]);
+  const retryPartialFailure = useCallback(async () => {
+    if (!partialFailure) return;
 
-  if (manageCredentials) {
-    return (
-      <StudioAdminOverlay
-        route="/ankh/auth"
-        projectId={projectId}
-        manifest={manifest}
-        onClose={closeCredentialManager}
-      />
-    );
-  }
+    setSaving(true);
+    setMessage(null);
+    try {
+      const persisted = (await getProjectAuthSettings(projectId)) ?? createDefaultSettings();
+      const persistedOAuth = persisted.oauth ?? createDefaultOAuth();
+      await saveProjectAuthSettings({
+        projectId,
+        config: {
+          ...persisted,
+          oauth: {
+            ...persistedOAuth,
+            providers: upsertProvider(persistedOAuth.providers, partialFailure.intendedProvider),
+          },
+        },
+      });
+      setDraft((current) => {
+        const currentOAuth = current.oauth ?? createDefaultOAuth();
+        return {
+          ...current,
+          oauth: {
+            ...currentOAuth,
+            providers: upsertProvider(currentOAuth.providers, partialFailure.intendedProvider),
+          },
+        };
+      });
+      await refreshHealth();
+      setPartialFailure(null);
+      setMessage(`Linked ${partialFailure.credentialsRef} to the provider configuration.`);
+    } catch (error) {
+      setMessage(toMessage(error));
+    } finally {
+      setSaving(false);
+    }
+  }, [partialFailure, projectId, refreshHealth]);
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
@@ -132,6 +187,8 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         {loading ? <ActivityIndicator /> : null}
+
+        <AuthHealthCard health={health} />
 
         <Card title="Overview">
           <SwitchSetting
@@ -328,19 +385,63 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
           {SUPABASE_OAUTH_PROVIDER_IDS.map((providerId) => (
             <OAuthProviderSetting
               key={providerId}
+              projectId={projectId}
               providerId={providerId}
               oauth={oauth}
+              providerHealth={health?.providers.find(
+                (provider) => provider.providerId === providerId,
+              )}
               onChange={(nextOAuth, nextMessage) => {
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
+              onSaved={(nextOAuth, nextMessage) => {
+                setDraft((current) => ({ ...current, oauth: nextOAuth }));
+                setMessage(nextMessage);
+                setPartialFailure(null);
+                void refreshHealth();
+              }}
+              onPartialFailure={(failure) => {
+                setPartialFailure(failure);
+                setMessage(
+                  `${failure.credentialsRef} was saved, but the manifest link failed. Retry the link or open project secrets for cleanup.`,
+                );
+              }}
             />
           ))}
 
+          {partialFailure ? (
+            <View style={styles.partialFailure}>
+              <Text color="warning" weight="semiBold">
+                Credential secret saved, manifest link failed.
+              </Text>
+              <Text color="neutral" emphasis="muted" variant="caption">
+                Ref: {partialFailure.credentialsRef}
+              </Text>
+              <Text color="neutral" emphasis="muted" variant="caption">
+                Configured fields: {partialFailure.configuredFields.join(', ') || 'none'}
+              </Text>
+              <View style={styles.actions}>
+                <SecondaryButton
+                  label="Retry manifest link"
+                  onPress={() => void retryPartialFailure()}
+                />
+                <SecondaryButton
+                  label="Open cleanup"
+                  onPress={() => {
+                    router.push('/ankh/secrets');
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
+
           <View style={styles.actions}>
             <SecondaryButton
-              label="Manage OAuth credentials"
-              onPress={() => setManageCredentials(true)}
+              label="Open project secrets"
+              onPress={() => {
+                router.push('/ankh/secrets');
+              }}
             />
           </View>
         </Card>
@@ -466,23 +567,39 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 }
 
 function OAuthProviderSetting(props: {
+  readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
+  readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
+  readonly onSaved: (oauth: NonNullable<StudioAuthSettings['oauth']>, message: string) => void;
+  readonly onPartialFailure: (failure: RecoverableOAuthPartialFailure) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
-  const configured = Boolean(current?.credentialsRef);
+  const requiredFields =
+    props.providerHealth?.requiredFields ??
+    definition?.secretFields.map((field) => field.name) ??
+    [];
+  const configuredFields = props.providerHealth?.configuredFields ?? [];
+  const credentialsComplete =
+    definition !== null &&
+    Boolean(current?.credentialsRef) &&
+    requiredFields.length > 0 &&
+    requiredFields.every((field) => configuredFields.includes(field));
   const enabled = current?.enabled === true;
+  const [credentialValues, setCredentialValues] = useState<Record<string, string>>({});
+  const [savingCredentials, setSavingCredentials] = useState(false);
+  const [credentialMessage, setCredentialMessage] = useState<string | null>(null);
 
   const setEnabled = (nextEnabled: boolean) => {
-    if (nextEnabled && !current?.credentialsRef) {
+    if (nextEnabled && !credentialsComplete) {
       props.onChange(
         props.oauth,
-        `Configure ${definition?.label ?? props.providerId} credentials before enabling the provider.`,
+        `Complete ${definition?.label ?? props.providerId} credentials before enabling the provider.`,
       );
       return;
     }
@@ -504,17 +621,146 @@ function OAuthProviderSetting(props: {
     );
   };
 
+  const saveCredentials = async () => {
+    if (!definition) {
+      setCredentialMessage('The selected OAuth provider is not supported.');
+      return;
+    }
+
+    const entries = definition.secretFields.map(
+      (field) => [field.name, credentialValues[field.name] ?? ''] as const,
+    );
+    if (entries.some(([, value]) => !value)) {
+      setCredentialMessage(
+        'Enter a complete credential payload. Existing values cannot be merged.',
+      );
+      return;
+    }
+
+    const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
+    const intendedProvider = {
+      ...(current ?? {
+        id: props.providerId,
+        label: definition.label,
+        scopes: [...definition.defaultScopes],
+      }),
+      enabled,
+      credentialsRef,
+    };
+    const intendedOAuth = {
+      ...props.oauth,
+      providers: upsertProvider(props.oauth.providers, intendedProvider),
+    };
+    setSavingCredentials(true);
+    setCredentialMessage(null);
+    try {
+      const result = await configureProjectOAuthProvider({
+        projectId: props.projectId,
+        providerId: props.providerId as AuthOAuthProviderId,
+        environment: 'local',
+        credentialsRef,
+        enabled,
+        label: current?.label ?? definition.label,
+        scopes: current?.scopes ?? definition.defaultScopes,
+        payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
+      });
+
+      if (result.ok) {
+        props.onSaved(
+          mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
+          `${definition.label} credentials saved through ${result.credentialsRef}.`,
+        );
+        return;
+      }
+
+      if (
+        result.state === 'secret_saved_manifest_failed' &&
+        result.credentialsRef &&
+        result.metadata
+      ) {
+        props.onPartialFailure({
+          state: 'secret_saved_manifest_failed',
+          providerId: props.providerId,
+          credentialsRef: result.credentialsRef,
+          configuredFields: result.metadata.configuredFields,
+          intendedProvider: {
+            ...intendedProvider,
+            credentialsRef: result.credentialsRef,
+          },
+        });
+        return;
+      }
+
+      setCredentialMessage(result.error.message);
+    } catch (error) {
+      setCredentialMessage(toMessage(error));
+    } finally {
+      setCredentialValues({});
+      setSavingCredentials(false);
+    }
+  };
+
   return (
-    <View style={styles.providerRow}>
-      <View style={styles.grow}>
-        <Text weight="semiBold">{definition?.label ?? props.providerId}</Text>
-        <Text color={configured ? 'success' : 'warning'} emphasis="muted" variant="caption">
-          {configured ? `Credentials: ${current?.credentialsRef}` : 'Credentials not configured'}
-        </Text>
+    <View style={styles.providerPanel}>
+      <View style={styles.providerRow}>
+        <View style={styles.grow}>
+          <Text weight="semiBold">{definition?.label ?? props.providerId}</Text>
+          <Text
+            color={credentialsComplete ? 'success' : 'warning'}
+            emphasis="muted"
+            variant="caption"
+          >
+            {formatProviderHealthStatus(props.providerHealth?.status ?? 'missing')}
+            {current?.credentialsRef ? `: ${current.credentialsRef}` : ''}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Required fields: {props.providerHealth?.requiredFields.join(', ') || 'loading'}
+          </Text>
+        </View>
+        <Switch value={enabled} onValueChange={setEnabled} />
       </View>
-      <Switch value={enabled} onValueChange={setEnabled} />
+
+      {definition?.secretFields.map((field) => (
+        <Field key={field.name} label={field.label}>
+          <Input
+            value={credentialValues[field.name] ?? ''}
+            secureTextEntry={field.secret}
+            autoCapitalize="none"
+            placeholder={credentialsComplete ? 'Enter complete replacement value' : field.label}
+            onChangeText={(value) =>
+              setCredentialValues((currentValues) => ({
+                ...currentValues,
+                [field.name]: value,
+              }))
+            }
+          />
+        </Field>
+      ))}
+
+      <View style={styles.actions}>
+        <PrimaryButton
+          label={credentialsComplete ? 'Replace credentials' : 'Save credentials'}
+          loading={savingCredentials}
+          onPress={() => void saveCredentials()}
+        />
+      </View>
+      {credentialMessage ? <Message text={credentialMessage} /> : null}
     </View>
   );
+}
+
+function mergeOAuthProviderCredentialsRef(
+  oauth: NonNullable<StudioAuthSettings['oauth']>,
+  provider: AuthOAuthProviderConfig,
+  credentialsRef: string,
+): NonNullable<StudioAuthSettings['oauth']> {
+  return {
+    ...oauth,
+    providers: upsertProvider(oauth.providers, {
+      ...provider,
+      credentialsRef,
+    }),
+  };
 }
 
 function upsertProvider(
@@ -589,6 +835,94 @@ function splitList(value: string): string[] {
 function toMessage(error: unknown): string {
   if (error instanceof ProjectAuthApiError) return error.message;
   return error instanceof Error ? error.message : 'Authentication configuration request failed.';
+}
+
+function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null }) {
+  if (!health) {
+    return (
+      <Card title="Health">
+        <Text color="neutral" emphasis="muted" variant="bodySmall">
+          Auth health is unavailable.
+        </Text>
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Health">
+      <Text color={healthStatusColor(health.status)} weight="semiBold">
+        {formatHealthStatus(health.status)}
+      </Text>
+      <KeyValue label="Callback route" value={health.callbackUrls.appCallbackRoute} />
+      {health.callbackUrls.providerRedirectUrl ? (
+        <KeyValue label="Provider redirect URL" value={health.callbackUrls.providerRedirectUrl} />
+      ) : null}
+      {health.providers.map((provider) => (
+        <View key={provider.providerId} style={styles.healthProvider}>
+          <Text weight="semiBold">
+            {provider.label}: {formatProviderHealthStatus(provider.status)}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Ref: {provider.credentialsRef ?? 'none'}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Required fields: {provider.requiredFields.join(', ') || 'none'}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Configured fields: {provider.configuredFields.join(', ') || 'none'}
+          </Text>
+          {provider.missingFields.length > 0 ? (
+            <Text color="warning" variant="caption">
+              Missing fields: {provider.missingFields.join(', ')}
+            </Text>
+          ) : null}
+        </View>
+      ))}
+      {health.diagnostics.map((diagnostic) => (
+        <View key={`${diagnostic.code}:${diagnostic.path ?? ''}`} style={styles.diagnostic}>
+          <Text color={diagnosticSeverityColor(diagnostic.severity)} variant="bodySmall">
+            {diagnostic.code}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            {diagnostic.message}
+          </Text>
+        </View>
+      ))}
+      {health.diagnostics.length === 0 ? (
+        <Text color="success" variant="bodySmall">
+          No auth diagnostics.
+        </Text>
+      ) : null}
+    </Card>
+  );
+}
+
+function formatHealthStatus(status: ProjectAuthHealth['status']): string {
+  if (status === 'healthy') return 'Healthy';
+  if (status === 'warning') return 'Warning';
+  if (status === 'error') return 'Error';
+  return 'Not configured';
+}
+
+function formatProviderHealthStatus(status: ProjectAuthHealth['providers'][number]['status']) {
+  if (status === 'configured') return 'Configured';
+  if (status === 'incomplete') return 'Incomplete';
+  if (status === 'missing') return 'Missing secret';
+  if (status === 'invalid') return 'Invalid';
+  return 'Disabled';
+}
+
+function healthStatusColor(status: ProjectAuthHealth['status']) {
+  if (status === 'healthy') return 'success';
+  if (status === 'warning') return 'warning';
+  if (status === 'error') return 'danger';
+  return 'neutral';
+}
+
+function diagnosticSeverityColor(severity: ProjectAuthHealth['diagnostics'][number]['severity']) {
+  if (severity === 'error') return 'danger';
+  if (severity === 'warning') return 'warning';
+  return 'neutral';
 }
 
 function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
@@ -803,6 +1137,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     paddingVertical: 8,
+  },
+  providerPanel: {
+    gap: 10,
+    paddingVertical: 8,
+  },
+  partialFailure: {
+    gap: 8,
+    paddingVertical: 10,
+  },
+  healthProvider: {
+    gap: 3,
+    paddingVertical: 8,
+  },
+  diagnostic: {
+    gap: 3,
+    paddingVertical: 6,
   },
   keyValue: {
     flexDirection: 'row',

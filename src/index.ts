@@ -12,6 +12,20 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+export type {
+  ProjectAuthDiagnostic,
+  ProjectAuthDiagnosticSeverity,
+  ProjectAuthHealth,
+  ProjectAuthHealthStatus,
+  ProjectOAuthProviderHealth,
+  ProjectOAuthProviderHealthStatus,
+} from './projectAuthHealth';
+export type {
+  ProjectSecretUsage,
+  ProjectSecretUsageCategory,
+  ProjectSecretUsageSummary,
+} from './projectSecretUsage';
+
 export const STUDIO_PACKAGE_NAME = '@ankhorage/studio' as const;
 
 export interface StudioPackageBoundary {
@@ -58,6 +72,8 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioCommand',
   'StudioEvent',
   'StudioComponentMetaRegistry',
+  'ProjectAuthHealth',
+  'ProjectSecretUsageSummary',
   'ACTION_REGISTRY',
   'TPL_SCREEN_EMPTY',
   'resolveDefaultInsertPlacement',
@@ -77,7 +93,7 @@ export type StudioMode = 'light' | 'dark';
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers' | 'modules' | 'localization';
 export type StudioAdminRoutePath =
-  '/' | '/ankh/apis' | '/ankh/auth' | '/ankh/properties' | '/ankh/theme';
+  '/' | '/ankh/apis' | '/ankh/auth' | '/ankh/properties' | '/ankh/secrets' | '/ankh/theme';
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {

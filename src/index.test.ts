@@ -9,6 +9,8 @@ import {
   findNodeById,
   insertNodeAtPlacement,
   moveNodeToPlacement,
+  type ProjectAuthHealth,
+  type ProjectSecretUsageSummary,
   resolveDefaultInsertPlacement,
   resolveInsertCatalogEntries,
   STUDIO_PACKAGE_BOUNDARY,
@@ -98,7 +100,25 @@ describe('@ankhorage/studio', () => {
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioCommand');
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioEvent');
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('StudioComponentMetaRegistry');
+    expect(STUDIO_PUBLIC_CONTRACTS).toContain('ProjectAuthHealth');
+    expect(STUDIO_PUBLIC_CONTRACTS).toContain('ProjectSecretUsageSummary');
     expect(STUDIO_PUBLIC_CONTRACTS).toContain('buildInsertCatalogEntries');
+  });
+
+  test('exports Phase 2 auth and secret metadata models', () => {
+    const health = {
+      status: 'healthy',
+      diagnostics: [],
+      providers: [],
+      callbackUrls: { appCallbackRoute: '/auth/callback' },
+    } satisfies ProjectAuthHealth;
+    const usages = {
+      ref: 'auth/oauth/google',
+      usages: [],
+    } satisfies ProjectSecretUsageSummary;
+
+    expect(health.status).toBe('healthy');
+    expect(usages.ref).toBe('auth/oauth/google');
   });
 
   test('exports package-neutral action definitions', () => {

@@ -1,8 +1,10 @@
 import { IconButton } from '@ankhorage/zora';
-import React, { useCallback, useState } from 'react';
+import { usePathname, useRouter } from 'expo-router';
+import React, { useCallback } from 'react';
 
 import { useStudio } from '../core/StudioContext';
-import { StudioAdminOverlay, type StudioPhase2AdminRoute } from './StudioAdminOverlay';
+import { resolveStudioAdminRoutePath } from '../studioAdminRouteModel';
+import { StudioAdminOverlay } from './StudioAdminOverlay';
 import { StudioAuthSettingsOverlay } from './StudioAuthSettingsOverlay';
 
 export interface StudioAppBarAugmentation {
@@ -14,19 +16,26 @@ export interface StudioAppBarAugmentation {
 
 export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const studio = useStudio();
-  const [activeRoute, setActiveRoute] = useState<StudioPhase2AdminRoute | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const activeRoute = resolveStudioAdminRoutePath(pathname);
 
   const openRoute = useCallback(
-    (route: StudioPhase2AdminRoute) => {
+    (route: '/ankh/auth' | '/ankh/secrets') => {
       studio.setActivePanelId(null);
-      setActiveRoute(route);
+      router.push(route);
     },
-    [studio],
+    [router, studio],
   );
 
   const closeOverlay = useCallback(() => {
-    setActiveRoute(null);
-  }, []);
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace('/');
+  }, [router]);
 
   const actions = React.createElement(
     React.Fragment,
@@ -56,9 +65,7 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
         })
       : activeRoute === '/ankh/secrets'
         ? React.createElement(StudioAdminOverlay, {
-            route: activeRoute,
             projectId: studio.projectId,
-            manifest: studio.manifest,
             onClose: closeOverlay,
           })
         : null;
