@@ -133,10 +133,7 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
           ...persisted,
           oauth: {
             ...persistedOAuth,
-            providers: upsertProvider(
-              persistedOAuth.providers,
-              partialFailure.intendedProvider,
-            ),
+            providers: upsertProvider(persistedOAuth.providers, partialFailure.intendedProvider),
           },
         },
       });

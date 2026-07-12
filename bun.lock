@@ -24,7 +24,7 @@
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.6.3",
-        "@ankhorage/devtools": "^1.1.0",
+        "@ankhorage/devtools": "^1.2.1",
         "@ankhorage/paradox": "^0.1.10",
         "@changesets/cli": "^2.31.0",
         "@types/bun": "^1.3.13",
@@ -87,7 +87,7 @@
 
     "@ankhorage/data-sources": ["@ankhorage/data-sources@0.5.2", "", { "dependencies": { "@ankhorage/contracts": "^1.18.3" } }, "sha512-Z/miagAQSjYeDWH70LTRqn0e52+N58/dDWW70MLqTW1udmQxmUrJkjQ1BXocl1yAq8rcQBus+xvkJd9D40xOFw=="],
 
-    "@ankhorage/devtools": ["@ankhorage/devtools@1.1.0", "", { "dependencies": { "@eslint/js": "^10.0.1", "eslint": "^10.2.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/eslint-cli.js", "ankhorage-knip": "dist/knip-cli.js", "ankhorage-prettier": "dist/prettier-cli.js" } }, "sha512-RKI53N+oMHFhpCpHyksozMybaXSudbwAV5InHwSPw49sa+PxTE4l6UOnpfIUOJ8l8qbWuaKYRBF56sPpYbhUgg=="],
+    "@ankhorage/devtools": ["@ankhorage/devtools@1.2.1", "", { "dependencies": { "@eslint/js": "^10.0.1", "eslint": "^10.2.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-ub8jve1q+7kQyftz0WcbBurbq1R6BURqXkziDj3NG4sQ+80vDWYFzE4hwjm3DbPJNycHdIZZZCKq+yoFyiwOPQ=="],
 
     "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@0.0.10", "", { "dependencies": { "@ankhorage/contracts": "^2.0.0", "@ankhorage/permissions": "^0.2.1", "@ankhorage/zora": "^2.8.0" }, "peerDependencies": { "expo": "~54.0.34", "expo-camera": "~17.0.10", "react": "19.1.0", "react-native": "0.81.5" } }, "sha512-GUp2jKnR8Bcbu6BjpNDWiVG3e8Svp/Zr3GCBEKG7w/rzwbYKxXFyio5MaJgjDIP2asDkySPgE8QffTWzyNzokg=="],
 
