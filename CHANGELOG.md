@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.1
+
+### Patch Changes
+
+- 373082f: Verify the released Google and Apple OAuth fixtures through the real generated-app host pipeline and consume the released Phase 3 package APIs directly.
+
 ## 0.6.0
 
 ### Minor Changes
