@@ -19,7 +19,7 @@ export default function SignOutScreen() {
       try {
         await authAdapter.signOut();
       } finally {
-        clearStoredAuthSession();
+        await clearStoredAuthSession();
       }
     })();
   }, []);
