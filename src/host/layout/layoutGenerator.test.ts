@@ -83,9 +83,7 @@ describe('LayoutGenerator', () => {
     const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
       includeStudio: false,
     });
-    const callbackFiles = files.filter(
-      (file) => file.path === 'src/app/(auth)/auth/callback.tsx',
-    );
+    const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
     const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
     const session = files.find((file) => file.path === 'src/auth/session.ts')?.content ?? '';
