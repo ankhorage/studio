@@ -1,6 +1,6 @@
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -465,22 +465,31 @@ function useSecretInventory(projectId: string, environment: string) {
   const [items, setItems] = useState<readonly SecretMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const requestGeneration = useRef(0);
 
   const refresh = useCallback(async () => {
+    const generation = ++requestGeneration.current;
+    setItems([]);
     setLoading(true);
+    setError(null);
     try {
-      setItems(await listProjectSecrets({ projectId, environment }));
-      setError(null);
+      const nextItems = await listProjectSecrets({ projectId, environment });
+      if (generation !== requestGeneration.current) return;
+      setItems(nextItems);
     } catch (caught) {
+      if (generation !== requestGeneration.current) return;
       setItems([]);
       setError(toMessage(caught));
     } finally {
-      setLoading(false);
+      if (generation === requestGeneration.current) setLoading(false);
     }
   }, [environment, projectId]);
 
   useEffect(() => {
     void refresh();
+    return () => {
+      requestGeneration.current += 1;
+    };
   }, [refresh]);
 
   return useMemo(() => ({ items, loading, error, refresh }), [error, items, loading, refresh]);
