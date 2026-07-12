@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -17,7 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: phase3/oauth-fixture-consumer-smoke
           fetch-depth: 0
 
       - name: Setup Bun
@@ -79,9 +78,6 @@ jobs:
             echo "No typecheck script found; skipping."
           fi
 
-      - name: Generate documentation
-        run: bun run docs
-
       - name: Check changesets
         if: github.event_name == 'pull_request'
         run: |
@@ -90,17 +86,3 @@ jobs:
           else
             echo "No changeset:status script found; skipping."
           fi
-
-      - name: Commit generated documentation
-        if: github.actor != 'github-actions[bot]'
-        run: |
-          if git diff --quiet -- README.md paradox; then
-            echo "Generated documentation is already current."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md paradox
-          git commit -m "docs: update Phase 3 consumer references"
-          git push
