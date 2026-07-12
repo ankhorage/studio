@@ -44,7 +44,7 @@ function createManifest(): AppManifest {
 }
 
 describe('configureManifestOAuthProvider', () => {
-  test('creates canonical auth and OAuth configuration without inline values', () => {
+  test('creates disabled canonical auth and OAuth configuration without inline values', () => {
     const next = configureManifestOAuthProvider(createManifest(), {
       provider: {
         id: 'google',
@@ -53,13 +53,13 @@ describe('configureManifestOAuthProvider', () => {
         scopes: ['openid', 'email', 'profile'],
         credentialsRef: 'auth/oauth/google',
       },
-      callbackRoute: '/auth/callback',
     });
 
     expect(next.infra.auth?.authorization).toBeUndefined();
+    expect(next.infra.auth?.scope).toBe('none');
     expect(next.infra.auth?.flow?.signInRoute).toBe('sign-in');
     expect(next.infra.auth?.oauth).toEqual({
-      enabled: true,
+      enabled: false,
       callbackRoute: '/auth/callback',
       providers: [
         {
@@ -79,8 +79,6 @@ describe('configureManifestOAuthProvider', () => {
 
   test('preserves disabled global Auth and OAuth intent for credential saves', () => {
     const next = configureManifestOAuthProvider(createManifest(), {
-      authScope: 'none',
-      oauthEnabled: false,
       provider: {
         id: 'google',
         label: 'Google',
@@ -88,7 +86,6 @@ describe('configureManifestOAuthProvider', () => {
         scopes: ['openid', 'email', 'profile'],
         credentialsRef: 'auth/oauth/google',
       },
-      callbackRoute: '/auth/callback',
     });
 
     expect(next.infra.auth?.scope).toBe('none');
@@ -96,10 +93,8 @@ describe('configureManifestOAuthProvider', () => {
     expect(next.infra.auth?.oauth?.providers[0]?.enabled).toBe(false);
   });
 
-  test('creates missing auth config without enabling runtime OAuth when requested', () => {
+  test('creates missing auth config without enabling runtime OAuth', () => {
     const next = configureManifestOAuthProvider(createManifest(), {
-      authScope: 'none',
-      oauthEnabled: false,
       provider: {
         id: 'apple',
         enabled: false,
@@ -124,14 +119,33 @@ describe('configureManifestOAuthProvider', () => {
     });
   });
 
-  test('replaces one provider without deleting unrelated providers', () => {
-    const manifest = configureManifestOAuthProvider(createManifest(), {
+  test('preserves persisted global auth and OAuth state while replacing one provider', () => {
+    const initial = configureManifestOAuthProvider(createManifest(), {
       provider: {
         id: 'apple',
         enabled: false,
         credentialsRef: 'auth/oauth/apple',
       },
     });
+    const manifest: AppManifest = {
+      ...initial,
+      infra: {
+        ...initial.infra,
+        auth: initial.infra.auth
+          ? {
+              ...initial.infra.auth,
+              scope: 'global',
+              oauth: initial.infra.auth.oauth
+                ? {
+                    ...initial.infra.auth.oauth,
+                    enabled: true,
+                    callbackRoute: '/custom/callback',
+                  }
+                : undefined,
+            }
+          : undefined,
+      },
+    };
 
     const next = configureManifestOAuthProvider(manifest, {
       provider: {
@@ -143,6 +157,9 @@ describe('configureManifestOAuthProvider', () => {
       },
     });
 
+    expect(next.infra.auth?.scope).toBe('global');
+    expect(next.infra.auth?.oauth?.enabled).toBe(true);
+    expect(next.infra.auth?.oauth?.callbackRoute).toBe('/custom/callback');
     expect(next.infra.auth?.oauth?.providers).toHaveLength(1);
     expect(next.infra.auth?.oauth?.providers[0]?.enabled).toBe(true);
   });
