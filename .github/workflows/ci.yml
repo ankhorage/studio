@@ -26,7 +26,10 @@ jobs:
       - name: Apply targeted Phase 2 fixes
         if: github.event_name == 'pull_request'
         run: |
-          python scripts/apply_phase2_state_integrity_fixes.py
+          if ! python scripts/apply_phase2_state_integrity_fixes.py 2>fix-error.log; then
+            tail -1 fix-error.log
+            exit 1
+          fi
           git fetch --quiet origin main --depth=1
           git show origin/main:.github/workflows/ci.yml > .github/workflows/ci.yml
           rm -f scripts/apply_phase2_state_integrity_fixes.py
