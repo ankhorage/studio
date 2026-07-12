@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -17,6 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: phase3/oauth-fixture-consumer-smoke
           fetch-depth: 0
 
       - name: Setup Bun
@@ -26,6 +27,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Format generated documentation
+        run: ankhorage-prettier --write README.md paradox
 
       - name: Run build
         run: |
@@ -86,3 +90,17 @@ jobs:
           else
             echo "No changeset:status script found; skipping."
           fi
+
+      - name: Commit formatted documentation
+        if: github.actor != 'github-actions[bot]'
+        run: |
+          if git diff --quiet -- README.md paradox; then
+            echo "Generated documentation is already formatted."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md paradox
+          git commit -m "style: format generated Phase 3 docs"
+          git push
