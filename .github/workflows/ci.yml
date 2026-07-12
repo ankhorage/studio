@@ -19,16 +19,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
 
       - name: Apply targeted Phase 2 fixes
         if: github.event_name == 'pull_request'
         run: |
           python scripts/apply_phase2_state_integrity_fixes.py
+          git fetch origin main --depth=1
           git show origin/main:.github/workflows/ci.yml > .github/workflows/ci.yml
           rm -f scripts/apply_phase2_state_integrity_fixes.py
-          rm -f .github/workflows/apply-phase2-state-integrity-fixes.yml
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
