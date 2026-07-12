@@ -952,7 +952,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/projectSecretApi.ts">
                 src/projectSecretApi.ts
-                <small>25 functions</small>
+                <small>26 functions</small>
               </button>
             </li>
             <li>
@@ -1086,7 +1086,7 @@
                 data-target="src/ui/StudioAuthSettingsOverlay.tsx"
               >
                 src/ui/StudioAuthSettingsOverlay.tsx
-                <small>27 functions</small>
+                <small>29 functions</small>
               </button>
             </li>
             <li>
@@ -1109,7 +1109,7 @@
             <div class="summary">
               <div><strong>82</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>153</strong><span class="muted">modules</span></div>
+              <div><strong>155</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2660,7 +2660,7 @@
             </article>
             <article
               class="item"
-              data-search="src/projectSecretApi.ts src/projectSecretUsage.ts src/secretResponseGuard.ts configureProjectOAuthProvider ConfigureProjectOAuthProviderInput ConfigureProjectOAuthProviderResponse createProjectSecret getProjectSecretUsages listProjectSecrets parseConfigureProjectOAuthProviderResponse parseProjectSecretListResponse parseProjectSecretMetadataResponse parseProjectSecretUsageSummaryResponse ProjectSecretApiError ProjectSecretCreateInput ProjectSecretRemoveInput ProjectSecretReplaceInput removeProjectSecret replaceProjectSecret"
+              data-search="src/projectSecretApi.ts src/projectSecretUsage.ts src/secretResponseGuard.ts configureProjectOAuthProvider ConfigureProjectOAuthProviderInput ConfigureProjectOAuthProviderResponse createProjectSecret getProjectSecretUsages listProjectSecrets parseConfigureProjectOAuthProviderResponse parseProjectSecretHttpErrorResponse parseProjectSecretListResponse parseProjectSecretMetadataResponse parseProjectSecretUsageSummaryResponse ProjectSecretApiError ProjectSecretCreateInput ProjectSecretRemoveInput ProjectSecretReplaceInput removeProjectSecret replaceProjectSecret"
             >
               <h3>src/projectSecretApi.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2675,6 +2675,7 @@
                 <code>createProjectSecret</code>, <code>getProjectSecretUsages</code>,
                 <code>listProjectSecrets</code>,
                 <code>parseConfigureProjectOAuthProviderResponse</code>,
+                <code>parseProjectSecretHttpErrorResponse</code>,
                 <code>parseProjectSecretListResponse</code>,
                 <code>parseProjectSecretMetadataResponse</code>,
                 <code>parseProjectSecretUsageSummaryResponse</code>,
@@ -3067,6 +3068,12 @@
               <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code></p>
               <p><strong>Exports:</strong> <code>AnkhStudio</code>, <code>AnkhStudioProps</code></p>
             </article>
+            <article class="item" data-search="src/ui/StudioAdminOverlay.test.ts">
+              <h3>src/ui/StudioAdminOverlay.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
             <article
               class="item"
               data-search="src/ui/StudioAdminOverlay.tsx src/projectSecretApi.ts src/projectSecretUsage.ts StudioAdminOverlay StudioAdminOverlayProps"
@@ -3082,15 +3089,22 @@
                 <code>StudioAdminOverlayProps</code>
               </p>
             </article>
+            <article class="item" data-search="src/ui/StudioAuthSettingsOverlay.test.ts">
+              <h3>src/ui/StudioAuthSettingsOverlay.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
             <article
               class="item"
-              data-search="src/ui/StudioAuthSettingsOverlay.tsx src/authSettings.ts src/projectAuthApi.ts src/projectAuthHealth.ts StudioAuthSettingsOverlay StudioAuthSettingsOverlayProps"
+              data-search="src/ui/StudioAuthSettingsOverlay.tsx src/authSettings.ts src/projectAuthApi.ts src/projectAuthHealth.ts src/projectSecretApi.ts StudioAuthSettingsOverlay StudioAuthSettingsOverlayProps"
             >
               <h3>src/ui/StudioAuthSettingsOverlay.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/authSettings.ts</code>,
-                <code>src/projectAuthApi.ts</code>, <code>src/projectAuthHealth.ts</code>
+                <code>src/projectAuthApi.ts</code>, <code>src/projectAuthHealth.ts</code>,
+                <code>src/projectSecretApi.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioAuthSettingsOverlay</code>,
@@ -6935,15 +6949,20 @@
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
                 module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_test_ts
                 module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_tsx
                 module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretUsage_ts
+                module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_StudioAuthSettingsOverlay_test_ts
                 module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_StudioAuthSettingsOverlay_tsx
                 module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_authSettings_ts
                 module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthApi_ts
                 module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthHealth_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_test_ts
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -7440,15 +7459,20 @@ graph TD
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_test_ts
   module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretUsage_ts
+  module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_StudioAuthSettingsOverlay_test_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_authSettings_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthApi_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthHealth_ts
+  module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_test_ts
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -7618,7 +7642,9 @@ graph TD
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
                 module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+                module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
                 module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -7880,7 +7906,8 @@ graph TD
                 module_src_projectSecretUsage_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
                 module_src_authSettings_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
                 module_src_projectAuthApi_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_projectAuthHealth_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_projectAuthHealth_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
+                module_src_projectSecretApi_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
                 module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
                 module_src_studioAdminRouteModel_ts module_src_ui_useStudioAppBarAugmentation_ts
                 --&gt; module_src_ui_StudioAdminOverlay_tsx
@@ -8040,7 +8067,9 @@ graph LR
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
   module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+  module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
   module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -8230,6 +8259,7 @@ graph LR
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_authSettings_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthApi_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthHealth_ts
+  module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_studioAdminRouteModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_StudioAdminOverlay_tsx
@@ -8390,7 +8420,9 @@ graph LR
                 module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
                 module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
                 module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+                module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
                 module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -8760,7 +8792,9 @@ graph LR
   module_src_studioSelectionModel_test_ts[&quot;src/studioSelectionModel.test.ts&quot;]
   module_src_studioSelectionModel_ts[&quot;src/studioSelectionModel.ts&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_StudioAdminOverlay_test_ts[&quot;src/ui/StudioAdminOverlay.test.ts&quot;]
   module_src_ui_StudioAdminOverlay_tsx[&quot;src/ui/StudioAdminOverlay.tsx&quot;]
+  module_src_ui_StudioAuthSettingsOverlay_test_ts[&quot;src/ui/StudioAuthSettingsOverlay.test.ts&quot;]
   module_src_ui_StudioAuthSettingsOverlay_tsx[&quot;src/ui/StudioAuthSettingsOverlay.tsx&quot;]
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
@@ -13495,14 +13529,22 @@ sequenceDiagram
               <p class="muted"><code>src/projectSecretApi.ts:283:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article
+              class="item"
+              data-search="parseProjectSecretHttpErrorResponse src/projectSecretApi.ts "
+            >
+              <h3>parseProjectSecretHttpErrorResponse</h3>
+              <p class="muted"><code>src/projectSecretApi.ts:287:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="readResult src/projectSecretApi.ts ">
               <h3>readResult</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:302:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:310:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseSecretMetadata src/projectSecretApi.ts ">
               <h3>parseSecretMetadata</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:310:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:318:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13510,42 +13552,42 @@ sequenceDiagram
               data-search="parseProjectSecretUsageSummary src/projectSecretApi.ts "
             >
               <h3>parseProjectSecretUsageSummary</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:342:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:350:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProjectSecretUsage src/projectSecretApi.ts ">
               <h3>parseProjectSecretUsage</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:353:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:361:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseError src/projectSecretApi.ts ">
               <h3>parseError</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:377:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:385:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createQuery src/projectSecretApi.ts ">
               <h3>createQuery</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:385:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:393:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="asRecord src/projectSecretApi.ts ">
               <h3>asRecord</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:395:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:403:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStringArray src/projectSecretApi.ts ">
               <h3>isStringArray</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:401:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:409:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createInvalidResponseError src/projectSecretApi.ts ">
               <h3>createInvalidResponseError</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:405:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:413:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="rejectRawSecretResponse src/projectSecretApi.ts ">
               <h3>rejectRawSecretResponse</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:409:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:417:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13553,7 +13595,7 @@ sequenceDiagram
               data-search="isProjectSecretUsageCategory src/projectSecretApi.ts "
             >
               <h3>isProjectSecretUsageCategory</h3>
-              <p class="muted"><code>src/projectSecretApi.ts:418:1</code></p>
+              <p class="muted"><code>src/projectSecretApi.ts:426:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -13973,82 +14015,82 @@ sequenceDiagram
             <h2>src/ui/StudioAdminOverlay.tsx</h2>
             <article class="item" data-search="createField src/ui/StudioAdminOverlay.tsx ">
               <h3>createField</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:38:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioAdminOverlay src/ui/StudioAdminOverlay.tsx ">
               <h3>StudioAdminOverlay</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:42:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:47:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SecretsAdmin src/ui/StudioAdminOverlay.tsx ">
               <h3>SecretsAdmin</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:74:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:79:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="useSecretInventory src/ui/StudioAdminOverlay.tsx ">
               <h3>useSecretInventory</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:435:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:464:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/StudioAdminOverlay.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:459:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:488:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/StudioAdminOverlay.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:474:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:503:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/StudioAdminOverlay.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:485:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:514:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="InventoryRow src/ui/StudioAdminOverlay.tsx ">
               <h3>InventoryRow</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:504:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:533:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/StudioAdminOverlay.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:561:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:607:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="FilterPills src/ui/StudioAdminOverlay.tsx ">
               <h3>FilterPills</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:589:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:635:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SecondaryButton src/ui/StudioAdminOverlay.tsx ">
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:609:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:655:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/StudioAdminOverlay.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:636:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:682:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/StudioAdminOverlay.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:645:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:691:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="secretInventoryKey src/ui/StudioAdminOverlay.tsx ">
               <h3>secretInventoryKey</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:650:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:696:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="uniqueSorted src/ui/StudioAdminOverlay.tsx ">
               <h3>uniqueSorted</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:654:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:700:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isPresentString src/ui/StudioAdminOverlay.tsx ">
               <h3>isPresentString</h3>
-              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:658:1</code></p>
+              <p class="muted"><code>src/ui/StudioAdminOverlay.tsx:704:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14066,7 +14108,7 @@ sequenceDiagram
               data-search="StudioAuthSettingsOverlay src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>StudioAuthSettingsOverlay</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:47:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:59:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14074,12 +14116,20 @@ sequenceDiagram
               data-search="OAuthProviderSetting src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>OAuthProviderSetting</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:463:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:539:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="setEnabled src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>setEnabled</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:476:9</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:559:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="saveCredentials src/ui/StudioAuthSettingsOverlay.tsx "
+            >
+              <h3>saveCredentials</h3>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:585:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14087,22 +14137,30 @@ sequenceDiagram
               data-search="upsertProvider src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>upsertProvider</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:515:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:690:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="linkRecoverableOAuthCredentials src/ui/StudioAuthSettingsOverlay.tsx "
+            >
+              <h3>linkRecoverableOAuthCredentials</h3>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:701:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateFlow src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>updateFlow</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:526:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:728:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitSignUp src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>omitSignUp</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:533:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:735:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitProfile src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>omitProfile</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:538:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:740:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14110,7 +14168,7 @@ sequenceDiagram
               data-search="createDefaultSettings src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createDefaultSettings</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:543:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:745:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14118,7 +14176,7 @@ sequenceDiagram
               data-search="createDefaultOAuth src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createDefaultOAuth</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:553:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:755:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14126,17 +14184,17 @@ sequenceDiagram
               data-search="createFallbackManifest src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createFallbackManifest</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:561:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:763:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="splitList src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>splitList</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:573:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:775:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:584:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:786:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14144,7 +14202,7 @@ sequenceDiagram
               data-search="AuthHealthCard src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>AuthHealthCard</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:589:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:791:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14152,7 +14210,7 @@ sequenceDiagram
               data-search="formatHealthStatus src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>formatHealthStatus</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:649:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:851:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14160,7 +14218,7 @@ sequenceDiagram
               data-search="formatProviderHealthStatus src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>formatProviderHealthStatus</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:656:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:858:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14168,7 +14226,7 @@ sequenceDiagram
               data-search="healthStatusColor src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>healthStatusColor</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:664:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:866:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14176,47 +14234,47 @@ sequenceDiagram
               data-search="diagnosticSeverityColor src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>diagnosticSeverityColor</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:671:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:873:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:677:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:879:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:692:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:894:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="RouteField src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>RouteField</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:703:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:905:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:715:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:917:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SwitchSetting src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>SwitchSetting</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:734:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:936:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Choice src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Choice</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:753:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:955:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:777:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:979:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:788:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:990:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14224,12 +14282,12 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:811:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1013:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:823:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1025:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

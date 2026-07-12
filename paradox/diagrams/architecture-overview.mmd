@@ -477,15 +477,20 @@ graph TD
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_StudioAdminOverlay_test_ts["src/ui/StudioAdminOverlay.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_StudioAdminOverlay_test_ts
   module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
   package__ankhorage_studio -.-> module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretApi_ts
   module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretUsage_ts
+  module_src_ui_StudioAuthSettingsOverlay_test_ts["src/ui/StudioAuthSettingsOverlay.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_StudioAuthSettingsOverlay_test_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx["src/ui/StudioAuthSettingsOverlay.tsx"]
   package__ankhorage_studio -.-> module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_authSettings_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthApi_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthHealth_ts
+  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_test_ts
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
