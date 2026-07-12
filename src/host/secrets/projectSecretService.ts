@@ -326,13 +326,10 @@ export class ProjectSecretService {
       provider: {
         id: definition.id,
         label: normalizeOptionalText(input.label) ?? definition.label,
-        enabled: input.enabled ?? true,
+        enabled: input.enabled ?? false,
         scopes: normalizeScopes(input.scopes ?? definition.defaultScopes),
         credentialsRef: refResult.data,
       },
-      authScope: input.authScope,
-      oauthEnabled: input.oauthEnabled,
-      callbackRoute: input.callbackRoute,
     });
 
     try {
@@ -421,18 +418,10 @@ export function configureManifestOAuthProvider(
   manifest: AppManifest,
   input: {
     readonly provider: AuthOAuthProviderConfig;
-    readonly authScope?: NonNullable<AppManifest['infra']['auth']>['scope'];
-    readonly oauthEnabled?: boolean;
-    readonly callbackRoute?: string;
   },
 ): AppManifest {
   const currentAuth = manifest.infra.auth;
   const currentOAuth = currentAuth?.oauth;
-  const existingCallbackRoute = currentOAuth ? currentOAuth.callbackRoute : undefined;
-  const callbackRoute =
-    normalizeOptionalText(input.callbackRoute) ??
-    normalizeOptionalText(existingCallbackRoute) ??
-    '/auth/callback';
   const providers = [...(currentOAuth?.providers ?? [])];
   const existingIndex = providers.findIndex((provider) => provider.id === input.provider.id);
 
@@ -446,14 +435,13 @@ export function configureManifestOAuthProvider(
       auth: {
         ...(currentAuth ?? {
           provider: 'supabase',
-          scope: input.authScope ?? 'global',
+          scope: 'none',
           flow: { ...DEFAULT_AUTH_FLOW },
           signIn: { identifiers: ['email'] },
         }),
-        ...(input.authScope ? { scope: input.authScope } : {}),
         oauth: {
-          enabled: input.oauthEnabled ?? currentOAuth?.enabled ?? true,
-          callbackRoute,
+          enabled: currentOAuth?.enabled ?? false,
+          callbackRoute: normalizeOptionalText(currentOAuth?.callbackRoute) ?? '/auth/callback',
           providers,
         },
       },
