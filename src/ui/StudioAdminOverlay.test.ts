@@ -13,9 +13,11 @@ test('secret inventory exposes an environment filter', () => {
   expect(source).toContain('useSecretInventory(projectId, inventoryEnvironment)');
 });
 
-test('secret inventory clears rows when the selected environment fails to load', () => {
-  expect(source).toContain('setItems([])');
-  expect(source).toContain('setError(toMessage(caught))');
+test('secret inventory clears rows and rejects stale environment responses', () => {
+  expect(source).toContain('const generation = ++requestGeneration.current');
+  expect(source).toContain('setItems([]);\n    setLoading(true);');
+  expect(source).toContain('generation !== requestGeneration.current');
+  expect(source).toContain('requestGeneration.current += 1');
 });
 
 test('secret usage lookup failures remain unavailable instead of becoming zero usages', () => {
