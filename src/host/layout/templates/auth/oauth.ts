@@ -213,10 +213,14 @@ async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
     const attemptId = Reflect.get(value, 'attemptId');
     const provider = Reflect.get(value, 'provider');
     const redirectUri = Reflect.get(value, 'redirectUri');
+    const configuredProvider =
+      typeof provider === 'string'
+        ? GENERATED_OAUTH_PROVIDERS.find((entry) => entry.id === provider)
+        : undefined;
     return typeof attemptId === 'string' &&
-      typeof provider === 'string' &&
+      configuredProvider !== undefined &&
       typeof redirectUri === 'string'
-      ? { attemptId, provider, redirectUri }
+      ? { attemptId, provider: configuredProvider.id, redirectUri }
       : null;
   } catch {
     return null;
