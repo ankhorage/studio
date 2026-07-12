@@ -17,10 +17,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  readStudioAuthSettings,
-  type StudioAuthSettings,
-} from '../authSettings';
+import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
 import {
   getProjectAuthSettings,
   ProjectAuthApiError,
@@ -48,8 +45,8 @@ const PROFILE_FIELDS = [
 export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
   const { projectId, manifest, onClose } = props;
   const { theme } = useZoraTheme();
-  const [draft, setDraft] = useState<StudioAuthSettings>(() =>
-    readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
+  const [draft, setDraft] = useState<StudioAuthSettings>(
+    () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
   );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -117,7 +114,7 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
         { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
       ]}
     >
-      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}> 
+      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
         <View style={styles.grow}>
           <Heading level={2} text="Authentication" />
           <Text color="neutral" emphasis="muted" variant="bodySmall">
@@ -148,7 +145,8 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
           <KeyValue label="Provider" value="Supabase" />
           <KeyValue label="Configuration source" value="infra.auth" />
           <Text color="neutral" emphasis="muted" variant="caption">
-            Roles, RBAC, ABAC, registered users, and user passwords are intentionally not managed here.
+            Roles, RBAC, ABAC, registered users, and user passwords are intentionally not managed
+            here.
           </Text>
         </Card>
 
@@ -578,7 +576,14 @@ function createFallbackManifest(): AppManifest {
 }
 
 function splitList(value: string): string[] {
-  return [...new Set(value.split(',').map((entry) => entry.trim()).filter(Boolean))];
+  return [
+    ...new Set(
+      value
+        .split(',')
+        .map((entry) => entry.trim())
+        .filter(Boolean),
+    ),
+  ];
 }
 
 function toMessage(error: unknown): string {
