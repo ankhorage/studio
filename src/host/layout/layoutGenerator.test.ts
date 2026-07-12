@@ -102,6 +102,7 @@ describe('LayoutGenerator', () => {
     expect(oauth).toContain('WebBrowser.openAuthSessionAsync');
     expect(oauth).toContain('Linking.createURL');
     expect(oauth).toContain('callback_already_completed');
+    expect(oauth).toContain('cancelOAuthAttempt');
     expect(oauth).toContain('configuredProvider');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreens).toContain('OAuthProviderList');
