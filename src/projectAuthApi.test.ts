@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
+import type { StudioAuthSettings } from './authSettings';
 import { parseProjectAuthSettingsResponse } from './projectAuthApi';
 
 const config = {
@@ -25,7 +26,7 @@ const config = {
       },
     ],
   },
-};
+} satisfies StudioAuthSettings;
 
 describe('projectAuthApi', () => {
   test('parses loaded and saved canonical auth settings', () => {
