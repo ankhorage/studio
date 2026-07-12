@@ -77,6 +77,53 @@ describe('configureManifestOAuthProvider', () => {
     expect(serialized).not.toContain('sentinel-secret');
   });
 
+  test('preserves disabled global Auth and OAuth intent for credential saves', () => {
+    const next = configureManifestOAuthProvider(createManifest(), {
+      authScope: 'none',
+      oauthEnabled: false,
+      provider: {
+        id: 'google',
+        label: 'Google',
+        enabled: false,
+        scopes: ['openid', 'email', 'profile'],
+        credentialsRef: 'auth/oauth/google',
+      },
+      callbackRoute: '/auth/callback',
+    });
+
+    expect(next.infra.auth?.scope).toBe('none');
+    expect(next.infra.auth?.oauth?.enabled).toBe(false);
+    expect(next.infra.auth?.oauth?.providers[0]?.enabled).toBe(false);
+  });
+
+  test('creates missing auth config without enabling runtime OAuth when requested', () => {
+    const next = configureManifestOAuthProvider(createManifest(), {
+      authScope: 'none',
+      oauthEnabled: false,
+      provider: {
+        id: 'apple',
+        enabled: false,
+        credentialsRef: 'auth/oauth/apple',
+      },
+    });
+
+    expect(next.infra.auth).toMatchObject({
+      provider: 'supabase',
+      scope: 'none',
+      oauth: {
+        enabled: false,
+        callbackRoute: '/auth/callback',
+        providers: [
+          {
+            id: 'apple',
+            enabled: false,
+            credentialsRef: 'auth/oauth/apple',
+          },
+        ],
+      },
+    });
+  });
+
   test('replaces one provider without deleting unrelated providers', () => {
     const manifest = configureManifestOAuthProvider(createManifest(), {
       provider: {

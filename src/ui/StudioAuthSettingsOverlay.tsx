@@ -1,6 +1,7 @@
 import {
   DEFAULT_AUTH_FLOW,
   type AppManifest,
+  type AuthOAuthProviderConfig,
   type AuthOAuthProviderId,
 } from '@ankhorage/contracts';
 import {
@@ -93,6 +94,14 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
   useEffect(() => {
     void reload();
   }, [reload]);
+
+  const refreshHealth = useCallback(async () => {
+    try {
+      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
+    } catch (error) {
+      setMessage(toMessage(error));
+    }
+  }, [projectId]);
 
   const save = useCallback(async () => {
     setSaving(true);
@@ -359,6 +368,7 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               key={providerId}
               projectId={projectId}
               providerId={providerId}
+              authScope={draft.scope}
               oauth={oauth}
               providerHealth={health?.providers.find(
                 (provider) => provider.providerId === providerId,
@@ -367,10 +377,11 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(nextMessage) => {
+              onSaved={(nextOAuth, nextMessage) => {
+                setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
                 setPartialFailure(null);
-                void reload();
+                void refreshHealth();
               }}
               onPartialFailure={(failure) => {
                 setPartialFailure(failure);
@@ -540,13 +551,14 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
+  readonly authScope: StudioAuthSettings['scope'];
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
   readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
-  readonly onSaved: (message: string) => void;
+  readonly onSaved: (oauth: NonNullable<StudioAuthSettings['oauth']>, message: string) => void;
   readonly onPartialFailure: (failure: RecoverableOAuthPartialFailure) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
@@ -629,6 +641,8 @@ function OAuthProviderSetting(props: {
         projectId: props.projectId,
         providerId: props.providerId as AuthOAuthProviderId,
         environment: 'local',
+        authScope: props.authScope,
+        oauthEnabled: props.oauth.enabled,
         credentialsRef,
         enabled,
         label: current?.label ?? definition.label,
@@ -638,7 +652,10 @@ function OAuthProviderSetting(props: {
       });
 
       if (result.ok) {
-        props.onSaved(`${definition.label} credentials saved through ${result.credentialsRef}.`);
+        props.onSaved(
+          mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
+          `${definition.label} credentials saved through ${result.credentialsRef}.`,
+        );
         return;
       }
 
@@ -652,13 +669,11 @@ function OAuthProviderSetting(props: {
           providerId: props.providerId,
           credentialsRef: result.credentialsRef,
           configuredFields: result.metadata.configuredFields,
-          intendedOAuth: {
-            ...intendedOAuth,
-            providers: upsertProvider(intendedOAuth.providers, {
-              ...intendedProvider,
-              credentialsRef: result.credentialsRef,
-            }),
-          },
+          intendedOAuth: mergeOAuthProviderCredentialsRef(
+            intendedOAuth,
+            intendedProvider,
+            result.credentialsRef,
+          ),
         });
         return;
       }
@@ -719,6 +734,20 @@ function OAuthProviderSetting(props: {
       {credentialMessage ? <Message text={credentialMessage} /> : null}
     </View>
   );
+}
+
+function mergeOAuthProviderCredentialsRef(
+  oauth: NonNullable<StudioAuthSettings['oauth']>,
+  provider: AuthOAuthProviderConfig,
+  credentialsRef: string,
+): NonNullable<StudioAuthSettings['oauth']> {
+  return {
+    ...oauth,
+    providers: upsertProvider(oauth.providers, {
+      ...provider,
+      credentialsRef,
+    }),
+  };
 }
 
 function upsertProvider(

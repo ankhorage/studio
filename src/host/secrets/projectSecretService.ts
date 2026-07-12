@@ -41,6 +41,8 @@ export interface ConfigureOAuthProviderInput {
   readonly environment?: string;
   readonly providerId: AuthOAuthProviderId;
   readonly payload: SecretPayload;
+  readonly authScope?: NonNullable<AppManifest['infra']['auth']>['scope'];
+  readonly oauthEnabled?: boolean;
   readonly credentialsRef?: string;
   readonly enabled?: boolean;
   readonly label?: string;
@@ -328,6 +330,8 @@ export class ProjectSecretService {
         scopes: normalizeScopes(input.scopes ?? definition.defaultScopes),
         credentialsRef: refResult.data,
       },
+      authScope: input.authScope,
+      oauthEnabled: input.oauthEnabled,
       callbackRoute: input.callbackRoute,
     });
 
@@ -417,6 +421,8 @@ export function configureManifestOAuthProvider(
   manifest: AppManifest,
   input: {
     readonly provider: AuthOAuthProviderConfig;
+    readonly authScope?: NonNullable<AppManifest['infra']['auth']>['scope'];
+    readonly oauthEnabled?: boolean;
     readonly callbackRoute?: string;
   },
 ): AppManifest {
@@ -440,12 +446,13 @@ export function configureManifestOAuthProvider(
       auth: {
         ...(currentAuth ?? {
           provider: 'supabase',
-          scope: 'global',
+          scope: input.authScope ?? 'global',
           flow: { ...DEFAULT_AUTH_FLOW },
           signIn: { identifiers: ['email'] },
         }),
+        ...(input.authScope ? { scope: input.authScope } : {}),
         oauth: {
-          enabled: true,
+          enabled: input.oauthEnabled ?? currentOAuth?.enabled ?? true,
           callbackRoute,
           providers,
         },

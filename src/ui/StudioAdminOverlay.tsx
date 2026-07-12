@@ -472,6 +472,7 @@ function useSecretInventory(projectId: string, environment: string) {
       setItems(await listProjectSecrets({ projectId, environment }));
       setError(null);
     } catch (caught) {
+      setItems([]);
       setError(toMessage(caught));
     } finally {
       setLoading(false);

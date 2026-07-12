@@ -179,6 +179,8 @@ export function registerProjectSecretRoutes(
         providerId,
         payload,
         environment: readOptionalString(body.environment),
+        authScope: readAuthScope(body.authScope),
+        oauthEnabled: typeof body.oauthEnabled === 'boolean' ? body.oauthEnabled : undefined,
         credentialsRef: readOptionalString(body.credentialsRef),
         enabled: typeof body.enabled === 'boolean' ? body.enabled : undefined,
         label: readOptionalString(body.label),
@@ -243,6 +245,10 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
+}
+
+function readAuthScope(value: unknown): 'global' | 'none' | 'integrated' | undefined {
+  return value === 'global' || value === 'none' || value === 'integrated' ? value : undefined;
 }
 
 function readStringArray(value: unknown): string[] | undefined {

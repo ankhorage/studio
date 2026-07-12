@@ -35,6 +35,8 @@ export interface ConfigureProjectOAuthProviderInput {
   readonly projectId: string;
   readonly providerId: AuthOAuthProviderId;
   readonly environment?: string;
+  readonly authScope?: 'global' | 'none' | 'integrated';
+  readonly oauthEnabled?: boolean;
   readonly credentialsRef?: string;
   readonly enabled?: boolean;
   readonly label?: string;
@@ -163,6 +165,8 @@ export async function configureProjectOAuthProvider(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         environment: input.environment,
+        authScope: input.authScope,
+        oauthEnabled: input.oauthEnabled,
         credentialsRef: input.credentialsRef,
         enabled: input.enabled,
         label: input.label,
