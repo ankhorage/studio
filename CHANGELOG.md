@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.5.1
+
+### Patch Changes
+
+- 5b44e42: devtools sync (update CI pipeline)
+
 ## 0.5.0
 
 ### Minor Changes
