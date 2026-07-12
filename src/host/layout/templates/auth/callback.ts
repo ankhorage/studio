@@ -6,9 +6,7 @@ export function getAuthOAuthCallbackTsx(args: {
   postSignInRoute: string;
 }) {
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
-  const postSignInTarget = escapeStringLiteral(
-    routeNameToGroupedHref(args.postSignInRoute, 'app'),
-  );
+  const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
   return `import * as Linking from 'expo-linking';
 import { Stack, useRouter } from 'expo-router';
