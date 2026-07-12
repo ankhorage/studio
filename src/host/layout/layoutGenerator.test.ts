@@ -84,6 +84,7 @@ describe('LayoutGenerator', () => {
       includeStudio: false,
     });
     const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
     const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
     const session = files.find((file) => file.path === 'src/auth/session.ts')?.content ?? '';
@@ -94,11 +95,15 @@ describe('LayoutGenerator', () => {
     const allGeneratedSource = files.map((file) => file.content).join('\n');
 
     expect(callbackFiles).toHaveLength(1);
+    expect(rootLayout).toContain("AppState.addEventListener('change'");
+    expect(rootLayout).toContain('await bootstrapAuthSession()');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
     expect(adapter).toContain('["google"]');
     expect(oauth).toContain('WebBrowser.openAuthSessionAsync');
     expect(oauth).toContain('Linking.createURL');
     expect(oauth).toContain('callback_already_completed');
+    expect(oauth).toContain('configuredProvider');
+    expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreens).toContain('OAuthProviderList');
     expect(authScreens).toContain('startOAuthAuthorization');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store'");
