@@ -3,10 +3,12 @@ import { describe, expect, it } from 'bun:test';
 
 import { resolveAuthLayoutPlan } from './resolveAuthLayoutPlan';
 
-function createManifest(args: {
-  flow?: AuthFlowConfig;
-  oauth?: AuthOAuthConfig;
-} = {}): AppManifest {
+function createManifest(
+  args: {
+    flow?: AuthFlowConfig;
+    oauth?: AuthOAuthConfig;
+  } = {},
+): AppManifest {
   return {
     metadata: {
       name: 'Auth app',
