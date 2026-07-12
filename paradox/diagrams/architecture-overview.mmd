@@ -154,8 +154,17 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_adapter_ts
+  module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_callback_ts
+  module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_templates_utils_routes_ts
+  module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_oauth_ts
+  module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_screen_ts
+  module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
@@ -216,6 +225,11 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_modules_layout_ts
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
   package__ankhorage_studio -.-> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts["src/host/oauthFixtureConsumer.smoke.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_oauthFixtureConsumer_smoke_test_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
@@ -270,6 +284,9 @@ graph TD
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_templates_test_ts
+  module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
