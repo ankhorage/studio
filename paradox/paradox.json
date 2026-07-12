@@ -883,7 +883,8 @@
         "ConfigureOAuthProviderResult",
         "ProjectSecretRemoveResult",
         "ProjectSecretService",
-        "ProjectSecretServiceOptions"
+        "ProjectSecretServiceOptions",
+        "ProjectSecretUsageError"
       ]
     },
     {
@@ -1276,6 +1277,7 @@
         "getProjectAuthHealth",
         "getProjectAuthSettings",
         "parseProjectAuthHealthResponse",
+        "parseProjectAuthHttpErrorResponse",
         "parseProjectAuthSettingsResponse",
         "ProjectAuthApiError",
         "saveProjectAuthSettings"
@@ -5668,7 +5670,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 196,
+        "line": 199,
         "column": 1
       }
     },
@@ -5677,7 +5679,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 209,
+        "line": 212,
         "column": 1
       }
     },
@@ -5686,7 +5688,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 227,
+        "line": 230,
         "column": 1
       }
     },
@@ -5695,7 +5697,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 235,
+        "line": 238,
         "column": 1
       }
     },
@@ -5704,7 +5706,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 241,
+        "line": 244,
         "column": 1
       }
     },
@@ -5713,7 +5715,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 245,
+        "line": 248,
         "column": 1
       }
     },
@@ -5722,7 +5724,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/secretRoutes.ts",
-        "line": 258,
+        "line": 261,
         "column": 1
       }
     },
@@ -7432,7 +7434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 166,
+        "line": 224,
         "column": 1
       }
     },
@@ -7441,7 +7443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 394,
+        "line": 416,
         "column": 1
       }
     },
@@ -7450,7 +7452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 435,
+        "line": 457,
         "column": 1
       }
     },
@@ -7459,7 +7461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 442,
+        "line": 464,
         "column": 1
       }
     },
@@ -7468,7 +7470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 446,
+        "line": 468,
         "column": 1
       }
     },
@@ -7477,7 +7479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 452,
+        "line": 474,
         "column": 1
       }
     },
@@ -9057,11 +9059,20 @@
       }
     },
     {
+      "name": "parseProjectAuthHttpErrorResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectAuthApi.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
       "name": "invalidResponse",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 121,
+        "line": 129,
         "column": 1
       }
     },
@@ -9070,7 +9081,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 125,
+        "line": 133,
         "column": 1
       }
     },
@@ -9079,7 +9090,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 131,
+        "line": 139,
         "column": 1
       }
     },
@@ -9088,7 +9099,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 160,
+        "line": 168,
         "column": 1
       }
     },
@@ -9097,7 +9108,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 184,
+        "line": 192,
         "column": 1
       }
     },
@@ -9106,7 +9117,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 212,
+        "line": 220,
         "column": 1
       }
     },
@@ -9115,7 +9126,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 222,
+        "line": 230,
         "column": 1
       }
     },
@@ -9124,7 +9135,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 231,
+        "line": 239,
         "column": 1
       }
     },
@@ -9133,7 +9144,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 235,
+        "line": 243,
         "column": 1
       }
     },
@@ -9142,7 +9153,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 241,
+        "line": 249,
         "column": 1
       }
     },
@@ -9151,7 +9162,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectAuthApi.ts",
-        "line": 245,
+        "line": 253,
         "column": 1
       }
     },
@@ -9934,7 +9945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 59,
+        "line": 60,
         "column": 1
       }
     },
@@ -9943,7 +9954,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 539,
+        "line": 540,
         "column": 1
       }
     },
@@ -9952,7 +9963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 559,
+        "line": 569,
         "column": 9
       }
     },
@@ -9961,7 +9972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 585,
+        "line": 595,
         "column": 9
       }
     },
@@ -9970,7 +9981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 690,
+        "line": 724,
         "column": 1
       }
     },
@@ -9979,7 +9990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 701,
+        "line": 735,
         "column": 1
       }
     },
@@ -9988,7 +9999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 728,
+        "line": 745,
         "column": 1
       }
     },
@@ -9997,7 +10008,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 735,
+        "line": 752,
         "column": 1
       }
     },
@@ -10006,7 +10017,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 740,
+        "line": 757,
         "column": 1
       }
     },
@@ -10015,7 +10026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 745,
+        "line": 762,
         "column": 1
       }
     },
@@ -10024,7 +10035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 755,
+        "line": 772,
         "column": 1
       }
     },
@@ -10033,7 +10044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 763,
+        "line": 780,
         "column": 1
       }
     },
@@ -10042,7 +10053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 775,
+        "line": 792,
         "column": 1
       }
     },
@@ -10051,7 +10062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 786,
+        "line": 803,
         "column": 1
       }
     },
@@ -10060,7 +10071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 791,
+        "line": 808,
         "column": 1
       }
     },
@@ -10069,7 +10080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 851,
+        "line": 868,
         "column": 1
       }
     },
@@ -10078,7 +10089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 858,
+        "line": 875,
         "column": 1
       }
     },
@@ -10087,7 +10098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 866,
+        "line": 883,
         "column": 1
       }
     },
@@ -10096,7 +10107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 873,
+        "line": 890,
         "column": 1
       }
     },
@@ -10105,7 +10116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 879,
+        "line": 896,
         "column": 1
       }
     },
@@ -10114,7 +10125,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 894,
+        "line": 911,
         "column": 1
       }
     },
@@ -10123,7 +10134,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 905,
+        "line": 922,
         "column": 1
       }
     },
@@ -10132,7 +10143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 917,
+        "line": 934,
         "column": 1
       }
     },
@@ -10141,7 +10152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 936,
+        "line": 953,
         "column": 1
       }
     },
@@ -10150,7 +10161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 955,
+        "line": 972,
         "column": 1
       }
     },
@@ -10159,7 +10170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 979,
+        "line": 996,
         "column": 1
       }
     },
@@ -10168,7 +10179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 990,
+        "line": 1007,
         "column": 1
       }
     },
@@ -10177,7 +10188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1013,
+        "line": 1030,
         "column": 1
       }
     },
@@ -10186,7 +10197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1025,
+        "line": 1042,
         "column": 1
       }
     },
@@ -13709,6 +13720,12 @@
         "sourcePath": "src/projectAuthApi.test.ts"
       },
       {
+        "fromSymbol": "src/projectAuthApi.test.ts",
+        "toSymbol": "parseProjectAuthHttpErrorResponse",
+        "callExpression": "parseProjectAuthHttpErrorResponse",
+        "sourcePath": "src/projectAuthApi.test.ts"
+      },
+      {
         "fromSymbol": "getProjectAuthSettings",
         "toSymbol": "requestJson",
         "callExpression": "requestJson",
@@ -13812,6 +13829,18 @@
       },
       {
         "fromSymbol": "parseHttpError",
+        "toSymbol": "parseProjectAuthHttpErrorResponse",
+        "callExpression": "parseProjectAuthHttpErrorResponse",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectAuthHttpErrorResponse",
+        "toSymbol": "rejectRawSecretResponse",
+        "callExpression": "rejectRawSecretResponse",
+        "sourcePath": "src/projectAuthApi.ts"
+      },
+      {
+        "fromSymbol": "parseProjectAuthHttpErrorResponse",
         "toSymbol": "asRecord",
         "callExpression": "asRecord",
         "sourcePath": "src/projectAuthApi.ts"
@@ -16506,6 +16535,12 @@
       },
       {
         "fromSymbol": "saveCredentials",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
         "toSymbol": "setSavingCredentials",
         "callExpression": "setSavingCredentials",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -16556,24 +16591,6 @@
         "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
         "toSymbol": "saveCredentials",
         "callExpression": "saveCredentials",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "linkRecoverableOAuthCredentials",
-        "toSymbol": "createDefaultOAuth",
-        "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "linkRecoverableOAuthCredentials",
-        "toSymbol": "getSupabaseOAuthProviderDefinition",
-        "callExpression": "getSupabaseOAuthProviderDefinition",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "linkRecoverableOAuthCredentials",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
@@ -19896,6 +19913,12 @@
       },
       {
         "fromSymbol": "getUsages",
+        "toSymbol": "normalizeSecretRef",
+        "callExpression": "normalizeSecretRef",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "getUsages",
         "toSymbol": "readEditableManifest",
         "callExpression": "this.readEditableManifest",
         "sourcePath": "src/host/secrets/projectSecretService.ts"
@@ -19904,6 +19927,18 @@
         "fromSymbol": "getUsages",
         "toSymbol": "findProjectSecretUsages",
         "callExpression": "findProjectSecretUsages",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "removeGuarded",
+        "toSymbol": "normalizeSecretRef",
+        "callExpression": "normalizeSecretRef",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "removeGuarded",
+        "toSymbol": "toPublicError",
+        "callExpression": "toPublicError",
         "sourcePath": "src/host/secrets/projectSecretService.ts"
       },
       {

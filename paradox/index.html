@@ -934,7 +934,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/projectAuthApi.ts">
                 src/projectAuthApi.ts
-                <small>19 functions</small>
+                <small>20 functions</small>
               </button>
             </li>
             <li>
@@ -2133,7 +2133,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/secrets/projectSecretService.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/secrets/bunSupabaseVaultClient.ts src/host/secrets/resolveProjectSecretDatabaseUrl.ts src/projectSecretUsage.ts configureManifestOAuthProvider ConfigureOAuthProviderInput ConfigureOAuthProviderResult ProjectSecretRemoveResult ProjectSecretService ProjectSecretServiceOptions"
+              data-search="src/host/secrets/projectSecretService.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/secrets/bunSupabaseVaultClient.ts src/host/secrets/resolveProjectSecretDatabaseUrl.ts src/projectSecretUsage.ts configureManifestOAuthProvider ConfigureOAuthProviderInput ConfigureOAuthProviderResult ProjectSecretRemoveResult ProjectSecretService ProjectSecretServiceOptions ProjectSecretUsageError"
             >
               <h3>src/host/secrets/projectSecretService.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2148,7 +2148,7 @@
                 <strong>Exports:</strong> <code>configureManifestOAuthProvider</code>,
                 <code>ConfigureOAuthProviderInput</code>, <code>ConfigureOAuthProviderResult</code>,
                 <code>ProjectSecretRemoveResult</code>, <code>ProjectSecretService</code>,
-                <code>ProjectSecretServiceOptions</code>
+                <code>ProjectSecretServiceOptions</code>, <code>ProjectSecretUsageError</code>
               </p>
             </article>
             <article
@@ -2610,7 +2610,7 @@
             </article>
             <article
               class="item"
-              data-search="src/projectAuthApi.ts src/authSettings.ts src/projectAuthHealth.ts src/secretResponseGuard.ts getProjectAuthHealth getProjectAuthSettings parseProjectAuthHealthResponse parseProjectAuthSettingsResponse ProjectAuthApiError saveProjectAuthSettings"
+              data-search="src/projectAuthApi.ts src/authSettings.ts src/projectAuthHealth.ts src/secretResponseGuard.ts getProjectAuthHealth getProjectAuthSettings parseProjectAuthHealthResponse parseProjectAuthHttpErrorResponse parseProjectAuthSettingsResponse ProjectAuthApiError saveProjectAuthSettings"
             >
               <h3>src/projectAuthApi.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2621,6 +2621,7 @@
               <p>
                 <strong>Exports:</strong> <code>getProjectAuthHealth</code>,
                 <code>getProjectAuthSettings</code>, <code>parseProjectAuthHealthResponse</code>,
+                <code>parseProjectAuthHttpErrorResponse</code>,
                 <code>parseProjectAuthSettingsResponse</code>, <code>ProjectAuthApiError</code>,
                 <code>saveProjectAuthSettings</code>
               </p>
@@ -10062,7 +10063,7 @@ sequenceDiagram
             </article>
             <article class="item" data-search="sendSecretResult src/host/http/secretRoutes.ts ">
               <h3>sendSecretResult</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:196:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:199:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10070,32 +10071,32 @@ sequenceDiagram
               data-search="sendSecretRemoveResult src/host/http/secretRoutes.ts "
             >
               <h3>sendSecretRemoveResult</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:209:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:212:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveErrorStatus src/host/http/secretRoutes.ts ">
               <h3>resolveErrorStatus</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:227:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:230:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="asRecord src/host/http/secretRoutes.ts ">
               <h3>asRecord</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:235:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:238:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readOptionalString src/host/http/secretRoutes.ts ">
               <h3>readOptionalString</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:241:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:244:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readStringArray src/host/http/secretRoutes.ts ">
               <h3>readStringArray</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:245:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:248:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readSecretPayload src/host/http/secretRoutes.ts ">
               <h3>readSecretPayload</h3>
-              <p class="muted"><code>src/host/http/secretRoutes.ts:258:1</code></p>
+              <p class="muted"><code>src/host/http/secretRoutes.ts:261:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11923,7 +11924,7 @@ sequenceDiagram
               data-search="fakeQuery src/host/secrets/projectSecretService.test.ts "
             >
               <h3>fakeQuery</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.test.ts:166:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.test.ts:224:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11941,7 +11942,7 @@ sequenceDiagram
               data-search="configureManifestOAuthProvider src/host/secrets/projectSecretService.ts "
             >
               <h3>configureManifestOAuthProvider</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:394:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:416:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11949,7 +11950,7 @@ sequenceDiagram
               data-search="createScope src/host/secrets/projectSecretService.ts "
             >
               <h3>createScope</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:435:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:457:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11957,7 +11958,7 @@ sequenceDiagram
               data-search="normalizeScopes src/host/secrets/projectSecretService.ts "
             >
               <h3>normalizeScopes</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:442:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:464:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11965,7 +11966,7 @@ sequenceDiagram
               data-search="normalizeOptionalText src/host/secrets/projectSecretService.ts "
             >
               <h3>normalizeOptionalText</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:446:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:468:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11973,7 +11974,7 @@ sequenceDiagram
               data-search="toPublicError src/host/secrets/projectSecretService.ts "
             >
               <h3>toPublicError</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:452:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:474:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -13307,24 +13308,32 @@ sequenceDiagram
               <p class="muted"><code>src/projectAuthApi.ts:108:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article
+              class="item"
+              data-search="parseProjectAuthHttpErrorResponse src/projectAuthApi.ts "
+            >
+              <h3>parseProjectAuthHttpErrorResponse</h3>
+              <p class="muted"><code>src/projectAuthApi.ts:112:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="invalidResponse src/projectAuthApi.ts ">
               <h3>invalidResponse</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:121:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:129:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="asRecord src/projectAuthApi.ts ">
               <h3>asRecord</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:125:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:133:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProjectAuthHealth src/projectAuthApi.ts ">
               <h3>parseProjectAuthHealth</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:131:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:139:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProjectAuthDiagnostic src/projectAuthApi.ts ">
               <h3>parseProjectAuthDiagnostic</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:160:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:168:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13332,27 +13341,27 @@ sequenceDiagram
               data-search="parseProjectOAuthProviderHealth src/projectAuthApi.ts "
             >
               <h3>parseProjectOAuthProviderHealth</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:184:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:192:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createQuery src/projectAuthApi.ts ">
               <h3>createQuery</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:212:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:220:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="rejectRawSecretResponse src/projectAuthApi.ts ">
               <h3>rejectRawSecretResponse</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:222:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:230:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStringArray src/projectAuthApi.ts ">
               <h3>isStringArray</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:231:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:239:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isProjectAuthHealthStatus src/projectAuthApi.ts ">
               <h3>isProjectAuthHealthStatus</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:235:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:243:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13360,7 +13369,7 @@ sequenceDiagram
               data-search="isProjectAuthDiagnosticSeverity src/projectAuthApi.ts "
             >
               <h3>isProjectAuthDiagnosticSeverity</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:241:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:249:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13368,7 +13377,7 @@ sequenceDiagram
               data-search="isProjectOAuthProviderHealthStatus src/projectAuthApi.ts "
             >
               <h3>isProjectOAuthProviderHealthStatus</h3>
-              <p class="muted"><code>src/projectAuthApi.ts:245:1</code></p>
+              <p class="muted"><code>src/projectAuthApi.ts:253:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14108,7 +14117,7 @@ sequenceDiagram
               data-search="StudioAuthSettingsOverlay src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>StudioAuthSettingsOverlay</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:59:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:60:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14116,12 +14125,12 @@ sequenceDiagram
               data-search="OAuthProviderSetting src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>OAuthProviderSetting</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:539:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:540:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="setEnabled src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>setEnabled</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:559:9</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:569:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14129,7 +14138,7 @@ sequenceDiagram
               data-search="saveCredentials src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>saveCredentials</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:585:9</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:595:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14137,7 +14146,7 @@ sequenceDiagram
               data-search="upsertProvider src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>upsertProvider</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:690:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:724:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14145,22 +14154,22 @@ sequenceDiagram
               data-search="linkRecoverableOAuthCredentials src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>linkRecoverableOAuthCredentials</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:701:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:735:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateFlow src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>updateFlow</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:728:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:745:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitSignUp src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>omitSignUp</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:735:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:752:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitProfile src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>omitProfile</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:740:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:757:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14168,7 +14177,7 @@ sequenceDiagram
               data-search="createDefaultSettings src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createDefaultSettings</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:745:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:762:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14176,7 +14185,7 @@ sequenceDiagram
               data-search="createDefaultOAuth src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createDefaultOAuth</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:755:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:772:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14184,17 +14193,17 @@ sequenceDiagram
               data-search="createFallbackManifest src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>createFallbackManifest</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:763:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:780:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="splitList src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>splitList</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:775:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:792:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:786:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:803:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14202,7 +14211,7 @@ sequenceDiagram
               data-search="AuthHealthCard src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>AuthHealthCard</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:791:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:808:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14210,7 +14219,7 @@ sequenceDiagram
               data-search="formatHealthStatus src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>formatHealthStatus</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:851:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:868:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14218,7 +14227,7 @@ sequenceDiagram
               data-search="formatProviderHealthStatus src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>formatProviderHealthStatus</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:858:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:875:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14226,7 +14235,7 @@ sequenceDiagram
               data-search="healthStatusColor src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>healthStatusColor</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:866:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:883:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14234,47 +14243,47 @@ sequenceDiagram
               data-search="diagnosticSeverityColor src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>diagnosticSeverityColor</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:873:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:890:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:879:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:896:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:894:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:911:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="RouteField src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>RouteField</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:905:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:922:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:917:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:934:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SwitchSetting src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>SwitchSetting</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:936:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:953:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Choice src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Choice</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:955:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:972:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:979:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:996:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:990:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1007:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14282,12 +14291,12 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/StudioAuthSettingsOverlay.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1013:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1030:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/StudioAuthSettingsOverlay.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1025:1</code></p>
+              <p class="muted"><code>src/ui/StudioAuthSettingsOverlay.tsx:1042:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
