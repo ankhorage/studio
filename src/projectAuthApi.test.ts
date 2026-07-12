@@ -43,7 +43,7 @@ describe('projectAuthApi', () => {
     ).toBeNull();
     expect(() =>
       parseProjectAuthSettingsResponse({ ok: true, state: 'saved', data: null }, 'saved'),
-    ).toThrow('invalid');
+    ).toThrow('unsupported fields');
   });
 
   test('rejects inline secret-shaped response fields', () => {
