@@ -102,8 +102,16 @@ export class LayoutGenerator {
           content: getStudioAdminRouteTsx('apis'),
         },
         {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth.tsx')),
+          content: getStudioAdminRouteTsx('auth'),
+        },
+        {
           path: normalizeRel(path.join(appRootRel, 'ankh', 'properties', '[id].tsx')),
           content: getStudioAdminRouteTsx('properties'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'secrets.tsx')),
+          content: getStudioAdminRouteTsx('secrets'),
         },
         {
           path: normalizeRel(path.join(appRootRel, 'ankh', 'theme.tsx')),
@@ -418,12 +426,16 @@ export default function AnkhLayout() {
 `;
 }
 
-function getStudioAdminRouteTsx(routeName: 'apis' | 'properties' | 'theme'): string {
+type StudioAdminGeneratedRouteName = 'apis' | 'auth' | 'properties' | 'secrets' | 'theme';
+
+function getStudioAdminRouteTsx(routeName: StudioAdminGeneratedRouteName): string {
   const titleByRouteName = {
     apis: 'APIs',
+    auth: 'Auth',
     properties: 'Properties',
+    secrets: 'Secrets',
     theme: 'Theme',
-  } satisfies Record<typeof routeName, string>;
+  } satisfies Record<StudioAdminGeneratedRouteName, string>;
   const title = titleByRouteName[routeName];
 
   return `export default function Ankh${title}Route() {

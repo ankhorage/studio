@@ -20,6 +20,7 @@ import {
   validateSupabaseOAuthSecretPayload,
 } from '@ankhorage/supabase-auth';
 
+import { findProjectSecretUsages, type ProjectSecretUsageSummary } from '../../projectSecretUsage';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import {
@@ -60,6 +61,20 @@ export type ConfigureOAuthProviderResult =
       readonly error: { readonly code: string; readonly message: string };
       readonly metadata?: SecretMetadata;
       readonly credentialsRef?: string;
+    };
+
+export type ProjectSecretRemoveResult =
+  | {
+      readonly ok: true;
+      readonly data: ProjectSecretUsageSummary;
+    }
+  | {
+      readonly ok: false;
+      readonly error: {
+        readonly code: string;
+        readonly message: string;
+      };
+      readonly data?: ProjectSecretUsageSummary;
     };
 
 export class ProjectSecretService {
@@ -150,6 +165,78 @@ export class ProjectSecretService {
         ref: input.ref,
       }),
     );
+  }
+
+  async getUsages(input: {
+    readonly projectId: string;
+    readonly environment?: string;
+    readonly ref: string;
+  }): Promise<ProjectSecretUsageSummary> {
+    const manifest = await this.readEditableManifest(input.projectId);
+    return findProjectSecretUsages({ manifest, ref: input.ref });
+  }
+
+  async removeGuarded(input: {
+    readonly projectId: string;
+    readonly environment?: string;
+    readonly ref: string;
+    readonly confirmBrokenReferences?: boolean;
+  }): Promise<ProjectSecretRemoveResult> {
+    let client: BunSupabaseVaultClient | null = null;
+
+    try {
+      const manifest = await this.readEditableManifest(input.projectId);
+      const projectPath = getProjectPath(this.workspaceRoot, input.projectId);
+      const databaseUrl = await this.resolveDatabaseUrl(projectPath);
+      client = this.createClient(databaseUrl);
+      const adapter = createInfraSecretStoreAdapter({
+        manifest: manifest.infra,
+        providers: {
+          supabaseVault: { client },
+        },
+      });
+
+      if (!adapter) {
+        return {
+          ok: false,
+          error: {
+            code: 'invalid_config',
+            message: 'This project does not configure infra.secretStore.provider.',
+          },
+        };
+      }
+
+      const usages = findProjectSecretUsages({ manifest, ref: input.ref });
+      if (usages.usages.length > 0 && input.confirmBrokenReferences !== true) {
+        return {
+          ok: false,
+          error: {
+            code: 'secret_in_use',
+            message: 'The secret is referenced by the current project configuration.',
+          },
+          data: usages,
+        };
+      }
+
+      const removeResult = await adapter.remove({
+        scope: createScope(input.projectId, input.environment),
+        ref: input.ref,
+      });
+      if (!removeResult.ok) return removeResult;
+
+      return { ok: true, data: usages };
+    } catch {
+      return {
+        ok: false,
+        error: {
+          code: 'unavailable',
+          message:
+            'The project secret store is unavailable. Verify local Supabase is running and the trusted database URL is configured.',
+        },
+      };
+    } finally {
+      await client?.close();
+    }
   }
 
   async configureOAuthProvider(
@@ -259,7 +346,10 @@ export class ProjectSecretService {
 
   private async withAdapter<TResult>(
     projectId: string,
-    operation: (adapter: SecretStoreAdapter) => Promise<SecretStoreResult<TResult>>,
+    operation: (
+      adapter: SecretStoreAdapter,
+      manifest: AppManifest,
+    ) => Promise<SecretStoreResult<TResult>>,
   ): Promise<SecretStoreResult<TResult>> {
     let client: BunSupabaseVaultClient | null = null;
 
@@ -285,7 +375,7 @@ export class ProjectSecretService {
         };
       }
 
-      return await operation(adapter);
+      return await operation(adapter, manifest);
     } catch {
       return {
         ok: false,

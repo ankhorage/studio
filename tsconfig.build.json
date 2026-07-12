@@ -54,9 +54,12 @@
     "src/manifestNavigatorPreviewModel.ts",
     "src/manifestState.ts",
     "src/manifestSync.ts",
+    "src/projectAuthHealth.ts",
+    "src/projectSecretUsage.ts",
     "src/routeUtils.ts",
     "src/runtimeDiagnosticsModel.ts",
     "src/runtimeLocalization.ts",
+    "src/secretResponseGuard.ts",
     "src/studioAdminRouteModel.ts",
     "src/studioSelectionModel.ts"
   ],

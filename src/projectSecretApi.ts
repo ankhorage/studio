@@ -1,16 +1,12 @@
 import type { AuthOAuthProviderId } from '@ankhorage/contracts';
 import type { SecretMetadata, SecretPayload } from '@ankhorage/contracts/secrets';
 
-const FORBIDDEN_SECRET_RESPONSE_KEYS = new Set([
-  'clientSecret',
-  'payload',
-  'privateKey',
-  'rawValue',
-  'secret',
-  'secretValue',
-  'token',
-  'value',
-]);
+import {
+  type ProjectSecretUsage,
+  type ProjectSecretUsageCategory,
+  type ProjectSecretUsageSummary,
+} from './projectSecretUsage';
+import { findRawSecretResponseKey } from './secretResponseGuard';
 
 export interface ProjectSecretCreateInput {
   readonly projectId: string;
@@ -32,6 +28,7 @@ export interface ProjectSecretRemoveInput {
   readonly projectId: string;
   readonly environment?: string;
   readonly ref: string;
+  readonly confirmBrokenReferences?: boolean;
 }
 
 export interface ConfigureProjectOAuthProviderInput {
@@ -64,12 +61,19 @@ export type ConfigureProjectOAuthProviderResponse =
 export class ProjectSecretApiError extends Error {
   readonly code: string;
   readonly status: number;
+  readonly data?: unknown;
 
-  constructor(args: { readonly code: string; readonly message: string; readonly status: number }) {
+  constructor(args: {
+    readonly code: string;
+    readonly message: string;
+    readonly status: number;
+    readonly data?: unknown;
+  }) {
     super(args.message);
     this.name = 'ProjectSecretApiError';
     this.code = args.code;
     this.status = args.status;
+    this.data = args.data;
   }
 }
 
@@ -122,13 +126,31 @@ export async function replaceProjectSecret(
   return parseProjectSecretMetadataResponse(value);
 }
 
-export async function removeProjectSecret(input: ProjectSecretRemoveInput): Promise<void> {
+export async function getProjectSecretUsages(input: {
+  readonly projectId: string;
+  readonly environment?: string;
+  readonly ref: string;
+}): Promise<ProjectSecretUsageSummary> {
   const query = createQuery({ environment: input.environment, ref: input.ref });
+  const value = await requestJson(
+    `/projects/${encodeURIComponent(input.projectId)}/secrets/usages${query}`,
+  );
+  return parseProjectSecretUsageSummaryResponse(value);
+}
+
+export async function removeProjectSecret(
+  input: ProjectSecretRemoveInput,
+): Promise<ProjectSecretUsageSummary> {
+  const query = createQuery({
+    environment: input.environment,
+    ref: input.ref,
+    confirmBrokenReferences: input.confirmBrokenReferences ? 'true' : undefined,
+  });
   const value = await requestJson(
     `/projects/${encodeURIComponent(input.projectId)}/secrets${query}`,
     { method: 'DELETE' },
   );
-  parseProjectSecretRemoveResponse(value);
+  return parseProjectSecretRemoveResponse(value);
 }
 
 export async function configureProjectOAuthProvider(
@@ -155,6 +177,7 @@ export async function configureProjectOAuthProvider(
 }
 
 export function parseProjectSecretListResponse(value: unknown): readonly SecretMetadata[] {
+  rejectRawSecretResponse(value, 'Secret list response was invalid.');
   const result = readResult(value);
   if (!result.ok || !Array.isArray(result.data)) {
     throw createInvalidResponseError('Secret list response was invalid.');
@@ -163,6 +186,7 @@ export function parseProjectSecretListResponse(value: unknown): readonly SecretM
 }
 
 export function parseProjectSecretMetadataResponse(value: unknown): SecretMetadata {
+  rejectRawSecretResponse(value, 'Secret metadata response was invalid.');
   const result = readResult(value);
   if (!result.ok) {
     throw createInvalidResponseError('Secret metadata response was invalid.');
@@ -170,16 +194,28 @@ export function parseProjectSecretMetadataResponse(value: unknown): SecretMetada
   return parseSecretMetadata(result.data);
 }
 
-function parseProjectSecretRemoveResponse(value: unknown): void {
+export function parseProjectSecretUsageSummaryResponse(value: unknown): ProjectSecretUsageSummary {
+  rejectRawSecretResponse(value, 'Secret usage response was invalid.');
+  const result = readResult(value);
+  if (!result.ok) {
+    throw createInvalidResponseError('Secret usage response was invalid.');
+  }
+  return parseProjectSecretUsageSummary(result.data);
+}
+
+function parseProjectSecretRemoveResponse(value: unknown): ProjectSecretUsageSummary {
+  rejectRawSecretResponse(value, 'Secret removal response was invalid.');
   const result = readResult(value);
   if (!result.ok) {
     throw createInvalidResponseError('Secret removal response was invalid.');
   }
+  return parseProjectSecretUsageSummary(result.data);
 }
 
 export function parseConfigureProjectOAuthProviderResponse(
   value: unknown,
 ): ConfigureProjectOAuthProviderResponse {
+  rejectRawSecretResponse(value, 'OAuth configuration response was invalid.');
   const record = asRecord(value);
   if (record === null || typeof record.ok !== 'boolean') {
     throw createInvalidResponseError('OAuth configuration response was invalid.');
@@ -247,6 +283,7 @@ async function readJson(response: Response): Promise<unknown> {
 function parseHttpError(value: unknown, status: number): ProjectSecretApiError {
   const record = asRecord(value);
   const errorRecord = asRecord(record?.error);
+  const data = record?.data;
   const code =
     typeof errorRecord?.code === 'string'
       ? errorRecord.code
@@ -259,7 +296,7 @@ function parseHttpError(value: unknown, status: number): ProjectSecretApiError {
       : typeof record?.error === 'string'
         ? record.error
         : 'The Studio secret request failed.';
-  return new ProjectSecretApiError({ code, message, status });
+  return new ProjectSecretApiError({ code, message, status, data });
 }
 
 function readResult(value: unknown): { readonly ok: boolean; readonly data?: unknown } {
@@ -274,11 +311,6 @@ function parseSecretMetadata(value: unknown): SecretMetadata {
   const record = asRecord(value);
   if (record === null) {
     throw createInvalidResponseError('Secret metadata was invalid.');
-  }
-  for (const key of Object.keys(record)) {
-    if (FORBIDDEN_SECRET_RESPONSE_KEYS.has(key)) {
-      throw createInvalidResponseError('Secret response unexpectedly contained a raw value field.');
-    }
   }
 
   const scope = asRecord(record.scope);
@@ -304,6 +336,41 @@ function parseSecretMetadata(value: unknown): SecretMetadata {
     configuredFields: [...record.configuredFields],
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
+  };
+}
+
+function parseProjectSecretUsageSummary(value: unknown): ProjectSecretUsageSummary {
+  const record = asRecord(value);
+  if (record === null || typeof record.ref !== 'string' || !Array.isArray(record.usages)) {
+    throw createInvalidResponseError('Secret usage summary was invalid.');
+  }
+  return {
+    ref: record.ref,
+    usages: record.usages.map(parseProjectSecretUsage),
+  };
+}
+
+function parseProjectSecretUsage(value: unknown): ProjectSecretUsage {
+  const record = asRecord(value);
+  if (
+    record === null ||
+    typeof record.ref !== 'string' ||
+    typeof record.path !== 'string' ||
+    !isProjectSecretUsageCategory(record.category) ||
+    typeof record.label !== 'string' ||
+    (record.ownerId !== undefined && typeof record.ownerId !== 'string') ||
+    typeof record.breaksWhenMissing !== 'boolean'
+  ) {
+    throw createInvalidResponseError('Secret usage was invalid.');
+  }
+
+  return {
+    ref: record.ref,
+    path: record.path,
+    category: record.category,
+    label: record.label,
+    ...(typeof record.ownerId === 'string' ? { ownerId: record.ownerId } : {}),
+    breaksWhenMissing: record.breaksWhenMissing,
   };
 }
 
@@ -337,4 +404,17 @@ function isStringArray(value: unknown): value is string[] {
 
 function createInvalidResponseError(message: string): ProjectSecretApiError {
   return new ProjectSecretApiError({ code: 'invalid_response', message, status: 502 });
+}
+
+function rejectRawSecretResponse(value: unknown, message: string): void {
+  const match = findRawSecretResponseKey(value);
+  if (match) {
+    throw createInvalidResponseError(
+      `${message} Raw secret-shaped response field "${match.key}" was present.`,
+    );
+  }
+}
+
+function isProjectSecretUsageCategory(value: unknown): value is ProjectSecretUsageCategory {
+  return value === 'oauth-provider' || value === 'project-config';
 }

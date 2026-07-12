@@ -22,6 +22,7 @@ graph LR
   module_src_dnd_state_ts["src/dnd/state.ts"]
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
+  module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
   module_src_host_auth_projectAuthService_test_ts["src/host/auth/projectAuthService.test.ts"]
   module_src_host_auth_projectAuthService_ts["src/host/auth/projectAuthService.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
@@ -36,6 +37,7 @@ graph LR
   module_src_host_index_ts["src/host/index.ts"]
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts["src/host/layout/auth/resolveAuthLayoutPlan.test.ts"]
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
+  module_src_host_layout_layoutGenerator_test_ts["src/host/layout/layoutGenerator.test.ts"]
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
@@ -111,8 +113,12 @@ graph LR
   module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
+  module_src_projectAuthHealth_test_ts["src/projectAuthHealth.test.ts"]
+  module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
   module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
   module_src_projectSecretApi_ts["src/projectSecretApi.ts"]
+  module_src_projectSecretUsage_test_ts["src/projectSecretUsage.test.ts"]
+  module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
   module_src_root_test_ts["src/root.test.ts"]
   module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
@@ -133,6 +139,8 @@ graph LR
   module_src_runtimeLocalization_public_test_ts["src/runtimeLocalization.public.test.ts"]
   module_src_runtimeLocalization_test_ts["src/runtimeLocalization.test.ts"]
   module_src_runtimeLocalization_ts["src/runtimeLocalization.ts"]
+  module_src_secretResponseGuard_test_ts["src/secretResponseGuard.test.ts"]
+  module_src_secretResponseGuard_ts["src/secretResponseGuard.ts"]
   module_src_studioAdminRouteModel_test_ts["src/studioAdminRouteModel.test.ts"]
   module_src_studioAdminRouteModel_ts["src/studioAdminRouteModel.ts"]
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
@@ -141,6 +149,7 @@ graph LR
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
   module_src_ui_StudioAuthSettingsOverlay_tsx["src/ui/StudioAuthSettingsOverlay.tsx"]
+  module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   module_src_app_StudioDashboard_tsx --> module_src_hooks_useProjects_ts
@@ -172,6 +181,9 @@ graph LR
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_modules_dashboard_types_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthHealth_ts
   module_src_host_auth_projectAuthService_test_ts --> module_src_host_auth_projectAuthService_ts
   module_src_host_auth_projectAuthService_ts --> module_src_authSettings_ts
   module_src_host_auth_projectAuthService_ts --> module_src_host_orchestrator_projectManager_ts
@@ -184,8 +196,10 @@ graph LR
   module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_authRoutes_ts --> module_src_host_auth_projectAuthHealthService_ts
   module_src_host_http_authRoutes_ts --> module_src_host_auth_projectAuthService_ts
   module_src_host_http_authRoutes_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_authRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
@@ -204,6 +218,7 @@ graph LR
   module_src_host_http_serverWithSecrets_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_host_http_standalone_ts --> module_src_host_http_serverWithSecrets_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
@@ -262,6 +277,7 @@ graph LR
   module_src_host_secrets_projectSecretService_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_secrets_projectSecretService_ts --> module_src_host_secrets_bunSupabaseVaultClient_ts
   module_src_host_secrets_projectSecretService_ts --> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_projectSecretService_ts --> module_src_projectSecretUsage_ts
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --> module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --> module_src_index_ts
@@ -293,7 +309,14 @@ graph LR
   module_src_projectAuthApi_test_ts --> module_src_authSettings_ts
   module_src_projectAuthApi_test_ts --> module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --> module_src_authSettings_ts
+  module_src_projectAuthApi_ts --> module_src_projectAuthHealth_ts
+  module_src_projectAuthApi_ts --> module_src_secretResponseGuard_ts
+  module_src_projectAuthHealth_test_ts --> module_src_projectAuthHealth_ts
+  module_src_projectAuthHealth_ts --> module_src_authSettings_ts
   module_src_projectSecretApi_test_ts --> module_src_projectSecretApi_ts
+  module_src_projectSecretApi_ts --> module_src_projectSecretUsage_ts
+  module_src_projectSecretApi_ts --> module_src_secretResponseGuard_ts
+  module_src_projectSecretUsage_test_ts --> module_src_projectSecretUsage_ts
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
@@ -303,16 +326,19 @@ graph LR
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts
   module_src_runtimeLocalization_test_ts --> module_src_runtimeLocalization_ts
+  module_src_secretResponseGuard_test_ts --> module_src_secretResponseGuard_ts
   module_src_studioAdminRouteModel_test_ts --> module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --> module_src_index_ts
   module_src_studioSelectionModel_knip_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
   module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretUsage_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_authSettings_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthApi_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_ui_StudioAdminOverlay_tsx
+  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_utils_treeUtils_ts --> module_src_index_ts

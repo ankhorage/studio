@@ -17,7 +17,7 @@ export async function startStudioHostServerWithSecrets(
   const projectManager = new ProjectManager(projectRoot);
   const fastify = await createStudioHostServer({ projectManager, orchestrator, projectRoot });
 
-  registerProjectAuthRoutes(fastify, { projectManager });
+  registerProjectAuthRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
   registerProjectSecretRoutes(fastify, {
     projectManager,
     workspaceRoot: projectRoot,

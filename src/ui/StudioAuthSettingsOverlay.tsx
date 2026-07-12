@@ -5,6 +5,7 @@ import {
   type SupabaseOAuthProviderId,
 } from '@ankhorage/supabase-auth';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -18,12 +19,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
+import type { ProjectAuthHealth } from '../projectAuthHealth';
 import {
+  getProjectAuthHealth,
   getProjectAuthSettings,
   ProjectAuthApiError,
   saveProjectAuthSettings,
 } from '../projectAuthApi';
-import { StudioAdminOverlay } from './StudioAdminOverlay';
 
 export interface StudioAuthSettingsOverlayProps {
   readonly projectId: string;
@@ -45,19 +47,24 @@ const PROFILE_FIELDS = [
 export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
   const { projectId, manifest, onClose } = props;
   const { theme } = useZoraTheme();
+  const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
   );
+  const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [manageCredentials, setManageCredentials] = useState(false);
 
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      const loaded = await getProjectAuthSettings(projectId);
+      const [loaded, loadedHealth] = await Promise.all([
+        getProjectAuthSettings(projectId),
+        getProjectAuthHealth({ projectId, environment: 'local' }),
+      ]);
       setDraft(loaded ?? createDefaultSettings());
+      setHealth(loadedHealth);
       setMessage(null);
     } catch (error) {
       const local = manifest ? readStudioAuthSettings(manifest) : null;
@@ -85,22 +92,6 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
       setSaving(false);
     }
   }, [draft, projectId]);
-
-  const closeCredentialManager = useCallback(() => {
-    setManageCredentials(false);
-    void reload();
-  }, [reload]);
-
-  if (manageCredentials) {
-    return (
-      <StudioAdminOverlay
-        route="/ankh/auth"
-        projectId={projectId}
-        manifest={manifest}
-        onClose={closeCredentialManager}
-      />
-    );
-  }
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
@@ -132,6 +123,8 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         {loading ? <ActivityIndicator /> : null}
+
+        <AuthHealthCard health={health} />
 
         <Card title="Overview">
           <SwitchSetting
@@ -339,8 +332,10 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
 
           <View style={styles.actions}>
             <SecondaryButton
-              label="Manage OAuth credentials"
-              onPress={() => setManageCredentials(true)}
+              label="Open project secrets"
+              onPress={() => {
+                router.push('/ankh/secrets');
+              }}
             />
           </View>
         </Card>
@@ -591,6 +586,94 @@ function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Authentication configuration request failed.';
 }
 
+function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null }) {
+  if (!health) {
+    return (
+      <Card title="Health">
+        <Text color="neutral" emphasis="muted" variant="bodySmall">
+          Auth health is unavailable.
+        </Text>
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Health">
+      <Text color={healthStatusColor(health.status)} weight="semiBold">
+        {formatHealthStatus(health.status)}
+      </Text>
+      <KeyValue label="Callback route" value={health.callbackUrls.appCallbackRoute} />
+      {health.callbackUrls.providerRedirectUrl ? (
+        <KeyValue label="Provider redirect URL" value={health.callbackUrls.providerRedirectUrl} />
+      ) : null}
+      {health.providers.map((provider) => (
+        <View key={provider.providerId} style={styles.healthProvider}>
+          <Text weight="semiBold">
+            {provider.label}: {formatProviderHealthStatus(provider.status)}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Ref: {provider.credentialsRef ?? 'none'}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Required fields: {provider.requiredFields.join(', ') || 'none'}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            Configured fields: {provider.configuredFields.join(', ') || 'none'}
+          </Text>
+          {provider.missingFields.length > 0 ? (
+            <Text color="warning" variant="caption">
+              Missing fields: {provider.missingFields.join(', ')}
+            </Text>
+          ) : null}
+        </View>
+      ))}
+      {health.diagnostics.map((diagnostic) => (
+        <View key={`${diagnostic.code}:${diagnostic.path ?? ''}`} style={styles.diagnostic}>
+          <Text color={diagnosticSeverityColor(diagnostic.severity)} variant="bodySmall">
+            {diagnostic.code}
+          </Text>
+          <Text color="neutral" emphasis="muted" variant="caption">
+            {diagnostic.message}
+          </Text>
+        </View>
+      ))}
+      {health.diagnostics.length === 0 ? (
+        <Text color="success" variant="bodySmall">
+          No auth diagnostics.
+        </Text>
+      ) : null}
+    </Card>
+  );
+}
+
+function formatHealthStatus(status: ProjectAuthHealth['status']): string {
+  if (status === 'healthy') return 'Healthy';
+  if (status === 'warning') return 'Warning';
+  if (status === 'error') return 'Error';
+  return 'Not configured';
+}
+
+function formatProviderHealthStatus(status: ProjectAuthHealth['providers'][number]['status']) {
+  if (status === 'configured') return 'Configured';
+  if (status === 'incomplete') return 'Incomplete';
+  if (status === 'missing') return 'Missing secret';
+  if (status === 'invalid') return 'Invalid';
+  return 'Disabled';
+}
+
+function healthStatusColor(status: ProjectAuthHealth['status']) {
+  if (status === 'healthy') return 'success';
+  if (status === 'warning') return 'warning';
+  if (status === 'error') return 'danger';
+  return 'neutral';
+}
+
+function diagnosticSeverityColor(severity: ProjectAuthHealth['diagnostics'][number]['severity']) {
+  if (severity === 'error') return 'danger';
+  if (severity === 'warning') return 'warning';
+  return 'neutral';
+}
+
 function Card(props: { readonly title: string; readonly children: React.ReactNode }) {
   const { theme } = useZoraTheme();
   return (
@@ -803,6 +886,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     paddingVertical: 8,
+  },
+  healthProvider: {
+    gap: 3,
+    paddingVertical: 8,
+  },
+  diagnostic: {
+    gap: 3,
+    paddingVertical: 6,
   },
   keyValue: {
     flexDirection: 'row',

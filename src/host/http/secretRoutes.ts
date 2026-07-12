@@ -51,6 +51,36 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  fastify.get('/api/projects/:id/secrets/usages', async (request: FastifyRequest, reply) => {
+    const { id } = request.params as { id: string };
+    const query = request.query as { environment?: string; ref?: unknown };
+    if (typeof query.ref !== 'string' || query.ref.trim().length === 0) {
+      return reply.status(400).send({
+        ok: false,
+        error: { code: 'invalid_reference', message: 'A secret ref query parameter is required.' },
+      });
+    }
+
+    try {
+      return {
+        ok: true,
+        data: await service.getUsages({
+          projectId: id,
+          environment: query.environment,
+          ref: query.ref,
+        }),
+      };
+    } catch {
+      return reply.status(500).send({
+        ok: false,
+        error: {
+          code: 'manifest_read_failed',
+          message: 'The project manifest could not be loaded for secret usage analysis.',
+        },
+      });
+    }
+  });
+
   fastify.post('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const body = asRecord(request.body);
@@ -104,19 +134,24 @@ export function registerProjectSecretRoutes(
 
   fastify.delete('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
-    const query = request.query as { environment?: string; ref?: unknown };
+    const query = request.query as {
+      environment?: string;
+      ref?: unknown;
+      confirmBrokenReferences?: unknown;
+    };
     if (typeof query.ref !== 'string' || query.ref.trim().length === 0) {
       return reply.status(400).send({
         error: { code: 'invalid_reference', message: 'A secret ref query parameter is required.' },
       });
     }
 
-    return sendSecretResult(
+    return sendSecretRemoveResult(
       reply,
-      await service.remove({
+      await service.removeGuarded({
         projectId: id,
         environment: query.environment,
         ref: query.ref,
+        confirmBrokenReferences: query.confirmBrokenReferences === 'true',
       }),
     );
   });
@@ -168,6 +203,24 @@ function sendSecretResult<TData>(reply: FastifyReply, result: SecretStoreResult<
       code: result.error.code,
       message: result.error.message,
     },
+  });
+}
+
+function sendSecretRemoveResult(
+  reply: FastifyReply,
+  result: Awaited<ReturnType<ProjectSecretService['removeGuarded']>>,
+) {
+  if (result.ok) return result;
+
+  const status =
+    result.error.code === 'secret_in_use' ? 409 : resolveErrorStatus(result.error.code);
+  return reply.status(status).send({
+    ok: false,
+    error: {
+      code: result.error.code,
+      message: result.error.message,
+    },
+    ...(result.data ? { data: result.data } : {}),
   });
 }
 

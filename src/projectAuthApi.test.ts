@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import type { StudioAuthSettings } from './authSettings';
-import { parseProjectAuthSettingsResponse } from './projectAuthApi';
+import { parseProjectAuthHealthResponse, parseProjectAuthSettingsResponse } from './projectAuthApi';
 
 const config = {
   scope: 'global',
@@ -48,6 +48,7 @@ describe('projectAuthApi', () => {
   });
 
   test('rejects inline secret-shaped response fields', () => {
+    const sentinel = 'sentinel-phase2-secret-do-not-leak';
     expect(() =>
       parseProjectAuthSettingsResponse(
         {
@@ -57,12 +58,52 @@ describe('projectAuthApi', () => {
             ...config,
             oauth: {
               ...config.oauth,
-              providers: [{ ...config.oauth.providers[0], clientSecret: 'sentinel-secret' }],
+              providers: [{ ...config.oauth.providers[0], clientSecret: sentinel }],
             },
           },
         },
         'loaded',
       ),
     ).toThrow('clientSecret');
+  });
+
+  test('parses metadata-only auth health and rejects nested raw secret fields', () => {
+    expect(
+      parseProjectAuthHealthResponse({
+        ok: true,
+        state: 'loaded',
+        data: {
+          status: 'healthy',
+          diagnostics: [],
+          providers: [
+            {
+              providerId: 'google',
+              label: 'Google',
+              enabled: true,
+              credentialsRef: 'auth/oauth/google',
+              status: 'configured',
+              requiredFields: ['clientId', 'clientSecret'],
+              configuredFields: ['clientId', 'clientSecret'],
+              missingFields: [],
+            },
+          ],
+          callbackUrls: { appCallbackRoute: '/auth/callback' },
+        },
+      }).providers[0]?.status,
+    ).toBe('configured');
+
+    expect(() =>
+      parseProjectAuthHealthResponse({
+        ok: true,
+        state: 'loaded',
+        data: {
+          status: 'error',
+          diagnostics: [{ code: 'x', severity: 'error', message: 'x' }],
+          providers: [],
+          callbackUrls: { appCallbackRoute: '/auth/callback' },
+          nested: { privateKey: 'sentinel-phase2-secret-do-not-leak' },
+        },
+      }),
+    ).toThrow('privateKey');
   });
 });

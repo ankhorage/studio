@@ -1,10 +1,4 @@
-import type { AppManifest, AuthOAuthProviderId } from '@ankhorage/contracts';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
-import {
-  getSupabaseOAuthProviderDefinition,
-  SUPABASE_OAUTH_PROVIDER_IDS,
-  type SupabaseOAuthProviderId,
-} from '@ankhorage/supabase-auth';
 import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -13,27 +7,23 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Switch,
   TextInput,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
-  configureProjectOAuthProvider,
   createProjectSecret,
+  getProjectSecretUsages,
   listProjectSecrets,
   ProjectSecretApiError,
   removeProjectSecret,
   replaceProjectSecret,
 } from '../projectSecretApi';
-
-export type StudioPhase2AdminRoute = '/ankh/auth' | '/ankh/secrets';
+import type { ProjectSecretUsageSummary } from '../projectSecretUsage';
 
 export interface StudioAdminOverlayProps {
-  readonly route: StudioPhase2AdminRoute;
   readonly projectId: string;
-  readonly manifest: AppManifest | null;
   readonly onClose: () => void;
 }
 
@@ -50,9 +40,8 @@ function createField(name = ''): SecretFieldDraft {
 }
 
 export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
-  const { route, projectId, manifest, onClose } = props;
+  const { projectId, onClose } = props;
   const { theme } = useZoraTheme();
-  const authRoute = route === '/ankh/auth';
 
   return (
     <SafeAreaView
@@ -63,11 +52,9 @@ export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
     >
       <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
         <View style={styles.grow}>
-          <Heading level={2} text={authRoute ? 'Authentication' : 'Project secrets'} />
+          <Heading level={2} text="Project secrets" />
           <Text color="neutral" emphasis="muted" variant="bodySmall">
-            {authRoute
-              ? 'Configure OAuth providers without exposing stored credentials.'
-              : 'Create, rotate, and explicitly remove server-side project secrets.'}
+            Create, rotate, and explicitly remove server-side project secrets.
           </Text>
         </View>
         <IconButton
@@ -79,11 +66,7 @@ export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
         />
       </View>
 
-      {authRoute ? (
-        <AuthAdmin projectId={projectId} manifest={manifest} />
-      ) : (
-        <SecretsAdmin projectId={projectId} />
-      )}
+      <SecretsAdmin projectId={projectId} />
     </SafeAreaView>
   );
 }
@@ -94,10 +77,67 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
   const [ref, setRef] = useState('');
   const [kind, setKind] = useState('api-key');
   const [provider, setProvider] = useState('');
+  const [kindFilter, setKindFilter] = useState('All');
+  const [providerFilter, setProviderFilter] = useState('All');
+  const [usageByKey, setUsageByKey] = useState<Record<string, ProjectSecretUsageSummary>>({});
   const [fields, setFields] = useState<SecretFieldDraft[]>([createField('value')]);
   const [replaceTarget, setReplaceTarget] = useState<SecretMetadata | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<{
+    readonly metadata: SecretMetadata;
+    readonly usageSummary: ProjectSecretUsageSummary;
+    readonly confirmation: string;
+  } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  const kindOptions = useMemo(
+    () => ['All', ...uniqueSorted(inventory.items.map((item) => item.kind))],
+    [inventory.items],
+  );
+  const providerOptions = useMemo(
+    () => [
+      'All',
+      ...uniqueSorted(inventory.items.map((item) => item.provider).filter(isPresentString)),
+    ],
+    [inventory.items],
+  );
+  const filteredItems = useMemo(
+    () =>
+      inventory.items.filter(
+        (item) =>
+          (kindFilter === 'All' || item.kind === kindFilter) &&
+          (providerFilter === 'All' || item.provider === providerFilter),
+      ),
+    [inventory.items, kindFilter, providerFilter],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const entries = await Promise.all(
+        inventory.items.map(async (item) => {
+          try {
+            const summary = await getProjectSecretUsages({
+              projectId,
+              environment: item.scope.environment,
+              ref: item.ref,
+            });
+            return [secretInventoryKey(item), summary] as const;
+          } catch {
+            return [secretInventoryKey(item), { ref: item.ref, usages: [] }] as const;
+          }
+        }),
+      );
+      if (!cancelled) {
+        setUsageByKey(Object.fromEntries(entries));
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [inventory.items, projectId]);
 
   const resetDraft = useCallback(() => {
     setRef('');
@@ -171,31 +211,61 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
   }, [environment, fields, inventory, kind, projectId, provider, ref, replaceTarget, resetDraft]);
 
   const confirmRemove = useCallback(
-    (metadata: SecretMetadata) => {
-      Alert.alert(
-        'Remove secret',
-        `Remove ${metadata.ref}? Manifest references are not changed automatically.`,
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Remove',
-            style: 'destructive',
-            onPress: () => {
-              void removeProjectSecret({
-                projectId,
-                environment: metadata.scope.environment,
-                ref: metadata.ref,
-              })
-                .then(inventory.refresh)
-                .then(() => setMessage(`Removed ${metadata.ref}.`))
-                .catch((error: unknown) => setMessage(toMessage(error)));
-            },
+    async (metadata: SecretMetadata) => {
+      const usageSummary = await getProjectSecretUsages({
+        projectId,
+        environment: metadata.scope.environment,
+        ref: metadata.ref,
+      });
+
+      if (usageSummary.usages.length > 0) {
+        setPendingDelete({ metadata, usageSummary, confirmation: '' });
+        return;
+      }
+
+      Alert.alert('Remove secret', `Remove ${metadata.ref}?`, [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Remove',
+          style: 'destructive',
+          onPress: () => {
+            void removeProjectSecret({
+              projectId,
+              environment: metadata.scope.environment,
+              ref: metadata.ref,
+            })
+              .then(inventory.refresh)
+              .then(() => setMessage(`Removed ${metadata.ref}.`))
+              .catch((error: unknown) => setMessage(toMessage(error)));
           },
-        ],
-      );
+        },
+      ]);
     },
     [inventory.refresh, projectId],
   );
+
+  const confirmBrokenReferenceDelete = useCallback(async () => {
+    if (!pendingDelete || pendingDelete.confirmation !== pendingDelete.metadata.ref) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      await removeProjectSecret({
+        projectId,
+        environment: pendingDelete.metadata.scope.environment,
+        ref: pendingDelete.metadata.ref,
+        confirmBrokenReferences: true,
+      });
+      await inventory.refresh();
+      setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
+      setPendingDelete(null);
+    } catch (error) {
+      setMessage(toMessage(error));
+    } finally {
+      setDeleting(false);
+    }
+  }, [inventory, pendingDelete, projectId]);
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -281,14 +351,33 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           Only metadata and configured field names are available to the browser.
         </Text>
+        <View style={styles.columns}>
+          <View style={styles.column}>
+            <Text variant="bodySmall" weight="semiBold">
+              Kind
+            </Text>
+            <FilterPills options={kindOptions} value={kindFilter} onChange={setKindFilter} />
+          </View>
+          <View style={styles.column}>
+            <Text variant="bodySmall" weight="semiBold">
+              Provider
+            </Text>
+            <FilterPills
+              options={providerOptions}
+              value={providerFilter}
+              onChange={setProviderFilter}
+            />
+          </View>
+        </View>
         {inventory.loading ? <ActivityIndicator /> : null}
         {inventory.error ? <Message text={inventory.error} /> : null}
-        {inventory.items.map((metadata) => (
+        {filteredItems.map((metadata) => (
           <InventoryRow
             key={`${metadata.scope.environment}:${metadata.ref}`}
             metadata={metadata}
+            usageSummary={usageByKey[secretInventoryKey(metadata)]}
             onRotate={() => beginRotation(metadata)}
-            onRemove={() => confirmRemove(metadata)}
+            onRemove={() => void confirmRemove(metadata)}
           />
         ))}
         {!inventory.loading && inventory.items.length === 0 ? (
@@ -296,187 +385,49 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
             No local project secrets configured.
           </Text>
         ) : null}
+        {!inventory.loading && inventory.items.length > 0 && filteredItems.length === 0 ? (
+          <Text color="neutral" emphasis="muted">
+            No project secrets match the selected filters.
+          </Text>
+        ) : null}
       </Card>
-    </ScrollView>
-  );
-}
-
-function AuthAdmin(props: { readonly projectId: string; readonly manifest: AppManifest | null }) {
-  const { projectId, manifest } = props;
-  const inventory = useSecretInventory(projectId);
-  const [providerId, setProviderId] = useState<SupabaseOAuthProviderId>('google');
-  const [enabled, setEnabled] = useState(true);
-  const [label, setLabel] = useState('Google');
-  const [scopes, setScopes] = useState('openid, email, profile');
-  const [callbackRoute, setCallbackRoute] = useState('/auth/callback');
-  const [values, setValues] = useState<Record<string, string>>({});
-  const [message, setMessage] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-
-  const definition = getSupabaseOAuthProviderDefinition(providerId);
-  const providerConfig = manifest?.infra.auth?.oauth?.providers.find(
-    (provider) => provider.id === providerId,
-  );
-  const credentialsRef = providerConfig?.credentialsRef ?? `auth/oauth/${providerId}`;
-  const metadata = inventory.items.find((item) => item.ref === credentialsRef);
-  const requiredFields = definition?.secretFields.map((field) => field.name) ?? [];
-  const configured =
-    metadata !== undefined &&
-    requiredFields.every((name) => metadata.configuredFields.includes(name));
-
-  useEffect(() => {
-    const currentDefinition = getSupabaseOAuthProviderDefinition(providerId);
-    const currentConfig = manifest?.infra.auth?.oauth?.providers.find(
-      (provider) => provider.id === providerId,
-    );
-    setEnabled(currentConfig?.enabled ?? true);
-    setLabel(currentConfig?.label ?? currentDefinition?.label ?? providerId);
-    setScopes((currentConfig?.scopes ?? currentDefinition?.defaultScopes ?? []).join(', '));
-    setCallbackRoute(manifest?.infra.auth?.oauth?.callbackRoute ?? '/auth/callback');
-    setValues({});
-    setMessage(null);
-  }, [manifest, providerId]);
-
-  const save = useCallback(async () => {
-    if (!definition) {
-      setMessage('The selected OAuth provider is not supported.');
-      return;
-    }
-
-    const entries = definition.secretFields.map(
-      (field) => [field.name, values[field.name] ?? ''] as const,
-    );
-    if (entries.some(([, value]) => !value)) {
-      setMessage('Enter a complete credential payload. Existing values cannot be merged.');
-      return;
-    }
-
-    setSaving(true);
-    setMessage(null);
-    try {
-      const result = await configureProjectOAuthProvider({
-        projectId,
-        providerId: providerId as AuthOAuthProviderId,
-        environment: 'local',
-        credentialsRef,
-        enabled,
-        label,
-        scopes: scopes
-          .split(',')
-          .map((scope) => scope.trim())
-          .filter(Boolean),
-        callbackRoute,
-        payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
-      });
-      setMessage(
-        result.ok
-          ? `${definition.label} credentials saved through ${result.credentialsRef}.`
-          : result.error.message,
-      );
-      await inventory.refresh();
-    } catch (error) {
-      setMessage(toMessage(error));
-    } finally {
-      setValues({});
-      setSaving(false);
-    }
-  }, [
-    callbackRoute,
-    credentialsRef,
-    definition,
-    enabled,
-    inventory,
-    label,
-    projectId,
-    providerId,
-    scopes,
-    values,
-  ]);
-
-  return (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <Card title="Authentication overview">
-        <KeyValue label="Provider" value={manifest?.infra.auth?.provider ?? 'Not configured'} />
-        <KeyValue
-          label="Sign-in identifiers"
-          value={(manifest?.infra.auth?.signIn?.identifiers ?? ['email']).join(', ')}
-        />
-        <KeyValue
-          label="Sign-in route"
-          value={manifest?.infra.auth?.flow?.signInRoute ?? 'Canonical default'}
-        />
-        <KeyValue
-          label="Profile table"
-          value={manifest?.infra.auth?.profile?.table ?? 'Not configured'}
-        />
-      </Card>
-
-      <Card title="OAuth provider credentials">
-        <View style={styles.providerTabs}>
-          {SUPABASE_OAUTH_PROVIDER_IDS.map((id) => (
-            <ProviderTab
-              key={id}
-              id={id}
-              selected={id === providerId}
-              configured={inventory.items.some((item) => item.ref === `auth/oauth/${id}`)}
-              onPress={() => setProviderId(id)}
-            />
+      {pendingDelete ? (
+        <Card title="Delete in-use secret">
+          <Text color="danger" variant="bodySmall" weight="semiBold">
+            References will remain and become broken. No manifest cleanup will be performed.
+          </Text>
+          <Text variant="bodySmall">Logical ref: {pendingDelete.metadata.ref}</Text>
+          {pendingDelete.usageSummary.usages.map((usage) => (
+            <View key={`${usage.path}:${usage.label}`} style={styles.usageRow}>
+              <Text weight="semiBold">{usage.label}</Text>
+              <Text color="neutral" emphasis="muted" variant="caption">
+                {usage.path}
+              </Text>
+              <Text color={usage.breaksWhenMissing ? 'danger' : 'neutral'} variant="caption">
+                Breaking when missing: {usage.breaksWhenMissing ? 'yes' : 'no'}
+              </Text>
+            </View>
           ))}
-        </View>
-
-        <View style={styles.switchRow}>
-          <View style={styles.grow}>
-            <Text weight="semiBold">Enable {definition?.label ?? providerId}</Text>
-            <Text color="neutral" emphasis="muted" variant="caption">
-              Disabling does not delete the stored secret.
-            </Text>
-          </View>
-          <Switch value={enabled} onValueChange={setEnabled} />
-        </View>
-
-        <Field label="Label">
-          <Input value={label} onChangeText={setLabel} />
-        </Field>
-        <Field label="Callback route">
-          <Input value={callbackRoute} autoCapitalize="none" onChangeText={setCallbackRoute} />
-        </Field>
-        <Field label="Scopes (comma-separated)">
-          <Input value={scopes} autoCapitalize="none" onChangeText={setScopes} />
-        </Field>
-
-        <Text color={configured ? 'success' : 'warning'} variant="bodySmall">
-          {configured
-            ? `Configured fields: ${metadata?.configuredFields.join(', ')}`
-            : `Required fields: ${requiredFields.join(', ')}`}
-        </Text>
-        <Text color="neutral" emphasis="muted" variant="caption">
-          Existing values are never loaded. Saving always performs a complete replacement.
-        </Text>
-
-        {definition?.secretFields.map((field) => (
-          <Field key={field.name} label={field.label}>
+          <Field label="Type the full logical ref to confirm">
             <Input
-              value={values[field.name] ?? ''}
-              secureTextEntry={field.secret}
+              value={pendingDelete.confirmation}
               autoCapitalize="none"
-              placeholder={configured ? 'Enter complete replacement value' : field.label}
-              onChangeText={(value) =>
-                setValues((current) => ({ ...current, [field.name]: value }))
+              onChangeText={(confirmation) =>
+                setPendingDelete((current) => (current ? { ...current, confirmation } : current))
               }
             />
           </Field>
-        ))}
-
-        <View style={styles.actions}>
-          <PrimaryButton
-            label={configured ? 'Replace credentials' : 'Save provider'}
-            loading={saving}
-            onPress={() => void save()}
-          />
-        </View>
-        {inventory.error ? <Message text={inventory.error} /> : null}
-        {message ? <Message text={message} /> : null}
-      </Card>
+          <View style={styles.actions}>
+            <SecondaryButton label="Cancel" onPress={() => setPendingDelete(null)} />
+            <PrimaryButton
+              label="Delete and leave references"
+              loading={deleting}
+              disabled={pendingDelete.confirmation !== pendingDelete.metadata.ref}
+              onPress={() => void confirmBrokenReferenceDelete()}
+            />
+          </View>
+        </Card>
+      ) : null}
     </ScrollView>
   );
 }
@@ -552,11 +503,14 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
 
 function InventoryRow(props: {
   readonly metadata: SecretMetadata;
+  readonly usageSummary: ProjectSecretUsageSummary | undefined;
   readonly onRotate: () => void;
   readonly onRemove: () => void;
 }) {
   const { theme } = useZoraTheme();
   const { metadata } = props;
+  const [expanded, setExpanded] = useState(false);
+  const usageCount = props.usageSummary?.usages.length ?? 0;
   return (
     <View style={[styles.inventoryRow, { borderColor: theme.colors.border }]}>
       <View style={styles.grow}>
@@ -568,8 +522,35 @@ function InventoryRow(props: {
         <Text color="neutral" emphasis="muted" variant="caption">
           Fields: {metadata.configuredFields.join(', ') || 'none'}
         </Text>
+        <Text color={usageCount > 0 ? 'warning' : 'neutral'} emphasis="muted" variant="caption">
+          Usage count: {props.usageSummary ? usageCount : 'loading'}
+        </Text>
+        <Text color="neutral" emphasis="muted" variant="caption">
+          Created: {metadata.createdAt} · Updated: {metadata.updatedAt}
+        </Text>
+        <Text color={usageCount > 0 ? 'warning' : 'success'} variant="caption">
+          {usageCount > 0 ? 'Referenced by project configuration' : 'No detected references'}
+        </Text>
+        {expanded && props.usageSummary
+          ? props.usageSummary.usages.map((usage) => (
+              <View key={`${usage.path}:${usage.label}`} style={styles.usageRow}>
+                <Text weight="semiBold">{usage.label}</Text>
+                <Text color="neutral" emphasis="muted" variant="caption">
+                  {usage.path}
+                </Text>
+                <Text color={usage.breaksWhenMissing ? 'danger' : 'neutral'} variant="caption">
+                  Breaking when missing: {usage.breaksWhenMissing ? 'yes' : 'no'}
+                </Text>
+              </View>
+            ))
+          : null}
       </View>
       <View style={styles.rowActions}>
+        <SecondaryButton
+          label={expanded ? 'Hide usage' : 'Usage'}
+          compact
+          onPress={() => setExpanded((current) => !current)}
+        />
         <SecondaryButton label="Rotate" compact onPress={props.onRotate} />
         <SecondaryButton label="Remove" compact danger onPress={props.onRemove} />
       </View>
@@ -577,41 +558,22 @@ function InventoryRow(props: {
   );
 }
 
-function ProviderTab(props: {
-  readonly id: SupabaseOAuthProviderId;
-  readonly selected: boolean;
-  readonly configured: boolean;
-  readonly onPress: () => void;
-}) {
-  const { theme } = useZoraTheme();
-  const definition = getSupabaseOAuthProviderDefinition(props.id);
-  return (
-    <Pressable
-      onPress={props.onPress}
-      style={[
-        styles.providerTab,
-        { borderColor: props.selected ? theme.colors.primary : theme.colors.border },
-      ]}
-    >
-      <Text weight="semiBold">{definition?.label ?? props.id}</Text>
-      <Text color={props.configured ? 'success' : 'neutral'} emphasis="muted" variant="caption">
-        {props.configured ? 'Configured' : 'Not configured'}
-      </Text>
-    </Pressable>
-  );
-}
-
 function PrimaryButton(props: {
   readonly label: string;
   readonly loading: boolean;
+  readonly disabled?: boolean;
   readonly onPress: () => void;
 }) {
   const { theme } = useZoraTheme();
   return (
     <Pressable
-      disabled={props.loading}
+      disabled={props.loading || props.disabled === true}
       onPress={props.onPress}
-      style={[styles.primaryButton, { backgroundColor: theme.colors.primary }]}
+      style={[
+        styles.primaryButton,
+        { backgroundColor: theme.colors.primary },
+        props.disabled ? styles.disabledButton : null,
+      ]}
     >
       {props.loading ? (
         <ActivityIndicator color="#ffffff" />
@@ -624,10 +586,31 @@ function PrimaryButton(props: {
   );
 }
 
+function FilterPills(props: {
+  readonly options: readonly string[];
+  readonly value: string;
+  readonly onChange: (value: string) => void;
+}) {
+  return (
+    <View style={styles.filterPills}>
+      {props.options.map((option) => (
+        <SecondaryButton
+          key={option}
+          label={option}
+          compact
+          selected={props.value === option}
+          onPress={() => props.onChange(option)}
+        />
+      ))}
+    </View>
+  );
+}
+
 function SecondaryButton(props: {
   readonly label: string;
   readonly compact?: boolean;
   readonly danger?: boolean;
+  readonly selected?: boolean;
   readonly onPress: () => void;
 }) {
   const { theme } = useZoraTheme();
@@ -637,26 +620,16 @@ function SecondaryButton(props: {
       style={[
         styles.secondaryButton,
         props.compact ? styles.compactButton : null,
-        { borderColor: theme.colors.border },
+        {
+          borderColor: props.selected ? theme.colors.primary : theme.colors.border,
+          backgroundColor: props.selected ? theme.colors.surface : 'transparent',
+        },
       ]}
     >
       <Text color={props.danger ? 'danger' : 'neutral'} variant="bodySmall" weight="semiBold">
         {props.label}
       </Text>
     </Pressable>
-  );
-}
-
-function KeyValue(props: { readonly label: string; readonly value: string }) {
-  return (
-    <View style={styles.keyValue}>
-      <Text color="neutral" emphasis="muted" variant="bodySmall">
-        {props.label}
-      </Text>
-      <Text align="right" variant="bodySmall" weight="semiBold">
-        {props.value}
-      </Text>
-    </View>
   );
 }
 
@@ -672,6 +645,18 @@ function Message({ text }: { readonly text: string }) {
 function toMessage(error: unknown): string {
   if (error instanceof ProjectSecretApiError || error instanceof Error) return error.message;
   return 'The Studio secret operation failed.';
+}
+
+function secretInventoryKey(metadata: SecretMetadata): string {
+  return `${metadata.scope.environment}:${metadata.ref}`;
+}
+
+function uniqueSorted(values: readonly string[]): string[] {
+  return [...new Set(values)].sort((left, right) => left.localeCompare(right));
+}
+
+function isPresentString(value: string | undefined): value is string {
+  return typeof value === 'string' && value.length > 0;
 }
 
 const styles = StyleSheet.create({
@@ -727,6 +712,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  disabledButton: { opacity: 0.5 },
   secondaryButton: {
     minHeight: 42,
     borderWidth: 1,
@@ -748,8 +734,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   rowActions: { flexDirection: 'row', gap: 8 },
-  providerTabs: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  providerTab: { minWidth: 150, borderWidth: 1, borderRadius: 10, padding: 12, gap: 3 },
-  switchRow: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-  keyValue: { flexDirection: 'row', justifyContent: 'space-between', gap: 16 },
+  filterPills: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  usageRow: { gap: 2, paddingVertical: 6 },
 });

@@ -144,6 +144,14 @@
       "types": "./dist/manifestSync.d.ts",
       "import": "./dist/manifestSync.js"
     },
+    "./projectAuthHealth": {
+      "types": "./dist/projectAuthHealth.d.ts",
+      "import": "./dist/projectAuthHealth.js"
+    },
+    "./projectSecretUsage": {
+      "types": "./dist/projectSecretUsage.d.ts",
+      "import": "./dist/projectSecretUsage.js"
+    },
     "./routeUtils": {
       "types": "./dist/routeUtils.d.ts",
       "import": "./dist/routeUtils.js"
