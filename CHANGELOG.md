@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.0
+
+### Minor Changes
+
+- 3708a66: Generate the canonical cross-platform OAuth PKCE runtime for Supabase auth, including enabled-provider configuration, Expo browser/deep-link transport, one callback route, unified provider controls, and SecureStore-backed native session persistence.
+
 ## 0.5.1
 
 ### Patch Changes
