@@ -6078,7 +6078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
-        "line": 6,
+        "line": 10,
         "column": 1
       }
     },
@@ -6087,7 +6087,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
-        "line": 28,
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "getGeneratedAuthAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.test.ts",
+        "line": 73,
         "column": 1
       }
     },
@@ -6096,7 +6105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 45,
+        "line": 39,
         "column": 1
       }
     },
@@ -6105,7 +6114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 60,
+        "line": 54,
         "column": 1
       }
     },
@@ -6114,7 +6123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 71,
+        "line": 65,
         "column": 1
       }
     },
@@ -6123,7 +6132,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 94,
+        "line": 88,
         "column": 11
       }
     },
@@ -6132,7 +6141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 125,
+        "line": 119,
         "column": 11
       }
     },
@@ -6141,7 +6150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 436,
+        "line": 428,
         "column": 1
       }
     },
@@ -6150,7 +6159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 447,
+        "line": 439,
         "column": 1
       }
     },
@@ -6159,7 +6168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 463,
+        "line": 455,
         "column": 1
       }
     },
@@ -6168,7 +6177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 467,
+        "line": 459,
         "column": 1
       }
     },
@@ -6177,7 +6186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 511,
+        "line": 503,
         "column": 1
       }
     },
@@ -6186,7 +6195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 519,
+        "line": 511,
         "column": 1
       }
     },
@@ -6195,61 +6204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 524,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveGeneratedLocalSupabaseUrl",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 537,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveMinikubeNamespace",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 543,
-        "column": 1
-      }
-    },
-    {
-      "name": "firstNonEmptyString",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 557,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveSupabaseLocalApiPort",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 561,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveSupabaseLocalPortBucket",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 569,
-        "column": 1
-      }
-    },
-    {
-      "name": "hashProjectId",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 574,
+        "line": 516,
         "column": 1
       }
     },
@@ -6258,7 +6213,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/auth/adapter.ts",
-        "line": 9,
+        "line": 5,
         "column": 1
       }
     },
@@ -17609,6 +17564,12 @@
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
+        "fromSymbol": "getGeneratedAuthAdapter",
+        "toSymbol": "generateAll",
+        "callExpression": "new LayoutGenerator()\n      .generateAll",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -17642,6 +17603,36 @@
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "createOAuthManifest",
         "callExpression": "createOAuthManifest",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "getGeneratedAuthAdapter",
+        "callExpression": "getGeneratedAuthAdapter",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
@@ -17832,12 +17823,6 @@
       },
       {
         "fromSymbol": "getGeneratedAuthFileContent",
-        "toSymbol": "resolveGeneratedLocalSupabaseUrl",
-        "callExpression": "resolveGeneratedLocalSupabaseUrl",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "getGeneratedAuthFileContent",
         "toSymbol": "getAuthSessionTs",
         "callExpression": "getAuthSessionTs",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
@@ -17900,36 +17885,6 @@
         "fromSymbol": "prepareRouteForGeneratedRoutes",
         "toSymbol": "prepareNavigatorForGeneratedRoutes",
         "callExpression": "prepareNavigatorForGeneratedRoutes",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "resolveGeneratedLocalSupabaseUrl",
-        "toSymbol": "resolveMinikubeNamespace",
-        "callExpression": "resolveMinikubeNamespace",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "resolveGeneratedLocalSupabaseUrl",
-        "toSymbol": "resolveSupabaseLocalApiPort",
-        "callExpression": "resolveSupabaseLocalApiPort",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "resolveMinikubeNamespace",
-        "toSymbol": "firstNonEmptyString",
-        "callExpression": "firstNonEmptyString",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "resolveSupabaseLocalApiPort",
-        "toSymbol": "resolveSupabaseLocalPortBucket",
-        "callExpression": "resolveSupabaseLocalPortBucket",
-        "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "resolveSupabaseLocalPortBucket",
-        "toSymbol": "hashProjectId",
-        "callExpression": "hashProjectId",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {

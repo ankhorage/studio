@@ -36,12 +36,6 @@ export interface LayoutGenerationOptions {
   runtimePlan?: ExpoRuntimePlan;
 }
 
-const SUPABASE_LOCAL_PORT_BASE = 55320;
-const SUPABASE_LOCAL_PORT_BUCKET_SIZE = 10;
-const SUPABASE_LOCAL_PORT_BUCKET_COUNT = 1000;
-const SUPABASE_LOCAL_PORT_REFERENCE_PROJECT = 'my-app';
-const DEFAULT_NAMESPACE = 'ankh-app';
-
 function getPackageOwnedRuntimeImports(): string {
   return `import {
   createRuntimeDataSourceOperationExecutor,
@@ -210,7 +204,7 @@ export class LayoutGenerator {
       for (const generatedAuthFile of authLayoutPlan.generatedFiles) {
         files.push({
           path: generatedAuthFile.path,
-          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan, manifest),
+          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan),
         });
       }
 
@@ -397,12 +391,10 @@ import { authAdapter } from '@/auth/adapter';`,
   private getGeneratedAuthFileContent(
     filePlan: AuthGeneratedFilePlan,
     authLayoutPlan: EnabledAuthLayoutPlan,
-    manifest: AppManifest,
   ): string {
     switch (filePlan.kind) {
       case 'adapter':
         return getAuthAdapterTs({
-          localSupabaseUrl: resolveGeneratedLocalSupabaseUrl(manifest),
           oauthProviders: authLayoutPlan.oauth?.providers.map((provider) => provider.id),
         });
       case 'session':
@@ -532,52 +524,4 @@ function resolveValidGeneratedInitialRouteName(
   }
 
   return routes[0]?.name ?? 'index';
-}
-
-function resolveGeneratedLocalSupabaseUrl(manifest: AppManifest): string {
-  const namespace = resolveMinikubeNamespace(manifest);
-  const port = resolveSupabaseLocalApiPort(namespace);
-  return `http://127.0.0.1:${port}`;
-}
-
-function resolveMinikubeNamespace(manifest: AppManifest): string {
-  const domain = manifest.infra.networking?.domain?.trim();
-  const slug = manifest.metadata.slug.trim();
-  const source = firstNonEmptyString(domain, slug) ?? DEFAULT_NAMESPACE;
-  const normalized = source
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  const safe = normalized.slice(0, 63).replace(/-+$/g, '');
-  return firstNonEmptyString(safe) ?? DEFAULT_NAMESPACE;
-}
-
-function firstNonEmptyString(...values: readonly (string | undefined)[]): string | undefined {
-  return values.find((value) => value !== undefined && value.length > 0);
-}
-
-function resolveSupabaseLocalApiPort(namespace: string): number {
-  return (
-    SUPABASE_LOCAL_PORT_BASE +
-    resolveSupabaseLocalPortBucket(namespace) * SUPABASE_LOCAL_PORT_BUCKET_SIZE +
-    1
-  );
-}
-
-function resolveSupabaseLocalPortBucket(namespace: string): number {
-  const rawBucket = hashProjectId(namespace) - hashProjectId(SUPABASE_LOCAL_PORT_REFERENCE_PROJECT);
-  return (rawBucket + SUPABASE_LOCAL_PORT_BUCKET_COUNT) % SUPABASE_LOCAL_PORT_BUCKET_COUNT;
-}
-
-function hashProjectId(value: string): number {
-  const source = value.trim().length > 0 ? value.trim() : 'app';
-  let hash = 0;
-
-  for (const char of source) {
-    hash = (hash * 31 + char.charCodeAt(0)) % SUPABASE_LOCAL_PORT_BUCKET_COUNT;
-  }
-
-  return hash;
 }
