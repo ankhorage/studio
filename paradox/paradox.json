@@ -393,6 +393,16 @@
       "exports": ["createStudioHost", "CreateStudioHostOptions", "StudioHost"]
     },
     {
+      "path": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/hostLifecycle.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -5647,6 +5657,96 @@
       "sourceLocation": {
         "filePath": "src/host/createStudioHost.ts",
         "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "requireAggregateModule",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBabelCore",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "readEnvString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRuntimeSmokeManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGeneratedProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeRuntimeSmokeNodeModules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 156,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeStubPackage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 190,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeRuntimeSmokeScript",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 209,
+        "column": 1
+      }
+    },
+    {
+      "name": "runRuntimeSmoke",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 289,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectAuthError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "line": 312,
         "column": 1
       }
     },
@@ -10908,6 +11008,21 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromPath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
         "fromPath": "src/host/hostLifecycle.smoke.test.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
@@ -15828,6 +15943,222 @@
         "toSymbol": "stopAllProjectInfraPortForwards",
         "callExpression": "stopAllProjectInfraPortForwards",
         "sourcePath": "src/host/createStudioHost.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "createRequire",
+        "callExpression": "createRequire",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "requireAggregateModule",
+        "toSymbol": "requireFromAggregateNodeModules",
+        "callExpression": "requireFromAggregateNodeModules",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "getTemplateSummaries",
+        "callExpression": "getTemplateSummaries",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "createProject",
+        "callExpression": "projectManager.createProject",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "generateModuleRegistry",
+        "callExpression": "moduleManager.generateModuleRegistry",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "projectManager.saveStudioManifest",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "createRuntimeSmokeManifest",
+        "callExpression": "createRuntimeSmokeManifest",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "syncProject",
+        "callExpression": "moduleManager.syncProject",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "writeRuntimeSmokeScript",
+        "callExpression": "writeRuntimeSmokeScript",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedProject",
+        "toSymbol": "writeRuntimeSmokeNodeModules",
+        "callExpression": "writeRuntimeSmokeNodeModules",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeNodeModules",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeNodeModules",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeNodeModules",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeNodeModules",
+        "toSymbol": "writeStubPackage",
+        "callExpression": "writeStubPackage",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeStubPackage",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeStubPackage",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeRuntimeSmokeScript",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "runRuntimeSmoke",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectAuthError",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "createGeneratedProject",
+        "callExpression": "createGeneratedProject",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "runRuntimeSmoke",
+        "callExpression": "runRuntimeSmoke",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "expectAuthError",
+        "callExpression": "expectAuthError",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "requireAggregateModule",
+        "callExpression": "requireAggregateModule",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "isBabelCore",
+        "callExpression": "isBabelCore",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "readEnvString",
+        "callExpression": "readEnvString",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
+        "toSymbol": "transformAsync",
+        "callExpression": "loadedBabel.transformAsync",
+        "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
         "fromSymbol": "collectSourceFiles",

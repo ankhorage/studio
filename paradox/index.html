@@ -309,6 +309,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+              >
+                src/host/generatedAuthAdapterRuntime.smoke.test.ts
+                <small>10 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/hostLifecycle.smoke.test.ts"
               >
                 src/host/hostLifecycle.smoke.test.ts
@@ -1139,7 +1149,7 @@
             <div class="summary">
               <div><strong>82</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>159</strong><span class="muted">modules</span></div>
+              <div><strong>160</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1509,6 +1519,19 @@
                 <strong>Exports:</strong> <code>createStudioHost</code>,
                 <code>CreateStudioHostOptions</code>, <code>StudioHost</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/generatedAuthAdapterRuntime.smoke.test.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/templateRegistry/index.ts"
+            >
+              <h3>src/host/generatedAuthAdapterRuntime.smoke.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/moduleManager.ts</code>,
+                <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/templateRegistry/index.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -6561,6 +6584,15 @@
                 --&gt; module_src_host_orchestrator_moduleManager_ts
                 module_src_host_createStudioHost_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_orchestrator_moduleManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts
                 module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_hostLifecycle_smoke_test_ts
                 module_src_host_hostLifecycle_smoke_test_ts --&gt;
@@ -7184,6 +7216,11 @@ graph TD
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_hostLifecycle_smoke_test_ts
   module_src_host_hostLifecycle_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -7646,6 +7683,7 @@ graph TD
                 module_src_host_auth_projectAuthService_test_ts[&quot;src/host/auth/projectAuthService.test.ts&quot;]
                 module_src_host_auth_projectAuthService_ts[&quot;src/host/auth/projectAuthService.ts&quot;]
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
                 module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
                 module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
                 module_src_host_http_authRoutes_ts[&quot;src/host/http/authRoutes.ts&quot;]
@@ -7823,6 +7861,12 @@ graph TD
                 module_src_host_createStudioHost_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts module_src_host_createStudioHost_ts
                 --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_orchestrator_moduleManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts
                 module_src_host_hostLifecycle_smoke_test_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
                 module_src_host_hostLifecycle_smoke_test_ts --&gt;
@@ -8093,6 +8137,7 @@ graph LR
   module_src_host_auth_projectAuthService_test_ts[&quot;src/host/auth/projectAuthService.test.ts&quot;]
   module_src_host_auth_projectAuthService_ts[&quot;src/host/auth/projectAuthService.ts&quot;]
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
   module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
   module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
   module_src_host_http_authRoutes_ts[&quot;src/host/http/authRoutes.ts&quot;]
@@ -8263,6 +8308,9 @@ graph LR
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_hostLifecycle_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
@@ -8459,6 +8507,7 @@ graph LR
                 module_src_host_auth_projectAuthService_test_ts[&quot;src/host/auth/projectAuthService.test.ts&quot;]
                 module_src_host_auth_projectAuthService_ts[&quot;src/host/auth/projectAuthService.ts&quot;]
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
+                module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
                 module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
                 module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
                 module_src_host_http_authRoutes_ts[&quot;src/host/http/authRoutes.ts&quot;]
@@ -8835,6 +8884,7 @@ graph LR
   module_src_host_auth_projectAuthService_test_ts[&quot;src/host/auth/projectAuthService.test.ts&quot;]
   module_src_host_auth_projectAuthService_ts[&quot;src/host/auth/projectAuthService.ts&quot;]
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
+  module_src_host_generatedAuthAdapterRuntime_smoke_test_ts[&quot;src/host/generatedAuthAdapterRuntime.smoke.test.ts&quot;]
   module_src_host_hostLifecycle_smoke_test_ts[&quot;src/host/hostLifecycle.smoke.test.ts&quot;]
   module_src_host_hostOwnership_test_ts[&quot;src/host/hostOwnership.test.ts&quot;]
   module_src_host_http_authRoutes_ts[&quot;src/host/http/authRoutes.ts&quot;]
@@ -10154,6 +10204,116 @@ sequenceDiagram
             <article class="item" data-search="createStudioHost src/host/createStudioHost.ts ">
               <h3>createStudioHost</h3>
               <p class="muted"><code>src/host/createStudioHost.ts:9:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-generatedauthadapterruntime-smoke-test-ts"
+          class="view"
+          data-view="src/host/generatedAuthAdapterRuntime.smoke.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/generatedAuthAdapterRuntime.smoke.test.ts</h2>
+            <article
+              class="item"
+              data-search="requireAggregateModule src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>requireAggregateModule</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:52:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isBabelCore src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>isBabelCore</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:56:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readEnvString src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>readEnvString</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:65:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createRuntimeSmokeManifest src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>createRuntimeSmokeManifest</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:71:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createGeneratedProject src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>createGeneratedProject</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:116:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeRuntimeSmokeNodeModules src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>writeRuntimeSmokeNodeModules</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:156:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeStubPackage src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>writeStubPackage</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:190:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeRuntimeSmokeScript src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>writeRuntimeSmokeScript</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:209:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="runRuntimeSmoke src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>runRuntimeSmoke</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:289:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectAuthError src/host/generatedAuthAdapterRuntime.smoke.test.ts "
+            >
+              <h3>expectAuthError</h3>
+              <p class="muted">
+                <code>src/host/generatedAuthAdapterRuntime.smoke.test.ts:312:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>
