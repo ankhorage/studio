@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.2
+
+### Patch Changes
+
+- 43ac613: Generate Supabase Auth adapters from Infra-provided Expo public environment values only.
+
 ## 0.6.1
 
 ### Patch Changes
