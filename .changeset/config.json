@@ -5,6 +5,7 @@
   "linked": [],
   "access": "public",
   "baseBranch": "main",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
   "updateInternalDependencies": "patch",
   "ignore": []
 }
