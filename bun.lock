@@ -7,7 +7,7 @@
       "dependencies": {
         "@ankhorage/contracts": "^3.0.0",
         "@ankhorage/expo-runtime": "^0.0.10",
-        "@ankhorage/infra": "^0.4.0",
+        "@ankhorage/infra": "^0.4.1",
         "@ankhorage/orchestrator": "^0.2.4",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.1.2",
         "@ankhorage/orchestrator-module-expo-localization": "^0.1.5",
@@ -93,7 +93,7 @@
 
     "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@0.0.10", "", { "dependencies": { "@ankhorage/contracts": "^2.0.0", "@ankhorage/permissions": "^0.2.1", "@ankhorage/zora": "^2.8.0" }, "peerDependencies": { "expo": "~54.0.34", "expo-camera": "~17.0.10", "react": "19.1.0", "react-native": "0.81.5" } }, "sha512-GUp2jKnR8Bcbu6BjpNDWiVG3e8Svp/Zr3GCBEKG7w/rzwbYKxXFyio5MaJgjDIP2asDkySPgE8QffTWzyNzokg=="],
 
-    "@ankhorage/infra": ["@ankhorage/infra@0.4.0", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0", "@ankhorage/supabase-vault": "^0.2.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-yxTrfHZcGTiQ+eWyyYD9KokMzl/Lp01Fg4G/Zf9T5pFddvRZuqL3amdqKwxTus6ZGD+i6Xwj4FQMDNlUDZ2zrQ=="],
+    "@ankhorage/infra": ["@ankhorage/infra@0.4.1", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0", "@ankhorage/supabase-vault": "^0.2.0" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-veAHFY8aNYGTQVCXkwalGQAaNmE8QvSglk8aF8LDVdaKJKOgllG+N8l7/ylUOyAchDoTYzRdAa35p3CjGId4AQ=="],
 
     "@ankhorage/orchestrator": ["@ankhorage/orchestrator@0.2.4", "", {}, "sha512-nzjBRZwymHctg+e1EbGdXpxg41UKookVyZc3J4YNP8UNQmPkcTbgL1hQRJaGB9xmVeoACwFU1fACnDb0epjwdQ=="],
 
