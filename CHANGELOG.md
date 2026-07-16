@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.6
+
+### Patch Changes
+
+- 3210f5d: Update SUPABASE-AUTH
+
 ## 0.6.5
 
 ### Patch Changes
