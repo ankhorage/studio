@@ -346,7 +346,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/host/http/server.ts">
                 src/host/http/server.ts
-                <small>8 functions</small>
+                <small>10 functions</small>
               </button>
             </li>
             <li>
@@ -622,7 +622,7 @@
                 data-target="src/host/orchestrator/infraRuntime.ts"
               >
                 src/host/orchestrator/infraRuntime.ts
-                <small>11 functions</small>
+                <small>12 functions</small>
               </button>
             </li>
             <li>
@@ -1600,7 +1600,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
+              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/secrets/projectSecretService.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
             >
               <h3>src/host/http/server.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1610,6 +1610,7 @@
                 <code>src/host/orchestrator/moduleManager.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/orchestrator/resolveMutations.ts</code>,
+                <code>src/host/secrets/projectSecretService.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>,
                 <code>src/host/utils/trimOutput.ts</code>,
                 <code>src/host/utils/workspaceRoot.ts</code>
@@ -2067,7 +2068,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectPaths.ts ensureProjectInfraPortForward InfraLifecycleScript InfraScriptExecutionError InfraScriptOutput runProjectInfraScript runProjectInfraScriptCapture stopAllProjectInfraPortForwards"
+              data-search="src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectPaths.ts ensureProjectInfraPortForward InfraLifecycleScript InfraScriptExecutionError InfraScriptOutput registerProjectInfraPortForwardOwner runProjectInfraScript runProjectInfraScriptCapture stopAllProjectInfraPortForwards"
             >
               <h3>src/host/orchestrator/infraRuntime.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2077,8 +2078,8 @@
               <p>
                 <strong>Exports:</strong> <code>ensureProjectInfraPortForward</code>,
                 <code>InfraLifecycleScript</code>, <code>InfraScriptExecutionError</code>,
-                <code>InfraScriptOutput</code>, <code>runProjectInfraScript</code>,
-                <code>runProjectInfraScriptCapture</code>,
+                <code>InfraScriptOutput</code>, <code>registerProjectInfraPortForwardOwner</code>,
+                <code>runProjectInfraScript</code>, <code>runProjectInfraScriptCapture</code>,
                 <code>stopAllProjectInfraPortForwards</code>
               </p>
             </article>
@@ -6656,9 +6657,10 @@
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
-                --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
-                module_src_host_utils_workspaceRoot_ts
+                --&gt; module_src_host_secrets_projectSecretService_ts
+                module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
+                module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
+                module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
                 module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
                 module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
@@ -7285,6 +7287,7 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_http_server_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -7933,14 +7936,15 @@ graph TD
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
-                --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
-                module_src_host_utils_workspaceRoot_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_http_authRoutes_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_http_secretRoutes_ts
-                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
+                --&gt; module_src_host_secrets_projectSecretService_ts
+                module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
+                module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
+                module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
+                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
-                module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_secretRoutes_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_server_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_orchestrator_moduleManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
@@ -8377,6 +8381,7 @@ graph LR
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_http_server_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -10513,17 +10518,17 @@ sequenceDiagram
             <h2>src/host/http/server.ts</h2>
             <article class="item" data-search="exists src/host/http/server.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/http/server.ts:25:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:27:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readSimpleEnvMap src/host/http/server.ts ">
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/http/server.ts:34:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:36:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readFirstEnvValue src/host/http/server.ts ">
               <h3>readFirstEnvValue</h3>
-              <p class="muted"><code>src/host/http/server.ts:56:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:58:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10531,22 +10536,35 @@ sequenceDiagram
               data-search="resolveProjectTemplateSelection src/host/http/server.ts "
             >
               <h3>resolveProjectTemplateSelection</h3>
-              <p class="muted"><code>src/host/http/server.ts:66:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:68:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createStudioHostServer src/host/http/server.ts ">
               <h3>createStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:80:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:82:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="upProjectInfrastructure src/host/http/server.ts ">
               <h3>upProjectInfrastructure</h3>
-              <p class="muted"><code>src/host/http/server.ts:103:3</code></p>
+              <p class="muted"><code>src/host/http/server.ts:105:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveTrustedOAuthInfraEnvironment src/host/http/server.ts "
+            >
+              <h3>resolveTrustedOAuthInfraEnvironment</h3>
+              <p class="muted"><code>src/host/http/server.ts:143:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readCurrentManifest src/host/http/server.ts ">
+              <h3>readCurrentManifest</h3>
+              <p class="muted"><code>src/host/http/server.ts:184:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="startStudioHostServer src/host/http/server.ts ">
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:664:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:724:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10554,7 +10572,7 @@ sequenceDiagram
               data-search="formatRuntimeOutputForResponse src/host/http/server.ts "
             >
               <h3>formatRuntimeOutputForResponse</h3>
-              <p class="muted"><code>src/host/http/server.ts:678:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:738:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11740,7 +11758,7 @@ sequenceDiagram
               data-search="runProjectInfraScriptCapture src/host/orchestrator/infraRuntime.ts "
             >
               <h3>runProjectInfraScriptCapture</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:66:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:67:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11748,7 +11766,15 @@ sequenceDiagram
               data-search="ensureProjectInfraPortForward src/host/orchestrator/infraRuntime.ts "
             >
               <h3>ensureProjectInfraPortForward</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:83:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:84:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="registerProjectInfraPortForwardOwner src/host/orchestrator/infraRuntime.ts "
+            >
+              <h3>registerProjectInfraPortForwardOwner</h3>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:117:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11756,7 +11782,7 @@ sequenceDiagram
               data-search="stopAllProjectInfraPortForwards src/host/orchestrator/infraRuntime.ts "
             >
               <h3>stopAllProjectInfraPortForwards</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:116:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:136:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11764,7 +11790,7 @@ sequenceDiagram
               data-search="getInfraScriptsDir src/host/orchestrator/infraRuntime.ts "
             >
               <h3>getInfraScriptsDir</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:132:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:152:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11772,7 +11798,7 @@ sequenceDiagram
               data-search="resolveProjectPortForwardLocalPort src/host/orchestrator/infraRuntime.ts "
             >
               <h3>resolveProjectPortForwardLocalPort</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:141:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:161:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11780,7 +11806,7 @@ sequenceDiagram
               data-search="readSimpleEnvMap src/host/orchestrator/infraRuntime.ts "
             >
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:159:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:179:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11788,7 +11814,7 @@ sequenceDiagram
               data-search="parsePositivePort src/host/orchestrator/infraRuntime.ts "
             >
               <h3>parsePositivePort</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:181:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:201:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11796,12 +11822,12 @@ sequenceDiagram
               data-search="runShellScript src/host/orchestrator/infraRuntime.ts "
             >
               <h3>runShellScript</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:189:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:209:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="exists src/host/orchestrator/infraRuntime.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:237:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:258:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12364,7 +12390,7 @@ sequenceDiagram
               data-search="configureManifestOAuthProvider src/host/secrets/projectSecretService.ts "
             >
               <h3>configureManifestOAuthProvider</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:417:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:431:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12372,7 +12398,7 @@ sequenceDiagram
               data-search="createScope src/host/secrets/projectSecretService.ts "
             >
               <h3>createScope</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:452:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:466:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12380,7 +12406,7 @@ sequenceDiagram
               data-search="normalizeScopes src/host/secrets/projectSecretService.ts "
             >
               <h3>normalizeScopes</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:459:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:473:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12388,7 +12414,7 @@ sequenceDiagram
               data-search="normalizeOptionalText src/host/secrets/projectSecretService.ts "
             >
               <h3>normalizeOptionalText</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:463:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:477:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12396,7 +12422,7 @@ sequenceDiagram
               data-search="toPublicError src/host/secrets/projectSecretService.ts "
             >
               <h3>toPublicError</h3>
-              <p class="muted"><code>src/host/secrets/projectSecretService.ts:469:1</code></p>
+              <p class="muted"><code>src/host/secrets/projectSecretService.ts:483:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

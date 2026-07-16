@@ -463,6 +463,7 @@
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/resolveMutations.ts",
+        "src/host/secrets/projectSecretService.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/utils/trimOutput.ts",
         "src/host/utils/workspaceRoot.ts"
@@ -801,6 +802,7 @@
         "InfraLifecycleScript",
         "InfraScriptExecutionError",
         "InfraScriptOutput",
+        "registerProjectInfraPortForwardOwner",
         "runProjectInfraScript",
         "runProjectInfraScriptCapture",
         "stopAllProjectInfraPortForwards"
@@ -5906,7 +5908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 25,
+        "line": 27,
         "column": 1
       }
     },
@@ -5915,7 +5917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 34,
+        "line": 36,
         "column": 1
       }
     },
@@ -5924,7 +5926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 56,
+        "line": 58,
         "column": 1
       }
     },
@@ -5933,7 +5935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 66,
+        "line": 68,
         "column": 1
       }
     },
@@ -5942,7 +5944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 80,
+        "line": 82,
         "column": 1
       }
     },
@@ -5951,7 +5953,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 103,
+        "line": 105,
+        "column": 3
+      }
+    },
+    {
+      "name": "resolveTrustedOAuthInfraEnvironment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/server.ts",
+        "line": 143,
+        "column": 3
+      }
+    },
+    {
+      "name": "readCurrentManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/server.ts",
+        "line": 184,
         "column": 3
       }
     },
@@ -5960,7 +5980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 664,
+        "line": 724,
         "column": 1
       }
     },
@@ -5969,7 +5989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 678,
+        "line": 738,
         "column": 1
       }
     },
@@ -7004,7 +7024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 66,
+        "line": 67,
         "column": 1
       }
     },
@@ -7013,7 +7033,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 83,
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerProjectInfraPortForwardOwner",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/infraRuntime.ts",
+        "line": 117,
         "column": 1
       }
     },
@@ -7022,7 +7051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 116,
+        "line": 136,
         "column": 1
       }
     },
@@ -7031,7 +7060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 132,
+        "line": 152,
         "column": 1
       }
     },
@@ -7040,7 +7069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 141,
+        "line": 161,
         "column": 1
       }
     },
@@ -7049,7 +7078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 159,
+        "line": 179,
         "column": 1
       }
     },
@@ -7058,7 +7087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 181,
+        "line": 201,
         "column": 1
       }
     },
@@ -7067,7 +7096,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 189,
+        "line": 209,
         "column": 1
       }
     },
@@ -7076,7 +7105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 237,
+        "line": 258,
         "column": 1
       }
     },
@@ -7607,7 +7636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 417,
+        "line": 431,
         "column": 1
       }
     },
@@ -7616,7 +7645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 452,
+        "line": 466,
         "column": 1
       }
     },
@@ -7625,7 +7654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 459,
+        "line": 473,
         "column": 1
       }
     },
@@ -7634,7 +7663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 463,
+        "line": 477,
         "column": 1
       }
     },
@@ -7643,7 +7672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 469,
+        "line": 483,
         "column": 1
       }
     },
@@ -11321,6 +11350,11 @@
       {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/orchestrator/resolveMutations.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -17618,6 +17652,42 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "callExpression": "resolveTrustedOAuthInfraEnvironment",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "registerProjectInfraPortForwardOwner",
+        "callExpression": "registerProjectInfraPortForwardOwner",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "toSymbol": "readCurrentManifest",
+        "callExpression": "readCurrentManifest",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "toSymbol": "resolve",
+        "callExpression": "secretService.resolve",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "readCurrentManifest",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "projectManager.getStudioManifest",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "readCurrentManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "projectManager.getProjectManifest",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
         "fromSymbol": "src/host/http/server.ts",
         "toSymbol": "listProjects",
         "callExpression": "projectManager.listProjects",
@@ -18536,6 +18606,12 @@
         "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "registerProjectInfraPortForwardOwner",
+        "callExpression": "registerProjectInfraPortForwardOwner",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
         "fromSymbol": "resolveProjectInfraScriptPath",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
@@ -18605,6 +18681,24 @@
         "fromSymbol": "ensureProjectInfraPortForward",
         "toSymbol": "runShellScript",
         "callExpression": "runShellScript",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "registerProjectInfraPortForwardOwner",
+        "toSymbol": "resolveProjectInfraScriptPath",
+        "callExpression": "resolveProjectInfraScriptPath",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "registerProjectInfraPortForwardOwner",
+        "toSymbol": "exists",
+        "callExpression": "exists",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "registerProjectInfraPortForwardOwner",
+        "toSymbol": "resolveProjectPortForwardLocalPort",
+        "callExpression": "resolveProjectPortForwardLocalPort",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
@@ -20613,6 +20707,12 @@
       },
       {
         "fromSymbol": "remove",
+        "toSymbol": "withAdapter",
+        "callExpression": "this.withAdapter",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "resolve",
         "toSymbol": "withAdapter",
         "callExpression": "this.withAdapter",
         "sourcePath": "src/host/secrets/projectSecretService.ts"

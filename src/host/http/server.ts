@@ -8,6 +8,7 @@ import path from 'path';
 import {
   ensureProjectInfraPortForward,
   InfraScriptExecutionError,
+  registerProjectInfraPortForwardOwner,
   runProjectInfraScript,
   runProjectInfraScriptCapture,
   stopAllProjectInfraPortForwards,
@@ -15,6 +16,7 @@ import {
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveModuleLayoutMutations } from '../orchestrator/resolveMutations';
+import { ProjectSecretService } from '../secrets/projectSecretService';
 import { getTemplateSummaries, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
@@ -121,12 +123,70 @@ export async function createStudioHostServer(args: {
       projectId,
       target: status.target,
       script: 'up',
+      env: {
+        ...process.env,
+        ...(await resolveTrustedOAuthInfraEnvironment(projectId)),
+      },
+    });
+    await registerProjectInfraPortForwardOwner({
+      rootPath: projectRoot,
+      projectId,
+      target: status.target,
     });
 
     return {
       target: status.target,
       regenerated,
     };
+  }
+
+  async function resolveTrustedOAuthInfraEnvironment(
+    projectId: string,
+  ): Promise<Record<string, string | undefined>> {
+    const manifest = await readCurrentManifest(projectId);
+    const providers = manifest.infra.auth?.oauth?.enabled
+      ? manifest.infra.auth.oauth.providers.filter(
+          (provider) => provider.enabled !== false && provider.credentialsRef,
+        )
+      : [];
+    if (providers.length === 0) return {};
+
+    const secretService = new ProjectSecretService({
+      projectManager,
+      workspaceRoot: projectRoot,
+    });
+    const env: Record<string, string | undefined> = {};
+
+    for (const provider of providers) {
+      if (!provider.credentialsRef) continue;
+      const result = await secretService.resolve({
+        projectId,
+        ref: provider.credentialsRef,
+      });
+      if (!result.ok) continue;
+
+      const { clientId, clientSecret } = result.data;
+      if (typeof clientId !== 'string' || typeof clientSecret !== 'string') continue;
+
+      const envPrefix = provider.id
+        .toUpperCase()
+        .replace(/[^A-Z0-9]+/gu, '_')
+        .replace(/^_+|_+$/gu, '');
+      if (!envPrefix) continue;
+
+      env[`GOTRUE_EXTERNAL_${envPrefix}_CLIENT_ID`] = clientId;
+      env[`GOTRUE_EXTERNAL_${envPrefix}_SECRET`] = clientSecret;
+    }
+
+    return env;
+  }
+
+  async function readCurrentManifest(projectId: string): Promise<AppManifest> {
+    try {
+      return await projectManager.getStudioManifest(projectId);
+    } catch {
+      return projectManager.getProjectManifest(projectId);
+    }
   }
 
   // --- PROJECT ROUTES ---

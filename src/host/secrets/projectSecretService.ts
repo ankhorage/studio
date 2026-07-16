@@ -11,6 +11,7 @@ import {
   type SecretMetadata,
   type SecretPayload,
   type SecretReplaceInput,
+  type SecretResolveInput,
   type SecretStoreAdapter,
   type SecretStoreResult,
 } from '@ankhorage/contracts/secrets';
@@ -176,6 +177,19 @@ export class ProjectSecretService {
         scope: createScope(input.projectId, input.environment),
         ref: input.ref,
       }),
+    );
+  }
+
+  resolve(input: {
+    readonly projectId: string;
+    readonly environment?: string;
+    readonly ref: string;
+  }): Promise<SecretStoreResult<SecretPayload>> {
+    return this.withAdapter(input.projectId, (adapter) =>
+      adapter.resolve({
+        scope: createScope(input.projectId, input.environment),
+        ref: input.ref,
+      } satisfies SecretResolveInput),
     );
   }
 

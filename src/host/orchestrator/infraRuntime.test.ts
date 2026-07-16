@@ -4,7 +4,11 @@ import path from 'node:path';
 
 import { expect, test } from 'bun:test';
 
-import { ensureProjectInfraPortForward, stopAllProjectInfraPortForwards } from './infraRuntime';
+import {
+  ensureProjectInfraPortForward,
+  registerProjectInfraPortForwardOwner,
+  stopAllProjectInfraPortForwards,
+} from './infraRuntime';
 
 test('uses generated port-forward lifecycle script instead of tracking kubectl children', async () => {
   const rootPath = await mkdtemp(path.join(tmpdir(), 'ankh-studio-port-forward-'));
@@ -69,4 +73,32 @@ esac
     'status app',
     'stop all',
   ]);
+});
+
+test('shutdown stops generated forwards registered by infra up even without launch', async () => {
+  const rootPath = await mkdtemp(path.join(tmpdir(), 'ankh-studio-port-forward-owner-'));
+  const projectId = 'demo';
+  const infraRoot = path.join(rootPath, 'apps', projectId, 'infra', 'minikube');
+  const scriptsRoot = path.join(infraRoot, 'scripts');
+  const logPath = path.join(rootPath, 'port-forward-args.log');
+
+  await mkdir(scriptsRoot, { recursive: true });
+  await writeFile(path.join(infraRoot, '.env.example'), 'APP_PORT_FORWARD_LOCAL_PORT=19091\n');
+  await writeFile(
+    path.join(scriptsRoot, 'port-forward.sh'),
+    `#!/usr/bin/env bash
+set -euo pipefail
+LOG_FILE=${JSON.stringify(logPath)}
+printf '%s %s\\n' "\${1:-}" "\${2:-}" >> "\${LOG_FILE}"
+`,
+  );
+
+  await registerProjectInfraPortForwardOwner({
+    rootPath,
+    projectId,
+    target: 'minikube',
+  });
+  await stopAllProjectInfraPortForwards();
+
+  expect((await readFile(logPath, 'utf8')).trim()).toBe('stop all');
 });

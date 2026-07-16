@@ -51,6 +51,7 @@ export async function runProjectInfraScript(args: {
   projectId: string;
   target: string;
   script: InfraLifecycleScript;
+  env?: Record<string, string | undefined>;
 }) {
   const scriptPath = resolveProjectInfraScriptPath(args);
 
@@ -60,7 +61,7 @@ export async function runProjectInfraScript(args: {
     );
   }
 
-  await runShellScript(scriptPath, 'inherit');
+  await runShellScript(scriptPath, 'inherit', [], args.env);
 }
 
 export async function runProjectInfraScriptCapture(args: {
@@ -111,6 +112,25 @@ export async function ensureProjectInfraPortForward(args: {
     url,
     started: true,
   };
+}
+
+export async function registerProjectInfraPortForwardOwner(args: {
+  rootPath: string;
+  projectId: string;
+  target: string;
+}): Promise<{ url: string }> {
+  const scriptPath = resolveProjectInfraScriptPath({ ...args, script: 'port-forward' });
+  if (!(await exists(scriptPath))) {
+    throw new Error(
+      `Infra script not found: ${scriptPath}. Run 'ankh infra:regenerate ${args.projectId}' first.`,
+    );
+  }
+
+  const localPort = await resolveProjectPortForwardLocalPort(args);
+  const url = `http://127.0.0.1:${localPort}`;
+  const sessionKey = `${args.rootPath}:${args.projectId}:${args.target}`;
+  portForwardSessions.set(sessionKey, { ...args, url });
+  return { url };
 }
 
 export async function stopAllProjectInfraPortForwards() {
@@ -190,12 +210,13 @@ function runShellScript(
   scriptPath: string,
   mode: 'inherit' | 'capture',
   args: string[] = [],
+  env: Record<string, string | undefined> = process.env,
 ): Promise<InfraScriptOutput> {
   return new Promise<InfraScriptOutput>((resolve, reject) => {
     const child = spawn('bash', [scriptPath, ...args], {
       cwd: path.dirname(scriptPath),
       stdio: mode === 'inherit' ? 'inherit' : 'pipe',
-      env: process.env,
+      env: env as NodeJS.ProcessEnv,
     });
 
     let stdout = '';
