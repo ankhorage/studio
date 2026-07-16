@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.4
+
+### Patch Changes
+
+- 1b8be86: Update packages
+
 ## 0.6.3
 
 ### Patch Changes
