@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.3
+
+### Patch Changes
+
+- ac49c42: Release trigger
+
 ## 0.6.2
 
 ### Patch Changes
