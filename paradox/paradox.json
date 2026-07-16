@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.5",
+      "value": "v0.6.6",
       "color": "cb3837"
     },
     {
@@ -824,9 +824,7 @@
       "exports": [
         "cleanupProjectGeneratedAppImage",
         "CommandRunner",
-        "ProjectGeneratedAppImageCleanupResult",
-        "ProjectSupabaseCleanupResult",
-        "stopProjectSupabaseContainers"
+        "ProjectGeneratedAppImageCleanupResult"
       ]
     },
     {
@@ -7152,29 +7150,11 @@
       }
     },
     {
-      "name": "getSupabaseContainersForProject",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 49,
-        "column": 1
-      }
-    },
-    {
       "name": "cleanupProjectGeneratedAppImage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 59,
-        "column": 1
-      }
-    },
-    {
-      "name": "stopProjectSupabaseContainers",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 118,
+        "line": 42,
         "column": 1
       }
     },
@@ -7183,7 +7163,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 176,
+        "line": 103,
         "column": 1
       }
     },
@@ -7192,7 +7172,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 216,
+        "line": 143,
         "column": 1
       }
     },
@@ -7201,7 +7181,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 251,
+        "line": 178,
         "column": 1
       }
     },
@@ -7210,7 +7190,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 261,
+        "line": 188,
         "column": 1
       }
     },
@@ -7219,7 +7199,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 275,
+        "line": 202,
         "column": 1
       }
     },
@@ -7228,7 +7208,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 289,
+        "line": 216,
         "column": 1
       }
     },
@@ -7237,7 +7217,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 297,
+        "line": 224,
         "column": 1
       }
     },
@@ -7246,7 +7226,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 303,
+        "line": 230,
         "column": 1
       }
     },
@@ -7255,7 +7235,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 309,
+        "line": 236,
         "column": 1
       }
     },
@@ -7264,7 +7244,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 314,
+        "line": 241,
         "column": 1
       }
     },
@@ -7273,7 +7253,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 466,
+        "line": 464,
         "column": 1
       }
     },
@@ -7282,7 +7262,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 475,
+        "line": 473,
         "column": 1
       }
     },
@@ -7291,7 +7271,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 486,
+        "line": 484,
         "column": 1
       }
     },
@@ -7300,7 +7280,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 495,
+        "line": 493,
         "column": 1
       }
     },
@@ -7309,7 +7289,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 504,
+        "line": 502,
         "column": 1
       }
     },
@@ -19245,30 +19225,6 @@
         "sourcePath": "src/host/orchestrator/projectDeletion.ts"
       },
       {
-        "fromSymbol": "stopProjectSupabaseContainers",
-        "toSymbol": "run",
-        "callExpression": "runner.run",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "stopProjectSupabaseContainers",
-        "toSymbol": "getSupabaseContainersForProject",
-        "callExpression": "getSupabaseContainersForProject",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "stopProjectSupabaseContainers",
-        "toSymbol": "formatError",
-        "callExpression": "formatError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "stopProjectSupabaseContainers",
-        "toSymbol": "isMissingCommandError",
-        "callExpression": "isMissingCommandError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
         "fromSymbol": "removeMinikubeImage",
         "toSymbol": "run",
         "callExpression": "runner.run",
@@ -19356,12 +19312,6 @@
         "fromSymbol": "deleteProject",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "deleteProject",
-        "toSymbol": "stopProjectSupabaseContainers",
-        "callExpression": "stopProjectSupabaseContainers",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
