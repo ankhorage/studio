@@ -197,6 +197,7 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "type-check": "bun run typecheck",
+    "dev": "bun run --parallel dev:host dev:studio",
     "dev:studio": "bun run --cwd apps/studio web",
     "type-check:studio": "bun run --cwd apps/studio type-check",
     "lint": "ankhorage-eslint . --max-warnings=0",

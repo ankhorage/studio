@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.3",
+      "value": "v0.6.4",
       "color": "cb3837"
     },
     {
@@ -59,7 +59,13 @@
     }
   ],
   "usage": null,
+  "readmeUsageDescription": "For local Studio development, run:\n\n```bash\nbun dev\n```\n\nThis starts both the local Studio host and the first-party Studio web app.",
   "readmeUsage": [],
+  "readmeCli": {
+    "description": "Manage Studio development and projects through the Ankh CLI.",
+    "sourcePath": "src/cli/index.ts"
+  },
+  "readmeConfig": null,
   "config": null,
   "entrypoints": ["src/index.ts"],
   "modules": [
@@ -5269,7 +5275,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 74,
+        "line": 79,
         "column": 1
       }
     },
@@ -5278,7 +5284,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 89,
+        "line": 94,
         "column": 1
       }
     },
@@ -5287,7 +5293,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 93,
+        "line": 98,
         "column": 1
       }
     },
@@ -5296,7 +5302,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 97,
+        "line": 102,
         "column": 1
       }
     },
@@ -5305,7 +5311,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 108,
+        "line": 113,
         "column": 9
       }
     },
@@ -5314,7 +5320,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 124,
+        "line": 129,
         "column": 1
       }
     },
@@ -5323,7 +5329,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 136,
+        "line": 141,
         "column": 1
       }
     },
@@ -5332,7 +5338,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 153,
+        "line": 158,
         "column": 1
       }
     },
@@ -5341,7 +5347,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 166,
+        "line": 171,
         "column": 1
       }
     },
@@ -5350,7 +5356,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 179,
+        "line": 184,
         "column": 1
       }
     },
@@ -5359,7 +5365,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 191,
+        "line": 196,
         "column": 1
       }
     },
@@ -5368,7 +5374,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 199,
+        "line": 204,
         "column": 1
       }
     },
@@ -5377,7 +5383,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 215,
+        "line": 220,
         "column": 1
       }
     },

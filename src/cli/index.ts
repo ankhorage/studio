@@ -1,3 +1,8 @@
+/***
+ * Manage Studio development and projects through the Ankh CLI.
+ *
+ * @readme
+ */
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
