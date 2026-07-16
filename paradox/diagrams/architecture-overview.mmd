@@ -243,6 +243,9 @@ graph TD
   module_src_host_orchestrator_infraGenerator_ts["src/host/orchestrator/infraGenerator.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_infraGenerator_ts
   module_src_host_orchestrator_infraGenerator_ts --> module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_infraRuntime_test_ts["src/host/orchestrator/infraRuntime.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_infraRuntime_test_ts
+  module_src_host_orchestrator_infraRuntime_test_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_infraRuntime_ts["src/host/orchestrator/infraRuntime.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_infraRuntime_ts --> module_src_host_orchestrator_projectPaths_ts
@@ -254,6 +257,9 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectDeletion_test_ts["src/host/orchestrator/projectDeletion.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectDeletion_test_ts
+  module_src_host_orchestrator_projectDeletion_test_ts --> module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectDeletion_ts["src/host/orchestrator/projectDeletion.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]

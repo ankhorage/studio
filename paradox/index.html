@@ -622,7 +622,7 @@
                 data-target="src/host/orchestrator/infraRuntime.ts"
               >
                 src/host/orchestrator/infraRuntime.ts
-                <small>14 functions</small>
+                <small>11 functions</small>
               </button>
             </li>
             <li>
@@ -1149,7 +1149,7 @@
             <div class="summary">
               <div><strong>82</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>160</strong><span class="muted">modules</span></div>
+              <div><strong>162</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2056,6 +2056,17 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/infraRuntime.test.ts src/host/orchestrator/infraRuntime.ts"
+            >
+              <h3>src/host/orchestrator/infraRuntime.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/infraRuntime.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectPaths.ts ensureProjectInfraPortForward InfraLifecycleScript InfraScriptExecutionError InfraScriptOutput runProjectInfraScript runProjectInfraScriptCapture stopAllProjectInfraPortForwards"
             >
               <h3>src/host/orchestrator/infraRuntime.ts</h3>
@@ -2093,6 +2104,17 @@
                 <code>src/host/orchestrator/resolveMutations.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>ModuleManager</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/projectDeletion.test.ts src/host/orchestrator/projectDeletion.ts"
+            >
+              <h3>src/host/orchestrator/projectDeletion.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectDeletion.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -6792,6 +6814,10 @@
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraGenerator_ts
                 module_src_host_orchestrator_infraGenerator_ts --&gt;
                 module_src_host_orchestrator_infraValidation_ts
+                module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraRuntime_test_ts
+                module_src_host_orchestrator_infraRuntime_test_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts
                 module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraRuntime_ts
                 module_src_host_orchestrator_infraRuntime_ts --&gt;
@@ -6807,6 +6833,11 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts
+                module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectDeletion_test_ts
+                module_src_host_orchestrator_projectDeletion_test_ts --&gt;
+                module_src_host_orchestrator_projectDeletion_ts
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectDeletion_ts
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
@@ -7369,6 +7400,9 @@ graph TD
   module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraGenerator_ts
   module_src_host_orchestrator_infraGenerator_ts --&gt; module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraRuntime_test_ts
+  module_src_host_orchestrator_infraRuntime_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_infraRuntime_ts --&gt; module_src_host_orchestrator_projectPaths_ts
@@ -7380,6 +7414,9 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectDeletion_test_ts
+  module_src_host_orchestrator_projectDeletion_test_ts --&gt; module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
@@ -7729,9 +7766,11 @@ graph TD
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
                 module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
+                module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
                 module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
                 module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+                module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -7971,6 +8010,8 @@ graph TD
                 module_src_host_zoraExtensions_index_ts
                 module_src_host_orchestrator_infraGenerator_ts --&gt;
                 module_src_host_orchestrator_infraValidation_ts
+                module_src_host_orchestrator_infraRuntime_test_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts
                 module_src_host_orchestrator_infraRuntime_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
@@ -7980,6 +8021,8 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts
+                module_src_host_orchestrator_projectDeletion_test_ts --&gt;
+                module_src_host_orchestrator_projectDeletion_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_layout_layoutGenerator_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -8183,9 +8226,11 @@ graph LR
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
   module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
+  module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
   module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
   module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+  module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -8377,11 +8422,13 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_infraGenerator_ts --&gt; module_src_host_orchestrator_infraValidation_ts
+  module_src_host_orchestrator_infraRuntime_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_infraRuntime_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectDeletion_test_ts --&gt; module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_modules_layout_ts
@@ -8553,9 +8600,11 @@ graph LR
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
                 module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
+                module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
                 module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
                 module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+                module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -8930,9 +8979,11 @@ graph LR
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
   module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
+  module_src_host_orchestrator_infraRuntime_test_ts[&quot;src/host/orchestrator/infraRuntime.test.ts&quot;]
   module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
   module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+  module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -11705,7 +11756,7 @@ sequenceDiagram
               data-search="stopAllProjectInfraPortForwards src/host/orchestrator/infraRuntime.ts "
             >
               <h3>stopAllProjectInfraPortForwards</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:133:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:116:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11713,7 +11764,7 @@ sequenceDiagram
               data-search="getInfraScriptsDir src/host/orchestrator/infraRuntime.ts "
             >
               <h3>getInfraScriptsDir</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:151:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:132:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11721,7 +11772,7 @@ sequenceDiagram
               data-search="resolveProjectPortForwardLocalPort src/host/orchestrator/infraRuntime.ts "
             >
               <h3>resolveProjectPortForwardLocalPort</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:160:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:141:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11729,7 +11780,7 @@ sequenceDiagram
               data-search="readSimpleEnvMap src/host/orchestrator/infraRuntime.ts "
             >
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:178:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:159:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11737,31 +11788,7 @@ sequenceDiagram
               data-search="parsePositivePort src/host/orchestrator/infraRuntime.ts "
             >
               <h3>parsePositivePort</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:200:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="waitForPortForwardStartup src/host/orchestrator/infraRuntime.ts "
-            >
-              <h3>waitForPortForwardStartup</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:208:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="completeResolve src/host/orchestrator/infraRuntime.ts "
-            >
-              <h3>completeResolve</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:225:11</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="completeReject src/host/orchestrator/infraRuntime.ts "
-            >
-              <h3>completeReject</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:232:11</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:181:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11769,12 +11796,12 @@ sequenceDiagram
               data-search="runShellScript src/host/orchestrator/infraRuntime.ts "
             >
               <h3>runShellScript</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:262:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:189:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="exists src/host/orchestrator/infraRuntime.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:309:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:237:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

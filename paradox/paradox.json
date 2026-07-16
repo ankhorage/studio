@@ -787,6 +787,12 @@
       ]
     },
     {
+      "path": "src/host/orchestrator/infraRuntime.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/infraRuntime.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/infraRuntime.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/projectPaths.ts"],
@@ -816,6 +822,12 @@
         "src/host/orchestrator/resolveMutations.ts"
       ],
       "exports": ["ModuleManager"]
+    },
+    {
+      "path": "src/host/orchestrator/projectDeletion.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/projectDeletion.ts"],
+      "exports": []
     },
     {
       "path": "src/host/orchestrator/projectDeletion.ts",
@@ -7010,7 +7022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 133,
+        "line": 116,
         "column": 1
       }
     },
@@ -7019,7 +7031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 151,
+        "line": 132,
         "column": 1
       }
     },
@@ -7028,7 +7040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 160,
+        "line": 141,
         "column": 1
       }
     },
@@ -7037,7 +7049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 178,
+        "line": 159,
         "column": 1
       }
     },
@@ -7046,35 +7058,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 200,
+        "line": 181,
         "column": 1
-      }
-    },
-    {
-      "name": "waitForPortForwardStartup",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 208,
-        "column": 1
-      }
-    },
-    {
-      "name": "completeResolve",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 225,
-        "column": 11
-      }
-    },
-    {
-      "name": "completeReject",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 232,
-        "column": 11
       }
     },
     {
@@ -7082,7 +7067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 262,
+        "line": 189,
         "column": 1
       }
     },
@@ -7091,7 +7076,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 309,
+        "line": 237,
         "column": 1
       }
     },
@@ -11444,6 +11429,11 @@
         "sourcePath": "src/host/orchestrator/infraGenerator.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/infraRuntime.test.ts",
+        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/infraRuntime.ts",
         "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
@@ -11467,6 +11457,11 @@
         "fromPath": "src/host/orchestrator/moduleManager.ts",
         "toPath": "src/host/orchestrator/resolveMutations.ts",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectDeletion.test.ts",
+        "toPath": "src/host/orchestrator/projectDeletion.ts",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
@@ -18487,6 +18482,60 @@
         "sourcePath": "src/host/orchestrator/infraGenerator.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "ensureProjectInfraPortForward",
+        "callExpression": "ensureProjectInfraPortForward",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "stopAllProjectInfraPortForwards",
+        "callExpression": "stopAllProjectInfraPortForwards",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
         "fromSymbol": "resolveProjectInfraScriptPath",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
@@ -18554,20 +18603,26 @@
       },
       {
         "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "spawn",
-        "callExpression": "spawn",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "waitForPortForwardStartup",
-        "callExpression": "waitForPortForwardStartup",
+        "toSymbol": "runShellScript",
+        "callExpression": "runShellScript",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
+        "toSymbol": "resolveProjectInfraScriptPath",
+        "callExpression": "resolveProjectInfraScriptPath",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
+        "toSymbol": "exists",
+        "callExpression": "exists",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
+        "toSymbol": "runShellScript",
+        "callExpression": "runShellScript",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
@@ -18601,30 +18656,6 @@
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
-        "fromSymbol": "completeResolve",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "completeReject",
-        "toSymbol": "reject",
-        "callExpression": "reject",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "completeResolve",
-        "callExpression": "completeResolve",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "completeReject",
-        "callExpression": "completeReject",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
         "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
         "toSymbol": "spawn",
         "callExpression": "spawn",
@@ -18634,6 +18665,12 @@
         "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
         "toSymbol": "reject",
         "callExpression": "reject",
+        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
@@ -19189,6 +19226,48 @@
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "cleanupProjectGeneratedAppImage",
+        "callExpression": "cleanupProjectGeneratedAppImage",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/projectDeletion.ts",
         "toSymbol": "promisify",
         "callExpression": "promisify",
@@ -19340,14 +19419,14 @@
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "cleanupProjectGeneratedAppImage",
+        "callExpression": "cleanupProjectGeneratedAppImage",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "cleanupProjectGeneratedAppImage",
-        "callExpression": "cleanupProjectGeneratedAppImage",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {

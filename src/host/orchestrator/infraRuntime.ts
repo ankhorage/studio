@@ -1,4 +1,3 @@
-import type { ChildProcess } from 'child_process';
 import { spawn } from 'child_process';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -13,11 +12,12 @@ export interface InfraScriptOutput {
 }
 
 interface PortForwardSession {
-  child: ChildProcess;
+  rootPath: string;
+  projectId: string;
+  target: string;
   url: string;
 }
 
-const PORT_FORWARD_STARTUP_TIMEOUT_MS = 1_000;
 const portForwardSessions = new Map<string, PortForwardSession>();
 
 export class InfraScriptExecutionError extends Error {
@@ -93,36 +93,19 @@ export async function ensureProjectInfraPortForward(args: {
   }
 
   const sessionKey = `${args.rootPath}:${args.projectId}:${args.target}`;
-  const existing = portForwardSessions.get(sessionKey);
-  if (existing?.child.exitCode === null && !existing.child.killed) {
+  const localPort = await resolveProjectPortForwardLocalPort(args);
+  const url = `http://127.0.0.1:${localPort}`;
+  const status = await runShellScript(scriptPath, 'capture', ['status', 'app']);
+  if (/\bapp:\s+running\b/u.test(status.stdout)) {
+    portForwardSessions.set(sessionKey, { ...args, url });
     return {
-      url: existing.url,
+      url,
       started: false,
     };
   }
 
-  portForwardSessions.delete(sessionKey);
-
-  const localPort = await resolveProjectPortForwardLocalPort(args);
-  const url = `http://127.0.0.1:${localPort}`;
-
-  const child = spawn('bash', [scriptPath], {
-    cwd: path.dirname(scriptPath),
-    stdio: ['ignore', 'pipe', 'pipe'],
-    env: process.env,
-  });
-
-  const session: PortForwardSession = { child, url };
-  portForwardSessions.set(sessionKey, session);
-
-  child.once('close', () => {
-    portForwardSessions.delete(sessionKey);
-  });
-  child.once('error', () => {
-    portForwardSessions.delete(sessionKey);
-  });
-
-  await waitForPortForwardStartup({ child, scriptPath });
+  await runShellScript(scriptPath, 'capture', ['start', 'app']);
+  portForwardSessions.set(sessionKey, { ...args, url });
 
   return {
     url,
@@ -134,16 +117,14 @@ export async function stopAllProjectInfraPortForwards() {
   const sessions = [...portForwardSessions.values()];
   portForwardSessions.clear();
   await Promise.all(
-    sessions.map(async ({ child }) => {
-      if (child.exitCode !== null || child.killed) return;
-      await new Promise<void>((resolve) => {
-        const timer = setTimeout(resolve, 1_000);
-        child.once('close', () => {
-          clearTimeout(timer);
-          resolve();
-        });
-        child.kill('SIGTERM');
-      });
+    sessions.map(async (session) => {
+      const scriptPath = resolveProjectInfraScriptPath({ ...session, script: 'port-forward' });
+      if (!(await exists(scriptPath))) return;
+      try {
+        await runShellScript(scriptPath, 'capture', ['stop', 'all']);
+      } catch {
+        // Close hooks should never prevent Studio shutdown; status surfaces stale forwards later.
+      }
     }),
   );
 }
@@ -205,66 +186,13 @@ function parsePositivePort(value?: string): number | null {
   return parsed;
 }
 
-function waitForPortForwardStartup(args: {
-  child: ChildProcess;
-  scriptPath: string;
-}): Promise<void> {
-  const { child, scriptPath } = args;
-  return new Promise<void>((resolve, reject) => {
-    let settled = false;
-    let stderr = '';
-
-    child.stderr?.setEncoding('utf8');
-    child.stderr?.on('data', (chunk: string) => {
-      stderr += chunk;
-      if (stderr.length > 8_000) {
-        stderr = stderr.slice(stderr.length - 8_000);
-      }
-    });
-
-    const completeResolve = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      resolve();
-    };
-
-    const completeReject = (error: Error) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      reject(error);
-    };
-
-    const timer = setTimeout(() => {
-      completeResolve();
-    }, PORT_FORWARD_STARTUP_TIMEOUT_MS);
-
-    child.once('error', (err) => {
-      completeReject(new Error(`Failed to start infra script '${scriptPath}': ${err.message}`));
-    });
-
-    child.once('close', (code) => {
-      if (code === 0) {
-        completeResolve();
-        return;
-      }
-
-      const stderrSnippet = stderr.trim();
-      const suffix = stderrSnippet ? ` stderr: ${stderrSnippet}` : '';
-      completeReject(
-        new Error(`Infra script '${scriptPath}' exited with code ${code ?? 'unknown'}.${suffix}`),
-      );
-    });
-  });
-}
-
 function runShellScript(
   scriptPath: string,
   mode: 'inherit' | 'capture',
+  args: string[] = [],
 ): Promise<InfraScriptOutput> {
   return new Promise<InfraScriptOutput>((resolve, reject) => {
-    const child = spawn('bash', [scriptPath], {
+    const child = spawn('bash', [scriptPath, ...args], {
       cwd: path.dirname(scriptPath),
       stdio: mode === 'inherit' ? 'inherit' : 'pipe',
       env: process.env,

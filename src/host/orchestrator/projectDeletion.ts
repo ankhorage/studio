@@ -58,13 +58,13 @@ export async function cleanupProjectGeneratedAppImage(args: {
   }
 
   const env = await readMinikubeEnv(projectPath);
-  const cleanupEnabled = readBooleanEnv(env, 'APP_IMAGE_CLEANUP_ON_DOWN', true);
+  const cleanupEnabled = readBooleanEnv(env, 'APP_IMAGE_CLEANUP_ON_DESTROY', true);
   if (!cleanupEnabled) {
     return {
       removedImages: 0,
       warnings: [],
       skipped: {
-        reason: 'Generated app image cleanup disabled by APP_IMAGE_CLEANUP_ON_DOWN=false.',
+        reason: 'Generated app image cleanup disabled by APP_IMAGE_CLEANUP_ON_DESTROY=false.',
       },
     };
   }
