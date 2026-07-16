@@ -51,12 +51,13 @@ jobs:
 
       - name: Create release pull request or publish to npm
         if: hashFiles('.changeset/config.json') != ''
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           version: bun run version-packages
           publish: bunx changeset publish
           commit: Version Packages
           title: Version Packages
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
