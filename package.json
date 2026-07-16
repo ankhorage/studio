@@ -232,7 +232,7 @@
     "@ankhorage/orchestrator-module-expo-localization": "^0.1.5",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
     "@ankhorage/runtime": "^0.2.1",
-    "@ankhorage/supabase-auth": "^1.0.0",
+    "@ankhorage/supabase-auth": "^1.1.1",
     "@ankhorage/supabase-vault": "^0.2.0",
     "@ankhorage/templates": "^2.2.0",
     "@ankhorage/zora": "^2.8.1",
