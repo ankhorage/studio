@@ -5,16 +5,9 @@ import { promisify } from 'util';
 
 const execFileAsync = promisify(execFile);
 
-const DOCKER_LIST_TIMEOUT_MS = 8_000;
-const DOCKER_REMOVE_TIMEOUT_MS = 15_000;
 const DOCKER_IMAGE_REMOVE_TIMEOUT_MS = 15_000;
 const MINIKUBE_IMAGE_REMOVE_TIMEOUT_MS = 20_000;
 const EXEC_MAX_BUFFER = 1024 * 1024;
-
-export interface ProjectSupabaseCleanupResult {
-  removedContainers: number;
-  warnings: string[];
-}
 
 export interface ProjectGeneratedAppImageCleanupResult {
   removedImages: number;
@@ -46,22 +39,13 @@ const defaultCommandRunner: CommandRunner = {
   },
 };
 
-function getSupabaseContainersForProject(args: {
-  projectId: string;
-  containerNames: string[];
-}): string[] {
-  const { projectId, containerNames } = args;
-  const suffix = `_${projectId}`;
-
-  return containerNames.filter((name) => name.startsWith('supabase_') && name.endsWith(suffix));
-}
-
 export async function cleanupProjectGeneratedAppImage(args: {
+  projectId: string;
   projectPath: string;
   target: string;
   runner?: CommandRunner;
 }): Promise<ProjectGeneratedAppImageCleanupResult> {
-  const { projectPath, target, runner = defaultCommandRunner } = args;
+  const { projectId, projectPath, target, runner = defaultCommandRunner } = args;
 
   if (target !== 'minikube') {
     return {
@@ -93,7 +77,8 @@ export async function cleanupProjectGeneratedAppImage(args: {
     };
   }
 
-  const profile = env.get('MINIKUBE_PROFILE')?.trim() ?? 'minikube';
+  const configuredProfile = env.get('ANKH_APP_SLUG')?.trim();
+  const profile = configuredProfile && configuredProfile.length > 0 ? configuredProfile : projectId;
   const warnings: string[] = [];
   let removedImages = 0;
 
@@ -113,64 +98,6 @@ export async function cleanupProjectGeneratedAppImage(args: {
     removedImages,
     warnings,
   };
-}
-
-export async function stopProjectSupabaseContainers(args: {
-  projectId: string;
-  runner?: CommandRunner;
-}): Promise<ProjectSupabaseCleanupResult> {
-  const { projectId, runner = defaultCommandRunner } = args;
-
-  if (!projectId) {
-    return {
-      removedContainers: 0,
-      warnings: [],
-    };
-  }
-
-  try {
-    const listResult = await runner.run(
-      'docker',
-      ['ps', '-a', '--format', '{{.Names}}'],
-      DOCKER_LIST_TIMEOUT_MS,
-    );
-
-    const allContainerNames = listResult.stdout
-      .split(/\r?\n/u)
-      .map((value) => value.trim())
-      .filter((value) => value.length > 0);
-
-    const supabaseContainers = getSupabaseContainersForProject({
-      projectId,
-      containerNames: allContainerNames,
-    });
-    if (supabaseContainers.length === 0) {
-      return {
-        removedContainers: 0,
-        warnings: [],
-      };
-    }
-
-    try {
-      await runner.run('docker', ['rm', '-f', ...supabaseContainers], DOCKER_REMOVE_TIMEOUT_MS);
-    } catch (err) {
-      throw new Error(`Failed to remove Supabase containers: ${formatError(err)}`, { cause: err });
-    }
-
-    return {
-      removedContainers: supabaseContainers.length,
-      warnings: [],
-    };
-  } catch (err) {
-    if (isMissingCommandError(err)) {
-      return {
-        removedContainers: 0,
-        warnings: ['Skipping Supabase container cleanup because docker is not available in PATH.'],
-      };
-    }
-
-    throw new Error(`Failed to list Docker containers: ${formatError(err)}`, { cause: err });
-  }
 }
 
 async function removeMinikubeImage(args: {

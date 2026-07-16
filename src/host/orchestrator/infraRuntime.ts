@@ -5,7 +5,7 @@ import path from 'path';
 
 import { getProjectPath } from './projectPaths';
 
-export type InfraLifecycleScript = 'up' | 'down' | 'status' | 'port-forward';
+export type InfraLifecycleScript = 'up' | 'down' | 'reset' | 'destroy' | 'status' | 'port-forward';
 
 export interface InfraScriptOutput {
   stdout: string;

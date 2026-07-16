@@ -11,7 +11,7 @@ import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
 import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
 import { getProjectInfrastructureStatus, syncProjectInfrastructure } from './infraGenerator';
 import { runProjectInfraScript } from './infraRuntime';
-import { cleanupProjectGeneratedAppImage, stopProjectSupabaseContainers } from './projectDeletion';
+import { cleanupProjectGeneratedAppImage } from './projectDeletion';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
 import { resolveModuleLayoutMutations } from './resolveMutations';
@@ -44,10 +44,7 @@ export class ProjectManager {
   async deleteProject(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const warnings: string[] = [];
-    let infraDown = false;
-
-    const supabaseCleanup = await stopProjectSupabaseContainers({ projectId });
-    warnings.push(...supabaseCleanup.warnings);
+    let infraDestroyed = false;
 
     if (await exists(projectPath)) {
       const manifest = await this.store.readManifest(projectId);
@@ -58,7 +55,7 @@ export class ProjectManager {
       });
 
       if (!infraStatus.skipped && infraStatus.hasDeployment && infraStatus.target) {
-        // Regenerate once to ensure teardown scripts exist before invoking down lifecycle.
+        // Regenerate once to ensure teardown scripts exist before invoking destroy lifecycle.
         await syncProjectInfrastructure({
           projectId,
           projectPath,
@@ -70,15 +67,16 @@ export class ProjectManager {
             rootPath: this.rootPath,
             projectId,
             target: infraStatus.target,
-            script: 'down',
+            script: 'destroy',
           });
-          infraDown = true;
+          infraDestroyed = true;
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
           warnings.push(`Infrastructure teardown failed: ${message}`);
         }
 
         const imageCleanup = await cleanupProjectGeneratedAppImage({
+          projectId,
           projectPath,
           target: infraStatus.target,
         });
@@ -90,7 +88,7 @@ export class ProjectManager {
 
     return {
       success: true,
-      infraDown,
+      infraDown: infraDestroyed,
       warnings,
     };
   }
