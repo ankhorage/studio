@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.5
+
+### Patch Changes
+
+- 876566a: Document the Studio CLI from the canonical CLI entrypoint, add a combined `bun dev` workflow, and explain local Studio usage in generated documentation.
+
 ## 0.6.4
 
 ### Patch Changes
