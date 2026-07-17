@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.9
+
+### Patch Changes
+
+- 919131c: Align the Studio app with the expected Expo SDK 54 patch versions and restrict the root workspace to the first-party `apps/studio` app so locally generated projects are not treated as repository workspaces.
+
 ## 0.6.8
 
 ### Patch Changes
