@@ -228,7 +228,7 @@
   "dependencies": {
     "@ankhorage/contracts": "^3.0.0",
     "@ankhorage/expo-runtime": "^0.0.10",
-    "@ankhorage/infra": "^1.0.0",
+    "@ankhorage/infra": "^1.0.1",
     "@ankhorage/orchestrator": "^0.2.4",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.1.2",
     "@ankhorage/orchestrator-module-expo-localization": "^0.1.5",
