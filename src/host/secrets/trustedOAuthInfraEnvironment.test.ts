@@ -4,6 +4,7 @@ import { expect, test } from 'bun:test';
 
 import {
   resolveTrustedOAuthInfraEnvironment,
+  resolveTrustedOAuthInfraEnvironmentForUp,
   type TrustedOAuthSecretResolver,
 } from './trustedOAuthInfraEnvironment';
 
@@ -57,6 +58,62 @@ test('fails clearly when enabled OAuth credentials cannot be resolved', async ()
   await expectRejects(
     () =>
       resolveTrustedOAuthInfraEnvironment({
+        projectId: 'demo',
+        workspaceRoot: '/tmp',
+        projectManager: createProjectManager(manifest),
+        secretResolver: {
+          resolve: () =>
+            Promise.resolve({
+              ok: false,
+              error: { code: 'not_found', message: 'secret missing' },
+            }),
+        },
+      }),
+    /Failed to resolve trusted OAuth credentials.*secret missing/u,
+  );
+});
+
+test('defers trusted OAuth env for Infra Up when the local secret store is unavailable', async () => {
+  const manifest = createOAuthManifest({
+    oauthEnabled: true,
+    providerEnabled: true,
+    credentialsRef: 'auth/oauth/google',
+  });
+
+  const result = await resolveTrustedOAuthInfraEnvironmentForUp({
+    projectId: 'demo',
+    workspaceRoot: '/tmp',
+    projectManager: createProjectManager(manifest),
+    secretResolver: {
+      resolve: () =>
+        Promise.resolve({
+          ok: false,
+          error: {
+            code: 'unavailable',
+            message: 'local Vault is stopped',
+          },
+        }),
+    },
+  });
+
+  expect(result).toEqual({
+    deferred: true,
+    env: {},
+    reason:
+      "Trusted OAuth secret store is unavailable for provider 'google' at 'auth/oauth/google': local Vault is stopped",
+  });
+});
+
+test('does not defer non-unavailable trusted OAuth failures for Infra Up', async () => {
+  const manifest = createOAuthManifest({
+    oauthEnabled: true,
+    providerEnabled: true,
+    credentialsRef: 'auth/oauth/google',
+  });
+
+  await expectRejects(
+    () =>
+      resolveTrustedOAuthInfraEnvironmentForUp({
         projectId: 'demo',
         workspaceRoot: '/tmp',
         projectManager: createProjectManager(manifest),

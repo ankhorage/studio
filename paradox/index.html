@@ -346,7 +346,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/host/http/server.ts">
                 src/host/http/server.ts
-                <small>8 functions</small>
+                <small>7 functions</small>
               </button>
             </li>
             <li>
@@ -729,6 +729,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/studioInfraUp.ts"
+              >
+                src/host/orchestrator/studioInfraUp.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/templates.ts"
               >
                 src/host/orchestrator/templates.ts
@@ -812,7 +822,7 @@
                 data-target="src/host/secrets/trustedOAuthInfraEnvironment.ts"
               >
                 src/host/secrets/trustedOAuthInfraEnvironment.ts
-                <small>2 functions</small>
+                <small>3 functions</small>
               </button>
             </li>
             <li>
@@ -822,7 +832,7 @@
                 data-target="src/host/studioInfra.e2e.test.ts"
               >
                 src/host/studioInfra.e2e.test.ts
-                <small>17 functions</small>
+                <small>22 functions</small>
               </button>
             </li>
             <li>
@@ -1199,7 +1209,7 @@
             <div class="summary">
               <div><strong>82</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>166</strong><span class="muted">modules</span></div>
+              <div><strong>167</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1650,7 +1660,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/secrets/trustedOAuthInfraEnvironment.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
+              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/orchestrator/studioInfraUp.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
             >
               <h3>src/host/http/server.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1660,7 +1670,7 @@
                 <code>src/host/orchestrator/moduleManager.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/orchestrator/resolveMutations.ts</code>,
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>,
+                <code>src/host/orchestrator/studioInfraUp.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>,
                 <code>src/host/utils/trimOutput.ts</code>,
                 <code>src/host/utils/workspaceRoot.ts</code>
@@ -2269,6 +2279,22 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/studioInfraUp.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectManager.ts src/host/secrets/trustedOAuthInfraEnvironment.ts StudioInfraUpResult upProjectInfrastructure"
+            >
+              <h3>src/host/orchestrator/studioInfraUp.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/infraRuntime.ts</code>,
+                <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>StudioInfraUpResult</code>,
+                <code>upProjectInfrastructure</code>
+              </p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/templates.test.ts src/host/orchestrator/templates.ts"
             >
               <h3>src/host/orchestrator/templates.test.ts</h3>
@@ -2381,7 +2407,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/secrets/trustedOAuthInfraEnvironment.ts src/host/orchestrator/projectManager.ts src/host/secrets/projectSecretService.ts resolveTrustedOAuthInfraEnvironment TrustedOAuthSecretResolver"
+              data-search="src/host/secrets/trustedOAuthInfraEnvironment.ts src/host/orchestrator/projectManager.ts src/host/secrets/projectSecretService.ts resolveTrustedOAuthInfraEnvironment resolveTrustedOAuthInfraEnvironmentForUp TrustedOAuthInfraEnvironmentForUpResult TrustedOAuthSecretResolver"
             >
               <h3>src/host/secrets/trustedOAuthInfraEnvironment.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2391,18 +2417,21 @@
               </p>
               <p>
                 <strong>Exports:</strong> <code>resolveTrustedOAuthInfraEnvironment</code>,
+                <code>resolveTrustedOAuthInfraEnvironmentForUp</code>,
+                <code>TrustedOAuthInfraEnvironmentForUpResult</code>,
                 <code>TrustedOAuthSecretResolver</code>
               </p>
             </article>
             <article
               class="item"
-              data-search="src/host/studioInfra.e2e.test.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectManager.ts src/host/secrets/trustedOAuthInfraEnvironment.ts"
+              data-search="src/host/studioInfra.e2e.test.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/studioInfraUp.ts src/host/secrets/trustedOAuthInfraEnvironment.ts"
             >
               <h3>src/host/studioInfra.e2e.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/host/orchestrator/infraRuntime.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/orchestrator/studioInfraUp.ts</code>,
                 <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
@@ -6758,10 +6787,10 @@
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
-                module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
-                module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
-                module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
+                --&gt; module_src_host_orchestrator_studioInfraUp_ts module_src_host_http_server_ts
+                --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
+                --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
+                module_src_host_utils_workspaceRoot_ts
                 module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
                 module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
@@ -7000,6 +7029,14 @@
                 --&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_scaffolder_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_templates_test_ts
                 module_src_host_orchestrator_templates_test_ts --&gt;
@@ -7052,6 +7089,8 @@
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_orchestrator_infraRuntime_ts module_src_host_studioInfra_e2e_test_ts
                 --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
@@ -7412,7 +7451,7 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
-  module_src_host_http_server_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_http_server_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -7583,6 +7622,11 @@ graph TD
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_templates_test_ts
   module_src_host_orchestrator_templates_test_ts --&gt; module_src_host_orchestrator_templates_ts
@@ -7618,6 +7662,7 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_studioInfra_e2e_test_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
@@ -7921,6 +7966,7 @@ graph TD
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
+                module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
                 module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
                 module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
@@ -8080,15 +8126,15 @@ graph TD
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
-                module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
-                module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
-                module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
-                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
+                --&gt; module_src_host_orchestrator_studioInfraUp_ts module_src_host_http_server_ts
+                --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
+                --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
+                module_src_host_utils_workspaceRoot_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_authRoutes_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_secretRoutes_ts
+                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
-                module_src_host_http_secretRoutes_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_http_server_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_orchestrator_moduleManager_ts
+                module_src_host_orchestrator_moduleManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
@@ -8215,6 +8261,12 @@ graph TD
                 --&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_scaffolder_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_orchestrator_studioInfraUp_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_orchestrator_templates_test_ts --&gt;
                 module_src_host_orchestrator_templates_ts
                 module_src_host_secrets_projectSecretService_test_ts --&gt;
@@ -8240,6 +8292,8 @@ graph TD
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_orchestrator_infraRuntime_ts module_src_host_studioInfra_e2e_test_ts
                 --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_zoraExtensions_index_ts --&gt;
@@ -8400,6 +8454,7 @@ graph LR
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
+  module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
   module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
   module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
@@ -8543,7 +8598,7 @@ graph LR
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
-  module_src_host_http_server_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_http_server_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -8620,6 +8675,9 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_orchestrator_templates_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_secrets_projectSecretService_test_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -8633,6 +8691,7 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_zoraExtensions_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
@@ -8786,6 +8845,7 @@ graph LR
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
+                module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
                 module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
                 module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
@@ -9169,6 +9229,7 @@ graph LR
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
+  module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
   module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
   module_src_host_orchestrator_workspaceRuntime_ts[&quot;src/host/orchestrator/workspaceRuntime.ts&quot;]
@@ -10695,17 +10756,17 @@ sequenceDiagram
             <h2>src/host/http/server.ts</h2>
             <article class="item" data-search="exists src/host/http/server.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/http/server.ts:27:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:26:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readSimpleEnvMap src/host/http/server.ts ">
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/http/server.ts:36:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:35:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readFirstEnvValue src/host/http/server.ts ">
               <h3>readFirstEnvValue</h3>
-              <p class="muted"><code>src/host/http/server.ts:58:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10713,22 +10774,17 @@ sequenceDiagram
               data-search="resolveProjectTemplateSelection src/host/http/server.ts "
             >
               <h3>resolveProjectTemplateSelection</h3>
-              <p class="muted"><code>src/host/http/server.ts:68:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:67:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createStudioHostServer src/host/http/server.ts ">
               <h3>createStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:82:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="upProjectInfrastructure src/host/http/server.ts ">
-              <h3>upProjectInfrastructure</h3>
-              <p class="muted"><code>src/host/http/server.ts:105:3</code></p>
+              <p class="muted"><code>src/host/http/server.ts:81:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="startStudioHostServer src/host/http/server.ts ">
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:679:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:639:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10736,7 +10792,7 @@ sequenceDiagram
               data-search="formatRuntimeOutputForResponse src/host/http/server.ts "
             >
               <h3>formatRuntimeOutputForResponse</h3>
-              <p class="muted"><code>src/host/http/server.ts:693:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:653:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12396,6 +12452,24 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-orchestrator-studioinfraup-ts"
+          class="view"
+          data-view="src/host/orchestrator/studioInfraUp.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/studioInfraUp.ts</h2>
+            <article
+              class="item"
+              data-search="upProjectInfrastructure src/host/orchestrator/studioInfraUp.ts "
+            >
+              <h3>upProjectInfrastructure</h3>
+              <p class="muted"><code>src/host/orchestrator/studioInfraUp.ts:22:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-orchestrator-templates-ts"
           class="view"
           data-view="src/host/orchestrator/templates.ts"
@@ -12759,7 +12833,7 @@ sequenceDiagram
             >
               <h3>createProjectManager</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:119:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:176:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12769,7 +12843,7 @@ sequenceDiagram
             >
               <h3>createSecretResolver</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:126:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:183:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12779,7 +12853,7 @@ sequenceDiagram
             >
               <h3>createInvalidSecretResolver</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:132:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:189:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12789,7 +12863,7 @@ sequenceDiagram
             >
               <h3>createOAuthManifest</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:142:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:199:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12799,7 +12873,7 @@ sequenceDiagram
             >
               <h3>expectRejects</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:205:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:262:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12815,11 +12889,21 @@ sequenceDiagram
             <h2>src/host/secrets/trustedOAuthInfraEnvironment.ts</h2>
             <article
               class="item"
+              data-search="resolveTrustedOAuthInfraEnvironmentForUp src/host/secrets/trustedOAuthInfraEnvironment.ts "
+            >
+              <h3>resolveTrustedOAuthInfraEnvironmentForUp</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:32:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="resolveTrustedOAuthInfraEnvironment src/host/secrets/trustedOAuthInfraEnvironment.ts "
             >
               <h3>resolveTrustedOAuthInfraEnvironment</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:14:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:55:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12829,7 +12913,7 @@ sequenceDiagram
             >
               <h3>readCurrentManifest</h3>
               <p class="muted">
-                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:71:1</code>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:117:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -12845,17 +12929,54 @@ sequenceDiagram
             <h2>src/host/studioInfra.e2e.test.ts</h2>
             <article class="item" data-search="createWorkspace src/host/studioInfra.e2e.test.ts ">
               <h3>createWorkspace</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:151:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:164:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createE2eProject src/host/studioInfra.e2e.test.ts ">
               <h3>createE2eProject</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:159:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:172:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="upThroughStudio src/host/studioInfra.e2e.test.ts ">
               <h3>upThroughStudio</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:224:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:237:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="saveFakeOAuthCredentialsToVault src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>saveFakeOAuthCredentialsToVault</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:251:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createOAuthSecretResolver src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>createOAuthSecretResolver</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:303:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createUnavailableSecretResolver src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>createUnavailableSecretResolver</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:315:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveGeneratedDbUrl src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>resolveGeneratedDbUrl</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:328:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="escapeSqlLiteral src/host/studioInfra.e2e.test.ts ">
+              <h3>escapeSqlLiteral</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:352:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12863,7 +12984,7 @@ sequenceDiagram
               data-search="expectProfileOwnsNamespaces src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectProfileOwnsNamespaces</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:246:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:356:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12871,7 +12992,7 @@ sequenceDiagram
               data-search="expectProfileExists src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectProfileExists</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:260:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:370:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12879,7 +13000,7 @@ sequenceDiagram
               data-search="expectProfileDeleted src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectProfileDeleted</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:265:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:375:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12887,7 +13008,7 @@ sequenceDiagram
               data-search="expectNoHostSupabaseComposeContainersFor src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectNoHostSupabaseComposeContainersFor</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:270:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:380:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12895,7 +13016,7 @@ sequenceDiagram
               data-search="expectOAuthRuntimeSecret src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectOAuthRuntimeSecret</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:280:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:390:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12903,22 +13024,22 @@ sequenceDiagram
               data-search="expectForwardStatus src/host/studioInfra.e2e.test.ts "
             >
               <h3>expectForwardStatus</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:304:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:414:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="expectReachable src/host/studioInfra.e2e.test.ts ">
               <h3>expectReachable</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:324:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:434:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="destroyIfPresent src/host/studioInfra.e2e.test.ts ">
               <h3>destroyIfPresent</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:330:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:440:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="removeDockerImage src/host/studioInfra.e2e.test.ts ">
               <h3>removeDockerImage</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:353:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:463:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12926,7 +13047,7 @@ sequenceDiagram
               data-search="reserveHostPortSets src/host/studioInfra.e2e.test.ts "
             >
               <h3>reserveHostPortSets</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:357:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:467:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12934,22 +13055,22 @@ sequenceDiagram
               data-search="listenOnEphemeralPort src/host/studioInfra.e2e.test.ts "
             >
               <h3>listenOnEphemeralPort</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:384:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:494:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="closeServer src/host/studioInfra.e2e.test.ts ">
               <h3>closeServer</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:396:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:506:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="decodeBase64 src/host/studioInfra.e2e.test.ts ">
               <h3>decodeBase64</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:405:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:515:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createManifest src/host/studioInfra.e2e.test.ts ">
               <h3>createManifest</h3>
-              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:410:1</code></p>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:520:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

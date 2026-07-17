@@ -11,6 +11,47 @@ export interface TrustedOAuthSecretResolver {
   }): Promise<SecretStoreResult<SecretPayload>>;
 }
 
+export type TrustedOAuthInfraEnvironmentForUpResult =
+  | {
+      readonly deferred: false;
+      readonly env: Record<string, string | undefined>;
+    }
+  | {
+      readonly deferred: true;
+      readonly env: Record<string, string | undefined>;
+      readonly reason: string;
+    };
+
+class TrustedOAuthSecretStoreUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TrustedOAuthSecretStoreUnavailableError';
+  }
+}
+
+export async function resolveTrustedOAuthInfraEnvironmentForUp(args: {
+  readonly projectId: string;
+  readonly projectManager: Pick<ProjectManager, 'getStudioManifest' | 'getProjectManifest'>;
+  readonly workspaceRoot: string;
+  readonly secretResolver?: TrustedOAuthSecretResolver;
+}): Promise<TrustedOAuthInfraEnvironmentForUpResult> {
+  try {
+    return {
+      deferred: false,
+      env: await resolveTrustedOAuthInfraEnvironment(args),
+    };
+  } catch (error) {
+    if (error instanceof TrustedOAuthSecretStoreUnavailableError) {
+      return {
+        deferred: true,
+        env: {},
+        reason: error.message,
+      };
+    }
+    throw error;
+  }
+}
+
 export async function resolveTrustedOAuthInfraEnvironment(args: {
   readonly projectId: string;
   readonly projectManager: Pick<ProjectManager, 'getStudioManifest' | 'getProjectManifest'>;
@@ -41,6 +82,11 @@ export async function resolveTrustedOAuthInfraEnvironment(args: {
       ref: provider.credentialsRef,
     });
     if (!result.ok) {
+      if (result.error.code === 'unavailable') {
+        throw new TrustedOAuthSecretStoreUnavailableError(
+          `Trusted OAuth secret store is unavailable for provider '${provider.id}' at '${provider.credentialsRef}': ${result.error.message}`,
+        );
+      }
       throw new Error(
         `Failed to resolve trusted OAuth credentials for provider '${provider.id}' at '${provider.credentialsRef}': ${result.error.message}`,
       );

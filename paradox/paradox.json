@@ -463,7 +463,7 @@
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/resolveMutations.ts",
-        "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "src/host/orchestrator/studioInfraUp.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/utils/trimOutput.ts",
         "src/host/utils/workspaceRoot.ts"
@@ -900,6 +900,16 @@
       "exports": ["ProjectScaffolder"]
     },
     {
+      "path": "src/host/orchestrator/studioInfraUp.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      ],
+      "exports": ["StudioInfraUpResult", "upProjectInfrastructure"]
+    },
+    {
       "path": "src/host/orchestrator/templates.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/templates.ts"],
@@ -985,7 +995,12 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/secrets/projectSecretService.ts"
       ],
-      "exports": ["resolveTrustedOAuthInfraEnvironment", "TrustedOAuthSecretResolver"]
+      "exports": [
+        "resolveTrustedOAuthInfraEnvironment",
+        "resolveTrustedOAuthInfraEnvironmentForUp",
+        "TrustedOAuthInfraEnvironmentForUpResult",
+        "TrustedOAuthSecretResolver"
+      ]
     },
     {
       "path": "src/host/studioInfra.e2e.test.ts",
@@ -993,6 +1008,7 @@
       "dependencies": [
         "src/host/orchestrator/infraRuntime.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/studioInfraUp.ts",
         "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       ],
       "exports": []
@@ -5939,7 +5955,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 27,
+        "line": 26,
         "column": 1
       }
     },
@@ -5948,7 +5964,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 36,
+        "line": 35,
         "column": 1
       }
     },
@@ -5957,7 +5973,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 58,
+        "line": 57,
         "column": 1
       }
     },
@@ -5966,7 +5982,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 68,
+        "line": 67,
         "column": 1
       }
     },
@@ -5975,17 +5991,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 82,
+        "line": 81,
         "column": 1
-      }
-    },
-    {
-      "name": "upProjectInfrastructure",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 105,
-        "column": 3
       }
     },
     {
@@ -5993,7 +6000,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 679,
+        "line": 639,
         "column": 1
       }
     },
@@ -6002,7 +6009,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 693,
+        "line": 653,
         "column": 1
       }
     },
@@ -7474,6 +7481,15 @@
       }
     },
     {
+      "name": "upProjectInfrastructure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/studioInfraUp.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
       "name": "serializeStringLiteral",
       "description": null,
       "sourceLocation": {
@@ -7802,7 +7818,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 119,
+        "line": 176,
         "column": 1
       }
     },
@@ -7811,7 +7827,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 126,
+        "line": 183,
         "column": 1
       }
     },
@@ -7820,7 +7836,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 132,
+        "line": 189,
         "column": 1
       }
     },
@@ -7829,7 +7845,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 142,
+        "line": 199,
         "column": 1
       }
     },
@@ -7838,7 +7854,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 205,
+        "line": 262,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTrustedOAuthInfraEnvironmentForUp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "line": 32,
         "column": 1
       }
     },
@@ -7847,7 +7872,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
-        "line": 14,
+        "line": 55,
         "column": 1
       }
     },
@@ -7856,7 +7881,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
-        "line": 71,
+        "line": 117,
         "column": 1
       }
     },
@@ -7865,7 +7890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 151,
+        "line": 164,
         "column": 1
       }
     },
@@ -7874,7 +7899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 159,
+        "line": 172,
         "column": 1
       }
     },
@@ -7883,7 +7908,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 224,
+        "line": 237,
+        "column": 1
+      }
+    },
+    {
+      "name": "saveFakeOAuthCredentialsToVault",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 251,
+        "column": 1
+      }
+    },
+    {
+      "name": "createOAuthSecretResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 303,
+        "column": 1
+      }
+    },
+    {
+      "name": "createUnavailableSecretResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 315,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveGeneratedDbUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 328,
+        "column": 1
+      }
+    },
+    {
+      "name": "escapeSqlLiteral",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 352,
         "column": 1
       }
     },
@@ -7892,7 +7962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 246,
+        "line": 356,
         "column": 1
       }
     },
@@ -7901,7 +7971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 260,
+        "line": 370,
         "column": 1
       }
     },
@@ -7910,7 +7980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 265,
+        "line": 375,
         "column": 1
       }
     },
@@ -7919,7 +7989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 270,
+        "line": 380,
         "column": 1
       }
     },
@@ -7928,7 +7998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 280,
+        "line": 390,
         "column": 1
       }
     },
@@ -7937,7 +8007,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 304,
+        "line": 414,
         "column": 1
       }
     },
@@ -7946,7 +8016,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 324,
+        "line": 434,
         "column": 1
       }
     },
@@ -7955,7 +8025,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 330,
+        "line": 440,
         "column": 1
       }
     },
@@ -7964,7 +8034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 353,
+        "line": 463,
         "column": 1
       }
     },
@@ -7973,7 +8043,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 357,
+        "line": 467,
         "column": 1
       }
     },
@@ -7982,7 +8052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 384,
+        "line": 494,
         "column": 1
       }
     },
@@ -7991,7 +8061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 396,
+        "line": 506,
         "column": 1
       }
     },
@@ -8000,7 +8070,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 405,
+        "line": 515,
         "column": 1
       }
     },
@@ -8009,7 +8079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 410,
+        "line": 520,
         "column": 1
       }
     },
@@ -11456,6 +11526,11 @@
       },
       {
         "fromPath": "src/host/studioInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/studioInfraUp.ts",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/studioInfra.e2e.test.ts",
         "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
@@ -11661,7 +11736,7 @@
       },
       {
         "fromPath": "src/host/http/server.ts",
-        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "toPath": "src/host/orchestrator/studioInfraUp.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -11923,6 +11998,21 @@
         "fromPath": "src/host/orchestrator/scaffolder.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/studioInfraUp.ts",
+        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/studioInfraUp.ts",
+        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/studioInfraUp.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
       },
       {
         "fromPath": "src/host/orchestrator/templates.test.ts",
@@ -16834,8 +16924,20 @@
       },
       {
         "fromSymbol": "src/host/studioInfra.e2e.test.ts",
-        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
-        "callExpression": "resolveTrustedOAuthInfraEnvironment",
+        "toSymbol": "createOAuthSecretResolver",
+        "callExpression": "createOAuthSecretResolver",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "saveFakeOAuthCredentialsToVault",
+        "callExpression": "saveFakeOAuthCredentialsToVault",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -16848,12 +16950,6 @@
         "fromSymbol": "src/host/studioInfra.e2e.test.ts",
         "toSymbol": "expectNoHostSupabaseComposeContainersFor",
         "callExpression": "expectNoHostSupabaseComposeContainersFor",
-        "sourcePath": "src/host/studioInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -16890,6 +16986,12 @@
         "fromSymbol": "src/host/studioInfra.e2e.test.ts",
         "toSymbol": "runProjectInfraScript",
         "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "createUnavailableSecretResolver",
+        "callExpression": "createUnavailableSecretResolver",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -16984,14 +17086,38 @@
       },
       {
         "fromSymbol": "upThroughStudio",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
-        "fromSymbol": "upThroughStudio",
-        "toSymbol": "registerProjectInfraPortForwardOwner",
-        "callExpression": "registerProjectInfraPortForwardOwner",
+        "fromSymbol": "saveFakeOAuthCredentialsToVault",
+        "toSymbol": "resolveGeneratedDbUrl",
+        "callExpression": "resolveGeneratedDbUrl",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "saveFakeOAuthCredentialsToVault",
+        "toSymbol": "escapeSqlLiteral",
+        "callExpression": "escapeSqlLiteral",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "saveFakeOAuthCredentialsToVault",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "saveFakeOAuthCredentialsToVault",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedDbUrl",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -18300,36 +18426,6 @@
         "fromSymbol": "origin",
         "toSymbol": "cb",
         "callExpression": "cb",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "regenerateInfrastructure",
-        "callExpression": "projectManager.regenerateInfrastructure",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "getInfrastructureStatus",
-        "callExpression": "projectManager.getInfrastructureStatus",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
-        "callExpression": "resolveTrustedOAuthInfraEnvironment",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "registerProjectInfraPortForwardOwner",
-        "callExpression": "registerProjectInfraPortForwardOwner",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -21219,6 +21315,36 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "regenerateInfrastructure",
+        "callExpression": "args.projectManager.regenerateInfrastructure",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "getInfrastructureStatus",
+        "callExpression": "args.projectManager.getInfrastructureStatus",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironmentForUp",
+        "callExpression": "resolveTrustedOAuthInfraEnvironmentForUp",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "registerProjectInfraPortForwardOwner",
+        "callExpression": "registerProjectInfraPortForwardOwner",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -21832,6 +21958,12 @@
       },
       {
         "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironmentForUp",
+        "callExpression": "resolveTrustedOAuthInfraEnvironmentForUp",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
         "toSymbol": "createInvalidSecretResolver",
         "callExpression": "createInvalidSecretResolver",
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
@@ -21847,6 +21979,12 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "resolveTrustedOAuthInfraEnvironmentForUp",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "callExpression": "resolveTrustedOAuthInfraEnvironment",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
         "fromSymbol": "resolveTrustedOAuthInfraEnvironment",

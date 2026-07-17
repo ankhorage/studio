@@ -24,6 +24,8 @@ The host binds to loopback by default, validates project IDs, rejects paths outs
 
 For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Minikube projects. Each app slug maps to its own Minikube profile, generated Infra owns the `app`, `supabase`, and provider namespaces, and generated Infra owns `kubectl port-forward` process lifecycle through `infra/minikube/scripts/port-forward.sh`. Studio orchestrates generated lifecycle scripts and, on shutdown, asks registered projects' generated `port-forward.sh stop all` scripts to stop forwards; it does not run host Supabase or terminate arbitrary forward PIDs itself.
 
+For OAuth-enabled projects, Studio pre-resolves trusted credentials into the `up.sh` child process environment when the local secret store is reachable. If the local secret store is unavailable because generated Infra is stopped, Studio runs `up.sh` without those ephemeral values and lets generated Infra restart Postgres, bootstrap Vault, resolve `credentialsRef` entries, and validate runtime OAuth before rollout.
+
 ## Public API
 
 Host consumers import the supported service boundary from `@ankhorage/studio/host`. Internal layout, manifest-system, scaffolding, and process helpers remain private implementation details.

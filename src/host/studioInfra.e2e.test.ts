@@ -10,12 +10,12 @@ import { expect, test } from 'bun:test';
 
 import {
   ensureProjectInfraPortForward,
-  registerProjectInfraPortForwardOwner,
   runProjectInfraScript,
   stopAllProjectInfraPortForwards,
 } from './orchestrator/infraRuntime';
 import { ProjectManager } from './orchestrator/projectManager';
-import { resolveTrustedOAuthInfraEnvironment } from './secrets/trustedOAuthInfraEnvironment';
+import { upProjectInfrastructure } from './orchestrator/studioInfraUp';
+import type { TrustedOAuthSecretResolver } from './secrets/trustedOAuthInfraEnvironment';
 
 const execFile = promisify(execFileCallback);
 const infraE2eTest = process.env.ANKH_STUDIO_INFRA_E2E === '1' ? test : test.skip;
@@ -35,6 +35,11 @@ interface E2eProject {
   readonly projectPath: string;
   readonly ports: HostPorts;
 }
+
+const fakeGoogleOAuthCredentials = {
+  clientId: 'fake-google-client-id',
+  clientSecret: 'fake-google-client-secret',
+} as const;
 
 infraE2eTest(
   'orchestrates generated Infra 1.0.0 for two Supabase-backed projects',
@@ -61,23 +66,18 @@ infraE2eTest(
     });
 
     try {
-      await upThroughStudio({ workspaceRoot, project: first, oauthEnv: {} });
-      const oauthEnv = await resolveTrustedOAuthInfraEnvironment({
-        projectId: second.projectId,
+      await upThroughStudio({ workspaceRoot, projectManager, project: first });
+      const initialSecondUp = await upThroughStudio({
         workspaceRoot,
         projectManager,
-        secretResolver: {
-          resolve: () =>
-            Promise.resolve({
-              ok: true,
-              data: {
-                clientId: 'fake-google-client-id',
-                clientSecret: 'fake-google-client-secret',
-              },
-            }),
-        },
+        project: second,
+        secretResolver: createOAuthSecretResolver(fakeGoogleOAuthCredentials),
       });
-      await upThroughStudio({ workspaceRoot, project: second, oauthEnv });
+      expect(initialSecondUp.trustedOAuth.deferred).toBe(false);
+      await saveFakeOAuthCredentialsToVault({
+        workspaceRoot,
+        projectId: second.projectId,
+      });
 
       await expectProfileOwnsNamespaces(first.projectId);
       await expectProfileOwnsNamespaces(second.projectId);
@@ -85,12 +85,12 @@ infraE2eTest(
       expect(first.ports.app).not.toBe(second.ports.app);
 
       await expectOAuthRuntimeSecret(second.projectId, {
-        clientId: 'fake-google-client-id',
-        clientSecret: 'fake-google-client-secret',
+        clientId: fakeGoogleOAuthCredentials.clientId,
+        clientSecret: fakeGoogleOAuthCredentials.clientSecret,
       });
       expect(
         await readFile(path.join(second.projectPath, 'infra', 'minikube', '.env'), 'utf8'),
-      ).not.toContain('fake-google-client-secret');
+      ).not.toContain(fakeGoogleOAuthCredentials.clientSecret);
 
       const firstLaunch = await ensureProjectInfraPortForward({
         rootPath: workspaceRoot,
@@ -120,9 +120,22 @@ infraE2eTest(
         target: 'minikube',
         script: 'down',
       });
-      await upThroughStudio({ workspaceRoot, project: second, oauthEnv });
+      const restartedSecondUp = await upThroughStudio({
+        workspaceRoot,
+        projectManager,
+        project: second,
+        secretResolver: createUnavailableSecretResolver(),
+      });
+      expect(restartedSecondUp.trustedOAuth.deferred).toBe(true);
       await expectReachable(firstLaunch.url, first.projectId);
       await expectReachable(`http://127.0.0.1:${second.ports.app}`, second.projectId);
+      await expectOAuthRuntimeSecret(second.projectId, {
+        clientId: fakeGoogleOAuthCredentials.clientId,
+        clientSecret: fakeGoogleOAuthCredentials.clientSecret,
+      });
+      expect(
+        await readFile(path.join(second.projectPath, 'infra', 'minikube', '.env'), 'utf8'),
+      ).not.toContain(fakeGoogleOAuthCredentials.clientSecret);
 
       await projectManager.deleteProject(first.projectId);
       await expectProfileDeleted(first.projectId);
@@ -223,24 +236,121 @@ async function createE2eProject(args: {
 
 async function upThroughStudio(args: {
   readonly workspaceRoot: string;
+  readonly projectManager: ProjectManager;
   readonly project: E2eProject;
-  readonly oauthEnv: Record<string, string | undefined>;
+  readonly secretResolver?: TrustedOAuthSecretResolver;
+}) {
+  return upProjectInfrastructure({
+    workspaceRoot: args.workspaceRoot,
+    projectManager: args.projectManager,
+    projectId: args.project.projectId,
+    ...(args.secretResolver ? { secretResolver: args.secretResolver } : {}),
+  });
+}
+
+async function saveFakeOAuthCredentialsToVault(args: {
+  readonly workspaceRoot: string;
+  readonly projectId: string;
 }): Promise<void> {
-  await runProjectInfraScript({
-    rootPath: args.workspaceRoot,
-    projectId: args.project.projectId,
-    target: 'minikube',
-    script: 'up',
-    env: {
-      ...process.env,
-      ...args.oauthEnv,
-    },
+  const dbUrl = await resolveGeneratedDbUrl(args.workspaceRoot, args.projectId);
+  const secretRef = 'auth/oauth/google';
+  const payload = JSON.stringify(fakeGoogleOAuthCredentials);
+  const sql = `
+with created as (
+  select vault.create_secret('${escapeSqlLiteral(payload)}', '${escapeSqlLiteral(
+    secretRef,
+  )}', 'Generated Studio Infra E2E OAuth credential')::uuid as id
+)
+insert into ankh_secret_store.secret_metadata (
+  project_id, environment, secret_ref, vault_secret_id, kind, provider, configured_fields
+)
+select '${escapeSqlLiteral(args.projectId)}', 'local', '${escapeSqlLiteral(
+    secretRef,
+  )}', id, 'oauth', 'google', array['clientId', 'clientSecret']::text[]
+from created
+on conflict (project_id, environment, secret_ref) do update
+  set vault_secret_id = excluded.vault_secret_id,
+      kind = excluded.kind,
+      provider = excluded.provider,
+      configured_fields = excluded.configured_fields,
+      updated_at = now();
+`;
+  await execFile('psql', [dbUrl, '-v', 'ON_ERROR_STOP=1', '-q', '-c', sql], {
+    timeout: 60_000,
   });
-  await registerProjectInfraPortForwardOwner({
-    rootPath: args.workspaceRoot,
-    projectId: args.project.projectId,
-    target: 'minikube',
-  });
+
+  const resolved = await execFile(
+    'psql',
+    [
+      dbUrl,
+      '-v',
+      'ON_ERROR_STOP=1',
+      '-Atq',
+      '-c',
+      `select decrypted.decrypted_secret::jsonb ->> 'clientSecret'
+       from ankh_secret_store.secret_metadata metadata
+       join vault.decrypted_secrets decrypted on decrypted.id = metadata.vault_secret_id
+       where metadata.project_id = '${escapeSqlLiteral(args.projectId)}'
+         and metadata.environment = 'local'
+         and metadata.secret_ref = '${escapeSqlLiteral(secretRef)}'
+       limit 1;`,
+    ],
+    { timeout: 60_000 },
+  );
+  expect(resolved.stdout.trim()).toBe(fakeGoogleOAuthCredentials.clientSecret);
+}
+
+function createOAuthSecretResolver(
+  payload: typeof fakeGoogleOAuthCredentials,
+): TrustedOAuthSecretResolver {
+  return {
+    resolve: () =>
+      Promise.resolve({
+        ok: true,
+        data: payload,
+      }),
+  };
+}
+
+function createUnavailableSecretResolver(): TrustedOAuthSecretResolver {
+  return {
+    resolve: () =>
+      Promise.resolve({
+        ok: false,
+        error: {
+          code: 'unavailable',
+          message: 'local Supabase Vault is stopped',
+        },
+      }),
+  };
+}
+
+async function resolveGeneratedDbUrl(workspaceRoot: string, projectId: string): Promise<string> {
+  const infraRoot = path.join(workspaceRoot, 'apps', projectId, 'infra', 'minikube');
+  const env = new Map<string, string>();
+  for (const fileName of ['.env.example', '.env']) {
+    const filePath = path.join(infraRoot, fileName);
+    const content = await readFile(filePath, 'utf8').catch(() => '');
+    for (const line of content.split(/\r?\n/u)) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const index = trimmed.indexOf('=');
+      if (index <= 0) continue;
+      env.set(trimmed.slice(0, index).trim(), trimmed.slice(index + 1).trim());
+    }
+  }
+
+  const port = env.get('SUPABASE_DB_FORWARD_LOCAL_PORT');
+  const password = env.get('POSTGRES_PASSWORD');
+  if (!port || !password) {
+    throw new Error(`Generated Infra for ${projectId} did not provide DB port/password env.`);
+  }
+
+  return `postgres://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres?sslmode=disable`;
+}
+
+function escapeSqlLiteral(value: string): string {
+  return value.replace(/'/gu, "''");
 }
 
 async function expectProfileOwnsNamespaces(profile: string): Promise<void> {
