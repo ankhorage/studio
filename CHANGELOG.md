@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 0.6.7
+
+### Patch Changes
+
+- 39e9fbf: Align Studio project lifecycle ownership with `@ankhorage/infra` 1.0.0 generated slug-scoped Minikube infra.
+
+  Studio now delegates app-owned Minikube up/down/destroy/status and port-forward ownership to generated Infra scripts, injects trusted OAuth credentials into Infra Up as process environment only when the local trusted store is reachable, defers stopped-store bootstrap to generated Infra, and keeps deletion and shutdown cleanup aligned with generated lifecycle boundaries.
+
 ## 0.6.6
 
 ### Patch Changes
