@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.8
+
+### Patch Changes
+
+- 97600f8: Update INFRA to add app .env.local file required to connect to db
+
 ## 0.6.7
 
 ### Patch Changes
