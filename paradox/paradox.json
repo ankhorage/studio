@@ -463,7 +463,7 @@
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/resolveMutations.ts",
-        "src/host/secrets/projectSecretService.ts",
+        "src/host/secrets/trustedOAuthInfraEnvironment.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/utils/trimOutput.ts",
         "src/host/utils/workspaceRoot.ts"
@@ -864,6 +864,12 @@
       "exports": ["ProjectManager"]
     },
     {
+      "path": "src/host/orchestrator/projectManagerDeletion.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/projectManager.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/projectPaths.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -965,6 +971,31 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["resolveProjectSecretDatabaseUrl", "ResolveProjectSecretDatabaseUrlInput"]
+    },
+    {
+      "path": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/secrets/trustedOAuthInfraEnvironment.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/projectSecretService.ts"
+      ],
+      "exports": ["resolveTrustedOAuthInfraEnvironment", "TrustedOAuthSecretResolver"]
+    },
+    {
+      "path": "src/host/studioInfra.e2e.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/host/templateRegistry/index.ts",
@@ -5958,29 +5989,11 @@
       }
     },
     {
-      "name": "resolveTrustedOAuthInfraEnvironment",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 143,
-        "column": 3
-      }
-    },
-    {
-      "name": "readCurrentManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 184,
-        "column": 3
-      }
-    },
-    {
       "name": "startStudioHostServer",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 724,
+        "line": 679,
         "column": 1
       }
     },
@@ -5989,7 +6002,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 738,
+        "line": 693,
         "column": 1
       }
     },
@@ -7002,6 +7015,33 @@
       }
     },
     {
+      "name": "createGeneratedForwardProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
+        "line": 261,
+        "column": 1
+      }
+    },
+    {
+      "name": "writePortForwardScript",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
+        "line": 273,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRejects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
+        "line": 288,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveProjectInfraScriptPath",
       "description": null,
       "sourceLocation": {
@@ -7078,7 +7118,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 179,
+        "line": 186,
         "column": 1
       }
     },
@@ -7087,7 +7127,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 201,
+        "line": 208,
         "column": 1
       }
     },
@@ -7096,7 +7136,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 209,
+        "line": 216,
         "column": 1
       }
     },
@@ -7105,7 +7145,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 258,
+        "line": 265,
         "column": 1
       }
     },
@@ -7267,7 +7307,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 464,
+        "line": 483,
         "column": 1
       }
     },
@@ -7276,7 +7316,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 473,
+        "line": 492,
         "column": 1
       }
     },
@@ -7285,7 +7325,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 484,
+        "line": 503,
         "column": 1
       }
     },
@@ -7294,7 +7334,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 493,
+        "line": 512,
         "column": 1
       }
     },
@@ -7303,7 +7343,43 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 502,
+        "line": 521,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspace",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRejects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "line": 161,
         "column": 1
       }
     },
@@ -7718,6 +7794,222 @@
       "sourceLocation": {
         "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
         "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectManager",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "createSecretResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "line": 126,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInvalidSecretResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "createOAuthManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRejects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "line": 205,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTrustedOAuthInfraEnvironment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCurrentManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspace",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 151,
+        "column": 1
+      }
+    },
+    {
+      "name": "createE2eProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 159,
+        "column": 1
+      }
+    },
+    {
+      "name": "upThroughStudio",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 224,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectProfileOwnsNamespaces",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectProfileExists",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectProfileDeleted",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 265,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectNoHostSupabaseComposeContainersFor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 270,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectOAuthRuntimeSecret",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 280,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectForwardStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 304,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectReachable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 324,
+        "column": 1
+      }
+    },
+    {
+      "name": "destroyIfPresent",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 330,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeDockerImage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 353,
+        "column": 1
+      }
+    },
+    {
+      "name": "reserveHostPortSets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 357,
+        "column": 1
+      }
+    },
+    {
+      "name": "listenOnEphemeralPort",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 384,
+        "column": 1
+      }
+    },
+    {
+      "name": "closeServer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 396,
+        "column": 1
+      }
+    },
+    {
+      "name": "decodeBase64",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 405,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioInfra.e2e.test.ts",
+        "line": 410,
         "column": 1
       }
     },
@@ -11153,6 +11445,21 @@
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
       },
       {
+        "fromPath": "src/host/studioInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/studioInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/studioInfra.e2e.test.ts",
+        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
         "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/actionSuppression.ts",
         "sourcePath": "src/runtime/index.ts"
@@ -11354,7 +11661,7 @@
       },
       {
         "fromPath": "src/host/http/server.ts",
-        "toPath": "src/host/secrets/projectSecretService.ts",
+        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -11573,6 +11880,11 @@
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/projectStore.ts",
         "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
@@ -11651,6 +11963,21 @@
         "fromPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts",
         "toPath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
         "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      },
+      {
+        "fromPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
         "fromPath": "src/host/zoraExtensions/index.ts",
@@ -16458,6 +16785,348 @@
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
       },
       {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "infraE2eTest",
+        "callExpression": "infraE2eTest",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "reserveHostPortSets",
+        "callExpression": "reserveHostPortSets",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "createWorkspace",
+        "callExpression": "createWorkspace",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "createE2eProject",
+        "callExpression": "createE2eProject",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "upThroughStudio",
+        "callExpression": "upThroughStudio",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "callExpression": "resolveTrustedOAuthInfraEnvironment",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectProfileOwnsNamespaces",
+        "callExpression": "expectProfileOwnsNamespaces",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectNoHostSupabaseComposeContainersFor",
+        "callExpression": "expectNoHostSupabaseComposeContainersFor",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectOAuthRuntimeSecret",
+        "callExpression": "expectOAuthRuntimeSecret",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "ensureProjectInfraPortForward",
+        "callExpression": "ensureProjectInfraPortForward",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectReachable",
+        "callExpression": "expectReachable",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectForwardStatus",
+        "callExpression": "expectForwardStatus",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "deleteProject",
+        "callExpression": "projectManager.deleteProject",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectProfileDeleted",
+        "callExpression": "expectProfileDeleted",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "stopAllProjectInfraPortForwards",
+        "callExpression": "stopAllProjectInfraPortForwards",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "expectProfileExists",
+        "callExpression": "expectProfileExists",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "destroyIfPresent",
+        "callExpression": "destroyIfPresent",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "removeDockerImage",
+        "callExpression": "removeDockerImage",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "regenerateInfrastructure",
+        "callExpression": "args.projectManager.regenerateInfrastructure",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createE2eProject",
+        "toSymbol": "chmod",
+        "callExpression": "chmod",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "upThroughStudio",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "upThroughStudio",
+        "toSymbol": "registerProjectInfraPortForwardOwner",
+        "callExpression": "registerProjectInfraPortForwardOwner",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileOwnsNamespaces",
+        "toSymbol": "expectProfileExists",
+        "callExpression": "expectProfileExists",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileOwnsNamespaces",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileOwnsNamespaces",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileExists",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileExists",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileDeleted",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectProfileDeleted",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectNoHostSupabaseComposeContainersFor",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectNoHostSupabaseComposeContainersFor",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectOAuthRuntimeSecret",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectOAuthRuntimeSecret",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectOAuthRuntimeSecret",
+        "toSymbol": "decodeBase64",
+        "callExpression": "decodeBase64",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectForwardStatus",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectForwardStatus",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "expectReachable",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "destroyIfPresent",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "destroyIfPresent",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "removeDockerImage",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "listenOnEphemeralPort",
+        "callExpression": "listenOnEphemeralPort",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "listenOnEphemeralPort",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioInfra.e2e.test.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
         "fromSymbol": "createStudioActionSuppressionConfig",
         "toSymbol": "shouldSuppressStudioRuntimeActions",
         "callExpression": "shouldSuppressStudioRuntimeActions",
@@ -17664,30 +18333,6 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
-        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
-        "toSymbol": "readCurrentManifest",
-        "callExpression": "readCurrentManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
-        "toSymbol": "resolve",
-        "callExpression": "secretService.resolve",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "readCurrentManifest",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "projectManager.getStudioManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "readCurrentManifest",
-        "toSymbol": "getProjectManifest",
-        "callExpression": "projectManager.getProjectManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
         "fromSymbol": "src/host/http/server.ts",
         "toSymbol": "listProjects",
         "callExpression": "projectManager.listProjects",
@@ -18612,6 +19257,72 @@
         "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "writePortForwardScript",
+        "callExpression": "writePortForwardScript",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "expectRejects",
+        "callExpression": "expectRejects",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "createGeneratedForwardProject",
+        "callExpression": "createGeneratedForwardProject",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "runProjectInfraScriptCapture",
+        "callExpression": "runProjectInfraScriptCapture",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "runProjectInfraScript",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedForwardProject",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedForwardProject",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedForwardProject",
+        "toSymbol": "writePortForwardScript",
+        "callExpression": "writePortForwardScript",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "writePortForwardScript",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
+      },
+      {
         "fromSymbol": "resolveProjectInfraScriptPath",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
@@ -18727,14 +19438,14 @@
       },
       {
         "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "readSimpleEnvMap",
-        "callExpression": "readSimpleEnvMap",
+        "toSymbol": "exists",
+        "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
         "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "exists",
-        "callExpression": "exists",
+        "toSymbol": "readSimpleEnvMap",
+        "callExpression": "readSimpleEnvMap",
         "sourcePath": "src/host/orchestrator/infraRuntime.ts"
       },
       {
@@ -19513,14 +20224,14 @@
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "cleanupProjectGeneratedAppImage",
-        "callExpression": "cleanupProjectGeneratedAppImage",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "this.dependencies.runProjectInfraScript",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "cleanupProjectGeneratedAppImage",
+        "callExpression": "this.dependencies.cleanupProjectGeneratedAppImage",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -20014,6 +20725,102 @@
         "toSymbol": "resolveGeneratedStorageProvider",
         "callExpression": "resolveGeneratedStorageProvider",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "createWorkspace",
+        "callExpression": "createWorkspace",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "createProject",
+        "callExpression": "createProject",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "deleteProject",
+        "callExpression": "manager.deleteProject",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "expectRejects",
+        "callExpression": "expectRejects",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspace",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectManagerDeletion.test.ts"
       },
       {
         "fromSymbol": "getProjectPath",
@@ -20980,6 +21787,90 @@
         "toSymbol": "isMissingFileError",
         "callExpression": "isMissingFileError",
         "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "createOAuthManifest",
+        "callExpression": "createOAuthManifest",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "callExpression": "resolveTrustedOAuthInfraEnvironment",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "createProjectManager",
+        "callExpression": "createProjectManager",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "createSecretResolver",
+        "callExpression": "createSecretResolver",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "expectRejects",
+        "callExpression": "expectRejects",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
+        "toSymbol": "createInvalidSecretResolver",
+        "callExpression": "createInvalidSecretResolver",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "expectRejects",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+      },
+      {
+        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "toSymbol": "readCurrentManifest",
+        "callExpression": "readCurrentManifest",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      },
+      {
+        "fromSymbol": "resolveTrustedOAuthInfraEnvironment",
+        "toSymbol": "resolve",
+        "callExpression": "secretResolver.resolve",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      },
+      {
+        "fromSymbol": "readCurrentManifest",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "projectManager.getStudioManifest",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
+      },
+      {
+        "fromSymbol": "readCurrentManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "projectManager.getProjectManifest",
+        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
         "fromSymbol": "createTemplateManifest",

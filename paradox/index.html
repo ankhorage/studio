@@ -346,7 +346,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/host/http/server.ts">
                 src/host/http/server.ts
-                <small>10 functions</small>
+                <small>8 functions</small>
               </button>
             </li>
             <li>
@@ -619,6 +619,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/infraRuntime.test.ts"
+              >
+                src/host/orchestrator/infraRuntime.test.ts
+                <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/infraRuntime.ts"
               >
                 src/host/orchestrator/infraRuntime.ts
@@ -663,6 +673,16 @@
               >
                 src/host/orchestrator/projectManager.ts
                 <small>5 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/orchestrator/projectManagerDeletion.test.ts"
+              >
+                src/host/orchestrator/projectManagerDeletion.test.ts
+                <small>4 functions</small>
               </button>
             </li>
             <li>
@@ -773,6 +793,36 @@
               >
                 src/host/secrets/resolveProjectSecretDatabaseUrl.ts
                 <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+              >
+                src/host/secrets/trustedOAuthInfraEnvironment.test.ts
+                <small>5 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/secrets/trustedOAuthInfraEnvironment.ts"
+              >
+                src/host/secrets/trustedOAuthInfraEnvironment.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/studioInfra.e2e.test.ts"
+              >
+                src/host/studioInfra.e2e.test.ts
+                <small>17 functions</small>
               </button>
             </li>
             <li>
@@ -1149,7 +1199,7 @@
             <div class="summary">
               <div><strong>82</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>162</strong><span class="muted">modules</span></div>
+              <div><strong>166</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1600,7 +1650,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/secrets/projectSecretService.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
+              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/secrets/trustedOAuthInfraEnvironment.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
             >
               <h3>src/host/http/server.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1610,7 +1660,7 @@
                 <code>src/host/orchestrator/moduleManager.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/orchestrator/resolveMutations.ts</code>,
-                <code>src/host/secrets/projectSecretService.ts</code>,
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>,
                 <code>src/host/utils/trimOutput.ts</code>,
                 <code>src/host/utils/workspaceRoot.ts</code>
@@ -2156,6 +2206,17 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/projectManagerDeletion.test.ts src/host/orchestrator/projectManager.ts"
+            >
+              <h3>src/host/orchestrator/projectManagerDeletion.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/projectPaths.ts assertProjectId getAppsRoot getProjectPath"
             >
               <h3>src/host/orchestrator/projectPaths.ts</h3>
@@ -2305,6 +2366,46 @@
                 <strong>Exports:</strong> <code>resolveProjectSecretDatabaseUrl</code>,
                 <code>ResolveProjectSecretDatabaseUrlInput</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/trustedOAuthInfraEnvironment.test.ts src/host/secrets/trustedOAuthInfraEnvironment.ts"
+            >
+              <h3>src/host/secrets/trustedOAuthInfraEnvironment.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/secrets/trustedOAuthInfraEnvironment.ts src/host/orchestrator/projectManager.ts src/host/secrets/projectSecretService.ts resolveTrustedOAuthInfraEnvironment TrustedOAuthSecretResolver"
+            >
+              <h3>src/host/secrets/trustedOAuthInfraEnvironment.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/secrets/projectSecretService.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>resolveTrustedOAuthInfraEnvironment</code>,
+                <code>TrustedOAuthSecretResolver</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/studioInfra.e2e.test.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectManager.ts src/host/secrets/trustedOAuthInfraEnvironment.ts"
+            >
+              <h3>src/host/studioInfra.e2e.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/infraRuntime.ts</code>,
+                <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -6657,7 +6758,7 @@
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_secrets_projectSecretService_ts
+                --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
                 module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -6873,6 +6974,11 @@
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectManagerDeletion_test_ts
+                module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -6929,6 +7035,25 @@
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt;
+                module_src_host_secrets_projectSecretService_ts
+                module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_studioInfra_e2e_test_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts module_src_host_studioInfra_e2e_test_ts
+                --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -7287,7 +7412,7 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
-  module_src_host_http_server_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_server_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -7439,6 +7564,9 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerDeletion_test_ts
+  module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
@@ -7479,6 +7607,18 @@ graph TD
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_studioInfra_e2e_test_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -7776,6 +7916,7 @@ graph TD
                 module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
+                module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
@@ -7788,6 +7929,9 @@ graph TD
                 module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+                module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -7936,7 +8080,7 @@ graph TD
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_server_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts module_src_host_http_server_ts
-                --&gt; module_src_host_secrets_projectSecretService_ts
+                --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
                 module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -8055,8 +8199,11 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
-                module_src_host_zoraExtensions_index_ts module_src_host_orchestrator_projectStore_ts
-                --&gt; module_src_host_orchestrator_projectPaths_ts
+                module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_orchestrator_projectStore_ts --&gt;
+                module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_resolveMutations_ts --&gt;
                 module_src_host_modules_catalog_ts module_src_host_orchestrator_resolveMutations_ts
                 --&gt; module_src_host_modules_layout_ts module_src_host_orchestrator_scaffolder_ts
@@ -8084,6 +8231,17 @@ graph TD
                 module_src_projectSecretUsage_ts
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt;
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt;
+                module_src_host_secrets_projectSecretService_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_orchestrator_infraRuntime_ts module_src_host_studioInfra_e2e_test_ts
+                --&gt; module_src_host_orchestrator_projectManager_ts
+                module_src_host_studioInfra_e2e_test_ts --&gt;
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_zoraExtensions_index_ts --&gt;
                 module_src_host_templateRegistry_index_ts module_src_index_test_ts --&gt;
                 module_src_index_ts module_src_insertModalModel_public_test_ts --&gt;
@@ -8237,6 +8395,7 @@ graph LR
   module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
+  module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
@@ -8249,6 +8408,9 @@ graph LR
   module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+  module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+  module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -8381,7 +8543,7 @@ graph LR
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
-  module_src_host_http_server_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_server_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
@@ -8449,6 +8611,7 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_layout_ts
@@ -8465,6 +8628,12 @@ graph LR
   module_src_host_secrets_projectSecretService_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
   module_src_host_secrets_projectSecretService_ts --&gt; module_src_projectSecretUsage_ts
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts --&gt; module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts --&gt; module_src_host_secrets_projectSecretService_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_zoraExtensions_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_insertModalModel_public_test_ts --&gt; module_src_index_ts
@@ -8612,6 +8781,7 @@ graph LR
                 module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
+                module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
@@ -8624,6 +8794,9 @@ graph LR
                 module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
                 module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+                module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+                module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+                module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -8991,6 +9164,7 @@ graph LR
   module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
+  module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
@@ -9003,6 +9177,9 @@ graph LR
   module_src_host_secrets_projectSecretService_ts[&quot;src/host/secrets/projectSecretService.ts&quot;]
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_test_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.test.ts&quot;]
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts[&quot;src/host/secrets/resolveProjectSecretDatabaseUrl.ts&quot;]
+  module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
+  module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
+  module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -10549,22 +10726,9 @@ sequenceDiagram
               <p class="muted"><code>src/host/http/server.ts:105:3</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article
-              class="item"
-              data-search="resolveTrustedOAuthInfraEnvironment src/host/http/server.ts "
-            >
-              <h3>resolveTrustedOAuthInfraEnvironment</h3>
-              <p class="muted"><code>src/host/http/server.ts:143:3</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="readCurrentManifest src/host/http/server.ts ">
-              <h3>readCurrentManifest</h3>
-              <p class="muted"><code>src/host/http/server.ts:184:3</code></p>
-              <p class="empty">No description available.</p>
-            </article>
             <article class="item" data-search="startStudioHostServer src/host/http/server.ts ">
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:724:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:679:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -10572,7 +10736,7 @@ sequenceDiagram
               data-search="formatRuntimeOutputForResponse src/host/http/server.ts "
             >
               <h3>formatRuntimeOutputForResponse</h3>
-              <p class="muted"><code>src/host/http/server.ts:738:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:693:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11730,6 +11894,40 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-orchestrator-infraruntime-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/infraRuntime.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/infraRuntime.test.ts</h2>
+            <article
+              class="item"
+              data-search="createGeneratedForwardProject src/host/orchestrator/infraRuntime.test.ts "
+            >
+              <h3>createGeneratedForwardProject</h3>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.test.ts:261:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writePortForwardScript src/host/orchestrator/infraRuntime.test.ts "
+            >
+              <h3>writePortForwardScript</h3>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.test.ts:273:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRejects src/host/orchestrator/infraRuntime.test.ts "
+            >
+              <h3>expectRejects</h3>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.test.ts:288:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-orchestrator-infraruntime-ts"
           class="view"
           data-view="src/host/orchestrator/infraRuntime.ts"
@@ -11806,7 +12004,7 @@ sequenceDiagram
               data-search="readSimpleEnvMap src/host/orchestrator/infraRuntime.ts "
             >
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:179:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:186:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11814,7 +12012,7 @@ sequenceDiagram
               data-search="parsePositivePort src/host/orchestrator/infraRuntime.ts "
             >
               <h3>parsePositivePort</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:201:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:208:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11822,12 +12020,12 @@ sequenceDiagram
               data-search="runShellScript src/host/orchestrator/infraRuntime.ts "
             >
               <h3>runShellScript</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:209:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:216:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="exists src/host/orchestrator/infraRuntime.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:258:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraRuntime.ts:265:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12008,17 +12206,17 @@ sequenceDiagram
               data-search="isStringRecord src/host/orchestrator/projectManager.ts "
             >
               <h3>isStringRecord</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:464:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:483:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="slugify src/host/orchestrator/projectManager.ts ">
               <h3>slugify</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:473:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:492:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="exists src/host/orchestrator/projectManager.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:484:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:503:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12026,7 +12224,7 @@ sequenceDiagram
               data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedAuthProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:493:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:512:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12034,7 +12232,57 @@ sequenceDiagram
               data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedStorageProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:502:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:521:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-orchestrator-projectmanagerdeletion-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/projectManagerDeletion.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/projectManagerDeletion.test.ts</h2>
+            <article
+              class="item"
+              data-search="createWorkspace src/host/orchestrator/projectManagerDeletion.test.ts "
+            >
+              <h3>createWorkspace</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectManagerDeletion.test.ts:82:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createProject src/host/orchestrator/projectManagerDeletion.test.ts "
+            >
+              <h3>createProject</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectManagerDeletion.test.ts:92:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createManifest src/host/orchestrator/projectManagerDeletion.test.ts "
+            >
+              <h3>createManifest</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectManagerDeletion.test.ts:105:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRejects src/host/orchestrator/projectManagerDeletion.test.ts "
+            >
+              <h3>expectRejects</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectManagerDeletion.test.ts:161:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12493,6 +12741,215 @@ sequenceDiagram
               <p class="muted">
                 <code>src/host/secrets/resolveProjectSecretDatabaseUrl.ts:76:1</code>
               </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-trustedoauthinfraenvironment-test-ts"
+          class="view"
+          data-view="src/host/secrets/trustedOAuthInfraEnvironment.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/trustedOAuthInfraEnvironment.test.ts</h2>
+            <article
+              class="item"
+              data-search="createProjectManager src/host/secrets/trustedOAuthInfraEnvironment.test.ts "
+            >
+              <h3>createProjectManager</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:119:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createSecretResolver src/host/secrets/trustedOAuthInfraEnvironment.test.ts "
+            >
+              <h3>createSecretResolver</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:126:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createInvalidSecretResolver src/host/secrets/trustedOAuthInfraEnvironment.test.ts "
+            >
+              <h3>createInvalidSecretResolver</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:132:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createOAuthManifest src/host/secrets/trustedOAuthInfraEnvironment.test.ts "
+            >
+              <h3>createOAuthManifest</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:142:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRejects src/host/secrets/trustedOAuthInfraEnvironment.test.ts "
+            >
+              <h3>expectRejects</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.test.ts:205:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-secrets-trustedoauthinfraenvironment-ts"
+          class="view"
+          data-view="src/host/secrets/trustedOAuthInfraEnvironment.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/secrets/trustedOAuthInfraEnvironment.ts</h2>
+            <article
+              class="item"
+              data-search="resolveTrustedOAuthInfraEnvironment src/host/secrets/trustedOAuthInfraEnvironment.ts "
+            >
+              <h3>resolveTrustedOAuthInfraEnvironment</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:14:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readCurrentManifest src/host/secrets/trustedOAuthInfraEnvironment.ts "
+            >
+              <h3>readCurrentManifest</h3>
+              <p class="muted">
+                <code>src/host/secrets/trustedOAuthInfraEnvironment.ts:71:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-studioinfra-e2e-test-ts"
+          class="view"
+          data-view="src/host/studioInfra.e2e.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/studioInfra.e2e.test.ts</h2>
+            <article class="item" data-search="createWorkspace src/host/studioInfra.e2e.test.ts ">
+              <h3>createWorkspace</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:151:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createE2eProject src/host/studioInfra.e2e.test.ts ">
+              <h3>createE2eProject</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:159:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="upThroughStudio src/host/studioInfra.e2e.test.ts ">
+              <h3>upThroughStudio</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:224:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectProfileOwnsNamespaces src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectProfileOwnsNamespaces</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:246:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectProfileExists src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectProfileExists</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:260:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectProfileDeleted src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectProfileDeleted</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:265:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectNoHostSupabaseComposeContainersFor src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectNoHostSupabaseComposeContainersFor</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:270:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectOAuthRuntimeSecret src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectOAuthRuntimeSecret</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:280:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectForwardStatus src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>expectForwardStatus</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:304:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="expectReachable src/host/studioInfra.e2e.test.ts ">
+              <h3>expectReachable</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:324:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="destroyIfPresent src/host/studioInfra.e2e.test.ts ">
+              <h3>destroyIfPresent</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:330:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="removeDockerImage src/host/studioInfra.e2e.test.ts ">
+              <h3>removeDockerImage</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:353:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="reserveHostPortSets src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>reserveHostPortSets</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:357:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="listenOnEphemeralPort src/host/studioInfra.e2e.test.ts "
+            >
+              <h3>listenOnEphemeralPort</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:384:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="closeServer src/host/studioInfra.e2e.test.ts ">
+              <h3>closeServer</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:396:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="decodeBase64 src/host/studioInfra.e2e.test.ts ">
+              <h3>decodeBase64</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:405:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createManifest src/host/studioInfra.e2e.test.ts ">
+              <h3>createManifest</h3>
+              <p class="muted"><code>src/host/studioInfra.e2e.test.ts:410:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

@@ -19,18 +19,32 @@ import { ProjectScaffolder } from './scaffolder';
 import type { GeneratedAuthProvider, GeneratedStorageProvider } from './templates';
 import { runWorkspaceInstall } from './workspaceRuntime';
 
+interface ProjectManagerDependencies {
+  readonly runProjectInfraScript: typeof runProjectInfraScript;
+  readonly cleanupProjectGeneratedAppImage: typeof cleanupProjectGeneratedAppImage;
+}
+
 export class ProjectManager {
   private readonly store: ProjectStore;
   private readonly scaffolder: ProjectScaffolder;
   private readonly layout: LayoutGenerator;
+  private readonly dependencies: ProjectManagerDependencies;
 
   private readonly appsRoot: string;
 
-  constructor(private readonly rootPath: string) {
+  constructor(
+    private readonly rootPath: string,
+    dependencies: Partial<ProjectManagerDependencies> = {},
+  ) {
     this.appsRoot = getAppsRoot(rootPath);
     this.store = new ProjectStore(rootPath);
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.layout = new LayoutGenerator();
+    this.dependencies = {
+      runProjectInfraScript,
+      cleanupProjectGeneratedAppImage,
+      ...dependencies,
+    };
   }
 
   // =========================================================================
@@ -45,6 +59,7 @@ export class ProjectManager {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const warnings: string[] = [];
     let infraDestroyed = false;
+    let imageCleanup: Awaited<ReturnType<typeof cleanupProjectGeneratedAppImage>> | null = null;
 
     if (await exists(projectPath)) {
       const manifest = await this.store.readManifest(projectId);
@@ -62,15 +77,8 @@ export class ProjectManager {
           manifest,
         });
 
-        const imageCleanup = await cleanupProjectGeneratedAppImage({
-          projectId,
-          projectPath,
-          target: infraStatus.target,
-        });
-        warnings.push(...imageCleanup.warnings);
-
         try {
-          await runProjectInfraScript({
+          await this.dependencies.runProjectInfraScript({
             rootPath: this.rootPath,
             projectId,
             target: infraStatus.target,
@@ -79,8 +87,17 @@ export class ProjectManager {
           infraDestroyed = true;
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
-          warnings.push(`Infrastructure teardown failed: ${message}`);
+          throw new Error(`Infrastructure teardown failed for project '${projectId}': ${message}`, {
+            cause: error,
+          });
         }
+
+        imageCleanup = await this.dependencies.cleanupProjectGeneratedAppImage({
+          projectId,
+          projectPath,
+          target: infraStatus.target,
+        });
+        warnings.push(...imageCleanup.warnings);
       }
     }
 
@@ -89,6 +106,8 @@ export class ProjectManager {
     return {
       success: true,
       infraDestroyed,
+      projectFilesDeleted: true,
+      imageCleanup,
       warnings,
     };
   }

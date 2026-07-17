@@ -169,11 +169,18 @@ async function resolveProjectPortForwardLocalPort(args: {
   const envPath = path.join(infraRoot, '.env');
   const fallbackEnvPath = path.join(infraRoot, '.env.example');
 
-  const envMap = await readSimpleEnvMap((await exists(envPath)) ? envPath : fallbackEnvPath);
-  const localPortRaw = envMap.get('APP_PORT_FORWARD_LOCAL_PORT');
+  const envSourcePath = (await exists(envPath)) ? envPath : fallbackEnvPath;
+  const envMap = await readSimpleEnvMap(envSourcePath);
+  const localPortRaw = envMap.get('APP_PORT_FORWARD_LOCAL_PORT')?.trim();
   const parsedPort = parsePositivePort(localPortRaw);
 
-  return parsedPort ?? 18080;
+  if (parsedPort === null) {
+    throw new Error(
+      `Generated Infra for project '${args.projectId}' did not provide a valid APP_PORT_FORWARD_LOCAL_PORT in ${envSourcePath}. Regenerate infrastructure with @ankhorage/infra 1.0.0 or fix the generated env file.`,
+    );
+  }
+
+  return parsedPort;
 }
 
 async function readSimpleEnvMap(filePath: string): Promise<Map<string, string>> {
