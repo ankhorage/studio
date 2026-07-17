@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.6.10
+
+### Patch Changes
+
+- Restore workspace settings
+
 ## 0.6.9
 
 ### Patch Changes
