@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/studio",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "description": "Studio authoring package for Ankhorage apps",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/studio#readme",
@@ -20,7 +20,7 @@
   "sideEffects": false,
   "workspaces": [
     ".",
-    "apps/studio"
+    "apps/*"
   ],
   "files": [
     "dist",

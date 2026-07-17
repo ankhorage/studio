@@ -16,5 +16,5 @@ test('keeps generated apps outside Studio workspace installs', async () => {
     readonly workspaces?: readonly string[];
   };
 
-  expect(packageJson.workspaces).toEqual(['.', 'apps/studio']);
+  expect(packageJson.workspaces).toEqual(['.', 'apps/*']);
 });
