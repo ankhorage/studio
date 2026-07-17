@@ -20,7 +20,11 @@ The dashboard uses the HTTP adapter. Studio CLI project commands call `ProjectMa
 
 The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, dependency installation, infrastructure operations, launch behavior, and process cleanup stay in shared `src/host` services.
 
-The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, bounds command output returned by HTTP, and terminates owned port-forward processes when the host closes.
+The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, and bounds command output returned by HTTP.
+
+For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Minikube projects. Each app slug maps to its own Minikube profile, generated Infra owns the `app`, `supabase`, and provider namespaces, and generated Infra owns `kubectl port-forward` process lifecycle through `infra/minikube/scripts/port-forward.sh`. Studio orchestrates generated lifecycle scripts and, on shutdown, asks registered projects' generated `port-forward.sh stop all` scripts to stop forwards; it does not run host Supabase or terminate arbitrary forward PIDs itself.
+
+For OAuth-enabled projects, Studio pre-resolves trusted credentials into the `up.sh` child process environment when the local secret store is reachable. If the local secret store is unavailable because generated Infra is stopped, Studio runs `up.sh` without those ephemeral values and lets generated Infra restart Postgres, bootstrap Vault, resolve `credentialsRef` entries, and validate runtime OAuth before rollout.
 
 ## Public API
 
@@ -33,6 +37,14 @@ bun run test:host-smoke
 ```
 
 The smoke test creates a real app from the published template catalog, synchronizes it, edits its Studio manifest, verifies generated imports, checks infrastructure status, and deletes the project without using `ankhorage4`.
+
+Changes that affect local Infra orchestration must also pass the opt-in Docker/Minikube gate:
+
+```bash
+bun run test:e2e
+```
+
+That gated test exercises Studio orchestration against generated Infra without adding Docker or Minikube requirements to normal `bun test`.
 
 ## Troubleshooting
 

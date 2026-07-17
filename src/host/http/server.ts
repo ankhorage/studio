@@ -15,6 +15,7 @@ import {
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveModuleLayoutMutations } from '../orchestrator/resolveMutations';
+import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { getTemplateSummaries, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
@@ -98,36 +99,6 @@ export async function createStudioHostServer(args: {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-
-  // Helper inside scope to access dependencies
-  async function upProjectInfrastructure(projectId: string) {
-    const regenerated = await projectManager.regenerateInfrastructure(projectId);
-    if (regenerated.skipped) {
-      return {
-        skipped: regenerated.skipped,
-        regenerated,
-      };
-    }
-
-    const status = await projectManager.getInfrastructureStatus(projectId);
-    if (!status.target) {
-      throw new Error(
-        `Project '${projectId}' has no infrastructure target. Run infra generation first.`,
-      );
-    }
-
-    await runProjectInfraScript({
-      rootPath: projectRoot,
-      projectId,
-      target: status.target,
-      script: 'up',
-    });
-
-    return {
-      target: status.target,
-      regenerated,
-    };
-  }
 
   // --- PROJECT ROUTES ---
 
@@ -215,7 +186,11 @@ export async function createStudioHostServer(args: {
   fastify.post('/api/projects/:id/infra/up', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
-      const infra = await upProjectInfrastructure(id);
+      const infra = await upProjectInfrastructure({
+        projectId: id,
+        projectManager,
+        workspaceRoot: projectRoot,
+      });
       return {
         success: true,
         ...infra,
