@@ -1846,50 +1846,78 @@
       ]
     },
     {
-      "path": "src/ui/AnkhAdmin.test.ts",
+      "path": "src/ui/admin/adminPagePrimitives.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AdminHeader",
+        "adminPageStyles",
+        "AdminScroll",
+        "Field",
+        "Input",
+        "KeyValue",
+        "Metric"
+      ]
+    },
+    {
+      "path": "src/ui/admin/adminPageUtils.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["formatPrimitive", "readRecord", "readString"]
+    },
+    {
+      "path": "src/ui/admin/AnkhAdminPage.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": []
     },
     {
-      "path": "src/ui/AnkhAdmin.tsx",
+      "path": "src/ui/admin/AnkhAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
         "src/core/StudioContext.ts",
         "src/index.ts",
-        "src/manifestState.ts",
         "src/studioAdminRouteModel.ts",
-        "src/ui/StudioAdminOverlay.tsx",
-        "src/ui/StudioAuthSettingsOverlay.tsx"
+        "src/ui/admin/pages/ApisAdminPage.tsx",
+        "src/ui/admin/pages/AuthAdminPage.tsx",
+        "src/ui/admin/pages/OverviewAdminPage.tsx",
+        "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "src/ui/admin/pages/ThemeAdminPage.tsx"
       ],
-      "exports": ["AnkhAdminPage", "AnkhAdminPageProps", "AnkhAdminShell", "AnkhAdminShellProps"]
+      "exports": ["AnkhAdminPage", "AnkhAdminPageProps"]
     },
     {
-      "path": "src/ui/AnkhStudio.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/core/StudioContext.ts"],
-      "exports": ["AnkhStudio", "AnkhStudioProps"]
-    },
-    {
-      "path": "src/ui/StudioAdminOverlay.test.ts",
+      "path": "src/ui/admin/AnkhAdminShell.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": []
     },
     {
-      "path": "src/ui/StudioAdminOverlay.tsx",
+      "path": "src/ui/admin/AnkhAdminShell.tsx",
       "isEntrypoint": false,
-      "dependencies": ["src/projectSecretApi.ts", "src/projectSecretUsage.ts"],
-      "exports": ["StudioSecretsPage"]
+      "dependencies": ["src/core/StudioContext.ts", "src/index.ts", "src/studioAdminRouteModel.ts"],
+      "exports": ["AnkhAdminShell", "AnkhAdminShellProps"]
     },
     {
-      "path": "src/ui/StudioAuthSettingsOverlay.test.ts",
+      "path": "src/ui/admin/pages/ApisAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/adminPageUtils.ts"
+      ],
+      "exports": ["ApisAdminPage", "ApisAdminRouteId"]
+    },
+    {
+      "path": "src/ui/admin/pages/AuthAdminPage.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": []
     },
     {
-      "path": "src/ui/StudioAuthSettingsOverlay.tsx",
+      "path": "src/ui/admin/pages/AuthAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
         "src/authSettings.ts",
@@ -1898,7 +1926,58 @@
         "src/projectAuthHealth.ts",
         "src/projectSecretApi.ts"
       ],
-      "exports": ["StudioAuthSettingsPage", "StudioAuthSettingsPageProps"]
+      "exports": ["AuthAdminPage", "AuthAdminPageProps"]
+    },
+    {
+      "path": "src/ui/admin/pages/OverviewAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/StudioContext.ts", "src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["OverviewAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/manifestState.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/adminPageUtils.ts"
+      ],
+      "exports": ["PropertiesAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/SecretsAdminPage.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/SecretsAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectSecretApi.ts", "src/projectSecretUsage.ts"],
+      "exports": ["SecretsAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/ui/admin/adminPagePrimitives.tsx"
+      ],
+      "exports": ["ThemeAdminPage"]
+    },
+    {
+      "path": "src/ui/AnkhStudio.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/StudioContext.ts"],
+      "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
       "path": "src/ui/useStudioAppBarAugmentation.test.ts",
@@ -10605,110 +10684,11 @@
       }
     },
     {
-      "name": "AnkhAdminShell",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 43,
-        "column": 1
-      }
-    },
-    {
-      "name": "openRoute",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 54,
-        "column": 9
-      }
-    },
-    {
-      "name": "goBackToApp",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 66,
-        "column": 9
-      }
-    },
-    {
-      "name": "AnkhAdminPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 132,
-        "column": 1
-      }
-    },
-    {
-      "name": "OverviewAdminPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 175,
-        "column": 1
-      }
-    },
-    {
-      "name": "ApisAdminPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 204,
-        "column": 1
-      }
-    },
-    {
-      "name": "ThemeAdminPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 273,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateActiveTheme",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 281,
-        "column": 9
-      }
-    },
-    {
-      "name": "PropertiesAdminPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 329,
-        "column": 1
-      }
-    },
-    {
-      "name": "AdminNavigation",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 372,
-        "column": 1
-      }
-    },
-    {
-      "name": "NodeProps",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 422,
-        "column": 1
-      }
-    },
-    {
       "name": "AdminScroll",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 441,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 5,
         "column": 1
       }
     },
@@ -10716,8 +10696,8 @@
       "name": "AdminHeader",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 445,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 9,
         "column": 1
       }
     },
@@ -10725,8 +10705,8 @@
       "name": "Metric",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 456,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 20,
         "column": 1
       }
     },
@@ -10734,8 +10714,8 @@
       "name": "Field",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 464,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 28,
         "column": 1
       }
     },
@@ -10743,8 +10723,8 @@
       "name": "Input",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 475,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 39,
         "column": 1
       }
     },
@@ -10752,8 +10732,8 @@
       "name": "KeyValue",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 494,
+        "filePath": "src/ui/admin/adminPagePrimitives.tsx",
+        "line": 58,
         "column": 1
       }
     },
@@ -10761,8 +10741,8 @@
       "name": "readRecord",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 505,
+        "filePath": "src/ui/admin/adminPageUtils.ts",
+        "line": 1,
         "column": 1
       }
     },
@@ -10770,8 +10750,8 @@
       "name": "readString",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 509,
+        "filePath": "src/ui/admin/adminPageUtils.ts",
+        "line": 5,
         "column": 1
       }
     },
@@ -10779,9 +10759,504 @@
       "name": "formatPrimitive",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 513,
+        "filePath": "src/ui/admin/adminPageUtils.ts",
+        "line": 9,
         "column": 1
+      }
+    },
+    {
+      "name": "AnkhAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/AnkhAdminPage.tsx",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "AnkhAdminShell",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "openRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
+        "line": 33,
+        "column": 9
+      }
+    },
+    {
+      "name": "goBackToApp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
+        "line": 45,
+        "column": 9
+      }
+    },
+    {
+      "name": "AdminNavigation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/AnkhAdminShell.tsx",
+        "line": 107,
+        "column": 1
+      }
+    },
+    {
+      "name": "ApisAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "AuthAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "OAuthProviderSetting",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 550,
+        "column": 1
+      }
+    },
+    {
+      "name": "setEnabled",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 579,
+        "column": 9
+      }
+    },
+    {
+      "name": "saveCredentials",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 605,
+        "column": 9
+      }
+    },
+    {
+      "name": "mergeOAuthProviderCredentialsRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 733,
+        "column": 1
+      }
+    },
+    {
+      "name": "upsertProvider",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 747,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateFlow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 758,
+        "column": 1
+      }
+    },
+    {
+      "name": "omitSignUp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 765,
+        "column": 1
+      }
+    },
+    {
+      "name": "omitProfile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 770,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 775,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 785,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFallbackManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 793,
+        "column": 1
+      }
+    },
+    {
+      "name": "splitList",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 805,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 816,
+        "column": 1
+      }
+    },
+    {
+      "name": "AuthHealthCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 821,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatHealthStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 881,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatProviderHealthStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 888,
+        "column": 1
+      }
+    },
+    {
+      "name": "healthStatusColor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 896,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnosticSeverityColor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 903,
+        "column": 1
+      }
+    },
+    {
+      "name": "Card",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 909,
+        "column": 1
+      }
+    },
+    {
+      "name": "Field",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 924,
+        "column": 1
+      }
+    },
+    {
+      "name": "RouteField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 935,
+        "column": 1
+      }
+    },
+    {
+      "name": "Input",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 947,
+        "column": 1
+      }
+    },
+    {
+      "name": "SwitchSetting",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 966,
+        "column": 1
+      }
+    },
+    {
+      "name": "Choice",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 985,
+        "column": 1
+      }
+    },
+    {
+      "name": "KeyValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 1009,
+        "column": 1
+      }
+    },
+    {
+      "name": "PrimaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 1020,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecondaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 1043,
+        "column": 1
+      }
+    },
+    {
+      "name": "Message",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "line": 1055,
+        "column": 1
+      }
+    },
+    {
+      "name": "OverviewAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/OverviewAdminPage.tsx",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "PropertiesAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "NodeProps",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "createField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 37,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecretsAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "useSecretInventory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 426,
+        "column": 1
+      }
+    },
+    {
+      "name": "Card",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 460,
+        "column": 1
+      }
+    },
+    {
+      "name": "Field",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 475,
+        "column": 1
+      }
+    },
+    {
+      "name": "Input",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 486,
+        "column": 1
+      }
+    },
+    {
+      "name": "InventoryRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 505,
+        "column": 1
+      }
+    },
+    {
+      "name": "PrimaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 579,
+        "column": 1
+      }
+    },
+    {
+      "name": "FilterPills",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 607,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecondaryButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 627,
+        "column": 1
+      }
+    },
+    {
+      "name": "Message",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 654,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 663,
+        "column": 1
+      }
+    },
+    {
+      "name": "secretInventoryKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 668,
+        "column": 1
+      }
+    },
+    {
+      "name": "uniqueSorted",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 672,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPresentString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 676,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateActiveTheme",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "line": 17,
+        "column": 9
       }
     },
     {
@@ -10791,402 +11266,6 @@
         "filePath": "src/ui/AnkhStudio.ts",
         "line": 11,
         "column": 14
-      }
-    },
-    {
-      "name": "createField",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 37,
-        "column": 1
-      }
-    },
-    {
-      "name": "StudioSecretsPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 41,
-        "column": 1
-      }
-    },
-    {
-      "name": "useSecretInventory",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 426,
-        "column": 1
-      }
-    },
-    {
-      "name": "Card",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 460,
-        "column": 1
-      }
-    },
-    {
-      "name": "Field",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 475,
-        "column": 1
-      }
-    },
-    {
-      "name": "Input",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 486,
-        "column": 1
-      }
-    },
-    {
-      "name": "InventoryRow",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 505,
-        "column": 1
-      }
-    },
-    {
-      "name": "PrimaryButton",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 579,
-        "column": 1
-      }
-    },
-    {
-      "name": "FilterPills",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 607,
-        "column": 1
-      }
-    },
-    {
-      "name": "SecondaryButton",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 627,
-        "column": 1
-      }
-    },
-    {
-      "name": "Message",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 654,
-        "column": 1
-      }
-    },
-    {
-      "name": "toMessage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 663,
-        "column": 1
-      }
-    },
-    {
-      "name": "secretInventoryKey",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 668,
-        "column": 1
-      }
-    },
-    {
-      "name": "uniqueSorted",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 672,
-        "column": 1
-      }
-    },
-    {
-      "name": "isPresentString",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 676,
-        "column": 1
-      }
-    },
-    {
-      "name": "StudioAuthSettingsPage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 64,
-        "column": 1
-      }
-    },
-    {
-      "name": "OAuthProviderSetting",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 550,
-        "column": 1
-      }
-    },
-    {
-      "name": "setEnabled",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 579,
-        "column": 9
-      }
-    },
-    {
-      "name": "saveCredentials",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 605,
-        "column": 9
-      }
-    },
-    {
-      "name": "mergeOAuthProviderCredentialsRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 733,
-        "column": 1
-      }
-    },
-    {
-      "name": "upsertProvider",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 747,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateFlow",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 758,
-        "column": 1
-      }
-    },
-    {
-      "name": "omitSignUp",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 765,
-        "column": 1
-      }
-    },
-    {
-      "name": "omitProfile",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 770,
-        "column": 1
-      }
-    },
-    {
-      "name": "createDefaultSettings",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 775,
-        "column": 1
-      }
-    },
-    {
-      "name": "createDefaultOAuth",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 785,
-        "column": 1
-      }
-    },
-    {
-      "name": "createFallbackManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 793,
-        "column": 1
-      }
-    },
-    {
-      "name": "splitList",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 805,
-        "column": 1
-      }
-    },
-    {
-      "name": "toMessage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 816,
-        "column": 1
-      }
-    },
-    {
-      "name": "AuthHealthCard",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 821,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatHealthStatus",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 881,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatProviderHealthStatus",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 888,
-        "column": 1
-      }
-    },
-    {
-      "name": "healthStatusColor",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 896,
-        "column": 1
-      }
-    },
-    {
-      "name": "diagnosticSeverityColor",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 903,
-        "column": 1
-      }
-    },
-    {
-      "name": "Card",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 909,
-        "column": 1
-      }
-    },
-    {
-      "name": "Field",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 924,
-        "column": 1
-      }
-    },
-    {
-      "name": "RouteField",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 935,
-        "column": 1
-      }
-    },
-    {
-      "name": "Input",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 947,
-        "column": 1
-      }
-    },
-    {
-      "name": "SwitchSetting",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 966,
-        "column": 1
-      }
-    },
-    {
-      "name": "Choice",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 985,
-        "column": 1
-      }
-    },
-    {
-      "name": "KeyValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1009,
-        "column": 1
-      }
-    },
-    {
-      "name": "PrimaryButton",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1020,
-        "column": 1
-      }
-    },
-    {
-      "name": "SecondaryButton",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1043,
-        "column": 1
-      }
-    },
-    {
-      "name": "Message",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1055,
-        "column": 1
       }
     },
     {
@@ -11614,7 +11693,12 @@
       },
       {
         "fromPath": "src/root.ts",
-        "toPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/ui/admin/AnkhAdminShell.tsx",
         "sourcePath": "src/root.ts"
       },
       {
@@ -12053,74 +12137,9 @@
         "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/core/StudioContext.ts",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/manifestState.ts",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/studioAdminRouteModel.ts",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/ui/StudioAdminOverlay.tsx",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromPath": "src/ui/AnkhAdmin.tsx",
-        "toPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
         "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
-      },
-      {
-        "fromPath": "src/ui/StudioAdminOverlay.tsx",
-        "toPath": "src/projectSecretApi.ts",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAdminOverlay.tsx",
-        "toPath": "src/projectSecretUsage.ts",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toPath": "src/authSettings.ts",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toPath": "src/projectAuthHealth.ts",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toPath": "src/projectAuthApi.ts",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toPath": "src/projectSecretApi.ts",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
@@ -12578,6 +12597,66 @@
         "sourcePath": "src/modules/dashboard/templates.ts"
       },
       {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/OverviewAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminShell.tsx",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
         "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
         "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
@@ -12706,6 +12785,106 @@
         "fromPath": "src/modules/dashboard/ui/TemplateCard.tsx",
         "toPath": "src/modules/dashboard/types.ts",
         "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPageUtils.ts",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/authSettings.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/projectAuthHealth.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/projectAuthApi.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/projectSecretApi.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/OverviewAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/OverviewAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/OverviewAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/OverviewAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPageUtils.ts",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toPath": "src/projectSecretApi.ts",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toPath": "src/projectSecretUsage.ts",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
         "fromPath": "src/host/layout/templates/auth/callback.ts",
@@ -18148,940 +18327,10 @@
         "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
-        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/ui/AnkhAdmin.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
-        "sourcePath": "src/ui/AnkhAdmin.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/ui/AnkhAdmin.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/ui/AnkhAdmin.test.ts"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "usePathname",
-        "callExpression": "usePathname",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useRouter",
-        "callExpression": "useRouter",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useWindowDimensions",
-        "callExpression": "useWindowDimensions",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "resolveStudioAdminActiveRouteId",
-        "callExpression": "resolveStudioAdminActiveRouteId",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "getStudioAdminRouteDefinition",
-        "callExpression": "getStudioAdminRouteDefinition",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "createStudioAdminRoutePath",
-        "callExpression": "createStudioAdminRoutePath",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "setActiveAdminRouteId",
-        "callExpression": "studio.setActiveAdminRouteId",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "openRoute",
-        "toSymbol": "setDrawerOpen",
-        "callExpression": "setDrawerOpen",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "setDrawerOpen",
-        "callExpression": "setDrawerOpen",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminPage",
-        "toSymbol": "usePathname",
-        "callExpression": "usePathname",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminPage",
-        "toSymbol": "resolveStudioPropertiesNodeId",
-        "callExpression": "resolveStudioPropertiesNodeId",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "OverviewAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "ApisAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "readRecord",
-        "callExpression": "readRecord",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "readString",
-        "callExpression": "readString",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "ThemeAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "updateActiveTheme",
-        "toSymbol": "updateTheme",
-        "callExpression": "studio.updateTheme",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "updateActiveTheme",
-        "callExpression": "updateActiveTheme",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "PropertiesAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "PropertiesAdminPage",
-        "toSymbol": "findScreenIdForNode",
-        "callExpression": "findScreenIdForNode",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "PropertiesAdminPage",
-        "toSymbol": "findNodeInManifest",
-        "callExpression": "findNodeInManifest",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "setActiveScreenId",
-        "callExpression": "studio.setActiveScreenId",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "selectNode",
-        "callExpression": "studio.selectNode",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "updateNode",
-        "callExpression": "studio.updateNode",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "AdminNavigation",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "isStudioAdminRouteAvailable",
-        "callExpression": "isStudioAdminRouteAvailable",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "isStudioAdminRouteActive",
-        "callExpression": "isStudioAdminRouteActive",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "onRoutePress",
-        "callExpression": "props.onRoutePress",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "formatPrimitive",
-        "callExpression": "formatPrimitive",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "Input",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
         "fromSymbol": "AnkhStudio",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
         "sourcePath": "src/ui/AnkhStudio.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/ui/StudioAdminOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.test.ts",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
-        "sourcePath": "src/ui/StudioAdminOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/ui/StudioAdminOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/ui/StudioAdminOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "useSecretInventory",
-        "callExpression": "useSecretInventory",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "createField",
-        "callExpression": "createField",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "uniqueSorted",
-        "callExpression": "uniqueSorted",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setUsageByKey",
-        "callExpression": "setUsageByKey",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "secretInventoryKey",
-        "callExpression": "secretInventoryKey",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "__function",
-        "callExpression": "(async () => {\n      const entries = await Promise.all(\n        inventory.items.map(async (item) => {\n          try {\n            const summary = await getProjectSecretUsages({\n              projectId,\n              environment: item.scope.environment,\n              ref: item.ref,\n            });\n            return [secretInventoryKey(item), { status: 'loaded', summary }] as const;\n          } catch (error) {\n            return [\n              secretInventoryKey(item),\n              { status: 'error', message: toMessage(error) },\n            ] as const;\n          }\n        }),\n      );\n      if (!cancelled) {\n        setUsageByKey(Object.fromEntries(entries));\n      }\n    })",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "getProjectSecretUsages",
-        "callExpression": "getProjectSecretUsages",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "toMessage",
-        "callExpression": "toMessage",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioSecretsPage",
-        "toSymbol": "useCallback",
-        "callExpression": "useCallback",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setRef",
-        "callExpression": "setRef",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setKind",
-        "callExpression": "setKind",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setProvider",
-        "callExpression": "setProvider",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setFields",
-        "callExpression": "setFields",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "createField",
-        "callExpression": "createField",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setReplaceTarget",
-        "callExpression": "setReplaceTarget",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setEnvironment",
-        "callExpression": "setEnvironment",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setMessage",
-        "callExpression": "setMessage",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setSaving",
-        "callExpression": "setSaving",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "replaceProjectSecret",
-        "callExpression": "replaceProjectSecret",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "createProjectSecret",
-        "callExpression": "createProjectSecret",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "refresh",
-        "callExpression": "inventory.refresh",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "resetDraft",
-        "callExpression": "resetDraft",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setPendingDelete",
-        "callExpression": "setPendingDelete",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "onPress",
-        "toSymbol": "removeProjectSecret",
-        "callExpression": "removeProjectSecret",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setDeleting",
-        "callExpression": "setDeleting",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "removeProjectSecret",
-        "callExpression": "removeProjectSecret",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "updateField",
-        "callExpression": "updateField",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "save",
-        "callExpression": "save",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "beginRotation",
-        "callExpression": "beginRotation",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "confirmRemove",
-        "callExpression": "confirmRemove",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "confirmBrokenReferenceDelete",
-        "callExpression": "confirmBrokenReferenceDelete",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "useSecretInventory",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "useSecretInventory",
-        "toSymbol": "useRef",
-        "callExpression": "useRef",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "useSecretInventory",
-        "toSymbol": "useCallback",
-        "callExpression": "useCallback",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setItems",
-        "callExpression": "setItems",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setLoading",
-        "callExpression": "setLoading",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setError",
-        "callExpression": "setError",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "listProjectSecrets",
-        "callExpression": "listProjectSecrets",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "useSecretInventory",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "refresh",
-        "callExpression": "refresh",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "useSecretInventory",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Card",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Input",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "InventoryRow",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "InventoryRow",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "setExpanded",
-        "callExpression": "setExpanded",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "PrimaryButton",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAdminOverlay.tsx",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "SecondaryButton",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Message",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.test.ts",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.test.ts"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsPage",
-        "toSymbol": "useRouter",
-        "callExpression": "useRouter",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsPage",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "readStudioAuthSettings",
-        "callExpression": "readStudioAuthSettings",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "createFallbackManifest",
-        "callExpression": "createFallbackManifest",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "createDefaultSettings",
-        "callExpression": "createDefaultSettings",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsPage",
-        "toSymbol": "useCallback",
-        "callExpression": "useCallback",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setLoading",
-        "callExpression": "setLoading",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "getProjectAuthSettings",
-        "callExpression": "getProjectAuthSettings",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "getProjectAuthHealth",
-        "callExpression": "getProjectAuthHealth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setDraft",
-        "callExpression": "setDraft",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setHealth",
-        "callExpression": "setHealth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setPartialFailure",
-        "callExpression": "setPartialFailure",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setMessage",
-        "callExpression": "setMessage",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "toMessage",
-        "callExpression": "toMessage",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsPage",
-        "toSymbol": "useEffect",
-        "callExpression": "useEffect",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "reload",
-        "callExpression": "reload",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setSaving",
-        "callExpression": "setSaving",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "saveProjectAuthSettings",
-        "callExpression": "saveProjectAuthSettings",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "createDefaultOAuth",
-        "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "refreshHealth",
-        "callExpression": "refreshHealth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsPage",
-        "toSymbol": "createDefaultOAuth",
-        "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "omitSignUp",
-        "callExpression": "omitSignUp",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "splitList",
-        "callExpression": "splitList",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "updateFlow",
-        "callExpression": "updateFlow",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "retryPartialFailure",
-        "callExpression": "retryPartialFailure",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "omitProfile",
-        "callExpression": "omitProfile",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "save",
-        "callExpression": "save",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "OAuthProviderSetting",
-        "toSymbol": "getSupabaseOAuthProviderDefinition",
-        "callExpression": "getSupabaseOAuthProviderDefinition",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "OAuthProviderSetting",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "setEnabled",
-        "toSymbol": "onChange",
-        "callExpression": "props.onChange",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "setEnabled",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "setCredentialMessage",
-        "callExpression": "setCredentialMessage",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "setSavingCredentials",
-        "callExpression": "setSavingCredentials",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "configureProjectOAuthProvider",
-        "callExpression": "configureProjectOAuthProvider",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "onSaved",
-        "callExpression": "props.onSaved",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "mergeOAuthProviderCredentialsRef",
-        "callExpression": "mergeOAuthProviderCredentialsRef",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "onPartialFailure",
-        "callExpression": "props.onPartialFailure",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "toMessage",
-        "callExpression": "toMessage",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "setCredentialValues",
-        "callExpression": "setCredentialValues",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "OAuthProviderSetting",
-        "toSymbol": "formatProviderHealthStatus",
-        "callExpression": "formatProviderHealthStatus",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "setCredentialValues",
-        "callExpression": "setCredentialValues",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "saveCredentials",
-        "callExpression": "saveCredentials",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "mergeOAuthProviderCredentialsRef",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "updateFlow",
-        "toSymbol": "setDraft",
-        "callExpression": "setDraft",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "createDefaultSettings",
-        "toSymbol": "createDefaultOAuth",
-        "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "AuthHealthCard",
-        "toSymbol": "healthStatusColor",
-        "callExpression": "healthStatusColor",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "AuthHealthCard",
-        "toSymbol": "formatHealthStatus",
-        "callExpression": "formatHealthStatus",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "formatProviderHealthStatus",
-        "callExpression": "formatProviderHealthStatus",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "toSymbol": "diagnosticSeverityColor",
-        "callExpression": "diagnosticSeverityColor",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Card",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Input",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "Choice",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "PrimaryButton",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "SecondaryButton",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.test.ts",
@@ -23158,6 +22407,180 @@
         "sourcePath": "src/modules/dashboard/search.ts"
       },
       {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/adminPagePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminPage.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminPage.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminPage.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminPage.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "properties",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "usePathname",
+        "callExpression": "usePathname",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "renderPage",
+        "callExpression": "renderPage",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.test.ts"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "usePathname",
+        "callExpression": "usePathname",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useWindowDimensions",
+        "callExpression": "useWindowDimensions",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "resolveStudioAdminActiveRouteId",
+        "callExpression": "resolveStudioAdminActiveRouteId",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "setActiveAdminRouteId",
+        "callExpression": "studio.setActiveAdminRouteId",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "setDrawerOpen",
+        "callExpression": "setDrawerOpen",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
+        "toSymbol": "setDrawerOpen",
+        "callExpression": "setDrawerOpen",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "AdminNavigation",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
+        "toSymbol": "isStudioAdminRouteAvailable",
+        "callExpression": "isStudioAdminRouteAvailable",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
+        "toSymbol": "isStudioAdminRouteActive",
+        "callExpression": "isStudioAdminRouteActive",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/AnkhAdminShell.tsx",
+        "toSymbol": "onRoutePress",
+        "callExpression": "props.onRoutePress",
+        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
+      },
+      {
         "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -23726,6 +23149,816 @@
         "toSymbol": "formatCategory",
         "callExpression": "formatCategory",
         "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
+      },
+      {
+        "fromSymbol": "ApisAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "createFallbackManifest",
+        "callExpression": "createFallbackManifest",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "createDefaultSettings",
+        "callExpression": "createDefaultSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "getProjectAuthSettings",
+        "callExpression": "getProjectAuthSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "getProjectAuthHealth",
+        "callExpression": "getProjectAuthHealth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setHealth",
+        "callExpression": "setHealth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setPartialFailure",
+        "callExpression": "setPartialFailure",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "reload",
+        "callExpression": "reload",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setSaving",
+        "callExpression": "setSaving",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "saveProjectAuthSettings",
+        "callExpression": "saveProjectAuthSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "refreshHealth",
+        "callExpression": "refreshHealth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "omitSignUp",
+        "callExpression": "omitSignUp",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "splitList",
+        "callExpression": "splitList",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "updateFlow",
+        "callExpression": "updateFlow",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "retryPartialFailure",
+        "callExpression": "retryPartialFailure",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "omitProfile",
+        "callExpression": "omitProfile",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "save",
+        "callExpression": "save",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "OAuthProviderSetting",
+        "toSymbol": "getSupabaseOAuthProviderDefinition",
+        "callExpression": "getSupabaseOAuthProviderDefinition",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "OAuthProviderSetting",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "setEnabled",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "setEnabled",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "setCredentialMessage",
+        "callExpression": "setCredentialMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "setSavingCredentials",
+        "callExpression": "setSavingCredentials",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "configureProjectOAuthProvider",
+        "callExpression": "configureProjectOAuthProvider",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "onSaved",
+        "callExpression": "props.onSaved",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "mergeOAuthProviderCredentialsRef",
+        "callExpression": "mergeOAuthProviderCredentialsRef",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "onPartialFailure",
+        "callExpression": "props.onPartialFailure",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "setCredentialValues",
+        "callExpression": "setCredentialValues",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "OAuthProviderSetting",
+        "toSymbol": "formatProviderHealthStatus",
+        "callExpression": "formatProviderHealthStatus",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setCredentialValues",
+        "callExpression": "setCredentialValues",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "saveCredentials",
+        "callExpression": "saveCredentials",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "mergeOAuthProviderCredentialsRef",
+        "toSymbol": "upsertProvider",
+        "callExpression": "upsertProvider",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateFlow",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "createDefaultSettings",
+        "toSymbol": "createDefaultOAuth",
+        "callExpression": "createDefaultOAuth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthHealthCard",
+        "toSymbol": "healthStatusColor",
+        "callExpression": "healthStatusColor",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthHealthCard",
+        "toSymbol": "formatHealthStatus",
+        "callExpression": "formatHealthStatus",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "formatProviderHealthStatus",
+        "callExpression": "formatProviderHealthStatus",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "diagnosticSeverityColor",
+        "callExpression": "diagnosticSeverityColor",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Card",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Choice",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "OverviewAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/OverviewAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "findScreenIdForNode",
+        "callExpression": "findScreenIdForNode",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toSymbol": "setActiveScreenId",
+        "callExpression": "studio.setActiveScreenId",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toSymbol": "selectNode",
+        "callExpression": "studio.selectNode",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toSymbol": "updateNode",
+        "callExpression": "studio.updateNode",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toSymbol": "formatPrimitive",
+        "callExpression": "formatPrimitive",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "useSecretInventory",
+        "callExpression": "useSecretInventory",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "createField",
+        "callExpression": "createField",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "uniqueSorted",
+        "callExpression": "uniqueSorted",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setUsageByKey",
+        "callExpression": "setUsageByKey",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "secretInventoryKey",
+        "callExpression": "secretInventoryKey",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "__function",
+        "callExpression": "(async () => {\n      const entries = await Promise.all(\n        inventory.items.map(async (item) => {\n          try {\n            const summary = await getProjectSecretUsages({\n              projectId,\n              environment: item.scope.environment,\n              ref: item.ref,\n            });\n            return [secretInventoryKey(item), { status: 'loaded', summary }] as const;\n          } catch (error) {\n            return [\n              secretInventoryKey(item),\n              { status: 'error', message: toMessage(error) },\n            ] as const;\n          }\n        }),\n      );\n      if (!cancelled) {\n        setUsageByKey(Object.fromEntries(entries));\n      }\n    })",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "getProjectSecretUsages",
+        "callExpression": "getProjectSecretUsages",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecretsAdminPage",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setRef",
+        "callExpression": "setRef",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setKind",
+        "callExpression": "setKind",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setProvider",
+        "callExpression": "setProvider",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setFields",
+        "callExpression": "setFields",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "createField",
+        "callExpression": "createField",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setReplaceTarget",
+        "callExpression": "setReplaceTarget",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setEnvironment",
+        "callExpression": "setEnvironment",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setSaving",
+        "callExpression": "setSaving",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "replaceProjectSecret",
+        "callExpression": "replaceProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "createProjectSecret",
+        "callExpression": "createProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "refresh",
+        "callExpression": "inventory.refresh",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "resetDraft",
+        "callExpression": "resetDraft",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setPendingDelete",
+        "callExpression": "setPendingDelete",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onPress",
+        "toSymbol": "removeProjectSecret",
+        "callExpression": "removeProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setDeleting",
+        "callExpression": "setDeleting",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "removeProjectSecret",
+        "callExpression": "removeProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "updateField",
+        "callExpression": "updateField",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "save",
+        "callExpression": "save",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "beginRotation",
+        "callExpression": "beginRotation",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "confirmRemove",
+        "callExpression": "confirmRemove",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "confirmBrokenReferenceDelete",
+        "callExpression": "confirmBrokenReferenceDelete",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useRef",
+        "callExpression": "useRef",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setItems",
+        "callExpression": "setItems",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "listProjectSecrets",
+        "callExpression": "listProjectSecrets",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "useSecretInventory",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Card",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "InventoryRow",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "InventoryRow",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "setExpanded",
+        "callExpression": "setExpanded",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Message",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateActiveTheme",
+        "toSymbol": "updateTheme",
+        "callExpression": "studio.updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toSymbol": "updateActiveTheme",
+        "callExpression": "updateActiveTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
         "fromSymbol": "getAuthOAuthCallbackTsx",

@@ -534,34 +534,71 @@ graph TD
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
   package__ankhorage_studio -.-> module_src_studioSelectionModel_ts
-  module_src_ui_AnkhAdmin_test_ts["src/ui/AnkhAdmin.test.ts"]
-  package__ankhorage_studio -.-> module_src_ui_AnkhAdmin_test_ts
-  module_src_ui_AnkhAdmin_tsx["src/ui/AnkhAdmin.tsx"]
-  package__ankhorage_studio -.-> module_src_ui_AnkhAdmin_tsx
-  module_src_ui_AnkhAdmin_tsx --> module_src_core_StudioContext_ts
-  module_src_ui_AnkhAdmin_tsx --> module_src_index_ts
-  module_src_ui_AnkhAdmin_tsx --> module_src_manifestState_ts
-  module_src_ui_AnkhAdmin_tsx --> module_src_studioAdminRouteModel_ts
-  module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAdminOverlay_tsx
-  module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAuthSettingsOverlay_tsx
+  module_src_ui_admin_adminPagePrimitives_tsx["src/ui/admin/adminPagePrimitives.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_adminPageUtils_ts["src/ui/admin/adminPageUtils.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_adminPageUtils_ts
+  module_src_ui_admin_AnkhAdminPage_test_ts["src/ui/admin/AnkhAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_AnkhAdminPage_test_ts
+  module_src_ui_admin_AnkhAdminPage_tsx["src/ui/admin/AnkhAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_AnkhAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_index_ts
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ApisAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_AuthAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_OverviewAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_PropertiesAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_SecretsAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeAdminPage_tsx
+  module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_AnkhAdminShell_test_ts
+  module_src_ui_admin_AnkhAdminShell_tsx["src/ui/admin/AnkhAdminShell.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_AnkhAdminShell_tsx
+  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_index_ts
+  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_pages_ApisAdminPage_tsx["src/ui/admin/pages/ApisAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ApisAdminPage_tsx
+  module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_index_ts
+  module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_adminPageUtils_ts
+  module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_AuthAdminPage_test_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx["src/ui/admin/pages/AuthAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_AuthAdminPage_tsx
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_authSettings_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_index_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_OverviewAdminPage_tsx
+  module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_PropertiesAdminPage_test_ts["src/ui/admin/pages/PropertiesAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_PropertiesAdminPage_test_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx["src/ui/admin/pages/PropertiesAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_PropertiesAdminPage_tsx
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_manifestState_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPageUtils_ts
+  module_src_ui_admin_pages_SecretsAdminPage_test_ts["src/ui/admin/pages/SecretsAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_SecretsAdminPage_test_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx["src/ui/admin/pages/SecretsAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_SecretsAdminPage_tsx
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretUsage_ts
+  module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeAdminPage_tsx
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_index_ts
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
-  module_src_ui_StudioAdminOverlay_test_ts["src/ui/StudioAdminOverlay.test.ts"]
-  package__ankhorage_studio -.-> module_src_ui_StudioAdminOverlay_test_ts
-  module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
-  package__ankhorage_studio -.-> module_src_ui_StudioAdminOverlay_tsx
-  module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretApi_ts
-  module_src_ui_StudioAdminOverlay_tsx --> module_src_projectSecretUsage_ts
-  module_src_ui_StudioAuthSettingsOverlay_test_ts["src/ui/StudioAuthSettingsOverlay.test.ts"]
-  package__ankhorage_studio -.-> module_src_ui_StudioAuthSettingsOverlay_test_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx["src/ui/StudioAuthSettingsOverlay.tsx"]
-  package__ankhorage_studio -.-> module_src_ui_StudioAuthSettingsOverlay_tsx
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_authSettings_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_index_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthApi_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthHealth_ts
-  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectSecretApi_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_test_ts
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]

@@ -18,8 +18,8 @@ import {
   ProjectSecretApiError,
   removeProjectSecret,
   replaceProjectSecret,
-} from '../projectSecretApi';
-import type { ProjectSecretUsageSummary } from '../projectSecretUsage';
+} from '../../../projectSecretApi';
+import type { ProjectSecretUsageSummary } from '../../../projectSecretUsage';
 
 interface SecretFieldDraft {
   readonly id: number;
@@ -38,7 +38,7 @@ function createField(name = ''): SecretFieldDraft {
   return { id: nextFieldId++, name, value: '' };
 }
 
-export function StudioSecretsPage({ projectId }: { readonly projectId: string }) {
+export function SecretsAdminPage({ projectId }: { readonly projectId: string }) {
   const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
   const inventory = useSecretInventory(projectId, inventoryEnvironment);
   const [environment, setEnvironment] = useState('local');

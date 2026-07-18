@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const source = readFileSync(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), 'StudioAdminOverlay.tsx'),
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'SecretsAdminPage.tsx'),
   'utf8',
 );
 

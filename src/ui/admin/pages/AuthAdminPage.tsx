@@ -22,16 +22,16 @@ import {
   View,
 } from 'react-native';
 
-import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
-import type { ProjectAuthHealth } from '../projectAuthHealth';
+import { readStudioAuthSettings, type StudioAuthSettings } from '../../../authSettings';
+import type { StudioAdminRouteId } from '../../../index';
+import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import {
   getProjectAuthHealth,
   getProjectAuthSettings,
   ProjectAuthApiError,
   saveProjectAuthSettings,
-} from '../projectAuthApi';
-import { configureProjectOAuthProvider } from '../projectSecretApi';
-import type { StudioAdminRouteId } from '../index';
+} from '../../../projectAuthApi';
+import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
@@ -52,7 +52,7 @@ interface RecoverableOAuthPartialFailure {
   readonly intendedProvider: AuthOAuthProviderConfig;
 }
 
-export interface StudioAuthSettingsPageProps {
+export interface AuthAdminPageProps {
   readonly projectId: string;
   readonly manifest: AppManifest | null;
   readonly routeId: Extract<
@@ -61,7 +61,7 @@ export interface StudioAuthSettingsPageProps {
   >;
 }
 
-export function StudioAuthSettingsPage(props: StudioAuthSettingsPageProps) {
+export function AuthAdminPage(props: AuthAdminPageProps) {
   const { projectId, manifest, routeId } = props;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
