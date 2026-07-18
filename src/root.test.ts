@@ -7,6 +7,9 @@ test('exports the Studio runtime symbols used by generated app layouts', async (
   expect(rootSource).toContain("export { StudioProvider } from './core/StudioProvider.js';");
   expect(rootSource).toContain("export { AnkhStudio } from './ui/AnkhStudio.js';");
   expect(rootSource).toContain(
+    "export { AnkhAdminPage, AnkhAdminShell } from './ui/AnkhAdmin.js';",
+  );
+  expect(rootSource).toContain(
     "export { useStudioAppBarAugmentation } from './ui/useStudioAppBarAugmentation.js';",
   );
 });

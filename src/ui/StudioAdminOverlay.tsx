@@ -10,7 +10,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   createProjectSecret,
@@ -21,11 +20,6 @@ import {
   replaceProjectSecret,
 } from '../projectSecretApi';
 import type { ProjectSecretUsageSummary } from '../projectSecretUsage';
-
-export interface StudioAdminOverlayProps {
-  readonly projectId: string;
-  readonly onClose: () => void;
-}
 
 interface SecretFieldDraft {
   readonly id: number;
@@ -44,39 +38,7 @@ function createField(name = ''): SecretFieldDraft {
   return { id: nextFieldId++, name, value: '' };
 }
 
-export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
-  const { projectId, onClose } = props;
-  const { theme } = useZoraTheme();
-
-  return (
-    <SafeAreaView
-      style={[
-        styles.overlay,
-        { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
-      ]}
-    >
-      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <View style={styles.grow}>
-          <Heading level={2} text="Project secrets" />
-          <Text color="neutral" emphasis="muted" variant="bodySmall">
-            Create, rotate, and explicitly remove server-side project secrets.
-          </Text>
-        </View>
-        <IconButton
-          icon={{ name: 'close-outline' }}
-          label="Close administration"
-          color="neutral"
-          variant="ghost"
-          onPress={onClose}
-        />
-      </View>
-
-      <SecretsAdmin projectId={projectId} />
-    </SafeAreaView>
-  );
-}
-
-function SecretsAdmin({ projectId }: { readonly projectId: string }) {
+export function StudioSecretsPage({ projectId }: { readonly projectId: string }) {
   const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
   const inventory = useSecretInventory(projectId, inventoryEnvironment);
   const [environment, setEnvironment] = useState('local');
@@ -716,21 +678,6 @@ function isPresentString(value: string | undefined): value is string {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1000,
-    elevation: 24,
-    borderWidth: 1,
-  },
-  header: {
-    minHeight: 76,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
   content: {
     width: '100%',
     maxWidth: 1040,

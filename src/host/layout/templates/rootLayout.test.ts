@@ -65,4 +65,9 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain(
+    'setLastNonAdminLocation(resolveStudioNavigableLocation(appPathname))',
+  );
+  expect(generated).toContain('if (!isStudioAdminPath(appPathname))');
+  expect(generated).not.toContain('studioAppBar.overlay');
 });

@@ -84,11 +84,28 @@ describe('LayoutGenerator', () => {
     const paths = files.map((file) => file.path).sort();
 
     expect(paths).toContain('src/app/ankh/_layout.tsx');
-    expect(paths).toContain('src/app/ankh/apis.tsx');
-    expect(paths).toContain('src/app/ankh/auth.tsx');
+    expect(paths).toContain('src/app/ankh/index.tsx');
+    expect(paths).toContain('src/app/ankh/apis/index.tsx');
+    expect(paths).toContain('src/app/ankh/apis/data-sources.tsx');
+    expect(paths).toContain('src/app/ankh/apis/operations.tsx');
+    expect(paths).toContain('src/app/ankh/auth/index.tsx');
+    expect(paths).toContain('src/app/ankh/auth/providers.tsx');
+    expect(paths).toContain('src/app/ankh/auth/routes.tsx');
+    expect(paths).toContain('src/app/ankh/auth/profile.tsx');
     expect(paths).toContain('src/app/ankh/secrets.tsx');
     expect(paths).toContain('src/app/ankh/properties/[id].tsx');
     expect(paths).toContain('src/app/ankh/theme.tsx');
+
+    const adminSources = files
+      .filter((file) => file.path.startsWith('src/app/ankh/') && file.path.endsWith('.tsx'))
+      .map((file) => file.content)
+      .join('\n');
+
+    expect(adminSources).toContain('AnkhAdminShell');
+    expect(adminSources).toContain('AnkhAdminPage');
+    expect(adminSources).toContain('routeId="auth-providers"');
+    expect(adminSources).toContain('routeId="api-data-sources"');
+    expect(adminSources).not.toContain('return null;');
   });
 
   test('generates one canonical OAuth runtime without secret references', () => {

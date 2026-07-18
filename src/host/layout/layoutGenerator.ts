@@ -94,12 +94,36 @@ export class LayoutGenerator {
           content: getStudioAdminLayoutTsx(),
         },
         {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis.tsx')),
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'index.tsx')),
+          content: getStudioAdminRouteTsx('overview'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'index.tsx')),
           content: getStudioAdminRouteTsx('apis'),
         },
         {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth.tsx')),
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'data-sources.tsx')),
+          content: getStudioAdminRouteTsx('api-data-sources'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'operations.tsx')),
+          content: getStudioAdminRouteTsx('api-operations'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'index.tsx')),
           content: getStudioAdminRouteTsx('auth'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')),
+          content: getStudioAdminRouteTsx('auth-providers'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'routes.tsx')),
+          content: getStudioAdminRouteTsx('auth-routes'),
+        },
+        {
+          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'profile.tsx')),
+          content: getStudioAdminRouteTsx('auth-profile'),
         },
         {
           path: normalizeRel(path.join(appRootRel, 'ankh', 'properties', '[id].tsx')),
@@ -283,6 +307,9 @@ import { authAdapter } from '@/auth/adapter';`,
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
+      includeStudio
+        ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
+        : '',
       ...pluginImports,
     ]
       .filter(Boolean)
@@ -353,13 +380,16 @@ import { authAdapter } from '@/auth/adapter';`,
           ? `${includeStudio ? `import { usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
           : `import { Stack${includeStudio ? ', usePathname' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import React, { useMemo } from 'react';`,
+      `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       '',
       getPackageOwnedRuntimeImports(),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
+        : '',
+      includeStudio
+        ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
     ];
 
@@ -426,28 +456,32 @@ import { authAdapter } from '@/auth/adapter';`,
 }
 
 function getStudioAdminLayoutTsx(): string {
-  return `import { Stack } from 'expo-router';
+  return `import { AnkhAdminShell } from '@ankhorage/studio';
 
 export default function AnkhLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return <AnkhAdminShell />;
 }
 `;
 }
 
-type StudioAdminGeneratedRouteName = 'apis' | 'auth' | 'properties' | 'secrets' | 'theme';
+type StudioAdminGeneratedRouteName =
+  | 'overview'
+  | 'apis'
+  | 'api-data-sources'
+  | 'api-operations'
+  | 'auth'
+  | 'auth-providers'
+  | 'auth-routes'
+  | 'auth-profile'
+  | 'properties'
+  | 'secrets'
+  | 'theme';
 
 function getStudioAdminRouteTsx(routeName: StudioAdminGeneratedRouteName): string {
-  const titleByRouteName = {
-    apis: 'APIs',
-    auth: 'Auth',
-    properties: 'Properties',
-    secrets: 'Secrets',
-    theme: 'Theme',
-  } satisfies Record<StudioAdminGeneratedRouteName, string>;
-  const title = titleByRouteName[routeName];
+  return `import { AnkhAdminPage } from '@ankhorage/studio';
 
-  return `export default function Ankh${title}Route() {
-  return null;
+export default function AnkhAdminRoute() {
+  return <AnkhAdminPage routeId="${routeName}" />;
 }
 `;
 }

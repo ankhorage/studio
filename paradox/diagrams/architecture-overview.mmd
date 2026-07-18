@@ -6,6 +6,9 @@ graph TD
   package__ankhorage_studio -.-> module_knip_config_ts
   module_paradox_config_ts["paradox.config.ts"]
   package__ankhorage_studio -.-> module_paradox_config_ts
+  module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_ankhAdmin_public_test_ts
+  module_src_ankhAdmin_public_test_ts --> module_src_root_ts
   module_src_app_index_ts["src/app/index.ts"]
   package__ankhorage_studio -.-> module_src_app_index_ts
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
@@ -524,6 +527,15 @@ graph TD
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
   package__ankhorage_studio -.-> module_src_studioSelectionModel_ts
+  module_src_ui_AnkhAdmin_test_ts["src/ui/AnkhAdmin.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_AnkhAdmin_test_ts
+  module_src_ui_AnkhAdmin_tsx["src/ui/AnkhAdmin.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_AnkhAdmin_tsx
+  module_src_ui_AnkhAdmin_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_AnkhAdmin_tsx --> module_src_index_ts
+  module_src_ui_AnkhAdmin_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAdminOverlay_tsx
+  module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
@@ -538,6 +550,7 @@ graph TD
   module_src_ui_StudioAuthSettingsOverlay_tsx["src/ui/StudioAuthSettingsOverlay.tsx"]
   package__ankhorage_studio -.-> module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_authSettings_ts
+  module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_index_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthApi_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_StudioAuthSettingsOverlay_tsx --> module_src_projectSecretApi_ts
@@ -547,8 +560,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
-  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAdminOverlay_tsx
-  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioAuthSettingsOverlay_tsx
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts

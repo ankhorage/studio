@@ -11,8 +11,11 @@ test('uses the URL as the admin route source of truth', () => {
 
   expect(source).toContain('usePathname()');
   expect(source).toContain('useRouter()');
-  expect(source).toContain('router.push(route)');
-  expect(source).toContain("router.replace('/')");
+  expect(source).toContain("router.push('/ankh')");
+  expect(source).toContain('setLastNonAdminLocation');
+  expect(source).toContain('Administration');
+  expect(source).not.toContain('StudioAuthSettingsOverlay');
+  expect(source).not.toContain('StudioAdminOverlay');
   expect(source).not.toContain('useState<');
   expect(source).not.toContain('setActiveRoute');
 });

@@ -525,7 +525,17 @@ function StudioShell({
   appPathname: string;
   shouldMountAppHeader: boolean;
 }) {
-  const { activeScreenId, manifest: studioManifest, previewMode } = useStudio();
+  const {
+    activeScreenId,
+    manifest: studioManifest,
+    previewMode,
+    setLastNonAdminLocation,
+  } = useStudio();
+  useEffect(() => {
+    if (!isStudioAdminPath(appPathname)) {
+      setLastNonAdminLocation(resolveStudioNavigableLocation(appPathname));
+    }
+  }, [appPathname, setLastNonAdminLocation]);
   const appHeaderTitle = resolveStudioAppHeaderTitle({
     runtimeManifest,
     studioManifest,
@@ -570,7 +580,6 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
         actions={studioAppBar.actions}
         overflow={studioAppBar.overflow}
       />
-      {studioAppBar.overlay}
     </>
   );
 }`

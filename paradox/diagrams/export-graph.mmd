@@ -1,6 +1,7 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   module_src_app_index_ts["src/app/index.ts"]
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
   module_src_app_StudioDashboard_tsx["src/app/StudioDashboard.tsx"]
@@ -158,6 +159,8 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
+  module_src_ui_AnkhAdmin_test_ts["src/ui/AnkhAdmin.test.ts"]
+  module_src_ui_AnkhAdmin_tsx["src/ui/AnkhAdmin.tsx"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   module_src_ui_StudioAdminOverlay_test_ts["src/ui/StudioAdminOverlay.test.ts"]
   module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
@@ -325,8 +328,12 @@ graph LR
   module_src_index_ts --> export_StudioActionPayloadPrimitive
   export_StudioActionPayloadSchema["StudioActionPayloadSchema"]
   module_src_index_ts --> export_StudioActionPayloadSchema
+  export_StudioAdminRouteId["StudioAdminRouteId"]
+  module_src_index_ts --> export_StudioAdminRouteId
   export_StudioAdminRoutePath["StudioAdminRoutePath"]
   module_src_index_ts --> export_StudioAdminRoutePath
+  export_StudioAdminStaticRoutePath["StudioAdminStaticRoutePath"]
+  module_src_index_ts --> export_StudioAdminStaticRoutePath
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
   export_StudioComponentBlueprint["StudioComponentBlueprint"]
@@ -340,7 +347,7 @@ graph LR
   module_src_index_ts --> export_StudioContextValue
   export_StudioContextValue -.-> export_InsertCatalogEntry
   export_StudioContextValue -.-> export_NodePlacement
-  export_StudioContextValue -.-> export_StudioAdminRoutePath
+  export_StudioContextValue -.-> export_StudioAdminRouteId
   export_StudioContextValue -.-> export_StudioLocale
   export_StudioContextValue -.-> export_StudioManifest
   export_StudioContextValue -.-> export_StudioMode
@@ -378,7 +385,7 @@ graph LR
   module_src_index_ts --> export_StudioScreenId
   export_StudioSelectionState["StudioSelectionState"]
   module_src_index_ts --> export_StudioSelectionState
-  export_StudioSelectionState -.-> export_StudioAdminRoutePath
+  export_StudioSelectionState -.-> export_StudioAdminRouteId
   export_StudioSelectionState -.-> export_StudioPanelId
   export_StudioSessionId["StudioSessionId"]
   module_src_index_ts --> export_StudioSessionId

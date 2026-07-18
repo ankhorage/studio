@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.6.9",
+      "value": "v0.6.10",
       "color": "cb3837"
     },
     {
@@ -80,6 +80,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["default"]
+    },
+    {
+      "path": "src/ankhAdmin.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/root.ts"],
+      "exports": []
     },
     {
       "path": "src/app/index.ts",
@@ -1120,7 +1126,9 @@
         "StudioActionPayloadField",
         "StudioActionPayloadPrimitive",
         "StudioActionPayloadSchema",
+        "StudioAdminRouteId",
         "StudioAdminRoutePath",
+        "StudioAdminStaticRoutePath",
         "StudioCommand",
         "StudioComponentBlueprint",
         "StudioComponentMeta",
@@ -1479,6 +1487,8 @@
         "ActionDefinition",
         "addNodeToTree",
         "analyzeProjectAuthHealth",
+        "AnkhAdminPage",
+        "AnkhAdminShell",
         "AnkhStudio",
         "assertMetadataOnlyResponse",
         "buildInsertCatalogEntries",
@@ -1537,7 +1547,9 @@
         "StudioActionPayloadField",
         "StudioActionPayloadPrimitive",
         "StudioActionPayloadSchema",
+        "StudioAdminRouteId",
         "StudioAdminRoutePath",
+        "StudioAdminStaticRoutePath",
         "StudioApp",
         "StudioCommand",
         "StudioComponentBlueprint",
@@ -1778,11 +1790,22 @@
       "isEntrypoint": false,
       "dependencies": ["src/index.ts"],
       "exports": [
+        "createStudioAdminRoutePath",
         "createStudioAdminRouteRenderState",
         "createStudioPropertiesRoutePath",
+        "getStudioAdminRouteDefinition",
+        "isStudioAdminPath",
+        "isStudioAdminRouteActive",
+        "isStudioAdminRouteAvailable",
         "openStudioAdminRoute",
+        "resolveStudioAdminActiveRouteId",
+        "resolveStudioAdminRouteId",
         "resolveStudioAdminRoutePath",
+        "resolveStudioNavigableLocation",
         "resolveStudioPropertiesNodeId",
+        "STUDIO_ADMIN_ROUTE_REGISTRY",
+        "StudioAdminRouteAvailabilityContext",
+        "StudioAdminRouteDefinition",
         "StudioAdminRouteRenderState"
       ]
     },
@@ -1809,6 +1832,24 @@
       ]
     },
     {
+      "path": "src/ui/AnkhAdmin.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/AnkhAdmin.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/studioAdminRouteModel.ts",
+        "src/ui/StudioAdminOverlay.tsx",
+        "src/ui/StudioAuthSettingsOverlay.tsx"
+      ],
+      "exports": ["AnkhAdminPage", "AnkhAdminPageProps", "AnkhAdminShell", "AnkhAdminShellProps"]
+    },
+    {
       "path": "src/ui/AnkhStudio.ts",
       "isEntrypoint": false,
       "dependencies": ["src/core/StudioContext.ts"],
@@ -1824,7 +1865,7 @@
       "path": "src/ui/StudioAdminOverlay.tsx",
       "isEntrypoint": false,
       "dependencies": ["src/projectSecretApi.ts", "src/projectSecretUsage.ts"],
-      "exports": ["StudioAdminOverlay", "StudioAdminOverlayProps"]
+      "exports": ["StudioSecretsPage"]
     },
     {
       "path": "src/ui/StudioAuthSettingsOverlay.test.ts",
@@ -1837,11 +1878,12 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/authSettings.ts",
+        "src/index.ts",
         "src/projectAuthApi.ts",
         "src/projectAuthHealth.ts",
         "src/projectSecretApi.ts"
       ],
-      "exports": ["StudioAuthSettingsOverlay", "StudioAuthSettingsOverlayProps"]
+      "exports": ["StudioAuthSettingsPage", "StudioAuthSettingsPageProps"]
     },
     {
       "path": "src/ui/useStudioAppBarAugmentation.test.ts",
@@ -1852,12 +1894,7 @@
     {
       "path": "src/ui/useStudioAppBarAugmentation.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/studioAdminRouteModel.ts",
-        "src/ui/StudioAdminOverlay.tsx",
-        "src/ui/StudioAuthSettingsOverlay.tsx"
-      ],
+      "dependencies": ["src/core/StudioContext.ts", "src/studioAdminRouteModel.ts"],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
     {
@@ -1884,7 +1921,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 320,
+        "line": 346,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -1902,7 +1939,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 234,
+        "line": 259,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -1956,7 +1993,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 568,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -1988,7 +2025,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1254,
+        "line": 1280,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2020,7 +2057,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 701,
+        "line": 727,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2052,7 +2089,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 467,
+        "line": 493,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -2090,7 +2127,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1173,
+        "line": 1199,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2134,7 +2171,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 484,
+        "line": 510,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -2172,7 +2209,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 460,
+        "line": 486,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -2204,7 +2241,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1099,
+        "line": 1125,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2236,7 +2273,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 212,
+        "line": 237,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2329,7 +2366,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 194,
+        "line": 219,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2369,7 +2406,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 171,
+        "line": 196,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2387,7 +2424,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 222,
+        "line": 247,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2405,7 +2442,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 200,
+        "line": 225,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2492,7 +2529,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 168,
+        "line": 193,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2510,7 +2547,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 169,
+        "line": 194,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2528,7 +2565,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 217,
+        "line": 242,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2622,7 +2659,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 931,
+        "line": 957,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2654,7 +2691,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 874,
+        "line": 900,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2701,7 +2738,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 881,
+        "line": 907,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2734,7 +2771,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 179,
+        "line": 204,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2788,7 +2825,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 187,
+        "line": 212,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2835,7 +2872,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 174,
+        "line": 199,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2868,7 +2905,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 242,
+        "line": 267,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2915,7 +2952,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 575,
+        "line": 601,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -2959,7 +2996,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 999,
+        "line": 1025,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -2991,7 +3028,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 958,
+        "line": 984,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3038,7 +3075,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 965,
+        "line": 991,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3071,7 +3108,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 130,
+        "line": 155,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3118,7 +3155,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 137,
+        "line": 162,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3136,7 +3173,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 149,
+        "line": 174,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3169,7 +3206,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 128,
+        "line": 153,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3187,7 +3224,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 161,
+        "line": 186,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3205,7 +3242,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 154,
+        "line": 179,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3576,7 +3613,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 524,
+        "line": 550,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3614,7 +3651,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 829,
+        "line": 855,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3646,7 +3683,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1296,
+        "line": 1322,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3678,7 +3715,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 768,
+        "line": 794,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3714,7 +3751,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1066,
+        "line": 1092,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3811,7 +3848,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 226,
+        "line": 251,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3851,7 +3888,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 224,
+        "line": 249,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3869,7 +3906,25 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 232,
+        "line": 257,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioAdminRouteId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 97,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3887,7 +3942,25 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 95,
+        "line": 120,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioAdminStaticRoutePath",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 109,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3905,7 +3978,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 267,
+        "line": 292,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3923,7 +3996,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 251,
+        "line": 276,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3956,7 +4029,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 256,
+        "line": 281,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4003,7 +4076,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 263,
+        "line": 288,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4021,14 +4094,14 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 283,
+        "line": 308,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
       "relatedSymbols": [
         "InsertCatalogEntry",
         "NodePlacement",
-        "StudioAdminRoutePath",
+        "StudioAdminRouteId",
         "StudioLocale",
         "StudioManifest",
         "StudioMode",
@@ -4042,9 +4115,9 @@
       "signatures": [],
       "members": [
         {
-          "name": "activeAdminRoutePath",
+          "name": "activeAdminRouteId",
           "kind": "property",
-          "type": "StudioAdminRoutePath",
+          "type": "StudioAdminRouteId",
           "required": true,
           "description": null
         },
@@ -4140,6 +4213,13 @@
           "description": null
         },
         {
+          "name": "lastNonAdminLocation",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "manifest",
           "kind": "property",
           "type": "StudioManifest | null",
@@ -4231,9 +4311,9 @@
           "description": null
         },
         {
-          "name": "setActiveAdminRoutePath",
+          "name": "setActiveAdminRouteId",
           "kind": "property",
-          "type": "(routePath: StudioAdminRoutePath) => void",
+          "type": "(routeId: StudioAdminRouteId) => void",
           "required": true,
           "description": null
         },
@@ -4276,6 +4356,13 @@
           "name": "setActiveThemeMode",
           "kind": "property",
           "type": "(mode: StudioMode) => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "setLastNonAdminLocation",
+          "kind": "property",
+          "type": "(location: string) => void",
           "required": true,
           "description": null
         },
@@ -4382,7 +4469,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 276,
+        "line": 301,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4400,7 +4487,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 265,
+        "line": 290,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4418,7 +4505,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 90,
+        "line": 92,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4436,7 +4523,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 98,
+        "line": 122,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4454,7 +4541,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 92,
+        "line": 94,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4472,7 +4559,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 89,
+        "line": 91,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4490,7 +4577,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 87,
+        "line": 89,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4548,7 +4635,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 94,
+        "line": 96,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4566,7 +4653,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 85,
+        "line": 87,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4584,7 +4671,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 83,
+        "line": 85,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4602,7 +4689,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 93,
+        "line": 95,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4620,7 +4707,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 88,
+        "line": 90,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4638,17 +4725,17 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 109,
+        "line": 133,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["StudioAdminRoutePath", "StudioPanelId"],
+      "relatedSymbols": ["StudioAdminRouteId", "StudioPanelId"],
       "signatures": [],
       "members": [
         {
-          "name": "activeAdminRoutePath",
+          "name": "activeAdminRouteId",
           "kind": "property",
-          "type": "StudioAdminRoutePath",
+          "type": "StudioAdminRouteId",
           "required": true,
           "description": null
         },
@@ -4692,7 +4779,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 86,
+        "line": 88,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4710,7 +4797,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 117,
+        "line": 141,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4735,6 +4822,13 @@
           "name": "isLoading",
           "kind": "property",
           "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "lastNonAdminLocation",
+          "kind": "property",
+          "type": "string",
           "required": true,
           "description": null
         },
@@ -4785,7 +4879,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 104,
+        "line": 128,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4803,7 +4897,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 412,
+        "line": 438,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4821,7 +4915,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 496,
+        "line": 522,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4865,7 +4959,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1116,
+        "line": 1142,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4903,7 +4997,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 713,
+        "line": 739,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6297,7 +6391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 119,
+        "line": 143,
         "column": 11
       }
     },
@@ -6306,7 +6400,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 428,
+        "line": 458,
         "column": 1
       }
     },
@@ -6315,7 +6409,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 439,
+        "line": 480,
         "column": 1
       }
     },
@@ -6324,7 +6418,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 455,
+        "line": 489,
         "column": 1
       }
     },
@@ -6333,7 +6427,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 459,
+        "line": 493,
         "column": 1
       }
     },
@@ -6342,7 +6436,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 503,
+        "line": 537,
         "column": 1
       }
     },
@@ -6351,7 +6445,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 511,
+        "line": 545,
         "column": 1
       }
     },
@@ -6360,7 +6454,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 516,
+        "line": 550,
         "column": 1
       }
     },
@@ -8259,7 +8353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 460,
+        "line": 486,
         "column": 14
       }
     },
@@ -8268,7 +8362,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 467,
+        "line": 493,
         "column": 14
       }
     },
@@ -8277,7 +8371,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 484,
+        "line": 510,
         "column": 14
       }
     },
@@ -8286,7 +8380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 496,
+        "line": 522,
         "column": 14
       }
     },
@@ -8295,7 +8389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 524,
+        "line": 550,
         "column": 14
       }
     },
@@ -8304,7 +8398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 568,
         "column": 14
       }
     },
@@ -8313,7 +8407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 575,
+        "line": 601,
         "column": 14
       }
     },
@@ -8322,7 +8416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 611,
+        "line": 637,
         "column": 1
       }
     },
@@ -8331,7 +8425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 616,
+        "line": 642,
         "column": 9
       }
     },
@@ -8340,7 +8434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 635,
+        "line": 661,
         "column": 1
       }
     },
@@ -8349,7 +8443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 646,
+        "line": 672,
         "column": 1
       }
     },
@@ -8358,7 +8452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 701,
+        "line": 727,
         "column": 1
       }
     },
@@ -8367,7 +8461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 713,
+        "line": 739,
         "column": 1
       }
     },
@@ -8376,7 +8470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 768,
+        "line": 794,
         "column": 1
       }
     },
@@ -8385,7 +8479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 829,
+        "line": 855,
         "column": 1
       }
     },
@@ -8394,7 +8488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 886,
+        "line": 912,
         "column": 1
       }
     },
@@ -8403,7 +8497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 931,
+        "line": 957,
         "column": 1
       }
     },
@@ -8412,7 +8506,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 970,
+        "line": 996,
         "column": 1
       }
     },
@@ -8421,7 +8515,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 999,
+        "line": 1025,
         "column": 1
       }
     },
@@ -8430,7 +8524,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1099,
+        "line": 1125,
         "column": 1
       }
     },
@@ -8439,7 +8533,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1103,
+        "line": 1129,
         "column": 1
       }
     },
@@ -8448,7 +8542,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1108,
+        "line": 1134,
         "column": 1
       }
     },
@@ -8457,7 +8551,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1116,
+        "line": 1142,
         "column": 1
       }
     },
@@ -8466,7 +8560,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1120,
+        "line": 1146,
         "column": 9
       }
     },
@@ -8475,7 +8569,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1153,
+        "line": 1179,
         "column": 1
       }
     },
@@ -8484,7 +8578,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1158,
+        "line": 1184,
         "column": 9
       }
     },
@@ -8493,7 +8587,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1173,
+        "line": 1199,
         "column": 1
       }
     },
@@ -8502,7 +8596,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1193,
+        "line": 1219,
         "column": 1
       }
     },
@@ -8511,7 +8605,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1216,
+        "line": 1242,
         "column": 1
       }
     },
@@ -8520,7 +8614,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1254,
+        "line": 1280,
         "column": 1
       }
     },
@@ -8529,7 +8623,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1280,
+        "line": 1306,
         "column": 1
       }
     },
@@ -8538,7 +8632,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1296,
+        "line": 1322,
         "column": 1
       }
     },
@@ -8547,7 +8641,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1345,
+        "line": 1371,
         "column": 1
       }
     },
@@ -10289,11 +10383,29 @@
       }
     },
     {
+      "name": "getStudioAdminRouteDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioAdminRouteId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveStudioAdminRoutePath",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 14,
+        "line": 154,
         "column": 1
       }
     },
@@ -10302,25 +10414,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 22,
-        "column": 1
-      }
-    },
-    {
-      "name": "createStudioAdminRouteRenderState",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/studioAdminRouteModel.ts",
-        "line": 39,
-        "column": 1
-      }
-    },
-    {
-      "name": "openStudioAdminRoute",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/studioAdminRouteModel.ts",
-        "line": 55,
+        "line": 165,
         "column": 1
       }
     },
@@ -10329,7 +10423,79 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 64,
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioAdminRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStudioAdminRouteAvailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioAdminActiveRouteId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 208,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStudioAdminRouteActive",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 212,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioAdminRouteRenderState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 229,
+        "column": 1
+      }
+    },
+    {
+      "name": "openStudioAdminRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 247,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStudioAdminPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 264,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioNavigableLocation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 268,
         "column": 1
       }
     },
@@ -10339,6 +10505,177 @@
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
         "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "AnkhAdminShell",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "openRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 76,
+        "column": 9
+      }
+    },
+    {
+      "name": "goBackToApp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 89,
+        "column": 9
+      }
+    },
+    {
+      "name": "AnkhAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 163,
+        "column": 1
+      }
+    },
+    {
+      "name": "OverviewAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 206,
+        "column": 1
+      }
+    },
+    {
+      "name": "ApisAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 236,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 305,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateActiveTheme",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 313,
+        "column": 9
+      }
+    },
+    {
+      "name": "PropertiesAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 362,
+        "column": 1
+      }
+    },
+    {
+      "name": "NodeProps",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 401,
+        "column": 1
+      }
+    },
+    {
+      "name": "AdminScroll",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 420,
+        "column": 1
+      }
+    },
+    {
+      "name": "AdminHeader",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 424,
+        "column": 1
+      }
+    },
+    {
+      "name": "Metric",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 435,
+        "column": 1
+      }
+    },
+    {
+      "name": "Field",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 443,
+        "column": 1
+      }
+    },
+    {
+      "name": "Input",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 454,
+        "column": 1
+      }
+    },
+    {
+      "name": "KeyValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 473,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 484,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 488,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatPrimitive",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 492,
         "column": 1
       }
     },
@@ -10356,25 +10693,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 43,
+        "line": 37,
         "column": 1
       }
     },
     {
-      "name": "StudioAdminOverlay",
+      "name": "StudioSecretsPage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 47,
-        "column": 1
-      }
-    },
-    {
-      "name": "SecretsAdmin",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 79,
+        "line": 41,
         "column": 1
       }
     },
@@ -10383,7 +10711,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 464,
+        "line": 426,
         "column": 1
       }
     },
@@ -10392,7 +10720,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 498,
+        "line": 460,
         "column": 1
       }
     },
@@ -10401,7 +10729,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 513,
+        "line": 475,
         "column": 1
       }
     },
@@ -10410,7 +10738,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 524,
+        "line": 486,
         "column": 1
       }
     },
@@ -10419,7 +10747,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 543,
+        "line": 505,
         "column": 1
       }
     },
@@ -10428,7 +10756,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 617,
+        "line": 579,
         "column": 1
       }
     },
@@ -10437,7 +10765,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 645,
+        "line": 607,
         "column": 1
       }
     },
@@ -10446,7 +10774,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 665,
+        "line": 627,
         "column": 1
       }
     },
@@ -10455,7 +10783,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 692,
+        "line": 654,
         "column": 1
       }
     },
@@ -10464,7 +10792,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 701,
+        "line": 663,
         "column": 1
       }
     },
@@ -10473,7 +10801,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 706,
+        "line": 668,
         "column": 1
       }
     },
@@ -10482,7 +10810,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 710,
+        "line": 672,
         "column": 1
       }
     },
@@ -10491,16 +10819,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAdminOverlay.tsx",
-        "line": 714,
+        "line": 676,
         "column": 1
       }
     },
     {
-      "name": "StudioAuthSettingsOverlay",
+      "name": "StudioAuthSettingsPage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 61,
+        "line": 64,
         "column": 1
       }
     },
@@ -10509,7 +10837,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 569,
+        "line": 550,
         "column": 1
       }
     },
@@ -10518,7 +10846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 598,
+        "line": 579,
         "column": 9
       }
     },
@@ -10527,7 +10855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 624,
+        "line": 605,
         "column": 9
       }
     },
@@ -10536,7 +10864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 752,
+        "line": 733,
         "column": 1
       }
     },
@@ -10545,7 +10873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 766,
+        "line": 747,
         "column": 1
       }
     },
@@ -10554,7 +10882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 777,
+        "line": 758,
         "column": 1
       }
     },
@@ -10563,7 +10891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 784,
+        "line": 765,
         "column": 1
       }
     },
@@ -10572,7 +10900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 789,
+        "line": 770,
         "column": 1
       }
     },
@@ -10581,7 +10909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 794,
+        "line": 775,
         "column": 1
       }
     },
@@ -10590,7 +10918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 804,
+        "line": 785,
         "column": 1
       }
     },
@@ -10599,7 +10927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 812,
+        "line": 793,
         "column": 1
       }
     },
@@ -10608,7 +10936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 824,
+        "line": 805,
         "column": 1
       }
     },
@@ -10617,7 +10945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 835,
+        "line": 816,
         "column": 1
       }
     },
@@ -10626,7 +10954,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 840,
+        "line": 821,
         "column": 1
       }
     },
@@ -10635,7 +10963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 900,
+        "line": 881,
         "column": 1
       }
     },
@@ -10644,7 +10972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 907,
+        "line": 888,
         "column": 1
       }
     },
@@ -10653,7 +10981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 915,
+        "line": 896,
         "column": 1
       }
     },
@@ -10662,7 +10990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 922,
+        "line": 903,
         "column": 1
       }
     },
@@ -10671,7 +10999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 928,
+        "line": 909,
         "column": 1
       }
     },
@@ -10680,7 +11008,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 943,
+        "line": 924,
         "column": 1
       }
     },
@@ -10689,7 +11017,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 954,
+        "line": 935,
         "column": 1
       }
     },
@@ -10698,7 +11026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 966,
+        "line": 947,
         "column": 1
       }
     },
@@ -10707,7 +11035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 985,
+        "line": 966,
         "column": 1
       }
     },
@@ -10716,7 +11044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1004,
+        "line": 985,
         "column": 1
       }
     },
@@ -10725,7 +11053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1028,
+        "line": 1009,
         "column": 1
       }
     },
@@ -10734,7 +11062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1039,
+        "line": 1020,
         "column": 1
       }
     },
@@ -10743,7 +11071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1062,
+        "line": 1043,
         "column": 1
       }
     },
@@ -10752,7 +11080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/StudioAuthSettingsOverlay.tsx",
-        "line": 1074,
+        "line": 1055,
         "column": 1
       }
     },
@@ -10761,7 +11089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 17,
+        "line": 14,
         "column": 1
       }
     }
@@ -10914,6 +11242,11 @@
   ],
   "graphs": {
     "imports": [
+      {
+        "fromPath": "src/ankhAdmin.public.test.ts",
+        "toPath": "src/root.ts",
+        "sourcePath": "src/ankhAdmin.public.test.ts"
+      },
       {
         "fromPath": "src/authSettings.test.ts",
         "toPath": "src/authSettings.ts",
@@ -11172,6 +11505,11 @@
       {
         "fromPath": "src/root.ts",
         "toPath": "src/secretResponseGuard.ts",
+        "sourcePath": "src/root.ts"
+      },
+      {
+        "fromPath": "src/root.ts",
+        "toPath": "src/ui/AnkhAdmin.tsx",
         "sourcePath": "src/root.ts"
       },
       {
@@ -11595,6 +11933,31 @@
         "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/ui/StudioAdminOverlay.tsx",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
         "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
@@ -11630,6 +11993,11 @@
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
+        "fromPath": "src/ui/StudioAuthSettingsOverlay.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
+      },
+      {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -11637,16 +12005,6 @@
       {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/studioAdminRouteModel.ts",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
-        "toPath": "src/ui/StudioAdminOverlay.tsx",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
-        "toPath": "src/ui/StudioAuthSettingsOverlay.tsx",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -12277,6 +12635,18 @@
         "toSymbol": "defineParadoxConfig",
         "callExpression": "defineParadoxConfig",
         "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "src/ankhAdmin.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ankhAdmin.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/ankhAdmin.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ankhAdmin.public.test.ts"
       },
       {
         "fromSymbol": "collectFiles",
@@ -15532,6 +15902,12 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioAdminRouteId",
+        "callExpression": "resolveStudioAdminRouteId",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "resolveStudioAdminRoutePath",
         "callExpression": "resolveStudioAdminRoutePath",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
@@ -15544,14 +15920,32 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioPropertiesRoutePath",
+        "callExpression": "createStudioPropertiesRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "createStudioAdminRouteRenderState",
         "callExpression": "createStudioAdminRouteRenderState",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
-        "toSymbol": "createStudioPropertiesRoutePath",
-        "callExpression": "createStudioPropertiesRoutePath",
+        "toSymbol": "isStudioAdminRouteActive",
+        "callExpression": "isStudioAdminRouteActive",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "isStudioAdminRouteAvailable",
+        "callExpression": "isStudioAdminRouteAvailable",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
       },
       {
@@ -15559,6 +15953,72 @@
         "toSymbol": "openStudioAdminRoute",
         "callExpression": "openStudioAdminRoute",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioNavigableLocation",
+        "callExpression": "resolveStudioNavigableLocation",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRouteId",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "resolveStudioAdminRouteId",
+        "callExpression": "resolveStudioAdminRouteId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "createStudioPropertiesRoutePath",
+        "callExpression": "createStudioPropertiesRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRoutePath",
+        "toSymbol": "createStudioPropertiesRoutePath",
+        "callExpression": "createStudioPropertiesRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRoutePath",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminActiveRouteId",
+        "toSymbol": "resolveStudioAdminRouteId",
+        "callExpression": "resolveStudioAdminRouteId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "isStudioAdminRouteActive",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRouteRenderState",
+        "toSymbol": "resolveStudioAdminRouteId",
+        "callExpression": "resolveStudioAdminRouteId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
         "fromSymbol": "createStudioAdminRouteRenderState",
@@ -15570,6 +16030,12 @@
         "fromSymbol": "createStudioAdminRouteRenderState",
         "toSymbol": "resolveStudioPropertiesNodeId",
         "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "openStudioAdminRoute",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -17361,6 +17827,210 @@
         "sourcePath": "src/runtime/useRuntimeAction.ts"
       },
       {
+        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/AnkhAdmin.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/AnkhAdmin.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/AnkhAdmin.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/AnkhAdmin.test.ts"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "usePathname",
+        "callExpression": "usePathname",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useWindowDimensions",
+        "callExpression": "useWindowDimensions",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "resolveStudioAdminActiveRouteId",
+        "callExpression": "resolveStudioAdminActiveRouteId",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminShell",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "isStudioAdminRouteAvailable",
+        "callExpression": "isStudioAdminRouteAvailable",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "setActiveAdminRouteId",
+        "callExpression": "studio.setActiveAdminRouteId",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "openRoute",
+        "toSymbol": "setDrawerOpen",
+        "callExpression": "setDrawerOpen",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "setDrawerOpen",
+        "callExpression": "setDrawerOpen",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "usePathname",
+        "callExpression": "usePathname",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AnkhAdminPage",
+        "toSymbol": "resolveStudioPropertiesNodeId",
+        "callExpression": "resolveStudioPropertiesNodeId",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "OverviewAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "ApisAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "ThemeAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "updateActiveTheme",
+        "toSymbol": "updateTheme",
+        "callExpression": "studio.updateTheme",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "updateActiveTheme",
+        "callExpression": "updateActiveTheme",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "findNode",
+        "callExpression": "studio.findNode",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "selectNode",
+        "callExpression": "studio.selectNode",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "updateNode",
+        "callExpression": "studio.updateNode",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "formatPrimitive",
+        "callExpression": "formatPrimitive",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "Input",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
         "fromSymbol": "AnkhStudio",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
@@ -17391,31 +18061,25 @@
         "sourcePath": "src/ui/StudioAdminOverlay.test.ts"
       },
       {
-        "fromSymbol": "StudioAdminOverlay",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAdminOverlay.tsx"
-      },
-      {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "useState",
         "callExpression": "useState",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "useSecretInventory",
         "callExpression": "useSecretInventory",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "createField",
         "callExpression": "createField",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "useMemo",
         "callExpression": "useMemo",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
@@ -17427,7 +18091,7 @@
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "useEffect",
         "callExpression": "useEffect",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
@@ -17463,7 +18127,7 @@
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
       },
       {
-        "fromSymbol": "SecretsAdmin",
+        "fromSymbol": "StudioSecretsPage",
         "toSymbol": "useCallback",
         "callExpression": "useCallback",
         "sourcePath": "src/ui/StudioAdminOverlay.tsx"
@@ -17739,19 +18403,13 @@
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.test.ts"
       },
       {
-        "fromSymbol": "StudioAuthSettingsOverlay",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
-      },
-      {
-        "fromSymbol": "StudioAuthSettingsOverlay",
+        "fromSymbol": "StudioAuthSettingsPage",
         "toSymbol": "useRouter",
         "callExpression": "useRouter",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
-        "fromSymbol": "StudioAuthSettingsOverlay",
+        "fromSymbol": "StudioAuthSettingsPage",
         "toSymbol": "useState",
         "callExpression": "useState",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -17775,7 +18433,7 @@
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
-        "fromSymbol": "StudioAuthSettingsOverlay",
+        "fromSymbol": "StudioAuthSettingsPage",
         "toSymbol": "useCallback",
         "callExpression": "useCallback",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -17829,7 +18487,7 @@
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
-        "fromSymbol": "StudioAuthSettingsOverlay",
+        "fromSymbol": "StudioAuthSettingsPage",
         "toSymbol": "useEffect",
         "callExpression": "useEffect",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -17871,7 +18529,7 @@
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
       },
       {
-        "fromSymbol": "StudioAuthSettingsOverlay",
+        "fromSymbol": "StudioAuthSettingsPage",
         "toSymbol": "createDefaultOAuth",
         "callExpression": "createDefaultOAuth",
         "sourcePath": "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -18124,14 +18782,20 @@
       },
       {
         "fromSymbol": "useStudioAppBarAugmentation",
-        "toSymbol": "resolveStudioAdminRoutePath",
-        "callExpression": "resolveStudioAdminRoutePath",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
-        "fromSymbol": "useStudioAppBarAugmentation",
-        "toSymbol": "useCallback",
-        "callExpression": "useCallback",
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "isStudioAdminPath",
+        "callExpression": "isStudioAdminPath",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setLastNonAdminLocation",
+        "callExpression": "studio.setLastNonAdminLocation",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -18141,9 +18805,9 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
-        "fromSymbol": "onPress",
-        "toSymbol": "openRoute",
-        "callExpression": "openRoute",
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "isStudioAdminPath",
+        "callExpression": "isStudioAdminPath",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -22944,7 +23608,7 @@
       },
       {
         "fromSymbol": "StudioSelectionState",
-        "toType": "StudioAdminRoutePath",
+        "toType": "StudioAdminRouteId",
         "sourcePath": "src/index.ts"
       },
       {
@@ -23104,7 +23768,7 @@
       },
       {
         "fromSymbol": "StudioContextValue",
-        "toType": "StudioAdminRoutePath",
+        "toType": "StudioAdminRouteId",
         "sourcePath": "src/index.ts"
       },
       {

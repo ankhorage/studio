@@ -9,7 +9,7 @@ import {
   SUPABASE_OAUTH_PROVIDER_IDS,
   type SupabaseOAuthProviderId,
 } from '@ankhorage/supabase-auth';
-import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import { Heading, Text, useZoraTheme } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -21,7 +21,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
 import type { ProjectAuthHealth } from '../projectAuthHealth';
@@ -32,12 +31,7 @@ import {
   saveProjectAuthSettings,
 } from '../projectAuthApi';
 import { configureProjectOAuthProvider } from '../projectSecretApi';
-
-export interface StudioAuthSettingsOverlayProps {
-  readonly projectId: string;
-  readonly manifest: AppManifest | null;
-  readonly onClose: () => void;
-}
+import type { StudioAdminRouteId } from '../index';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
@@ -58,9 +52,17 @@ interface RecoverableOAuthPartialFailure {
   readonly intendedProvider: AuthOAuthProviderConfig;
 }
 
-export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
-  const { projectId, manifest, onClose } = props;
-  const { theme } = useZoraTheme();
+export interface StudioAuthSettingsPageProps {
+  readonly projectId: string;
+  readonly manifest: AppManifest | null;
+  readonly routeId: Extract<
+    StudioAdminRouteId,
+    'auth' | 'auth-providers' | 'auth-routes' | 'auth-profile'
+  >;
+}
+
+export function StudioAuthSettingsPage(props: StudioAuthSettingsPageProps) {
+  const { projectId, manifest, routeId } = props;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
@@ -161,35 +163,18 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
   const signUpEnabled = draft.signUp !== undefined;
   const profileEnabled = draft.profile !== undefined;
   const oauth = draft.oauth ?? createDefaultOAuth();
+  const showGeneral = routeId === 'auth';
+  const showProviders = routeId === 'auth-providers';
+  const showRoutes = routeId === 'auth-routes';
+  const showProfile = routeId === 'auth-profile';
 
   return (
-    <SafeAreaView
-      style={[
-        styles.overlay,
-        { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
-      ]}
-    >
-      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <View style={styles.grow}>
-          <Heading level={2} text="Authentication" />
-          <Text color="neutral" emphasis="muted" variant="bodySmall">
-            Configure canonical auth methods, routes, profile settings, and provider activation.
-          </Text>
-        </View>
-        <IconButton
-          icon={{ name: 'close-outline' }}
-          label="Close authentication settings"
-          color="neutral"
-          variant="ghost"
-          onPress={onClose}
-        />
-      </View>
+    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      {loading ? <ActivityIndicator /> : null}
 
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        {loading ? <ActivityIndicator /> : null}
+      {showGeneral || showProviders ? <AuthHealthCard health={health} /> : null}
 
-        <AuthHealthCard health={health} />
-
+      {showGeneral ? (
         <Card title="Overview">
           <SwitchSetting
             title="Authentication enabled"
@@ -206,7 +191,9 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             here.
           </Text>
         </Card>
+      ) : null}
 
+      {showGeneral ? (
         <Card title="Email and password">
           <Text weight="semiBold">Sign-in identifiers</Text>
           <View style={styles.choiceRow}>
@@ -311,24 +298,10 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               />
             </>
           ) : null}
-
-          <Field label="Forgot-password route">
-            <Input
-              value={draft.flow.forgotPasswordRoute ?? ''}
-              autoCapitalize="none"
-              onChangeText={(forgotPasswordRoute) =>
-                setDraft((current) => ({
-                  ...current,
-                  flow: {
-                    ...current.flow,
-                    ...(forgotPasswordRoute.trim() ? { forgotPasswordRoute } : {}),
-                  },
-                }))
-              }
-            />
-          </Field>
         </Card>
+      ) : null}
 
+      {showRoutes ? (
         <Card title="Routes">
           <RouteField
             label="Sign-in route"
@@ -355,8 +328,27 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             value={draft.flow.unauthorizedRoute ?? ''}
             onChange={(unauthorizedRoute) => updateFlow(setDraft, { unauthorizedRoute })}
           />
+          <RouteField
+            label="Forgot-password route"
+            value={draft.flow.forgotPasswordRoute ?? ''}
+            onChange={(forgotPasswordRoute) => updateFlow(setDraft, { forgotPasswordRoute })}
+          />
+          <Field label="OAuth callback route">
+            <Input
+              value={oauth.callbackRoute}
+              autoCapitalize="none"
+              onChangeText={(callbackRoute) =>
+                setDraft((current) => ({
+                  ...current,
+                  oauth: { ...(current.oauth ?? createDefaultOAuth()), callbackRoute },
+                }))
+              }
+            />
+          </Field>
         </Card>
+      ) : null}
 
+      {showProviders ? (
         <Card title="OAuth providers">
           <SwitchSetting
             title="OAuth enabled"
@@ -369,19 +361,6 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               }))
             }
           />
-          <Field label="Callback route">
-            <Input
-              value={oauth.callbackRoute}
-              autoCapitalize="none"
-              onChangeText={(callbackRoute) =>
-                setDraft((current) => ({
-                  ...current,
-                  oauth: { ...(current.oauth ?? createDefaultOAuth()), callbackRoute },
-                }))
-              }
-            />
-          </Field>
-
           {SUPABASE_OAUTH_PROVIDER_IDS.map((providerId) => (
             <OAuthProviderSetting
               key={providerId}
@@ -445,7 +424,9 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             />
           </View>
         </Card>
+      ) : null}
 
+      {showProfile ? (
         <Card title="Profile">
           <SwitchSetting
             title="Profile table enabled"
@@ -555,14 +536,14 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             </>
           ) : null}
         </Card>
+      ) : null}
 
-        <View style={styles.footerActions}>
-          <SecondaryButton label="Reload" onPress={() => void reload()} />
-          <PrimaryButton label="Save authentication" loading={saving} onPress={() => void save()} />
-        </View>
-        {message ? <Message text={message} /> : null}
-      </ScrollView>
-    </SafeAreaView>
+      <View style={styles.footerActions}>
+        <SecondaryButton label="Reload" onPress={() => void reload()} />
+        <PrimaryButton label="Save authentication" loading={saving} onPress={() => void save()} />
+      </View>
+      {message ? <Message text={message} /> : null}
+    </ScrollView>
   );
 }
 
@@ -1080,20 +1061,6 @@ function Message({ text }: { readonly text: string }) {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1000,
-    borderWidth: 1,
-  },
-  header: {
-    minHeight: 72,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
   content: {
     width: '100%',
     maxWidth: 920,

@@ -13,7 +13,7 @@ import {
   findNodeById,
   type InsertCatalogEntry,
   type NodePlacement,
-  type StudioAdminRoutePath,
+  type StudioAdminRouteId,
   type StudioContextValue,
   type StudioManifest,
   type StudioMode,
@@ -64,10 +64,11 @@ export const StudioProvider = ({
 }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
-  const [activeAdminRoutePath, setActiveAdminRoutePath] = useState<StudioAdminRoutePath>('/');
+  const [activeAdminRouteId, setActiveAdminRouteId] = useState<StudioAdminRouteId>('overview');
   const [activeCanvasDragNodeId, setActiveCanvasDragNodeId] = useState<StudioNodeId | null>(null);
   const [activeScreenId, setActiveScreenId] = useState<StudioScreenId | null>(null);
   const [selectedNodeId, selectNode] = useState<StudioNodeId | null>(null);
+  const [lastNonAdminLocation, setLastNonAdminLocation] = useState('/');
   const [studioMode, setStudioMode] = useState<StudioMode>('dark');
   const [previewMode, setPreviewMode] = useState(false);
   const [activeLocale, setActiveLocale] = useState('en');
@@ -84,10 +85,11 @@ export const StudioProvider = ({
       activeScreenId,
       selectedNodeId,
       activePanelId,
-      activeAdminRoutePath,
+      activeAdminRouteId,
       activeCanvasDragNodeId,
       studioMode,
       previewMode,
+      lastNonAdminLocation,
       saveStatus: 'idle',
       isLoading: false,
       error: null,
@@ -95,7 +97,8 @@ export const StudioProvider = ({
       rootNode,
       selectNode,
       setActivePanelId,
-      setActiveAdminRoutePath,
+      setActiveAdminRouteId,
+      setLastNonAdminLocation,
       setActiveCanvasDragNodeId,
       updateNode: noop,
       updateAppData: (data: AppDataManifest) =>
@@ -131,11 +134,12 @@ export const StudioProvider = ({
       refetchManifest: noopAsync,
     }),
     [
-      activeAdminRoutePath,
+      activeAdminRouteId,
       activeCanvasDragNodeId,
       activeLocale,
       activePanelId,
       activeScreenId,
+      lastNonAdminLocation,
       manifest,
       previewMode,
       projectId,
