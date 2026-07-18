@@ -108,6 +108,18 @@ describe('LayoutGenerator', () => {
     expect(adminSources).not.toContain('return null;');
   });
 
+  test('derives Studio admin route files from the canonical registry', () => {
+    const source = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), 'layoutGenerator.ts'),
+      { encoding: 'utf8' },
+    );
+
+    expect(source).toContain('STUDIO_ADMIN_ROUTE_REGISTRY.map');
+    expect(source).toContain('resolveStudioAdminRouteFilePath(route.id)');
+    expect(source).not.toContain("path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')");
+    expect(source).not.toContain('type StudioAdminGeneratedRouteName =');
+  });
+
   test('generates one canonical OAuth runtime without secret references', () => {
     const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
       includeStudio: false,

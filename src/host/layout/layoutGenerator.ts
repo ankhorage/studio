@@ -5,6 +5,11 @@ import {
 } from '@ankhorage/expo-runtime/planning';
 import path from 'path';
 
+import type { StudioAdminRouteId } from '../../index';
+import {
+  getStudioAdminRouteDefinition,
+  STUDIO_ADMIN_ROUTE_REGISTRY,
+} from '../../studioAdminRouteModel';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,
@@ -93,50 +98,7 @@ export class LayoutGenerator {
           path: normalizeRel(path.join(appRootRel, 'ankh', '_layout.tsx')),
           content: getStudioAdminLayoutTsx(),
         },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'index.tsx')),
-          content: getStudioAdminRouteTsx('overview'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'index.tsx')),
-          content: getStudioAdminRouteTsx('apis'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'data-sources.tsx')),
-          content: getStudioAdminRouteTsx('api-data-sources'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis', 'operations.tsx')),
-          content: getStudioAdminRouteTsx('api-operations'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'index.tsx')),
-          content: getStudioAdminRouteTsx('auth'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')),
-          content: getStudioAdminRouteTsx('auth-providers'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'routes.tsx')),
-          content: getStudioAdminRouteTsx('auth-routes'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth', 'profile.tsx')),
-          content: getStudioAdminRouteTsx('auth-profile'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'properties', '[id].tsx')),
-          content: getStudioAdminRouteTsx('properties'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'secrets.tsx')),
-          content: getStudioAdminRouteTsx('secrets'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'theme.tsx')),
-          content: getStudioAdminRouteTsx('theme'),
-        },
+        ...createStudioAdminRouteGeneratedFiles(appRootRel),
       );
     };
 
@@ -464,20 +426,37 @@ export default function AnkhLayout() {
 `;
 }
 
-type StudioAdminGeneratedRouteName =
-  | 'overview'
-  | 'apis'
-  | 'api-data-sources'
-  | 'api-operations'
-  | 'auth'
-  | 'auth-providers'
-  | 'auth-routes'
-  | 'auth-profile'
-  | 'properties'
-  | 'secrets'
-  | 'theme';
+function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile[] {
+  return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
+    path: normalizeRel(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
+    content: getStudioAdminRouteTsx(route.id),
+  }));
+}
 
-function getStudioAdminRouteTsx(routeName: StudioAdminGeneratedRouteName): string {
+function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
+  const route = getStudioAdminRouteDefinition(routeId);
+  const segments = route.path
+    .replace(/^\/ankh\/?/u, '')
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => (segment.startsWith(':') ? '[id]' : segment));
+  const hasChildren = STUDIO_ADMIN_ROUTE_REGISTRY.some(
+    (candidate) => candidate.parentId === routeId,
+  );
+
+  if (segments.length === 0) {
+    return path.join('ankh', 'index.tsx');
+  }
+
+  if (hasChildren) {
+    return path.join('ankh', ...segments, 'index.tsx');
+  }
+
+  const fileName = `${segments[segments.length - 1]}.tsx`;
+  return path.join('ankh', ...segments.slice(0, -1), fileName);
+}
+
+function getStudioAdminRouteTsx(routeName: StudioAdminRouteId): string {
   return `import { AnkhAdminPage } from '@ankhorage/studio';
 
 export default function AnkhAdminRoute() {

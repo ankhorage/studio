@@ -388,9 +388,9 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     .join('\n\n');
   const studioRuntimeLines = includeStudio
     ? `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
-const shouldMountAppHeader = ${
-        authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'
-      };`
+const shouldMountAppHeader =
+  !isStudioAdminPath(appPathname) &&
+  ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`
     : '';
   const indentedStudioRuntimeLines =
     studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';

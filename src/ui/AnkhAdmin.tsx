@@ -5,23 +5,29 @@ import {
   Drawer,
   Heading,
   IconButton,
-  NavigationList,
   SidebarLayout,
   Text,
   useZoraTheme,
-  type ZoraNavigationRouteMap,
-  type ZoraNavigationRouteState,
 } from '@ankhorage/zora';
 import { Slot, usePathname, useRouter } from 'expo-router';
-import React, { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useStudio } from '../core/StudioContext';
 import type { StudioAdminRouteId, ThemeUpdates } from '../index';
+import { findNodeInManifest, findScreenIdForNode } from '../manifestState';
 import {
   createStudioAdminRoutePath,
   getStudioAdminRouteDefinition,
+  isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   resolveStudioAdminActiveRouteId,
   resolveStudioPropertiesNodeId,
@@ -34,8 +40,6 @@ export interface AnkhAdminShellProps {
   readonly children?: React.ReactNode;
 }
 
-type RouteState = { key: StudioAdminRouteId; name: StudioAdminRouteId };
-
 export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const studio = useStudio();
   const pathname = usePathname();
@@ -46,35 +50,8 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const activeRouteId = resolveStudioAdminActiveRouteId(pathname);
   const activeDefinition = getStudioAdminRouteDefinition(activeRouteId);
   const compact = width < 900;
-  const routes = useMemo<RouteState[]>(
-    () =>
-      STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
-        key: route.id,
-        name: route.id,
-      })),
-    [],
-  );
-  const routeMap = useMemo<ZoraNavigationRouteMap>(
-    () =>
-      Object.fromEntries(
-        STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => [
-          route.id,
-          {
-            label: route.parentId ? `  ${route.label}` : route.label,
-            icon: { name: route.icon },
-            disabled: !isStudioAdminRouteAvailable(route.id, {
-              selectedNodeId: studio.selectedNodeId,
-            }),
-            accessibilityLabel: `${route.label} administration`,
-            testID: `ankh-admin-nav-${route.id}`,
-          },
-        ]),
-      ),
-    [studio.selectedNodeId],
-  );
 
-  const openRoute = (route: ZoraNavigationRouteState) => {
-    const routeId = route.key as StudioAdminRouteId;
+  const openRoute = (routeId: StudioAdminRouteId) => {
     const path = createStudioAdminRoutePath({
       routeId,
       selectedNodeId: studio.selectedNodeId,
@@ -91,18 +68,10 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   };
 
   const nav = (
-    <NavigationList
-      activeRouteKey={activeRouteId}
-      routes={routes}
-      routeMap={routeMap}
+    <AdminNavigation
+      activeRouteId={activeRouteId}
+      selectedNodeId={studio.selectedNodeId}
       onRoutePress={openRoute}
-      header={
-        <View style={styles.navigationHeader}>
-          <Text color="neutral" emphasis="muted" variant="caption">
-            Administration
-          </Text>
-        </View>
-      }
     />
   );
 
@@ -227,7 +196,6 @@ function OverviewAdminPage() {
         <KeyValue label="Project ID" value={studio.projectId} />
         <KeyValue label="Auth scope" value={authScope} />
         <KeyValue label="Active theme" value={manifest?.activeThemeId ?? 'none'} />
-        <KeyValue label="Theme mode" value={manifest?.activeThemeMode ?? 'light'} />
       </Card>
     </AdminScroll>
   );
@@ -323,7 +291,6 @@ function ThemeAdminPage() {
       />
       {activeTheme && modeConfig ? (
         <Card title={activeTheme.name}>
-          <KeyValue label="Active mode" value={mode} />
           <Field label="Theme name">
             <Input value={activeTheme.name} onChangeText={(name) => updateActiveTheme({ name })} />
           </Field>
@@ -361,13 +328,17 @@ function ThemeAdminPage() {
 
 function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null }) {
   const studio = useStudio();
-  const node = nodeId && studio.rootNode ? studio.findNode(studio.rootNode, nodeId) : null;
+  const owningScreenId =
+    nodeId && studio.manifest ? findScreenIdForNode(studio.manifest, nodeId) : null;
+  const owningRoot = owningScreenId ? studio.manifest?.screens[owningScreenId]?.root : null;
+  const node = owningRoot && nodeId ? findNodeInManifest(owningRoot, nodeId) : null;
 
   React.useEffect(() => {
-    if (nodeId && node) {
+    if (nodeId && node && owningScreenId) {
+      studio.setActiveScreenId(owningScreenId);
       studio.selectNode(nodeId);
     }
-  }, [node, nodeId, studio]);
+  }, [node, nodeId, owningScreenId, studio]);
 
   return (
     <AdminScroll>
@@ -395,6 +366,56 @@ function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null }) {
         </Card>
       )}
     </AdminScroll>
+  );
+}
+
+function AdminNavigation(props: {
+  readonly activeRouteId: StudioAdminRouteId;
+  readonly selectedNodeId: string | null;
+  readonly onRoutePress: (routeId: StudioAdminRouteId) => void;
+}) {
+  const { theme } = useZoraTheme();
+
+  return (
+    <ScrollView contentContainerStyle={styles.navigationContent}>
+      <Text color="neutral" emphasis="muted" variant="caption">
+        Administration
+      </Text>
+      {STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => {
+        const available = isStudioAdminRouteAvailable(route.id, {
+          selectedNodeId: props.selectedNodeId,
+        });
+        const active = isStudioAdminRouteActive({
+          currentRouteId: props.activeRouteId,
+          candidateRouteId: route.id,
+        });
+        const exact = props.activeRouteId === route.id;
+
+        return (
+          <Pressable
+            key={route.id}
+            accessibilityLabel={`${route.label} administration`}
+            accessibilityRole="button"
+            disabled={!available}
+            onPress={() => props.onRoutePress(route.id)}
+            style={[
+              styles.navigationItem,
+              route.parentId ? styles.navigationChildItem : null,
+              {
+                backgroundColor: active ? theme.colors.surface : 'transparent',
+                borderColor: exact ? theme.colors.primary : theme.colors.border,
+                opacity: available ? 1 : 0.45,
+              },
+            ]}
+            testID={`ankh-admin-nav-${route.id}`}
+          >
+            <Text color={active ? 'primary' : 'neutral'} weight={active ? 'semiBold' : 'regular'}>
+              {route.label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </ScrollView>
   );
 }
 
@@ -508,9 +529,20 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 0,
   },
-  navigationHeader: {
-    paddingHorizontal: 8,
+  navigationContent: {
+    gap: 8,
     paddingVertical: 4,
+  },
+  navigationItem: {
+    minHeight: 42,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    justifyContent: 'center',
+  },
+  navigationChildItem: {
+    marginLeft: 18,
   },
   content: {
     width: '100%',

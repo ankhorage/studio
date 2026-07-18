@@ -218,9 +218,21 @@
       "exports": ["STANDALONE_STUDIO_PACKAGE_NAME"]
     },
     {
+      "path": "src/core/StudioProvider.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
       "path": "src/core/StudioProvider.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/StudioContext.ts", "src/index.ts"],
+      "dependencies": [
+        "src/core/constants.ts",
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/manifestState.ts",
+        "src/manifestSync.ts"
+      ],
       "exports": ["StudioProvider", "StudioProviderProps"]
     },
     {
@@ -566,7 +578,9 @@
       "dependencies": [
         "src/host/layout/auth/resolveAuthLayoutPlan.ts",
         "src/host/layout/templates/index.ts",
-        "src/host/modules/layout.ts"
+        "src/host/modules/layout.ts",
+        "src/index.ts",
+        "src/studioAdminRouteModel.ts"
       ],
       "exports": ["GeneratedFile", "LayoutGenerationOptions", "LayoutGenerator"]
     },
@@ -1843,6 +1857,7 @@
       "dependencies": [
         "src/core/StudioContext.ts",
         "src/index.ts",
+        "src/manifestState.ts",
         "src/studioAdminRouteModel.ts",
         "src/ui/StudioAdminOverlay.tsx",
         "src/ui/StudioAuthSettingsOverlay.tsx"
@@ -5581,7 +5596,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 34,
+        "line": 44,
         "column": 7
       }
     },
@@ -5590,7 +5605,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 35,
+        "line": 45,
         "column": 7
       }
     },
@@ -5599,7 +5614,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 37,
+        "line": 48,
         "column": 7
       }
     },
@@ -5608,8 +5623,71 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 60,
+        "line": 71,
         "column": 14
+      }
+    },
+    {
+      "name": "useStudioManifestPersistence",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 201,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasPendingStudioManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 303,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestStudioManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 307,
+        "column": 1
+      }
+    },
+    {
+      "name": "saveStudioManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 316,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPersistenceJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "createPersistenceError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 337,
+        "column": 1
+      }
+    },
+    {
+      "name": "toPersistenceMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/StudioProvider.ts",
+        "line": 344,
+        "column": 1
       }
     },
     {
@@ -6355,7 +6433,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 39,
+        "line": 44,
         "column": 1
       }
     },
@@ -6364,7 +6442,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 54,
+        "line": 59,
         "column": 1
       }
     },
@@ -6373,7 +6451,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 65,
+        "line": 70,
         "column": 1
       }
     },
@@ -6382,7 +6460,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 88,
+        "line": 93,
         "column": 11
       }
     },
@@ -6391,7 +6469,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 143,
+        "line": 105,
         "column": 11
       }
     },
@@ -6400,7 +6478,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 458,
+        "line": 420,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioAdminRouteGeneratedFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.ts",
+        "line": 429,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioAdminRouteFilePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.ts",
+        "line": 436,
         "column": 1
       }
     },
@@ -6409,7 +6505,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 480,
+        "line": 459,
         "column": 1
       }
     },
@@ -6418,7 +6514,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 489,
+        "line": 468,
         "column": 1
       }
     },
@@ -6427,7 +6523,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 493,
+        "line": 472,
         "column": 1
       }
     },
@@ -6436,7 +6532,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 537,
+        "line": 516,
         "column": 1
       }
     },
@@ -6445,7 +6541,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 545,
+        "line": 524,
         "column": 1
       }
     },
@@ -6454,7 +6550,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 550,
+        "line": 529,
         "column": 1
       }
     },
@@ -10513,7 +10609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 39,
+        "line": 43,
         "column": 1
       }
     },
@@ -10522,7 +10618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 76,
+        "line": 54,
         "column": 9
       }
     },
@@ -10531,7 +10627,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 89,
+        "line": 66,
         "column": 9
       }
     },
@@ -10540,7 +10636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 163,
+        "line": 132,
         "column": 1
       }
     },
@@ -10549,7 +10645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 206,
+        "line": 175,
         "column": 1
       }
     },
@@ -10558,7 +10654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 236,
+        "line": 204,
         "column": 1
       }
     },
@@ -10567,7 +10663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 305,
+        "line": 273,
         "column": 1
       }
     },
@@ -10576,7 +10672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 313,
+        "line": 281,
         "column": 9
       }
     },
@@ -10585,7 +10681,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 362,
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "AdminNavigation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/AnkhAdmin.tsx",
+        "line": 372,
         "column": 1
       }
     },
@@ -10594,7 +10699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 401,
+        "line": 422,
         "column": 1
       }
     },
@@ -10603,7 +10708,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 420,
+        "line": 441,
         "column": 1
       }
     },
@@ -10612,7 +10717,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 424,
+        "line": 445,
         "column": 1
       }
     },
@@ -10621,7 +10726,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 435,
+        "line": 456,
         "column": 1
       }
     },
@@ -10630,7 +10735,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 443,
+        "line": 464,
         "column": 1
       }
     },
@@ -10639,7 +10744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 454,
+        "line": 475,
         "column": 1
       }
     },
@@ -10648,7 +10753,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 473,
+        "line": 494,
         "column": 1
       }
     },
@@ -10657,7 +10762,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 484,
+        "line": 505,
         "column": 1
       }
     },
@@ -10666,7 +10771,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 488,
+        "line": 509,
         "column": 1
       }
     },
@@ -10675,7 +10780,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhAdmin.tsx",
-        "line": 492,
+        "line": 513,
         "column": 1
       }
     },
@@ -11664,6 +11769,21 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/manifestSync.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
@@ -11944,6 +12064,11 @@
       },
       {
         "fromPath": "src/ui/AnkhAdmin.tsx",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromPath": "src/ui/AnkhAdmin.tsx",
         "toPath": "src/studioAdminRouteModel.ts",
         "sourcePath": "src/ui/AnkhAdmin.tsx"
       },
@@ -12156,6 +12281,16 @@
         "fromPath": "src/host/layout/layoutGenerator.test.ts",
         "toPath": "src/host/layout/layoutGenerator.ts",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
@@ -16579,9 +16714,39 @@
         "sourcePath": "src/core/StudioContext.ts"
       },
       {
+        "fromSymbol": "src/core/StudioProvider.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/core/StudioProvider.test.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.test.ts",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/core/StudioProvider.test.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/core/StudioProvider.test.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/core/StudioProvider.test.ts"
+      },
+      {
         "fromSymbol": "StudioProvider",
         "toSymbol": "useState",
         "callExpression": "useState",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "useStudioManifestPersistence",
+        "callExpression": "useStudioManifestPersistence",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -16597,9 +16762,45 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setManifest",
+        "callExpression": "setManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "findScreenIdForNode",
+        "callExpression": "findScreenIdForNode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioManifestNode",
+        "callExpression": "updateStudioManifestNode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioManifestTheme",
+        "callExpression": "updateStudioManifestTheme",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
         "fromSymbol": "updateAppData",
         "toSymbol": "setManifest",
         "callExpression": "setManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioManifestAppData",
+        "callExpression": "updateStudioManifestAppData",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -16609,15 +16810,135 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioManifestDataBindings",
+        "callExpression": "updateStudioManifestDataBindings",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
         "fromSymbol": "updateDataSources",
         "toSymbol": "setManifest",
         "callExpression": "setManifest",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "updateStudioManifestDataSources",
+        "callExpression": "updateStudioManifestDataSources",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
         "fromSymbol": "togglePreviewMode",
         "toSymbol": "setPreviewMode",
         "callExpression": "setPreviewMode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "useStudioManifestPersistence",
+        "toSymbol": "useRef",
+        "callExpression": "useRef",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "useStudioManifestPersistence",
+        "toSymbol": "createStudioManifestSignature",
+        "callExpression": "createStudioManifestSignature",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "useStudioManifestPersistence",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setIsLoading",
+        "callExpression": "setIsLoading",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "requestStudioManifest",
+        "callExpression": "requestStudioManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "createStudioManifestSignature",
+        "callExpression": "createStudioManifestSignature",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setSaveStatus",
+        "callExpression": "setSaveStatus",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "toPersistenceMessage",
+        "callExpression": "toPersistenceMessage",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "saveStudioManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "hasPendingStudioManifest",
+        "callExpression": "hasPendingStudioManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "saveNext",
+        "callExpression": "saveNext",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "useStudioManifestPersistence",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "loadManifest",
+        "callExpression": "loadManifest",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "requestStudioManifest",
+        "toSymbol": "readPersistenceJson",
+        "callExpression": "readPersistenceJson",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "requestStudioManifest",
+        "toSymbol": "createPersistenceError",
+        "callExpression": "createPersistenceError",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "saveStudioManifest",
+        "toSymbol": "readPersistenceJson",
+        "callExpression": "readPersistenceJson",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "saveStudioManifest",
+        "toSymbol": "createPersistenceError",
+        "callExpression": "createPersistenceError",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -17899,18 +18220,6 @@
         "sourcePath": "src/ui/AnkhAdmin.tsx"
       },
       {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/AnkhAdmin.tsx",
-        "toSymbol": "isStudioAdminRouteAvailable",
-        "callExpression": "isStudioAdminRouteAvailable",
-        "sourcePath": "src/ui/AnkhAdmin.tsx"
-      },
-      {
         "fromSymbol": "openRoute",
         "toSymbol": "createStudioAdminRoutePath",
         "callExpression": "createStudioAdminRoutePath",
@@ -18002,8 +18311,20 @@
       },
       {
         "fromSymbol": "PropertiesAdminPage",
-        "toSymbol": "findNode",
-        "callExpression": "studio.findNode",
+        "toSymbol": "findScreenIdForNode",
+        "callExpression": "findScreenIdForNode",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "PropertiesAdminPage",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "setActiveScreenId",
+        "callExpression": "studio.setActiveScreenId",
         "sourcePath": "src/ui/AnkhAdmin.tsx"
       },
       {
@@ -18016,6 +18337,30 @@
         "fromSymbol": "src/ui/AnkhAdmin.tsx",
         "toSymbol": "updateNode",
         "callExpression": "studio.updateNode",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "AdminNavigation",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "isStudioAdminRouteAvailable",
+        "callExpression": "isStudioAdminRouteAvailable",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "isStudioAdminRouteActive",
+        "callExpression": "isStudioAdminRouteActive",
+        "sourcePath": "src/ui/AnkhAdmin.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhAdmin.tsx",
+        "toSymbol": "onRoutePress",
+        "callExpression": "props.onRoutePress",
         "sourcePath": "src/ui/AnkhAdmin.tsx"
       },
       {
@@ -18788,18 +19133,6 @@
       },
       {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
-        "toSymbol": "isStudioAdminPath",
-        "callExpression": "isStudioAdminPath",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
-        "toSymbol": "setLastNonAdminLocation",
-        "callExpression": "studio.setLastNonAdminLocation",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
         "toSymbol": "setActivePanelId",
         "callExpression": "studio.setActivePanelId",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -19388,18 +19721,6 @@
       },
       {
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
-        "toSymbol": "createOAuthManifest",
-        "callExpression": "createOAuthManifest",
-        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
-        "toSymbol": "getGeneratedAuthAdapter",
-        "callExpression": "getGeneratedAuthAdapter",
-        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "readFileSync",
         "callExpression": "readFileSync",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
@@ -19423,6 +19744,18 @@
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "createOAuthManifest",
+        "callExpression": "createOAuthManifest",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "getGeneratedAuthAdapter",
+        "callExpression": "getGeneratedAuthAdapter",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
         "fromSymbol": "generateAll",
         "toSymbol": "resolveAuthLayoutPlan",
         "callExpression": "resolveAuthLayoutPlan",
@@ -19442,8 +19775,8 @@
       },
       {
         "fromSymbol": "addStudioAdminRouteFiles",
-        "toSymbol": "getStudioAdminRouteTsx",
-        "callExpression": "getStudioAdminRouteTsx",
+        "toSymbol": "createStudioAdminRouteGeneratedFiles",
+        "callExpression": "createStudioAdminRouteGeneratedFiles",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -19642,6 +19975,24 @@
         "fromSymbol": "getLayoutTemplate",
         "toSymbol": "getNestedLayoutTsx",
         "callExpression": "getNestedLayoutTsx",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.ts",
+        "toSymbol": "resolveStudioAdminRouteFilePath",
+        "callExpression": "resolveStudioAdminRouteFilePath",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.ts",
+        "toSymbol": "getStudioAdminRouteTsx",
+        "callExpression": "getStudioAdminRouteTsx",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRouteFilePath",
+        "toSymbol": "getStudioAdminRouteDefinition",
+        "callExpression": "getStudioAdminRouteDefinition",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {

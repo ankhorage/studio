@@ -17,13 +17,9 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const router = useRouter();
 
   const openAdministration = useCallback(() => {
-    if (!isStudioAdminPath(pathname)) {
-      studio.setLastNonAdminLocation(pathname);
-    }
-
     studio.setActivePanelId(null);
     router.push('/ankh');
-  }, [pathname, router, studio]);
+  }, [router, studio]);
 
   const actions = isStudioAdminPath(pathname)
     ? null

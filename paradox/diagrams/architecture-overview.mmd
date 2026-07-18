@@ -63,10 +63,15 @@ graph TD
   module_src_core_StudioContext_ts --> module_src_index_ts
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
   package__ankhorage_studio -.-> module_src_core_studioPackageBoundary_ts
+  module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
+  package__ankhorage_studio -.-> module_src_core_StudioProvider_test_ts
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
   package__ankhorage_studio -.-> module_src_core_StudioProvider_ts
+  module_src_core_StudioProvider_ts --> module_src_core_constants_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
+  module_src_core_StudioProvider_ts --> module_src_manifestState_ts
+  module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
   module_src_dnd_index_ts["src/dnd/index.ts"]
   package__ankhorage_studio -.-> module_src_dnd_index_ts
   module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
@@ -161,6 +166,8 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
@@ -533,6 +540,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_AnkhAdmin_tsx
   module_src_ui_AnkhAdmin_tsx --> module_src_core_StudioContext_ts
   module_src_ui_AnkhAdmin_tsx --> module_src_index_ts
+  module_src_ui_AnkhAdmin_tsx --> module_src_manifestState_ts
   module_src_ui_AnkhAdmin_tsx --> module_src_studioAdminRouteModel_ts
   module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_AnkhAdmin_tsx --> module_src_ui_StudioAuthSettingsOverlay_tsx

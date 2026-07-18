@@ -264,7 +264,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/core/StudioProvider.ts">
                 src/core/StudioProvider.ts
-                <small>4 functions</small>
+                <small>11 functions</small>
               </button>
             </li>
             <li>
@@ -396,7 +396,7 @@
                 data-target="src/host/layout/layoutGenerator.ts"
               >
                 src/host/layout/layoutGenerator.ts
-                <small>12 functions</small>
+                <small>14 functions</small>
               </button>
             </li>
             <li>
@@ -1170,7 +1170,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/ui/AnkhAdmin.tsx">
                 src/ui/AnkhAdmin.tsx
-                <small>19 functions</small>
+                <small>20 functions</small>
               </button>
             </li>
             <li>
@@ -1215,7 +1215,7 @@
             <div class="summary">
               <div><strong>84</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>170</strong><span class="muted">modules</span></div>
+              <div><strong>171</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1415,15 +1415,22 @@
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>STANDALONE_STUDIO_PACKAGE_NAME</code></p>
             </article>
+            <article class="item" data-search="src/core/StudioProvider.test.ts">
+              <h3>src/core/StudioProvider.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
             <article
               class="item"
-              data-search="src/core/StudioProvider.ts src/core/StudioContext.ts src/index.ts StudioProvider StudioProviderProps"
+              data-search="src/core/StudioProvider.ts src/core/constants.ts src/core/StudioContext.ts src/index.ts src/manifestState.ts src/manifestSync.ts StudioProvider StudioProviderProps"
             >
               <h3>src/core/StudioProvider.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
-                <code>src/index.ts</code>
+                <strong>Dependencies:</strong> <code>src/core/constants.ts</code>,
+                <code>src/core/StudioContext.ts</code>, <code>src/index.ts</code>,
+                <code>src/manifestState.ts</code>, <code>src/manifestSync.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioProvider</code>,
@@ -1780,7 +1787,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/templates/index.ts src/host/modules/layout.ts GeneratedFile LayoutGenerationOptions LayoutGenerator"
+              data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/templates/index.ts src/host/modules/layout.ts src/index.ts src/studioAdminRouteModel.ts GeneratedFile LayoutGenerationOptions LayoutGenerator"
             >
               <h3>src/host/layout/layoutGenerator.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1788,7 +1795,8 @@
                 <strong>Dependencies:</strong>
                 <code>src/host/layout/auth/resolveAuthLayoutPlan.ts</code>,
                 <code>src/host/layout/templates/index.ts</code>,
-                <code>src/host/modules/layout.ts</code>
+                <code>src/host/modules/layout.ts</code>, <code>src/index.ts</code>,
+                <code>src/studioAdminRouteModel.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>GeneratedFile</code>,
@@ -3352,13 +3360,14 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/AnkhAdmin.tsx src/core/StudioContext.ts src/index.ts src/studioAdminRouteModel.ts src/ui/StudioAdminOverlay.tsx src/ui/StudioAuthSettingsOverlay.tsx AnkhAdminPage AnkhAdminPageProps AnkhAdminShell AnkhAdminShellProps"
+              data-search="src/ui/AnkhAdmin.tsx src/core/StudioContext.ts src/index.ts src/manifestState.ts src/studioAdminRouteModel.ts src/ui/StudioAdminOverlay.tsx src/ui/StudioAuthSettingsOverlay.tsx AnkhAdminPage AnkhAdminPageProps AnkhAdminShell AnkhAdminShellProps"
             >
               <h3>src/ui/AnkhAdmin.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
-                <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>,
+                <code>src/index.ts</code>, <code>src/manifestState.ts</code>,
+                <code>src/studioAdminRouteModel.ts</code>,
                 <code>src/ui/StudioAdminOverlay.tsx</code>,
                 <code>src/ui/StudioAuthSettingsOverlay.tsx</code>
               </p>
@@ -6787,10 +6796,15 @@
                 module_src_core_StudioContext_ts --&gt; module_src_index_ts
                 module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_studioPackageBoundary_ts
+                module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_test_ts
                 module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
                 module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
                 module_src_core_StudioProvider_ts --&gt; module_src_index_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_manifestState_ts
+                module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
                 module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_dnd_index_ts
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -6913,7 +6927,9 @@
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts
                 module_src_host_layout_layoutGenerator_ts --&gt;
                 module_src_host_layout_templates_index_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_host_modules_layout_ts
+                --&gt; module_src_host_modules_layout_ts module_src_host_layout_layoutGenerator_ts
+                --&gt; module_src_index_ts module_src_host_layout_layoutGenerator_ts --&gt;
+                module_src_studioAdminRouteModel_ts
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_ts
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
@@ -7381,7 +7397,8 @@
                 package__ankhorage_studio -.-&gt; module_src_ui_AnkhAdmin_tsx
                 module_src_ui_AnkhAdmin_tsx --&gt; module_src_core_StudioContext_ts
                 module_src_ui_AnkhAdmin_tsx --&gt; module_src_index_ts module_src_ui_AnkhAdmin_tsx
-                --&gt; module_src_studioAdminRouteModel_ts module_src_ui_AnkhAdmin_tsx --&gt;
+                --&gt; module_src_manifestState_ts module_src_ui_AnkhAdmin_tsx --&gt;
+                module_src_studioAdminRouteModel_ts module_src_ui_AnkhAdmin_tsx --&gt;
                 module_src_ui_StudioAdminOverlay_tsx module_src_ui_AnkhAdmin_tsx --&gt;
                 module_src_ui_StudioAuthSettingsOverlay_tsx
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
@@ -7481,10 +7498,15 @@ graph TD
   module_src_core_StudioContext_ts --&gt; module_src_index_ts
   module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_studioPackageBoundary_ts
+  module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_test_ts
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_StudioProvider_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_manifestState_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_dnd_index_ts
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -7579,6 +7601,8 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
@@ -7951,6 +7975,7 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhAdmin_tsx
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_index_ts
+  module_src_ui_AnkhAdmin_tsx --&gt; module_src_manifestState_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_studioAdminRouteModel_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAuthSettingsOverlay_tsx
@@ -8009,6 +8034,7 @@ graph TD
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
                 module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+                module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
                 module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
                 module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -8188,8 +8214,11 @@ graph TD
                 module_src_host_templateRegistry_index_ts module_src_cli_index_ts --&gt;
                 module_src_host_utils_workspaceRoot_ts module_src_core_StudioContext_ts --&gt;
                 module_src_index_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_core_constants_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_core_StudioContext_ts module_src_core_StudioProvider_ts --&gt;
-                module_src_index_ts module_src_hooks_useProjects_ts --&gt;
+                module_src_index_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_manifestState_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_manifestSync_ts module_src_hooks_useProjects_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
                 module_src_modules_dashboard_types_ts
@@ -8257,7 +8286,9 @@ graph TD
                 --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
                 module_src_host_layout_layoutGenerator_ts --&gt;
                 module_src_host_layout_templates_index_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_host_modules_layout_ts
+                --&gt; module_src_host_modules_layout_ts module_src_host_layout_layoutGenerator_ts
+                --&gt; module_src_index_ts module_src_host_layout_layoutGenerator_ts --&gt;
+                module_src_studioAdminRouteModel_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
                 module_src_host_layout_templates_utils_routes_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
@@ -8466,19 +8497,20 @@ graph TD
                 module_src_studioSelectionModel_ts module_src_studioSelectionModel_test_ts --&gt;
                 module_src_studioSelectionModel_ts module_src_ui_AnkhAdmin_tsx --&gt;
                 module_src_core_StudioContext_ts module_src_ui_AnkhAdmin_tsx --&gt;
-                module_src_index_ts module_src_ui_AnkhAdmin_tsx --&gt;
-                module_src_studioAdminRouteModel_ts module_src_ui_AnkhAdmin_tsx --&gt;
-                module_src_ui_StudioAdminOverlay_tsx module_src_ui_AnkhAdmin_tsx --&gt;
-                module_src_ui_StudioAuthSettingsOverlay_tsx module_src_ui_AnkhStudio_ts --&gt;
-                module_src_core_StudioContext_ts module_src_ui_StudioAdminOverlay_tsx --&gt;
-                module_src_projectSecretApi_ts module_src_ui_StudioAdminOverlay_tsx --&gt;
-                module_src_projectSecretUsage_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_authSettings_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_index_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_projectAuthApi_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_projectAuthHealth_ts module_src_ui_StudioAuthSettingsOverlay_tsx --&gt;
-                module_src_projectSecretApi_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
-                module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_index_ts module_src_ui_AnkhAdmin_tsx --&gt; module_src_manifestState_ts
+                module_src_ui_AnkhAdmin_tsx --&gt; module_src_studioAdminRouteModel_ts
+                module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAdminOverlay_tsx
+                module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAuthSettingsOverlay_tsx
+                module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretApi_ts
+                module_src_ui_StudioAdminOverlay_tsx --&gt; module_src_projectSecretUsage_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_authSettings_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_index_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthApi_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectAuthHealth_ts
+                module_src_ui_StudioAuthSettingsOverlay_tsx --&gt; module_src_projectSecretApi_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt;
                 module_src_studioAdminRouteModel_ts module_src_utils_treeUtils_ts --&gt;
                 module_src_index_ts
               </div>
@@ -8504,6 +8536,7 @@ graph LR
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
   module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+  module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -8681,8 +8714,11 @@ graph LR
   module_src_cli_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_cli_index_ts --&gt; module_src_host_utils_workspaceRoot_ts
   module_src_core_StudioContext_ts --&gt; module_src_index_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_core_constants_ts
   module_src_core_StudioProvider_ts --&gt; module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_manifestState_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_modules_dashboard_types_ts
@@ -8731,6 +8767,8 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_auth_oauth_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -8864,6 +8902,7 @@ graph LR
   module_src_studioSelectionModel_test_ts --&gt; module_src_studioSelectionModel_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_index_ts
+  module_src_ui_AnkhAdmin_tsx --&gt; module_src_manifestState_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_studioAdminRouteModel_ts
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAdminOverlay_tsx
   module_src_ui_AnkhAdmin_tsx --&gt; module_src_ui_StudioAuthSettingsOverlay_tsx
@@ -8903,6 +8942,7 @@ graph LR
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
                 module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+                module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
                 module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
                 module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -9295,6 +9335,7 @@ graph LR
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_StudioContext_ts[&quot;src/core/StudioContext.ts&quot;]
   module_src_core_studioPackageBoundary_ts[&quot;src/core/studioPackageBoundary.ts&quot;]
+  module_src_core_StudioProvider_test_ts[&quot;src/core/StudioProvider.test.ts&quot;]
   module_src_core_StudioProvider_ts[&quot;src/core/StudioProvider.ts&quot;]
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -10438,22 +10479,63 @@ sequenceDiagram
             <h2>src/core/StudioProvider.ts</h2>
             <article class="item" data-search="noop src/core/StudioProvider.ts ">
               <h3>noop</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:34:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:44:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
               <h3>noopAsync</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:35:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:45:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
               <h3>resolveActiveRootNode</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:37:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:48:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
               <h3>StudioProvider</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:60:14</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:71:14</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="useStudioManifestPersistence src/core/StudioProvider.ts "
+            >
+              <h3>useStudioManifestPersistence</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:201:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="hasPendingStudioManifest src/core/StudioProvider.ts "
+            >
+              <h3>hasPendingStudioManifest</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:303:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="requestStudioManifest src/core/StudioProvider.ts ">
+              <h3>requestStudioManifest</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:307:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="saveStudioManifest src/core/StudioProvider.ts ">
+              <h3>saveStudioManifest</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:316:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts ">
+              <h3>readPersistenceJson</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:329:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createPersistenceError src/core/StudioProvider.ts ">
+              <h3>createPersistenceError</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:337:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts ">
+              <h3>toPersistenceMessage</h3>
+              <p class="muted"><code>src/core/StudioProvider.ts:344:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11206,7 +11288,7 @@ sequenceDiagram
               data-search="getPackageOwnedRuntimeImports src/host/layout/layoutGenerator.ts "
             >
               <h3>getPackageOwnedRuntimeImports</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:39:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:44:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11214,7 +11296,7 @@ sequenceDiagram
               data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:54:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:59:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11222,7 +11304,7 @@ sequenceDiagram
               data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>mergeRuntimeModuleDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:65:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:70:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11230,12 +11312,12 @@ sequenceDiagram
               data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>addStudioAdminRouteFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:88:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:93:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
               <h3>walk</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:143:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:105:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11243,7 +11325,23 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:458:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:420:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
+            >
+              <h3>createStudioAdminRouteGeneratedFiles</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:429:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
+            >
+              <h3>resolveStudioAdminRouteFilePath</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:436:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11251,12 +11349,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:480:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:459:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:489:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:468:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11264,7 +11362,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:493:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:472:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11272,7 +11370,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:537:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:516:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11280,7 +11378,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:545:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:524:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11288,7 +11386,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:550:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:529:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15232,97 +15330,102 @@ sequenceDiagram
             <h2>src/ui/AnkhAdmin.tsx</h2>
             <article class="item" data-search="AnkhAdminShell src/ui/AnkhAdmin.tsx ">
               <h3>AnkhAdminShell</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:39:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="openRoute src/ui/AnkhAdmin.tsx ">
               <h3>openRoute</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:76:9</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:54:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="goBackToApp src/ui/AnkhAdmin.tsx ">
               <h3>goBackToApp</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:89:9</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:66:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AnkhAdminPage src/ui/AnkhAdmin.tsx ">
               <h3>AnkhAdminPage</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:163:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:132:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="OverviewAdminPage src/ui/AnkhAdmin.tsx ">
               <h3>OverviewAdminPage</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:206:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:175:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="ApisAdminPage src/ui/AnkhAdmin.tsx ">
               <h3>ApisAdminPage</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:236:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:204:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="ThemeAdminPage src/ui/AnkhAdmin.tsx ">
               <h3>ThemeAdminPage</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:305:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:273:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateActiveTheme src/ui/AnkhAdmin.tsx ">
               <h3>updateActiveTheme</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:313:9</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:281:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PropertiesAdminPage src/ui/AnkhAdmin.tsx ">
               <h3>PropertiesAdminPage</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:362:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:329:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="AdminNavigation src/ui/AnkhAdmin.tsx ">
+              <h3>AdminNavigation</h3>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:372:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="NodeProps src/ui/AnkhAdmin.tsx ">
               <h3>NodeProps</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:401:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:422:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AdminScroll src/ui/AnkhAdmin.tsx ">
               <h3>AdminScroll</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:420:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:441:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AdminHeader src/ui/AnkhAdmin.tsx ">
               <h3>AdminHeader</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:424:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:445:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Metric src/ui/AnkhAdmin.tsx ">
               <h3>Metric</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:435:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:456:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/AnkhAdmin.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:443:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:464:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/AnkhAdmin.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:454:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:475:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/AnkhAdmin.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:473:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:494:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readRecord src/ui/AnkhAdmin.tsx ">
               <h3>readRecord</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:484:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:505:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readString src/ui/AnkhAdmin.tsx ">
               <h3>readString</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:488:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:509:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="formatPrimitive src/ui/AnkhAdmin.tsx ">
               <h3>formatPrimitive</h3>
-              <p class="muted"><code>src/ui/AnkhAdmin.tsx:492:1</code></p>
+              <p class="muted"><code>src/ui/AnkhAdmin.tsx:513:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
