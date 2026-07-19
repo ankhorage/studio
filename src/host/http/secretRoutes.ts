@@ -179,18 +179,11 @@ export function registerProjectSecretRoutes(
         providerId,
         payload,
         environment: readOptionalString(body.environment),
-        authScope: readAuthScope(body.authScope),
-        oauthEnabled: typeof body.oauthEnabled === 'boolean' ? body.oauthEnabled : undefined,
         credentialsRef: readOptionalString(body.credentialsRef),
-        enabled: typeof body.enabled === 'boolean' ? body.enabled : undefined,
-        label: readOptionalString(body.label),
-        scopes: readStringArray(body.scopes),
-        callbackRoute: readOptionalString(body.callbackRoute),
       });
 
       if (!result.ok) {
-        const status = result.state === 'secret_saved_manifest_failed' ? 409 : 400;
-        return reply.status(status).send(result);
+        return reply.status(400).send(result);
       }
 
       return result;
@@ -245,23 +238,6 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
-}
-
-function readAuthScope(value: unknown): 'global' | 'none' | 'integrated' | undefined {
-  return value === 'global' || value === 'none' || value === 'integrated' ? value : undefined;
-}
-
-function readStringArray(value: unknown): string[] | undefined {
-  if (!Array.isArray(value)) return undefined;
-
-  const result: string[] = [];
-  for (const item of value as readonly unknown[]) {
-    if (typeof item !== 'string') return undefined;
-    const normalized = item.trim();
-    if (normalized) result.push(normalized);
-  }
-
-  return result;
 }
 
 function readSecretPayload(value: unknown): SecretPayload | null {

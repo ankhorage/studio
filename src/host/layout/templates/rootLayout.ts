@@ -246,6 +246,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
+  ${includeStudio ? 'if (isStudioAdminPath(pathname)) return;' : ''}
 
   const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
   if (!authEnforced) return;
@@ -302,7 +303,7 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports = includeStudio ? "import type { ReactNode } from 'react';" : '';
+  const rootLayoutTypeImports = "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -388,9 +389,15 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     .join('\n\n');
   const studioRuntimeLines = includeStudio
     ? `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
-const shouldMountAppHeader = ${
-        authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'
-      };`
+const appRouteSearchParams = useGlobalSearchParams();
+const appRouteSearchParamsKey = JSON.stringify(appRouteSearchParams);
+const appLocation = useMemo(
+  () => resolveStudioNavigableLocation(appPathname),
+  [appPathname, appRouteSearchParamsKey],
+);
+const shouldMountAppHeader =
+  !isStudioAdminPath(appPathname) &&
+  ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`
     : '';
   const indentedStudioRuntimeLines =
     studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';
@@ -419,6 +426,7 @@ const shouldMountAppHeader = ${
           activeThemeMode={activeThemeMode}
           runtimeManifest={runtimeManifest}
           appPathname={appPathname}
+          appLocation={appLocation}
           shouldMountAppHeader={shouldMountAppHeader}
         />
       </StudioProvider>
@@ -441,13 +449,26 @@ const runtimeComponentRegistry = {
   ...APP_EXTENSION_COMPONENT_REGISTRY,
 };
 
-function resolveZoraProviderTheme(theme: AppManifest['themes'][number]) {
+function resolveZoraProviderTheme(
+  theme: AppManifest['themes'][number],
+  mode: NonNullable<AppManifest['activeThemeMode']>,
+) {
+  const modeConfig = theme[mode];
   return {
     id: theme.id,
     name: theme.name,
     appCategory: 'developer_tools' as const,
-    primaryColor: theme.light.primaryColor,
-    harmony: theme.light.harmony,
+    primaryColor: modeConfig.primaryColor,
+    harmony: modeConfig.harmony,
+  };
+}
+
+function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
+  return {
+    id: theme.id,
+    name: theme.name,
+    light: { ...theme.light },
+    dark: { ...theme.dark },
   };
 }
 
@@ -479,7 +500,6 @@ ${indentedRootHookBlock}
   }
 
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
-  const zoraTheme = resolveZoraProviderTheme(activeTheme);
   const executeOperation = useMemo(
     () =>
       createRuntimeDataSourceOperationExecutor({
@@ -497,14 +517,14 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
   ${outputDeclaration}
 
   const shell = (
-    <ZoraProvider theme={zoraTheme} initialMode={activeThemeMode}>
+    <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
       <SafeAreaProvider>
         <AppShell>
           ${finalJsx}
         </AppShell>
-        <StatusBar style={activeThemeMode === 'dark' ? 'light' : 'dark'} />
+        <GeneratedStatusBar />
       </SafeAreaProvider>
-    </ZoraProvider>
+    </GeneratedZoraProvider>
   );
 ${indentedStudioShellBlock}  return <GestureHandlerRootView style={{ flex: 1 }}>{shell}</GestureHandlerRootView>;
 }${
@@ -516,6 +536,7 @@ function StudioShell({
   activeThemeMode,
   runtimeManifest,
   appPathname,
+  appLocation,
   shouldMountAppHeader,
 }: {
   output: ReactNode;
@@ -523,9 +544,22 @@ function StudioShell({
   activeThemeMode: NonNullable<AppManifest['activeThemeMode']>;
   runtimeManifest: AppManifest;
   appPathname: string;
+  appLocation: string;
   shouldMountAppHeader: boolean;
 }) {
-  const { activeScreenId, manifest: studioManifest, previewMode } = useStudio();
+  const {
+    activeScreenId,
+    manifest: studioManifest,
+    previewMode,
+    setLastNonAdminLocation,
+  } = useStudio();
+  useEffect(() => {
+    const nextAppLocation = resolveStudioLastNonAdminLocation({
+      pathname: appPathname,
+      navigableLocation: appLocation,
+    });
+    if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
+  }, [appLocation, appPathname, setLastNonAdminLocation]);
   const appHeaderTitle = resolveStudioAppHeaderTitle({
     runtimeManifest,
     studioManifest,
@@ -545,17 +579,16 @@ function StudioShell({
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
   );
-  const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme);
 
   return (
-    <ZoraProvider theme={studioZoraTheme} initialMode={activeStudioThemeMode}>
+    <GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>
       <SafeAreaProvider>
         <AppShell header={header}>
           ${finalJsx}
         </AppShell>
-        <StatusBar style={activeStudioThemeMode === 'dark' ? 'light' : 'dark'} />
+        <GeneratedStatusBar />
       </SafeAreaProvider>
-    </ZoraProvider>
+    </GeneratedZoraProvider>
   );
 }
 
@@ -570,12 +603,61 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
         actions={studioAppBar.actions}
         overflow={studioAppBar.overflow}
       />
-      {studioAppBar.overlay}
     </>
   );
 }`
       : ''
   }
+
+function GeneratedZoraProvider({
+  children,
+  theme,
+  initialMode,
+}: {
+  children: ReactNode;
+  theme: AppManifest['themes'][number];
+  initialMode: NonNullable<AppManifest['activeThemeMode']>;
+}) {
+  const initialZoraTheme = useMemo(
+    () => resolveZoraProviderTheme(theme, initialMode),
+    [initialMode, theme],
+  );
+
+  return (
+    <ZoraProvider theme={initialZoraTheme} initialMode={initialMode}>
+      <GeneratedZoraThemeConfigSync theme={theme} />
+      {children}
+    </ZoraProvider>
+  );
+}
+
+function GeneratedZoraThemeConfigSync({
+  theme,
+}: {
+  theme: AppManifest['themes'][number];
+}) {
+  const { setThemeConfig } = useZoraTheme();
+  const setThemeConfigRef = useRef(setThemeConfig);
+  const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
+  const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig), [themeConfig]);
+  const lastSyncedThemeConfigSignatureRef = useRef<string | null>(null);
+
+  setThemeConfigRef.current = setThemeConfig;
+
+  useEffect(() => {
+    if (lastSyncedThemeConfigSignatureRef.current === themeConfigSignature) return;
+    setThemeConfigRef.current(themeConfig);
+    lastSyncedThemeConfigSignatureRef.current = themeConfigSignature;
+  }, [themeConfig, themeConfigSignature]);
+
+  return null;
+}
+
+function GeneratedStatusBar() {
+  const { mode } = useZoraTheme();
+
+  return <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />;
+}
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
 ${innerThemeHook}  return (

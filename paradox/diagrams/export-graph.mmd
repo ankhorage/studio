@@ -1,6 +1,7 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   module_src_app_index_ts["src/app/index.ts"]
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
   module_src_app_StudioDashboard_tsx["src/app/StudioDashboard.tsx"]
@@ -15,7 +16,12 @@ graph LR
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
+  module_src_core_studioManifestDraftModel_test_ts["src/core/studioManifestDraftModel.test.ts"]
+  module_src_core_studioManifestDraftModel_ts["src/core/studioManifestDraftModel.ts"]
+  module_src_core_studioManifestPersistenceModel_test_ts["src/core/studioManifestPersistenceModel.test.ts"]
+  module_src_core_studioManifestPersistenceModel_ts["src/core/studioManifestPersistenceModel.ts"]
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
+  module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
   module_src_dnd_index_ts["src/dnd/index.ts"]
   module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
@@ -23,12 +29,12 @@ graph LR
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
-  module_src_host_auth_projectAuthService_test_ts["src/host/auth/projectAuthService.test.ts"]
-  module_src_host_auth_projectAuthService_ts["src/host/auth/projectAuthService.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
+  module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
   module_src_host_http_authRoutes_ts["src/host/http/authRoutes.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   module_src_host_http_security_ts["src/host/http/security.ts"]
@@ -140,11 +146,11 @@ graph LR
   module_src_runtime_appExtensionRegistry_ts["src/runtime/appExtensionRegistry.ts"]
   module_src_runtime_index_ts["src/runtime/index.ts"]
   module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
-  module_src_runtime_overlay_test_ts["src/runtime/overlay.test.ts"]
   module_src_runtime_previewRegistry_ts["src/runtime/previewRegistry.ts"]
   module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
+  module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
@@ -158,11 +164,35 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
+  module_src_ui_admin_adminPagePrimitives_tsx["src/ui/admin/adminPagePrimitives.tsx"]
+  module_src_ui_admin_adminPageUtils_ts["src/ui/admin/adminPageUtils.ts"]
+  module_src_ui_admin_AnkhAdminPage_test_ts["src/ui/admin/AnkhAdminPage.test.ts"]
+  module_src_ui_admin_AnkhAdminPage_tsx["src/ui/admin/AnkhAdminPage.tsx"]
+  module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
+  module_src_ui_admin_AnkhAdminShell_tsx["src/ui/admin/AnkhAdminShell.tsx"]
+  module_src_ui_admin_AuthAdminSession_tsx["src/ui/admin/AuthAdminSession.tsx"]
+  module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts["src/ui/admin/pages/adminAuthCredentialFlow.test.ts"]
+  module_src_ui_admin_pages_adminAuthCredentialFlow_ts["src/ui/admin/pages/adminAuthCredentialFlow.ts"]
+  module_src_ui_admin_pages_adminAuthHealthFlow_test_ts["src/ui/admin/pages/adminAuthHealthFlow.test.ts"]
+  module_src_ui_admin_pages_adminAuthHealthFlow_ts["src/ui/admin/pages/adminAuthHealthFlow.ts"]
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts["src/ui/admin/pages/adminAuthSessionModel.test.ts"]
+  module_src_ui_admin_pages_adminAuthSessionModel_ts["src/ui/admin/pages/adminAuthSessionModel.ts"]
+  module_src_ui_admin_pages_adminDataSourceOperations_ts["src/ui/admin/pages/adminDataSourceOperations.ts"]
+  module_src_ui_admin_pages_adminThemeHarmony_ts["src/ui/admin/pages/adminThemeHarmony.ts"]
+  module_src_ui_admin_pages_adminThemeModel_test_ts["src/ui/admin/pages/adminThemeModel.test.ts"]
+  module_src_ui_admin_pages_adminThemeModel_ts["src/ui/admin/pages/adminThemeModel.ts"]
+  module_src_ui_admin_pages_ApisAdminPage_test_ts["src/ui/admin/pages/ApisAdminPage.test.ts"]
+  module_src_ui_admin_pages_ApisAdminPage_tsx["src/ui/admin/pages/ApisAdminPage.tsx"]
+  module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
+  module_src_ui_admin_pages_AuthAdminPage_tsx["src/ui/admin/pages/AuthAdminPage.tsx"]
+  module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
+  module_src_ui_admin_pages_PropertiesAdminPage_test_ts["src/ui/admin/pages/PropertiesAdminPage.test.ts"]
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx["src/ui/admin/pages/PropertiesAdminPage.tsx"]
+  module_src_ui_admin_pages_SecretsAdminPage_test_ts["src/ui/admin/pages/SecretsAdminPage.test.ts"]
+  module_src_ui_admin_pages_SecretsAdminPage_tsx["src/ui/admin/pages/SecretsAdminPage.tsx"]
+  module_src_ui_admin_pages_ThemeAdminPage_test_ts["src/ui/admin/pages/ThemeAdminPage.test.ts"]
+  module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
-  module_src_ui_StudioAdminOverlay_test_ts["src/ui/StudioAdminOverlay.test.ts"]
-  module_src_ui_StudioAdminOverlay_tsx["src/ui/StudioAdminOverlay.tsx"]
-  module_src_ui_StudioAuthSettingsOverlay_test_ts["src/ui/StudioAuthSettingsOverlay.test.ts"]
-  module_src_ui_StudioAuthSettingsOverlay_tsx["src/ui/StudioAuthSettingsOverlay.tsx"]
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
@@ -325,8 +355,12 @@ graph LR
   module_src_index_ts --> export_StudioActionPayloadPrimitive
   export_StudioActionPayloadSchema["StudioActionPayloadSchema"]
   module_src_index_ts --> export_StudioActionPayloadSchema
+  export_StudioAdminRouteId["StudioAdminRouteId"]
+  module_src_index_ts --> export_StudioAdminRouteId
   export_StudioAdminRoutePath["StudioAdminRoutePath"]
   module_src_index_ts --> export_StudioAdminRoutePath
+  export_StudioAdminStaticRoutePath["StudioAdminStaticRoutePath"]
+  module_src_index_ts --> export_StudioAdminStaticRoutePath
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
   export_StudioComponentBlueprint["StudioComponentBlueprint"]
@@ -340,7 +374,7 @@ graph LR
   module_src_index_ts --> export_StudioContextValue
   export_StudioContextValue -.-> export_InsertCatalogEntry
   export_StudioContextValue -.-> export_NodePlacement
-  export_StudioContextValue -.-> export_StudioAdminRoutePath
+  export_StudioContextValue -.-> export_StudioAdminRouteId
   export_StudioContextValue -.-> export_StudioLocale
   export_StudioContextValue -.-> export_StudioManifest
   export_StudioContextValue -.-> export_StudioMode
@@ -378,7 +412,7 @@ graph LR
   module_src_index_ts --> export_StudioScreenId
   export_StudioSelectionState["StudioSelectionState"]
   module_src_index_ts --> export_StudioSelectionState
-  export_StudioSelectionState -.-> export_StudioAdminRoutePath
+  export_StudioSelectionState -.-> export_StudioAdminRouteId
   export_StudioSelectionState -.-> export_StudioPanelId
   export_StudioSessionId["StudioSessionId"]
   module_src_index_ts --> export_StudioSessionId

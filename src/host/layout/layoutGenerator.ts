@@ -5,6 +5,11 @@ import {
 } from '@ankhorage/expo-runtime/planning';
 import path from 'path';
 
+import type { StudioAdminRouteId } from '../../index';
+import {
+  getStudioAdminRouteDefinition,
+  STUDIO_ADMIN_ROUTE_REGISTRY,
+} from '../../studioAdminRouteModel';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,
@@ -93,26 +98,7 @@ export class LayoutGenerator {
           path: normalizeRel(path.join(appRootRel, 'ankh', '_layout.tsx')),
           content: getStudioAdminLayoutTsx(),
         },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'apis.tsx')),
-          content: getStudioAdminRouteTsx('apis'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'auth.tsx')),
-          content: getStudioAdminRouteTsx('auth'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'properties', '[id].tsx')),
-          content: getStudioAdminRouteTsx('properties'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'secrets.tsx')),
-          content: getStudioAdminRouteTsx('secrets'),
-        },
-        {
-          path: normalizeRel(path.join(appRootRel, 'ankh', 'theme.tsx')),
-          content: getStudioAdminRouteTsx('theme'),
-        },
+        ...createStudioAdminRouteGeneratedFiles(appRootRel),
       );
     };
 
@@ -260,13 +246,13 @@ export class LayoutGenerator {
     const allImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
-      `import { ${['AppShell', 'ZoraProvider', includeStudio ? 'AppBar' : '']
+      `import { ${['AppShell', 'ZoraProvider', 'useZoraTheme', includeStudio ? 'AppBar' : '']
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import { useCallback, useEffect, useMemo, useState } from 'react';`,
+      `import { useCallback, useEffect, useMemo, useRef, useState } from 'react';`,
       `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
@@ -282,6 +268,9 @@ import { authAdapter } from '@/auth/adapter';`,
       getPackageOwnedRuntimeImports(),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
+        : '',
+      includeStudio
+        ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
       ...pluginImports,
     ]
@@ -322,7 +311,6 @@ import { authAdapter } from '@/auth/adapter';`,
       manifest,
       includeStudio,
     });
-    const needsTheme = innerNavigation.usesTheme;
     const needsIcon = innerNavigation.usesIcon;
     const needsZoraTabBar = innerNavigation.usesZoraTabBar;
     const needsZoraDrawerContent = innerNavigation.usesZoraDrawerContent;
@@ -338,28 +326,31 @@ import { authAdapter } from '@/auth/adapter';`,
       `import { ${[
         'AppShell',
         'ZoraProvider',
+        'useZoraTheme',
         includeStudio ? 'AppBar' : '',
         needsZoraTabBar ? 'ZoraTabBar' : '',
         needsZoraDrawerContent ? 'ZoraDrawerContent' : '',
-        needsTheme ? 'useZoraTheme' : '',
         needsIcon ? 'Icon' : '',
       ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
       rootNavigator.type === 'tabs'
-        ? `import { Tabs${includeStudio ? ', usePathname' : ''} } from 'expo-router';`
+        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`
         : rootNavigator.type === 'drawer'
-          ? `${includeStudio ? `import { usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
-          : `import { Stack${includeStudio ? ', usePathname' : ''} } from 'expo-router';`,
+          ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
+          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import React, { useMemo } from 'react';`,
+      `import React, { useEffect, useMemo, useRef } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       '',
       getPackageOwnedRuntimeImports(),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
+        : '',
+      includeStudio
+        ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
     ];
 
@@ -426,28 +417,59 @@ import { authAdapter } from '@/auth/adapter';`,
 }
 
 function getStudioAdminLayoutTsx(): string {
-  return `import { Stack } from 'expo-router';
+  return `import { AnkhAdminShell } from '@ankhorage/studio';
+import { Redirect } from 'expo-router';
 
 export default function AnkhLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  if (!__DEV__) {
+    return <Redirect href="/" />;
+  }
+
+  return <AnkhAdminShell />;
 }
 `;
 }
 
-type StudioAdminGeneratedRouteName = 'apis' | 'auth' | 'properties' | 'secrets' | 'theme';
+function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile[] {
+  return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
+    path: normalizeRel(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
+    content: getStudioAdminRouteTsx(route.id),
+  }));
+}
 
-function getStudioAdminRouteTsx(routeName: StudioAdminGeneratedRouteName): string {
-  const titleByRouteName = {
-    apis: 'APIs',
-    auth: 'Auth',
-    properties: 'Properties',
-    secrets: 'Secrets',
-    theme: 'Theme',
-  } satisfies Record<StudioAdminGeneratedRouteName, string>;
-  const title = titleByRouteName[routeName];
+function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
+  const route = getStudioAdminRouteDefinition(routeId);
+  const segments = route.path
+    .replace(/^\/ankh\/?/u, '')
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => (segment.startsWith(':') ? '[id]' : segment));
+  const hasChildren = STUDIO_ADMIN_ROUTE_REGISTRY.some(
+    (candidate) => candidate.parentId === routeId,
+  );
 
-  return `export default function Ankh${title}Route() {
-  return null;
+  if (segments.length === 0) {
+    return path.join('ankh', 'index.tsx');
+  }
+
+  if (hasChildren) {
+    return path.join('ankh', ...segments, 'index.tsx');
+  }
+
+  const fileName = `${segments[segments.length - 1]}.tsx`;
+  return path.join('ankh', ...segments.slice(0, -1), fileName);
+}
+
+function getStudioAdminRouteTsx(routeName: StudioAdminRouteId): string {
+  return `import { AnkhAdminPage } from '@ankhorage/studio';
+import { Redirect } from 'expo-router';
+
+export default function AnkhAdminRoute() {
+  if (!__DEV__) {
+    return <Redirect href="/" />;
+  }
+
+  return <AnkhAdminPage routeId="${routeName}" />;
 }
 `;
 }

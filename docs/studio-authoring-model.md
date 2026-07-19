@@ -4,7 +4,7 @@ This package now owns the package-neutral Studio authoring/model helpers used by
 
 ## Owned here
 
-`@ankhorage/studio` owns the reusable authoring logic that does not need React, React Native, Expo, DnD, Supabase, generated-app runtime overlay code, or host-app modules:
+`@ankhorage/studio` owns the reusable authoring logic that does not need React, React Native, Expo, DnD, Supabase, generated-app runtime composition code, or host-app modules:
 
 - action registry and action definitions
 - component metadata contract shape used by authoring helpers
@@ -34,9 +34,9 @@ This slice still does not move product shell or platform code. In particular, th
 - Expo Router code
 - DnD provider/runtime implementation
 - Supabase/storage implementation
-- generated-app runtime overlay code
+- generated-app runtime composition code
 - template catalog ownership
 
 ## Dependency rule
 
-The authoring model may depend on `@ankhorage/contracts` for manifest and `UiNode` types. It must not import React, React Native, Expo, DnD, Supabase, Zora implementation modules, generated-app runtime overlay code, or host-app implementation modules.
+The authoring model may depend on `@ankhorage/contracts` for manifest and `UiNode` types. It must not import React, React Native, Expo, DnD, Supabase, Zora implementation modules, generated-app runtime composition code, or host-app implementation modules.

@@ -5,5 +5,7 @@ export * from './index.js';
 export * from './projectAuthHealth.js';
 export * from './projectSecretUsage.js';
 export * from './secretResponseGuard.js';
+export { AnkhAdminPage } from './ui/admin/AnkhAdminPage.js';
+export { AnkhAdminShell } from './ui/admin/AnkhAdminShell.js';
 export { AnkhStudio } from './ui/AnkhStudio.js';
 export { useStudioAppBarAugmentation } from './ui/useStudioAppBarAugmentation.js';

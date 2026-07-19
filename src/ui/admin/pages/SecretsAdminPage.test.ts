@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const source = readFileSync(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), 'StudioAdminOverlay.tsx'),
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'SecretsAdminPage.tsx'),
   'utf8',
 );
 
@@ -25,4 +25,15 @@ test('secret usage lookup failures remain unavailable instead of becoming zero u
   expect(source).toContain('Usage unavailable');
   expect(source).toContain('Reference status unavailable');
   expect(source).not.toContain('{ ref: item.ref, usages: [] }');
+});
+
+test('successful secret deletion clears matching pending Auth credential recovery', () => {
+  expect(source).toContain('useAuthAdminSession');
+  expect(source).toContain('clearPendingCredentialLinksForRemovedProjectSecret');
+  expect(source).toContain('runCredentialSecretCleanup');
+  expect(source).toContain('removeSecretAndReconcilePendingAuth');
+  expect(source).toContain('confirmBrokenReferences: true');
+  expect(source).toContain('removed: true');
+  expect(source).toContain('ref: metadata.ref');
+  expect(source).toContain('removeSecretAndReconcilePendingAuth(pendingDelete.metadata, true)');
 });

@@ -2,7 +2,6 @@ export {
   type ProjectAuthHealthResult,
   ProjectAuthHealthService,
 } from './auth/projectAuthHealthService';
-export { ProjectAuthService, type ProjectAuthSettingsResult } from './auth/projectAuthService';
 export {
   createStudioHost,
   type CreateStudioHostOptions,
@@ -26,7 +25,6 @@ export {
   createBunSupabaseVaultClient,
 } from './secrets/bunSupabaseVaultClient';
 export {
-  configureManifestOAuthProvider,
   type ConfigureOAuthProviderInput,
   type ConfigureOAuthProviderResult,
   ProjectSecretService,

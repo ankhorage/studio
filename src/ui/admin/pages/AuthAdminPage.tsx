@@ -9,9 +9,9 @@ import {
   SUPABASE_OAUTH_PROVIDER_IDS,
   type SupabaseOAuthProviderId,
 } from '@ankhorage/supabase-auth';
-import { Heading, IconButton, Text, useZoraTheme } from '@ankhorage/zora';
+import { Heading, Text, useZoraTheme } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -21,23 +21,25 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
-import type { ProjectAuthHealth } from '../projectAuthHealth';
+import { readStudioAuthSettings, type StudioAuthSettings } from '../../../authSettings';
+import { useStudio } from '../../../core/StudioContext';
+import type { StudioAdminRouteId } from '../../../index';
+import type { ProjectAuthHealth } from '../../../projectAuthHealth';
+import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
+import { configureProjectOAuthProvider } from '../../../projectSecretApi';
+import { useAuthAdminSession } from '../AuthAdminSession';
+import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import {
-  getProjectAuthHealth,
-  getProjectAuthSettings,
-  ProjectAuthApiError,
-  saveProjectAuthSettings,
-} from '../projectAuthApi';
-import { configureProjectOAuthProvider } from '../projectSecretApi';
-
-export interface StudioAuthSettingsOverlayProps {
-  readonly projectId: string;
-  readonly manifest: AppManifest | null;
-  readonly onClose: () => void;
-}
+  persistStoredOAuthCredentialLinkAndPatchLocalDraft,
+  persistStoredOAuthCredentialLink,
+  type StoredOAuthCredentialLink,
+  type StoredOAuthCredentialLinkResult,
+} from './adminAuthCredentialFlow';
+import {
+  type AuthAdminWriteResult,
+  rebaseAuthDraftOntoCanonicalCredentialRefs,
+} from './adminAuthSessionModel';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
@@ -50,17 +52,25 @@ const PROFILE_FIELDS = [
   'avatarUrl',
 ] as const;
 
-interface RecoverableOAuthPartialFailure {
-  readonly state: 'secret_saved_manifest_failed';
-  readonly providerId: SupabaseOAuthProviderId;
-  readonly credentialsRef: string;
-  readonly configuredFields: readonly string[];
-  readonly intendedProvider: AuthOAuthProviderConfig;
+export interface AuthAdminPageProps {
+  readonly projectId: string;
+  readonly manifest: AppManifest | null;
+  readonly routeId: Extract<
+    StudioAdminRouteId,
+    'auth' | 'auth-providers' | 'auth-routes' | 'auth-profile'
+  >;
 }
 
-export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps) {
-  const { projectId, manifest, onClose } = props;
-  const { theme } = useZoraTheme();
+export function AuthAdminPage(props: AuthAdminPageProps) {
+  const { projectId, manifest, routeId } = props;
+  const studio = useStudio();
+  const authAdminSession = useAuthAdminSession();
+  const {
+    flushManifest,
+    manifest: studioManifest,
+    mutateAuthSettings,
+    updateAuthSettings,
+  } = studio;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
@@ -69,127 +79,163 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [partialFailure, setPartialFailure] = useState<RecoverableOAuthPartialFailure | null>(null);
+  const canonicalManifestRef = useRef<AppManifest | null>(manifest);
+  const initializedDraftFromManifestRef = useRef(manifest !== null);
+  const healthRefreshCoordinatorRef = useRef(new AuthHealthRefreshCoordinator());
+
+  canonicalManifestRef.current = studioManifest ?? manifest;
+
+  useEffect(() => {
+    if (initializedDraftFromManifestRef.current || !manifest) return;
+    initializedDraftFromManifestRef.current = true;
+    setDraft(readStudioAuthSettings(manifest) ?? createDefaultSettings());
+  }, [manifest]);
+
+  const refreshHealth = useCallback(async () => {
+    await healthRefreshCoordinatorRef.current.refresh({
+      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      onHealth: setHealth,
+      onError: (error) => setMessage(toMessage(error)),
+    });
+  }, [projectId]);
 
   const reload = useCallback(async () => {
     setLoading(true);
-    try {
-      const [loaded, loadedHealth] = await Promise.all([
-        getProjectAuthSettings(projectId),
-        getProjectAuthHealth({ projectId, environment: 'local' }),
-      ]);
-      setDraft(loaded ?? createDefaultSettings());
-      setHealth(loadedHealth);
-      setPartialFailure(null);
-      setMessage(null);
-    } catch (error) {
-      const local = manifest ? readStudioAuthSettings(manifest) : null;
-      if (local) setDraft(local);
-      setMessage(toMessage(error));
-    } finally {
-      setLoading(false);
-    }
-  }, [manifest, projectId]);
+    const result = await healthRefreshCoordinatorRef.current.refresh({
+      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      onHealth: (loadedHealth) => {
+        const canonicalAuthSettings = canonicalManifestRef.current
+          ? readStudioAuthSettings(canonicalManifestRef.current)
+          : null;
+        setDraft(canonicalAuthSettings ?? createDefaultSettings());
+        setHealth(loadedHealth);
+        setMessage(null);
+      },
+      onError: (error) => {
+        const canonicalAuthSettings = canonicalManifestRef.current
+          ? readStudioAuthSettings(canonicalManifestRef.current)
+          : null;
+        if (canonicalAuthSettings) setDraft(canonicalAuthSettings);
+        setMessage(toMessage(error));
+      },
+    });
+    if (result.applied || result.error) setLoading(false);
+  }, [projectId]);
 
   useEffect(() => {
-    void reload();
-  }, [reload]);
+    void refreshHealth().finally(() => {
+      setLoading(false);
+    });
+  }, [refreshHealth]);
 
-  const refreshHealth = useCallback(async () => {
-    try {
-      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
-    } catch (error) {
-      setMessage(toMessage(error));
-    }
-  }, [projectId]);
+  const persistAuthDraft = useCallback(
+    async (nextDraft: StudioAuthSettings, nextMessage: string) => {
+      const canonicalAuthSettings = canonicalManifestRef.current
+        ? readStudioAuthSettings(canonicalManifestRef.current)
+        : null;
+      const rebasedDraft = rebaseAuthDraftOntoCanonicalCredentialRefs({
+        draft: nextDraft,
+        canonical: canonicalAuthSettings,
+      });
+      updateAuthSettings(rebasedDraft);
+      await flushManifest();
+      setMessage(nextMessage);
+      await refreshHealth();
+    },
+    [flushManifest, refreshHealth, updateAuthSettings],
+  );
+
+  const persistCredentialLink = useCallback(
+    async (link: StoredOAuthCredentialLink): Promise<StoredOAuthCredentialLinkResult> => {
+      const result = await persistStoredOAuthCredentialLink({
+        link,
+        mutateAuthSettings,
+        flushManifest,
+        refreshHealth,
+        toMessage,
+      });
+      if (result.ok) {
+        authAdminSession.clearPendingCredentialLink(link.providerId);
+        setMessage(result.message);
+        return result;
+      }
+
+      authAdminSession.setPendingCredentialLink(result.pendingLink);
+      setMessage(result.message);
+      return result;
+    },
+    [authAdminSession, flushManifest, mutateAuthSettings, refreshHealth],
+  );
+
+  const persistCredentialLinkAndPatchDraft = useCallback(
+    async (link: StoredOAuthCredentialLink) =>
+      persistStoredOAuthCredentialLinkAndPatchLocalDraft({
+        link,
+        persistCredentialLink,
+        patchDraft: (mutation) => setDraft(mutation),
+      }),
+    [persistCredentialLink],
+  );
+
+  const retryPendingCredentialLink = useCallback(
+    async (link: StoredOAuthCredentialLink) => {
+      const result = await authAdminSession.runCredentialTransaction(
+        link.providerId,
+        link.credentialsRef,
+        () => persistCredentialLinkAndPatchDraft(link),
+      );
+      if (!result.ok) {
+        setMessage(formatAuthAdminWriteBusyReason(result.reason));
+      }
+    },
+    [authAdminSession, persistCredentialLinkAndPatchDraft],
+  );
 
   const save = useCallback(async () => {
     setSaving(true);
     setMessage(null);
     try {
-      const saved = await saveProjectAuthSettings({ projectId, config: draft });
-      setDraft(saved);
-      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
-      setPartialFailure(null);
-      setMessage('Authentication configuration saved to the Studio manifest draft.');
+      const result = await authAdminSession.runFullAuthSave(() =>
+        persistAuthDraft(draft, 'Authentication configuration saved to the Studio manifest.'),
+      );
+      if (!result.ok) setMessage(formatAuthAdminWriteBusyReason(result.reason));
     } catch (error) {
       setMessage(toMessage(error));
     } finally {
       setSaving(false);
     }
-  }, [draft, projectId]);
-
-  const retryPartialFailure = useCallback(async () => {
-    if (!partialFailure) return;
-
-    setSaving(true);
-    setMessage(null);
-    try {
-      const persisted = (await getProjectAuthSettings(projectId)) ?? createDefaultSettings();
-      const persistedOAuth = persisted.oauth ?? createDefaultOAuth();
-      await saveProjectAuthSettings({
-        projectId,
-        config: {
-          ...persisted,
-          oauth: {
-            ...persistedOAuth,
-            providers: upsertProvider(persistedOAuth.providers, partialFailure.intendedProvider),
-          },
-        },
-      });
-      setDraft((current) => {
-        const currentOAuth = current.oauth ?? createDefaultOAuth();
-        return {
-          ...current,
-          oauth: {
-            ...currentOAuth,
-            providers: upsertProvider(currentOAuth.providers, partialFailure.intendedProvider),
-          },
-        };
-      });
-      await refreshHealth();
-      setPartialFailure(null);
-      setMessage(`Linked ${partialFailure.credentialsRef} to the provider configuration.`);
-    } catch (error) {
-      setMessage(toMessage(error));
-    } finally {
-      setSaving(false);
-    }
-  }, [partialFailure, projectId, refreshHealth]);
+  }, [authAdminSession, draft, persistAuthDraft]);
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
   const profileEnabled = draft.profile !== undefined;
   const oauth = draft.oauth ?? createDefaultOAuth();
+  const showGeneral = routeId === 'auth';
+  const showProviders = routeId === 'auth-providers';
+  const showRoutes = routeId === 'auth-routes';
+  const showProfile = routeId === 'auth-profile';
 
   return (
-    <SafeAreaView
-      style={[
-        styles.overlay,
-        { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
-      ]}
-    >
-      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <View style={styles.grow}>
-          <Heading level={2} text="Authentication" />
-          <Text color="neutral" emphasis="muted" variant="bodySmall">
-            Configure canonical auth methods, routes, profile settings, and provider activation.
-          </Text>
-        </View>
-        <IconButton
-          icon={{ name: 'close-outline' }}
-          label="Close authentication settings"
-          color="neutral"
-          variant="ghost"
-          onPress={onClose}
+    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      {loading ? <ActivityIndicator /> : null}
+
+      {showGeneral || showProviders ? <AuthHealthCard health={health} /> : null}
+      {authAdminSession.pendingCredentialLinks.map((pendingCredentialLink) => (
+        <PendingCredentialLinkCard
+          key={pendingCredentialLink.providerId}
+          link={pendingCredentialLink}
+          loading={
+            authAdminSession.fullAuthSaveBusy ||
+            authAdminSession.busyCredentialProviderIds.has(pendingCredentialLink.providerId)
+          }
+          onRetry={() => void retryPendingCredentialLink(pendingCredentialLink)}
+          onOpenSecrets={() => {
+            router.push('/ankh/secrets');
+          }}
         />
-      </View>
+      ))}
 
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        {loading ? <ActivityIndicator /> : null}
-
-        <AuthHealthCard health={health} />
-
+      {showGeneral ? (
         <Card title="Overview">
           <SwitchSetting
             title="Authentication enabled"
@@ -206,7 +252,9 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             here.
           </Text>
         </Card>
+      ) : null}
 
+      {showGeneral ? (
         <Card title="Email and password">
           <Text weight="semiBold">Sign-in identifiers</Text>
           <View style={styles.choiceRow}>
@@ -311,24 +359,10 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               />
             </>
           ) : null}
-
-          <Field label="Forgot-password route">
-            <Input
-              value={draft.flow.forgotPasswordRoute ?? ''}
-              autoCapitalize="none"
-              onChangeText={(forgotPasswordRoute) =>
-                setDraft((current) => ({
-                  ...current,
-                  flow: {
-                    ...current.flow,
-                    ...(forgotPasswordRoute.trim() ? { forgotPasswordRoute } : {}),
-                  },
-                }))
-              }
-            />
-          </Field>
         </Card>
+      ) : null}
 
+      {showRoutes ? (
         <Card title="Routes">
           <RouteField
             label="Sign-in route"
@@ -355,8 +389,27 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             value={draft.flow.unauthorizedRoute ?? ''}
             onChange={(unauthorizedRoute) => updateFlow(setDraft, { unauthorizedRoute })}
           />
+          <RouteField
+            label="Forgot-password route"
+            value={draft.flow.forgotPasswordRoute ?? ''}
+            onChange={(forgotPasswordRoute) => updateFlow(setDraft, { forgotPasswordRoute })}
+          />
+          <Field label="OAuth callback route">
+            <Input
+              value={oauth.callbackRoute}
+              autoCapitalize="none"
+              onChangeText={(callbackRoute) =>
+                setDraft((current) => ({
+                  ...current,
+                  oauth: { ...(current.oauth ?? createDefaultOAuth()), callbackRoute },
+                }))
+              }
+            />
+          </Field>
         </Card>
+      ) : null}
 
+      {showProviders ? (
         <Card title="OAuth providers">
           <SwitchSetting
             title="OAuth enabled"
@@ -369,19 +422,6 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
               }))
             }
           />
-          <Field label="Callback route">
-            <Input
-              value={oauth.callbackRoute}
-              autoCapitalize="none"
-              onChangeText={(callbackRoute) =>
-                setDraft((current) => ({
-                  ...current,
-                  oauth: { ...(current.oauth ?? createDefaultOAuth()), callbackRoute },
-                }))
-              }
-            />
-          </Field>
-
           {SUPABASE_OAUTH_PROVIDER_IDS.map((providerId) => (
             <OAuthProviderSetting
               key={providerId}
@@ -395,46 +435,14 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(nextOAuth, nextMessage) => {
-                setDraft((current) => ({ ...current, oauth: nextOAuth }));
-                setMessage(nextMessage);
-                setPartialFailure(null);
-                void refreshHealth();
-              }}
-              onPartialFailure={(failure) => {
-                setPartialFailure(failure);
-                setMessage(
-                  `${failure.credentialsRef} was saved, but the manifest link failed. Retry the link or open project secrets for cleanup.`,
-                );
-              }}
+              onSaved={persistCredentialLinkAndPatchDraft}
+              runCredentialTransaction={authAdminSession.runCredentialTransaction}
+              transactionBusy={
+                authAdminSession.fullAuthSaveBusy ||
+                authAdminSession.busyCredentialProviderIds.has(providerId)
+              }
             />
           ))}
-
-          {partialFailure ? (
-            <View style={styles.partialFailure}>
-              <Text color="warning" weight="semiBold">
-                Credential secret saved, manifest link failed.
-              </Text>
-              <Text color="neutral" emphasis="muted" variant="caption">
-                Ref: {partialFailure.credentialsRef}
-              </Text>
-              <Text color="neutral" emphasis="muted" variant="caption">
-                Configured fields: {partialFailure.configuredFields.join(', ') || 'none'}
-              </Text>
-              <View style={styles.actions}>
-                <SecondaryButton
-                  label="Retry manifest link"
-                  onPress={() => void retryPartialFailure()}
-                />
-                <SecondaryButton
-                  label="Open cleanup"
-                  onPress={() => {
-                    router.push('/ankh/secrets');
-                  }}
-                />
-              </View>
-            </View>
-          ) : null}
 
           <View style={styles.actions}>
             <SecondaryButton
@@ -445,7 +453,9 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             />
           </View>
         </Card>
+      ) : null}
 
+      {showProfile ? (
         <Card title="Profile">
           <SwitchSetting
             title="Profile table enabled"
@@ -555,14 +565,43 @@ export function StudioAuthSettingsOverlay(props: StudioAuthSettingsOverlayProps)
             </>
           ) : null}
         </Card>
+      ) : null}
 
-        <View style={styles.footerActions}>
-          <SecondaryButton label="Reload" onPress={() => void reload()} />
-          <PrimaryButton label="Save authentication" loading={saving} onPress={() => void save()} />
-        </View>
-        {message ? <Message text={message} /> : null}
-      </ScrollView>
-    </SafeAreaView>
+      <View style={styles.footerActions}>
+        <SecondaryButton label="Reload" onPress={() => void reload()} />
+        <PrimaryButton
+          label="Save authentication"
+          loading={saving || authAdminSession.authWriteBusy}
+          onPress={() => void save()}
+        />
+      </View>
+      {message ? <Message text={message} /> : null}
+    </ScrollView>
+  );
+}
+
+function PendingCredentialLinkCard(props: {
+  readonly link: StoredOAuthCredentialLink;
+  readonly loading: boolean;
+  readonly onRetry: () => void;
+  readonly onOpenSecrets: () => void;
+}) {
+  return (
+    <Card title="Credential link pending">
+      <Text color="warning" weight="semiBold">
+        {props.link.providerLabel} credentials were saved, but the Studio manifest link still needs
+        to be persisted.
+      </Text>
+      <KeyValue label="Credentials ref" value={props.link.credentialsRef} />
+      <View style={styles.actions}>
+        <PrimaryButton
+          label="Retry manifest link"
+          loading={props.loading}
+          onPress={props.onRetry}
+        />
+        <SecondaryButton label="Open project secrets" onPress={props.onOpenSecrets} />
+      </View>
+    </Card>
   );
 }
 
@@ -575,8 +614,13 @@ function OAuthProviderSetting(props: {
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
-  readonly onSaved: (oauth: NonNullable<StudioAuthSettings['oauth']>, message: string) => void;
-  readonly onPartialFailure: (failure: RecoverableOAuthPartialFailure) => void;
+  readonly onSaved: (link: StoredOAuthCredentialLink) => Promise<StoredOAuthCredentialLinkResult>;
+  readonly runCredentialTransaction: <T>(
+    providerId: AuthOAuthProviderId,
+    credentialsRef: string,
+    operation: () => Promise<T>,
+  ) => Promise<AuthAdminWriteResult<T>>;
+  readonly transactionBusy: boolean;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
@@ -622,6 +666,13 @@ function OAuthProviderSetting(props: {
   };
 
   const saveCredentials = async () => {
+    if (props.transactionBusy) {
+      setCredentialMessage(
+        `${definition?.label ?? props.providerId} credentials are already being saved.`,
+      );
+      return;
+    }
+
     if (!definition) {
       setCredentialMessage('The selected OAuth provider is not supported.');
       return;
@@ -638,65 +689,50 @@ function OAuthProviderSetting(props: {
     }
 
     const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
-    const intendedProvider = {
-      ...(current ?? {
-        id: props.providerId,
-        label: definition.label,
-        scopes: [...definition.defaultScopes],
-      }),
-      enabled,
+    const transaction = await props.runCredentialTransaction(
+      props.providerId,
       credentialsRef,
-    };
-    const intendedOAuth = {
-      ...props.oauth,
-      providers: upsertProvider(props.oauth.providers, intendedProvider),
-    };
-    setSavingCredentials(true);
-    setCredentialMessage(null);
-    try {
-      const result = await configureProjectOAuthProvider({
-        projectId: props.projectId,
-        providerId: props.providerId as AuthOAuthProviderId,
-        environment: 'local',
-        credentialsRef,
-        enabled,
-        label: current?.label ?? definition.label,
-        scopes: current?.scopes ?? definition.defaultScopes,
-        payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
-      });
+      async () => {
+        setSavingCredentials(true);
+        setCredentialMessage(null);
+        try {
+          const result = await configureProjectOAuthProvider({
+            projectId: props.projectId,
+            providerId: props.providerId as AuthOAuthProviderId,
+            environment: 'local',
+            credentialsRef,
+            payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
+          });
 
-      if (result.ok) {
-        props.onSaved(
-          mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
-          `${definition.label} credentials saved through ${result.credentialsRef}.`,
-        );
-        return;
-      }
+          if (result.ok) {
+            const linkResult = await props.onSaved({
+              providerId: props.providerId,
+              providerLabel: definition.label,
+              credentialsRef: result.credentialsRef,
+              providerDefaults: {
+                label: definition.label,
+                scopes: [...definition.defaultScopes],
+              },
+              successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+            });
+            if (!linkResult.ok) setCredentialMessage(linkResult.message);
+            return linkResult;
+          }
 
-      if (
-        result.state === 'secret_saved_manifest_failed' &&
-        result.credentialsRef &&
-        result.metadata
-      ) {
-        props.onPartialFailure({
-          state: 'secret_saved_manifest_failed',
-          providerId: props.providerId,
-          credentialsRef: result.credentialsRef,
-          configuredFields: result.metadata.configuredFields,
-          intendedProvider: {
-            ...intendedProvider,
-            credentialsRef: result.credentialsRef,
-          },
-        });
-        return;
-      }
+          setCredentialMessage(result.error.message);
+          return null;
+        } catch (error) {
+          setCredentialMessage(toMessage(error));
+          return null;
+        } finally {
+          setCredentialValues({});
+          setSavingCredentials(false);
+        }
+      },
+    );
 
-      setCredentialMessage(result.error.message);
-    } catch (error) {
-      setCredentialMessage(toMessage(error));
-    } finally {
-      setCredentialValues({});
-      setSavingCredentials(false);
+    if (!transaction.ok) {
+      setCredentialMessage(formatAuthAdminWriteBusyReason(transaction.reason));
     }
   };
 
@@ -740,27 +776,13 @@ function OAuthProviderSetting(props: {
       <View style={styles.actions}>
         <PrimaryButton
           label={credentialsComplete ? 'Replace credentials' : 'Save credentials'}
-          loading={savingCredentials}
+          loading={savingCredentials || props.transactionBusy}
           onPress={() => void saveCredentials()}
         />
       </View>
       {credentialMessage ? <Message text={credentialMessage} /> : null}
     </View>
   );
-}
-
-function mergeOAuthProviderCredentialsRef(
-  oauth: NonNullable<StudioAuthSettings['oauth']>,
-  provider: AuthOAuthProviderConfig,
-  credentialsRef: string,
-): NonNullable<StudioAuthSettings['oauth']> {
-  return {
-    ...oauth,
-    providers: upsertProvider(oauth.providers, {
-      ...provider,
-      credentialsRef,
-    }),
-  };
 }
 
 function upsertProvider(
@@ -835,6 +857,24 @@ function splitList(value: string): string[] {
 function toMessage(error: unknown): string {
   if (error instanceof ProjectAuthApiError) return error.message;
   return error instanceof Error ? error.message : 'Authentication configuration request failed.';
+}
+
+function formatAuthAdminWriteBusyReason(
+  reason: Extract<AuthAdminWriteResult<unknown>, { readonly ok: false }>['reason'],
+): string {
+  if (reason === 'full_auth_save_busy') {
+    return 'Authentication configuration is already being saved.';
+  }
+  if (reason === 'credential_transaction_busy') {
+    return 'OAuth credential changes are still being linked. Try again after they finish.';
+  }
+  if (reason === 'credential_ref_busy') {
+    return 'OAuth credentials for this secret are already being linked.';
+  }
+  if (reason === 'credential_secret_cleanup_busy') {
+    return 'Project secret cleanup is in progress for these OAuth credentials.';
+  }
+  return 'OAuth provider credentials are already being saved.';
 }
 
 function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null }) {
@@ -1080,20 +1120,6 @@ function Message({ text }: { readonly text: string }) {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1000,
-    borderWidth: 1,
-  },
-  header: {
-    minHeight: 72,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
   content: {
     width: '100%',
     maxWidth: 920,
@@ -1141,10 +1167,6 @@ const styles = StyleSheet.create({
   providerPanel: {
     gap: 10,
     paddingVertical: 8,
-  },
-  partialFailure: {
-    gap: 8,
-    paddingVertical: 10,
   },
   healthProvider: {
     gap: 3,

@@ -12,6 +12,8 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
+
 export type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -53,7 +55,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     'generic runtime renderer behavior',
     'generic runtime actions or bindings',
     'Expo runtime planning',
-    'generated-app overlay code',
+    'generated-app runtime composition code',
     'template catalog content',
     'root command bus behavior',
     'React Native UI components',
@@ -74,6 +76,8 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioComponentMetaRegistry',
   'ProjectAuthHealth',
   'ProjectSecretUsageSummary',
+  'StudioAdminRouteId',
+  'StudioAdminRoutePath',
   'ACTION_REGISTRY',
   'TPL_SCREEN_EMPTY',
   'resolveDefaultInsertPlacement',
@@ -92,8 +96,30 @@ export type StudioLocale = string;
 export type StudioMode = 'light' | 'dark';
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers' | 'modules' | 'localization';
-export type StudioAdminRoutePath =
-  '/' | '/ankh/apis' | '/ankh/auth' | '/ankh/properties' | '/ankh/secrets' | '/ankh/theme';
+export type StudioAdminRouteId =
+  | 'overview'
+  | 'apis'
+  | 'api-data-sources'
+  | 'api-operations'
+  | 'auth'
+  | 'auth-providers'
+  | 'auth-routes'
+  | 'auth-profile'
+  | 'secrets'
+  | 'theme'
+  | 'properties';
+export type StudioAdminStaticRoutePath =
+  | '/ankh'
+  | '/ankh/apis'
+  | '/ankh/apis/data-sources'
+  | '/ankh/apis/operations'
+  | '/ankh/auth'
+  | '/ankh/auth/providers'
+  | '/ankh/auth/routes'
+  | '/ankh/auth/profile'
+  | '/ankh/secrets'
+  | '/ankh/theme';
+export type StudioAdminRoutePath = StudioAdminStaticRoutePath | `/ankh/properties/${string}`;
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {
@@ -110,7 +136,7 @@ export interface StudioSelectionState {
   activeScreenId: StudioScreenId | null;
   selectedNodeId: StudioNodeId | null;
   activePanelId: StudioPanelId | null;
-  activeAdminRoutePath: StudioAdminRoutePath;
+  activeAdminRouteId: StudioAdminRouteId;
   activeCanvasDragNodeId: StudioNodeId | null;
 }
 
@@ -120,6 +146,7 @@ export interface StudioSessionState {
   activeLocale: StudioLocale;
   studioMode: StudioMode;
   previewMode: boolean;
+  lastNonAdminLocation: string;
   saveStatus: StudioSaveStatus;
   isLoading: boolean;
   error: string | null;
@@ -267,7 +294,7 @@ export type StudioIdGenerator = (prefix?: string) => string;
 export type StudioCommand =
   | { type: 'studio.selectNode'; nodeId: StudioNodeId | null }
   | { type: 'studio.setActivePanel'; panelId: StudioPanelId | null }
-  | { type: 'studio.setActiveAdminRoute'; routePath: StudioAdminRoutePath }
+  | { type: 'studio.setActiveAdminRoute'; routeId: StudioAdminRouteId }
   | { type: 'studio.setActiveCanvasDragNode'; nodeId: StudioNodeId | null }
   | { type: 'studio.setActiveScreen'; screenId: StudioScreenId }
   | { type: 'studio.setStudioMode'; mode: StudioMode }
@@ -285,7 +312,8 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   rootNode: UiNode | null;
   selectNode: (id: StudioNodeId | null) => void;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
-  setActiveAdminRoutePath: (routePath: StudioAdminRoutePath) => void;
+  setActiveAdminRouteId: (routeId: StudioAdminRouteId) => void;
+  setLastNonAdminLocation: (location: string) => void;
   setActiveCanvasDragNodeId: (nodeId: StudioNodeId | null) => void;
   updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
   updateAppData: (data: AppDataManifest) => void;
@@ -303,6 +331,8 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   deleteTheme: (id: string) => void;
   setActiveThemeId: (id: string) => void;
   setActiveThemeMode: (mode: StudioMode) => void;
+  updateAuthSettings: (settings: StudioAuthSettings) => void;
+  mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
   moveNode: (id: StudioNodeId, direction: 'up' | 'down') => void;
@@ -315,6 +345,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setActiveLocale: (locale: StudioLocale) => void;
   reloadDictionaries: () => Promise<void>;
   refetchManifest: () => Promise<void>;
+  flushManifest: () => Promise<void>;
 }
 
 export const ACTION_REGISTRY: Record<ActionType, ActionDefinition> = {

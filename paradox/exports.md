@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:320:14`
+Source: `src/index.ts:351:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:234:1`
+Source: `src/index.ts:261:1`
 
 ### Members
 
@@ -26,7 +26,7 @@ Source: `src/index.ts:234:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:542:14`
+Source: `src/index.ts:573:14`
 
 ### Signatures
 
@@ -38,7 +38,7 @@ Source: `src/index.ts:542:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1254:1`
+Source: `src/index.ts:1285:1`
 
 ### Signatures
 
@@ -50,7 +50,7 @@ Source: `src/index.ts:1254:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:701:1`
+Source: `src/index.ts:732:1`
 
 ### Signatures
 
@@ -62,7 +62,7 @@ Source: `src/index.ts:701:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:467:14`
+Source: `src/index.ts:498:14`
 
 ### Signatures
 
@@ -75,7 +75,7 @@ Source: `src/index.ts:467:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1173:1`
+Source: `src/index.ts:1204:1`
 
 ### Signatures
 
@@ -89,7 +89,7 @@ Source: `src/index.ts:1173:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:484:14`
+Source: `src/index.ts:515:14`
 
 ### Signatures
 
@@ -102,7 +102,7 @@ Source: `src/index.ts:484:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:460:14`
+Source: `src/index.ts:491:14`
 
 ### Signatures
 
@@ -114,7 +114,7 @@ Source: `src/index.ts:460:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1099:1`
+Source: `src/index.ts:1130:1`
 
 ### Signatures
 
@@ -126,7 +126,7 @@ Source: `src/index.ts:1099:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:212:1`
+Source: `src/index.ts:239:1`
 
 ### Members
 
@@ -147,7 +147,7 @@ Source: `src/index.ts:212:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:194:1`
+Source: `src/index.ts:221:1`
 
 ### Members
 
@@ -161,19 +161,19 @@ Source: `src/index.ts:194:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:171:1`
+Source: `src/index.ts:198:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:222:1`
+Source: `src/index.ts:249:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:200:1`
+Source: `src/index.ts:227:1`
 
 ### Members
 
@@ -193,19 +193,19 @@ Source: `src/index.ts:200:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:168:1`
+Source: `src/index.ts:195:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:169:1`
+Source: `src/index.ts:196:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:217:1`
+Source: `src/index.ts:244:1`
 
 ### Members
 
@@ -226,7 +226,7 @@ Source: `src/index.ts:217:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:931:1`
+Source: `src/index.ts:962:1`
 
 ### Signatures
 
@@ -238,7 +238,7 @@ Source: `src/index.ts:931:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:874:1`
+Source: `src/index.ts:905:1`
 
 ### Members
 
@@ -253,7 +253,7 @@ Source: `src/index.ts:874:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:881:1`
+Source: `src/index.ts:912:1`
 
 ### Members
 
@@ -266,7 +266,7 @@ Source: `src/index.ts:881:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:179:1`
+Source: `src/index.ts:206:1`
 
 ### Members
 
@@ -282,7 +282,7 @@ Source: `src/index.ts:179:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:187:1`
+Source: `src/index.ts:214:1`
 
 ### Members
 
@@ -297,7 +297,7 @@ Source: `src/index.ts:187:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:174:1`
+Source: `src/index.ts:201:1`
 
 ### Members
 
@@ -310,7 +310,7 @@ Source: `src/index.ts:174:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:242:1`
+Source: `src/index.ts:269:1`
 
 ### Members
 
@@ -325,7 +325,7 @@ Source: `src/index.ts:242:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:575:14`
+Source: `src/index.ts:606:14`
 
 ### Signatures
 
@@ -339,7 +339,7 @@ Source: `src/index.ts:575:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:999:1`
+Source: `src/index.ts:1030:1`
 
 ### Signatures
 
@@ -351,7 +351,7 @@ Source: `src/index.ts:999:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:958:1`
+Source: `src/index.ts:989:1`
 
 ### Members
 
@@ -366,7 +366,7 @@ Source: `src/index.ts:958:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:965:1`
+Source: `src/index.ts:996:1`
 
 ### Members
 
@@ -379,7 +379,7 @@ Source: `src/index.ts:965:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:130:1`
+Source: `src/index.ts:157:1`
 
 ### Members
 
@@ -394,13 +394,13 @@ Source: `src/index.ts:130:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:137:1`
+Source: `src/index.ts:164:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:149:1`
+Source: `src/index.ts:176:1`
 
 ### Members
 
@@ -413,19 +413,19 @@ Source: `src/index.ts:149:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:128:1`
+Source: `src/index.ts:155:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:161:1`
+Source: `src/index.ts:188:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:154:1`
+Source: `src/index.ts:181:1`
 
 ## ProjectAuthDiagnostic
 
@@ -536,7 +536,7 @@ Source: `src/projectSecretUsage.ts:14:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:524:14`
+Source: `src/index.ts:555:14`
 
 ### Signatures
 
@@ -549,7 +549,7 @@ Source: `src/index.ts:524:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:829:1`
+Source: `src/index.ts:860:1`
 
 ### Signatures
 
@@ -561,7 +561,7 @@ Source: `src/index.ts:829:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1296:1`
+Source: `src/index.ts:1327:1`
 
 ### Signatures
 
@@ -573,7 +573,7 @@ Source: `src/index.ts:1296:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:768:1`
+Source: `src/index.ts:799:1`
 
 ### Signatures
 
@@ -585,7 +585,7 @@ Source: `src/index.ts:768:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1066:14`
+Source: `src/index.ts:1097:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -597,25 +597,25 @@ Source: `src/index.ts:1066:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:37:14`
+Source: `src/index.ts:39:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:29:14`
+Source: `src/index.ts:31:14`
 
 ## STUDIO_PUBLIC_CONTRACTS
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:65:14`
+Source: `src/index.ts:67:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:226:1`
+Source: `src/index.ts:253:1`
 
 ### Members
 
@@ -629,31 +629,43 @@ Source: `src/index.ts:226:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:224:1`
+Source: `src/index.ts:251:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:232:1`
+Source: `src/index.ts:259:1`
+
+## StudioAdminRouteId
+
+Kind: `unknown`
+Module: `src/index.ts`
+Source: `src/index.ts:99:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:95:1`
+Source: `src/index.ts:122:1`
+
+## StudioAdminStaticRoutePath
+
+Kind: `unknown`
+Module: `src/index.ts`
+Source: `src/index.ts:111:1`
 
 ## StudioCommand
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:267:1`
+Source: `src/index.ts:294:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:251:1`
+Source: `src/index.ts:278:1`
 
 ### Members
 
@@ -666,7 +678,7 @@ Source: `src/index.ts:251:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:256:1`
+Source: `src/index.ts:283:1`
 
 ### Members
 
@@ -681,113 +693,118 @@ Source: `src/index.ts:256:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:263:1`
+Source: `src/index.ts:290:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:283:1`
+Source: `src/index.ts:310:1`
 
 ### Members
 
-| Name                      | Kind     | Type                                                                  | Required | Description |
-| ------------------------- | -------- | --------------------------------------------------------------------- | -------- | ----------- |
-| activeAdminRoutePath      | property | `StudioAdminRoutePath`                                                | yes      |             |
-| activeCanvasDragNodeId    | property | `string \| null`                                                      | yes      |             |
-| activeLocale              | property | `string`                                                              | yes      |             |
-| activePanelId             | property | `StudioPanelId \| null`                                               | yes      |             |
-| activeScreenId            | property | `string \| null`                                                      | yes      |             |
-| addScreen                 | property | `(name: string) => void`                                              | yes      |             |
-| addTheme                  | property | `() => void`                                                          | yes      |             |
-| deleteNode                | property | `(id: StudioNodeId) => void`                                          | yes      |             |
-| deleteScreen              | property | `(id: StudioScreenId) => void`                                        | yes      |             |
-| deleteTheme               | property | `(id: string) => void`                                                | yes      |             |
-| error                     | property | `string \| null`                                                      | yes      |             |
-| findNode                  | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                  | yes      |             |
-| insertFromCatalogEntry    | property | `(entry: InsertCatalogEntry) => boolean`                              | yes      |             |
-| isLoading                 | property | `boolean`                                                             | yes      |             |
-| manifest                  | property | `StudioManifest \| null`                                              | yes      |             |
-| moveNode                  | property | `(id: StudioNodeId, direction: "up" \| "down") => void`               | yes      |             |
-| moveNodeToPlacement       | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`         | yes      |             |
-| previewMode               | property | `boolean`                                                             | yes      |             |
-| projectId                 | property | `string`                                                              | yes      |             |
-| refetchManifest           | property | `() => Promise<void>`                                                 | yes      |             |
-| reloadDictionaries        | property | `() => Promise<void>`                                                 | yes      |             |
-| reorderScreens            | property | `(newRoutes: RouteDefinition[]) => void`                              | yes      |             |
-| rootNode                  | property | `UiNode \| null`                                                      | yes      |             |
-| saveStatus                | property | `StudioSaveStatus`                                                    | yes      |             |
-| selectedNodeId            | property | `string \| null`                                                      | yes      |             |
-| selectNode                | property | `(id: StudioNodeId \| null) => void`                                  | yes      |             |
-| sessionId                 | property | `string \| undefined`                                                 | no       |             |
-| setActiveAdminRoutePath   | property | `(routePath: StudioAdminRoutePath) => void`                           | yes      |             |
-| setActiveCanvasDragNodeId | property | `(nodeId: StudioNodeId \| null) => void`                              | yes      |             |
-| setActiveLocale           | property | `(locale: StudioLocale) => void`                                      | yes      |             |
-| setActivePanelId          | property | `(panelId: StudioPanelId \| null) => void`                            | yes      |             |
-| setActiveScreenId         | property | `(id: StudioScreenId) => void`                                        | yes      |             |
-| setActiveThemeId          | property | `(id: string) => void`                                                | yes      |             |
-| setActiveThemeMode        | property | `(mode: StudioMode) => void`                                          | yes      |             |
-| setNavigatorInitialRoute  | property | `(routeName: string) => void`                                         | yes      |             |
-| setNavigatorType          | property | `(type: NavigatorType) => void`                                       | yes      |             |
-| setStudioMode             | property | `(mode: StudioMode) => void`                                          | yes      |             |
-| studioMode                | property | `StudioMode`                                                          | yes      |             |
-| t                         | property | `(key: string) => string`                                             | yes      |             |
-| togglePreviewMode         | property | `() => void`                                                          | yes      |             |
-| updateAppData             | property | `(data: AppDataManifest) => void`                                     | yes      |             |
-| updateDataBindings        | property | `(dataBindings: ComponentDataBindingRegistry) => void`                | yes      |             |
-| updateDataSources         | property | `(dataSources: DataSourceRegistry) => void`                           | yes      |             |
-| updateModuleConfig        | property | `(moduleId: StudioModuleId, config: Record<string, unknown>) => void` | yes      |             |
-| updateNode                | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`      | yes      |             |
-| updateOAuthProviders      | property | `(providers: AuthOAuthProviderConfig[]) => void`                      | yes      |             |
-| updateTheme               | property | `(id: string, updates: ThemeUpdates) => void`                         | yes      |             |
+| Name                      | Kind     | Type                                                                   | Required | Description |
+| ------------------------- | -------- | ---------------------------------------------------------------------- | -------- | ----------- |
+| activeAdminRouteId        | property | `StudioAdminRouteId`                                                   | yes      |             |
+| activeCanvasDragNodeId    | property | `string \| null`                                                       | yes      |             |
+| activeLocale              | property | `string`                                                               | yes      |             |
+| activePanelId             | property | `StudioPanelId \| null`                                                | yes      |             |
+| activeScreenId            | property | `string \| null`                                                       | yes      |             |
+| addScreen                 | property | `(name: string) => void`                                               | yes      |             |
+| addTheme                  | property | `() => void`                                                           | yes      |             |
+| deleteNode                | property | `(id: StudioNodeId) => void`                                           | yes      |             |
+| deleteScreen              | property | `(id: StudioScreenId) => void`                                         | yes      |             |
+| deleteTheme               | property | `(id: string) => void`                                                 | yes      |             |
+| error                     | property | `string \| null`                                                       | yes      |             |
+| findNode                  | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                   | yes      |             |
+| flushManifest             | property | `() => Promise<void>`                                                  | yes      |             |
+| insertFromCatalogEntry    | property | `(entry: InsertCatalogEntry) => boolean`                               | yes      |             |
+| isLoading                 | property | `boolean`                                                              | yes      |             |
+| lastNonAdminLocation      | property | `string`                                                               | yes      |             |
+| manifest                  | property | `StudioManifest \| null`                                               | yes      |             |
+| moveNode                  | property | `(id: StudioNodeId, direction: "up" \| "down") => void`                | yes      |             |
+| moveNodeToPlacement       | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`          | yes      |             |
+| mutateAuthSettings        | property | `(mutation: StudioAuthSettingsMutation) => StudioAuthSettings \| null` | yes      |             |
+| previewMode               | property | `boolean`                                                              | yes      |             |
+| projectId                 | property | `string`                                                               | yes      |             |
+| refetchManifest           | property | `() => Promise<void>`                                                  | yes      |             |
+| reloadDictionaries        | property | `() => Promise<void>`                                                  | yes      |             |
+| reorderScreens            | property | `(newRoutes: RouteDefinition[]) => void`                               | yes      |             |
+| rootNode                  | property | `UiNode \| null`                                                       | yes      |             |
+| saveStatus                | property | `StudioSaveStatus`                                                     | yes      |             |
+| selectedNodeId            | property | `string \| null`                                                       | yes      |             |
+| selectNode                | property | `(id: StudioNodeId \| null) => void`                                   | yes      |             |
+| sessionId                 | property | `string \| undefined`                                                  | no       |             |
+| setActiveAdminRouteId     | property | `(routeId: StudioAdminRouteId) => void`                                | yes      |             |
+| setActiveCanvasDragNodeId | property | `(nodeId: StudioNodeId \| null) => void`                               | yes      |             |
+| setActiveLocale           | property | `(locale: StudioLocale) => void`                                       | yes      |             |
+| setActivePanelId          | property | `(panelId: StudioPanelId \| null) => void`                             | yes      |             |
+| setActiveScreenId         | property | `(id: StudioScreenId) => void`                                         | yes      |             |
+| setActiveThemeId          | property | `(id: string) => void`                                                 | yes      |             |
+| setActiveThemeMode        | property | `(mode: StudioMode) => void`                                           | yes      |             |
+| setLastNonAdminLocation   | property | `(location: string) => void`                                           | yes      |             |
+| setNavigatorInitialRoute  | property | `(routeName: string) => void`                                          | yes      |             |
+| setNavigatorType          | property | `(type: NavigatorType) => void`                                        | yes      |             |
+| setStudioMode             | property | `(mode: StudioMode) => void`                                           | yes      |             |
+| studioMode                | property | `StudioMode`                                                           | yes      |             |
+| t                         | property | `(key: string) => string`                                              | yes      |             |
+| togglePreviewMode         | property | `() => void`                                                           | yes      |             |
+| updateAppData             | property | `(data: AppDataManifest) => void`                                      | yes      |             |
+| updateAuthSettings        | property | `(settings: StudioAuthSettings) => void`                               | yes      |             |
+| updateDataBindings        | property | `(dataBindings: ComponentDataBindingRegistry) => void`                 | yes      |             |
+| updateDataSources         | property | `(dataSources: DataSourceRegistry) => void`                            | yes      |             |
+| updateModuleConfig        | property | `(moduleId: StudioModuleId, config: Record<string, unknown>) => void`  | yes      |             |
+| updateNode                | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`       | yes      |             |
+| updateOAuthProviders      | property | `(providers: AuthOAuthProviderConfig[]) => void`                       | yes      |             |
+| updateTheme               | property | `(id: string, updates: ThemeUpdates) => void`                          | yes      |             |
 
 ## StudioEvent
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:276:1`
+Source: `src/index.ts:303:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:265:1`
+Source: `src/index.ts:292:1`
 
 ## StudioLocale
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:90:1`
+Source: `src/index.ts:94:1`
 
 ## StudioManifest
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:98:1`
+Source: `src/index.ts:124:1`
 
 ## StudioMode
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:92:1`
+Source: `src/index.ts:96:1`
 
 ## StudioModuleId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:89:1`
+Source: `src/index.ts:93:1`
 
 ## StudioNodeId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:87:1`
+Source: `src/index.ts:91:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:31:1`
+Source: `src/index.ts:33:1`
 
 ### Members
 
@@ -801,43 +818,43 @@ Source: `src/index.ts:31:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:94:1`
+Source: `src/index.ts:98:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:85:1`
+Source: `src/index.ts:89:1`
 
 ## StudioPublicContract
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:83:1`
+Source: `src/index.ts:87:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:93:1`
+Source: `src/index.ts:97:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:88:1`
+Source: `src/index.ts:92:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:109:1`
+Source: `src/index.ts:135:1`
 
 ### Members
 
 | Name                   | Kind     | Type                    | Required | Description |
 | ---------------------- | -------- | ----------------------- | -------- | ----------- |
-| activeAdminRoutePath   | property | `StudioAdminRoutePath`  | yes      |             |
+| activeAdminRouteId     | property | `StudioAdminRouteId`    | yes      |             |
 | activeCanvasDragNodeId | property | `string \| null`        | yes      |             |
 | activePanelId          | property | `StudioPanelId \| null` | yes      |             |
 | activeScreenId         | property | `string \| null`        | yes      |             |
@@ -847,44 +864,45 @@ Source: `src/index.ts:109:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:86:1`
+Source: `src/index.ts:90:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:117:1`
+Source: `src/index.ts:143:1`
 
 ### Members
 
-| Name         | Kind     | Type                  | Required | Description |
-| ------------ | -------- | --------------------- | -------- | ----------- |
-| activeLocale | property | `string`              | yes      |             |
-| error        | property | `string \| null`      | yes      |             |
-| isLoading    | property | `boolean`             | yes      |             |
-| previewMode  | property | `boolean`             | yes      |             |
-| projectId    | property | `string`              | yes      |             |
-| saveStatus   | property | `StudioSaveStatus`    | yes      |             |
-| sessionId    | property | `string \| undefined` | no       |             |
-| studioMode   | property | `StudioMode`          | yes      |             |
+| Name                 | Kind     | Type                  | Required | Description |
+| -------------------- | -------- | --------------------- | -------- | ----------- |
+| activeLocale         | property | `string`              | yes      |             |
+| error                | property | `string \| null`      | yes      |             |
+| isLoading            | property | `boolean`             | yes      |             |
+| lastNonAdminLocation | property | `string`              | yes      |             |
+| previewMode          | property | `boolean`             | yes      |             |
+| projectId            | property | `string`              | yes      |             |
+| saveStatus           | property | `StudioSaveStatus`    | yes      |             |
+| sessionId            | property | `string \| undefined` | no       |             |
+| studioMode           | property | `StudioMode`          | yes      |             |
 
 ## ThemeUpdates
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:104:1`
+Source: `src/index.ts:130:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:412:14`
+Source: `src/index.ts:443:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:496:14`
+Source: `src/index.ts:527:14`
 
 ### Signatures
 
@@ -898,7 +916,7 @@ Source: `src/index.ts:496:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1116:1`
+Source: `src/index.ts:1147:1`
 
 ### Signatures
 
@@ -911,7 +929,7 @@ Source: `src/index.ts:1116:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:713:1`
+Source: `src/index.ts:744:1`
 
 ### Signatures
 

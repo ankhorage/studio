@@ -8,7 +8,9 @@ This release groups several remaining package-neutral Studio helper models into 
 
 ## Admin route model
 
-`@ankhorage/studio/studioAdminRouteModel` owns route parsing and render-state helpers for Studio admin routes.
+`@ankhorage/studio/studioAdminRouteModel` owns the canonical `/ankh` administration registry,
+route ID and concrete path helpers, active-route matching, contextual Properties availability, and
+render-state helpers for Studio admin routes.
 
 ## Selection model
 

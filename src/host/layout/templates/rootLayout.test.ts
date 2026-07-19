@@ -65,4 +65,54 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain('const appRouteSearchParams = useGlobalSearchParams();');
+  expect(generated).toContain('const appLocation = useMemo(');
+  expect(generated).toContain('resolveStudioLastNonAdminLocation({');
+  expect(generated).toContain('setLastNonAdminLocation(nextAppLocation)');
+  expect(generated).toContain('if (nextAppLocation) setLastNonAdminLocation(nextAppLocation)');
+  expect(generated).toContain('const shouldMountAppHeader =');
+  expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
+  expect(generated).toContain(
+    '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
+  );
+  expect(generated).toContain(
+    '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
+  );
+  expect(generated).toContain('function GeneratedZoraThemeConfigSync');
+  expect(generated).toContain('const setThemeConfigRef = useRef(setThemeConfig);');
+  expect(generated).toContain(
+    'const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig)',
+  );
+  expect(generated).toContain('lastSyncedThemeConfigSignatureRef.current === themeConfigSignature');
+  expect(generated).toContain('setThemeConfigRef.current(themeConfig)');
+  expect(generated).toContain('}, [themeConfig, themeConfigSignature]);');
+  expect(generated).not.toContain('}, [setThemeConfig, themeConfig]);');
+  expect(generated).toContain('<GeneratedStatusBar />');
+});
+
+test('suppresses the normal Studio app header inside admin routes without auth runtime', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+  });
+
+  expect(generated).toContain('const shouldMountAppHeader =');
+  expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
+  expect(generated).toContain('true;');
 });

@@ -1,5 +1,3 @@
-import type { StudioAuthSettings } from './authSettings';
-import { validateStudioAuthSettings } from './authSettings';
 import type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -22,33 +20,6 @@ export class ProjectAuthApiError extends Error {
   }
 }
 
-export async function getProjectAuthSettings(
-  projectId: string,
-): Promise<StudioAuthSettings | null> {
-  const value = await requestJson(`/projects/${encodeURIComponent(projectId)}/auth/config`);
-  return parseProjectAuthSettingsResponse(value, 'loaded');
-}
-
-export async function saveProjectAuthSettings(input: {
-  readonly projectId: string;
-  readonly config: StudioAuthSettings;
-}): Promise<StudioAuthSettings> {
-  const value = await requestJson(`/projects/${encodeURIComponent(input.projectId)}/auth/config`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ config: input.config }),
-  });
-  const result = parseProjectAuthSettingsResponse(value, 'saved');
-  if (!result) {
-    throw new ProjectAuthApiError({
-      code: 'invalid_response',
-      message: 'Saved auth configuration response did not contain configuration data.',
-      status: 502,
-    });
-  }
-  return result;
-}
-
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
   readonly environment?: string;
@@ -58,22 +29,6 @@ export async function getProjectAuthHealth(input: {
     `/projects/${encodeURIComponent(input.projectId)}/auth/health${query}`,
   );
   return parseProjectAuthHealthResponse(value);
-}
-
-export function parseProjectAuthSettingsResponse(
-  value: unknown,
-  expectedState: 'loaded' | 'saved',
-): StudioAuthSettings | null {
-  rejectRawSecretResponse(value, 'Project auth response was invalid.');
-  const record = asRecord(value);
-  if (record?.ok !== true || record.state !== expectedState) {
-    throw invalidResponse('Project auth response was invalid.');
-  }
-  if (record.data === null && expectedState === 'loaded') return null;
-
-  const parsed = validateStudioAuthSettings(record.data);
-  if (!parsed.ok) throw invalidResponse(parsed.error.message);
-  return parsed.data;
 }
 
 export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealth {

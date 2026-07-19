@@ -84,11 +84,63 @@ describe('LayoutGenerator', () => {
     const paths = files.map((file) => file.path).sort();
 
     expect(paths).toContain('src/app/ankh/_layout.tsx');
-    expect(paths).toContain('src/app/ankh/apis.tsx');
-    expect(paths).toContain('src/app/ankh/auth.tsx');
+    expect(paths).toContain('src/app/ankh/index.tsx');
+    expect(paths).toContain('src/app/ankh/apis/index.tsx');
+    expect(paths).toContain('src/app/ankh/apis/data-sources.tsx');
+    expect(paths).toContain('src/app/ankh/apis/operations.tsx');
+    expect(paths).toContain('src/app/ankh/auth/index.tsx');
+    expect(paths).toContain('src/app/ankh/auth/providers.tsx');
+    expect(paths).toContain('src/app/ankh/auth/routes.tsx');
+    expect(paths).toContain('src/app/ankh/auth/profile.tsx');
     expect(paths).toContain('src/app/ankh/secrets.tsx');
     expect(paths).toContain('src/app/ankh/properties/[id].tsx');
     expect(paths).toContain('src/app/ankh/theme.tsx');
+
+    const adminSources = files
+      .filter((file) => file.path.startsWith('src/app/ankh/') && file.path.endsWith('.tsx'))
+      .map((file) => file.content)
+      .join('\n');
+
+    expect(adminSources).toContain('AnkhAdminShell');
+    expect(adminSources).toContain('AnkhAdminPage');
+    expect(adminSources).toContain('routeId="auth-providers"');
+    expect(adminSources).toContain('routeId="api-data-sources"');
+    expect(adminSources).not.toContain('return null;');
+  });
+
+  test('generates auth-independent and production-gated Studio admin routes', () => {
+    const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
+      includeStudio: true,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
+    const adminPage = files.find(
+      (file) => file.path === 'src/app/ankh/auth/providers.tsx',
+    )?.content;
+
+    expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
+    expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
+    expect(rootLayout).toContain('useGlobalSearchParams');
+    expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
+    expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
+    expect(adminLayout).toContain('if (!__DEV__)');
+    expect(adminLayout).toContain('<Redirect href="/" />');
+    expect(adminLayout).toContain('<AnkhAdminShell />');
+    expect(adminPage).toContain('if (!__DEV__)');
+    expect(adminPage).toContain('<Redirect href="/" />');
+    expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+  });
+
+  test('derives Studio admin route files from the canonical registry', () => {
+    const source = readFileSync(
+      join(dirname(fileURLToPath(import.meta.url)), 'layoutGenerator.ts'),
+      { encoding: 'utf8' },
+    );
+
+    expect(source).toContain('STUDIO_ADMIN_ROUTE_REGISTRY.map');
+    expect(source).toContain('resolveStudioAdminRouteFilePath(route.id)');
+    expect(source).not.toContain("path.join(appRootRel, 'ankh', 'auth', 'providers.tsx')");
+    expect(source).not.toContain('type StudioAdminGeneratedRouteName =');
   });
 
   test('generates one canonical OAuth runtime without secret references', () => {

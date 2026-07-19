@@ -10,7 +10,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   createProjectSecret,
@@ -19,13 +18,13 @@ import {
   ProjectSecretApiError,
   removeProjectSecret,
   replaceProjectSecret,
-} from '../projectSecretApi';
-import type { ProjectSecretUsageSummary } from '../projectSecretUsage';
-
-export interface StudioAdminOverlayProps {
-  readonly projectId: string;
-  readonly onClose: () => void;
-}
+} from '../../../projectSecretApi';
+import type { ProjectSecretUsageSummary } from '../../../projectSecretUsage';
+import { useAuthAdminSession } from '../AuthAdminSession';
+import {
+  clearPendingCredentialLinksForRemovedProjectSecret,
+  type AuthAdminWriteResult,
+} from './adminAuthSessionModel';
 
 interface SecretFieldDraft {
   readonly id: number;
@@ -44,39 +43,8 @@ function createField(name = ''): SecretFieldDraft {
   return { id: nextFieldId++, name, value: '' };
 }
 
-export function StudioAdminOverlay(props: StudioAdminOverlayProps) {
-  const { projectId, onClose } = props;
-  const { theme } = useZoraTheme();
-
-  return (
-    <SafeAreaView
-      style={[
-        styles.overlay,
-        { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
-      ]}
-    >
-      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <View style={styles.grow}>
-          <Heading level={2} text="Project secrets" />
-          <Text color="neutral" emphasis="muted" variant="bodySmall">
-            Create, rotate, and explicitly remove server-side project secrets.
-          </Text>
-        </View>
-        <IconButton
-          icon={{ name: 'close-outline' }}
-          label="Close administration"
-          color="neutral"
-          variant="ghost"
-          onPress={onClose}
-        />
-      </View>
-
-      <SecretsAdmin projectId={projectId} />
-    </SafeAreaView>
-  );
-}
-
-function SecretsAdmin({ projectId }: { readonly projectId: string }) {
+export function SecretsAdminPage({ projectId }: { readonly projectId: string }) {
+  const authAdminSession = useAuthAdminSession();
   const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
   const inventory = useSecretInventory(projectId, inventoryEnvironment);
   const [environment, setEnvironment] = useState('local');
@@ -224,6 +192,42 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
     }
   }, [environment, fields, inventory, kind, projectId, provider, ref, replaceTarget, resetDraft]);
 
+  const removeSecretAndReconcilePendingAuth = useCallback(
+    async (metadata: SecretMetadata, confirmBrokenReferences = false) => {
+      const removeAndReconcile = async () => {
+        await removeProjectSecret({
+          projectId,
+          environment: metadata.scope.environment,
+          ref: metadata.ref,
+          ...(confirmBrokenReferences ? { confirmBrokenReferences: true } : {}),
+        });
+        clearPendingCredentialLinksForRemovedProjectSecret({
+          session: authAdminSession,
+          environment: metadata.scope.environment,
+          ref: metadata.ref,
+          removed: true,
+        });
+      };
+
+      if (metadata.scope.environment === 'local') {
+        const result = await authAdminSession.runCredentialSecretCleanup(
+          metadata.ref,
+          removeAndReconcile,
+        );
+        if (!result.ok) {
+          setMessage(formatSecretCleanupBusyReason(result.reason));
+          return false;
+        }
+      } else {
+        await removeAndReconcile();
+      }
+
+      await inventory.refresh();
+      return true;
+    },
+    [authAdminSession, inventory, projectId],
+  );
+
   const confirmRemove = useCallback(
     async (metadata: SecretMetadata) => {
       let usageSummary;
@@ -249,19 +253,16 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
           text: 'Remove',
           style: 'destructive',
           onPress: () => {
-            void removeProjectSecret({
-              projectId,
-              environment: metadata.scope.environment,
-              ref: metadata.ref,
-            })
-              .then(inventory.refresh)
-              .then(() => setMessage(`Removed ${metadata.ref}.`))
+            void removeSecretAndReconcilePendingAuth(metadata)
+              .then((removed) => {
+                if (removed) setMessage(`Removed ${metadata.ref}.`);
+              })
               .catch((error: unknown) => setMessage(toMessage(error)));
           },
         },
       ]);
     },
-    [inventory.refresh, projectId],
+    [projectId, removeSecretAndReconcilePendingAuth],
   );
 
   const confirmBrokenReferenceDelete = useCallback(async () => {
@@ -271,21 +272,17 @@ function SecretsAdmin({ projectId }: { readonly projectId: string }) {
 
     setDeleting(true);
     try {
-      await removeProjectSecret({
-        projectId,
-        environment: pendingDelete.metadata.scope.environment,
-        ref: pendingDelete.metadata.ref,
-        confirmBrokenReferences: true,
-      });
-      await inventory.refresh();
-      setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
-      setPendingDelete(null);
+      const removed = await removeSecretAndReconcilePendingAuth(pendingDelete.metadata, true);
+      if (removed) {
+        setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
+        setPendingDelete(null);
+      }
     } catch (error) {
       setMessage(toMessage(error));
     } finally {
       setDeleting(false);
     }
-  }, [inventory, pendingDelete, projectId]);
+  }, [pendingDelete, removeSecretAndReconcilePendingAuth]);
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -703,6 +700,21 @@ function toMessage(error: unknown): string {
   return 'The Studio secret operation failed.';
 }
 
+function formatSecretCleanupBusyReason(
+  reason: Extract<AuthAdminWriteResult<unknown>, { readonly ok: false }>['reason'],
+): string {
+  if (reason === 'credential_transaction_busy' || reason === 'credential_ref_busy') {
+    return 'OAuth credential changes are still being linked for this secret. Try again after they finish.';
+  }
+  if (reason === 'credential_secret_cleanup_busy') {
+    return 'Project secret cleanup is already in progress for this secret.';
+  }
+  if (reason === 'full_auth_save_busy') {
+    return 'Authentication configuration is already being saved.';
+  }
+  return 'OAuth provider credentials are already being saved.';
+}
+
 function secretInventoryKey(metadata: SecretMetadata): string {
   return `${metadata.scope.environment}:${metadata.ref}`;
 }
@@ -716,21 +728,6 @@ function isPresentString(value: string | undefined): value is string {
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1000,
-    elevation: 24,
-    borderWidth: 1,
-  },
-  header: {
-    minHeight: 76,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
   content: {
     width: '100%',
     maxWidth: 1040,
