@@ -93,6 +93,7 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
   module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_dnd_index_ts["src/dnd/index.ts"]
   package__ankhorage_studio -.-> module_src_dnd_index_ts
   module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
@@ -580,7 +581,6 @@ graph TD
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_studioAdminRouteModel_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx["src/ui/admin/AuthAdminSession.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
@@ -661,6 +661,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_pages_SecretsAdminPage_tsx
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretApi_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretUsage_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts["src/ui/admin/pages/ThemeAdminPage.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeAdminPage_test_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts --> module_src_ui_admin_pages_adminThemeHarmony_ts

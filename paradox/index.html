@@ -1236,7 +1236,7 @@
                 data-target="src/ui/admin/AuthAdminSession.tsx"
               >
                 src/ui/admin/AuthAdminSession.tsx
-                <small>3 functions</small>
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -1276,7 +1276,7 @@
                 data-target="src/ui/admin/pages/adminAuthSessionModel.test.ts"
               >
                 src/ui/admin/pages/adminAuthSessionModel.test.ts
-                <small>3 functions</small>
+                <small>8 functions</small>
               </button>
             </li>
             <li>
@@ -1286,7 +1286,7 @@
                 data-target="src/ui/admin/pages/adminAuthSessionModel.ts"
               >
                 src/ui/admin/pages/adminAuthSessionModel.ts
-                <small>1 function</small>
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -1676,7 +1676,7 @@
             </article>
             <article
               class="item"
-              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts StudioProvider StudioProviderProps"
+              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps"
             >
               <h3>src/core/StudioProvider.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1685,7 +1685,7 @@
                 <code>src/core/constants.ts</code>, <code>src/core/StudioContext.ts</code>,
                 <code>src/core/studioManifestDraftModel.ts</code>,
                 <code>src/core/studioManifestPersistenceModel.ts</code>, <code>src/index.ts</code>,
-                <code>src/manifestSync.ts</code>
+                <code>src/manifestSync.ts</code>, <code>src/ui/admin/AuthAdminSession.tsx</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioProvider</code>,
@@ -3660,14 +3660,13 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/AnkhAdminShell.tsx src/core/StudioContext.ts src/index.ts src/studioAdminRouteModel.ts src/ui/admin/AuthAdminSession.tsx AnkhAdminShell AnkhAdminShellProps"
+              data-search="src/ui/admin/AnkhAdminShell.tsx src/core/StudioContext.ts src/index.ts src/studioAdminRouteModel.ts AnkhAdminShell AnkhAdminShellProps"
             >
               <h3>src/ui/admin/AnkhAdminShell.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
-                <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>,
-                <code>src/ui/admin/AuthAdminSession.tsx</code>
+                <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>AnkhAdminShell</code>,
@@ -3756,7 +3755,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/adminAuthSessionModel.ts src/authSettings.ts src/ui/admin/pages/adminAuthCredentialFlow.ts AuthAdminPendingCredentialRecoveryStore AuthAdminWriteCoordinator AuthAdminWriteResult rebaseAuthDraftOntoCanonicalCredentialRefs"
+              data-search="src/ui/admin/pages/adminAuthSessionModel.ts src/authSettings.ts src/ui/admin/pages/adminAuthCredentialFlow.ts AuthAdminPendingCredentialRecoveryStore AuthAdminProjectSession AuthAdminProjectSessionSnapshot AuthAdminWriteCoordinator AuthAdminWriteResult clearPendingCredentialLinksForRemovedProjectSecret rebaseAuthDraftOntoCanonicalCredentialRefs"
             >
               <h3>src/ui/admin/pages/adminAuthSessionModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -3766,7 +3765,9 @@
               </p>
               <p>
                 <strong>Exports:</strong> <code>AuthAdminPendingCredentialRecoveryStore</code>,
+                <code>AuthAdminProjectSession</code>, <code>AuthAdminProjectSessionSnapshot</code>,
                 <code>AuthAdminWriteCoordinator</code>, <code>AuthAdminWriteResult</code>,
+                <code>clearPendingCredentialLinksForRemovedProjectSecret</code>,
                 <code>rebaseAuthDraftOntoCanonicalCredentialRefs</code>
               </p>
             </article>
@@ -3914,13 +3915,15 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/SecretsAdminPage.tsx src/projectSecretApi.ts src/projectSecretUsage.ts SecretsAdminPage"
+              data-search="src/ui/admin/pages/SecretsAdminPage.tsx src/projectSecretApi.ts src/projectSecretUsage.ts src/ui/admin/AuthAdminSession.tsx src/ui/admin/pages/adminAuthSessionModel.ts SecretsAdminPage"
             >
               <h3>src/ui/admin/pages/SecretsAdminPage.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/projectSecretApi.ts</code>,
-                <code>src/projectSecretUsage.ts</code>
+                <code>src/projectSecretUsage.ts</code>,
+                <code>src/ui/admin/AuthAdminSession.tsx</code>,
+                <code>src/ui/admin/pages/adminAuthSessionModel.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>SecretsAdminPage</code></p>
             </article>
@@ -7388,8 +7391,10 @@
                 module_src_core_StudioProvider_ts --&gt;
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
-                module_src_manifestSync_ts module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
-                package__ankhorage_studio -.-&gt; module_src_dnd_index_ts
+                module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_ui_admin_AuthAdminSession_tsx
+                module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;] package__ankhorage_studio
+                -.-&gt; module_src_dnd_index_ts
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_dnd_primitives_ts
                 module_src_dnd_state_ts[&quot;src/dnd/state.ts&quot;] package__ankhorage_studio
@@ -8006,8 +8011,6 @@
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
-                module_src_ui_admin_AnkhAdminShell_tsx --&gt;
-                module_src_ui_admin_AuthAdminSession_tsx
                 module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_AuthAdminSession_tsx
                 module_src_ui_admin_AuthAdminSession_tsx --&gt;
@@ -8115,7 +8118,10 @@
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_SecretsAdminPage_tsx
                 module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt;
-                module_src_projectSecretUsage_ts
+                module_src_projectSecretUsage_ts module_src_ui_admin_pages_SecretsAdminPage_tsx
+                --&gt; module_src_ui_admin_AuthAdminSession_tsx
+                module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ThemeAdminPage_test_ts
                 module_src_ui_admin_pages_ThemeAdminPage_test_ts --&gt;
@@ -8242,6 +8248,7 @@ graph TD
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_dnd_index_ts
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
@@ -8729,7 +8736,6 @@ graph TD
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
@@ -8810,6 +8816,8 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_SecretsAdminPage_tsx
   module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_projectSecretUsage_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ThemeAdminPage_test_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts --&gt; module_src_ui_admin_pages_adminThemeHarmony_ts
@@ -9085,7 +9093,8 @@ graph TD
                 module_src_core_studioManifestDraftModel_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
-                module_src_manifestSync_ts module_src_hooks_useProjects_ts --&gt;
+                module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_ui_admin_AuthAdminSession_tsx module_src_hooks_useProjects_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
                 module_src_modules_dashboard_types_ts
@@ -9382,9 +9391,8 @@ graph TD
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
-                module_src_ui_admin_AnkhAdminShell_tsx --&gt;
-                module_src_ui_admin_AuthAdminSession_tsx module_src_ui_admin_AuthAdminSession_tsx
-                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_AuthAdminSession_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_AuthAdminSession_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt;
@@ -9443,6 +9451,10 @@ graph TD
                 module_src_ui_admin_adminPageUtils_ts module_src_ui_admin_pages_SecretsAdminPage_tsx
                 --&gt; module_src_projectSecretApi_ts module_src_ui_admin_pages_SecretsAdminPage_tsx
                 --&gt; module_src_projectSecretUsage_ts
+                module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt;
+                module_src_ui_admin_AuthAdminSession_tsx
+                module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_ThemeAdminPage_test_ts --&gt;
                 module_src_ui_admin_pages_adminThemeHarmony_ts
                 module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt; module_src_core_StudioContext_ts
@@ -9702,6 +9714,7 @@ graph LR
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --&gt; module_src_modules_dashboard_types_ts
@@ -9896,7 +9909,6 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
@@ -9937,6 +9949,8 @@ graph LR
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --&gt; module_src_ui_admin_adminPageUtils_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_projectSecretUsage_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts --&gt; module_src_ui_admin_pages_adminThemeHarmony_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt; module_src_index_ts
@@ -11679,22 +11693,22 @@ sequenceDiagram
             <h2>src/core/StudioProvider.ts</h2>
             <article class="item" data-search="noop src/core/StudioProvider.ts ">
               <h3>noop</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:53:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:54:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
               <h3>noopAsync</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:54:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:55:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
               <h3>resolveActiveRootNode</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:57:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:58:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
               <h3>StudioProvider</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:80:14</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:81:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11702,32 +11716,32 @@ sequenceDiagram
               data-search="useStudioManifestPersistence src/core/StudioProvider.ts "
             >
               <h3>useStudioManifestPersistence</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:272:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:277:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestStudioManifest src/core/StudioProvider.ts ">
               <h3>requestStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:373:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:378:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="saveStudioManifest src/core/StudioProvider.ts ">
               <h3>saveStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:382:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:387:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts ">
               <h3>readPersistenceJson</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:395:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:400:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createPersistenceError src/core/StudioProvider.ts ">
               <h3>createPersistenceError</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:403:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:408:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts ">
               <h3>toPersistenceMessage</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:410:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:415:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16772,22 +16786,22 @@ sequenceDiagram
             <h2>src/ui/admin/AnkhAdminShell.tsx</h2>
             <article class="item" data-search="AnkhAdminShell src/ui/admin/AnkhAdminShell.tsx ">
               <h3>AnkhAdminShell</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:23:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:22:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="openRoute src/ui/admin/AnkhAdminShell.tsx ">
               <h3>openRoute</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:34:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:33:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="goBackToApp src/ui/admin/AnkhAdminShell.tsx ">
               <h3>goBackToApp</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:46:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:45:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AdminNavigation src/ui/admin/AnkhAdminShell.tsx ">
               <h3>AdminNavigation</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:110:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:107:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16805,7 +16819,7 @@ sequenceDiagram
               data-search="AuthAdminSessionProvider src/ui/admin/AuthAdminSession.tsx "
             >
               <h3>AuthAdminSessionProvider</h3>
-              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:34:1</code></p>
+              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:31:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16814,11 +16828,6 @@ sequenceDiagram
             >
               <h3>useAuthAdminSession</h3>
               <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:134:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="createSnapshot src/ui/admin/AuthAdminSession.tsx ">
-              <h3>createSnapshot</h3>
-              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:142:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -17051,7 +17060,7 @@ sequenceDiagram
             >
               <h3>createDeferred</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:12:1</code>
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:14:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -17061,7 +17070,47 @@ sequenceDiagram
             >
               <h3>createAuthSettings</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:29:1</code>
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:31:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getOAuth src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>getOAuth</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:68:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="withOAuthProviders src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>withOAuthProviders</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:73:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="withoutOAuth src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>withoutOAuth</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:86:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getProvider src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>getProvider</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:91:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -17071,7 +17120,17 @@ sequenceDiagram
             >
               <h3>createLink</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:66:1</code>
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:98:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createProjectSessionConsumer src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>createProjectSessionConsumer</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:111:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -17087,10 +17146,18 @@ sequenceDiagram
             <h2>src/ui/admin/pages/adminAuthSessionModel.ts</h2>
             <article
               class="item"
+              data-search="clearPendingCredentialLinksForRemovedProjectSecret src/ui/admin/pages/adminAuthSessionModel.ts "
+            >
+              <h3>clearPendingCredentialLinksForRemovedProjectSecret</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthSessionModel.ts:145:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="rebaseAuthDraftOntoCanonicalCredentialRefs src/ui/admin/pages/adminAuthSessionModel.ts "
             >
               <h3>rebaseAuthDraftOntoCanonicalCredentialRefs</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthSessionModel.ts:86:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthSessionModel.ts:160:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -17447,7 +17514,7 @@ sequenceDiagram
               data-search="createField src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>createField</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:37:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:39:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17455,7 +17522,7 @@ sequenceDiagram
               data-search="SecretsAdminPage src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>SecretsAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:41:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17463,22 +17530,22 @@ sequenceDiagram
               data-search="useSecretInventory src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>useSecretInventory</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:426:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:443:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/admin/pages/SecretsAdminPage.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:460:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:477:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/admin/pages/SecretsAdminPage.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:475:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:492:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/admin/pages/SecretsAdminPage.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:486:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:503:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17486,7 +17553,7 @@ sequenceDiagram
               data-search="InventoryRow src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>InventoryRow</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:505:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:522:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17494,7 +17561,7 @@ sequenceDiagram
               data-search="PrimaryButton src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:579:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:596:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17502,7 +17569,7 @@ sequenceDiagram
               data-search="FilterPills src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>FilterPills</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:607:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:624:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17510,17 +17577,17 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:627:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:644:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/admin/pages/SecretsAdminPage.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:654:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:671:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/admin/pages/SecretsAdminPage.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:663:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:680:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17528,7 +17595,7 @@ sequenceDiagram
               data-search="secretInventoryKey src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>secretInventoryKey</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:668:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:685:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17536,7 +17603,7 @@ sequenceDiagram
               data-search="uniqueSorted src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>uniqueSorted</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:672:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:689:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17544,7 +17611,7 @@ sequenceDiagram
               data-search="isPresentString src/ui/admin/pages/SecretsAdminPage.tsx "
             >
               <h3>isPresentString</h3>
-              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:676:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/SecretsAdminPage.tsx:693:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

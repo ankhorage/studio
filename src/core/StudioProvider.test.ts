@@ -25,3 +25,10 @@ test('owns Studio draft hydration and autosave through the host manifest boundar
   expect(source).toContain('flushManifest: persistence.flushManifest');
   expect(source).not.toContain('pendingSaveRef');
 });
+
+test('owns the stable Auth admin session for the Studio project lifetime', () => {
+  expect(source).toContain('AuthAdminSessionProvider');
+  expect(source).toContain('key: projectId');
+  expect(source).toContain('projectId,');
+  expect(source).toContain('React.createElement(StudioContext.Provider');
+});

@@ -25,8 +25,7 @@ test('uses parent-aware active navigation state', () => {
   expect(source).not.toContain('NavigationList');
 });
 
-test('owns the stable Auth admin session above route pages', () => {
-  expect(source).toContain('AuthAdminSessionProvider');
-  expect(source).toContain('key={studio.projectId}');
-  expect(source).toContain('projectId={studio.projectId}');
+test('does not own project-lifetime Auth admin session state at route-shell lifetime', () => {
+  expect(source).not.toContain('AuthAdminSessionProvider');
+  expect(source).not.toContain('key={studio.projectId}');
 });

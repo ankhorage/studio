@@ -3,8 +3,8 @@ import React, { createContext, useCallback, useContext, useMemo, useRef, useStat
 
 import type { StoredOAuthCredentialLink } from './pages/adminAuthCredentialFlow';
 import {
-  AuthAdminPendingCredentialRecoveryStore,
-  AuthAdminWriteCoordinator,
+  AuthAdminProjectSession,
+  type AuthAdminProjectSessionSnapshot,
   type AuthAdminWriteResult,
 } from './pages/adminAuthSessionModel';
 
@@ -16,17 +16,14 @@ export interface AuthAdminSessionValue {
   readonly authWriteBusy: boolean;
   readonly setPendingCredentialLink: (link: StoredOAuthCredentialLink) => void;
   readonly clearPendingCredentialLink: (providerId: AuthOAuthProviderId) => void;
+  readonly clearPendingCredentialLinksByCredentialsRef: (
+    credentialsRef: string,
+  ) => readonly StoredOAuthCredentialLink[];
   readonly runFullAuthSave: <T>(operation: () => Promise<T>) => Promise<AuthAdminWriteResult<T>>;
   readonly runCredentialTransaction: <T>(
     providerId: AuthOAuthProviderId,
     operation: () => Promise<T>,
   ) => Promise<AuthAdminWriteResult<T>>;
-}
-
-interface AuthAdminSessionSnapshot {
-  readonly pendingCredentialLinks: readonly StoredOAuthCredentialLink[];
-  readonly busyCredentialProviderIds: ReadonlySet<AuthOAuthProviderId>;
-  readonly fullAuthSaveBusy: boolean;
 }
 
 const AuthAdminSessionContext = createContext<AuthAdminSessionValue | null>(null);
@@ -35,27 +32,18 @@ export function AuthAdminSessionProvider(props: {
   readonly projectId: string;
   readonly children: React.ReactNode;
 }) {
-  const writeCoordinatorRef = useRef(new AuthAdminWriteCoordinator());
-  const pendingRecoveryRef = useRef(new AuthAdminPendingCredentialRecoveryStore());
-  const [snapshot, setSnapshot] = useState<AuthAdminSessionSnapshot>(() =>
-    createSnapshot({
-      writeCoordinator: writeCoordinatorRef.current,
-      pendingRecovery: pendingRecoveryRef.current,
-    }),
+  const sessionRef = useRef(new AuthAdminProjectSession(props.projectId));
+  const [snapshot, setSnapshot] = useState<AuthAdminProjectSessionSnapshot>(() =>
+    sessionRef.current.getSnapshot(),
   );
 
   const syncSnapshot = useCallback(() => {
-    setSnapshot(
-      createSnapshot({
-        writeCoordinator: writeCoordinatorRef.current,
-        pendingRecovery: pendingRecoveryRef.current,
-      }),
-    );
+    setSnapshot(sessionRef.current.getSnapshot());
   }, []);
 
   const setPendingCredentialLink = useCallback(
     (link: StoredOAuthCredentialLink) => {
-      pendingRecoveryRef.current.set(link);
+      sessionRef.current.setPendingCredentialLink(link);
       syncSnapshot();
     },
     [syncSnapshot],
@@ -63,8 +51,18 @@ export function AuthAdminSessionProvider(props: {
 
   const clearPendingCredentialLink = useCallback(
     (providerId: AuthOAuthProviderId) => {
-      pendingRecoveryRef.current.clear(providerId);
+      sessionRef.current.clearPendingCredentialLink(providerId);
       syncSnapshot();
+    },
+    [syncSnapshot],
+  );
+
+  const clearPendingCredentialLinksByCredentialsRef = useCallback(
+    (credentialsRef: string) => {
+      const cleared =
+        sessionRef.current.clearPendingCredentialLinksByCredentialsRef(credentialsRef);
+      syncSnapshot();
+      return cleared;
     },
     [syncSnapshot],
   );
@@ -72,7 +70,7 @@ export function AuthAdminSessionProvider(props: {
   const runFullAuthSave = useCallback(
     async <T,>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> => {
       try {
-        return await writeCoordinatorRef.current.runFullAuthSave(async () => {
+        return await sessionRef.current.runFullAuthSave(async () => {
           syncSnapshot();
           return await operation();
         });
@@ -89,7 +87,7 @@ export function AuthAdminSessionProvider(props: {
       operation: () => Promise<T>,
     ): Promise<AuthAdminWriteResult<T>> => {
       try {
-        return await writeCoordinatorRef.current.runCredentialTransaction(providerId, async () => {
+        return await sessionRef.current.runCredentialTransaction(providerId, async () => {
           syncSnapshot();
           return await operation();
         });
@@ -109,11 +107,13 @@ export function AuthAdminSessionProvider(props: {
       authWriteBusy: snapshot.fullAuthSaveBusy || snapshot.busyCredentialProviderIds.size > 0,
       setPendingCredentialLink,
       clearPendingCredentialLink,
+      clearPendingCredentialLinksByCredentialsRef,
       runFullAuthSave,
       runCredentialTransaction,
     }),
     [
       clearPendingCredentialLink,
+      clearPendingCredentialLinksByCredentialsRef,
       props.projectId,
       runCredentialTransaction,
       runFullAuthSave,
@@ -137,15 +137,4 @@ export function useAuthAdminSession(): AuthAdminSessionValue {
     throw new Error('useAuthAdminSession must be used within an AuthAdminSessionProvider');
   }
   return value;
-}
-
-function createSnapshot(args: {
-  readonly writeCoordinator: AuthAdminWriteCoordinator;
-  readonly pendingRecovery: AuthAdminPendingCredentialRecoveryStore;
-}): AuthAdminSessionSnapshot {
-  return {
-    pendingCredentialLinks: args.pendingRecovery.list(),
-    busyCredentialProviderIds: args.writeCoordinator.getBusyProviderIds(),
-    fullAuthSaveBusy: args.writeCoordinator.isFullAuthSaveActive(),
-  };
 }

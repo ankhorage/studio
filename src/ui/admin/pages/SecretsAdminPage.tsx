@@ -20,6 +20,8 @@ import {
   replaceProjectSecret,
 } from '../../../projectSecretApi';
 import type { ProjectSecretUsageSummary } from '../../../projectSecretUsage';
+import { useAuthAdminSession } from '../AuthAdminSession';
+import { clearPendingCredentialLinksForRemovedProjectSecret } from './adminAuthSessionModel';
 
 interface SecretFieldDraft {
   readonly id: number;
@@ -39,6 +41,7 @@ function createField(name = ''): SecretFieldDraft {
 }
 
 export function SecretsAdminPage({ projectId }: { readonly projectId: string }) {
+  const authAdminSession = useAuthAdminSession();
   const [inventoryEnvironment, setInventoryEnvironment] = useState('local');
   const inventory = useSecretInventory(projectId, inventoryEnvironment);
   const [environment, setEnvironment] = useState('local');
@@ -216,6 +219,14 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
               environment: metadata.scope.environment,
               ref: metadata.ref,
             })
+              .then(() => {
+                clearPendingCredentialLinksForRemovedProjectSecret({
+                  session: authAdminSession,
+                  environment: metadata.scope.environment,
+                  ref: metadata.ref,
+                  removed: true,
+                });
+              })
               .then(inventory.refresh)
               .then(() => setMessage(`Removed ${metadata.ref}.`))
               .catch((error: unknown) => setMessage(toMessage(error)));
@@ -223,7 +234,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
         },
       ]);
     },
-    [inventory.refresh, projectId],
+    [authAdminSession, inventory.refresh, projectId],
   );
 
   const confirmBrokenReferenceDelete = useCallback(async () => {
@@ -239,6 +250,12 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
         ref: pendingDelete.metadata.ref,
         confirmBrokenReferences: true,
       });
+      clearPendingCredentialLinksForRemovedProjectSecret({
+        session: authAdminSession,
+        environment: pendingDelete.metadata.scope.environment,
+        ref: pendingDelete.metadata.ref,
+        removed: true,
+      });
       await inventory.refresh();
       setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
       setPendingDelete(null);
@@ -247,7 +264,7 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     } finally {
       setDeleting(false);
     }
-  }, [inventory, pendingDelete, projectId]);
+  }, [authAdminSession, inventory, pendingDelete, projectId]);
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">

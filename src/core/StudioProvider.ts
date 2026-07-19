@@ -30,6 +30,7 @@ import {
   type ThemeUpdates,
 } from '../index';
 import { createStudioManifestSignature } from '../manifestSync';
+import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
 import { StudioContext } from './StudioContext';
 import {
@@ -266,7 +267,11 @@ export const StudioProvider = ({
     ],
   );
 
-  return React.createElement(StudioContext.Provider, { value }, children);
+  return React.createElement(AuthAdminSessionProvider, {
+    key: projectId,
+    projectId,
+    children: React.createElement(StudioContext.Provider, { value }, children),
+  });
 };
 
 function useStudioManifestPersistence(args: {

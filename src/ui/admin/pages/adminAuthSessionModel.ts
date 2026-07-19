@@ -81,30 +81,123 @@ export class AuthAdminPendingCredentialRecoveryStore {
   clear(providerId: AuthOAuthProviderId): void {
     this.linksByProviderId.delete(providerId);
   }
+
+  clearByCredentialsRef(credentialsRef: string): readonly StoredOAuthCredentialLink[] {
+    const cleared: StoredOAuthCredentialLink[] = [];
+
+    for (const link of this.linksByProviderId.values()) {
+      if (link.credentialsRef !== credentialsRef) continue;
+
+      this.linksByProviderId.delete(link.providerId);
+      cleared.push(link);
+    }
+
+    return cleared;
+  }
+}
+
+export interface AuthAdminProjectSessionSnapshot {
+  readonly pendingCredentialLinks: readonly StoredOAuthCredentialLink[];
+  readonly busyCredentialProviderIds: ReadonlySet<AuthOAuthProviderId>;
+  readonly fullAuthSaveBusy: boolean;
+}
+
+export class AuthAdminProjectSession {
+  private readonly writeCoordinator = new AuthAdminWriteCoordinator();
+  private readonly pendingRecovery = new AuthAdminPendingCredentialRecoveryStore();
+
+  constructor(readonly projectId: string) {}
+
+  getSnapshot(): AuthAdminProjectSessionSnapshot {
+    return {
+      pendingCredentialLinks: this.pendingRecovery.list(),
+      busyCredentialProviderIds: this.writeCoordinator.getBusyProviderIds(),
+      fullAuthSaveBusy: this.writeCoordinator.isFullAuthSaveActive(),
+    };
+  }
+
+  setPendingCredentialLink(link: StoredOAuthCredentialLink): void {
+    this.pendingRecovery.set(link);
+  }
+
+  clearPendingCredentialLink(providerId: AuthOAuthProviderId): void {
+    this.pendingRecovery.clear(providerId);
+  }
+
+  clearPendingCredentialLinksByCredentialsRef(
+    credentialsRef: string,
+  ): readonly StoredOAuthCredentialLink[] {
+    return this.pendingRecovery.clearByCredentialsRef(credentialsRef);
+  }
+
+  async runFullAuthSave<T>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> {
+    return await this.writeCoordinator.runFullAuthSave(operation);
+  }
+
+  async runCredentialTransaction<T>(
+    providerId: AuthOAuthProviderId,
+    operation: () => Promise<T>,
+  ): Promise<AuthAdminWriteResult<T>> {
+    return await this.writeCoordinator.runCredentialTransaction(providerId, operation);
+  }
+}
+
+export function clearPendingCredentialLinksForRemovedProjectSecret(args: {
+  readonly session: {
+    readonly clearPendingCredentialLinksByCredentialsRef: (
+      credentialsRef: string,
+    ) => readonly StoredOAuthCredentialLink[];
+  };
+  readonly environment: string;
+  readonly ref: string;
+  readonly removed: boolean;
+}): readonly StoredOAuthCredentialLink[] {
+  if (!args.removed || args.environment !== 'local') return [];
+
+  return args.session.clearPendingCredentialLinksByCredentialsRef(args.ref);
 }
 
 export function rebaseAuthDraftOntoCanonicalCredentialRefs(args: {
   readonly draft: StudioAuthSettings;
   readonly canonical: StudioAuthSettings | null;
 }): StudioAuthSettings {
-  const canonicalProviders = new Map(
-    args.canonical?.oauth?.providers.map((provider) => [provider.id, provider]) ?? [],
+  const canonicalOauth = args.canonical?.oauth;
+  const canonicalProvidersById = new Map(
+    canonicalOauth?.providers.map((provider) => [provider.id, provider]) ?? [],
   );
+  const canonicalCredentialProviders =
+    canonicalOauth?.providers.filter((provider) => provider.credentialsRef) ?? [];
 
-  if (!args.draft.oauth) return args.draft;
+  if (!args.draft.oauth) {
+    if (canonicalCredentialProviders.length === 0 || !canonicalOauth) return args.draft;
+
+    return {
+      ...args.draft,
+      oauth: {
+        ...canonicalOauth,
+        providers: canonicalCredentialProviders,
+      },
+    };
+  }
+
+  const draftProviderIds = new Set(args.draft.oauth.providers.map((provider) => provider.id));
+  const rebasedDraftProviders = args.draft.oauth.providers.map((provider) => {
+    const canonicalCredentialsRef = canonicalProvidersById.get(provider.id)?.credentialsRef;
+    const { credentialsRef: _draftCredentialsRef, ...providerWithoutCredentialsRef } = provider;
+
+    return canonicalCredentialsRef
+      ? { ...providerWithoutCredentialsRef, credentialsRef: canonicalCredentialsRef }
+      : providerWithoutCredentialsRef;
+  });
+  const missingCanonicalCredentialProviders = canonicalCredentialProviders.filter(
+    (provider) => !draftProviderIds.has(provider.id),
+  );
 
   return {
     ...args.draft,
     oauth: {
       ...args.draft.oauth,
-      providers: args.draft.oauth.providers.map((provider) => {
-        const canonicalCredentialsRef = canonicalProviders.get(provider.id)?.credentialsRef;
-        const { credentialsRef: _draftCredentialsRef, ...providerWithoutCredentialsRef } = provider;
-
-        return canonicalCredentialsRef
-          ? { ...providerWithoutCredentialsRef, credentialsRef: canonicalCredentialsRef }
-          : providerWithoutCredentialsRef;
-      }),
+      providers: [...rebasedDraftProviders, ...missingCanonicalCredentialProviders],
     },
   };
 }

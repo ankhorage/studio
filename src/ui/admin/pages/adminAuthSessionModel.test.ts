@@ -5,7 +5,9 @@ import type { StudioAuthSettings } from '../../../authSettings';
 import type { StoredOAuthCredentialLink } from './adminAuthCredentialFlow';
 import {
   AuthAdminPendingCredentialRecoveryStore,
+  AuthAdminProjectSession,
   AuthAdminWriteCoordinator,
+  clearPendingCredentialLinksForRemovedProjectSecret,
   rebaseAuthDraftOntoCanonicalCredentialRefs,
 } from './adminAuthSessionModel';
 
@@ -63,6 +65,36 @@ function createAuthSettings(args: {
   };
 }
 
+function getOAuth(settings: StudioAuthSettings): NonNullable<StudioAuthSettings['oauth']> {
+  if (!settings.oauth) throw new Error('Expected OAuth settings.');
+  return settings.oauth;
+}
+
+function withOAuthProviders(
+  settings: StudioAuthSettings,
+  providers: NonNullable<StudioAuthSettings['oauth']>['providers'],
+): StudioAuthSettings {
+  return {
+    ...settings,
+    oauth: {
+      ...getOAuth(settings),
+      providers,
+    },
+  };
+}
+
+function withoutOAuth(settings: StudioAuthSettings): StudioAuthSettings {
+  const { oauth: _oauth, ...settingsWithoutOAuth } = settings;
+  return settingsWithoutOAuth;
+}
+
+function getProvider(
+  settings: StudioAuthSettings,
+  providerId: AuthOAuthProviderId,
+): NonNullable<StudioAuthSettings['oauth']>['providers'][number] | null {
+  return settings.oauth?.providers.find((provider) => provider.id === providerId) ?? null;
+}
+
 function createLink(providerId: AuthOAuthProviderId = 'google'): StoredOAuthCredentialLink {
   return {
     providerId,
@@ -73,6 +105,24 @@ function createLink(providerId: AuthOAuthProviderId = 'google'): StoredOAuthCred
       scopes: ['email'],
     },
     successMessage: `${providerId} credentials linked.`,
+  };
+}
+
+function createProjectSessionConsumer(session: AuthAdminProjectSession): {
+  readonly snapshot: () => ReturnType<AuthAdminProjectSession['getSnapshot']>;
+  readonly setPendingCredentialLink: (link: StoredOAuthCredentialLink) => void;
+  readonly clearPendingCredentialLinksByCredentialsRef: (
+    credentialsRef: string,
+  ) => readonly StoredOAuthCredentialLink[];
+  readonly runCredentialTransaction: AuthAdminProjectSession['runCredentialTransaction'];
+} {
+  return {
+    snapshot: () => session.getSnapshot(),
+    setPendingCredentialLink: (link) => session.setPendingCredentialLink(link),
+    clearPendingCredentialLinksByCredentialsRef: (credentialsRef) =>
+      session.clearPendingCredentialLinksByCredentialsRef(credentialsRef),
+    runCredentialTransaction: (providerId, operation) =>
+      session.runCredentialTransaction(providerId, operation),
   };
 }
 
@@ -256,7 +306,211 @@ describe('AuthAdminPendingCredentialRecoveryStore', () => {
   });
 });
 
+describe('AuthAdminProjectSession', () => {
+  test('transaction remains busy when admin consumers disappear and reappear', async () => {
+    const session = new AuthAdminProjectSession('project-a');
+    const manifestFlush = createDeferred<void>();
+    const consumerA = createProjectSessionConsumer(session);
+
+    const first = consumerA.runCredentialTransaction('google', async () => {
+      await manifestFlush.promise;
+      return 'linked';
+    });
+
+    expect(consumerA.snapshot().busyCredentialProviderIds.has('google')).toBe(true);
+
+    const consumerB = createProjectSessionConsumer(session);
+    expect(consumerB.snapshot().busyCredentialProviderIds.has('google')).toBe(true);
+    expect(
+      await consumerB.runCredentialTransaction('google', () => Promise.resolve('overlap')),
+    ).toEqual({ ok: false, reason: 'provider_busy' });
+
+    manifestFlush.resolve();
+    expect(await first).toEqual({ ok: true, value: 'linked' });
+    expect(consumerB.snapshot().busyCredentialProviderIds.has('google')).toBe(false);
+  });
+
+  test('pending recovery remains available after leaving admin and returning', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    const consumerA = createProjectSessionConsumer(session);
+
+    consumerA.setPendingCredentialLink(createLink('google'));
+
+    const consumerB = createProjectSessionConsumer(session);
+    expect(consumerB.snapshot().pendingCredentialLinks).toEqual([createLink('google')]);
+  });
+
+  test('project change creates isolated fresh session state', async () => {
+    const projectA = new AuthAdminProjectSession('project-a');
+    const projectB = new AuthAdminProjectSession('project-b');
+    const projectAFlush = createDeferred<void>();
+
+    projectA.setPendingCredentialLink(createLink('google'));
+    const projectATransaction = projectA.runCredentialTransaction('google', async () => {
+      await projectAFlush.promise;
+      return 'project-a';
+    });
+
+    expect(projectB.getSnapshot().pendingCredentialLinks).toEqual([]);
+    expect(projectB.getSnapshot().busyCredentialProviderIds.has('google')).toBe(false);
+    expect(
+      await projectB.runCredentialTransaction('google', () => Promise.resolve('project-b')),
+    ).toEqual({
+      ok: true,
+      value: 'project-b',
+    });
+
+    projectAFlush.resolve();
+    expect(await projectATransaction).toEqual({ ok: true, value: 'project-a' });
+  });
+});
+
+describe('clearPendingCredentialLinksForRemovedProjectSecret', () => {
+  test('successful matching local secret removal clears pending link', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    session.setPendingCredentialLink(createLink('google'));
+
+    const cleared = clearPendingCredentialLinksForRemovedProjectSecret({
+      session,
+      environment: 'local',
+      ref: 'auth/oauth/google',
+      removed: true,
+    });
+
+    expect(cleared).toEqual([createLink('google')]);
+    expect(session.getSnapshot().pendingCredentialLinks).toEqual([]);
+  });
+
+  test('unrelated secret removal keeps pending link', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    session.setPendingCredentialLink(createLink('google'));
+
+    expect(
+      clearPendingCredentialLinksForRemovedProjectSecret({
+        session,
+        environment: 'local',
+        ref: 'auth/oauth/github',
+        removed: true,
+      }),
+    ).toEqual([]);
+    expect(session.getSnapshot().pendingCredentialLinks).toEqual([createLink('google')]);
+  });
+
+  test('failed deletion keeps pending link', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    session.setPendingCredentialLink(createLink('google'));
+
+    expect(
+      clearPendingCredentialLinksForRemovedProjectSecret({
+        session,
+        environment: 'local',
+        ref: 'auth/oauth/google',
+        removed: false,
+      }),
+    ).toEqual([]);
+    expect(session.getSnapshot().pendingCredentialLinks).toEqual([createLink('google')]);
+  });
+
+  test('multiple pending links are selectively cleared', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    session.setPendingCredentialLink(createLink('google'));
+    session.setPendingCredentialLink(createLink('github'));
+
+    expect(
+      clearPendingCredentialLinksForRemovedProjectSecret({
+        session,
+        environment: 'local',
+        ref: 'auth/oauth/google',
+        removed: true,
+      }),
+    ).toEqual([createLink('google')]);
+    expect(session.getSnapshot().pendingCredentialLinks).toEqual([createLink('github')]);
+  });
+
+  test('non-local removal keeps pending recovery for local credential links', () => {
+    const session = new AuthAdminProjectSession('project-a');
+    session.setPendingCredentialLink(createLink('google'));
+
+    expect(
+      clearPendingCredentialLinksForRemovedProjectSecret({
+        session,
+        environment: 'production',
+        ref: 'auth/oauth/google',
+        removed: true,
+      }),
+    ).toEqual([]);
+    expect(session.getSnapshot().pendingCredentialLinks).toEqual([createLink('google')]);
+  });
+});
+
 describe('rebaseAuthDraftOntoCanonicalCredentialRefs', () => {
+  test('canonical credential provider missing from draft is preserved', () => {
+    const canonical = withOAuthProviders(
+      createAuthSettings({ googleCredentialsRef: 'auth/oauth/google' }),
+      [
+        {
+          id: 'google',
+          enabled: true,
+          scopes: ['email'],
+          credentialsRef: 'auth/oauth/google',
+        },
+      ],
+    );
+    const draft = withOAuthProviders(createAuthSettings({}), []);
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(rebased.oauth?.providers).toEqual([
+      {
+        id: 'google',
+        enabled: true,
+        scopes: ['email'],
+        credentialsRef: 'auth/oauth/google',
+      },
+    ]);
+  });
+
+  test('multiple canonical credential providers missing from draft are preserved', () => {
+    const canonical = createAuthSettings({
+      googleCredentialsRef: 'auth/oauth/google',
+      githubCredentialsRef: 'auth/oauth/github',
+    });
+    const draft = withOAuthProviders(createAuthSettings({}), []);
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(getProvider(rebased, 'google')?.credentialsRef).toBe('auth/oauth/google');
+    expect(getProvider(rebased, 'github')?.credentialsRef).toBe('auth/oauth/github');
+  });
+
+  test('absent draft OAuth cannot erase canonical credential links', () => {
+    const canonical = withOAuthProviders(
+      createAuthSettings({ googleCredentialsRef: 'auth/oauth/google' }),
+      [
+        {
+          id: 'google',
+          enabled: true,
+          scopes: ['email'],
+          credentialsRef: 'auth/oauth/google',
+        },
+      ],
+    );
+    const draft = withoutOAuth(createAuthSettings({}));
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(rebased.oauth).toEqual(getOAuth(canonical));
+  });
+
+  test('stale draft credentialsRef cannot replace canonical credentialsRef', () => {
+    const canonical = createAuthSettings({ googleCredentialsRef: 'auth/oauth/google-canonical' });
+    const draft = createAuthSettings({ googleCredentialsRef: 'auth/oauth/google-stale' });
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(getProvider(rebased, 'google')?.credentialsRef).toBe('auth/oauth/google-canonical');
+  });
+
   test('stale full auth draft cannot erase canonical provider credentials refs', () => {
     const canonical = createAuthSettings({
       googleCredentialsRef: 'auth/oauth/google',
@@ -283,6 +537,33 @@ describe('rebaseAuthDraftOntoCanonicalCredentialRefs', () => {
         credentialsRef: 'auth/oauth/github',
       },
     ]);
+  });
+
+  test('canonical provider without credentialsRef follows normal editable removal semantics', () => {
+    const canonical = createAuthSettings({});
+    const draft = withOAuthProviders(createAuthSettings({}), []);
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(rebased.oauth?.providers).toEqual([]);
+  });
+
+  test('editable OAuth fields follow draft while credential providers survive', () => {
+    const canonical = createAuthSettings({ googleCredentialsRef: 'auth/oauth/google' });
+    const draft = {
+      ...createAuthSettings({}),
+      oauth: {
+        enabled: false,
+        callbackRoute: '/draft/callback',
+        providers: [],
+      },
+    };
+
+    const rebased = rebaseAuthDraftOntoCanonicalCredentialRefs({ draft, canonical });
+
+    expect(rebased.oauth?.enabled).toBe(false);
+    expect(rebased.oauth?.callbackRoute).toBe('/draft/callback');
+    expect(getProvider(rebased, 'google')?.credentialsRef).toBe('auth/oauth/google');
   });
 
   test('full auth draft cannot persist pending refs that are not canonical', () => {

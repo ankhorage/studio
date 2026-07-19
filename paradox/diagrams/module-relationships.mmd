@@ -239,6 +239,7 @@ graph LR
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
   module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_modules_dashboard_types_ts
@@ -433,7 +434,6 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_studioAdminRouteModel_ts
-  module_src_ui_admin_AnkhAdminShell_tsx --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --> module_src_authSettings_ts
@@ -474,6 +474,8 @@ graph LR
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPageUtils_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretApi_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretUsage_ts
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_ThemeAdminPage_test_ts --> module_src_ui_admin_pages_adminThemeHarmony_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_index_ts
