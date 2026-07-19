@@ -1,5 +1,4 @@
 import {
-  applyStudioAuthSettings,
   readStudioAuthSettings,
   type StudioAuthSettings,
   validateStudioAuthSettings,
@@ -15,15 +14,12 @@ export type ProjectAuthSettingsResult =
   | {
       readonly ok: false;
       readonly error: {
-        readonly code: 'invalid_config' | 'manifest_read_failed' | 'manifest_write_failed';
+        readonly code: 'invalid_config' | 'manifest_read_failed' | 'manifest_write_disabled';
         readonly message: string;
       };
     };
 
-type ProjectAuthManager = Pick<
-  ProjectManager,
-  'getProjectManifest' | 'getStudioManifest' | 'saveStudioManifest'
->;
+type ProjectAuthManager = Pick<ProjectManager, 'getProjectManifest' | 'getStudioManifest'>;
 
 export class ProjectAuthService {
   constructor(private readonly projectManager: ProjectAuthManager) {}
@@ -43,37 +39,19 @@ export class ProjectAuthService {
     }
   }
 
-  async configure(projectId: string, value: unknown): Promise<ProjectAuthSettingsResult> {
+  configure(projectId: string, value: unknown): Promise<ProjectAuthSettingsResult> {
     const parsed = validateStudioAuthSettings(value);
-    if (!parsed.ok) return parsed;
+    if (!parsed.ok) return Promise.resolve(parsed);
+    void projectId;
 
-    let manifest;
-    try {
-      manifest = await this.readEditableManifest(projectId);
-    } catch {
-      return {
-        ok: false,
-        error: {
-          code: 'manifest_read_failed',
-          message: 'The project authentication configuration could not be loaded.',
-        },
-      };
-    }
-
-    const nextManifest = applyStudioAuthSettings(manifest, parsed.data);
-    try {
-      await this.projectManager.saveStudioManifest({ projectId, manifest: nextManifest });
-    } catch {
-      return {
-        ok: false,
-        error: {
-          code: 'manifest_write_failed',
-          message: 'The canonical authentication configuration could not be saved.',
-        },
-      };
-    }
-
-    return { ok: true, state: 'saved', data: readStudioAuthSettings(nextManifest) };
+    return Promise.resolve({
+      ok: false,
+      error: {
+        code: 'manifest_write_disabled',
+        message:
+          'Authentication manifest changes must be written through the Studio manifest draft.',
+      },
+    });
   }
 
   private async readEditableManifest(projectId: string) {

@@ -8,7 +8,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 346,
+      "line": 349,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -26,7 +26,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 259,
+      "line": 261,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -80,7 +80,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 568,
+      "line": 571,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -112,7 +112,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1280,
+      "line": 1283,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -144,7 +144,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 727,
+      "line": 730,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -176,7 +176,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 493,
+      "line": 496,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -214,7 +214,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1199,
+      "line": 1202,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -258,7 +258,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 510,
+      "line": 513,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -296,7 +296,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 486,
+      "line": 489,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -328,7 +328,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1125,
+      "line": 1128,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -360,7 +360,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 237,
+      "line": 239,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -449,7 +449,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 219,
+      "line": 221,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -489,7 +489,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 196,
+      "line": 198,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -507,7 +507,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 247,
+      "line": 249,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -525,7 +525,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 225,
+      "line": 227,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -612,7 +612,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 193,
+      "line": 195,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -630,7 +630,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 194,
+      "line": 196,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -648,7 +648,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 242,
+      "line": 244,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -742,7 +742,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 957,
+      "line": 960,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -774,7 +774,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 900,
+      "line": 903,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -821,7 +821,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 907,
+      "line": 910,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -854,7 +854,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 204,
+      "line": 206,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -908,7 +908,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 212,
+      "line": 214,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -955,7 +955,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 199,
+      "line": 201,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -988,7 +988,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 267,
+      "line": 269,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1035,7 +1035,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 601,
+      "line": 604,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1079,7 +1079,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1025,
+      "line": 1028,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1111,7 +1111,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 984,
+      "line": 987,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1158,7 +1158,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 991,
+      "line": 994,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1191,7 +1191,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 155,
+      "line": 157,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1238,7 +1238,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 162,
+      "line": 164,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1256,7 +1256,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 174,
+      "line": 176,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1289,7 +1289,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 153,
+      "line": 155,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1307,7 +1307,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 186,
+      "line": 188,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1325,7 +1325,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 179,
+      "line": 181,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1696,7 +1696,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 550,
+      "line": 553,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1734,7 +1734,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 855,
+      "line": 858,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1766,7 +1766,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1322,
+      "line": 1325,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1798,7 +1798,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 794,
+      "line": 797,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1830,7 +1830,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1092,
+      "line": 1095,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1873,7 +1873,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 37,
+      "line": 39,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1891,7 +1891,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 29,
+      "line": 31,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1909,7 +1909,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 65,
+      "line": 67,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1927,7 +1927,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 251,
+      "line": 253,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1967,7 +1967,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 249,
+      "line": 251,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1985,7 +1985,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 257,
+      "line": 259,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2003,7 +2003,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 97,
+      "line": 99,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2021,7 +2021,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 120,
+      "line": 122,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2039,7 +2039,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 109,
+      "line": 111,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2057,7 +2057,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 292,
+      "line": 294,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2075,7 +2075,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 276,
+      "line": 278,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2108,7 +2108,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 281,
+      "line": 283,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2155,7 +2155,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 288,
+      "line": 290,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2173,7 +2173,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 308,
+      "line": 310,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2495,6 +2495,13 @@
         "description": null
       },
       {
+        "name": "updateAuthSettings",
+        "kind": "property",
+        "type": "(settings: StudioAuthSettings) => void",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "updateDataBindings",
         "kind": "property",
         "type": "(dataBindings: ComponentDataBindingRegistry) => void",
@@ -2548,7 +2555,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 301,
+      "line": 303,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2566,7 +2573,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 290,
+      "line": 292,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2584,7 +2591,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 92,
+      "line": 94,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2602,7 +2609,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 122,
+      "line": 124,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2620,7 +2627,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 94,
+      "line": 96,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2638,7 +2645,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 91,
+      "line": 93,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2656,7 +2663,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 89,
+      "line": 91,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2674,7 +2681,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 31,
+      "line": 33,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2714,7 +2721,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 96,
+      "line": 98,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2732,7 +2739,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 87,
+      "line": 89,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2750,7 +2757,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 85,
+      "line": 87,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2768,7 +2775,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 95,
+      "line": 97,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2786,7 +2793,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 90,
+      "line": 92,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2804,7 +2811,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 133,
+      "line": 135,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2858,7 +2865,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 88,
+      "line": 90,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2876,7 +2883,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 141,
+      "line": 143,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2958,7 +2965,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 128,
+      "line": 130,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2976,7 +2983,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 438,
+      "line": 441,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2994,7 +3001,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 522,
+      "line": 525,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -3038,7 +3045,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1142,
+      "line": 1145,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3076,7 +3083,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 739,
+      "line": 742,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

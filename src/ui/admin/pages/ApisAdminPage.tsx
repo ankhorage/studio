@@ -6,6 +6,7 @@ import { useStudio } from '../../../core/StudioContext';
 import type { StudioAdminRouteId } from '../../../index';
 import { AdminHeader, adminPageStyles, AdminScroll } from '../adminPagePrimitives';
 import { readRecord, readString } from '../adminPageUtils';
+import { collectDataSourceOperationRows } from './adminDataSourceOperations';
 
 export type ApisAdminRouteId = Extract<
   StudioAdminRouteId,
@@ -15,13 +16,7 @@ export type ApisAdminRouteId = Extract<
 export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId }) {
   const studio = useStudio();
   const dataSources = Object.entries(studio.manifest?.dataSources ?? {});
-  const operationRows = dataSources.flatMap(([sourceId, source]) =>
-    Object.entries(readRecord(source).endpoints ?? {}).map(([operationId, operation]) => ({
-      sourceId,
-      operationId,
-      kind: readString(readRecord(operation).kind) ?? 'operation',
-    })),
-  );
+  const operationRows = collectDataSourceOperationRows(studio.manifest?.dataSources ?? {});
   const showSources = routeId === 'apis' || routeId === 'api-data-sources';
   const showOperations = routeId === 'apis' || routeId === 'api-operations';
 
@@ -59,10 +54,14 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
         <Card title="Operations">
           {operationRows.length > 0 ? (
             operationRows.map((row) => (
-              <View key={`${row.sourceId}:${row.operationId}`} style={adminPageStyles.row}>
+              <View
+                key={`${row.sourceId}:${row.endpointId}:${row.operationId}`}
+                style={adminPageStyles.row}
+              >
                 <Text weight="semiBold">{row.operationId}</Text>
                 <Text color="neutral" emphasis="muted" variant="bodySmall">
-                  {row.sourceId} - {row.kind}
+                  {row.sourceId} / {row.endpointId} - {row.kind}
+                  {row.protocol ? ` (${row.protocol})` : ''}
                 </Text>
               </View>
             ))

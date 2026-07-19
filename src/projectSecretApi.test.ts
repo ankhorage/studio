@@ -143,8 +143,22 @@ describe('projectSecretApi', () => {
     });
   });
 
-  test('preserves recoverable partial-failure state', () => {
+  test('parses credential write failures without manifest partial states', () => {
     expect(
+      parseConfigureProjectOAuthProviderResponse({
+        ok: false,
+        state: 'secret_write_failed',
+        credentialsRef: 'auth/oauth/google',
+        error: { code: 'provider_error', message: 'Retry the credential save.' },
+      }),
+    ).toEqual({
+      ok: false,
+      state: 'secret_write_failed',
+      credentialsRef: 'auth/oauth/google',
+      error: { code: 'provider_error', message: 'Retry the credential save.' },
+    });
+
+    expect(() =>
       parseConfigureProjectOAuthProviderResponse({
         ok: false,
         state: 'secret_saved_manifest_failed',
@@ -152,12 +166,6 @@ describe('projectSecretApi', () => {
         credentialsRef: 'auth/oauth/google',
         error: { code: 'manifest_write_failed', message: 'Retry the manifest save.' },
       }),
-    ).toEqual({
-      ok: false,
-      state: 'secret_saved_manifest_failed',
-      metadata,
-      credentialsRef: 'auth/oauth/google',
-      error: { code: 'manifest_write_failed', message: 'Retry the manifest save.' },
-    });
+    ).toThrow('OAuth configuration response was invalid.');
   });
 });

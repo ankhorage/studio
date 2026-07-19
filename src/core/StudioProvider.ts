@@ -7,8 +7,14 @@ import type {
   RouteDefinition,
   UiNode,
 } from '@ankhorage/contracts';
+import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import {
+  applyStudioAuthSettings,
+  readStudioAuthSettings,
+  type StudioAuthSettings,
+} from '../authSettings';
 import {
   findNodeById,
   type InsertCatalogEntry,
@@ -114,6 +120,31 @@ export const StudioProvider = ({
     setManifest((current) => (current ? updateStudioManifestTheme(current, id, updates) : current));
   }, []);
 
+  const updateAuthSettings = useCallback((settings: StudioAuthSettings) => {
+    setManifest((current) => (current ? applyStudioAuthSettings(current, settings) : current));
+  }, []);
+
+  const updateOAuthProviders = useCallback((providers: AuthOAuthProviderConfig[]) => {
+    setManifest((current) => {
+      if (!current) return current;
+      const currentAuth = readStudioAuthSettings(current);
+      const nextAuth = currentAuth ?? {
+        scope: 'none',
+        provider: 'supabase',
+        flow: { ...DEFAULT_AUTH_FLOW },
+        signIn: { identifiers: ['email'] },
+      };
+      return applyStudioAuthSettings(current, {
+        ...nextAuth,
+        oauth: {
+          enabled: nextAuth.oauth?.enabled ?? false,
+          callbackRoute: nextAuth.oauth?.callbackRoute ?? '/auth/callback',
+          providers,
+        },
+      });
+    });
+  }, []);
+
   const value = useMemo<StudioContextValue>(
     () => ({
       projectId,
@@ -159,9 +190,10 @@ export const StudioProvider = ({
       deleteTheme: noop,
       setActiveThemeId: noop,
       setActiveThemeMode: setStudioMode,
+      updateAuthSettings,
       updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
         undefined,
-      updateOAuthProviders: (_providers: AuthOAuthProviderConfig[]) => undefined,
+      updateOAuthProviders,
       moveNode: noop,
       reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
       setActiveScreenId,
@@ -190,6 +222,8 @@ export const StudioProvider = ({
       selectedNodeId,
       studioMode,
       updateNode,
+      updateAuthSettings,
+      updateOAuthProviders,
       updateTheme,
       persistence.refetchManifest,
     ],

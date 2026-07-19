@@ -22,33 +22,6 @@ export class ProjectAuthApiError extends Error {
   }
 }
 
-export async function getProjectAuthSettings(
-  projectId: string,
-): Promise<StudioAuthSettings | null> {
-  const value = await requestJson(`/projects/${encodeURIComponent(projectId)}/auth/config`);
-  return parseProjectAuthSettingsResponse(value, 'loaded');
-}
-
-export async function saveProjectAuthSettings(input: {
-  readonly projectId: string;
-  readonly config: StudioAuthSettings;
-}): Promise<StudioAuthSettings> {
-  const value = await requestJson(`/projects/${encodeURIComponent(input.projectId)}/auth/config`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ config: input.config }),
-  });
-  const result = parseProjectAuthSettingsResponse(value, 'saved');
-  if (!result) {
-    throw new ProjectAuthApiError({
-      code: 'invalid_response',
-      message: 'Saved auth configuration response did not contain configuration data.',
-      status: 502,
-    });
-  }
-  return result;
-}
-
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
   readonly environment?: string;

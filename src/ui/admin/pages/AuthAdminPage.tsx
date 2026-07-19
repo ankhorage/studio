@@ -23,14 +23,10 @@ import {
 } from 'react-native';
 
 import { readStudioAuthSettings, type StudioAuthSettings } from '../../../authSettings';
+import { useStudio } from '../../../core/StudioContext';
 import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
-import {
-  getProjectAuthHealth,
-  getProjectAuthSettings,
-  ProjectAuthApiError,
-  saveProjectAuthSettings,
-} from '../../../projectAuthApi';
+import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
@@ -44,14 +40,6 @@ const PROFILE_FIELDS = [
   'avatarUrl',
 ] as const;
 
-interface RecoverableOAuthPartialFailure {
-  readonly state: 'secret_saved_manifest_failed';
-  readonly providerId: SupabaseOAuthProviderId;
-  readonly credentialsRef: string;
-  readonly configuredFields: readonly string[];
-  readonly intendedProvider: AuthOAuthProviderConfig;
-}
-
 export interface AuthAdminPageProps {
   readonly projectId: string;
   readonly manifest: AppManifest | null;
@@ -63,6 +51,7 @@ export interface AuthAdminPageProps {
 
 export function AuthAdminPage(props: AuthAdminPageProps) {
   const { projectId, manifest, routeId } = props;
+  const studio = useStudio();
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
@@ -71,18 +60,21 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [partialFailure, setPartialFailure] = useState<RecoverableOAuthPartialFailure | null>(null);
+
+  useEffect(() => {
+    setDraft(
+      readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
+    );
+  }, [manifest]);
 
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      const [loaded, loadedHealth] = await Promise.all([
-        getProjectAuthSettings(projectId),
-        getProjectAuthHealth({ projectId, environment: 'local' }),
-      ]);
-      setDraft(loaded ?? createDefaultSettings());
+      const loadedHealth = await getProjectAuthHealth({ projectId, environment: 'local' });
+      setDraft(
+        readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
+      );
       setHealth(loadedHealth);
-      setPartialFailure(null);
       setMessage(null);
     } catch (error) {
       const local = manifest ? readStudioAuthSettings(manifest) : null;
@@ -109,55 +101,14 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     setSaving(true);
     setMessage(null);
     try {
-      const saved = await saveProjectAuthSettings({ projectId, config: draft });
-      setDraft(saved);
-      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
-      setPartialFailure(null);
-      setMessage('Authentication configuration saved to the Studio manifest draft.');
+      studio.updateAuthSettings(draft);
+      setMessage('Authentication configuration queued for the Studio manifest draft.');
     } catch (error) {
       setMessage(toMessage(error));
     } finally {
       setSaving(false);
     }
-  }, [draft, projectId]);
-
-  const retryPartialFailure = useCallback(async () => {
-    if (!partialFailure) return;
-
-    setSaving(true);
-    setMessage(null);
-    try {
-      const persisted = (await getProjectAuthSettings(projectId)) ?? createDefaultSettings();
-      const persistedOAuth = persisted.oauth ?? createDefaultOAuth();
-      await saveProjectAuthSettings({
-        projectId,
-        config: {
-          ...persisted,
-          oauth: {
-            ...persistedOAuth,
-            providers: upsertProvider(persistedOAuth.providers, partialFailure.intendedProvider),
-          },
-        },
-      });
-      setDraft((current) => {
-        const currentOAuth = current.oauth ?? createDefaultOAuth();
-        return {
-          ...current,
-          oauth: {
-            ...currentOAuth,
-            providers: upsertProvider(currentOAuth.providers, partialFailure.intendedProvider),
-          },
-        };
-      });
-      await refreshHealth();
-      setPartialFailure(null);
-      setMessage(`Linked ${partialFailure.credentialsRef} to the provider configuration.`);
-    } catch (error) {
-      setMessage(toMessage(error));
-    } finally {
-      setSaving(false);
-    }
-  }, [partialFailure, projectId, refreshHealth]);
+  }, [draft, studio]);
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
@@ -375,45 +326,14 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
                 setMessage(nextMessage);
               }}
               onSaved={(nextOAuth, nextMessage) => {
-                setDraft((current) => ({ ...current, oauth: nextOAuth }));
+                const nextDraft = { ...draft, oauth: nextOAuth };
+                setDraft(nextDraft);
+                studio.updateAuthSettings(nextDraft);
                 setMessage(nextMessage);
-                setPartialFailure(null);
                 void refreshHealth();
-              }}
-              onPartialFailure={(failure) => {
-                setPartialFailure(failure);
-                setMessage(
-                  `${failure.credentialsRef} was saved, but the manifest link failed. Retry the link or open project secrets for cleanup.`,
-                );
               }}
             />
           ))}
-
-          {partialFailure ? (
-            <View style={styles.partialFailure}>
-              <Text color="warning" weight="semiBold">
-                Credential secret saved, manifest link failed.
-              </Text>
-              <Text color="neutral" emphasis="muted" variant="caption">
-                Ref: {partialFailure.credentialsRef}
-              </Text>
-              <Text color="neutral" emphasis="muted" variant="caption">
-                Configured fields: {partialFailure.configuredFields.join(', ') || 'none'}
-              </Text>
-              <View style={styles.actions}>
-                <SecondaryButton
-                  label="Retry manifest link"
-                  onPress={() => void retryPartialFailure()}
-                />
-                <SecondaryButton
-                  label="Open cleanup"
-                  onPress={() => {
-                    router.push('/ankh/secrets');
-                  }}
-                />
-              </View>
-            </View>
-          ) : null}
 
           <View style={styles.actions}>
             <SecondaryButton
@@ -557,7 +477,6 @@ function OAuthProviderSetting(props: {
     message: string | null,
   ) => void;
   readonly onSaved: (oauth: NonNullable<StudioAuthSettings['oauth']>, message: string) => void;
-  readonly onPartialFailure: (failure: RecoverableOAuthPartialFailure) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
@@ -640,9 +559,6 @@ function OAuthProviderSetting(props: {
         providerId: props.providerId as AuthOAuthProviderId,
         environment: 'local',
         credentialsRef,
-        enabled,
-        label: current?.label ?? definition.label,
-        scopes: current?.scopes ?? definition.defaultScopes,
         payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
       });
 
@@ -651,24 +567,6 @@ function OAuthProviderSetting(props: {
           mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
           `${definition.label} credentials saved through ${result.credentialsRef}.`,
         );
-        return;
-      }
-
-      if (
-        result.state === 'secret_saved_manifest_failed' &&
-        result.credentialsRef &&
-        result.metadata
-      ) {
-        props.onPartialFailure({
-          state: 'secret_saved_manifest_failed',
-          providerId: props.providerId,
-          credentialsRef: result.credentialsRef,
-          configuredFields: result.metadata.configuredFields,
-          intendedProvider: {
-            ...intendedProvider,
-            credentialsRef: result.credentialsRef,
-          },
-        });
         return;
       }
 
@@ -1108,10 +1006,6 @@ const styles = StyleSheet.create({
   providerPanel: {
     gap: 10,
     paddingVertical: 8,
-  },
-  partialFailure: {
-    gap: 8,
-    paddingVertical: 10,
   },
   healthProvider: {
     gap: 3,

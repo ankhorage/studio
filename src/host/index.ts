@@ -26,7 +26,6 @@ export {
   createBunSupabaseVaultClient,
 } from './secrets/bunSupabaseVaultClient';
 export {
-  configureManifestOAuthProvider,
   type ConfigureOAuthProviderInput,
   type ConfigureOAuthProviderResult,
   ProjectSecretService,

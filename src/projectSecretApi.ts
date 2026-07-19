@@ -35,13 +35,7 @@ export interface ConfigureProjectOAuthProviderInput {
   readonly projectId: string;
   readonly providerId: AuthOAuthProviderId;
   readonly environment?: string;
-  readonly authScope?: 'global' | 'none' | 'integrated';
-  readonly oauthEnabled?: boolean;
   readonly credentialsRef?: string;
-  readonly enabled?: boolean;
-  readonly label?: string;
-  readonly scopes?: readonly string[];
-  readonly callbackRoute?: string;
   readonly payload: SecretPayload;
 }
 
@@ -54,9 +48,8 @@ export type ConfigureProjectOAuthProviderResponse =
     }
   | {
       readonly ok: false;
-      readonly state: 'secret_write_failed' | 'secret_saved_manifest_failed';
+      readonly state: 'secret_write_failed';
       readonly error: { readonly code: string; readonly message: string };
-      readonly metadata?: SecretMetadata;
       readonly credentialsRef?: string;
     };
 
@@ -165,13 +158,7 @@ export async function configureProjectOAuthProvider(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         environment: input.environment,
-        authScope: input.authScope,
-        oauthEnabled: input.oauthEnabled,
         credentialsRef: input.credentialsRef,
-        enabled: input.enabled,
-        label: input.label,
-        scopes: input.scopes,
-        callbackRoute: input.callbackRoute,
         payload: input.payload,
       }),
     },
@@ -237,7 +224,7 @@ export function parseConfigureProjectOAuthProviderResponse(
     };
   }
 
-  if (record.state !== 'secret_write_failed' && record.state !== 'secret_saved_manifest_failed') {
+  if (record.state !== 'secret_write_failed') {
     throw createInvalidResponseError('OAuth configuration response was invalid.');
   }
 
@@ -245,7 +232,6 @@ export function parseConfigureProjectOAuthProviderResponse(
     ok: false,
     state: record.state,
     error: parseError(record.error),
-    ...(record.metadata === undefined ? {} : { metadata: parseSecretMetadata(record.metadata) }),
     ...(typeof record.credentialsRef === 'string' ? { credentialsRef: record.credentialsRef } : {}),
   };
 }

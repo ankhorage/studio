@@ -108,6 +108,27 @@ describe('LayoutGenerator', () => {
     expect(adminSources).not.toContain('return null;');
   });
 
+  test('generates auth-independent and production-gated Studio admin routes', () => {
+    const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
+      includeStudio: true,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
+    const adminPage = files.find(
+      (file) => file.path === 'src/app/ankh/auth/providers.tsx',
+    )?.content;
+
+    expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
+    expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
+    expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
+    expect(adminLayout).toContain('if (!__DEV__)');
+    expect(adminLayout).toContain('<Redirect href="/" />');
+    expect(adminLayout).toContain('<AnkhAdminShell />');
+    expect(adminPage).toContain('if (!__DEV__)');
+    expect(adminPage).toContain('<Redirect href="/" />');
+    expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+  });
+
   test('derives Studio admin route files from the canonical registry', () => {
     const source = readFileSync(
       join(dirname(fileURLToPath(import.meta.url)), 'layoutGenerator.ts'),

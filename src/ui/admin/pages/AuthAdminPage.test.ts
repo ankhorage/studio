@@ -11,29 +11,29 @@ const source = readFileSync(
 test('auth settings keeps provider-specific OAuth credential orchestration', () => {
   expect(source).toContain('configureProjectOAuthProvider');
   expect(source).toContain('definition.secretFields.map');
-  expect(source).toContain("state: 'secret_saved_manifest_failed'");
   expect(source).toContain('intendedProvider');
-  expect(source).toContain('Retry manifest link');
+  expect(source).toContain('studio.updateAuthSettings(nextDraft)');
+  expect(source).not.toContain("state: 'secret_saved_manifest_failed'");
+  expect(source).not.toContain('Retry manifest link');
 });
 
 test('credential writes do not submit unsaved global auth or OAuth state', () => {
-  expect(source).not.toContain('authScope: props.authScope');
-  expect(source).not.toContain('oauthEnabled: props.oauth.enabled');
+  expect(source).not.toContain('authScope:');
+  expect(source).not.toContain('oauthEnabled:');
   expect(source).not.toContain('callbackRoute: props.oauth.callbackRoute');
+  expect(source).not.toContain('saveProjectAuthSettings');
 });
 
-test('partial-failure retry persists only the intended provider against current server state', () => {
-  expect(source).toContain('const persisted = (await getProjectAuthSettings(projectId))');
-  expect(source).toContain('partialFailure.intendedProvider');
-  expect(source).toContain('persistedOAuth.providers');
-  expect(source).toContain('setDraft((current) => {');
-  expect(source).not.toContain('linkRecoverableOAuthCredentials');
+test('auth saves go through StudioProvider manifest state', () => {
+  expect(source).toContain('studio.updateAuthSettings(draft)');
+  expect(source).toContain('readStudioAuthSettings(manifest');
+  expect(source).not.toContain('getProjectAuthSettings');
 });
 
 test('credential saves preserve unrelated draft edits instead of reloading settings', () => {
   expect(source).toContain('void refreshHealth()');
   expect(source).toContain('mergeOAuthProviderCredentialsRef');
-  expect(source).toContain('setDraft((current) => ({ ...current, oauth: nextOAuth }))');
+  expect(source).toContain('const nextDraft = { ...draft, oauth: nextOAuth };');
   expect(source).not.toContain('onSaved={(nextMessage)');
 });
 

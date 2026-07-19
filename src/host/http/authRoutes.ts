@@ -68,7 +68,12 @@ export function registerProjectAuthRoutes(
 function sendProjectAuthResult(reply: FastifyReply, result: ProjectAuthSettingsResult) {
   if (result.ok) return result;
 
-  const status = result.error.code === 'invalid_config' ? 400 : 500;
+  const status =
+    result.error.code === 'invalid_config'
+      ? 400
+      : result.error.code === 'manifest_write_disabled'
+        ? 409
+        : 500;
   return reply.status(status).send(result);
 }
 

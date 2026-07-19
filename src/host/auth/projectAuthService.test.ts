@@ -44,23 +44,23 @@ const config = {
 };
 
 describe('ProjectAuthService', () => {
-  test('writes validated settings to the editable manifest draft', async () => {
-    const saved: AppManifest[] = [];
+  test('rejects legacy server-side manifest writes after validating settings', async () => {
+    let saveCount = 0;
     const manager = {
       getStudioManifest: () => Promise.reject(new Error('No draft')),
       getProjectManifest: () => Promise.resolve(createManifest()),
-      saveStudioManifest: ({ manifest }: { projectId: string; manifest: AppManifest }) => {
-        saved.push(manifest);
+      saveStudioManifest: () => {
+        saveCount += 1;
         return Promise.resolve({ success: true });
       },
-    } satisfies ConstructorParameters<typeof ProjectAuthService>[0];
+    } as unknown as ConstructorParameters<typeof ProjectAuthService>[0];
 
     const result = await new ProjectAuthService(manager).configure('demo', config);
 
-    expect(result.ok).toBe(true);
-    expect(saved).toHaveLength(1);
-    expect(saved[0]?.infra.auth?.flow?.signInRoute).toBe('sign-in');
-    expect(saved[0]?.infra.auth?.signUp?.signUpPolicy).toBe('requireVerification');
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error('Expected disabled write failure.');
+    expect(result.error.code).toBe('manifest_write_disabled');
+    expect(saveCount).toBe(0);
   });
 
   test('does not write a manifest when inline secrets are submitted', async () => {
@@ -72,7 +72,7 @@ describe('ProjectAuthService', () => {
         saveCount += 1;
         return Promise.resolve({ success: true });
       },
-    } satisfies ConstructorParameters<typeof ProjectAuthService>[0];
+    } as unknown as ConstructorParameters<typeof ProjectAuthService>[0];
 
     const result = await new ProjectAuthService(manager).configure('demo', {
       ...config,

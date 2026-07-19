@@ -1,9 +1,4 @@
-import {
-  type AppManifest,
-  type AuthOAuthProviderConfig,
-  type AuthOAuthProviderId,
-  DEFAULT_AUTH_FLOW,
-} from '@ankhorage/contracts';
+import { type AppManifest, type AuthOAuthProviderId } from '@ankhorage/contracts';
 import {
   normalizeSecretRef,
   type SecretCreateInput,
@@ -42,13 +37,7 @@ export interface ConfigureOAuthProviderInput {
   readonly environment?: string;
   readonly providerId: AuthOAuthProviderId;
   readonly payload: SecretPayload;
-  readonly authScope?: NonNullable<AppManifest['infra']['auth']>['scope'];
-  readonly oauthEnabled?: boolean;
   readonly credentialsRef?: string;
-  readonly enabled?: boolean;
-  readonly label?: string;
-  readonly scopes?: readonly string[];
-  readonly callbackRoute?: string;
 }
 
 export type ConfigureOAuthProviderResult =
@@ -60,9 +49,8 @@ export type ConfigureOAuthProviderResult =
     }
   | {
       readonly ok: false;
-      readonly state: 'secret_write_failed' | 'secret_saved_manifest_failed';
+      readonly state: 'secret_write_failed';
       readonly error: { readonly code: string; readonly message: string };
-      readonly metadata?: SecretMetadata;
       readonly credentialsRef?: string;
     };
 
@@ -335,36 +323,6 @@ export class ProjectSecretService {
       };
     }
 
-    const manifest = await this.readEditableManifest(input.projectId);
-    const nextManifest = configureManifestOAuthProvider(manifest, {
-      provider: {
-        id: definition.id,
-        label: normalizeOptionalText(input.label) ?? definition.label,
-        enabled: input.enabled ?? false,
-        scopes: normalizeScopes(input.scopes ?? definition.defaultScopes),
-        credentialsRef: refResult.data,
-      },
-    });
-
-    try {
-      await this.projectManager.saveStudioManifest({
-        projectId: input.projectId,
-        manifest: nextManifest,
-      });
-    } catch {
-      return {
-        ok: false,
-        state: 'secret_saved_manifest_failed',
-        metadata: secretResult.data,
-        credentialsRef: refResult.data,
-        error: {
-          code: 'manifest_write_failed',
-          message:
-            'OAuth credentials were saved, but the manifest update failed. Retry the manifest save or remove the stored secret explicitly.',
-        },
-      };
-    }
-
     return {
       ok: true,
       state: 'saved',
@@ -428,50 +386,11 @@ export class ProjectSecretService {
   }
 }
 
-export function configureManifestOAuthProvider(
-  manifest: AppManifest,
-  input: {
-    readonly provider: AuthOAuthProviderConfig;
-  },
-): AppManifest {
-  const currentAuth = manifest.infra.auth;
-  const currentOAuth = currentAuth?.oauth;
-  const providers = [...(currentOAuth?.providers ?? [])];
-  const existingIndex = providers.findIndex((provider) => provider.id === input.provider.id);
-
-  if (existingIndex >= 0) providers[existingIndex] = input.provider;
-  else providers.push(input.provider);
-
-  return {
-    ...manifest,
-    infra: {
-      ...manifest.infra,
-      auth: {
-        ...(currentAuth ?? {
-          provider: 'supabase',
-          scope: 'none',
-          flow: { ...DEFAULT_AUTH_FLOW },
-          signIn: { identifiers: ['email'] },
-        }),
-        oauth: {
-          enabled: currentOAuth?.enabled ?? false,
-          callbackRoute: normalizeOptionalText(currentOAuth?.callbackRoute) ?? '/auth/callback',
-          providers,
-        },
-      },
-    },
-  };
-}
-
 function createScope(projectId: string, environment = 'local') {
   return {
     projectId,
     environment: normalizeOptionalText(environment) ?? 'local',
   };
-}
-
-function normalizeScopes(scopes: readonly string[]): string[] {
-  return [...new Set(scopes.map((scope) => scope.trim()).filter(Boolean))];
 }
 
 function normalizeOptionalText(value: string | undefined): string | undefined {

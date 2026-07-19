@@ -419,8 +419,13 @@ import { authAdapter } from '@/auth/adapter';`,
 
 function getStudioAdminLayoutTsx(): string {
   return `import { AnkhAdminShell } from '@ankhorage/studio';
+import { Redirect } from 'expo-router';
 
 export default function AnkhLayout() {
+  if (!__DEV__) {
+    return <Redirect href="/" />;
+  }
+
   return <AnkhAdminShell />;
 }
 `;
@@ -458,8 +463,13 @@ function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
 
 function getStudioAdminRouteTsx(routeName: StudioAdminRouteId): string {
   return `import { AnkhAdminPage } from '@ankhorage/studio';
+import { Redirect } from 'expo-router';
 
 export default function AnkhAdminRoute() {
+  if (!__DEV__) {
+    return <Redirect href="/" />;
+  }
+
   return <AnkhAdminPage routeId="${routeName}" />;
 }
 `;

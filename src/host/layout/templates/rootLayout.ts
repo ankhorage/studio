@@ -246,6 +246,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
+  ${includeStudio ? 'if (isStudioAdminPath(pathname)) return;' : ''}
 
   const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
   if (!authEnforced) return;
