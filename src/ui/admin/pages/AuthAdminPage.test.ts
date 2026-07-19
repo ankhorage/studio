@@ -13,7 +13,7 @@ test('auth settings keeps provider-specific OAuth credential orchestration', () 
   expect(source).toContain('definition.secretFields.map');
   expect(source).toContain('credentialsRef');
   expect(source).toContain('persistStoredOAuthCredentialLink');
-  expect(source).toContain('setPendingCredentialLink(result.pendingLink)');
+  expect(source).toContain('authAdminSession.setPendingCredentialLink(result.pendingLink)');
   expect(source).not.toContain("state: 'secret_saved_manifest_failed'");
   expect(source).toContain('Retry manifest link');
 });
@@ -26,9 +26,10 @@ test('credential writes do not submit unsaved global auth or OAuth state', () =>
 });
 
 test('auth saves go through StudioProvider manifest state', () => {
-  expect(source).toContain('updateAuthSettings(nextDraft)');
+  expect(source).toContain('updateAuthSettings(rebasedDraft)');
   expect(source).toContain('await flushManifest()');
   expect(source).toContain('readStudioAuthSettings(canonicalManifestRef.current)');
+  expect(source).toContain('rebaseAuthDraftOntoCanonicalCredentialRefs');
   expect(source).toContain('mutateAuthSettings');
   expect(source).not.toContain('getProjectAuthSettings');
 });
@@ -46,11 +47,12 @@ test('credential saves preserve unrelated draft edits instead of reloading setti
 });
 
 test('credential saves serialize the full provider transaction', () => {
-  expect(source).toContain('OAuthCredentialTransactionCoordinator');
-  expect(source).toContain('runCredentialTransaction');
+  expect(source).toContain('useAuthAdminSession');
+  expect(source).toContain('authAdminSession.runCredentialTransaction');
+  expect(source).toContain('authAdminSession.runFullAuthSave');
   expect(source).toContain('await props.onSaved');
   expect(source).toContain('loading={savingCredentials || props.transactionBusy}');
-  expect(source).toContain('busyCredentialProviderIds.has(providerId)');
+  expect(source).toContain('authAdminSession.busyCredentialProviderIds.has(providerId)');
 });
 
 test('auth provider enablement uses credential completeness instead of status or ref alone', () => {

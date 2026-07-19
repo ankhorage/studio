@@ -14,6 +14,7 @@ import {
   resolveStudioAdminActiveRouteId,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
+import { AuthAdminSessionProvider } from './AuthAdminSession';
 
 export interface AnkhAdminShellProps {
   readonly children?: React.ReactNode;
@@ -55,52 +56,54 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   );
 
   return (
-    <SafeAreaView style={[styles.shell, { backgroundColor: theme.colors.background }]}>
-      <AppBar
-        title={activeDefinition.label}
-        subtitle={activeDefinition.description}
-        leading={
-          <IconButton
-            icon={{ name: 'arrow-back-outline' }}
-            label="Back to app"
-            variant="ghost"
-            color="neutral"
-            onPress={goBackToApp}
-          />
-        }
-        actions={
-          compact ? (
+    <AuthAdminSessionProvider key={studio.projectId} projectId={studio.projectId}>
+      <SafeAreaView style={[styles.shell, { backgroundColor: theme.colors.background }]}>
+        <AppBar
+          title={activeDefinition.label}
+          subtitle={activeDefinition.description}
+          leading={
             <IconButton
-              icon={{ name: 'menu-outline' }}
-              label="Open administration navigation"
+              icon={{ name: 'arrow-back-outline' }}
+              label="Back to app"
               variant="ghost"
               color="neutral"
-              onPress={() => setDrawerOpen(true)}
+              onPress={goBackToApp}
             />
-          ) : null
-        }
-      />
-      {compact ? (
-        <Drawer
-          visible={drawerOpen}
-          position="left"
-          title="Administration"
-          closeOnBackdrop
-          onDismiss={() => setDrawerOpen(false)}
-        >
-          {nav}
-        </Drawer>
-      ) : null}
-      <View style={styles.body}>
+          }
+          actions={
+            compact ? (
+              <IconButton
+                icon={{ name: 'menu-outline' }}
+                label="Open administration navigation"
+                variant="ghost"
+                color="neutral"
+                onPress={() => setDrawerOpen(true)}
+              />
+            ) : null
+          }
+        />
         {compact ? (
-          <View style={styles.contentOnly}>{children ?? <Slot />}</View>
-        ) : (
-          <SidebarLayout sidebar={nav} sidebarWidth={260}>
+          <Drawer
+            visible={drawerOpen}
+            position="left"
+            title="Administration"
+            closeOnBackdrop
+            onDismiss={() => setDrawerOpen(false)}
+          >
+            {nav}
+          </Drawer>
+        ) : null}
+        <View style={styles.body}>
+          {compact ? (
             <View style={styles.contentOnly}>{children ?? <Slot />}</View>
-          </SidebarLayout>
-        )}
-      </View>
-    </SafeAreaView>
+          ) : (
+            <SidebarLayout sidebar={nav} sidebarWidth={260}>
+              <View style={styles.contentOnly}>{children ?? <Slot />}</View>
+            </SidebarLayout>
+          )}
+        </View>
+      </SafeAreaView>
+    </AuthAdminSessionProvider>
   );
 }
 

@@ -1233,6 +1233,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/ui/admin/AuthAdminSession.tsx"
+              >
+                src/ui/admin/AuthAdminSession.tsx
+                <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
               >
                 src/ui/admin/pages/adminAuthCredentialFlow.test.ts
@@ -1253,20 +1263,30 @@
               <button
                 class="nav-button"
                 type="button"
-                data-target="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+                data-target="src/ui/admin/pages/adminAuthHealthFlow.test.ts"
               >
-                src/ui/admin/pages/adminAuthCredentialTransaction.test.ts
-                <small>1 function</small>
+                src/ui/admin/pages/adminAuthHealthFlow.test.ts
+                <small>2 functions</small>
               </button>
             </li>
             <li>
               <button
                 class="nav-button"
                 type="button"
-                data-target="src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+                data-target="src/ui/admin/pages/adminAuthSessionModel.test.ts"
               >
-                src/ui/admin/pages/adminAuthHealthFlow.test.ts
-                <small>2 functions</small>
+                src/ui/admin/pages/adminAuthSessionModel.test.ts
+                <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/ui/admin/pages/adminAuthSessionModel.ts"
+              >
+                src/ui/admin/pages/adminAuthSessionModel.ts
+                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -1316,7 +1336,7 @@
                 data-target="src/ui/admin/pages/AuthAdminPage.tsx"
               >
                 src/ui/admin/pages/AuthAdminPage.tsx
-                <small>29 functions</small>
+                <small>30 functions</small>
               </button>
             </li>
             <li>
@@ -1385,7 +1405,7 @@
             <div class="summary">
               <div><strong>84</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>196</strong><span class="muted">modules</span></div>
+              <div><strong>197</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -3640,17 +3660,34 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/AnkhAdminShell.tsx src/core/StudioContext.ts src/index.ts src/studioAdminRouteModel.ts AnkhAdminShell AnkhAdminShellProps"
+              data-search="src/ui/admin/AnkhAdminShell.tsx src/core/StudioContext.ts src/index.ts src/studioAdminRouteModel.ts src/ui/admin/AuthAdminSession.tsx AnkhAdminShell AnkhAdminShellProps"
             >
               <h3>src/ui/admin/AnkhAdminShell.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
-                <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>
+                <code>src/index.ts</code>, <code>src/studioAdminRouteModel.ts</code>,
+                <code>src/ui/admin/AuthAdminSession.tsx</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>AnkhAdminShell</code>,
                 <code>AnkhAdminShellProps</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/AuthAdminSession.tsx src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthSessionModel.ts AuthAdminSessionProvider AuthAdminSessionValue useAuthAdminSession"
+            >
+              <h3>src/ui/admin/AuthAdminSession.tsx</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.ts</code>,
+                <code>src/ui/admin/pages/adminAuthSessionModel.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AuthAdminSessionProvider</code>,
+                <code>AuthAdminSessionValue</code>, <code>useAuthAdminSession</code>
               </p>
             </article>
             <article
@@ -3682,30 +3719,6 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts src/ui/admin/pages/adminAuthCredentialTransaction.ts"
-            >
-              <h3>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p>
-                <strong>Dependencies:</strong>
-                <code>src/ui/admin/pages/adminAuthCredentialTransaction.ts</code>
-              </p>
-              <p><strong>Exports:</strong> <span class="empty">None</span></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/ui/admin/pages/adminAuthCredentialTransaction.ts OAuthCredentialTransactionCoordinator OAuthCredentialTransactionResult"
-            >
-              <h3>src/ui/admin/pages/adminAuthCredentialTransaction.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-              <p>
-                <strong>Exports:</strong> <code>OAuthCredentialTransactionCoordinator</code>,
-                <code>OAuthCredentialTransactionResult</code>
-              </p>
-            </article>
-            <article
-              class="item"
               data-search="src/ui/admin/pages/adminAuthHealthFlow.test.ts src/projectAuthHealth.ts src/ui/admin/pages/adminAuthHealthFlow.ts"
             >
               <h3>src/ui/admin/pages/adminAuthHealthFlow.test.ts</h3>
@@ -3726,6 +3739,35 @@
               <p>
                 <strong>Exports:</strong> <code>AuthHealthRefreshCoordinator</code>,
                 <code>AuthHealthRefreshResult</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/pages/adminAuthSessionModel.test.ts src/authSettings.ts src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthSessionModel.ts"
+            >
+              <h3>src/ui/admin/pages/adminAuthSessionModel.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/authSettings.ts</code>,
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.ts</code>,
+                <code>src/ui/admin/pages/adminAuthSessionModel.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/pages/adminAuthSessionModel.ts src/authSettings.ts src/ui/admin/pages/adminAuthCredentialFlow.ts AuthAdminPendingCredentialRecoveryStore AuthAdminWriteCoordinator AuthAdminWriteResult rebaseAuthDraftOntoCanonicalCredentialRefs"
+            >
+              <h3>src/ui/admin/pages/adminAuthSessionModel.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/authSettings.ts</code>,
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>AuthAdminPendingCredentialRecoveryStore</code>,
+                <code>AuthAdminWriteCoordinator</code>, <code>AuthAdminWriteResult</code>,
+                <code>rebaseAuthDraftOntoCanonicalCredentialRefs</code>
               </p>
             </article>
             <article
@@ -3813,7 +3855,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/AuthAdminPage.tsx src/authSettings.ts src/core/StudioContext.ts src/index.ts src/projectAuthApi.ts src/projectAuthHealth.ts src/projectSecretApi.ts src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthCredentialTransaction.ts src/ui/admin/pages/adminAuthHealthFlow.ts AuthAdminPage AuthAdminPageProps"
+              data-search="src/ui/admin/pages/AuthAdminPage.tsx src/authSettings.ts src/core/StudioContext.ts src/index.ts src/projectAuthApi.ts src/projectAuthHealth.ts src/projectSecretApi.ts src/ui/admin/AuthAdminSession.tsx src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthHealthFlow.ts src/ui/admin/pages/adminAuthSessionModel.ts AuthAdminPage AuthAdminPageProps"
             >
               <h3>src/ui/admin/pages/AuthAdminPage.tsx</h3>
               <p class="muted">Referenced module</p>
@@ -3822,9 +3864,10 @@
                 <code>src/core/StudioContext.ts</code>, <code>src/index.ts</code>,
                 <code>src/projectAuthApi.ts</code>, <code>src/projectAuthHealth.ts</code>,
                 <code>src/projectSecretApi.ts</code>,
+                <code>src/ui/admin/AuthAdminSession.tsx</code>,
                 <code>src/ui/admin/pages/adminAuthCredentialFlow.ts</code>,
-                <code>src/ui/admin/pages/adminAuthCredentialTransaction.ts</code>,
-                <code>src/ui/admin/pages/adminAuthHealthFlow.ts</code>
+                <code>src/ui/admin/pages/adminAuthHealthFlow.ts</code>,
+                <code>src/ui/admin/pages/adminAuthSessionModel.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>AuthAdminPage</code>,
@@ -7963,6 +8006,14 @@
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
+                module_src_ui_admin_AnkhAdminShell_tsx --&gt;
+                module_src_ui_admin_AuthAdminSession_tsx
+                module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_admin_AuthAdminSession_tsx
+                module_src_ui_admin_AuthAdminSession_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_AuthAdminSession_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
@@ -7974,14 +8025,6 @@
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt;
                 module_src_authSettings_ts
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-                package__ankhorage_studio -.-&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
-                package__ankhorage_studio -.-&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
@@ -7993,6 +8036,19 @@
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt;
                 module_src_projectAuthHealth_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt;
+                module_src_authSettings_ts module_src_ui_admin_pages_adminAuthSessionModel_test_ts
+                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_authSettings_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_adminDataSourceOperations_ts
@@ -8031,11 +8087,12 @@
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
-                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+                module_src_ui_admin_AuthAdminSession_tsx module_src_ui_admin_pages_AuthAdminPage_tsx
+                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
+                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_OverviewAdminPage_tsx[&quot;src/ui/admin/pages/OverviewAdminPage.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_OverviewAdminPage_tsx
                 module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt;
@@ -8672,6 +8729,11 @@ graph TD
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
@@ -8679,11 +8741,6 @@ graph TD
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt; module_src_authSettings_ts
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_projectAuthHealth_ts
@@ -8691,6 +8748,15 @@ graph TD
   module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt; module_src_projectAuthHealth_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthSessionModel_test_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminDataSourceOperations_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts --&gt; module_src_ui_admin_adminPageUtils_ts
@@ -8722,9 +8788,10 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
-  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx[&quot;src/ui/admin/pages/OverviewAdminPage.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt; module_src_core_StudioContext_ts
@@ -8946,12 +9013,13 @@ graph TD
                 module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
                 module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
+                module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+                module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
                 module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
                 module_src_ui_admin_pages_adminThemeHarmony_ts[&quot;src/ui/admin/pages/adminThemeHarmony.ts&quot;]
                 module_src_ui_admin_pages_adminThemeModel_test_ts[&quot;src/ui/admin/pages/adminThemeModel.test.ts&quot;]
@@ -9314,19 +9382,29 @@ graph TD
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
                 module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
+                module_src_ui_admin_AnkhAdminShell_tsx --&gt;
+                module_src_ui_admin_AuthAdminSession_tsx module_src_ui_admin_AuthAdminSession_tsx
+                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_AuthAdminSession_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt;
                 module_src_authSettings_ts module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
                 --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt;
-                module_src_authSettings_ts
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
-                module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt;
-                module_src_projectAuthHealth_ts
+                module_src_authSettings_ts module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
+                --&gt; module_src_projectAuthHealth_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt;
                 module_src_projectAuthHealth_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt;
+                module_src_authSettings_ts module_src_ui_admin_pages_adminAuthSessionModel_test_ts
+                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_authSettings_ts
+                module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminDataSourceOperations_ts --&gt;
                 module_src_ui_admin_adminPageUtils_ts
                 module_src_ui_admin_pages_adminThemeModel_test_ts --&gt;
@@ -9348,11 +9426,12 @@ graph TD
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialFlow_ts
-                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+                module_src_ui_admin_AuthAdminSession_tsx module_src_ui_admin_pages_AuthAdminPage_tsx
+                --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
+                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthSessionModel_ts
                 module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt;
                 module_src_core_StudioContext_ts module_src_ui_admin_pages_OverviewAdminPage_tsx
                 --&gt; module_src_ui_admin_adminPagePrimitives_tsx
@@ -9554,12 +9633,13 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
   module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
+  module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+  module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
   module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
   module_src_ui_admin_pages_adminThemeHarmony_ts[&quot;src/ui/admin/pages/adminThemeHarmony.ts&quot;]
   module_src_ui_admin_pages_adminThemeModel_test_ts[&quot;src/ui/admin/pages/adminThemeModel.test.ts&quot;]
@@ -9816,13 +9896,20 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
+  module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt; module_src_authSettings_ts
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt; module_src_projectAuthHealth_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthSessionModel_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts --&gt; module_src_ui_admin_adminPageUtils_ts
   module_src_ui_admin_pages_adminThemeModel_test_ts --&gt; module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_admin_pages_adminThemeModel_ts --&gt; module_src_index_ts
@@ -9838,9 +9925,10 @@ graph LR
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
-  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --&gt; module_src_core_StudioContext_ts
@@ -10037,12 +10125,13 @@ graph LR
                 module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
                 module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
+                module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
+                module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+                module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
                 module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
                 module_src_ui_admin_pages_adminThemeHarmony_ts[&quot;src/ui/admin/pages/adminThemeHarmony.ts&quot;]
                 module_src_ui_admin_pages_adminThemeModel_test_ts[&quot;src/ui/admin/pages/adminThemeModel.test.ts&quot;]
@@ -10455,12 +10544,13 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx[&quot;src/ui/admin/AnkhAdminPage.tsx&quot;]
   module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
+  module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
-  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
+  module_src_ui_admin_pages_adminAuthSessionModel_test_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.test.ts&quot;]
+  module_src_ui_admin_pages_adminAuthSessionModel_ts[&quot;src/ui/admin/pages/adminAuthSessionModel.ts&quot;]
   module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
   module_src_ui_admin_pages_adminThemeHarmony_ts[&quot;src/ui/admin/pages/adminThemeHarmony.ts&quot;]
   module_src_ui_admin_pages_adminThemeModel_test_ts[&quot;src/ui/admin/pages/adminThemeModel.test.ts&quot;]
@@ -16682,22 +16772,53 @@ sequenceDiagram
             <h2>src/ui/admin/AnkhAdminShell.tsx</h2>
             <article class="item" data-search="AnkhAdminShell src/ui/admin/AnkhAdminShell.tsx ">
               <h3>AnkhAdminShell</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:22:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:23:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="openRoute src/ui/admin/AnkhAdminShell.tsx ">
               <h3>openRoute</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:33:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:34:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="goBackToApp src/ui/admin/AnkhAdminShell.tsx ">
               <h3>goBackToApp</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:45:9</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:46:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AdminNavigation src/ui/admin/AnkhAdminShell.tsx ">
               <h3>AdminNavigation</h3>
-              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:107:1</code></p>
+              <p class="muted"><code>src/ui/admin/AnkhAdminShell.tsx:110:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-admin-authadminsession-tsx"
+          class="view"
+          data-view="src/ui/admin/AuthAdminSession.tsx"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/AuthAdminSession.tsx</h2>
+            <article
+              class="item"
+              data-search="AuthAdminSessionProvider src/ui/admin/AuthAdminSession.tsx "
+            >
+              <h3>AuthAdminSessionProvider</h3>
+              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:34:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="useAuthAdminSession src/ui/admin/AuthAdminSession.tsx "
+            >
+              <h3>useAuthAdminSession</h3>
+              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:134:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="createSnapshot src/ui/admin/AuthAdminSession.tsx ">
+              <h3>createSnapshot</h3>
+              <p class="muted"><code>src/ui/admin/AuthAdminSession.tsx:142:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16891,26 +17012,6 @@ sequenceDiagram
           </section>
         </section>
         <section
-          id="view-src-ui-admin-pages-adminauthcredentialtransaction-test-ts"
-          class="view"
-          data-view="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts</h2>
-            <article
-              class="item"
-              data-search="createDeferred src/ui/admin/pages/adminAuthCredentialTransaction.test.ts "
-            >
-              <h3>createDeferred</h3>
-              <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts:5:1</code>
-              </p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
           id="view-src-ui-admin-pages-adminauthhealthflow-test-ts"
           class="view"
           data-view="src/ui/admin/pages/adminAuthHealthFlow.test.ts"
@@ -16932,6 +17033,64 @@ sequenceDiagram
             >
               <h3>createDeferred</h3>
               <p class="muted"><code>src/ui/admin/pages/adminAuthHealthFlow.test.ts:15:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-admin-pages-adminauthsessionmodel-test-ts"
+          class="view"
+          data-view="src/ui/admin/pages/adminAuthSessionModel.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/pages/adminAuthSessionModel.test.ts</h2>
+            <article
+              class="item"
+              data-search="createDeferred src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>createDeferred</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:12:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createAuthSettings src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>createAuthSettings</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:29:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createLink src/ui/admin/pages/adminAuthSessionModel.test.ts "
+            >
+              <h3>createLink</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthSessionModel.test.ts:66:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-admin-pages-adminauthsessionmodel-ts"
+          class="view"
+          data-view="src/ui/admin/pages/adminAuthSessionModel.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/pages/adminAuthSessionModel.ts</h2>
+            <article
+              class="item"
+              data-search="rebaseAuthDraftOntoCanonicalCredentialRefs src/ui/admin/pages/adminAuthSessionModel.ts "
+            >
+              <h3>rebaseAuthDraftOntoCanonicalCredentialRefs</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthSessionModel.ts:86:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -17039,7 +17198,7 @@ sequenceDiagram
             <h2>src/ui/admin/pages/AuthAdminPage.tsx</h2>
             <article class="item" data-search="AuthAdminPage src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>AuthAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:63:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:64:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17047,7 +17206,7 @@ sequenceDiagram
               data-search="PendingCredentialLinkCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>PendingCredentialLinkCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:586:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:581:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17055,12 +17214,12 @@ sequenceDiagram
               data-search="OAuthProviderSetting src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>OAuthProviderSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:611:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:606:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="setEnabled src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>setEnabled</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:644:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:639:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17068,7 +17227,7 @@ sequenceDiagram
               data-search="saveCredentials src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>saveCredentials</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:670:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:665:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17076,22 +17235,22 @@ sequenceDiagram
               data-search="upsertProvider src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>upsertProvider</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:786:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:781:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateFlow src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>updateFlow</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:797:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:792:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitSignUp src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitSignUp</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:804:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:799:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitProfile src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitProfile</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:809:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:804:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17099,7 +17258,7 @@ sequenceDiagram
               data-search="createDefaultSettings src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultSettings</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:814:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:809:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17107,7 +17266,7 @@ sequenceDiagram
               data-search="createDefaultOAuth src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultOAuth</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:824:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:819:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17115,16 +17274,24 @@ sequenceDiagram
               data-search="createFallbackManifest src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createFallbackManifest</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:832:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:827:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="splitList src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>splitList</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:844:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:839:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>toMessage</h3>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:850:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="formatAuthAdminWriteBusyReason src/ui/admin/pages/AuthAdminPage.tsx "
+            >
+              <h3>formatAuthAdminWriteBusyReason</h3>
               <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:855:1</code></p>
               <p class="empty">No description available.</p>
             </article>
@@ -17133,7 +17300,7 @@ sequenceDiagram
               data-search="AuthHealthCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>AuthHealthCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:860:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:867:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17141,7 +17308,7 @@ sequenceDiagram
               data-search="formatHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:920:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:927:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17149,7 +17316,7 @@ sequenceDiagram
               data-search="formatProviderHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatProviderHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:927:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:934:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17157,7 +17324,7 @@ sequenceDiagram
               data-search="healthStatusColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>healthStatusColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:935:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:942:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17165,47 +17332,47 @@ sequenceDiagram
               data-search="diagnosticSeverityColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>diagnosticSeverityColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:942:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:949:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:948:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:955:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:963:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:970:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="RouteField src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>RouteField</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:974:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:981:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:986:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:993:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SwitchSetting src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>SwitchSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1005:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1012:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Choice src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Choice</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1024:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1031:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1048:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1055:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1059:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1066:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17213,12 +17380,12 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1082:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1089:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1094:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1101:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
