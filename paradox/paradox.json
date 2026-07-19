@@ -453,6 +453,16 @@
       "exports": ["createStudioHost", "CreateStudioHostOptions", "StudioHost"]
     },
     {
+      "path": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1713,12 +1723,6 @@
       ]
     },
     {
-      "path": "src/runtime/overlay.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": []
-    },
-    {
       "path": "src/runtime/previewRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -1752,6 +1756,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["executeRuntimeAction"]
+    },
+    {
+      "path": "src/runtime/runtimeSurface.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
     },
     {
       "path": "src/runtime/useRuntimeAction.ts",
@@ -1942,10 +1952,23 @@
       "dependencies": ["src/authSettings.ts"],
       "exports": [
         "applyStoredOAuthCredentialLink",
+        "patchLocalAuthDraftWithStoredOAuthCredentialLink",
         "persistStoredOAuthCredentialLink",
         "StoredOAuthCredentialLink",
         "StoredOAuthCredentialLinkResult"
       ]
+    },
+    {
+      "path": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectAuthHealth.ts", "src/ui/admin/pages/adminAuthHealthFlow.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/adminAuthHealthFlow.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectAuthHealth.ts"],
+      "exports": ["AuthHealthRefreshCoordinator", "AuthHealthRefreshResult"]
     },
     {
       "path": "src/ui/admin/pages/adminDataSourceOperations.ts",
@@ -2011,7 +2034,8 @@
         "src/projectAuthApi.ts",
         "src/projectAuthHealth.ts",
         "src/projectSecretApi.ts",
-        "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+        "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "src/ui/admin/pages/adminAuthHealthFlow.ts"
       ],
       "exports": ["AuthAdminPage", "AuthAdminPageProps"]
     },
@@ -6170,6 +6194,240 @@
       "sourceLocation": {
         "filePath": "src/host/createStudioHost.ts",
         "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAdminSmokeManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGeneratedAdminProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "copyGeneratedDirectDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeSmokeMetroConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 214,
+        "column": 1
+      }
+    },
+    {
+      "name": "reservePort",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 232,
+        "column": 1
+      }
+    },
+    {
+      "name": "spawnExpoWeb",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 248,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForExpoWebUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 264,
+        "column": 1
+      }
+    },
+    {
+      "name": "linkSmokeNodeModules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 277,
+        "column": 1
+      }
+    },
+    {
+      "name": "linkNodeModuleEntries",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 295,
+        "column": 1
+      }
+    },
+    {
+      "name": "linkScopedNodeModuleEntries",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 332,
+        "column": 1
+      }
+    },
+    {
+      "name": "symlinkIfMissing",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 347,
+        "column": 1
+      }
+    },
+    {
+      "name": "copyNodeModuleEntry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 356,
+        "column": 1
+      }
+    },
+    {
+      "name": "copyNodeModulePackage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 367,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSmokeNodeModuleSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 375,
+        "column": 1
+      }
+    },
+    {
+      "name": "getNodeModuleTargetPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 392,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeErrorWithCode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 404,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForHttp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 408,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChromePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 425,
+        "column": 1
+      }
+    },
+    {
+      "name": "readEnvString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 431,
+        "column": 1
+      }
+    },
+    {
+      "name": "spawnChrome",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 437,
+        "column": 1
+      }
+    },
+    {
+      "name": "openChromePage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 453,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseChromeProtocolMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 558,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 573,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 577,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 586,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 597,
         "column": 1
       }
     },
@@ -10957,7 +11215,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 10,
+        "line": 11,
         "column": 1
       }
     },
@@ -10966,7 +11224,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 45,
+        "line": 46,
         "column": 1
       }
     },
@@ -10975,7 +11233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 58,
+        "line": 59,
         "column": 1
       }
     },
@@ -10984,7 +11242,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 25,
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 60,
         "column": 1
       }
     },
@@ -10993,7 +11260,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 51,
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStoredOAuthCredentialRollback",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "rollbackStoredOAuthCredentialLink",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "restoreProviderCredentialsRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeInsertedOrFailedCredentialsRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 166,
+        "column": 1
+      }
+    },
+    {
+      "name": "areOAuthProvidersEqual",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 179,
         "column": 1
       }
     },
@@ -11002,7 +11314,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 78,
+        "line": 186,
         "column": 1
       }
     },
@@ -11011,7 +11323,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 88,
+        "line": 196,
         "column": 1
       }
     },
@@ -11020,7 +11332,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 96,
+        "line": 204,
+        "column": 1
+      }
+    },
+    {
+      "name": "createHealth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDeferred",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "line": 15,
         "column": 1
       }
     },
@@ -11092,7 +11422,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 56,
+        "line": 58,
         "column": 1
       }
     },
@@ -11101,7 +11431,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 519,
+        "line": 535,
         "column": 1
       }
     },
@@ -11110,7 +11440,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 539,
+        "line": 555,
         "column": 1
       }
     },
@@ -11119,7 +11449,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 570,
+        "line": 583,
         "column": 9
       }
     },
@@ -11128,17 +11458,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 596,
+        "line": 609,
         "column": 9
-      }
-    },
-    {
-      "name": "mergeOAuthProviderCredentialsRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 712,
-        "column": 1
       }
     },
     {
@@ -11146,7 +11467,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 726,
+        "line": 709,
         "column": 1
       }
     },
@@ -11155,7 +11476,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 737,
+        "line": 720,
         "column": 1
       }
     },
@@ -11164,7 +11485,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 744,
+        "line": 727,
         "column": 1
       }
     },
@@ -11173,7 +11494,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 749,
+        "line": 732,
         "column": 1
       }
     },
@@ -11182,7 +11503,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 754,
+        "line": 737,
         "column": 1
       }
     },
@@ -11191,7 +11512,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 764,
+        "line": 747,
         "column": 1
       }
     },
@@ -11200,7 +11521,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 772,
+        "line": 755,
         "column": 1
       }
     },
@@ -11209,7 +11530,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 784,
+        "line": 767,
         "column": 1
       }
     },
@@ -11218,7 +11539,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 795,
+        "line": 778,
         "column": 1
       }
     },
@@ -11227,7 +11548,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 800,
+        "line": 783,
         "column": 1
       }
     },
@@ -11236,7 +11557,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 860,
+        "line": 843,
         "column": 1
       }
     },
@@ -11245,7 +11566,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 867,
+        "line": 850,
         "column": 1
       }
     },
@@ -11254,7 +11575,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 875,
+        "line": 858,
         "column": 1
       }
     },
@@ -11263,7 +11584,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 882,
+        "line": 865,
         "column": 1
       }
     },
@@ -11272,7 +11593,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 888,
+        "line": 871,
         "column": 1
       }
     },
@@ -11281,7 +11602,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 903,
+        "line": 886,
         "column": 1
       }
     },
@@ -11290,7 +11611,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 914,
+        "line": 897,
         "column": 1
       }
     },
@@ -11299,7 +11620,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 926,
+        "line": 909,
         "column": 1
       }
     },
@@ -11308,7 +11629,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 945,
+        "line": 928,
         "column": 1
       }
     },
@@ -11317,7 +11638,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 964,
+        "line": 947,
         "column": 1
       }
     },
@@ -11326,7 +11647,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 988,
+        "line": 971,
         "column": 1
       }
     },
@@ -11335,7 +11656,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 999,
+        "line": 982,
         "column": 1
       }
     },
@@ -11344,7 +11665,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1022,
+        "line": 1005,
         "column": 1
       }
     },
@@ -11353,7 +11674,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1034,
+        "line": 1017,
         "column": 1
       }
     },
@@ -12259,6 +12580,21 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromPath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
@@ -13139,6 +13475,21 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromPath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toPath": "src/projectAuthHealth.ts",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toPath": "src/ui/admin/pages/adminAuthHealthFlow.ts",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/adminAuthHealthFlow.ts",
+        "toPath": "src/projectAuthHealth.ts",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.ts"
+      },
+      {
         "fromPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
         "toPath": "src/ui/admin/adminPageUtils.ts",
         "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.ts"
@@ -13211,6 +13562,11 @@
       {
         "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toPath": "src/projectSecretApi.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/adminAuthHealthFlow.ts",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -17979,6 +18335,468 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "adminWebSmokeTest",
+        "callExpression": "adminWebSmokeTest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "reservePort",
+        "callExpression": "reservePort",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "createGeneratedAdminProject",
+        "callExpression": "createGeneratedAdminProject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "spawnExpoWeb",
+        "callExpression": "spawnExpoWeb",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "collectProcessOutput",
+        "callExpression": "collectProcessOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForExpoWebUrl",
+        "callExpression": "waitForExpoWebUrl",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "resolveChromePath",
+        "callExpression": "resolveChromePath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "spawnChrome",
+        "callExpression": "spawnChrome",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "openChromePage",
+        "callExpression": "openChromePage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "navigate",
+        "callExpression": "page.navigate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "readBodyText",
+        "callExpression": "page.readBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "close",
+        "callExpression": "page.close",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "linkSmokeNodeModules",
+        "callExpression": "linkSmokeNodeModules",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "getTemplateSummaries",
+        "callExpression": "getTemplateSummaries",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "createProject",
+        "callExpression": "projectManager.createProject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "generateModuleRegistry",
+        "callExpression": "moduleManager.generateModuleRegistry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "projectManager.saveStudioManifest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "createAdminSmokeManifest",
+        "callExpression": "createAdminSmokeManifest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "syncProject",
+        "callExpression": "moduleManager.syncProject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "copyGeneratedDirectDependencies",
+        "callExpression": "copyGeneratedDirectDependencies",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "writeSmokeMetroConfig",
+        "callExpression": "writeSmokeMetroConfig",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyGeneratedDirectDependencies",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "copyNodeModulePackage",
+        "callExpression": "copyNodeModulePackage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeSmokeMetroConfig",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnExpoWeb",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForExpoWebUrl",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkSmokeNodeModules",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkSmokeNodeModules",
+        "toSymbol": "linkNodeModuleEntries",
+        "callExpression": "linkNodeModuleEntries",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkSmokeNodeModules",
+        "toSymbol": "copyNodeModuleEntry",
+        "callExpression": "copyNodeModuleEntry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkNodeModuleEntries",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkNodeModuleEntries",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkNodeModuleEntries",
+        "toSymbol": "symlinkIfMissing",
+        "callExpression": "symlinkIfMissing",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkNodeModuleEntries",
+        "toSymbol": "linkScopedNodeModuleEntries",
+        "callExpression": "linkScopedNodeModuleEntries",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkScopedNodeModuleEntries",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkScopedNodeModuleEntries",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkScopedNodeModuleEntries",
+        "toSymbol": "symlinkIfMissing",
+        "callExpression": "symlinkIfMissing",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "symlinkIfMissing",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "symlinkIfMissing",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "symlinkIfMissing",
+        "toSymbol": "isNodeErrorWithCode",
+        "callExpression": "isNodeErrorWithCode",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModuleEntry",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModuleEntry",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModuleEntry",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModulePackage",
+        "toSymbol": "resolveSmokeNodeModuleSource",
+        "callExpression": "resolveSmokeNodeModuleSource",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModulePackage",
+        "toSymbol": "getNodeModuleTargetPath",
+        "callExpression": "getNodeModuleTargetPath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModulePackage",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModulePackage",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "copyNodeModulePackage",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "resolveSmokeNodeModuleSource",
+        "toSymbol": "getNodeModuleTargetPath",
+        "callExpression": "getNodeModuleTargetPath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "resolveSmokeNodeModuleSource",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "isNodeErrorWithCode",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForHttp",
+        "toSymbol": "getDiagnostics",
+        "callExpression": "getDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "resolveChromePath",
+        "toSymbol": "readEnvString",
+        "callExpression": "readEnvString",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnChrome",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnChrome",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "openChromePage",
+        "toSymbol": "waitForHttp",
+        "callExpression": "waitForHttp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "openChromePage",
+        "toSymbol": "send",
+        "callExpression": "page.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "handleMessage",
+        "callExpression": "this.handleMessage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "navigate",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "navigate",
+        "toSymbol": "waitForLoad",
+        "callExpression": "this.waitForLoad",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyText",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyText",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "reject",
+        "callExpression": "pending.reject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "resolve",
+        "callExpression": "pending.resolve",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "parseChromeProtocolMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
         "toSymbol": "promisify",
         "callExpression": "promisify",
@@ -18861,36 +19679,6 @@
         "sourcePath": "src/runtime/actionSuppression.ts"
       },
       {
-        "fromSymbol": "src/runtime/overlay.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/runtime/overlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/overlay.test.ts",
-        "toSymbol": "join",
-        "callExpression": "join",
-        "sourcePath": "src/runtime/overlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/overlay.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/runtime/overlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/overlay.test.ts",
-        "toSymbol": "it",
-        "callExpression": "it",
-        "sourcePath": "src/runtime/overlay.test.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/overlay.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/runtime/overlay.test.ts"
-      },
-      {
         "fromSymbol": "createStudioPreviewComponentRegistry",
         "toSymbol": "createComponentRegistry",
         "callExpression": "createComponentRegistry",
@@ -18925,6 +19713,36 @@
         "toSymbol": "executeExpoRuntimeAction",
         "callExpression": "executeExpoRuntimeAction",
         "sourcePath": "src/runtime/runtimeActions.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeSurface.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeSurface.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeSurface.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeSurface.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeSurface.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/runtimeSurface.test.ts"
       },
       {
         "fromSymbol": "useRuntimeAction",
@@ -23781,15 +24599,27 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
       },
       {
-        "fromSymbol": "persistStoredOAuthCredentialLink",
-        "toSymbol": "readAuthSettings",
-        "callExpression": "args.readAuthSettings",
-        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+        "fromSymbol": "flushManifest",
+        "toSymbol": "mutateAuthSettings",
+        "callExpression": "store.mutateAuthSettings",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
+        "toSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "callExpression": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
       },
       {
         "fromSymbol": "persistStoredOAuthCredentialLink",
         "toSymbol": "mutateAuthSettings",
         "callExpression": "args.mutateAuthSettings",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "toSymbol": "createStoredOAuthCredentialRollback",
+        "callExpression": "createStoredOAuthCredentialRollback",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
@@ -23805,6 +24635,12 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "toSymbol": "rollbackStoredOAuthCredentialLink",
+        "callExpression": "rollbackStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
         "fromSymbol": "persistStoredOAuthCredentialLink",
         "toSymbol": "toMessage",
         "callExpression": "args.toMessage",
@@ -23814,6 +24650,12 @@
         "fromSymbol": "persistStoredOAuthCredentialLink",
         "toSymbol": "refreshHealth",
         "callExpression": "args.refreshHealth",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "toSymbol": "applyStoredOAuthCredentialLink",
+        "callExpression": "applyStoredOAuthCredentialLink",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
@@ -23835,10 +24677,124 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromSymbol": "createStoredOAuthCredentialRollback",
+        "toSymbol": "createDefaultOAuthSettings",
+        "callExpression": "createDefaultOAuthSettings",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "createStoredOAuthCredentialRollback",
+        "toSymbol": "applyStoredOAuthCredentialLink",
+        "callExpression": "applyStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "toSymbol": "restoreProviderCredentialsRef",
+        "callExpression": "restoreProviderCredentialsRef",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "rollbackStoredOAuthCredentialLink",
+        "toSymbol": "removeInsertedOrFailedCredentialsRef",
+        "callExpression": "removeInsertedOrFailedCredentialsRef",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "toSymbol": "areOAuthProvidersEqual",
+        "callExpression": "areOAuthProvidersEqual",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
         "fromSymbol": "createDefaultAuthSettings",
         "toSymbol": "createDefaultOAuthSettings",
         "callExpression": "createDefaultOAuthSettings",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "resolve",
+        "toSymbol": "resolvePromise",
+        "callExpression": "resolvePromise",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "refresh",
+        "callExpression": "coordinator.refresh",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "loadHealth",
+        "toSymbol": "createHealth",
+        "callExpression": "createHealth",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "createDeferred",
+        "callExpression": "createDeferred",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "newer.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "createHealth",
+        "callExpression": "createHealth",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "older.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
+      },
+      {
+        "fromSymbol": "refresh",
+        "toSymbol": "loadHealth",
+        "callExpression": "args.loadHealth",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.ts"
+      },
+      {
+        "fromSymbol": "refresh",
+        "toSymbol": "isLatest",
+        "callExpression": "this.isLatest",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.ts"
+      },
+      {
+        "fromSymbol": "refresh",
+        "toSymbol": "onHealth",
+        "callExpression": "args.onHealth",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.ts"
+      },
+      {
+        "fromSymbol": "refresh",
+        "toSymbol": "onError",
+        "callExpression": "args.onError",
+        "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.ts"
       },
       {
         "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.ts",
@@ -23998,6 +24954,12 @@
       },
       {
         "fromSymbol": "AuthAdminPage",
+        "toSymbol": "useRef",
+        "callExpression": "useRef",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "AuthAdminPage",
         "toSymbol": "useEffect",
         "callExpression": "useEffect",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
@@ -24016,50 +24978,92 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "setLoading",
-        "callExpression": "setLoading",
+        "toSymbol": "refresh",
+        "callExpression": "healthRefreshCoordinatorRef.current.refresh",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "fromSymbol": "loadHealth",
         "toSymbol": "getProjectAuthHealth",
         "callExpression": "getProjectAuthHealth",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "setHealth",
-        "callExpression": "setHealth",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "fromSymbol": "onError",
         "toSymbol": "setMessage",
         "callExpression": "setMessage",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "fromSymbol": "onError",
         "toSymbol": "toMessage",
         "callExpression": "toMessage",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "reload",
-        "callExpression": "reload",
+        "toSymbol": "setLoading",
+        "callExpression": "setLoading",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onHealth",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onHealth",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onHealth",
+        "toSymbol": "createDefaultSettings",
+        "callExpression": "createDefaultSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onHealth",
+        "toSymbol": "setHealth",
+        "callExpression": "setHealth",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onHealth",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onError",
+        "toSymbol": "readStudioAuthSettings",
+        "callExpression": "readStudioAuthSettings",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "onError",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "refreshHealth",
+        "callExpression": "refreshHealth",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "updateAuthSettings",
-        "callExpression": "studio.updateAuthSettings",
+        "callExpression": "updateAuthSettings",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "flushManifest",
-        "callExpression": "studio.flushManifest",
+        "callExpression": "flushManifest",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24070,8 +25074,8 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "refreshHealth",
-        "callExpression": "refreshHealth",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24090,6 +25094,12 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "persistAuthDraft",
         "callExpression": "persistAuthDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24130,8 +25140,20 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "callExpression": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "omitProfile",
         "callExpression": "omitProfile",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "reload",
+        "callExpression": "reload",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24172,12 +25194,6 @@
       },
       {
         "fromSymbol": "saveCredentials",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
         "toSymbol": "setSavingCredentials",
         "callExpression": "setSavingCredentials",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
@@ -24192,12 +25208,6 @@
         "fromSymbol": "saveCredentials",
         "toSymbol": "onSaved",
         "callExpression": "props.onSaved",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "mergeOAuthProviderCredentialsRef",
-        "callExpression": "mergeOAuthProviderCredentialsRef",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24228,12 +25238,6 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "saveCredentials",
         "callExpression": "saveCredentials",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "mergeOAuthProviderCredentialsRef",
-        "toSymbol": "upsertProvider",
-        "callExpression": "upsertProvider",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {

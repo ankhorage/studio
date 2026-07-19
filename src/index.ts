@@ -55,7 +55,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     'generic runtime renderer behavior',
     'generic runtime actions or bindings',
     'Expo runtime planning',
-    'generated-app overlay code',
+    'generated-app runtime composition code',
     'template catalog content',
     'root command bus behavior',
     'React Native UI components',

@@ -4,6 +4,7 @@ import type { StudioAuthSettings, StudioAuthSettingsMutation } from '../../../au
 import type { StoredOAuthCredentialLink } from './adminAuthCredentialFlow';
 import {
   applyStoredOAuthCredentialLink,
+  patchLocalAuthDraftWithStoredOAuthCredentialLink,
   persistStoredOAuthCredentialLink,
 } from './adminAuthCredentialFlow';
 
@@ -78,7 +79,6 @@ describe('admin auth credential flow', () => {
 
     const result = await persistStoredOAuthCredentialLink({
       link,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: (mutation) => {
         events.push('manifest-update');
         return store.mutateAuthSettings(mutation);
@@ -106,7 +106,6 @@ describe('admin auth credential flow', () => {
 
     const result = await persistStoredOAuthCredentialLink({
       link,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: store.mutateAuthSettings,
       flushManifest: () => Promise.reject(new Error('manifest unavailable')),
       refreshHealth: () => {
@@ -129,7 +128,6 @@ describe('admin auth credential flow', () => {
 
     await persistStoredOAuthCredentialLink({
       link,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: store.mutateAuthSettings,
       flushManifest: () => Promise.reject(new Error('manifest unavailable')),
       refreshHealth: () => Promise.resolve(),
@@ -147,7 +145,6 @@ describe('admin auth credential flow', () => {
 
     const failed = await persistStoredOAuthCredentialLink({
       link,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: store.mutateAuthSettings,
       flushManifest: () => Promise.reject(new Error('first failure')),
       refreshHealth: () => Promise.resolve(),
@@ -172,7 +169,6 @@ describe('admin auth credential flow', () => {
 
     const retried = await persistStoredOAuthCredentialLink({
       link: failed.pendingLink,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: store.mutateAuthSettings,
       flushManifest: () => Promise.resolve(),
       refreshHealth: () => Promise.resolve(),
@@ -197,7 +193,6 @@ describe('admin auth credential flow', () => {
 
     const failed = await persistStoredOAuthCredentialLink({
       link,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: store.mutateAuthSettings,
       flushManifest: () => Promise.reject(new Error('first failure')),
       refreshHealth: () => {
@@ -212,7 +207,6 @@ describe('admin auth credential flow', () => {
 
     const retried = await persistStoredOAuthCredentialLink({
       link: failed.pendingLink,
-      readAuthSettings: store.readAuthSettings,
       mutateAuthSettings: () => {
         events.push('manifest-update');
         return store.mutateAuthSettings((current) =>
@@ -242,5 +236,200 @@ describe('admin auth credential flow', () => {
     expect(localDraft.oauth?.enabled).toBe(true);
     expect(linked.oauth?.enabled).toBe(false);
     expect(linked.oauth?.providers[0]?.credentialsRef).toBe('auth/oauth/google');
+  });
+
+  test('rollback preserves concurrent unrelated auth changes made during a failed flush', async () => {
+    const store = createStore(createAuthSettings({ credentialsRef: 'auth/oauth/google-old' }));
+    const link = createLink('auth/oauth/google-new');
+
+    const result = await persistStoredOAuthCredentialLink({
+      link,
+      mutateAuthSettings: store.mutateAuthSettings,
+      flushManifest: () => {
+        store.mutateAuthSettings((current) => ({
+          ...(current ?? createAuthSettings()),
+          flow: {
+            ...(current ?? createAuthSettings()).flow,
+            postSignInRoute: 'dashboard',
+          },
+          signIn: { identifiers: ['email', 'phone'] },
+        }));
+        return Promise.reject(new Error('manifest unavailable'));
+      },
+      refreshHealth: () => Promise.resolve(),
+      toMessage: (error) => (error instanceof Error ? error.message : 'failed'),
+    });
+
+    expect(result.ok).toBe(false);
+    expect(store.readAuthSettings()?.flow.postSignInRoute).toBe('dashboard');
+    expect(store.readAuthSettings()?.signIn.identifiers).toEqual(['email', 'phone']);
+    expect(store.readAuthSettings()?.oauth?.providers[0]?.credentialsRef).toBe(
+      'auth/oauth/google-old',
+    );
+  });
+
+  test('rollback preserves same-provider edits while reversing only the failed credentials ref', async () => {
+    const store = createStore(createAuthSettings({ credentialsRef: 'auth/oauth/google-old' }));
+    const link = createLink('auth/oauth/google-new');
+
+    await persistStoredOAuthCredentialLink({
+      link,
+      mutateAuthSettings: store.mutateAuthSettings,
+      flushManifest: () => {
+        store.mutateAuthSettings((current) => {
+          const auth = current ?? createAuthSettings();
+          const oauth = auth.oauth ?? {
+            enabled: false,
+            callbackRoute: '/auth/callback',
+            providers: [],
+          };
+          return {
+            ...auth,
+            oauth: {
+              ...oauth,
+              providers: oauth.providers.map((provider) =>
+                provider.id === 'google'
+                  ? {
+                      ...provider,
+                      enabled: true,
+                      queryParams: { prompt: 'consent' },
+                    }
+                  : provider,
+              ),
+            },
+          };
+        });
+        return Promise.reject(new Error('manifest unavailable'));
+      },
+      refreshHealth: () => Promise.resolve(),
+      toMessage: (error) => (error instanceof Error ? error.message : 'failed'),
+    });
+
+    expect(store.readAuthSettings()?.oauth?.providers[0]).toMatchObject({
+      id: 'google',
+      enabled: true,
+      queryParams: { prompt: 'consent' },
+      credentialsRef: 'auth/oauth/google-old',
+    });
+  });
+
+  test('rollback does not overwrite a newer concurrent credentials ref for the same provider', async () => {
+    const store = createStore(createAuthSettings({ credentialsRef: 'auth/oauth/google-old' }));
+    const link = createLink('auth/oauth/google-failed');
+
+    await persistStoredOAuthCredentialLink({
+      link,
+      mutateAuthSettings: store.mutateAuthSettings,
+      flushManifest: () => {
+        store.mutateAuthSettings((current) => {
+          const auth = current ?? createAuthSettings();
+          const oauth = auth.oauth ?? {
+            enabled: false,
+            callbackRoute: '/auth/callback',
+            providers: [],
+          };
+          return {
+            ...auth,
+            oauth: {
+              ...oauth,
+              providers: oauth.providers.map((provider) =>
+                provider.id === 'google'
+                  ? {
+                      ...provider,
+                      credentialsRef: 'auth/oauth/google-concurrent',
+                    }
+                  : provider,
+              ),
+            },
+          };
+        });
+        return Promise.reject(new Error('manifest unavailable'));
+      },
+      refreshHealth: () => Promise.resolve(),
+      toMessage: (error) => (error instanceof Error ? error.message : 'failed'),
+    });
+
+    expect(store.readAuthSettings()?.oauth?.providers[0]?.credentialsRef).toBe(
+      'auth/oauth/google-concurrent',
+    );
+  });
+
+  test('rollback keeps a concurrently transformed inserted provider but removes the failed ref', async () => {
+    const store = createStore({
+      ...createAuthSettings(),
+      oauth: {
+        enabled: false,
+        callbackRoute: '/auth/callback',
+        providers: [],
+      },
+    });
+    const link = createLink('auth/oauth/google-new');
+
+    await persistStoredOAuthCredentialLink({
+      link,
+      mutateAuthSettings: store.mutateAuthSettings,
+      flushManifest: () => {
+        store.mutateAuthSettings((current) => {
+          const auth = current ?? createAuthSettings();
+          const oauth = auth.oauth ?? {
+            enabled: false,
+            callbackRoute: '/auth/callback',
+            providers: [],
+          };
+          return {
+            ...auth,
+            oauth: {
+              ...oauth,
+              providers: oauth.providers.map((provider) =>
+                provider.id === 'google'
+                  ? {
+                      ...provider,
+                      enabled: true,
+                      queryParams: { prompt: 'consent' },
+                    }
+                  : provider,
+              ),
+            },
+          };
+        });
+        return Promise.reject(new Error('manifest unavailable'));
+      },
+      refreshHealth: () => Promise.resolve(),
+      toMessage: (error) => (error instanceof Error ? error.message : 'failed'),
+    });
+
+    expect(store.readAuthSettings()?.oauth?.providers[0]).toEqual({
+      id: 'google',
+      label: 'Google',
+      scopes: ['openid', 'email', 'profile'],
+      enabled: true,
+      queryParams: { prompt: 'consent' },
+    });
+  });
+
+  test('local draft credential patch preserves unrelated unsaved auth fields', () => {
+    const draft = {
+      ...createAuthSettings({ oauthEnabled: true, callbackRoute: '/draft/callback' }),
+      flow: {
+        ...createAuthSettings().flow,
+        signInRoute: 'draft-sign-in',
+      },
+      signIn: { identifiers: ['email', 'phone'] as StudioAuthSettings['signIn']['identifiers'] },
+    };
+
+    const patched = patchLocalAuthDraftWithStoredOAuthCredentialLink(
+      draft,
+      createLink('auth/oauth/google-local'),
+    );
+
+    expect(patched.flow.signInRoute).toBe('draft-sign-in');
+    expect(patched.signIn.identifiers).toEqual(['email', 'phone']);
+    expect(patched.oauth?.enabled).toBe(true);
+    expect(patched.oauth?.callbackRoute).toBe('/draft/callback');
+    expect(patched.oauth?.providers[0]).toMatchObject({
+      id: 'google',
+      credentialsRef: 'auth/oauth/google-local',
+      queryParams: { prompt: 'select_account' },
+    });
   });
 });

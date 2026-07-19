@@ -27,7 +27,7 @@ still does not own:
 - `StudioDashboard`
 - React Native components
 - Expo-specific code
-- generated-app runtime overlay code
+- generated-app runtime composition code
 - DnD implementation
 - Supabase or storage implementation
 - template catalog content
@@ -37,4 +37,4 @@ still does not own:
 
 The public contracts may depend on `@ankhorage/contracts` because those are shared
 manifest/runtime schema types. They must not import React, React Native, Expo, DnD, Supabase,
-generated-app runtime overlay code, or host-app implementation modules.
+generated-app runtime composition code, or host-app implementation modules.

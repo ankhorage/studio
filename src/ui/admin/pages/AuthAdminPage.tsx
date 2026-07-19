@@ -11,7 +11,7 @@ import {
 } from '@ankhorage/supabase-auth';
 import { Heading, Text, useZoraTheme } from '@ankhorage/zora';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -28,7 +28,9 @@ import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
+import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import {
+  patchLocalAuthDraftWithStoredOAuthCredentialLink,
   persistStoredOAuthCredentialLink,
   type StoredOAuthCredentialLink,
 } from './adminAuthCredentialFlow';
@@ -56,6 +58,12 @@ export interface AuthAdminPageProps {
 export function AuthAdminPage(props: AuthAdminPageProps) {
   const { projectId, manifest, routeId } = props;
   const studio = useStudio();
+  const {
+    flushManifest,
+    manifest: studioManifest,
+    mutateAuthSettings,
+    updateAuthSettings,
+  } = studio;
   const router = useRouter();
   const [draft, setDraft] = useState<StudioAuthSettings>(
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
@@ -66,66 +74,72 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [pendingCredentialLink, setPendingCredentialLink] =
     useState<StoredOAuthCredentialLink | null>(null);
+  const canonicalManifestRef = useRef<AppManifest | null>(manifest);
+  const initializedDraftFromManifestRef = useRef(manifest !== null);
+  const healthRefreshCoordinatorRef = useRef(new AuthHealthRefreshCoordinator());
+
+  canonicalManifestRef.current = studioManifest ?? manifest;
 
   useEffect(() => {
-    setDraft(
-      readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
-    );
+    if (initializedDraftFromManifestRef.current || !manifest) return;
+    initializedDraftFromManifestRef.current = true;
+    setDraft(readStudioAuthSettings(manifest) ?? createDefaultSettings());
   }, [manifest]);
+
+  const refreshHealth = useCallback(async () => {
+    await healthRefreshCoordinatorRef.current.refresh({
+      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      onHealth: setHealth,
+      onError: (error) => setMessage(toMessage(error)),
+    });
+  }, [projectId]);
 
   const reload = useCallback(async () => {
     setLoading(true);
-    try {
-      const loadedHealth = await getProjectAuthHealth({ projectId, environment: 'local' });
-      setDraft(
-        readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
-      );
-      setHealth(loadedHealth);
-      setMessage(null);
-    } catch (error) {
-      const local = manifest ? readStudioAuthSettings(manifest) : null;
-      if (local) setDraft(local);
-      setMessage(toMessage(error));
-    } finally {
-      setLoading(false);
-    }
-  }, [manifest, projectId]);
-
-  useEffect(() => {
-    void reload();
-  }, [reload]);
-
-  const refreshHealth = useCallback(async () => {
-    try {
-      setHealth(await getProjectAuthHealth({ projectId, environment: 'local' }));
-    } catch (error) {
-      setMessage(toMessage(error));
-    }
+    const result = await healthRefreshCoordinatorRef.current.refresh({
+      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      onHealth: (loadedHealth) => {
+        const canonicalAuthSettings = canonicalManifestRef.current
+          ? readStudioAuthSettings(canonicalManifestRef.current)
+          : null;
+        setDraft(canonicalAuthSettings ?? createDefaultSettings());
+        setHealth(loadedHealth);
+        setMessage(null);
+      },
+      onError: (error) => {
+        const canonicalAuthSettings = canonicalManifestRef.current
+          ? readStudioAuthSettings(canonicalManifestRef.current)
+          : null;
+        if (canonicalAuthSettings) setDraft(canonicalAuthSettings);
+        setMessage(toMessage(error));
+      },
+    });
+    if (result.applied || result.error) setLoading(false);
   }, [projectId]);
 
-  const readCanonicalAuthSettings = useCallback(
-    () => (studio.manifest ? readStudioAuthSettings(studio.manifest) : null),
-    [studio.manifest],
-  );
+  useEffect(() => {
+    void refreshHealth().finally(() => {
+      setLoading(false);
+    });
+  }, [refreshHealth]);
 
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
-      studio.updateAuthSettings(nextDraft);
-      await studio.flushManifest();
+      updateAuthSettings(nextDraft);
+      await flushManifest();
       setPendingCredentialLink(null);
       setMessage(nextMessage);
       await refreshHealth();
     },
-    [refreshHealth, studio],
+    [flushManifest, refreshHealth, updateAuthSettings],
   );
 
   const persistCredentialLink = useCallback(
     async (link: StoredOAuthCredentialLink) => {
       const result = await persistStoredOAuthCredentialLink({
         link,
-        readAuthSettings: readCanonicalAuthSettings,
-        mutateAuthSettings: studio.mutateAuthSettings,
-        flushManifest: studio.flushManifest,
+        mutateAuthSettings,
+        flushManifest,
         refreshHealth,
         toMessage,
       });
@@ -138,7 +152,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       setPendingCredentialLink(result.pendingLink);
       setMessage(result.message);
     },
-    [readCanonicalAuthSettings, refreshHealth, studio.flushManifest, studio.mutateAuthSettings],
+    [flushManifest, mutateAuthSettings, refreshHealth],
   );
 
   const save = useCallback(async () => {
@@ -377,8 +391,10 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(nextOAuth, link) => {
-                setDraft((current) => ({ ...current, oauth: nextOAuth }));
+              onSaved={(link) => {
+                setDraft((current) =>
+                  patchLocalAuthDraftWithStoredOAuthCredentialLink(current, link),
+                );
                 void persistCredentialLink(link);
               }}
             />
@@ -545,10 +561,7 @@ function OAuthProviderSetting(props: {
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
-  readonly onSaved: (
-    oauth: NonNullable<StudioAuthSettings['oauth']>,
-    link: StoredOAuthCredentialLink,
-  ) => void;
+  readonly onSaved: (link: StoredOAuthCredentialLink) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
@@ -610,19 +623,6 @@ function OAuthProviderSetting(props: {
     }
 
     const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
-    const intendedProvider = {
-      ...(current ?? {
-        id: props.providerId,
-        label: definition.label,
-        scopes: [...definition.defaultScopes],
-      }),
-      enabled,
-      credentialsRef,
-    };
-    const intendedOAuth = {
-      ...props.oauth,
-      providers: upsertProvider(props.oauth.providers, intendedProvider),
-    };
     setSavingCredentials(true);
     setCredentialMessage(null);
     try {
@@ -635,19 +635,16 @@ function OAuthProviderSetting(props: {
       });
 
       if (result.ok) {
-        props.onSaved(
-          mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
-          {
-            providerId: props.providerId,
-            providerLabel: definition.label,
-            credentialsRef: result.credentialsRef,
-            providerDefaults: {
-              label: definition.label,
-              scopes: [...definition.defaultScopes],
-            },
-            successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+        props.onSaved({
+          providerId: props.providerId,
+          providerLabel: definition.label,
+          credentialsRef: result.credentialsRef,
+          providerDefaults: {
+            label: definition.label,
+            scopes: [...definition.defaultScopes],
           },
-        );
+          successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+        });
         return;
       }
 
@@ -707,20 +704,6 @@ function OAuthProviderSetting(props: {
       {credentialMessage ? <Message text={credentialMessage} /> : null}
     </View>
   );
-}
-
-function mergeOAuthProviderCredentialsRef(
-  oauth: NonNullable<StudioAuthSettings['oauth']>,
-  provider: AuthOAuthProviderConfig,
-  credentialsRef: string,
-): NonNullable<StudioAuthSettings['oauth']> {
-  return {
-    ...oauth,
-    providers: upsertProvider(oauth.providers, {
-      ...provider,
-      credentialsRef,
-    }),
-  };
 }
 
 function upsertProvider(

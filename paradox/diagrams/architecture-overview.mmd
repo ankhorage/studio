@@ -116,6 +116,11 @@ graph TD
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_generatedAdminExpoWeb_smoke_test_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
@@ -503,8 +508,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_index_ts
   module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
   package__ankhorage_studio -.-> module_src_runtime_localizationPreview_ts
-  module_src_runtime_overlay_test_ts["src/runtime/overlay.test.ts"]
-  package__ankhorage_studio -.-> module_src_runtime_overlay_test_ts
   module_src_runtime_previewRegistry_ts["src/runtime/previewRegistry.ts"]
   package__ankhorage_studio -.-> module_src_runtime_previewRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
@@ -516,6 +519,8 @@ graph TD
   module_src_runtime_registry_tsx --> module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeActions_ts
+  module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_runtimeSurface_test_ts
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   package__ankhorage_studio -.-> module_src_runtime_useRuntimeAction_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
@@ -582,6 +587,13 @@ graph TD
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts["src/ui/admin/pages/adminAuthCredentialFlow.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --> module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthHealthFlow_test_ts["src/ui/admin/pages/adminAuthHealthFlow.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
+  module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --> module_src_projectAuthHealth_ts
+  module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
+  module_src_ui_admin_pages_adminAuthHealthFlow_ts["src/ui/admin/pages/adminAuthHealthFlow.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthHealthFlow_ts
+  module_src_ui_admin_pages_adminAuthHealthFlow_ts --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts["src/ui/admin/pages/adminDataSourceOperations.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminDataSourceOperations_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts --> module_src_ui_admin_adminPageUtils_ts
@@ -614,6 +626,7 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_core_StudioContext_ts

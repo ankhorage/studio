@@ -72,7 +72,6 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain('if (nextAppLocation) setLastNonAdminLocation(nextAppLocation)');
   expect(generated).toContain('const shouldMountAppHeader =');
   expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
-  expect(generated).not.toContain('studioAppBar.overlay');
   expect(generated).toContain(
     '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
   );
@@ -80,7 +79,14 @@ test('initializes the Studio provider with the runtime manifest', () => {
     '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
   );
   expect(generated).toContain('function GeneratedZoraThemeConfigSync');
-  expect(generated).toContain('setThemeConfig(themeConfig)');
+  expect(generated).toContain('const setThemeConfigRef = useRef(setThemeConfig);');
+  expect(generated).toContain(
+    'const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig)',
+  );
+  expect(generated).toContain('lastSyncedThemeConfigSignatureRef.current === themeConfigSignature');
+  expect(generated).toContain('setThemeConfigRef.current(themeConfig)');
+  expect(generated).toContain('}, [themeConfig, themeConfigSignature]);');
+  expect(generated).not.toContain('}, [setThemeConfig, themeConfig]);');
   expect(generated).toContain('<GeneratedStatusBar />');
 });
 

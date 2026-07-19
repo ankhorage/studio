@@ -22,21 +22,30 @@ export type StoredOAuthCredentialLinkResult =
       readonly message: string;
     };
 
+interface StoredOAuthCredentialRollback {
+  readonly providerId: AuthOAuthProviderId;
+  readonly credentialsRef: string;
+  readonly previousProvider: AuthOAuthProviderConfig | null;
+  readonly insertedProvider: AuthOAuthProviderConfig;
+}
+
 export async function persistStoredOAuthCredentialLink(args: {
   readonly link: StoredOAuthCredentialLink;
-  readonly readAuthSettings: () => StudioAuthSettings | null;
   readonly mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   readonly flushManifest: () => Promise<void>;
   readonly refreshHealth: () => Promise<void>;
   readonly toMessage: (error: unknown) => string;
 }): Promise<StoredOAuthCredentialLinkResult> {
-  const previousAuthSettings = args.readAuthSettings();
-  args.mutateAuthSettings((current) => applyStoredOAuthCredentialLink(current, args.link));
+  let rollback!: StoredOAuthCredentialRollback;
+  args.mutateAuthSettings((current) => {
+    rollback = createStoredOAuthCredentialRollback(current, args.link);
+    return applyStoredOAuthCredentialLink(current, args.link);
+  });
 
   try {
     await args.flushManifest();
   } catch (error) {
-    args.mutateAuthSettings(() => previousAuthSettings);
+    args.mutateAuthSettings((current) => rollbackStoredOAuthCredentialLink(current, rollback));
     return {
       ok: false,
       pendingLink: args.link,
@@ -46,6 +55,13 @@ export async function persistStoredOAuthCredentialLink(args: {
 
   await args.refreshHealth();
   return { ok: true, message: args.link.successMessage };
+}
+
+export function patchLocalAuthDraftWithStoredOAuthCredentialLink(
+  settings: StudioAuthSettings,
+  link: StoredOAuthCredentialLink,
+): StudioAuthSettings {
+  return applyStoredOAuthCredentialLink(settings, link);
 }
 
 export function applyStoredOAuthCredentialLink(
@@ -73,6 +89,98 @@ export function applyStoredOAuthCredentialLink(
       providers: upsertOAuthProvider(oauth.providers, nextProvider),
     },
   };
+}
+
+function createStoredOAuthCredentialRollback(
+  settings: StudioAuthSettings | null,
+  link: StoredOAuthCredentialLink,
+): StoredOAuthCredentialRollback {
+  const oauth = settings?.oauth ?? createDefaultOAuthSettings();
+  const previousProvider =
+    oauth.providers.find((provider) => provider.id === link.providerId) ?? null;
+  const nextSettings = applyStoredOAuthCredentialLink(settings, link);
+  const insertedProvider =
+    nextSettings.oauth?.providers.find((provider) => provider.id === link.providerId) ??
+    ({
+      id: link.providerId,
+      ...link.providerDefaults,
+      credentialsRef: link.credentialsRef,
+    } satisfies AuthOAuthProviderConfig);
+
+  return {
+    providerId: link.providerId,
+    credentialsRef: link.credentialsRef,
+    previousProvider,
+    insertedProvider,
+  };
+}
+
+function rollbackStoredOAuthCredentialLink(
+  settings: StudioAuthSettings | null,
+  rollback: StoredOAuthCredentialRollback,
+): StudioAuthSettings | null {
+  if (!settings?.oauth) return settings;
+
+  const currentProvider = settings.oauth.providers.find(
+    (provider) => provider.id === rollback.providerId,
+  );
+  if (currentProvider?.credentialsRef !== rollback.credentialsRef) {
+    return settings;
+  }
+
+  const { previousProvider } = rollback;
+  const providers =
+    previousProvider !== null
+      ? settings.oauth.providers.map((provider) =>
+          provider.id === rollback.providerId
+            ? restoreProviderCredentialsRef(provider, previousProvider)
+            : provider,
+        )
+      : removeInsertedOrFailedCredentialsRef(settings.oauth.providers, rollback);
+
+  return {
+    ...settings,
+    oauth: {
+      ...settings.oauth,
+      providers,
+    },
+  };
+}
+
+function restoreProviderCredentialsRef(
+  currentProvider: AuthOAuthProviderConfig,
+  previousProvider: AuthOAuthProviderConfig,
+): AuthOAuthProviderConfig {
+  const { credentialsRef: _currentCredentialsRef, ...currentWithoutCredentialsRef } =
+    currentProvider;
+  if (previousProvider.credentialsRef === undefined) {
+    return currentWithoutCredentialsRef;
+  }
+
+  return {
+    ...currentProvider,
+    credentialsRef: previousProvider.credentialsRef,
+  };
+}
+
+function removeInsertedOrFailedCredentialsRef(
+  providers: readonly AuthOAuthProviderConfig[],
+  rollback: StoredOAuthCredentialRollback,
+): AuthOAuthProviderConfig[] {
+  return providers.flatMap((provider) => {
+    if (provider.id !== rollback.providerId) return [provider];
+    if (areOAuthProvidersEqual(provider, rollback.insertedProvider)) return [];
+
+    const { credentialsRef: _credentialsRef, ...providerWithoutCredentialsRef } = provider;
+    return [providerWithoutCredentialsRef];
+  });
+}
+
+function areOAuthProvidersEqual(
+  left: AuthOAuthProviderConfig,
+  right: AuthOAuthProviderConfig,
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function createDefaultAuthSettings(): StudioAuthSettings {

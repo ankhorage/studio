@@ -27,9 +27,11 @@ admin shell provides a desktop sidebar and a compact drawer. `Back to app` retur
 non-admin app location remembered by the current Studio session; navigation within `/ankh` does not
 overwrite that location.
 
-Auth and Secrets render as page content inside the admin shell. They keep the existing auth settings,
-provider health, trusted OAuth credential flow, project-secret inventory, rotation, usage detection,
-guarded removal, and browser-safe secret responses.
+Auth and Secrets render as page content inside the admin shell. Auth configuration writes flow
+through `StudioProvider` as the single canonical manifest writer, while OAuth credential payloads
+remain server-owned in the project secret store. The pages keep provider health, trusted OAuth
+credential linking, project-secret inventory, rotation, usage detection, guarded removal, and
+browser-safe secret responses.
 
 Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
 the existing manifest theme state for the currently active rendered theme mode. It does not

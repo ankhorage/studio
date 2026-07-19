@@ -11,7 +11,7 @@ const source = readFileSync(
 test('auth settings keeps provider-specific OAuth credential orchestration', () => {
   expect(source).toContain('configureProjectOAuthProvider');
   expect(source).toContain('definition.secretFields.map');
-  expect(source).toContain('intendedProvider');
+  expect(source).toContain('credentialsRef');
   expect(source).toContain('persistStoredOAuthCredentialLink');
   expect(source).toContain('setPendingCredentialLink(result.pendingLink)');
   expect(source).not.toContain("state: 'secret_saved_manifest_failed'");
@@ -26,17 +26,20 @@ test('credential writes do not submit unsaved global auth or OAuth state', () =>
 });
 
 test('auth saves go through StudioProvider manifest state', () => {
-  expect(source).toContain('studio.updateAuthSettings(nextDraft)');
-  expect(source).toContain('await studio.flushManifest()');
-  expect(source).toContain('readStudioAuthSettings(manifest');
-  expect(source).toContain('studio.mutateAuthSettings');
+  expect(source).toContain('updateAuthSettings(nextDraft)');
+  expect(source).toContain('await flushManifest()');
+  expect(source).toContain('readStudioAuthSettings(canonicalManifestRef.current)');
+  expect(source).toContain('mutateAuthSettings');
   expect(source).not.toContain('getProjectAuthSettings');
 });
 
 test('credential saves preserve unrelated draft edits instead of reloading settings', () => {
   expect(source).toContain('void persistCredentialLink');
-  expect(source).toContain('mergeOAuthProviderCredentialsRef');
-  expect(source).toContain('setDraft((current) => ({ ...current, oauth: nextOAuth }))');
+  expect(source).toContain('patchLocalAuthDraftWithStoredOAuthCredentialLink');
+  expect(source).toContain('initializedDraftFromManifestRef');
+  expect(source).toContain('canonicalManifestRef');
+  expect(source).not.toContain(`useEffect(() => {
+    setDraft`);
   expect(source).not.toContain('const nextDraft = { ...draft, oauth: nextOAuth };');
   expect(source).not.toContain('onSaved={(nextMessage)');
 });

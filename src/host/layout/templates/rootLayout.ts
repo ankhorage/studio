@@ -637,11 +637,18 @@ function GeneratedZoraThemeConfigSync({
   theme: AppManifest['themes'][number];
 }) {
   const { setThemeConfig } = useZoraTheme();
+  const setThemeConfigRef = useRef(setThemeConfig);
   const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
+  const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig), [themeConfig]);
+  const lastSyncedThemeConfigSignatureRef = useRef<string | null>(null);
+
+  setThemeConfigRef.current = setThemeConfig;
 
   useEffect(() => {
-    setThemeConfig(themeConfig);
-  }, [setThemeConfig, themeConfig]);
+    if (lastSyncedThemeConfigSignatureRef.current === themeConfigSignature) return;
+    setThemeConfigRef.current(themeConfig);
+    lastSyncedThemeConfigSignatureRef.current = themeConfigSignature;
+  }, [themeConfig, themeConfigSignature]);
 
   return null;
 }

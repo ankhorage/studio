@@ -17,4 +17,4 @@ import { resolveCanvasDropZones, getValidCanvasDropZones } from '@ankhorage/stud
 
 ## Host-owned concerns
 
-Hosts still own pointer handling, drag/drop gestures, visual overlays, dialogs, and React lifecycle wiring.
+Hosts still own pointer handling, drag/drop gestures, visual affordances, dialogs, and React lifecycle wiring.
