@@ -10,12 +10,19 @@ export type AuthAdminWriteResult<T> =
     }
   | {
       readonly ok: false;
-      readonly reason: 'full_auth_save_busy' | 'credential_transaction_busy' | 'provider_busy';
+      readonly reason:
+        | 'full_auth_save_busy'
+        | 'credential_transaction_busy'
+        | 'provider_busy'
+        | 'credential_ref_busy'
+        | 'credential_secret_cleanup_busy';
     };
 
 export class AuthAdminWriteCoordinator {
   private fullAuthSaveActive = false;
   private readonly activeProviderIds = new Set<AuthOAuthProviderId>();
+  private readonly activeCredentialRefs = new Set<string>();
+  private readonly activeCredentialSecretCleanupRefs = new Set<string>();
 
   isFullAuthSaveActive(): boolean {
     return this.fullAuthSaveActive;
@@ -29,8 +36,23 @@ export class AuthAdminWriteCoordinator {
     return this.activeProviderIds.has(providerId);
   }
 
+  isCredentialRefBusy(credentialsRef: string): boolean {
+    return (
+      this.activeCredentialRefs.has(credentialsRef) ||
+      this.activeCredentialSecretCleanupRefs.has(credentialsRef)
+    );
+  }
+
   getBusyProviderIds(): ReadonlySet<AuthOAuthProviderId> {
     return new Set(this.activeProviderIds);
+  }
+
+  getBusyCredentialRefs(): ReadonlySet<string> {
+    return new Set(this.activeCredentialRefs);
+  }
+
+  getBusyCredentialSecretCleanupRefs(): ReadonlySet<string> {
+    return new Set(this.activeCredentialSecretCleanupRefs);
   }
 
   async runFullAuthSave<T>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> {
@@ -49,16 +71,44 @@ export class AuthAdminWriteCoordinator {
 
   async runCredentialTransaction<T>(
     providerId: AuthOAuthProviderId,
+    credentialsRef: string,
     operation: () => Promise<T>,
   ): Promise<AuthAdminWriteResult<T>> {
     if (this.fullAuthSaveActive) return { ok: false, reason: 'full_auth_save_busy' };
     if (this.activeProviderIds.has(providerId)) return { ok: false, reason: 'provider_busy' };
+    if (this.activeCredentialRefs.has(credentialsRef)) {
+      return { ok: false, reason: 'credential_ref_busy' };
+    }
+    if (this.activeCredentialSecretCleanupRefs.has(credentialsRef)) {
+      return { ok: false, reason: 'credential_secret_cleanup_busy' };
+    }
 
     this.activeProviderIds.add(providerId);
+    this.activeCredentialRefs.add(credentialsRef);
     try {
       return { ok: true, value: await operation() };
     } finally {
+      this.activeCredentialRefs.delete(credentialsRef);
       this.activeProviderIds.delete(providerId);
+    }
+  }
+
+  async runCredentialSecretCleanup<T>(
+    credentialsRef: string,
+    operation: () => Promise<T>,
+  ): Promise<AuthAdminWriteResult<T>> {
+    if (this.activeCredentialRefs.has(credentialsRef)) {
+      return { ok: false, reason: 'credential_transaction_busy' };
+    }
+    if (this.activeCredentialSecretCleanupRefs.has(credentialsRef)) {
+      return { ok: false, reason: 'credential_secret_cleanup_busy' };
+    }
+
+    this.activeCredentialSecretCleanupRefs.add(credentialsRef);
+    try {
+      return { ok: true, value: await operation() };
+    } finally {
+      this.activeCredentialSecretCleanupRefs.delete(credentialsRef);
     }
   }
 }
@@ -99,6 +149,8 @@ export class AuthAdminPendingCredentialRecoveryStore {
 export interface AuthAdminProjectSessionSnapshot {
   readonly pendingCredentialLinks: readonly StoredOAuthCredentialLink[];
   readonly busyCredentialProviderIds: ReadonlySet<AuthOAuthProviderId>;
+  readonly busyCredentialRefs: ReadonlySet<string>;
+  readonly busyCredentialSecretCleanupRefs: ReadonlySet<string>;
   readonly fullAuthSaveBusy: boolean;
 }
 
@@ -112,6 +164,8 @@ export class AuthAdminProjectSession {
     return {
       pendingCredentialLinks: this.pendingRecovery.list(),
       busyCredentialProviderIds: this.writeCoordinator.getBusyProviderIds(),
+      busyCredentialRefs: this.writeCoordinator.getBusyCredentialRefs(),
+      busyCredentialSecretCleanupRefs: this.writeCoordinator.getBusyCredentialSecretCleanupRefs(),
       fullAuthSaveBusy: this.writeCoordinator.isFullAuthSaveActive(),
     };
   }
@@ -136,9 +190,21 @@ export class AuthAdminProjectSession {
 
   async runCredentialTransaction<T>(
     providerId: AuthOAuthProviderId,
+    credentialsRef: string,
     operation: () => Promise<T>,
   ): Promise<AuthAdminWriteResult<T>> {
-    return await this.writeCoordinator.runCredentialTransaction(providerId, operation);
+    return await this.writeCoordinator.runCredentialTransaction(
+      providerId,
+      credentialsRef,
+      operation,
+    );
+  }
+
+  async runCredentialSecretCleanup<T>(
+    credentialsRef: string,
+    operation: () => Promise<T>,
+  ): Promise<AuthAdminWriteResult<T>> {
+    return await this.writeCoordinator.runCredentialSecretCleanup(credentialsRef, operation);
   }
 }
 

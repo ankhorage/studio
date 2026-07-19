@@ -12,6 +12,8 @@ export interface AuthAdminSessionValue {
   readonly projectId: string;
   readonly pendingCredentialLinks: readonly StoredOAuthCredentialLink[];
   readonly busyCredentialProviderIds: ReadonlySet<AuthOAuthProviderId>;
+  readonly busyCredentialRefs: ReadonlySet<string>;
+  readonly busyCredentialSecretCleanupRefs: ReadonlySet<string>;
   readonly fullAuthSaveBusy: boolean;
   readonly authWriteBusy: boolean;
   readonly setPendingCredentialLink: (link: StoredOAuthCredentialLink) => void;
@@ -22,6 +24,11 @@ export interface AuthAdminSessionValue {
   readonly runFullAuthSave: <T>(operation: () => Promise<T>) => Promise<AuthAdminWriteResult<T>>;
   readonly runCredentialTransaction: <T>(
     providerId: AuthOAuthProviderId,
+    credentialsRef: string,
+    operation: () => Promise<T>,
+  ) => Promise<AuthAdminWriteResult<T>>;
+  readonly runCredentialSecretCleanup: <T>(
+    credentialsRef: string,
     operation: () => Promise<T>,
   ) => Promise<AuthAdminWriteResult<T>>;
 }
@@ -84,10 +91,29 @@ export function AuthAdminSessionProvider(props: {
   const runCredentialTransaction = useCallback(
     async <T,>(
       providerId: AuthOAuthProviderId,
+      credentialsRef: string,
       operation: () => Promise<T>,
     ): Promise<AuthAdminWriteResult<T>> => {
       try {
-        return await sessionRef.current.runCredentialTransaction(providerId, async () => {
+        return await sessionRef.current.runCredentialTransaction(
+          providerId,
+          credentialsRef,
+          async () => {
+            syncSnapshot();
+            return await operation();
+          },
+        );
+      } finally {
+        syncSnapshot();
+      }
+    },
+    [syncSnapshot],
+  );
+
+  const runCredentialSecretCleanup = useCallback(
+    async <T,>(credentialsRef: string, operation: () => Promise<T>) => {
+      try {
+        return await sessionRef.current.runCredentialSecretCleanup(credentialsRef, async () => {
           syncSnapshot();
           return await operation();
         });
@@ -103,22 +129,31 @@ export function AuthAdminSessionProvider(props: {
       projectId: props.projectId,
       pendingCredentialLinks: snapshot.pendingCredentialLinks,
       busyCredentialProviderIds: snapshot.busyCredentialProviderIds,
+      busyCredentialRefs: snapshot.busyCredentialRefs,
+      busyCredentialSecretCleanupRefs: snapshot.busyCredentialSecretCleanupRefs,
       fullAuthSaveBusy: snapshot.fullAuthSaveBusy,
-      authWriteBusy: snapshot.fullAuthSaveBusy || snapshot.busyCredentialProviderIds.size > 0,
+      authWriteBusy:
+        snapshot.fullAuthSaveBusy ||
+        snapshot.busyCredentialProviderIds.size > 0 ||
+        snapshot.busyCredentialSecretCleanupRefs.size > 0,
       setPendingCredentialLink,
       clearPendingCredentialLink,
       clearPendingCredentialLinksByCredentialsRef,
       runFullAuthSave,
       runCredentialTransaction,
+      runCredentialSecretCleanup,
     }),
     [
       clearPendingCredentialLink,
       clearPendingCredentialLinksByCredentialsRef,
       props.projectId,
+      runCredentialSecretCleanup,
       runCredentialTransaction,
       runFullAuthSave,
       setPendingCredentialLink,
+      snapshot.busyCredentialRefs,
       snapshot.busyCredentialProviderIds,
+      snapshot.busyCredentialSecretCleanupRefs,
       snapshot.fullAuthSaveBusy,
       snapshot.pendingCredentialLinks,
     ],

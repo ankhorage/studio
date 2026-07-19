@@ -11257,7 +11257,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AuthAdminSession.tsx",
-        "line": 31,
+        "line": 38,
         "column": 1
       }
     },
@@ -11266,7 +11266,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AuthAdminSession.tsx",
-        "line": 134,
+        "line": 169,
         "column": 1
       }
     },
@@ -11545,7 +11545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthSessionModel.ts",
-        "line": 145,
+        "line": 212,
         "column": 1
       }
     },
@@ -11554,7 +11554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthSessionModel.ts",
-        "line": 160,
+        "line": 227,
         "column": 1
       }
     },
@@ -11635,7 +11635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 581,
+        "line": 583,
         "column": 1
       }
     },
@@ -11644,7 +11644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 606,
+        "line": 608,
         "column": 1
       }
     },
@@ -11653,7 +11653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 639,
+        "line": 642,
         "column": 9
       }
     },
@@ -11662,7 +11662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 665,
+        "line": 668,
         "column": 9
       }
     },
@@ -11671,7 +11671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 781,
+        "line": 788,
         "column": 1
       }
     },
@@ -11680,7 +11680,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 792,
+        "line": 799,
         "column": 1
       }
     },
@@ -11689,7 +11689,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 799,
+        "line": 806,
         "column": 1
       }
     },
@@ -11698,7 +11698,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 804,
+        "line": 811,
         "column": 1
       }
     },
@@ -11707,7 +11707,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 809,
+        "line": 816,
         "column": 1
       }
     },
@@ -11716,7 +11716,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 819,
+        "line": 826,
         "column": 1
       }
     },
@@ -11725,7 +11725,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 827,
+        "line": 834,
         "column": 1
       }
     },
@@ -11734,7 +11734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 839,
+        "line": 846,
         "column": 1
       }
     },
@@ -11743,7 +11743,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 850,
+        "line": 857,
         "column": 1
       }
     },
@@ -11752,7 +11752,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 855,
+        "line": 862,
         "column": 1
       }
     },
@@ -11761,7 +11761,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 867,
+        "line": 880,
         "column": 1
       }
     },
@@ -11770,7 +11770,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 927,
+        "line": 940,
         "column": 1
       }
     },
@@ -11779,7 +11779,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 934,
+        "line": 947,
         "column": 1
       }
     },
@@ -11788,7 +11788,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 942,
+        "line": 955,
         "column": 1
       }
     },
@@ -11797,7 +11797,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 949,
+        "line": 962,
         "column": 1
       }
     },
@@ -11806,7 +11806,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 955,
+        "line": 968,
         "column": 1
       }
     },
@@ -11815,7 +11815,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 970,
+        "line": 983,
         "column": 1
       }
     },
@@ -11824,7 +11824,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 981,
+        "line": 994,
         "column": 1
       }
     },
@@ -11833,7 +11833,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 993,
+        "line": 1006,
         "column": 1
       }
     },
@@ -11842,7 +11842,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1012,
+        "line": 1025,
         "column": 1
       }
     },
@@ -11851,7 +11851,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1031,
+        "line": 1044,
         "column": 1
       }
     },
@@ -11860,7 +11860,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1055,
+        "line": 1068,
         "column": 1
       }
     },
@@ -11869,7 +11869,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1066,
+        "line": 1079,
         "column": 1
       }
     },
@@ -11878,7 +11878,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1089,
+        "line": 1102,
         "column": 1
       }
     },
@@ -11887,7 +11887,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1101,
+        "line": 1114,
         "column": 1
       }
     },
@@ -11923,7 +11923,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 39,
+        "line": 42,
         "column": 1
       }
     },
@@ -11932,8 +11932,17 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 43,
+        "line": 46,
         "column": 1
+      }
+    },
+    {
+      "name": "removeAndReconcile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 197,
+        "column": 13
       }
     },
     {
@@ -11941,7 +11950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 443,
+        "line": 461,
         "column": 1
       }
     },
@@ -11950,7 +11959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 477,
+        "line": 495,
         "column": 1
       }
     },
@@ -11959,7 +11968,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 492,
+        "line": 510,
         "column": 1
       }
     },
@@ -11968,7 +11977,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 503,
+        "line": 521,
         "column": 1
       }
     },
@@ -11977,7 +11986,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 522,
+        "line": 540,
         "column": 1
       }
     },
@@ -11986,7 +11995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 596,
+        "line": 614,
         "column": 1
       }
     },
@@ -11995,7 +12004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 624,
+        "line": 642,
         "column": 1
       }
     },
@@ -12004,7 +12013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 644,
+        "line": 662,
         "column": 1
       }
     },
@@ -12013,7 +12022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 671,
+        "line": 689,
         "column": 1
       }
     },
@@ -12022,7 +12031,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 680,
+        "line": 698,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatSecretCleanupBusyReason",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "line": 703,
         "column": 1
       }
     },
@@ -12031,7 +12049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 685,
+        "line": 718,
         "column": 1
       }
     },
@@ -12040,7 +12058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 689,
+        "line": 722,
         "column": 1
       }
     },
@@ -12049,7 +12067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "line": 693,
+        "line": 726,
         "column": 1
       }
     },
@@ -24302,6 +24320,12 @@
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
       },
       {
+        "fromSymbol": "src/ui/admin/AuthAdminSession.tsx",
+        "toSymbol": "runCredentialSecretCleanup",
+        "callExpression": "sessionRef.current.runCredentialSecretCleanup",
+        "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
+      },
+      {
         "fromSymbol": "AuthAdminSessionProvider",
         "toSymbol": "useMemo",
         "callExpression": "useMemo",
@@ -25520,6 +25544,12 @@
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
       },
       {
+        "fromSymbol": "runCredentialSecretCleanup",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
+      },
+      {
         "fromSymbol": "getSnapshot",
         "toSymbol": "list",
         "callExpression": "this.pendingRecovery.list",
@@ -25529,6 +25559,18 @@
         "fromSymbol": "getSnapshot",
         "toSymbol": "getBusyProviderIds",
         "callExpression": "this.writeCoordinator.getBusyProviderIds",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
+      },
+      {
+        "fromSymbol": "getSnapshot",
+        "toSymbol": "getBusyCredentialRefs",
+        "callExpression": "this.writeCoordinator.getBusyCredentialRefs",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
+      },
+      {
+        "fromSymbol": "getSnapshot",
+        "toSymbol": "getBusyCredentialSecretCleanupRefs",
+        "callExpression": "this.writeCoordinator.getBusyCredentialSecretCleanupRefs",
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
       },
       {
@@ -25565,6 +25607,12 @@
         "fromSymbol": "runCredentialTransaction",
         "toSymbol": "runCredentialTransaction",
         "callExpression": "this.writeCoordinator.runCredentialTransaction",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
+      },
+      {
+        "fromSymbol": "runCredentialSecretCleanup",
+        "toSymbol": "runCredentialSecretCleanup",
+        "callExpression": "this.writeCoordinator.runCredentialSecretCleanup",
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
       },
       {
@@ -25905,6 +25953,12 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "formatAuthAdminWriteBusyReason",
+        "callExpression": "formatAuthAdminWriteBusyReason",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "setSaving",
         "callExpression": "setSaving",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
@@ -25919,12 +25973,6 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "persistAuthDraft",
         "callExpression": "persistAuthDraft",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "formatAuthAdminWriteBusyReason",
-        "callExpression": "formatAuthAdminWriteBusyReason",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -26051,6 +26099,12 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "setCredentialValues",
         "callExpression": "setCredentialValues",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "saveCredentials",
+        "toSymbol": "formatAuthAdminWriteBusyReason",
+        "callExpression": "formatAuthAdminWriteBusyReason",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -26384,6 +26438,36 @@
         "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
       },
       {
+        "fromSymbol": "removeAndReconcile",
+        "toSymbol": "removeProjectSecret",
+        "callExpression": "removeProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "removeAndReconcile",
+        "toSymbol": "clearPendingCredentialLinksForRemovedProjectSecret",
+        "callExpression": "clearPendingCredentialLinksForRemovedProjectSecret",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "runCredentialSecretCleanup",
+        "callExpression": "authAdminSession.runCredentialSecretCleanup",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "formatSecretCleanupBusyReason",
+        "callExpression": "formatSecretCleanupBusyReason",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
+        "toSymbol": "removeAndReconcile",
+        "callExpression": "removeAndReconcile",
+        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
+      },
+      {
         "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
         "toSymbol": "setPendingDelete",
         "callExpression": "setPendingDelete",
@@ -26391,14 +26475,8 @@
       },
       {
         "fromSymbol": "onPress",
-        "toSymbol": "removeProjectSecret",
-        "callExpression": "removeProjectSecret",
-        "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "toSymbol": "clearPendingCredentialLinksForRemovedProjectSecret",
-        "callExpression": "clearPendingCredentialLinksForRemovedProjectSecret",
+        "toSymbol": "removeSecretAndReconcilePendingAuth",
+        "callExpression": "removeSecretAndReconcilePendingAuth",
         "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
       },
       {
@@ -26409,8 +26487,8 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "toSymbol": "removeProjectSecret",
-        "callExpression": "removeProjectSecret",
+        "toSymbol": "removeSecretAndReconcilePendingAuth",
+        "callExpression": "removeSecretAndReconcilePendingAuth",
         "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
       },
       {

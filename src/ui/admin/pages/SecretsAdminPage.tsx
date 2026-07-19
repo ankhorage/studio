@@ -21,7 +21,10 @@ import {
 } from '../../../projectSecretApi';
 import type { ProjectSecretUsageSummary } from '../../../projectSecretUsage';
 import { useAuthAdminSession } from '../AuthAdminSession';
-import { clearPendingCredentialLinksForRemovedProjectSecret } from './adminAuthSessionModel';
+import {
+  clearPendingCredentialLinksForRemovedProjectSecret,
+  type AuthAdminWriteResult,
+} from './adminAuthSessionModel';
 
 interface SecretFieldDraft {
   readonly id: number;
@@ -189,6 +192,42 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
     }
   }, [environment, fields, inventory, kind, projectId, provider, ref, replaceTarget, resetDraft]);
 
+  const removeSecretAndReconcilePendingAuth = useCallback(
+    async (metadata: SecretMetadata, confirmBrokenReferences = false) => {
+      const removeAndReconcile = async () => {
+        await removeProjectSecret({
+          projectId,
+          environment: metadata.scope.environment,
+          ref: metadata.ref,
+          ...(confirmBrokenReferences ? { confirmBrokenReferences: true } : {}),
+        });
+        clearPendingCredentialLinksForRemovedProjectSecret({
+          session: authAdminSession,
+          environment: metadata.scope.environment,
+          ref: metadata.ref,
+          removed: true,
+        });
+      };
+
+      if (metadata.scope.environment === 'local') {
+        const result = await authAdminSession.runCredentialSecretCleanup(
+          metadata.ref,
+          removeAndReconcile,
+        );
+        if (!result.ok) {
+          setMessage(formatSecretCleanupBusyReason(result.reason));
+          return false;
+        }
+      } else {
+        await removeAndReconcile();
+      }
+
+      await inventory.refresh();
+      return true;
+    },
+    [authAdminSession, inventory, projectId],
+  );
+
   const confirmRemove = useCallback(
     async (metadata: SecretMetadata) => {
       let usageSummary;
@@ -214,27 +253,16 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
           text: 'Remove',
           style: 'destructive',
           onPress: () => {
-            void removeProjectSecret({
-              projectId,
-              environment: metadata.scope.environment,
-              ref: metadata.ref,
-            })
-              .then(() => {
-                clearPendingCredentialLinksForRemovedProjectSecret({
-                  session: authAdminSession,
-                  environment: metadata.scope.environment,
-                  ref: metadata.ref,
-                  removed: true,
-                });
+            void removeSecretAndReconcilePendingAuth(metadata)
+              .then((removed) => {
+                if (removed) setMessage(`Removed ${metadata.ref}.`);
               })
-              .then(inventory.refresh)
-              .then(() => setMessage(`Removed ${metadata.ref}.`))
               .catch((error: unknown) => setMessage(toMessage(error)));
           },
         },
       ]);
     },
-    [authAdminSession, inventory.refresh, projectId],
+    [projectId, removeSecretAndReconcilePendingAuth],
   );
 
   const confirmBrokenReferenceDelete = useCallback(async () => {
@@ -244,27 +272,17 @@ export function SecretsAdminPage({ projectId }: { readonly projectId: string }) 
 
     setDeleting(true);
     try {
-      await removeProjectSecret({
-        projectId,
-        environment: pendingDelete.metadata.scope.environment,
-        ref: pendingDelete.metadata.ref,
-        confirmBrokenReferences: true,
-      });
-      clearPendingCredentialLinksForRemovedProjectSecret({
-        session: authAdminSession,
-        environment: pendingDelete.metadata.scope.environment,
-        ref: pendingDelete.metadata.ref,
-        removed: true,
-      });
-      await inventory.refresh();
-      setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
-      setPendingDelete(null);
+      const removed = await removeSecretAndReconcilePendingAuth(pendingDelete.metadata, true);
+      if (removed) {
+        setMessage(`Removed ${pendingDelete.metadata.ref}. Manifest references were not changed.`);
+        setPendingDelete(null);
+      }
     } catch (error) {
       setMessage(toMessage(error));
     } finally {
       setDeleting(false);
     }
-  }, [authAdminSession, inventory, pendingDelete, projectId]);
+  }, [pendingDelete, removeSecretAndReconcilePendingAuth]);
 
   return (
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
@@ -680,6 +698,21 @@ function Message({ text }: { readonly text: string }) {
 function toMessage(error: unknown): string {
   if (error instanceof ProjectSecretApiError || error instanceof Error) return error.message;
   return 'The Studio secret operation failed.';
+}
+
+function formatSecretCleanupBusyReason(
+  reason: Extract<AuthAdminWriteResult<unknown>, { readonly ok: false }>['reason'],
+): string {
+  if (reason === 'credential_transaction_busy' || reason === 'credential_ref_busy') {
+    return 'OAuth credential changes are still being linked for this secret. Try again after they finish.';
+  }
+  if (reason === 'credential_secret_cleanup_busy') {
+    return 'Project secret cleanup is already in progress for this secret.';
+  }
+  if (reason === 'full_auth_save_busy') {
+    return 'Authentication configuration is already being saved.';
+  }
+  return 'OAuth provider credentials are already being saved.';
 }
 
 function secretInventoryKey(metadata: SecretMetadata): string {

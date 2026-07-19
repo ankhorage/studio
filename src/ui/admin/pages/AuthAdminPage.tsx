@@ -179,11 +179,13 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
   const retryPendingCredentialLink = useCallback(
     async (link: StoredOAuthCredentialLink) => {
-      const result = await authAdminSession.runCredentialTransaction(link.providerId, () =>
-        persistCredentialLinkAndPatchDraft(link),
+      const result = await authAdminSession.runCredentialTransaction(
+        link.providerId,
+        link.credentialsRef,
+        () => persistCredentialLinkAndPatchDraft(link),
       );
       if (!result.ok) {
-        setMessage(`${link.providerLabel} credentials are already being linked.`);
+        setMessage(formatAuthAdminWriteBusyReason(result.reason));
       }
     },
     [authAdminSession, persistCredentialLinkAndPatchDraft],
@@ -615,6 +617,7 @@ function OAuthProviderSetting(props: {
   readonly onSaved: (link: StoredOAuthCredentialLink) => Promise<StoredOAuthCredentialLinkResult>;
   readonly runCredentialTransaction: <T>(
     providerId: AuthOAuthProviderId,
+    credentialsRef: string,
     operation: () => Promise<T>,
   ) => Promise<AuthAdminWriteResult<T>>;
   readonly transactionBusy: boolean;
@@ -686,46 +689,50 @@ function OAuthProviderSetting(props: {
     }
 
     const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
-    const transaction = await props.runCredentialTransaction(props.providerId, async () => {
-      setSavingCredentials(true);
-      setCredentialMessage(null);
-      try {
-        const result = await configureProjectOAuthProvider({
-          projectId: props.projectId,
-          providerId: props.providerId as AuthOAuthProviderId,
-          environment: 'local',
-          credentialsRef,
-          payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
-        });
-
-        if (result.ok) {
-          const linkResult = await props.onSaved({
-            providerId: props.providerId,
-            providerLabel: definition.label,
-            credentialsRef: result.credentialsRef,
-            providerDefaults: {
-              label: definition.label,
-              scopes: [...definition.defaultScopes],
-            },
-            successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+    const transaction = await props.runCredentialTransaction(
+      props.providerId,
+      credentialsRef,
+      async () => {
+        setSavingCredentials(true);
+        setCredentialMessage(null);
+        try {
+          const result = await configureProjectOAuthProvider({
+            projectId: props.projectId,
+            providerId: props.providerId as AuthOAuthProviderId,
+            environment: 'local',
+            credentialsRef,
+            payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
           });
-          if (!linkResult.ok) setCredentialMessage(linkResult.message);
-          return linkResult;
-        }
 
-        setCredentialMessage(result.error.message);
-        return null;
-      } catch (error) {
-        setCredentialMessage(toMessage(error));
-        return null;
-      } finally {
-        setCredentialValues({});
-        setSavingCredentials(false);
-      }
-    });
+          if (result.ok) {
+            const linkResult = await props.onSaved({
+              providerId: props.providerId,
+              providerLabel: definition.label,
+              credentialsRef: result.credentialsRef,
+              providerDefaults: {
+                label: definition.label,
+                scopes: [...definition.defaultScopes],
+              },
+              successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+            });
+            if (!linkResult.ok) setCredentialMessage(linkResult.message);
+            return linkResult;
+          }
+
+          setCredentialMessage(result.error.message);
+          return null;
+        } catch (error) {
+          setCredentialMessage(toMessage(error));
+          return null;
+        } finally {
+          setCredentialValues({});
+          setSavingCredentials(false);
+        }
+      },
+    );
 
     if (!transaction.ok) {
-      setCredentialMessage(`${definition.label} credentials are already being saved.`);
+      setCredentialMessage(formatAuthAdminWriteBusyReason(transaction.reason));
     }
   };
 
@@ -860,6 +867,12 @@ function formatAuthAdminWriteBusyReason(
   }
   if (reason === 'credential_transaction_busy') {
     return 'OAuth credential changes are still being linked. Try again after they finish.';
+  }
+  if (reason === 'credential_ref_busy') {
+    return 'OAuth credentials for this secret are already being linked.';
+  }
+  if (reason === 'credential_secret_cleanup_busy') {
+    return 'Project secret cleanup is in progress for these OAuth credentials.';
   }
   return 'OAuth provider credentials are already being saved.';
 }

@@ -121,8 +121,8 @@ function createProjectSessionConsumer(session: AuthAdminProjectSession): {
     setPendingCredentialLink: (link) => session.setPendingCredentialLink(link),
     clearPendingCredentialLinksByCredentialsRef: (credentialsRef) =>
       session.clearPendingCredentialLinksByCredentialsRef(credentialsRef),
-    runCredentialTransaction: (providerId, operation) =>
-      session.runCredentialTransaction(providerId, operation),
+    runCredentialTransaction: (providerId, credentialsRef, operation) =>
+      session.runCredentialTransaction(providerId, credentialsRef, operation),
   };
 }
 
@@ -132,7 +132,7 @@ describe('AuthAdminWriteCoordinator', () => {
     const manifestFlush = createDeferred<void>();
 
     const consumerA = coordinator;
-    const first = consumerA.runCredentialTransaction('google', async () => {
+    const first = consumerA.runCredentialTransaction('google', 'auth/oauth/google', async () => {
       await manifestFlush.promise;
       return 'linked';
     });
@@ -140,7 +140,7 @@ describe('AuthAdminWriteCoordinator', () => {
     expect(coordinator.isProviderBusy('google')).toBe(true);
 
     const consumerB = coordinator;
-    const second = await consumerB.runCredentialTransaction('google', () =>
+    const second = await consumerB.runCredentialTransaction('google', 'auth/oauth/google', () =>
       Promise.resolve('overlap'),
     );
 
@@ -155,12 +155,18 @@ describe('AuthAdminWriteCoordinator', () => {
     const projectB = new AuthAdminWriteCoordinator();
     const projectAFlush = createDeferred<void>();
 
-    const projectATransaction = projectA.runCredentialTransaction('google', async () => {
-      await projectAFlush.promise;
-      return 'project-a';
-    });
-    const projectBTransaction = await projectB.runCredentialTransaction('google', () =>
-      Promise.resolve('project-b'),
+    const projectATransaction = projectA.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        await projectAFlush.promise;
+        return 'project-a';
+      },
+    );
+    const projectBTransaction = await projectB.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      () => Promise.resolve('project-b'),
     );
 
     expect(projectBTransaction).toEqual({ ok: true, value: 'project-b' });
@@ -176,10 +182,14 @@ describe('AuthAdminWriteCoordinator', () => {
     const providerFlush = createDeferred<void>();
     const fullSaveFlush = createDeferred<void>();
 
-    const providerTransaction = coordinator.runCredentialTransaction('google', async () => {
-      await providerFlush.promise;
-      return 'provider';
-    });
+    const providerTransaction = coordinator.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        await providerFlush.promise;
+        return 'provider';
+      },
+    );
     expect(await coordinator.runFullAuthSave(() => Promise.resolve('full'))).toEqual({
       ok: false,
       reason: 'credential_transaction_busy',
@@ -192,10 +202,14 @@ describe('AuthAdminWriteCoordinator', () => {
       return 'full';
     });
     expect(
-      await coordinator.runCredentialTransaction('google', () => Promise.resolve('google')),
+      await coordinator.runCredentialTransaction('google', 'auth/oauth/google', () =>
+        Promise.resolve('google'),
+      ),
     ).toEqual({ ok: false, reason: 'full_auth_save_busy' });
     expect(
-      await coordinator.runCredentialTransaction('github', () => Promise.resolve('github')),
+      await coordinator.runCredentialTransaction('github', 'auth/oauth/github', () =>
+        Promise.resolve('github'),
+      ),
     ).toEqual({ ok: false, reason: 'full_auth_save_busy' });
     fullSaveFlush.resolve();
     expect(await fullSave).toEqual({ ok: true, value: 'full' });
@@ -205,11 +219,11 @@ describe('AuthAdminWriteCoordinator', () => {
     const coordinator = new AuthAdminWriteCoordinator();
     const googleFlush = createDeferred<void>();
 
-    const google = coordinator.runCredentialTransaction('google', async () => {
+    const google = coordinator.runCredentialTransaction('google', 'auth/oauth/google', async () => {
       await googleFlush.promise;
       return 'google';
     });
-    const github = await coordinator.runCredentialTransaction('github', () =>
+    const github = await coordinator.runCredentialTransaction('github', 'auth/oauth/github', () =>
       Promise.resolve('github'),
     );
 
@@ -227,18 +241,22 @@ describe('AuthAdminWriteCoordinator', () => {
     let secretWrites = 1;
     let retryLinks = 0;
 
-    const retry = coordinator.runCredentialTransaction('google', async () => {
+    const retry = coordinator.runCredentialTransaction('google', 'auth/oauth/google', async () => {
       retryLinks += 1;
       await retryFlush.promise;
       return 'retry';
     });
 
-    const overlappingRetry = await coordinator.runCredentialTransaction('google', async () => {
-      secretWrites += 1;
-      retryLinks += 1;
-      await Promise.resolve();
-      return 'overlap';
-    });
+    const overlappingRetry = await coordinator.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        secretWrites += 1;
+        retryLinks += 1;
+        await Promise.resolve();
+        return 'overlap';
+      },
+    );
 
     expect(overlappingRetry).toEqual({ ok: false, reason: 'provider_busy' });
     expect(secretWrites).toBe(1);
@@ -252,23 +270,27 @@ describe('AuthAdminWriteCoordinator', () => {
     const coordinator = new AuthAdminWriteCoordinator();
     const events: string[] = [];
 
-    const result = await coordinator.runCredentialTransaction('google', async () => {
-      events.push('secret-write');
-      expect(coordinator.isProviderBusy('google')).toBe(true);
-      await Promise.resolve();
+    const result = await coordinator.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        events.push('secret-write');
+        expect(coordinator.isProviderBusy('google')).toBe(true);
+        await Promise.resolve();
 
-      events.push('focused-canonical-mutation');
-      expect(coordinator.isProviderBusy('google')).toBe(true);
-      await Promise.resolve();
+        events.push('focused-canonical-mutation');
+        expect(coordinator.isProviderBusy('google')).toBe(true);
+        await Promise.resolve();
 
-      events.push('manifest-flush');
-      expect(coordinator.isProviderBusy('google')).toBe(true);
-      await Promise.resolve();
+        events.push('manifest-flush');
+        expect(coordinator.isProviderBusy('google')).toBe(true);
+        await Promise.resolve();
 
-      events.push('health-refresh');
-      expect(coordinator.isProviderBusy('google')).toBe(true);
-      return 'complete';
-    });
+        events.push('health-refresh');
+        expect(coordinator.isProviderBusy('google')).toBe(true);
+        return 'complete';
+      },
+    );
 
     expect(result).toEqual({ ok: true, value: 'complete' });
     expect(events).toEqual([
@@ -312,7 +334,7 @@ describe('AuthAdminProjectSession', () => {
     const manifestFlush = createDeferred<void>();
     const consumerA = createProjectSessionConsumer(session);
 
-    const first = consumerA.runCredentialTransaction('google', async () => {
+    const first = consumerA.runCredentialTransaction('google', 'auth/oauth/google', async () => {
       await manifestFlush.promise;
       return 'linked';
     });
@@ -322,7 +344,9 @@ describe('AuthAdminProjectSession', () => {
     const consumerB = createProjectSessionConsumer(session);
     expect(consumerB.snapshot().busyCredentialProviderIds.has('google')).toBe(true);
     expect(
-      await consumerB.runCredentialTransaction('google', () => Promise.resolve('overlap')),
+      await consumerB.runCredentialTransaction('google', 'auth/oauth/google', () =>
+        Promise.resolve('overlap'),
+      ),
     ).toEqual({ ok: false, reason: 'provider_busy' });
 
     manifestFlush.resolve();
@@ -346,15 +370,21 @@ describe('AuthAdminProjectSession', () => {
     const projectAFlush = createDeferred<void>();
 
     projectA.setPendingCredentialLink(createLink('google'));
-    const projectATransaction = projectA.runCredentialTransaction('google', async () => {
-      await projectAFlush.promise;
-      return 'project-a';
-    });
+    const projectATransaction = projectA.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        await projectAFlush.promise;
+        return 'project-a';
+      },
+    );
 
     expect(projectB.getSnapshot().pendingCredentialLinks).toEqual([]);
     expect(projectB.getSnapshot().busyCredentialProviderIds.has('google')).toBe(false);
     expect(
-      await projectB.runCredentialTransaction('google', () => Promise.resolve('project-b')),
+      await projectB.runCredentialTransaction('google', 'auth/oauth/google', () =>
+        Promise.resolve('project-b'),
+      ),
     ).toEqual({
       ok: true,
       value: 'project-b',
