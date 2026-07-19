@@ -10,7 +10,11 @@ import type {
 import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
+import {
+  readStudioAuthSettings,
+  type StudioAuthSettings,
+  type StudioAuthSettingsMutation,
+} from '../authSettings';
 import {
   findNodeById,
   type InsertCatalogEntry,
@@ -30,6 +34,7 @@ import { API_BASE } from './constants';
 import { StudioContext } from './StudioContext';
 import {
   applyStudioManifestDraftMutation,
+  replaceStudioManifestDraftAuthSettings,
   updateStudioManifestDraftAppData,
   updateStudioManifestDraftAuthSettings,
   updateStudioManifestDraftDataBindings,
@@ -141,6 +146,18 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  const mutateAuthSettings = useCallback(
+    (mutation: StudioAuthSettingsMutation) => {
+      let nextSettings: StudioAuthSettings | null = null;
+      updateManifest((current) => {
+        nextSettings = mutation(readStudioAuthSettings(current));
+        return replaceStudioManifestDraftAuthSettings(current, nextSettings);
+      });
+      return nextSettings;
+    },
+    [updateManifest],
+  );
+
   const updateOAuthProviders = useCallback(
     (providers: AuthOAuthProviderConfig[]) => {
       updateManifest((current) => {
@@ -206,6 +223,7 @@ export const StudioProvider = ({
       setActiveThemeId: noop,
       setActiveThemeMode: setStudioMode,
       updateAuthSettings,
+      mutateAuthSettings,
       updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
         undefined,
       updateOAuthProviders,
@@ -240,6 +258,7 @@ export const StudioProvider = ({
       updateManifest,
       updateNode,
       updateAuthSettings,
+      mutateAuthSettings,
       updateOAuthProviders,
       updateTheme,
       persistence.refetchManifest,

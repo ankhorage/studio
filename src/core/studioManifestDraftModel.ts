@@ -46,6 +46,18 @@ export function updateStudioManifestDraftAuthSettings(
   manifest: StudioManifest,
   settings: StudioAuthSettings,
 ): StudioManifest {
+  return replaceStudioManifestDraftAuthSettings(manifest, settings);
+}
+
+export function replaceStudioManifestDraftAuthSettings(
+  manifest: StudioManifest,
+  settings: StudioAuthSettings | null,
+): StudioManifest {
+  if (!settings) {
+    const { auth: _auth, ...infra } = manifest.infra;
+    return { ...manifest, infra };
+  }
+
   return applyStudioAuthSettings(manifest, settings);
 }
 

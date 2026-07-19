@@ -278,7 +278,7 @@
                 data-target="src/core/studioManifestDraftModel.ts"
               >
                 src/core/studioManifestDraftModel.ts
-                <small>7 functions</small>
+                <small>8 functions</small>
               </button>
             </li>
             <li>
@@ -1226,7 +1226,7 @@
                 data-target="src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
               >
                 src/ui/admin/pages/adminAuthCredentialFlow.test.ts
-                <small>2 functions</small>
+                <small>3 functions</small>
               </button>
             </li>
             <li>
@@ -1236,7 +1236,7 @@
                 data-target="src/ui/admin/pages/adminAuthCredentialFlow.ts"
               >
                 src/ui/admin/pages/adminAuthCredentialFlow.ts
-                <small>1 function</small>
+                <small>5 functions</small>
               </button>
             </li>
             <li>
@@ -1266,7 +1266,7 @@
                 data-target="src/ui/admin/pages/adminThemeModel.ts"
               >
                 src/ui/admin/pages/adminThemeModel.ts
-                <small>3 functions</small>
+                <small>4 functions</small>
               </button>
             </li>
             <li>
@@ -1435,7 +1435,7 @@
             </article>
             <article
               class="item"
-              data-search="src/authSettings.ts applyStudioAuthSettings readStudioAuthSettings StudioAuthSettings StudioAuthSettingsValidationResult validateStudioAuthSettings"
+              data-search="src/authSettings.ts applyStudioAuthSettings readStudioAuthSettings StudioAuthSettings StudioAuthSettingsMutation StudioAuthSettingsValidationResult validateStudioAuthSettings"
             >
               <h3>src/authSettings.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1443,6 +1443,7 @@
               <p>
                 <strong>Exports:</strong> <code>applyStudioAuthSettings</code>,
                 <code>readStudioAuthSettings</code>, <code>StudioAuthSettings</code>,
+                <code>StudioAuthSettingsMutation</code>,
                 <code>StudioAuthSettingsValidationResult</code>,
                 <code>validateStudioAuthSettings</code>
               </p>
@@ -1560,7 +1561,7 @@
             </article>
             <article
               class="item"
-              data-search="src/core/studioManifestDraftModel.ts src/authSettings.ts src/index.ts src/manifestState.ts applyStudioManifestDraftMutation StudioManifestDraftMutation updateStudioManifestDraftAppData updateStudioManifestDraftAuthSettings updateStudioManifestDraftDataBindings updateStudioManifestDraftDataSources updateStudioManifestDraftNode updateStudioManifestDraftTheme"
+              data-search="src/core/studioManifestDraftModel.ts src/authSettings.ts src/index.ts src/manifestState.ts applyStudioManifestDraftMutation replaceStudioManifestDraftAuthSettings StudioManifestDraftMutation updateStudioManifestDraftAppData updateStudioManifestDraftAuthSettings updateStudioManifestDraftDataBindings updateStudioManifestDraftDataSources updateStudioManifestDraftNode updateStudioManifestDraftTheme"
             >
               <h3>src/core/studioManifestDraftModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1570,6 +1571,7 @@
               </p>
               <p>
                 <strong>Exports:</strong> <code>applyStudioManifestDraftMutation</code>,
+                <code>replaceStudioManifestDraftAuthSettings</code>,
                 <code>StudioManifestDraftMutation</code>,
                 <code>updateStudioManifestDraftAppData</code>,
                 <code>updateStudioManifestDraftAuthSettings</code>,
@@ -3622,13 +3624,14 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/adminAuthCredentialFlow.ts src/authSettings.ts persistStoredOAuthCredentialLink StoredOAuthCredentialLink StoredOAuthCredentialLinkResult"
+              data-search="src/ui/admin/pages/adminAuthCredentialFlow.ts src/authSettings.ts applyStoredOAuthCredentialLink persistStoredOAuthCredentialLink StoredOAuthCredentialLink StoredOAuthCredentialLinkResult"
             >
               <h3>src/ui/admin/pages/adminAuthCredentialFlow.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <code>src/authSettings.ts</code></p>
               <p>
-                <strong>Exports:</strong> <code>persistStoredOAuthCredentialLink</code>,
+                <strong>Exports:</strong> <code>applyStoredOAuthCredentialLink</code>,
+                <code>persistStoredOAuthCredentialLink</code>,
                 <code>StoredOAuthCredentialLink</code>, <code>StoredOAuthCredentialLinkResult</code>
               </p>
             </article>
@@ -3669,7 +3672,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/adminThemeModel.ts src/index.ts ActiveThemeModeSelection createThemeModeUpdates resolveActiveThemeModeSelection resolveZoraThemeSourceModeConfig"
+              data-search="src/ui/admin/pages/adminThemeModel.ts src/index.ts ActiveThemeModeSelection createThemeModeUpdates resolveActiveThemeModeSelection resolveZoraSurfaceThemeConfig resolveZoraThemeSourceModeConfig"
             >
               <h3>src/ui/admin/pages/adminThemeModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -3677,6 +3680,7 @@
               <p>
                 <strong>Exports:</strong> <code>ActiveThemeModeSelection</code>,
                 <code>createThemeModeUpdates</code>, <code>resolveActiveThemeModeSelection</code>,
+                <code>resolveZoraSurfaceThemeConfig</code>,
                 <code>resolveZoraThemeSourceModeConfig</code>
               </p>
             </article>
@@ -3862,7 +3866,7 @@
                 data-search="ACTION_REGISTRY value src/index.ts "
               >
                 <h4>ACTION_REGISTRY</h4>
-                <p class="muted">value • <code>src/index.ts:350:14</code></p>
+                <p class="muted">value • <code>src/index.ts:351:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -3938,7 +3942,7 @@
                 data-search='addNodeToTree value src/index.ts  StudioComponentMetaRegistry (args: { root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: "append" | "prepend"; }) =&gt; UiNode'
               >
                 <h4>addNodeToTree</h4>
-                <p class="muted">value • <code>src/index.ts:572:14</code></p>
+                <p class="muted">value • <code>src/index.ts:573:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -3984,7 +3988,7 @@
                 data-search="buildInsertCatalogEntries function src/index.ts  InsertCatalogEntry InsertRecipe StudioComponentMetaRegistry (args: { componentMeta: StudioComponentMetaRegistry; recipes?: readonly InsertRecipe[]; }) =&gt; InsertCatalogEntry[]"
               >
                 <h4>buildInsertCatalogEntries</h4>
-                <p class="muted">function • <code>src/index.ts:1284:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1285:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4031,7 +4035,7 @@
                 data-search="canAcceptChild function src/index.ts  StudioComponentMetaRegistry (args: { parentType: string; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; boolean"
               >
                 <h4>canAcceptChild</h4>
-                <p class="muted">function • <code>src/index.ts:731:1</code></p>
+                <p class="muted">function • <code>src/index.ts:732:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4076,7 +4080,7 @@
                 data-search="cloneWithNewIds value src/index.ts  StudioIdGenerator (node: UiNode, createId?: StudioIdGenerator) =&gt; UiNode"
               >
                 <h4>cloneWithNewIds</h4>
-                <p class="muted">value • <code>src/index.ts:497:14</code></p>
+                <p class="muted">value • <code>src/index.ts:498:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4121,7 +4125,7 @@
                 data-search="createNodeFromCatalogEntry function src/index.ts  InsertCatalogEntry StudioComponentMetaRegistry StudioIdGenerator (entry: InsertCatalogEntry, componentMeta: StudioComponentMetaRegistry, createId?: StudioIdGenerator) =&gt; UiNode"
               >
                 <h4>createNodeFromCatalogEntry</h4>
-                <p class="muted">function • <code>src/index.ts:1203:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1204:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4175,7 +4179,7 @@
                 data-search="findNodeById value src/index.ts  (root: UiNode, id: string) =&gt; UiNode | null"
               >
                 <h4>findNodeById</h4>
-                <p class="muted">value • <code>src/index.ts:514:14</code></p>
+                <p class="muted">value • <code>src/index.ts:515:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -4215,7 +4219,7 @@
                 data-search="generateStudioId value src/index.ts  (prefix?: string | undefined) =&gt; string"
               >
                 <h4>generateStudioId</h4>
-                <p class="muted">value • <code>src/index.ts:490:14</code></p>
+                <p class="muted">value • <code>src/index.ts:491:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -4249,7 +4253,7 @@
                 data-search="getInsertCatalogCategoryLabel function src/index.ts  (category: string) =&gt; string"
               >
                 <h4>getInsertCatalogCategoryLabel</h4>
-                <p class="muted">function • <code>src/index.ts:1129:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1130:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -4680,7 +4684,7 @@
                 data-search="insertNodeAtPlacement function src/index.ts  InsertNodeAtPlacementArgs InsertNodeAtPlacementResult (args: InsertNodeAtPlacementArgs) =&gt; InsertNodeAtPlacementResult | null"
               >
                 <h4>insertNodeAtPlacement</h4>
-                <p class="muted">function • <code>src/index.ts:961:1</code></p>
+                <p class="muted">function • <code>src/index.ts:962:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4721,7 +4725,7 @@
                 data-search="InsertNodeAtPlacementArgs type src/index.ts  NodePlacement StudioComponentMetaRegistry"
               >
                 <h4>InsertNodeAtPlacementArgs</h4>
-                <p class="muted">type • <code>src/index.ts:904:1</code></p>
+                <p class="muted">type • <code>src/index.ts:905:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -4780,7 +4784,7 @@
                 data-search="InsertNodeAtPlacementResult type src/index.ts "
               >
                 <h4>InsertNodeAtPlacementResult</h4>
-                <p class="muted">type • <code>src/index.ts:911:1</code></p>
+                <p class="muted">type • <code>src/index.ts:912:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -5029,7 +5033,7 @@
                 data-search='moveNodeInTree value src/index.ts  (root: UiNode, nodeId: string, direction: "up" | "down") =&gt; UiNode'
               >
                 <h4>moveNodeInTree</h4>
-                <p class="muted">value • <code>src/index.ts:605:14</code></p>
+                <p class="muted">value • <code>src/index.ts:606:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -5076,7 +5080,7 @@
                 data-search="moveNodeToPlacement function src/index.ts  MoveNodeToPlacementArgs MoveNodeToPlacementResult (args: MoveNodeToPlacementArgs) =&gt; MoveNodeToPlacementResult | null"
               >
                 <h4>moveNodeToPlacement</h4>
-                <p class="muted">function • <code>src/index.ts:1029:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1030:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -5116,7 +5120,7 @@
                 data-search="MoveNodeToPlacementArgs type src/index.ts  NodePlacement StudioComponentMetaRegistry"
               >
                 <h4>MoveNodeToPlacementArgs</h4>
-                <p class="muted">type • <code>src/index.ts:988:1</code></p>
+                <p class="muted">type • <code>src/index.ts:989:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -5175,7 +5179,7 @@
                 data-search="MoveNodeToPlacementResult type src/index.ts "
               >
                 <h4>MoveNodeToPlacementResult</h4>
-                <p class="muted">type • <code>src/index.ts:995:1</code></p>
+                <p class="muted">type • <code>src/index.ts:996:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -5360,7 +5364,7 @@
                 data-search="removeNodeFromTree value src/index.ts  (root: UiNode, nodeId: string) =&gt; UiNode | null"
               >
                 <h4>removeNodeFromTree</h4>
-                <p class="muted">value • <code>src/index.ts:554:14</code></p>
+                <p class="muted">value • <code>src/index.ts:555:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -5400,7 +5404,7 @@
                 data-search="resolveDefaultInsertPlacement function src/index.ts  PlacementResolutionResult StudioComponentMetaRegistry (args: { root: UiNode; selectedNodeId: string | null; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementResolutionResult"
               >
                 <h4>resolveDefaultInsertPlacement</h4>
-                <p class="muted">function • <code>src/index.ts:859:1</code></p>
+                <p class="muted">function • <code>src/index.ts:860:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -5446,7 +5450,7 @@
                 data-search="resolveInsertCatalogEntries function src/index.ts  InsertCatalogEntry StudioComponentMetaRegistry (args: { entries: readonly InsertCatalogEntry[]; root: UiNode | null; selectedNodeId: string | null; componentMeta: StudioComponentMetaRegistry; }) =&gt; InsertCatalogEntry[]"
               >
                 <h4>resolveInsertCatalogEntries</h4>
-                <p class="muted">function • <code>src/index.ts:1326:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1327:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -5493,7 +5497,7 @@
                 data-search="resolveInsertPlacement function src/index.ts  PlacementKind PlacementResolutionResult StudioComponentMetaRegistry (args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) =&gt; PlacementResolutionResult"
               >
                 <h4>resolveInsertPlacement</h4>
-                <p class="muted">function • <code>src/index.ts:798:1</code></p>
+                <p class="muted">function • <code>src/index.ts:799:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -5540,7 +5544,7 @@
                 data-search="STUDIO_INSERT_RECIPES value src/index.ts "
               >
                 <h4>STUDIO_INSERT_RECIPES</h4>
-                <p class="muted">value • <code>src/index.ts:1096:14</code></p>
+                <p class="muted">value • <code>src/index.ts:1097:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -5977,6 +5981,18 @@
                       <td>property</td>
                       <td>
                         <code>(nodeId: StudioNodeId, placement: NodePlacement) =&gt; boolean</code>
+                      </td>
+                      <td>yes</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><code>mutateAuthSettings</code></td>
+                      <td>property</td>
+                      <td>
+                        <code
+                          >(mutation: StudioAuthSettingsMutation) =&gt; StudioAuthSettings |
+                          null</code
+                        >
                       </td>
                       <td>yes</td>
                       <td></td>
@@ -6584,7 +6600,7 @@
                 data-search="TPL_SCREEN_EMPTY value src/index.ts "
               >
                 <h4>TPL_SCREEN_EMPTY</h4>
-                <p class="muted">value • <code>src/index.ts:442:14</code></p>
+                <p class="muted">value • <code>src/index.ts:443:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -6595,7 +6611,7 @@
                 data-search="updateNodeInTree value src/index.ts  (root: UiNode, id: string, newProps: Record&lt;string, unknown&gt;) =&gt; UiNode"
               >
                 <h4>updateNodeInTree</h4>
-                <p class="muted">value • <code>src/index.ts:526:14</code></p>
+                <p class="muted">value • <code>src/index.ts:527:14</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -6642,7 +6658,7 @@
                 data-search="validateInsertRecipe function src/index.ts  InsertRecipe InsertRecipeIssue StudioComponentMetaRegistry (recipe: InsertRecipe, componentMeta: StudioComponentMetaRegistry) =&gt; InsertRecipeIssue | null"
               >
                 <h4>validateInsertRecipe</h4>
-                <p class="muted">function • <code>src/index.ts:1146:1</code></p>
+                <p class="muted">function • <code>src/index.ts:1147:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -6690,7 +6706,7 @@
                 data-search="validateNodePlacement function src/index.ts  NodePlacement PlacementValidationResult StudioComponentMetaRegistry (args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) =&gt; PlacementValidationResult"
               >
                 <h4>validateNodePlacement</h4>
-                <p class="muted">function • <code>src/index.ts:743:1</code></p>
+                <p class="muted">function • <code>src/index.ts:744:1</code></p>
 
                 <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
                 <div>
@@ -10968,102 +10984,102 @@ sequenceDiagram
             <h2>src/authSettings.ts</h2>
             <article class="item" data-search="readStudioAuthSettings src/authSettings.ts ">
               <h3>readStudioAuthSettings</h3>
-              <p class="muted"><code>src/authSettings.ts:69:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:73:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="applyStudioAuthSettings src/authSettings.ts ">
               <h3>applyStudioAuthSettings</h3>
-              <p class="muted"><code>src/authSettings.ts:112:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:116:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="validateStudioAuthSettings src/authSettings.ts ">
               <h3>validateStudioAuthSettings</h3>
-              <p class="muted"><code>src/authSettings.ts:170:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:174:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseFlow src/authSettings.ts ">
               <h3>parseFlow</h3>
-              <p class="muted"><code>src/authSettings.ts:213:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:217:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseSignIn src/authSettings.ts ">
               <h3>parseSignIn</h3>
-              <p class="muted"><code>src/authSettings.ts:255:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:259:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseSignUp src/authSettings.ts ">
               <h3>parseSignUp</h3>
-              <p class="muted"><code>src/authSettings.ts:266:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:270:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseOAuth src/authSettings.ts ">
               <h3>parseOAuth</h3>
-              <p class="muted"><code>src/authSettings.ts:301:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:305:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseOAuthProvider src/authSettings.ts ">
               <h3>parseOAuthProvider</h3>
-              <p class="muted"><code>src/authSettings.ts:336:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:340:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProfile src/authSettings.ts ">
               <h3>parseProfile</h3>
-              <p class="muted"><code>src/authSettings.ts:402:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:406:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="cloneOAuthProvider src/authSettings.ts ">
               <h3>cloneOAuthProvider</h3>
-              <p class="muted"><code>src/authSettings.ts:451:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:455:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readRoute src/authSettings.ts ">
               <h3>readRoute</h3>
-              <p class="muted"><code>src/authSettings.ts:460:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:464:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readCallbackRoute src/authSettings.ts ">
               <h3>readCallbackRoute</h3>
-              <p class="muted"><code>src/authSettings.ts:469:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:473:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readStringArray src/authSettings.ts ">
               <h3>readStringArray</h3>
-              <p class="muted"><code>src/authSettings.ts:485:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:489:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readOptionalStringRecord src/authSettings.ts ">
               <h3>readOptionalStringRecord</h3>
-              <p class="muted"><code>src/authSettings.ts:508:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:512:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readOptionalIcon src/authSettings.ts ">
               <h3>readOptionalIcon</h3>
-              <p class="muted"><code>src/authSettings.ts:522:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:526:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="findForbiddenInlineSecretPath src/authSettings.ts ">
               <h3>findForbiddenInlineSecretPath</h3>
-              <p class="muted"><code>src/authSettings.ts:557:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:561:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="hasOnlyKeys src/authSettings.ts ">
               <h3>hasOnlyKeys</h3>
-              <p class="muted"><code>src/authSettings.ts:577:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:581:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="asRecord src/authSettings.ts ">
               <h3>asRecord</h3>
-              <p class="muted"><code>src/authSettings.ts:582:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:586:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="success src/authSettings.ts ">
               <h3>success</h3>
-              <p class="muted"><code>src/authSettings.ts:588:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:592:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="invalid src/authSettings.ts ">
               <h3>invalid</h3>
-              <p class="muted"><code>src/authSettings.ts:592:1</code></p>
+              <p class="muted"><code>src/authSettings.ts:596:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11311,10 +11327,18 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="replaceStudioManifestDraftAuthSettings src/core/studioManifestDraftModel.ts "
+            >
+              <h3>replaceStudioManifestDraftAuthSettings</h3>
+              <p class="muted"><code>src/core/studioManifestDraftModel.ts:52:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="updateStudioManifestDraftAppData src/core/studioManifestDraftModel.ts "
             >
               <h3>updateStudioManifestDraftAppData</h3>
-              <p class="muted"><code>src/core/studioManifestDraftModel.ts:52:1</code></p>
+              <p class="muted"><code>src/core/studioManifestDraftModel.ts:64:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11322,7 +11346,7 @@ sequenceDiagram
               data-search="updateStudioManifestDraftDataBindings src/core/studioManifestDraftModel.ts "
             >
               <h3>updateStudioManifestDraftDataBindings</h3>
-              <p class="muted"><code>src/core/studioManifestDraftModel.ts:59:1</code></p>
+              <p class="muted"><code>src/core/studioManifestDraftModel.ts:71:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11330,7 +11354,7 @@ sequenceDiagram
               data-search="updateStudioManifestDraftDataSources src/core/studioManifestDraftModel.ts "
             >
               <h3>updateStudioManifestDraftDataSources</h3>
-              <p class="muted"><code>src/core/studioManifestDraftModel.ts:66:1</code></p>
+              <p class="muted"><code>src/core/studioManifestDraftModel.ts:78:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11371,22 +11395,22 @@ sequenceDiagram
             <h2>src/core/StudioProvider.ts</h2>
             <article class="item" data-search="noop src/core/StudioProvider.ts ">
               <h3>noop</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:48:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:53:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
               <h3>noopAsync</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:49:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:54:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
               <h3>resolveActiveRootNode</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:52:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:57:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
               <h3>StudioProvider</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:75:14</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:80:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11394,32 +11418,32 @@ sequenceDiagram
               data-search="useStudioManifestPersistence src/core/StudioProvider.ts "
             >
               <h3>useStudioManifestPersistence</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:253:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:272:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestStudioManifest src/core/StudioProvider.ts ">
               <h3>requestStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:354:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:373:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="saveStudioManifest src/core/StudioProvider.ts ">
               <h3>saveStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:363:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:382:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts ">
               <h3>readPersistenceJson</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:376:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:395:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createPersistenceError src/core/StudioProvider.ts ">
               <h3>createPersistenceError</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:384:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:403:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts ">
               <h3>toPersistenceMessage</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:391:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:410:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12171,7 +12195,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:420:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:419:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12179,7 +12203,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:434:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:433:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12187,7 +12211,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:441:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:440:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12195,12 +12219,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:464:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:463:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:478:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:477:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12208,7 +12232,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:482:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:481:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12216,7 +12240,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:526:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:525:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12224,7 +12248,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:534:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:533:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12232,7 +12256,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:539:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:538:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14355,167 +14379,167 @@ sequenceDiagram
             <h2>src/index.ts</h2>
             <article class="item" data-search="generateStudioId src/index.ts ">
               <h3>generateStudioId</h3>
-              <p class="muted"><code>src/index.ts:490:14</code></p>
+              <p class="muted"><code>src/index.ts:491:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="cloneWithNewIds src/index.ts ">
               <h3>cloneWithNewIds</h3>
-              <p class="muted"><code>src/index.ts:497:14</code></p>
+              <p class="muted"><code>src/index.ts:498:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="findNodeById src/index.ts ">
               <h3>findNodeById</h3>
-              <p class="muted"><code>src/index.ts:514:14</code></p>
+              <p class="muted"><code>src/index.ts:515:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateNodeInTree src/index.ts ">
               <h3>updateNodeInTree</h3>
-              <p class="muted"><code>src/index.ts:526:14</code></p>
+              <p class="muted"><code>src/index.ts:527:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="removeNodeFromTree src/index.ts ">
               <h3>removeNodeFromTree</h3>
-              <p class="muted"><code>src/index.ts:554:14</code></p>
+              <p class="muted"><code>src/index.ts:555:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="addNodeToTree src/index.ts ">
               <h3>addNodeToTree</h3>
-              <p class="muted"><code>src/index.ts:572:14</code></p>
+              <p class="muted"><code>src/index.ts:573:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="moveNodeInTree src/index.ts ">
               <h3>moveNodeInTree</h3>
-              <p class="muted"><code>src/index.ts:605:14</code></p>
+              <p class="muted"><code>src/index.ts:606:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="findNodeWithParent src/index.ts ">
               <h3>findNodeWithParent</h3>
-              <p class="muted"><code>src/index.ts:641:1</code></p>
+              <p class="muted"><code>src/index.ts:642:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="visit src/index.ts ">
               <h3>visit</h3>
-              <p class="muted"><code>src/index.ts:646:9</code></p>
+              <p class="muted"><code>src/index.ts:647:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isDescendantNode src/index.ts ">
               <h3>isDescendantNode</h3>
-              <p class="muted"><code>src/index.ts:665:1</code></p>
+              <p class="muted"><code>src/index.ts:666:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="removeNodeForMove src/index.ts ">
               <h3>removeNodeForMove</h3>
-              <p class="muted"><code>src/index.ts:676:1</code></p>
+              <p class="muted"><code>src/index.ts:677:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="canAcceptChild src/index.ts ">
               <h3>canAcceptChild</h3>
-              <p class="muted"><code>src/index.ts:731:1</code></p>
+              <p class="muted"><code>src/index.ts:732:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="validateNodePlacement src/index.ts ">
               <h3>validateNodePlacement</h3>
-              <p class="muted"><code>src/index.ts:743:1</code></p>
+              <p class="muted"><code>src/index.ts:744:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveInsertPlacement src/index.ts ">
               <h3>resolveInsertPlacement</h3>
-              <p class="muted"><code>src/index.ts:798:1</code></p>
+              <p class="muted"><code>src/index.ts:799:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveDefaultInsertPlacement src/index.ts ">
               <h3>resolveDefaultInsertPlacement</h3>
-              <p class="muted"><code>src/index.ts:859:1</code></p>
+              <p class="muted"><code>src/index.ts:860:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="insertChildAtIndex src/index.ts ">
               <h3>insertChildAtIndex</h3>
-              <p class="muted"><code>src/index.ts:916:1</code></p>
+              <p class="muted"><code>src/index.ts:917:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="insertNodeAtPlacement src/index.ts ">
               <h3>insertNodeAtPlacement</h3>
-              <p class="muted"><code>src/index.ts:961:1</code></p>
+              <p class="muted"><code>src/index.ts:962:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getAdjustedMovePlacement src/index.ts ">
               <h3>getAdjustedMovePlacement</h3>
-              <p class="muted"><code>src/index.ts:1000:1</code></p>
+              <p class="muted"><code>src/index.ts:1001:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="moveNodeToPlacement src/index.ts ">
               <h3>moveNodeToPlacement</h3>
-              <p class="muted"><code>src/index.ts:1029:1</code></p>
+              <p class="muted"><code>src/index.ts:1030:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getInsertCatalogCategoryLabel src/index.ts ">
               <h3>getInsertCatalogCategoryLabel</h3>
-              <p class="muted"><code>src/index.ts:1129:1</code></p>
+              <p class="muted"><code>src/index.ts:1130:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveCategoryOrder src/index.ts ">
               <h3>resolveCategoryOrder</h3>
-              <p class="muted"><code>src/index.ts:1133:1</code></p>
+              <p class="muted"><code>src/index.ts:1134:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="describeInsertRecipeIssue src/index.ts ">
               <h3>describeInsertRecipeIssue</h3>
-              <p class="muted"><code>src/index.ts:1138:1</code></p>
+              <p class="muted"><code>src/index.ts:1139:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="validateInsertRecipe src/index.ts ">
               <h3>validateInsertRecipe</h3>
-              <p class="muted"><code>src/index.ts:1146:1</code></p>
+              <p class="muted"><code>src/index.ts:1147:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="visit src/index.ts ">
               <h3>visit</h3>
-              <p class="muted"><code>src/index.ts:1150:9</code></p>
+              <p class="muted"><code>src/index.ts:1151:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createNodeFromRecipe src/index.ts ">
               <h3>createNodeFromRecipe</h3>
-              <p class="muted"><code>src/index.ts:1183:1</code></p>
+              <p class="muted"><code>src/index.ts:1184:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="buildNode src/index.ts ">
               <h3>buildNode</h3>
-              <p class="muted"><code>src/index.ts:1188:9</code></p>
+              <p class="muted"><code>src/index.ts:1189:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createNodeFromCatalogEntry src/index.ts ">
               <h3>createNodeFromCatalogEntry</h3>
-              <p class="muted"><code>src/index.ts:1203:1</code></p>
+              <p class="muted"><code>src/index.ts:1204:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createComponentEntry src/index.ts ">
               <h3>createComponentEntry</h3>
-              <p class="muted"><code>src/index.ts:1223:1</code></p>
+              <p class="muted"><code>src/index.ts:1224:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createRecipeEntry src/index.ts ">
               <h3>createRecipeEntry</h3>
-              <p class="muted"><code>src/index.ts:1246:1</code></p>
+              <p class="muted"><code>src/index.ts:1247:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="buildInsertCatalogEntries src/index.ts ">
               <h3>buildInsertCatalogEntries</h3>
-              <p class="muted"><code>src/index.ts:1284:1</code></p>
+              <p class="muted"><code>src/index.ts:1285:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolvePlacementForEntry src/index.ts ">
               <h3>resolvePlacementForEntry</h3>
-              <p class="muted"><code>src/index.ts:1310:1</code></p>
+              <p class="muted"><code>src/index.ts:1311:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveInsertCatalogEntries src/index.ts ">
               <h3>resolveInsertCatalogEntries</h3>
-              <p class="muted"><code>src/index.ts:1326:1</code></p>
+              <p class="muted"><code>src/index.ts:1327:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStyleRecord src/index.ts ">
               <h3>isStyleRecord</h3>
-              <p class="muted"><code>src/index.ts:1375:1</code></p>
+              <p class="muted"><code>src/index.ts:1376:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16276,11 +16300,11 @@ sequenceDiagram
             <h2>src/ui/admin/pages/adminAuthCredentialFlow.test.ts</h2>
             <article
               class="item"
-              data-search="createDraft src/ui/admin/pages/adminAuthCredentialFlow.test.ts "
+              data-search="createAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.test.ts "
             >
-              <h3>createDraft</h3>
+              <h3>createAuthSettings</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:7:1</code>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:10:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -16290,7 +16314,17 @@ sequenceDiagram
             >
               <h3>createLink</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:34:1</code>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:45:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createStore src/ui/admin/pages/adminAuthCredentialFlow.test.ts "
+            >
+              <h3>createStore</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:58:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -16309,7 +16343,39 @@ sequenceDiagram
               data-search="persistStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>persistStoredOAuthCredentialLink</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:22:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:25:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="applyStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>applyStoredOAuthCredentialLink</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:51:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createDefaultAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>createDefaultAuthSettings</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:78:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createDefaultOAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>createDefaultOAuthSettings</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:88:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="upsertOAuthProvider src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>upsertOAuthProvider</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:96:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16382,6 +16448,14 @@ sequenceDiagram
               <p class="muted"><code>src/ui/admin/pages/adminThemeModel.ts:32:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article
+              class="item"
+              data-search="resolveZoraSurfaceThemeConfig src/ui/admin/pages/adminThemeModel.ts "
+            >
+              <h3>resolveZoraSurfaceThemeConfig</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminThemeModel.ts:39:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
           </section>
         </section>
         <section
@@ -16417,7 +16491,7 @@ sequenceDiagram
               data-search="PendingCredentialLinkCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>PendingCredentialLinkCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:521:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:519:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16425,12 +16499,12 @@ sequenceDiagram
               data-search="OAuthProviderSetting src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>OAuthProviderSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:541:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:539:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="setEnabled src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>setEnabled</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:573:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:570:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16438,7 +16512,7 @@ sequenceDiagram
               data-search="saveCredentials src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>saveCredentials</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:599:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:596:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16446,7 +16520,7 @@ sequenceDiagram
               data-search="mergeOAuthProviderCredentialsRef src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>mergeOAuthProviderCredentialsRef</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:707:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:712:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16454,22 +16528,22 @@ sequenceDiagram
               data-search="upsertProvider src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>upsertProvider</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:721:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:726:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateFlow src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>updateFlow</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:732:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:737:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitSignUp src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitSignUp</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:739:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:744:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitProfile src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitProfile</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:744:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:749:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16477,7 +16551,7 @@ sequenceDiagram
               data-search="createDefaultSettings src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultSettings</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:749:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:754:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16485,7 +16559,7 @@ sequenceDiagram
               data-search="createDefaultOAuth src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultOAuth</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:759:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:764:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16493,17 +16567,17 @@ sequenceDiagram
               data-search="createFallbackManifest src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createFallbackManifest</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:767:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:772:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="splitList src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>splitList</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:779:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:784:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:790:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:795:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16511,7 +16585,7 @@ sequenceDiagram
               data-search="AuthHealthCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>AuthHealthCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:795:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:800:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16519,7 +16593,7 @@ sequenceDiagram
               data-search="formatHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:855:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:860:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16527,7 +16601,7 @@ sequenceDiagram
               data-search="formatProviderHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatProviderHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:862:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:867:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16535,7 +16609,7 @@ sequenceDiagram
               data-search="healthStatusColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>healthStatusColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:870:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:875:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16543,47 +16617,47 @@ sequenceDiagram
               data-search="diagnosticSeverityColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>diagnosticSeverityColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:877:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:882:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:883:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:888:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:898:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:903:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="RouteField src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>RouteField</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:909:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:914:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:921:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:926:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SwitchSetting src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>SwitchSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:940:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:945:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Choice src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Choice</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:959:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:964:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:983:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:988:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:994:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:999:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16591,12 +16665,12 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1017:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1022:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1029:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1034:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

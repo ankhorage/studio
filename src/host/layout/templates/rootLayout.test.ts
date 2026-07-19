@@ -74,11 +74,14 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
   expect(generated).not.toContain('studioAppBar.overlay');
   expect(generated).toContain(
-    'const zoraTheme = resolveZoraProviderTheme(activeTheme, activeThemeMode)',
+    '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
   );
   expect(generated).toContain(
-    'const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme, activeStudioThemeMode)',
+    '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
   );
+  expect(generated).toContain('function GeneratedZoraThemeConfigSync');
+  expect(generated).toContain('setThemeConfig(themeConfig)');
+  expect(generated).toContain('<GeneratedStatusBar />');
 });
 
 test('suppresses the normal Studio app header inside admin routes without auth runtime', () => {

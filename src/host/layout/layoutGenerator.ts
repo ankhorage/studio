@@ -246,7 +246,7 @@ export class LayoutGenerator {
     const allImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
-      `import { ${['AppShell', 'ZoraProvider', includeStudio ? 'AppBar' : '']
+      `import { ${['AppShell', 'ZoraProvider', 'useZoraTheme', includeStudio ? 'AppBar' : '']
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
@@ -311,7 +311,6 @@ import { authAdapter } from '@/auth/adapter';`,
       manifest,
       includeStudio,
     });
-    const needsTheme = innerNavigation.usesTheme;
     const needsIcon = innerNavigation.usesIcon;
     const needsZoraTabBar = innerNavigation.usesZoraTabBar;
     const needsZoraDrawerContent = innerNavigation.usesZoraDrawerContent;
@@ -327,10 +326,10 @@ import { authAdapter } from '@/auth/adapter';`,
       `import { ${[
         'AppShell',
         'ZoraProvider',
+        'useZoraTheme',
         includeStudio ? 'AppBar' : '',
         needsZoraTabBar ? 'ZoraTabBar' : '',
         needsZoraDrawerContent ? 'ZoraDrawerContent' : '',
-        needsTheme ? 'useZoraTheme' : '',
         needsIcon ? 'Icon' : '',
       ]
         .filter(Boolean)
@@ -342,7 +341,7 @@ import { authAdapter } from '@/auth/adapter';`,
           ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
           : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
+      `import React, { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       '',

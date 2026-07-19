@@ -12,7 +12,7 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
-import type { StudioAuthSettings } from './authSettings';
+import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
 
 export type {
   ProjectAuthDiagnostic,
@@ -332,6 +332,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setActiveThemeId: (id: string) => void;
   setActiveThemeMode: (mode: StudioMode) => void;
   updateAuthSettings: (settings: StudioAuthSettings) => void;
+  mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
   moveNode: (id: StudioNodeId, direction: 'up' | 'down') => void;

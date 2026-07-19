@@ -103,6 +103,11 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     }
   }, [projectId]);
 
+  const readCanonicalAuthSettings = useCallback(
+    () => (studio.manifest ? readStudioAuthSettings(studio.manifest) : null),
+    [studio.manifest],
+  );
+
   const persistAuthDraft = useCallback(
     async (nextDraft: StudioAuthSettings, nextMessage: string) => {
       studio.updateAuthSettings(nextDraft);
@@ -118,7 +123,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     async (link: StoredOAuthCredentialLink) => {
       const result = await persistStoredOAuthCredentialLink({
         link,
-        updateAuthSettings: studio.updateAuthSettings,
+        readAuthSettings: readCanonicalAuthSettings,
+        mutateAuthSettings: studio.mutateAuthSettings,
         flushManifest: studio.flushManifest,
         refreshHealth,
         toMessage,
@@ -132,7 +138,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       setPendingCredentialLink(result.pendingLink);
       setMessage(result.message);
     },
-    [refreshHealth, studio.flushManifest, studio.updateAuthSettings],
+    [readCanonicalAuthSettings, refreshHealth, studio.flushManifest, studio.mutateAuthSettings],
   );
 
   const save = useCallback(async () => {
@@ -371,17 +377,9 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(nextOAuth, nextMessage, credentialsRef) => {
-                const nextDraft = { ...draft, oauth: nextOAuth };
-                setDraft(nextDraft);
-                void persistCredentialLink({
-                  providerId,
-                  providerLabel:
-                    getSupabaseOAuthProviderDefinition(providerId)?.label ?? providerId,
-                  credentialsRef,
-                  nextDraft,
-                  successMessage: nextMessage,
-                });
+              onSaved={(nextOAuth, link) => {
+                setDraft((current) => ({ ...current, oauth: nextOAuth }));
+                void persistCredentialLink(link);
               }}
             />
           ))}
@@ -549,8 +547,7 @@ function OAuthProviderSetting(props: {
   ) => void;
   readonly onSaved: (
     oauth: NonNullable<StudioAuthSettings['oauth']>,
-    message: string,
-    credentialsRef: string,
+    link: StoredOAuthCredentialLink,
   ) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
@@ -640,8 +637,16 @@ function OAuthProviderSetting(props: {
       if (result.ok) {
         props.onSaved(
           mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
-          `${definition.label} credentials saved through ${result.credentialsRef}.`,
-          result.credentialsRef,
+          {
+            providerId: props.providerId,
+            providerLabel: definition.label,
+            credentialsRef: result.credentialsRef,
+            providerDefaults: {
+              label: definition.label,
+              scopes: [...definition.defaultScopes],
+            },
+            successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+          },
         );
         return;
       }

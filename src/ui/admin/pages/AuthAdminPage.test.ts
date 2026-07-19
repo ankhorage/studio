@@ -29,13 +29,15 @@ test('auth saves go through StudioProvider manifest state', () => {
   expect(source).toContain('studio.updateAuthSettings(nextDraft)');
   expect(source).toContain('await studio.flushManifest()');
   expect(source).toContain('readStudioAuthSettings(manifest');
+  expect(source).toContain('studio.mutateAuthSettings');
   expect(source).not.toContain('getProjectAuthSettings');
 });
 
 test('credential saves preserve unrelated draft edits instead of reloading settings', () => {
   expect(source).toContain('void persistCredentialLink');
   expect(source).toContain('mergeOAuthProviderCredentialsRef');
-  expect(source).toContain('const nextDraft = { ...draft, oauth: nextOAuth };');
+  expect(source).toContain('setDraft((current) => ({ ...current, oauth: nextOAuth }))');
+  expect(source).not.toContain('const nextDraft = { ...draft, oauth: nextOAuth };');
   expect(source).not.toContain('onSaved={(nextMessage)');
 });
 

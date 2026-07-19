@@ -26,6 +26,10 @@ export interface StudioAuthSettings {
   readonly profile?: ManifestProfile;
 }
 
+export type StudioAuthSettingsMutation = (
+  settings: StudioAuthSettings | null,
+) => StudioAuthSettings | null;
+
 export type StudioAuthSettingsValidationResult = ValidationResult<StudioAuthSettings>;
 
 const AUTH_SCOPES = new Set(['global', 'none', 'integrated']);

@@ -35,3 +35,12 @@ export function resolveZoraThemeSourceModeConfig(args: {
 }): Pick<ThemeModeConfig, 'primaryColor' | 'harmony'> {
   return args.theme[args.mode];
 }
+
+export function resolveZoraSurfaceThemeConfig(theme: ThemeConfig): ThemeConfig {
+  return {
+    id: theme.id,
+    name: theme.name,
+    light: { ...theme.light },
+    dark: { ...theme.dark },
+  };
+}

@@ -303,7 +303,7 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports = includeStudio ? "import type { ReactNode } from 'react';" : '';
+  const rootLayoutTypeImports = "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -463,6 +463,15 @@ function resolveZoraProviderTheme(
   };
 }
 
+function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
+  return {
+    id: theme.id,
+    name: theme.name,
+    light: { ...theme.light },
+    dark: { ...theme.dark },
+  };
+}
+
 function resolveThemeMode(
   mode: AppManifest['activeThemeMode'],
   fallback: NonNullable<AppManifest['activeThemeMode']>,
@@ -491,7 +500,6 @@ ${indentedRootHookBlock}
   }
 
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
-  const zoraTheme = resolveZoraProviderTheme(activeTheme, activeThemeMode);
   const executeOperation = useMemo(
     () =>
       createRuntimeDataSourceOperationExecutor({
@@ -509,14 +517,14 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
   ${outputDeclaration}
 
   const shell = (
-    <ZoraProvider theme={zoraTheme} initialMode={activeThemeMode}>
+    <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
       <SafeAreaProvider>
         <AppShell>
           ${finalJsx}
         </AppShell>
-        <StatusBar style={activeThemeMode === 'dark' ? 'light' : 'dark'} />
+        <GeneratedStatusBar />
       </SafeAreaProvider>
-    </ZoraProvider>
+    </GeneratedZoraProvider>
   );
 ${indentedStudioShellBlock}  return <GestureHandlerRootView style={{ flex: 1 }}>{shell}</GestureHandlerRootView>;
 }${
@@ -571,17 +579,16 @@ function StudioShell({
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
   );
-  const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme, activeStudioThemeMode);
 
   return (
-    <ZoraProvider theme={studioZoraTheme} initialMode={activeStudioThemeMode}>
+    <GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>
       <SafeAreaProvider>
         <AppShell header={header}>
           ${finalJsx}
         </AppShell>
-        <StatusBar style={activeStudioThemeMode === 'dark' ? 'light' : 'dark'} />
+        <GeneratedStatusBar />
       </SafeAreaProvider>
-    </ZoraProvider>
+    </GeneratedZoraProvider>
   );
 }
 
@@ -601,6 +608,49 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
 }`
       : ''
   }
+
+function GeneratedZoraProvider({
+  children,
+  theme,
+  initialMode,
+}: {
+  children: ReactNode;
+  theme: AppManifest['themes'][number];
+  initialMode: NonNullable<AppManifest['activeThemeMode']>;
+}) {
+  const initialZoraTheme = useMemo(
+    () => resolveZoraProviderTheme(theme, initialMode),
+    [initialMode, theme],
+  );
+
+  return (
+    <ZoraProvider theme={initialZoraTheme} initialMode={initialMode}>
+      <GeneratedZoraThemeConfigSync theme={theme} />
+      {children}
+    </ZoraProvider>
+  );
+}
+
+function GeneratedZoraThemeConfigSync({
+  theme,
+}: {
+  theme: AppManifest['themes'][number];
+}) {
+  const { setThemeConfig } = useZoraTheme();
+  const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
+
+  useEffect(() => {
+    setThemeConfig(themeConfig);
+  }, [setThemeConfig, themeConfig]);
+
+  return null;
+}
+
+function GeneratedStatusBar() {
+  const { mode } = useZoraTheme();
+
+  return <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />;
+}
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
 ${innerThemeHook}  return (
