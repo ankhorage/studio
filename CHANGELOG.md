@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 0.7.0
+
+### Minor Changes
+
+- 1a010a4: Build the first-class `/ankh` administration shell with canonical nested admin routes, route
+  registry helpers, generated page content, responsive admin navigation, and package-owned admin
+  composition exports for generated apps.
+
 ## 0.6.10
 
 ### Patch Changes
