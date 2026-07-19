@@ -30,10 +30,15 @@ import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthA
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import {
-  patchLocalAuthDraftWithStoredOAuthCredentialLink,
+  persistStoredOAuthCredentialLinkAndPatchLocalDraft,
   persistStoredOAuthCredentialLink,
   type StoredOAuthCredentialLink,
+  type StoredOAuthCredentialLinkResult,
 } from './adminAuthCredentialFlow';
+import {
+  OAuthCredentialTransactionCoordinator,
+  type OAuthCredentialTransactionResult,
+} from './adminAuthCredentialTransaction';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
@@ -74,9 +79,13 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [pendingCredentialLink, setPendingCredentialLink] =
     useState<StoredOAuthCredentialLink | null>(null);
+  const [busyCredentialProviderIds, setBusyCredentialProviderIds] = useState<
+    ReadonlySet<AuthOAuthProviderId>
+  >(() => new Set());
   const canonicalManifestRef = useRef<AppManifest | null>(manifest);
   const initializedDraftFromManifestRef = useRef(manifest !== null);
   const healthRefreshCoordinatorRef = useRef(new AuthHealthRefreshCoordinator());
+  const credentialTransactionCoordinatorRef = useRef(new OAuthCredentialTransactionCoordinator());
 
   canonicalManifestRef.current = studioManifest ?? manifest;
 
@@ -135,7 +144,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   );
 
   const persistCredentialLink = useCallback(
-    async (link: StoredOAuthCredentialLink) => {
+    async (link: StoredOAuthCredentialLink): Promise<StoredOAuthCredentialLinkResult> => {
       const result = await persistStoredOAuthCredentialLink({
         link,
         mutateAuthSettings,
@@ -146,13 +155,57 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       if (result.ok) {
         setPendingCredentialLink(null);
         setMessage(result.message);
-        return;
+        return result;
       }
 
       setPendingCredentialLink(result.pendingLink);
       setMessage(result.message);
+      return result;
     },
     [flushManifest, mutateAuthSettings, refreshHealth],
+  );
+
+  const runCredentialTransaction = useCallback(
+    async <T,>(
+      providerId: AuthOAuthProviderId,
+      operation: () => Promise<T>,
+    ): Promise<OAuthCredentialTransactionResult<T>> => {
+      return credentialTransactionCoordinatorRef.current.run(providerId, async () => {
+        setBusyCredentialProviderIds((current) => new Set(current).add(providerId));
+        try {
+          return await operation();
+        } finally {
+          setBusyCredentialProviderIds((current) => {
+            const next = new Set(current);
+            next.delete(providerId);
+            return next;
+          });
+        }
+      });
+    },
+    [],
+  );
+
+  const persistCredentialLinkAndPatchDraft = useCallback(
+    async (link: StoredOAuthCredentialLink) =>
+      persistStoredOAuthCredentialLinkAndPatchLocalDraft({
+        link,
+        persistCredentialLink,
+        patchDraft: (mutation) => setDraft(mutation),
+      }),
+    [persistCredentialLink],
+  );
+
+  const retryPendingCredentialLink = useCallback(
+    async (link: StoredOAuthCredentialLink) => {
+      const result = await runCredentialTransaction(link.providerId, () =>
+        persistCredentialLinkAndPatchDraft(link),
+      );
+      if (!result.ok) {
+        setMessage(`${link.providerLabel} credentials are already being linked.`);
+      }
+    },
+    [persistCredentialLinkAndPatchDraft, runCredentialTransaction],
   );
 
   const save = useCallback(async () => {
@@ -184,7 +237,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       {pendingCredentialLink ? (
         <PendingCredentialLinkCard
           link={pendingCredentialLink}
-          onRetry={() => void persistCredentialLink(pendingCredentialLink)}
+          loading={busyCredentialProviderIds.has(pendingCredentialLink.providerId)}
+          onRetry={() => void retryPendingCredentialLink(pendingCredentialLink)}
           onOpenSecrets={() => {
             router.push('/ankh/secrets');
           }}
@@ -391,12 +445,9 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(link) => {
-                setDraft((current) =>
-                  patchLocalAuthDraftWithStoredOAuthCredentialLink(current, link),
-                );
-                void persistCredentialLink(link);
-              }}
+              onSaved={persistCredentialLinkAndPatchDraft}
+              runCredentialTransaction={runCredentialTransaction}
+              transactionBusy={busyCredentialProviderIds.has(providerId)}
             />
           ))}
 
@@ -534,6 +585,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
 function PendingCredentialLinkCard(props: {
   readonly link: StoredOAuthCredentialLink;
+  readonly loading: boolean;
   readonly onRetry: () => void;
   readonly onOpenSecrets: () => void;
 }) {
@@ -545,7 +597,11 @@ function PendingCredentialLinkCard(props: {
       </Text>
       <KeyValue label="Credentials ref" value={props.link.credentialsRef} />
       <View style={styles.actions}>
-        <PrimaryButton label="Retry manifest link" loading={false} onPress={props.onRetry} />
+        <PrimaryButton
+          label="Retry manifest link"
+          loading={props.loading}
+          onPress={props.onRetry}
+        />
         <SecondaryButton label="Open project secrets" onPress={props.onOpenSecrets} />
       </View>
     </Card>
@@ -561,7 +617,12 @@ function OAuthProviderSetting(props: {
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
-  readonly onSaved: (link: StoredOAuthCredentialLink) => void;
+  readonly onSaved: (link: StoredOAuthCredentialLink) => Promise<StoredOAuthCredentialLinkResult>;
+  readonly runCredentialTransaction: <T>(
+    providerId: AuthOAuthProviderId,
+    operation: () => Promise<T>,
+  ) => Promise<OAuthCredentialTransactionResult<T>>;
+  readonly transactionBusy: boolean;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
@@ -607,6 +668,13 @@ function OAuthProviderSetting(props: {
   };
 
   const saveCredentials = async () => {
+    if (props.transactionBusy) {
+      setCredentialMessage(
+        `${definition?.label ?? props.providerId} credentials are already being saved.`,
+      );
+      return;
+    }
+
     if (!definition) {
       setCredentialMessage('The selected OAuth provider is not supported.');
       return;
@@ -623,37 +691,46 @@ function OAuthProviderSetting(props: {
     }
 
     const credentialsRef = current?.credentialsRef ?? `auth/oauth/${props.providerId}`;
-    setSavingCredentials(true);
-    setCredentialMessage(null);
-    try {
-      const result = await configureProjectOAuthProvider({
-        projectId: props.projectId,
-        providerId: props.providerId as AuthOAuthProviderId,
-        environment: 'local',
-        credentialsRef,
-        payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
-      });
-
-      if (result.ok) {
-        props.onSaved({
-          providerId: props.providerId,
-          providerLabel: definition.label,
-          credentialsRef: result.credentialsRef,
-          providerDefaults: {
-            label: definition.label,
-            scopes: [...definition.defaultScopes],
-          },
-          successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+    const transaction = await props.runCredentialTransaction(props.providerId, async () => {
+      setSavingCredentials(true);
+      setCredentialMessage(null);
+      try {
+        const result = await configureProjectOAuthProvider({
+          projectId: props.projectId,
+          providerId: props.providerId as AuthOAuthProviderId,
+          environment: 'local',
+          credentialsRef,
+          payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
         });
-        return;
-      }
 
-      setCredentialMessage(result.error.message);
-    } catch (error) {
-      setCredentialMessage(toMessage(error));
-    } finally {
-      setCredentialValues({});
-      setSavingCredentials(false);
+        if (result.ok) {
+          const linkResult = await props.onSaved({
+            providerId: props.providerId,
+            providerLabel: definition.label,
+            credentialsRef: result.credentialsRef,
+            providerDefaults: {
+              label: definition.label,
+              scopes: [...definition.defaultScopes],
+            },
+            successMessage: `${definition.label} credentials saved through ${result.credentialsRef}.`,
+          });
+          if (!linkResult.ok) setCredentialMessage(linkResult.message);
+          return linkResult;
+        }
+
+        setCredentialMessage(result.error.message);
+        return null;
+      } catch (error) {
+        setCredentialMessage(toMessage(error));
+        return null;
+      } finally {
+        setCredentialValues({});
+        setSavingCredentials(false);
+      }
+    });
+
+    if (!transaction.ok) {
+      setCredentialMessage(`${definition.label} credentials are already being saved.`);
     }
   };
 
@@ -697,7 +774,7 @@ function OAuthProviderSetting(props: {
       <View style={styles.actions}>
         <PrimaryButton
           label={credentialsComplete ? 'Replace credentials' : 'Save credentials'}
-          loading={savingCredentials}
+          loading={savingCredentials || props.transactionBusy}
           onPress={() => void saveCredentials()}
         />
       </View>

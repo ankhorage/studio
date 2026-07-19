@@ -23,6 +23,8 @@ export type StoredOAuthCredentialLinkResult =
     };
 
 interface StoredOAuthCredentialRollback {
+  readonly authExistedBefore: boolean;
+  readonly oauthExistedBefore: boolean;
   readonly providerId: AuthOAuthProviderId;
   readonly credentialsRef: string;
   readonly previousProvider: AuthOAuthProviderConfig | null;
@@ -64,6 +66,22 @@ export function patchLocalAuthDraftWithStoredOAuthCredentialLink(
   return applyStoredOAuthCredentialLink(settings, link);
 }
 
+export async function persistStoredOAuthCredentialLinkAndPatchLocalDraft(args: {
+  readonly link: StoredOAuthCredentialLink;
+  readonly persistCredentialLink: (
+    link: StoredOAuthCredentialLink,
+  ) => Promise<StoredOAuthCredentialLinkResult>;
+  readonly patchDraft: (mutation: (current: StudioAuthSettings) => StudioAuthSettings) => void;
+}): Promise<StoredOAuthCredentialLinkResult> {
+  const result = await args.persistCredentialLink(args.link);
+  if (result.ok) {
+    args.patchDraft((current) =>
+      patchLocalAuthDraftWithStoredOAuthCredentialLink(current, args.link),
+    );
+  }
+  return result;
+}
+
 export function applyStoredOAuthCredentialLink(
   settings: StudioAuthSettings | null,
   link: StoredOAuthCredentialLink,
@@ -95,9 +113,9 @@ function createStoredOAuthCredentialRollback(
   settings: StudioAuthSettings | null,
   link: StoredOAuthCredentialLink,
 ): StoredOAuthCredentialRollback {
-  const oauth = settings?.oauth ?? createDefaultOAuthSettings();
+  const oauth = settings?.oauth;
   const previousProvider =
-    oauth.providers.find((provider) => provider.id === link.providerId) ?? null;
+    oauth?.providers.find((provider) => provider.id === link.providerId) ?? null;
   const nextSettings = applyStoredOAuthCredentialLink(settings, link);
   const insertedProvider =
     nextSettings.oauth?.providers.find((provider) => provider.id === link.providerId) ??
@@ -108,6 +126,8 @@ function createStoredOAuthCredentialRollback(
     } satisfies AuthOAuthProviderConfig);
 
   return {
+    authExistedBefore: settings !== null,
+    oauthExistedBefore: oauth !== undefined,
     providerId: link.providerId,
     credentialsRef: link.credentialsRef,
     previousProvider,
@@ -124,27 +144,28 @@ function rollbackStoredOAuthCredentialLink(
   const currentProvider = settings.oauth.providers.find(
     (provider) => provider.id === rollback.providerId,
   );
-  if (currentProvider?.credentialsRef !== rollback.credentialsRef) {
-    return settings;
-  }
 
   const { previousProvider } = rollback;
   const providers =
-    previousProvider !== null
-      ? settings.oauth.providers.map((provider) =>
-          provider.id === rollback.providerId
-            ? restoreProviderCredentialsRef(provider, previousProvider)
-            : provider,
-        )
-      : removeInsertedOrFailedCredentialsRef(settings.oauth.providers, rollback);
+    currentProvider?.credentialsRef === rollback.credentialsRef
+      ? previousProvider !== null
+        ? settings.oauth.providers.map((provider) =>
+            provider.id === rollback.providerId
+              ? restoreProviderCredentialsRef(provider, previousProvider)
+              : provider,
+          )
+        : removeInsertedOrFailedCredentialsRef(settings.oauth.providers, rollback)
+      : settings.oauth.providers;
 
-  return {
+  const nextSettings: StudioAuthSettings = {
     ...settings,
     oauth: {
       ...settings.oauth,
       providers,
     },
   };
+
+  return removeTransactionIntroducedStructure(nextSettings, rollback);
 }
 
 function restoreProviderCredentialsRef(
@@ -181,6 +202,51 @@ function areOAuthProvidersEqual(
   right: AuthOAuthProviderConfig,
 ): boolean {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function removeTransactionIntroducedStructure(
+  settings: StudioAuthSettings,
+  rollback: StoredOAuthCredentialRollback,
+): StudioAuthSettings | null {
+  const withoutIntroducedOAuth =
+    !rollback.oauthExistedBefore && settings.oauth && isDefaultOAuthSettings(settings.oauth)
+      ? omitOAuth(settings)
+      : settings;
+
+  if (
+    !rollback.authExistedBefore &&
+    withoutIntroducedOAuth.oauth === undefined &&
+    isDefaultAuthShell(withoutIntroducedOAuth)
+  ) {
+    return null;
+  }
+
+  return withoutIntroducedOAuth;
+}
+
+function omitOAuth(settings: StudioAuthSettings): StudioAuthSettings {
+  const { oauth: _oauth, ...rest } = settings;
+  return rest;
+}
+
+function isDefaultOAuthSettings(oauth: NonNullable<StudioAuthSettings['oauth']>): boolean {
+  return (
+    oauth.enabled === false &&
+    oauth.callbackRoute === '/auth/callback' &&
+    oauth.providers.length === 0
+  );
+}
+
+function isDefaultAuthShell(settings: StudioAuthSettings): boolean {
+  return (
+    settings.scope === 'none' &&
+    settings.provider === 'supabase' &&
+    JSON.stringify(settings.flow) === JSON.stringify(DEFAULT_AUTH_FLOW) &&
+    settings.signIn.identifiers.length === 1 &&
+    settings.signIn.identifiers[0] === 'email' &&
+    settings.signUp === undefined &&
+    settings.profile === undefined
+  );
 }
 
 function createDefaultAuthSettings(): StudioAuthSettings {

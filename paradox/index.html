@@ -1236,7 +1236,7 @@
                 data-target="src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
               >
                 src/ui/admin/pages/adminAuthCredentialFlow.test.ts
-                <small>3 functions</small>
+                <small>4 functions</small>
               </button>
             </li>
             <li>
@@ -1246,7 +1246,17 @@
                 data-target="src/ui/admin/pages/adminAuthCredentialFlow.ts"
               >
                 src/ui/admin/pages/adminAuthCredentialFlow.ts
-                <small>11 functions</small>
+                <small>16 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+              >
+                src/ui/admin/pages/adminAuthCredentialTransaction.test.ts
+                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -1375,7 +1385,7 @@
             <div class="summary">
               <div><strong>84</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>194</strong><span class="muted">modules</span></div>
+              <div><strong>196</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -3657,7 +3667,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/adminAuthCredentialFlow.ts src/authSettings.ts applyStoredOAuthCredentialLink patchLocalAuthDraftWithStoredOAuthCredentialLink persistStoredOAuthCredentialLink StoredOAuthCredentialLink StoredOAuthCredentialLinkResult"
+              data-search="src/ui/admin/pages/adminAuthCredentialFlow.ts src/authSettings.ts applyStoredOAuthCredentialLink patchLocalAuthDraftWithStoredOAuthCredentialLink persistStoredOAuthCredentialLink persistStoredOAuthCredentialLinkAndPatchLocalDraft StoredOAuthCredentialLink StoredOAuthCredentialLinkResult"
             >
               <h3>src/ui/admin/pages/adminAuthCredentialFlow.ts</h3>
               <p class="muted">Referenced module</p>
@@ -3666,7 +3676,32 @@
                 <strong>Exports:</strong> <code>applyStoredOAuthCredentialLink</code>,
                 <code>patchLocalAuthDraftWithStoredOAuthCredentialLink</code>,
                 <code>persistStoredOAuthCredentialLink</code>,
+                <code>persistStoredOAuthCredentialLinkAndPatchLocalDraft</code>,
                 <code>StoredOAuthCredentialLink</code>, <code>StoredOAuthCredentialLinkResult</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts src/ui/admin/pages/adminAuthCredentialTransaction.ts"
+            >
+              <h3>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/ui/admin/pages/adminAuthCredentialTransaction.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/pages/adminAuthCredentialTransaction.ts OAuthCredentialTransactionCoordinator OAuthCredentialTransactionResult"
+            >
+              <h3>src/ui/admin/pages/adminAuthCredentialTransaction.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>OAuthCredentialTransactionCoordinator</code>,
+                <code>OAuthCredentialTransactionResult</code>
               </p>
             </article>
             <article
@@ -3778,7 +3813,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/AuthAdminPage.tsx src/authSettings.ts src/core/StudioContext.ts src/index.ts src/projectAuthApi.ts src/projectAuthHealth.ts src/projectSecretApi.ts src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthHealthFlow.ts AuthAdminPage AuthAdminPageProps"
+              data-search="src/ui/admin/pages/AuthAdminPage.tsx src/authSettings.ts src/core/StudioContext.ts src/index.ts src/projectAuthApi.ts src/projectAuthHealth.ts src/projectSecretApi.ts src/ui/admin/pages/adminAuthCredentialFlow.ts src/ui/admin/pages/adminAuthCredentialTransaction.ts src/ui/admin/pages/adminAuthHealthFlow.ts AuthAdminPage AuthAdminPageProps"
             >
               <h3>src/ui/admin/pages/AuthAdminPage.tsx</h3>
               <p class="muted">Referenced module</p>
@@ -3788,6 +3823,7 @@
                 <code>src/projectAuthApi.ts</code>, <code>src/projectAuthHealth.ts</code>,
                 <code>src/projectSecretApi.ts</code>,
                 <code>src/ui/admin/pages/adminAuthCredentialFlow.ts</code>,
+                <code>src/ui/admin/pages/adminAuthCredentialTransaction.ts</code>,
                 <code>src/ui/admin/pages/adminAuthHealthFlow.ts</code>
               </p>
               <p>
@@ -7938,6 +7974,14 @@
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt;
                 module_src_authSettings_ts
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
@@ -7988,6 +8032,8 @@
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
                 module_src_ui_admin_pages_OverviewAdminPage_tsx[&quot;src/ui/admin/pages/OverviewAdminPage.tsx&quot;]
@@ -8633,6 +8679,11 @@ graph TD
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_projectAuthHealth_ts
@@ -8672,6 +8723,7 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx[&quot;src/ui/admin/pages/OverviewAdminPage.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_OverviewAdminPage_tsx
@@ -8896,6 +8948,8 @@ graph TD
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
                 module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
@@ -9264,8 +9318,11 @@ graph TD
                 module_src_authSettings_ts module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
                 --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt;
-                module_src_authSettings_ts module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
-                --&gt; module_src_projectAuthHealth_ts
+                module_src_authSettings_ts
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+                module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt;
+                module_src_projectAuthHealth_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt;
@@ -9292,6 +9349,8 @@ graph TD
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+                module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
                 module_src_ui_admin_pages_AuthAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts
                 module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt;
@@ -9497,6 +9556,8 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
   module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
@@ -9758,6 +9819,7 @@ graph LR
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt; module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_ts --&gt; module_src_projectAuthHealth_ts
@@ -9777,6 +9839,7 @@ graph LR
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_projectSecretApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --&gt; module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
@@ -9976,6 +10039,8 @@ graph LR
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+                module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
                 module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
@@ -10392,6 +10457,8 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.test.ts&quot;]
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts[&quot;src/ui/admin/pages/adminAuthCredentialTransaction.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.ts&quot;]
   module_src_ui_admin_pages_adminDataSourceOperations_ts[&quot;src/ui/admin/pages/adminDataSourceOperations.ts&quot;]
@@ -16649,7 +16716,17 @@ sequenceDiagram
             >
               <h3>createAuthSettings</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:11:1</code>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:12:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createAuthSettingsWithoutOAuth src/ui/admin/pages/adminAuthCredentialFlow.test.ts "
+            >
+              <h3>createAuthSettingsWithoutOAuth</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:47:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -16659,7 +16736,7 @@ sequenceDiagram
             >
               <h3>createLink</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:46:1</code>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:52:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -16669,7 +16746,7 @@ sequenceDiagram
             >
               <h3>createStore</h3>
               <p class="muted">
-                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:59:1</code>
+                <code>src/ui/admin/pages/adminAuthCredentialFlow.test.ts:65:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -16688,7 +16765,7 @@ sequenceDiagram
               data-search="persistStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>persistStoredOAuthCredentialLink</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:32:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:34:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16696,7 +16773,15 @@ sequenceDiagram
               data-search="patchLocalAuthDraftWithStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>patchLocalAuthDraftWithStoredOAuthCredentialLink</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:60:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:62:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="persistStoredOAuthCredentialLinkAndPatchLocalDraft src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>persistStoredOAuthCredentialLinkAndPatchLocalDraft</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:69:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16704,7 +16789,7 @@ sequenceDiagram
               data-search="applyStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>applyStoredOAuthCredentialLink</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:67:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:85:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16712,7 +16797,7 @@ sequenceDiagram
               data-search="createStoredOAuthCredentialRollback src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>createStoredOAuthCredentialRollback</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:94:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:112:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16720,7 +16805,7 @@ sequenceDiagram
               data-search="rollbackStoredOAuthCredentialLink src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>rollbackStoredOAuthCredentialLink</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:118:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:138:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16728,7 +16813,7 @@ sequenceDiagram
               data-search="restoreProviderCredentialsRef src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>restoreProviderCredentialsRef</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:150:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:171:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16736,7 +16821,7 @@ sequenceDiagram
               data-search="removeInsertedOrFailedCredentialsRef src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>removeInsertedOrFailedCredentialsRef</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:166:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:187:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16744,7 +16829,39 @@ sequenceDiagram
               data-search="areOAuthProvidersEqual src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>areOAuthProvidersEqual</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:179:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:200:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="removeTransactionIntroducedStructure src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>removeTransactionIntroducedStructure</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:207:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="omitOAuth src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>omitOAuth</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:227:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isDefaultOAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>isDefaultOAuthSettings</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:232:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isDefaultAuthShell src/ui/admin/pages/adminAuthCredentialFlow.ts "
+            >
+              <h3>isDefaultAuthShell</h3>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:240:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16752,7 +16869,7 @@ sequenceDiagram
               data-search="createDefaultAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>createDefaultAuthSettings</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:186:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:252:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16760,7 +16877,7 @@ sequenceDiagram
               data-search="createDefaultOAuthSettings src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>createDefaultOAuthSettings</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:196:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:262:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16768,7 +16885,27 @@ sequenceDiagram
               data-search="upsertOAuthProvider src/ui/admin/pages/adminAuthCredentialFlow.ts "
             >
               <h3>upsertOAuthProvider</h3>
-              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:204:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/adminAuthCredentialFlow.ts:270:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-admin-pages-adminauthcredentialtransaction-test-ts"
+          class="view"
+          data-view="src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts</h2>
+            <article
+              class="item"
+              data-search="createDeferred src/ui/admin/pages/adminAuthCredentialTransaction.test.ts "
+            >
+              <h3>createDeferred</h3>
+              <p class="muted">
+                <code>src/ui/admin/pages/adminAuthCredentialTransaction.test.ts:5:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16902,7 +17039,7 @@ sequenceDiagram
             <h2>src/ui/admin/pages/AuthAdminPage.tsx</h2>
             <article class="item" data-search="AuthAdminPage src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>AuthAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:58:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:63:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16910,7 +17047,7 @@ sequenceDiagram
               data-search="PendingCredentialLinkCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>PendingCredentialLinkCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:535:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:586:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16918,12 +17055,12 @@ sequenceDiagram
               data-search="OAuthProviderSetting src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>OAuthProviderSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:555:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:611:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="setEnabled src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>setEnabled</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:583:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:644:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16931,7 +17068,7 @@ sequenceDiagram
               data-search="saveCredentials src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>saveCredentials</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:609:9</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:670:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16939,22 +17076,22 @@ sequenceDiagram
               data-search="upsertProvider src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>upsertProvider</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:709:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:786:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="updateFlow src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>updateFlow</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:720:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:797:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitSignUp src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitSignUp</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:727:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:804:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="omitProfile src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>omitProfile</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:732:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:809:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16962,7 +17099,7 @@ sequenceDiagram
               data-search="createDefaultSettings src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultSettings</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:737:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:814:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16970,7 +17107,7 @@ sequenceDiagram
               data-search="createDefaultOAuth src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createDefaultOAuth</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:747:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:824:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16978,17 +17115,17 @@ sequenceDiagram
               data-search="createFallbackManifest src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>createFallbackManifest</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:755:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:832:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="splitList src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>splitList</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:767:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:844:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMessage src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:778:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:855:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16996,7 +17133,7 @@ sequenceDiagram
               data-search="AuthHealthCard src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>AuthHealthCard</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:783:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:860:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17004,7 +17141,7 @@ sequenceDiagram
               data-search="formatHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:843:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:920:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17012,7 +17149,7 @@ sequenceDiagram
               data-search="formatProviderHealthStatus src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>formatProviderHealthStatus</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:850:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:927:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17020,7 +17157,7 @@ sequenceDiagram
               data-search="healthStatusColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>healthStatusColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:858:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:935:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17028,47 +17165,47 @@ sequenceDiagram
               data-search="diagnosticSeverityColor src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>diagnosticSeverityColor</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:865:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:942:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Card src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Card</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:871:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:948:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Field src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Field</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:886:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:963:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="RouteField src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>RouteField</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:897:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:974:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Input src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Input</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:909:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:986:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="SwitchSetting src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>SwitchSetting</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:928:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1005:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Choice src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Choice</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:947:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1024:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="KeyValue src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>KeyValue</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:971:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1048:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="PrimaryButton src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>PrimaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:982:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1059:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17076,12 +17213,12 @@ sequenceDiagram
               data-search="SecondaryButton src/ui/admin/pages/AuthAdminPage.tsx "
             >
               <h3>SecondaryButton</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1005:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1082:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="Message src/ui/admin/pages/AuthAdminPage.tsx ">
               <h3>Message</h3>
-              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1017:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/AuthAdminPage.tsx:1094:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

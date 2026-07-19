@@ -587,6 +587,11 @@ graph TD
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts["src/ui/admin/pages/adminAuthCredentialFlow.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --> module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts["src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_test_ts --> module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
+  module_src_ui_admin_pages_adminAuthCredentialTransaction_ts["src/ui/admin/pages/adminAuthCredentialTransaction.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts["src/ui/admin/pages/adminAuthHealthFlow.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthHealthFlow_test_ts
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts --> module_src_projectAuthHealth_ts
@@ -626,6 +631,7 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialTransaction_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_OverviewAdminPage_tsx

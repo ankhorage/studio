@@ -34,14 +34,23 @@ test('auth saves go through StudioProvider manifest state', () => {
 });
 
 test('credential saves preserve unrelated draft edits instead of reloading settings', () => {
-  expect(source).toContain('void persistCredentialLink');
-  expect(source).toContain('patchLocalAuthDraftWithStoredOAuthCredentialLink');
+  expect(source).toContain('persistStoredOAuthCredentialLinkAndPatchLocalDraft');
+  expect(source).toContain('persistCredentialLinkAndPatchDraft');
   expect(source).toContain('initializedDraftFromManifestRef');
   expect(source).toContain('canonicalManifestRef');
+  expect(source).not.toContain('void persistCredentialLink');
   expect(source).not.toContain(`useEffect(() => {
     setDraft`);
   expect(source).not.toContain('const nextDraft = { ...draft, oauth: nextOAuth };');
   expect(source).not.toContain('onSaved={(nextMessage)');
+});
+
+test('credential saves serialize the full provider transaction', () => {
+  expect(source).toContain('OAuthCredentialTransactionCoordinator');
+  expect(source).toContain('runCredentialTransaction');
+  expect(source).toContain('await props.onSaved');
+  expect(source).toContain('loading={savingCredentials || props.transactionBusy}');
+  expect(source).toContain('busyCredentialProviderIds.has(providerId)');
 });
 
 test('auth provider enablement uses credential completeness instead of status or ref alone', () => {

@@ -1954,9 +1954,22 @@
         "applyStoredOAuthCredentialLink",
         "patchLocalAuthDraftWithStoredOAuthCredentialLink",
         "persistStoredOAuthCredentialLink",
+        "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
         "StoredOAuthCredentialLink",
         "StoredOAuthCredentialLinkResult"
       ]
+    },
+    {
+      "path": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/adminAuthCredentialTransaction.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/adminAuthCredentialTransaction.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["OAuthCredentialTransactionCoordinator", "OAuthCredentialTransactionResult"]
     },
     {
       "path": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
@@ -2035,6 +2048,7 @@
         "src/projectAuthHealth.ts",
         "src/projectSecretApi.ts",
         "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "src/ui/admin/pages/adminAuthCredentialTransaction.ts",
         "src/ui/admin/pages/adminAuthHealthFlow.ts"
       ],
       "exports": ["AuthAdminPage", "AuthAdminPageProps"]
@@ -11215,7 +11229,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 11,
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthSettingsWithoutOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
+        "line": 47,
         "column": 1
       }
     },
@@ -11224,7 +11247,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 46,
+        "line": 52,
         "column": 1
       }
     },
@@ -11233,7 +11256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
-        "line": 59,
+        "line": 65,
         "column": 1
       }
     },
@@ -11242,7 +11265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 32,
+        "line": 34,
         "column": 1
       }
     },
@@ -11251,7 +11274,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 60,
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 69,
         "column": 1
       }
     },
@@ -11260,7 +11292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 67,
+        "line": 85,
         "column": 1
       }
     },
@@ -11269,7 +11301,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 94,
+        "line": 112,
         "column": 1
       }
     },
@@ -11278,7 +11310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 118,
+        "line": 138,
         "column": 1
       }
     },
@@ -11287,7 +11319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 150,
+        "line": 171,
         "column": 1
       }
     },
@@ -11296,7 +11328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 166,
+        "line": 187,
         "column": 1
       }
     },
@@ -11305,7 +11337,43 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 179,
+        "line": 200,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeTransactionIntroducedStructure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 207,
+        "column": 1
+      }
+    },
+    {
+      "name": "omitOAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDefaultOAuthSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 232,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDefaultAuthShell",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "line": 240,
         "column": 1
       }
     },
@@ -11314,7 +11382,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 186,
+        "line": 252,
         "column": 1
       }
     },
@@ -11323,7 +11391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 196,
+        "line": 262,
         "column": 1
       }
     },
@@ -11332,7 +11400,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
-        "line": 204,
+        "line": 270,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDeferred",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "line": 5,
         "column": 1
       }
     },
@@ -11422,7 +11499,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 58,
+        "line": 63,
         "column": 1
       }
     },
@@ -11431,7 +11508,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 535,
+        "line": 586,
         "column": 1
       }
     },
@@ -11440,7 +11517,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 555,
+        "line": 611,
         "column": 1
       }
     },
@@ -11449,7 +11526,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 583,
+        "line": 644,
         "column": 9
       }
     },
@@ -11458,7 +11535,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 609,
+        "line": 670,
         "column": 9
       }
     },
@@ -11467,7 +11544,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 709,
+        "line": 786,
         "column": 1
       }
     },
@@ -11476,7 +11553,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 720,
+        "line": 797,
         "column": 1
       }
     },
@@ -11485,7 +11562,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 727,
+        "line": 804,
         "column": 1
       }
     },
@@ -11494,7 +11571,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 732,
+        "line": 809,
         "column": 1
       }
     },
@@ -11503,7 +11580,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 737,
+        "line": 814,
         "column": 1
       }
     },
@@ -11512,7 +11589,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 747,
+        "line": 824,
         "column": 1
       }
     },
@@ -11521,7 +11598,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 755,
+        "line": 832,
         "column": 1
       }
     },
@@ -11530,7 +11607,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 767,
+        "line": 844,
         "column": 1
       }
     },
@@ -11539,7 +11616,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 778,
+        "line": 855,
         "column": 1
       }
     },
@@ -11548,7 +11625,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 783,
+        "line": 860,
         "column": 1
       }
     },
@@ -11557,7 +11634,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 843,
+        "line": 920,
         "column": 1
       }
     },
@@ -11566,7 +11643,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 850,
+        "line": 927,
         "column": 1
       }
     },
@@ -11575,7 +11652,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 858,
+        "line": 935,
         "column": 1
       }
     },
@@ -11584,7 +11661,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 865,
+        "line": 942,
         "column": 1
       }
     },
@@ -11593,7 +11670,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 871,
+        "line": 948,
         "column": 1
       }
     },
@@ -11602,7 +11679,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 886,
+        "line": 963,
         "column": 1
       }
     },
@@ -11611,7 +11688,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 897,
+        "line": 974,
         "column": 1
       }
     },
@@ -11620,7 +11697,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 909,
+        "line": 986,
         "column": 1
       }
     },
@@ -11629,7 +11706,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 928,
+        "line": 1005,
         "column": 1
       }
     },
@@ -11638,7 +11715,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 947,
+        "line": 1024,
         "column": 1
       }
     },
@@ -11647,7 +11724,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 971,
+        "line": 1048,
         "column": 1
       }
     },
@@ -11656,7 +11733,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 982,
+        "line": 1059,
         "column": 1
       }
     },
@@ -11665,7 +11742,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1005,
+        "line": 1082,
         "column": 1
       }
     },
@@ -11674,7 +11751,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "line": 1017,
+        "line": 1094,
         "column": 1
       }
     },
@@ -13475,6 +13552,11 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromPath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toPath": "src/ui/admin/pages/adminAuthCredentialTransaction.ts",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
         "fromPath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts",
         "toPath": "src/projectAuthHealth.ts",
         "sourcePath": "src/ui/admin/pages/adminAuthHealthFlow.test.ts"
@@ -13572,6 +13654,11 @@
       {
         "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toPath": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/adminAuthCredentialTransaction.ts",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -24521,6 +24608,12 @@
         "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
       },
       {
+        "fromSymbol": "createAuthSettingsWithoutOAuth",
+        "toSymbol": "createAuthSettings",
+        "callExpression": "createAuthSettings",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
+      },
+      {
         "fromSymbol": "mutateAuthSettings",
         "toSymbol": "mutation",
         "callExpression": "mutation",
@@ -24588,6 +24681,12 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
+        "toSymbol": "createAuthSettingsWithoutOAuth",
+        "callExpression": "createAuthSettingsWithoutOAuth",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
         "toSymbol": "mutateAuthSettings",
         "callExpression": "store.mutateAuthSettings",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
@@ -24608,6 +24707,18 @@
         "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
         "toSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
         "callExpression": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
+        "toSymbol": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "callExpression": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
+      },
+      {
+        "fromSymbol": "patchDraft",
+        "toSymbol": "mutation",
+        "callExpression": "mutation",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
       },
       {
@@ -24659,6 +24770,24 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromSymbol": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "toSymbol": "persistCredentialLink",
+        "callExpression": "args.persistCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "toSymbol": "patchDraft",
+        "callExpression": "args.patchDraft",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
+        "toSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "callExpression": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
         "fromSymbol": "applyStoredOAuthCredentialLink",
         "toSymbol": "createDefaultAuthSettings",
         "callExpression": "createDefaultAuthSettings",
@@ -24674,12 +24803,6 @@
         "fromSymbol": "applyStoredOAuthCredentialLink",
         "toSymbol": "upsertOAuthProvider",
         "callExpression": "upsertOAuthProvider",
-        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
-      },
-      {
-        "fromSymbol": "createStoredOAuthCredentialRollback",
-        "toSymbol": "createDefaultOAuthSettings",
-        "callExpression": "createDefaultOAuthSettings",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
@@ -24701,9 +24824,33 @@
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
+        "fromSymbol": "rollbackStoredOAuthCredentialLink",
+        "toSymbol": "removeTransactionIntroducedStructure",
+        "callExpression": "removeTransactionIntroducedStructure",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
         "fromSymbol": "src/ui/admin/pages/adminAuthCredentialFlow.ts",
         "toSymbol": "areOAuthProvidersEqual",
         "callExpression": "areOAuthProvidersEqual",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "removeTransactionIntroducedStructure",
+        "toSymbol": "isDefaultOAuthSettings",
+        "callExpression": "isDefaultOAuthSettings",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "removeTransactionIntroducedStructure",
+        "toSymbol": "omitOAuth",
+        "callExpression": "omitOAuth",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "removeTransactionIntroducedStructure",
+        "toSymbol": "isDefaultAuthShell",
+        "callExpression": "isDefaultAuthShell",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
       },
       {
@@ -24711,6 +24858,66 @@
         "toSymbol": "createDefaultOAuthSettings",
         "callExpression": "createDefaultOAuthSettings",
         "sourcePath": "src/ui/admin/pages/adminAuthCredentialFlow.ts"
+      },
+      {
+        "fromSymbol": "resolve",
+        "toSymbol": "resolvePromise",
+        "callExpression": "resolvePromise",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "createDeferred",
+        "callExpression": "createDeferred",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "run",
+        "callExpression": "coordinator.run",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "isBusy",
+        "callExpression": "coordinator.isBusy",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "flush.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "googleFlush.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.test.ts"
+      },
+      {
+        "fromSymbol": "run",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/ui/admin/pages/adminAuthCredentialTransaction.ts"
       },
       {
         "fromSymbol": "resolve",
@@ -25086,6 +25293,48 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "run",
+        "callExpression": "credentialTransactionCoordinatorRef.current.run",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setBusyCredentialProviderIds",
+        "callExpression": "setBusyCredentialProviderIds",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "callExpression": "persistStoredOAuthCredentialLinkAndPatchLocalDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "patchDraft",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "runCredentialTransaction",
+        "callExpression": "runCredentialTransaction",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "persistCredentialLinkAndPatchDraft",
+        "callExpression": "persistCredentialLinkAndPatchDraft",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "setSaving",
         "callExpression": "setSaving",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
@@ -25110,8 +25359,8 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "persistCredentialLink",
-        "callExpression": "persistCredentialLink",
+        "toSymbol": "retryPendingCredentialLink",
+        "callExpression": "retryPendingCredentialLink",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -25136,12 +25385,6 @@
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "createDefaultOAuth",
         "callExpression": "createDefaultOAuth",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
-        "callExpression": "patchLocalAuthDraftWithStoredOAuthCredentialLink",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -25194,30 +25437,36 @@
       },
       {
         "fromSymbol": "saveCredentials",
+        "toSymbol": "runCredentialTransaction",
+        "callExpression": "props.runCredentialTransaction",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "setSavingCredentials",
         "callExpression": "setSavingCredentials",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "saveCredentials",
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
+        "toSymbol": "setCredentialMessage",
+        "callExpression": "setCredentialMessage",
+        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "configureProjectOAuthProvider",
         "callExpression": "configureProjectOAuthProvider",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "saveCredentials",
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "onSaved",
         "callExpression": "props.onSaved",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
-        "fromSymbol": "saveCredentials",
-        "toSymbol": "toMessage",
-        "callExpression": "toMessage",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "saveCredentials",
+        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toSymbol": "setCredentialValues",
         "callExpression": "setCredentialValues",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
@@ -25226,12 +25475,6 @@
         "fromSymbol": "OAuthProviderSetting",
         "toSymbol": "formatProviderHealthStatus",
         "callExpression": "formatProviderHealthStatus",
-        "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "setCredentialValues",
-        "callExpression": "setCredentialValues",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
