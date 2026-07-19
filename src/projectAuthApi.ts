@@ -1,5 +1,3 @@
-import type { StudioAuthSettings } from './authSettings';
-import { validateStudioAuthSettings } from './authSettings';
 import type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -31,22 +29,6 @@ export async function getProjectAuthHealth(input: {
     `/projects/${encodeURIComponent(input.projectId)}/auth/health${query}`,
   );
   return parseProjectAuthHealthResponse(value);
-}
-
-export function parseProjectAuthSettingsResponse(
-  value: unknown,
-  expectedState: 'loaded' | 'saved',
-): StudioAuthSettings | null {
-  rejectRawSecretResponse(value, 'Project auth response was invalid.');
-  const record = asRecord(value);
-  if (record?.ok !== true || record.state !== expectedState) {
-    throw invalidResponse('Project auth response was invalid.');
-  }
-  if (record.data === null && expectedState === 'loaded') return null;
-
-  const parsed = validateStudioAuthSettings(record.data);
-  if (!parsed.ok) throw invalidResponse(parsed.error.message);
-  return parsed.data;
 }
 
 export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealth {

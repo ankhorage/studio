@@ -250,7 +250,7 @@ export class LayoutGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useCallback, useEffect, useMemo, useState } from 'react';`,
       `import { AppState } from 'react-native';`,
@@ -270,7 +270,7 @@ import { authAdapter } from '@/auth/adapter';`,
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
       includeStudio
-        ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
+        ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
       ...pluginImports,
     ]
@@ -337,10 +337,10 @@ import { authAdapter } from '@/auth/adapter';`,
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
       rootNavigator.type === 'tabs'
-        ? `import { Tabs${includeStudio ? ', usePathname' : ''} } from 'expo-router';`
+        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`
         : rootNavigator.type === 'drawer'
-          ? `${includeStudio ? `import { usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
-          : `import { Stack${includeStudio ? ', usePathname' : ''} } from 'expo-router';`,
+          ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
+          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -351,7 +351,7 @@ import { authAdapter } from '@/auth/adapter';`,
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
       includeStudio
-        ? `import { isStudioAdminPath, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
+        ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
     ];
 

@@ -344,6 +344,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setActiveLocale: (locale: StudioLocale) => void;
   reloadDictionaries: () => Promise<void>;
   refetchManifest: () => Promise<void>;
+  flushManifest: () => Promise<void>;
 }
 
 export const ACTION_REGISTRY: Record<ActionType, ActionDefinition> = {

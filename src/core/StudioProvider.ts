@@ -10,11 +10,7 @@ import type {
 import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
 import React, { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import {
-  applyStudioAuthSettings,
-  readStudioAuthSettings,
-  type StudioAuthSettings,
-} from '../authSettings';
+import { readStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
 import {
   findNodeById,
   type InsertCatalogEntry,
@@ -29,17 +25,19 @@ import {
   type StudioScreenId,
   type ThemeUpdates,
 } from '../index';
-import {
-  findScreenIdForNode,
-  updateStudioManifestAppData,
-  updateStudioManifestDataBindings,
-  updateStudioManifestDataSources,
-  updateStudioManifestNode,
-  updateStudioManifestTheme,
-} from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
 import { API_BASE } from './constants';
 import { StudioContext } from './StudioContext';
+import {
+  applyStudioManifestDraftMutation,
+  updateStudioManifestDraftAppData,
+  updateStudioManifestDraftAuthSettings,
+  updateStudioManifestDraftDataBindings,
+  updateStudioManifestDraftDataSources,
+  updateStudioManifestDraftNode,
+  updateStudioManifestDraftTheme,
+} from './studioManifestDraftModel';
+import { StudioManifestPersistenceCoordinator } from './studioManifestPersistenceModel';
 
 export interface StudioProviderProps {
   children: ReactNode;
@@ -92,11 +90,26 @@ export const StudioProvider = ({
   const [studioMode, setStudioMode] = useState<StudioMode>('dark');
   const [previewMode, setPreviewMode] = useState(false);
   const [activeLocale, setActiveLocale] = useState('en');
+  const manifestRef = useRef<StudioManifest | null>(initialManifest);
+  const replaceManifest = useCallback((nextManifest: StudioManifest | null) => {
+    manifestRef.current = nextManifest;
+    setManifest(nextManifest);
+  }, []);
+  const updateManifest = useCallback(
+    (mutation: (current: StudioManifest) => StudioManifest): StudioManifest | null => {
+      const nextManifest = applyStudioManifestDraftMutation(manifestRef.current, mutation);
+      if (!nextManifest) return null;
+      replaceManifest(nextManifest);
+      return nextManifest;
+    },
+    [replaceManifest],
+  );
   const persistence = useStudioManifestPersistence({
     projectId,
     manifest,
+    manifestRef,
     initialManifest,
-    setManifest,
+    replaceManifest,
     setSaveStatus,
     setIsLoading,
     setError,
@@ -107,43 +120,49 @@ export const StudioProvider = ({
     [activeScreenId, manifest],
   );
 
-  const updateNode = useCallback((nodeId: StudioNodeId, props: Record<string, unknown>) => {
-    setManifest((current) => {
-      if (!current) return current;
-      const owningScreenId = findScreenIdForNode(current, nodeId);
-      if (!owningScreenId) return current;
-      return updateStudioManifestNode(current, owningScreenId, nodeId, props);
-    });
-  }, []);
+  const updateNode = useCallback(
+    (nodeId: StudioNodeId, props: Record<string, unknown>) => {
+      updateManifest((current) => updateStudioManifestDraftNode(current, nodeId, props));
+    },
+    [updateManifest],
+  );
 
-  const updateTheme = useCallback((id: string, updates: ThemeUpdates) => {
-    setManifest((current) => (current ? updateStudioManifestTheme(current, id, updates) : current));
-  }, []);
+  const updateTheme = useCallback(
+    (id: string, updates: ThemeUpdates) => {
+      updateManifest((current) => updateStudioManifestDraftTheme(current, id, updates));
+    },
+    [updateManifest],
+  );
 
-  const updateAuthSettings = useCallback((settings: StudioAuthSettings) => {
-    setManifest((current) => (current ? applyStudioAuthSettings(current, settings) : current));
-  }, []);
+  const updateAuthSettings = useCallback(
+    (settings: StudioAuthSettings) => {
+      updateManifest((current) => updateStudioManifestDraftAuthSettings(current, settings));
+    },
+    [updateManifest],
+  );
 
-  const updateOAuthProviders = useCallback((providers: AuthOAuthProviderConfig[]) => {
-    setManifest((current) => {
-      if (!current) return current;
-      const currentAuth = readStudioAuthSettings(current);
-      const nextAuth = currentAuth ?? {
-        scope: 'none',
-        provider: 'supabase',
-        flow: { ...DEFAULT_AUTH_FLOW },
-        signIn: { identifiers: ['email'] },
-      };
-      return applyStudioAuthSettings(current, {
-        ...nextAuth,
-        oauth: {
-          enabled: nextAuth.oauth?.enabled ?? false,
-          callbackRoute: nextAuth.oauth?.callbackRoute ?? '/auth/callback',
-          providers,
-        },
+  const updateOAuthProviders = useCallback(
+    (providers: AuthOAuthProviderConfig[]) => {
+      updateManifest((current) => {
+        const currentAuth = readStudioAuthSettings(current);
+        const nextAuth = currentAuth ?? {
+          scope: 'none',
+          provider: 'supabase',
+          flow: { ...DEFAULT_AUTH_FLOW },
+          signIn: { identifiers: ['email'] },
+        };
+        return updateStudioManifestDraftAuthSettings(current, {
+          ...nextAuth,
+          oauth: {
+            enabled: nextAuth.oauth?.enabled ?? false,
+            callbackRoute: nextAuth.oauth?.callbackRoute ?? '/auth/callback',
+            providers,
+          },
+        });
       });
-    });
-  }, []);
+    },
+    [updateManifest],
+  );
 
   const value = useMemo<StudioContextValue>(
     () => ({
@@ -169,15 +188,11 @@ export const StudioProvider = ({
       setActiveCanvasDragNodeId,
       updateNode,
       updateAppData: (data: AppDataManifest) =>
-        setManifest((current) => (current ? updateStudioManifestAppData(current, data) : current)),
+        updateManifest((current) => updateStudioManifestDraftAppData(current, data)),
       updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
-        setManifest((current) =>
-          current ? updateStudioManifestDataBindings(current, dataBindings) : current,
-        ),
+        updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
-        setManifest((current) =>
-          current ? updateStudioManifestDataSources(current, dataSources) : current,
-        ),
+        updateManifest((current) => updateStudioManifestDraftDataSources(current, dataSources)),
       deleteNode: noop,
       insertFromCatalogEntry: (_entry: InsertCatalogEntry) => false,
       moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
@@ -204,6 +219,7 @@ export const StudioProvider = ({
       setActiveLocale,
       reloadDictionaries: noopAsync,
       refetchManifest: persistence.refetchManifest,
+      flushManifest: persistence.flushManifest,
     }),
     [
       activeAdminRouteId,
@@ -221,11 +237,13 @@ export const StudioProvider = ({
       saveStatus,
       selectedNodeId,
       studioMode,
+      updateManifest,
       updateNode,
       updateAuthSettings,
       updateOAuthProviders,
       updateTheme,
       persistence.refetchManifest,
+      persistence.flushManifest,
     ],
   );
 
@@ -235,35 +253,51 @@ export const StudioProvider = ({
 function useStudioManifestPersistence(args: {
   readonly projectId: string;
   readonly manifest: StudioManifest | null;
+  readonly manifestRef: React.RefObject<StudioManifest | null>;
   readonly initialManifest: StudioManifest | null;
-  readonly setManifest: React.Dispatch<React.SetStateAction<StudioManifest | null>>;
+  readonly replaceManifest: (manifest: StudioManifest | null) => void;
   readonly setSaveStatus: React.Dispatch<React.SetStateAction<StudioContextValue['saveStatus']>>;
   readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   readonly setError: React.Dispatch<React.SetStateAction<string | null>>;
-}): { readonly refetchManifest: () => Promise<void> } {
+}): { readonly refetchManifest: () => Promise<void>; readonly flushManifest: () => Promise<void> } {
   const {
     projectId,
     manifest,
+    manifestRef,
     initialManifest,
     setError,
     setIsLoading,
-    setManifest,
+    replaceManifest,
     setSaveStatus,
   } = args;
   const hydratedRef = useRef(false);
   const lastPersistedSignatureRef = useRef<string | null>(
     initialManifest ? createStudioManifestSignature(initialManifest) : null,
   );
-  const saveInFlightRef = useRef(false);
-  const pendingSaveRef = useRef<StudioManifest | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const coordinator = useMemo(
+    () =>
+      new StudioManifestPersistenceCoordinator({
+        projectId,
+        readManifest: () => manifestRef.current,
+        readLastPersistedSignature: () => lastPersistedSignatureRef.current,
+        setLastPersistedSignature: (signature) => {
+          lastPersistedSignatureRef.current = signature;
+        },
+        saveManifest: saveStudioManifest,
+        setSaveStatus,
+        setError,
+        toErrorMessage: toPersistenceMessage,
+      }),
+    [manifestRef, projectId, setError, setSaveStatus],
+  );
 
   const loadManifest = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const loaded = await requestStudioManifest(projectId);
-      setManifest(loaded);
+      replaceManifest(loaded);
       lastPersistedSignatureRef.current = createStudioManifestSignature(loaded);
       setSaveStatus('saved');
     } catch (caught) {
@@ -277,31 +311,7 @@ function useStudioManifestPersistence(args: {
       hydratedRef.current = true;
       setIsLoading(false);
     }
-  }, [initialManifest, projectId, setError, setIsLoading, setManifest, setSaveStatus]);
-
-  const saveNext = useCallback(async () => {
-    if (saveInFlightRef.current) return;
-    const nextManifest = pendingSaveRef.current;
-    if (!nextManifest) return;
-
-    pendingSaveRef.current = null;
-    saveInFlightRef.current = true;
-    setSaveStatus('saving');
-    try {
-      await saveStudioManifest(projectId, nextManifest);
-      lastPersistedSignatureRef.current = createStudioManifestSignature(nextManifest);
-      setError(null);
-      setSaveStatus('saved');
-    } catch (caught) {
-      setError(toPersistenceMessage(caught));
-      setSaveStatus('error');
-    } finally {
-      saveInFlightRef.current = false;
-      if (hasPendingStudioManifest(pendingSaveRef)) {
-        void saveNext();
-      }
-    }
-  }, [projectId, setError, setSaveStatus]);
+  }, [initialManifest, projectId, replaceManifest, setError, setIsLoading, setSaveStatus]);
 
   useEffect(() => {
     void loadManifest();
@@ -313,14 +323,13 @@ function useStudioManifestPersistence(args: {
     const signature = createStudioManifestSignature(manifest);
     if (signature === lastPersistedSignatureRef.current) return;
 
-    pendingSaveRef.current = manifest;
     setSaveStatus('saving');
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
     debounceTimerRef.current = setTimeout(() => {
       debounceTimerRef.current = null;
-      void saveNext();
+      void coordinator.queueLatestSave().catch(() => undefined);
     }, STUDIO_MANIFEST_SAVE_DELAY_MS);
 
     return () => {
@@ -329,13 +338,17 @@ function useStudioManifestPersistence(args: {
         debounceTimerRef.current = null;
       }
     };
-  }, [manifest, saveNext, setSaveStatus]);
+  }, [coordinator, manifest, setSaveStatus]);
 
-  return { refetchManifest: loadManifest };
-}
+  const flushManifest = useCallback(async () => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    await coordinator.flushLatestSave();
+  }, [coordinator]);
 
-function hasPendingStudioManifest(ref: React.RefObject<StudioManifest | null>): boolean {
-  return ref.current !== null;
+  return { refetchManifest: loadManifest, flushManifest };
 }
 
 async function requestStudioManifest(projectId: string): Promise<StudioManifest> {

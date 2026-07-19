@@ -16,6 +16,10 @@ graph LR
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
+  module_src_core_studioManifestDraftModel_test_ts["src/core/studioManifestDraftModel.test.ts"]
+  module_src_core_studioManifestDraftModel_ts["src/core/studioManifestDraftModel.ts"]
+  module_src_core_studioManifestPersistenceModel_test_ts["src/core/studioManifestPersistenceModel.test.ts"]
+  module_src_core_studioManifestPersistenceModel_ts["src/core/studioManifestPersistenceModel.ts"]
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
   module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
@@ -25,12 +29,11 @@ graph LR
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
-  module_src_host_auth_projectAuthService_test_ts["src/host/auth/projectAuthService.test.ts"]
-  module_src_host_auth_projectAuthService_ts["src/host/auth/projectAuthService.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
+  module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
   module_src_host_http_authRoutes_ts["src/host/http/authRoutes.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   module_src_host_http_security_ts["src/host/http/security.ts"]
@@ -166,8 +169,12 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx["src/ui/admin/AnkhAdminPage.tsx"]
   module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
   module_src_ui_admin_AnkhAdminShell_tsx["src/ui/admin/AnkhAdminShell.tsx"]
+  module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts["src/ui/admin/pages/adminAuthCredentialFlow.test.ts"]
+  module_src_ui_admin_pages_adminAuthCredentialFlow_ts["src/ui/admin/pages/adminAuthCredentialFlow.ts"]
   module_src_ui_admin_pages_adminDataSourceOperations_ts["src/ui/admin/pages/adminDataSourceOperations.ts"]
   module_src_ui_admin_pages_adminThemeHarmony_ts["src/ui/admin/pages/adminThemeHarmony.ts"]
+  module_src_ui_admin_pages_adminThemeModel_test_ts["src/ui/admin/pages/adminThemeModel.test.ts"]
+  module_src_ui_admin_pages_adminThemeModel_ts["src/ui/admin/pages/adminThemeModel.ts"]
   module_src_ui_admin_pages_ApisAdminPage_test_ts["src/ui/admin/pages/ApisAdminPage.test.ts"]
   module_src_ui_admin_pages_ApisAdminPage_tsx["src/ui/admin/pages/ApisAdminPage.tsx"]
   module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
@@ -208,11 +215,23 @@ graph LR
   module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
+  module_src_core_studioManifestDraftModel_test_ts --> module_src_authSettings_ts
+  module_src_core_studioManifestDraftModel_test_ts --> module_src_core_studioManifestDraftModel_ts
+  module_src_core_studioManifestDraftModel_test_ts --> module_src_index_ts
+  module_src_core_studioManifestDraftModel_ts --> module_src_authSettings_ts
+  module_src_core_studioManifestDraftModel_ts --> module_src_index_ts
+  module_src_core_studioManifestDraftModel_ts --> module_src_manifestState_ts
+  module_src_core_studioManifestPersistenceModel_test_ts --> module_src_core_studioManifestPersistenceModel_ts
+  module_src_core_studioManifestPersistenceModel_test_ts --> module_src_index_ts
+  module_src_core_studioManifestPersistenceModel_test_ts --> module_src_manifestSync_ts
+  module_src_core_studioManifestPersistenceModel_ts --> module_src_index_ts
+  module_src_core_studioManifestPersistenceModel_ts --> module_src_manifestSync_ts
   module_src_core_StudioProvider_ts --> module_src_authSettings_ts
   module_src_core_StudioProvider_ts --> module_src_core_constants_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
+  module_src_core_StudioProvider_ts --> module_src_core_studioManifestDraftModel_ts
+  module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
-  module_src_core_StudioProvider_ts --> module_src_manifestState_ts
   module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
@@ -220,9 +239,6 @@ graph LR
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthHealth_ts
-  module_src_host_auth_projectAuthService_test_ts --> module_src_host_auth_projectAuthService_ts
-  module_src_host_auth_projectAuthService_ts --> module_src_authSettings_ts
-  module_src_host_auth_projectAuthService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
@@ -235,8 +251,9 @@ graph LR
   module_src_host_hostOwnership_test_ts --> module_src_host_http_security_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_hostOwnership_test_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_authRoutes_test_ts --> module_src_host_http_authRoutes_ts
+  module_src_host_http_authRoutes_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_authRoutes_ts --> module_src_host_auth_projectAuthHealthService_ts
-  module_src_host_http_authRoutes_ts --> module_src_host_auth_projectAuthService_ts
   module_src_host_http_authRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_authRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
@@ -372,9 +389,7 @@ graph LR
   module_src_modules_dashboard_templates_ts --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_ProjectCard_tsx --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_ui_TemplateCard_tsx --> module_src_modules_dashboard_types_ts
-  module_src_projectAuthApi_test_ts --> module_src_authSettings_ts
   module_src_projectAuthApi_test_ts --> module_src_projectAuthApi_ts
-  module_src_projectAuthApi_ts --> module_src_authSettings_ts
   module_src_projectAuthApi_ts --> module_src_projectAuthHealth_ts
   module_src_projectAuthApi_ts --> module_src_secretResponseGuard_ts
   module_src_projectAuthHealth_test_ts --> module_src_projectAuthHealth_ts
@@ -409,7 +424,12 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_index_ts
   module_src_ui_admin_AnkhAdminShell_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --> module_src_authSettings_ts
+  module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
+  module_src_ui_admin_pages_adminAuthCredentialFlow_ts --> module_src_authSettings_ts
   module_src_ui_admin_pages_adminDataSourceOperations_ts --> module_src_ui_admin_adminPageUtils_ts
+  module_src_ui_admin_pages_adminThemeModel_test_ts --> module_src_ui_admin_pages_adminThemeModel_ts
+  module_src_ui_admin_pages_adminThemeModel_ts --> module_src_index_ts
   module_src_ui_admin_pages_ApisAdminPage_test_ts --> module_src_ui_admin_pages_adminDataSourceOperations_ts
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_index_ts
@@ -422,6 +442,7 @@ graph LR
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts
@@ -435,6 +456,7 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_index_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeHarmony_ts
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts

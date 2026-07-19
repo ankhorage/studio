@@ -9,9 +9,9 @@ const source = readFileSync(
 );
 
 test('uses canonical manifestState mutations for provider authoring state', () => {
-  expect(source).toContain('updateStudioManifestTheme');
-  expect(source).toContain('findScreenIdForNode');
-  expect(source).toContain('updateStudioManifestNode');
+  expect(source).toContain('updateStudioManifestDraftTheme');
+  expect(source).toContain('updateStudioManifestDraftNode');
+  expect(source).toContain('updateStudioManifestDraftAuthSettings');
   expect(source).not.toContain('updateNode: noop');
   expect(source).not.toContain('updateTheme: (_id: string, _updates: ThemeUpdates)');
 });
@@ -19,7 +19,9 @@ test('uses canonical manifestState mutations for provider authoring state', () =
 test('owns Studio draft hydration and autosave through the host manifest boundary', () => {
   expect(source).toContain('/studio/manifest');
   expect(source).toContain('createStudioManifestSignature');
-  expect(source).toContain('pendingSaveRef');
+  expect(source).toContain('StudioManifestPersistenceCoordinator');
   expect(source).toContain('lastPersistedSignatureRef');
   expect(source).toContain('refetchManifest: persistence.refetchManifest');
+  expect(source).toContain('flushManifest: persistence.flushManifest');
+  expect(source).not.toContain('pendingSaveRef');
 });

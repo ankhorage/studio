@@ -65,13 +65,20 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
-  expect(generated).toContain(
-    'setLastNonAdminLocation(resolveStudioNavigableLocation(appPathname))',
-  );
-  expect(generated).toContain('if (!isStudioAdminPath(appPathname))');
+  expect(generated).toContain('const appRouteSearchParams = useGlobalSearchParams();');
+  expect(generated).toContain('const appLocation = useMemo(');
+  expect(generated).toContain('resolveStudioLastNonAdminLocation({');
+  expect(generated).toContain('setLastNonAdminLocation(nextAppLocation)');
+  expect(generated).toContain('if (nextAppLocation) setLastNonAdminLocation(nextAppLocation)');
   expect(generated).toContain('const shouldMountAppHeader =');
   expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
   expect(generated).not.toContain('studioAppBar.overlay');
+  expect(generated).toContain(
+    'const zoraTheme = resolveZoraProviderTheme(activeTheme, activeThemeMode)',
+  );
+  expect(generated).toContain(
+    'const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme, activeStudioThemeMode)',
+  );
 });
 
 test('suppresses the normal Studio app header inside admin routes without auth runtime', () => {

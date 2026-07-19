@@ -9,6 +9,7 @@ import {
   openStudioAdminRoute,
   resolveStudioAdminRouteId,
   resolveStudioAdminRoutePath,
+  resolveStudioLastNonAdminLocation,
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
   STUDIO_ADMIN_ROUTE_REGISTRY,
@@ -125,11 +126,32 @@ describe('studioAdminRouteModel', () => {
     try {
       expect(resolveStudioNavigableLocation('/orders')).toBe('/orders?filter=open#row-1');
       expect(resolveStudioNavigableLocation('/customers')).toBe('/customers');
+      expect(resolveStudioLastNonAdminLocation({ pathname: '/orders' })).toBe(
+        '/orders?filter=open#row-1',
+      );
     } finally {
       Object.defineProperty(globalThis, 'location', {
         configurable: true,
         value: original,
       });
     }
+  });
+
+  test('tracks only useful non-admin locations and preserves native pathname fallback', () => {
+    expect(
+      resolveStudioLastNonAdminLocation({
+        pathname: '/orders',
+        navigableLocation: '/orders?filter=closed',
+      }),
+    ).toBe('/orders?filter=closed');
+    expect(
+      resolveStudioLastNonAdminLocation({
+        pathname: '/ankh/apis',
+        navigableLocation: '/ankh/apis?tab=operations',
+      }),
+    ).toBeNull();
+    expect(resolveStudioLastNonAdminLocation({ pathname: '/native/orders' })).toBe(
+      '/native/orders',
+    );
   });
 });

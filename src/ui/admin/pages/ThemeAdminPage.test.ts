@@ -27,4 +27,6 @@ test('does not accept arbitrary harmony text through type assertions', () => {
 
   expect(source).not.toContain("harmony as ThemeModeConfig['harmony']");
   expect(source).not.toContain('as ThemeUpdates');
+  expect(source).toContain('useZoraTheme()');
+  expect(source).toContain('The Studio manifest does not contain a valid active theme.');
 });

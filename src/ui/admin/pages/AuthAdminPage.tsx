@@ -28,6 +28,10 @@ import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
+import {
+  persistStoredOAuthCredentialLink,
+  type StoredOAuthCredentialLink,
+} from './adminAuthCredentialFlow';
 
 const SIGN_IN_IDENTIFIERS = ['email', 'phone', 'username'] as const;
 const PROFILE_FIELDS = [
@@ -60,6 +64,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [pendingCredentialLink, setPendingCredentialLink] =
+    useState<StoredOAuthCredentialLink | null>(null);
 
   useEffect(() => {
     setDraft(
@@ -97,18 +103,49 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     }
   }, [projectId]);
 
+  const persistAuthDraft = useCallback(
+    async (nextDraft: StudioAuthSettings, nextMessage: string) => {
+      studio.updateAuthSettings(nextDraft);
+      await studio.flushManifest();
+      setPendingCredentialLink(null);
+      setMessage(nextMessage);
+      await refreshHealth();
+    },
+    [refreshHealth, studio],
+  );
+
+  const persistCredentialLink = useCallback(
+    async (link: StoredOAuthCredentialLink) => {
+      const result = await persistStoredOAuthCredentialLink({
+        link,
+        updateAuthSettings: studio.updateAuthSettings,
+        flushManifest: studio.flushManifest,
+        refreshHealth,
+        toMessage,
+      });
+      if (result.ok) {
+        setPendingCredentialLink(null);
+        setMessage(result.message);
+        return;
+      }
+
+      setPendingCredentialLink(result.pendingLink);
+      setMessage(result.message);
+    },
+    [refreshHealth, studio.flushManifest, studio.updateAuthSettings],
+  );
+
   const save = useCallback(async () => {
     setSaving(true);
     setMessage(null);
     try {
-      studio.updateAuthSettings(draft);
-      setMessage('Authentication configuration queued for the Studio manifest draft.');
+      await persistAuthDraft(draft, 'Authentication configuration saved to the Studio manifest.');
     } catch (error) {
       setMessage(toMessage(error));
     } finally {
       setSaving(false);
     }
-  }, [draft, studio]);
+  }, [draft, persistAuthDraft]);
 
   const authEnabled = draft.scope !== 'none';
   const signUpEnabled = draft.signUp !== undefined;
@@ -124,6 +161,15 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       {loading ? <ActivityIndicator /> : null}
 
       {showGeneral || showProviders ? <AuthHealthCard health={health} /> : null}
+      {pendingCredentialLink ? (
+        <PendingCredentialLinkCard
+          link={pendingCredentialLink}
+          onRetry={() => void persistCredentialLink(pendingCredentialLink)}
+          onOpenSecrets={() => {
+            router.push('/ankh/secrets');
+          }}
+        />
+      ) : null}
 
       {showGeneral ? (
         <Card title="Overview">
@@ -325,12 +371,17 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
                 setDraft((current) => ({ ...current, oauth: nextOAuth }));
                 setMessage(nextMessage);
               }}
-              onSaved={(nextOAuth, nextMessage) => {
+              onSaved={(nextOAuth, nextMessage, credentialsRef) => {
                 const nextDraft = { ...draft, oauth: nextOAuth };
                 setDraft(nextDraft);
-                studio.updateAuthSettings(nextDraft);
-                setMessage(nextMessage);
-                void refreshHealth();
+                void persistCredentialLink({
+                  providerId,
+                  providerLabel:
+                    getSupabaseOAuthProviderDefinition(providerId)?.label ?? providerId,
+                  credentialsRef,
+                  nextDraft,
+                  successMessage: nextMessage,
+                });
               }}
             />
           ))}
@@ -467,6 +518,26 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
   );
 }
 
+function PendingCredentialLinkCard(props: {
+  readonly link: StoredOAuthCredentialLink;
+  readonly onRetry: () => void;
+  readonly onOpenSecrets: () => void;
+}) {
+  return (
+    <Card title="Credential link pending">
+      <Text color="warning" weight="semiBold">
+        {props.link.providerLabel} credentials were saved, but the Studio manifest link still needs
+        to be persisted.
+      </Text>
+      <KeyValue label="Credentials ref" value={props.link.credentialsRef} />
+      <View style={styles.actions}>
+        <PrimaryButton label="Retry manifest link" loading={false} onPress={props.onRetry} />
+        <SecondaryButton label="Open project secrets" onPress={props.onOpenSecrets} />
+      </View>
+    </Card>
+  );
+}
+
 function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
@@ -476,7 +547,11 @@ function OAuthProviderSetting(props: {
     oauth: NonNullable<StudioAuthSettings['oauth']>,
     message: string | null,
   ) => void;
-  readonly onSaved: (oauth: NonNullable<StudioAuthSettings['oauth']>, message: string) => void;
+  readonly onSaved: (
+    oauth: NonNullable<StudioAuthSettings['oauth']>,
+    message: string,
+    credentialsRef: string,
+  ) => void;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
@@ -566,6 +641,7 @@ function OAuthProviderSetting(props: {
         props.onSaved(
           mergeOAuthProviderCredentialsRef(intendedOAuth, intendedProvider, result.credentialsRef),
           `${definition.label} credentials saved through ${result.credentialsRef}.`,
+          result.credentialsRef,
         );
         return;
       }

@@ -120,6 +120,8 @@ describe('LayoutGenerator', () => {
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
+    expect(rootLayout).toContain('useGlobalSearchParams');
+    expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
     expect(adminLayout).toContain('if (!__DEV__)');
     expect(adminLayout).toContain('<Redirect href="/" />');

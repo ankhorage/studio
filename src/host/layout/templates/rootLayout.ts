@@ -389,6 +389,12 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     .join('\n\n');
   const studioRuntimeLines = includeStudio
     ? `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
+const appRouteSearchParams = useGlobalSearchParams();
+const appRouteSearchParamsKey = JSON.stringify(appRouteSearchParams);
+const appLocation = useMemo(
+  () => resolveStudioNavigableLocation(appPathname),
+  [appPathname, appRouteSearchParamsKey],
+);
 const shouldMountAppHeader =
   !isStudioAdminPath(appPathname) &&
   ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`
@@ -420,6 +426,7 @@ const shouldMountAppHeader =
           activeThemeMode={activeThemeMode}
           runtimeManifest={runtimeManifest}
           appPathname={appPathname}
+          appLocation={appLocation}
           shouldMountAppHeader={shouldMountAppHeader}
         />
       </StudioProvider>
@@ -442,13 +449,17 @@ const runtimeComponentRegistry = {
   ...APP_EXTENSION_COMPONENT_REGISTRY,
 };
 
-function resolveZoraProviderTheme(theme: AppManifest['themes'][number]) {
+function resolveZoraProviderTheme(
+  theme: AppManifest['themes'][number],
+  mode: NonNullable<AppManifest['activeThemeMode']>,
+) {
+  const modeConfig = theme[mode];
   return {
     id: theme.id,
     name: theme.name,
     appCategory: 'developer_tools' as const,
-    primaryColor: theme.light.primaryColor,
-    harmony: theme.light.harmony,
+    primaryColor: modeConfig.primaryColor,
+    harmony: modeConfig.harmony,
   };
 }
 
@@ -480,7 +491,7 @@ ${indentedRootHookBlock}
   }
 
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
-  const zoraTheme = resolveZoraProviderTheme(activeTheme);
+  const zoraTheme = resolveZoraProviderTheme(activeTheme, activeThemeMode);
   const executeOperation = useMemo(
     () =>
       createRuntimeDataSourceOperationExecutor({
@@ -517,6 +528,7 @@ function StudioShell({
   activeThemeMode,
   runtimeManifest,
   appPathname,
+  appLocation,
   shouldMountAppHeader,
 }: {
   output: ReactNode;
@@ -524,6 +536,7 @@ function StudioShell({
   activeThemeMode: NonNullable<AppManifest['activeThemeMode']>;
   runtimeManifest: AppManifest;
   appPathname: string;
+  appLocation: string;
   shouldMountAppHeader: boolean;
 }) {
   const {
@@ -533,10 +546,12 @@ function StudioShell({
     setLastNonAdminLocation,
   } = useStudio();
   useEffect(() => {
-    if (!isStudioAdminPath(appPathname)) {
-      setLastNonAdminLocation(resolveStudioNavigableLocation(appPathname));
-    }
-  }, [appPathname, setLastNonAdminLocation]);
+    const nextAppLocation = resolveStudioLastNonAdminLocation({
+      pathname: appPathname,
+      navigableLocation: appLocation,
+    });
+    if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
+  }, [appLocation, appPathname, setLastNonAdminLocation]);
   const appHeaderTitle = resolveStudioAppHeaderTitle({
     runtimeManifest,
     studioManifest,
@@ -556,7 +571,7 @@ function StudioShell({
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
   );
-  const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme);
+  const studioZoraTheme = resolveZoraProviderTheme(activeStudioTheme, activeStudioThemeMode);
 
   return (
     <ZoraProvider theme={studioZoraTheme} initialMode={activeStudioThemeMode}>

@@ -274,3 +274,11 @@ export function resolveStudioNavigableLocation(pathname: string): string {
 
   return pathname;
 }
+
+export function resolveStudioLastNonAdminLocation(args: {
+  readonly pathname: string;
+  readonly navigableLocation?: string;
+}): string | null {
+  if (isStudioAdminPath(args.pathname)) return null;
+  return args.navigableLocation ?? resolveStudioNavigableLocation(args.pathname);
+}

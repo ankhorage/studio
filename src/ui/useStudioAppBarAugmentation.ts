@@ -3,7 +3,11 @@ import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback } from 'react';
 
 import { useStudio } from '../core/StudioContext';
-import { isStudioAdminPath } from '../studioAdminRouteModel';
+import {
+  isStudioAdminPath,
+  resolveStudioLastNonAdminLocation,
+  resolveStudioNavigableLocation,
+} from '../studioAdminRouteModel';
 
 export interface StudioAppBarAugmentation {
   appMode?: unknown;
@@ -17,9 +21,16 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const router = useRouter();
 
   const openAdministration = useCallback(() => {
+    const appLocation = resolveStudioLastNonAdminLocation({
+      pathname,
+      navigableLocation: resolveStudioNavigableLocation(pathname),
+    });
+    if (appLocation) {
+      studio.setLastNonAdminLocation(appLocation);
+    }
     studio.setActivePanelId(null);
     router.push('/ankh');
-  }, [router, studio]);
+  }, [pathname, router, studio]);
 
   const actions = isStudioAdminPath(pathname)
     ? null

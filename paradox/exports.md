@@ -4,7 +4,7 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:349:14`
+Source: `src/index.ts:350:14`
 
 ## ActionDefinition
 
@@ -26,7 +26,7 @@ Source: `src/index.ts:261:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:571:14`
+Source: `src/index.ts:572:14`
 
 ### Signatures
 
@@ -38,7 +38,7 @@ Source: `src/index.ts:571:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1283:1`
+Source: `src/index.ts:1284:1`
 
 ### Signatures
 
@@ -50,7 +50,7 @@ Source: `src/index.ts:1283:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:730:1`
+Source: `src/index.ts:731:1`
 
 ### Signatures
 
@@ -62,7 +62,7 @@ Source: `src/index.ts:730:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:496:14`
+Source: `src/index.ts:497:14`
 
 ### Signatures
 
@@ -75,7 +75,7 @@ Source: `src/index.ts:496:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1202:1`
+Source: `src/index.ts:1203:1`
 
 ### Signatures
 
@@ -89,7 +89,7 @@ Source: `src/index.ts:1202:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:513:14`
+Source: `src/index.ts:514:14`
 
 ### Signatures
 
@@ -102,7 +102,7 @@ Source: `src/index.ts:513:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:489:14`
+Source: `src/index.ts:490:14`
 
 ### Signatures
 
@@ -114,7 +114,7 @@ Source: `src/index.ts:489:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1128:1`
+Source: `src/index.ts:1129:1`
 
 ### Signatures
 
@@ -226,7 +226,7 @@ Source: `src/index.ts:244:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:960:1`
+Source: `src/index.ts:961:1`
 
 ### Signatures
 
@@ -238,7 +238,7 @@ Source: `src/index.ts:960:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:903:1`
+Source: `src/index.ts:904:1`
 
 ### Members
 
@@ -253,7 +253,7 @@ Source: `src/index.ts:903:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:910:1`
+Source: `src/index.ts:911:1`
 
 ### Members
 
@@ -325,7 +325,7 @@ Source: `src/index.ts:269:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:604:14`
+Source: `src/index.ts:605:14`
 
 ### Signatures
 
@@ -339,7 +339,7 @@ Source: `src/index.ts:604:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1028:1`
+Source: `src/index.ts:1029:1`
 
 ### Signatures
 
@@ -351,7 +351,7 @@ Source: `src/index.ts:1028:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:987:1`
+Source: `src/index.ts:988:1`
 
 ### Members
 
@@ -366,7 +366,7 @@ Source: `src/index.ts:987:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:994:1`
+Source: `src/index.ts:995:1`
 
 ### Members
 
@@ -536,7 +536,7 @@ Source: `src/projectSecretUsage.ts:14:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:553:14`
+Source: `src/index.ts:554:14`
 
 ### Signatures
 
@@ -549,7 +549,7 @@ Source: `src/index.ts:553:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:858:1`
+Source: `src/index.ts:859:1`
 
 ### Signatures
 
@@ -561,7 +561,7 @@ Source: `src/index.ts:858:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1325:1`
+Source: `src/index.ts:1326:1`
 
 ### Signatures
 
@@ -573,7 +573,7 @@ Source: `src/index.ts:1325:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:797:1`
+Source: `src/index.ts:798:1`
 
 ### Signatures
 
@@ -585,7 +585,7 @@ Source: `src/index.ts:797:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1095:14`
+Source: `src/index.ts:1096:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -717,6 +717,7 @@ Source: `src/index.ts:310:1`
 | deleteTheme               | property | `(id: string) => void`                                                | yes      |             |
 | error                     | property | `string \| null`                                                      | yes      |             |
 | findNode                  | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                  | yes      |             |
+| flushManifest             | property | `() => Promise<void>`                                                 | yes      |             |
 | insertFromCatalogEntry    | property | `(entry: InsertCatalogEntry) => boolean`                              | yes      |             |
 | isLoading                 | property | `boolean`                                                             | yes      |             |
 | lastNonAdminLocation      | property | `string`                                                              | yes      |             |
@@ -894,13 +895,13 @@ Source: `src/index.ts:130:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:441:14`
+Source: `src/index.ts:442:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:525:14`
+Source: `src/index.ts:526:14`
 
 ### Signatures
 
@@ -914,7 +915,7 @@ Source: `src/index.ts:525:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1145:1`
+Source: `src/index.ts:1146:1`
 
 ### Signatures
 
@@ -927,7 +928,7 @@ Source: `src/index.ts:1145:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:742:1`
+Source: `src/index.ts:743:1`
 
 ### Signatures
 

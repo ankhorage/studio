@@ -31,8 +31,10 @@ Auth and Secrets render as page content inside the admin shell. They keep the ex
 provider health, trusted OAuth credential flow, project-secret inventory, rotation, usage detection,
 guarded removal, and browser-safe secret responses.
 
-Theme administration is a single page that edits the active theme through the existing manifest
-theme state. It does not introduce mode-specific routes or a second theme model.
+Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
+the existing manifest theme state for the currently active rendered theme mode. It does not
+introduce mode-specific routes, mode switching UI, or a second theme model.
 
 Properties is contextual. The selected node ID is encoded in `/ankh/properties/<node-id>`, decoded
-through the route model, and resolved against the active Studio tree.
+through the route model, resolved across the Studio manifest, mapped to its owning screen, and then
+used to activate that screen and select the requested node when necessary.
