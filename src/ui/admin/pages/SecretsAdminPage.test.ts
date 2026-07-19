@@ -30,8 +30,10 @@ test('secret usage lookup failures remain unavailable instead of becoming zero u
 test('successful secret deletion clears matching pending Auth credential recovery', () => {
   expect(source).toContain('useAuthAdminSession');
   expect(source).toContain('clearPendingCredentialLinksForRemovedProjectSecret');
+  expect(source).toContain('runCredentialSecretCleanup');
+  expect(source).toContain('removeSecretAndReconcilePendingAuth');
   expect(source).toContain('confirmBrokenReferences: true');
   expect(source).toContain('removed: true');
   expect(source).toContain('ref: metadata.ref');
-  expect(source).toContain('ref: pendingDelete.metadata.ref');
+  expect(source).toContain('removeSecretAndReconcilePendingAuth(pendingDelete.metadata, true)');
 });

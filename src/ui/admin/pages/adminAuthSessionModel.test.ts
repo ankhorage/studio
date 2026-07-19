@@ -235,6 +235,70 @@ describe('AuthAdminWriteCoordinator', () => {
     expect(await google).toEqual({ ok: true, value: 'google' });
   });
 
+  test('active credential transaction blocks cleanup for the same ref only', async () => {
+    const coordinator = new AuthAdminWriteCoordinator();
+    const transactionFlush = createDeferred<void>();
+    let removedSecrets = 0;
+
+    const transaction = coordinator.runCredentialTransaction(
+      'google',
+      'auth/oauth/google',
+      async () => {
+        await transactionFlush.promise;
+        return 'linked';
+      },
+    );
+
+    expect(coordinator.isCredentialRefBusy('auth/oauth/google')).toBe(true);
+    expect(
+      await coordinator.runCredentialSecretCleanup('auth/oauth/google', () => {
+        removedSecrets += 1;
+        return Promise.resolve('removed-google');
+      }),
+    ).toEqual({ ok: false, reason: 'credential_transaction_busy' });
+    expect(
+      await coordinator.runCredentialSecretCleanup('auth/oauth/github', () => {
+        removedSecrets += 1;
+        return Promise.resolve('removed-github');
+      }),
+    ).toEqual({ ok: true, value: 'removed-github' });
+    expect(removedSecrets).toBe(1);
+
+    transactionFlush.resolve();
+    expect(await transaction).toEqual({ ok: true, value: 'linked' });
+    expect(coordinator.isCredentialRefBusy('auth/oauth/google')).toBe(false);
+  });
+
+  test('active credential cleanup blocks transactions for the same ref only', async () => {
+    const coordinator = new AuthAdminWriteCoordinator();
+    const cleanupFlush = createDeferred<void>();
+    let credentialWrites = 0;
+
+    const cleanup = coordinator.runCredentialSecretCleanup('auth/oauth/google', async () => {
+      await cleanupFlush.promise;
+      return 'removed';
+    });
+
+    expect(coordinator.isCredentialRefBusy('auth/oauth/google')).toBe(true);
+    expect(
+      await coordinator.runCredentialTransaction('google', 'auth/oauth/google', () => {
+        credentialWrites += 1;
+        return Promise.resolve('linked-google');
+      }),
+    ).toEqual({ ok: false, reason: 'credential_secret_cleanup_busy' });
+    expect(
+      await coordinator.runCredentialTransaction('github', 'auth/oauth/github', () => {
+        credentialWrites += 1;
+        return Promise.resolve('linked-github');
+      }),
+    ).toEqual({ ok: true, value: 'linked-github' });
+    expect(credentialWrites).toBe(1);
+
+    cleanupFlush.resolve();
+    expect(await cleanup).toEqual({ ok: true, value: 'removed' });
+    expect(coordinator.isCredentialRefBusy('auth/oauth/google')).toBe(false);
+  });
+
   test('retry is serialized and does not perform another secret write', async () => {
     const coordinator = new AuthAdminWriteCoordinator();
     const retryFlush = createDeferred<void>();

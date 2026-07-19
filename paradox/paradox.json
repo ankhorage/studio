@@ -11545,7 +11545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthSessionModel.ts",
-        "line": 212,
+        "line": 211,
         "column": 1
       }
     },
@@ -11554,7 +11554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminAuthSessionModel.ts",
-        "line": 227,
+        "line": 226,
         "column": 1
       }
     },
@@ -25385,6 +25385,30 @@
         "fromSymbol": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
         "toSymbol": "resolve",
         "callExpression": "googleFlush.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
+        "toSymbol": "isCredentialRefBusy",
+        "callExpression": "coordinator.isCredentialRefBusy",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
+        "toSymbol": "runCredentialSecretCleanup",
+        "callExpression": "coordinator.runCredentialSecretCleanup",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "transactionFlush.resolve",
+        "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminAuthSessionModel.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "cleanupFlush.resolve",
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.test.ts"
       },
       {
