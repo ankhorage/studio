@@ -53,14 +53,14 @@ function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirem
 }
 
 function parseGeneratedImportStatement(statement: string): GeneratedImportRequirement {
-  const sideEffectMatch = statement.match(/^import\s+(['"])([^'"]+)\1\s*;?$/u);
+  const sideEffectMatch = /^import\s+(['"])([^'"]+)\1\s*;?$/u.exec(statement);
   if (sideEffectMatch) {
     const [, , source] = sideEffectMatch;
     if (!source) throw new Error(`Invalid side-effect import statement: ${statement}`);
     return { source, sideEffectOnly: true };
   }
 
-  const fromMatch = statement.match(/^import\s+([\s\S]+?)\s+from\s+(['"])([^'"]+)\2\s*;?$/u);
+  const fromMatch = /^import\s+([\s\S]+?)\s+from\s+(['"])([^'"]+)\2\s*;?$/u.exec(statement);
   const [, rawClause, , source] = fromMatch ?? [];
   if (!rawClause || !source) {
     throw new Error(`Unsupported generated import statement: ${statement}`);
@@ -89,9 +89,7 @@ function parseImportClause(
 
   const commaIndex = clause.indexOf(',');
   if (commaIndex === -1) {
-    return typeOnly
-      ? { source, typeOnlyDefaultImport: clause }
-      : { source, defaultImport: clause };
+    return typeOnly ? { source, typeOnlyDefaultImport: clause } : { source, defaultImport: clause };
   }
 
   const defaultImport = clause.slice(0, commaIndex).trim();
@@ -204,7 +202,9 @@ function mergeSingleBinding(
 ): string | undefined {
   if (!incoming) return current;
   if (current && current !== incoming) {
-    throw new Error(`Conflicting ${kind} bindings for '${source}': '${current}' and '${incoming}'.`);
+    throw new Error(
+      `Conflicting ${kind} bindings for '${source}': '${current}' and '${incoming}'.`,
+    );
   }
   registerLocalBinding(localBindings, incoming, `${source}:${kind}`);
   return incoming;
@@ -228,7 +228,7 @@ function mergeNamedImport(
   requirement.namedImports.set(local, {
     imported: incoming.imported,
     ...(incoming.local ? { local: incoming.local } : {}),
-    ...((existing?.typeOnly === false || incoming.typeOnly === false)
+    ...(existing?.typeOnly === false || incoming.typeOnly === false
       ? { typeOnly: false }
       : incoming.typeOnly === true || existing?.typeOnly === true
         ? { typeOnly: true }
@@ -239,15 +239,21 @@ function mergeNamedImport(
 function registerLocalBinding(bindings: Map<string, string>, local: string, owner: string): void {
   const existing = bindings.get(local);
   if (existing && existing !== owner) {
-    throw new Error(`Generated imports bind '${local}' more than once: '${existing}' and '${owner}'.`);
+    throw new Error(
+      `Generated imports bind '${local}' more than once: '${existing}' and '${owner}'.`,
+    );
   }
   bindings.set(local, owner);
 }
 
 function renderGeneratedImportRequirement(requirement: MutableImportRequirement): string[] {
   const statements: string[] = [];
-  const valueNamed = [...requirement.namedImports.values()].filter((entry) => entry.typeOnly !== true);
-  const typeNamed = [...requirement.namedImports.values()].filter((entry) => entry.typeOnly === true);
+  const valueNamed = [...requirement.namedImports.values()].filter(
+    (entry) => entry.typeOnly !== true,
+  );
+  const typeNamed = [...requirement.namedImports.values()].filter(
+    (entry) => entry.typeOnly === true,
+  );
 
   if (requirement.namespaceImport) {
     statements.push(
@@ -263,14 +269,18 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
       ...typeNamed.map((entry) => `type ${renderNamedImport(entry)}`),
     ];
     statements.push(
-      renderImportStatement(requirement.source, requirement.defaultImport, renderNamedClause(named)),
+      renderImportStatement(
+        requirement.source,
+        requirement.defaultImport,
+        renderNamedClause(named),
+      ),
     );
   }
 
   if (requirement.typeOnlyDefaultImport || requirement.typeOnlyNamespaceImport) {
     const clause = requirement.typeOnlyNamespaceImport
       ? `${requirement.typeOnlyDefaultImport ? `${requirement.typeOnlyDefaultImport}, ` : ''}* as ${requirement.typeOnlyNamespaceImport}`
-      : requirement.typeOnlyDefaultImport ?? '';
+      : (requirement.typeOnlyDefaultImport ?? '');
     statements.push(`import type ${clause} from '${requirement.source}';`);
   }
 
@@ -281,7 +291,11 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
   return statements;
 }
 
-function renderImportStatement(source: string, defaultImport: string | undefined, suffix: string): string {
+function renderImportStatement(
+  source: string,
+  defaultImport: string | undefined,
+  suffix: string,
+): string {
   const clause = [defaultImport, suffix].filter(Boolean).join(', ');
   return `import ${clause} from '${source}';`;
 }
