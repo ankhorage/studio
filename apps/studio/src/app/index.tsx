@@ -1,1 +1,1 @@
-export { StudioDashboard as default } from '@ankhorage/studio';
+export { ProjectsOverviewScreen as default } from '@ankhorage/studio';

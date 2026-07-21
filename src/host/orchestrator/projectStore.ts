@@ -1,16 +1,14 @@
-import type { AppManifest } from '@ankhorage/contracts';
+import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts';
+import { APP_CATEGORIES } from '@ankhorage/contracts';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import type { StudioProjectManifest, StudioProjectSummary } from '../../modules/dashboard/types';
 import { getProjectPath } from './projectPaths';
 
-export interface ProjectSummary {
-  id: string;
-  name: string;
-  path: string;
-  version: string;
-  isAnkhApp: boolean;
-}
+export type ProjectSummary = StudioProjectSummary;
+
+const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
 
 export class ProjectStore {
   constructor(private readonly rootPath: string) {}
@@ -45,24 +43,31 @@ export class ProjectStore {
             const hasPkg = await exists(pkgJsonPath);
             if (!hasPkg) return null;
 
-            let name = id;
-            let version = '0.0.0';
-            let isAnkhApp = false;
-
-            if (await exists(ankhConfigPath)) {
-              try {
-                const {
-                  metadata: { name: metaName, version: metaVersion },
-                } = JSON.parse(await fs.readFile(ankhConfigPath, 'utf8')) as AppManifest;
-                name = metaName;
-                version = metaVersion;
-                isAnkhApp = true;
-              } catch {
-                // ignore invalid json in listing (no side effects!)
-              }
+            if (!(await exists(ankhConfigPath))) {
+              return null;
             }
 
-            return { id, name, path: projectPath, version, isAnkhApp };
+            try {
+              const manifest = parseStudioProjectManifest(
+                JSON.parse(await fs.readFile(ankhConfigPath, 'utf8')),
+              );
+              const activeTheme = resolveActiveTheme(manifest);
+
+              return {
+                id,
+                name: manifest.metadata.name,
+                path: projectPath,
+                version: manifest.metadata.version,
+                isAnkhApp: true,
+                category: manifest.metadata.category,
+                created: manifest.metadata.created,
+                updated: manifest.metadata.updated,
+                activeTheme,
+                activeThemeMode: manifest.activeThemeMode,
+              };
+            } catch {
+              return null;
+            }
           } catch {
             // If getProjectPath throws or any other unexpected error occurs for a single project,
             // treat it as an unlistable project and skip it. This preserves robustness:
@@ -170,6 +175,58 @@ export class ProjectStore {
       await fs.rm(studioManifestPath, { force: true });
     }
   }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isAppCategory(value: unknown): value is AppCategory {
+  return typeof value === 'string' && APP_CATEGORY_SET.has(value);
+}
+
+function isThemeModeConfig(value: unknown): value is ThemeConfig['light'] {
+  return (
+    isRecord(value) && typeof value.primaryColor === 'string' && typeof value.harmony === 'string'
+  );
+}
+
+function isThemeConfig(value: unknown): value is ThemeConfig {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    typeof value.name === 'string' &&
+    isThemeModeConfig(value.light) &&
+    isThemeModeConfig(value.dark)
+  );
+}
+
+function parseStudioProjectManifest(value: unknown): StudioProjectManifest {
+  if (
+    !isRecord(value) ||
+    !isRecord(value.metadata) ||
+    typeof value.metadata.name !== 'string' ||
+    typeof value.metadata.slug !== 'string' ||
+    typeof value.metadata.version !== 'string' ||
+    typeof value.metadata.themeId !== 'string' ||
+    !isAppCategory(value.metadata.category) ||
+    !Array.isArray(value.themes) ||
+    !value.themes.every(isThemeConfig) ||
+    typeof value.activeThemeId !== 'string'
+  ) {
+    throw new Error('Project manifest does not contain canonical Studio metadata.');
+  }
+
+  return value as StudioProjectManifest;
+}
+
+function resolveActiveTheme(manifest: StudioProjectManifest): ThemeConfig {
+  const activeTheme = manifest.themes.find((theme) => theme.id === manifest.activeThemeId);
+  if (!activeTheme) {
+    throw new Error(`Manifest active theme '${manifest.activeThemeId}' is missing.`);
+  }
+
+  return activeTheme;
 }
 
 async function exists(p: string) {

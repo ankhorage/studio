@@ -31,5 +31,5 @@ export {
   type ProjectSecretServiceOptions,
 } from './secrets/projectSecretService';
 export { resolveProjectSecretDatabaseUrl } from './secrets/resolveProjectSecretDatabaseUrl';
-export { getProjectTemplate, getTemplateSummaries } from './templateRegistry';
+export { getProjectTemplate, getTemplateCatalog } from './templateRegistry';
 export { resolveWorkspaceRoot } from './utils/workspaceRoot';

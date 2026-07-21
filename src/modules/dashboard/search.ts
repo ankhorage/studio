@@ -1,4 +1,4 @@
-import type { ProjectItem, TemplateEntry } from './types';
+import type { ProjectSortKey, StudioProjectSummary, TemplateCatalog, TemplateEntry } from './types';
 
 function normalize(s: string): string {
   return s.trim().toLowerCase();
@@ -12,52 +12,75 @@ function scoreText(target: string, query: string): number {
   return 0;
 }
 
-export function filterAndSortProjects(projects: ProjectItem[], queryRaw: string): ProjectItem[] {
+function compareProjects(a: StudioProjectSummary, b: StudioProjectSummary, sort: ProjectSortKey) {
+  if (sort === 'name-asc') {
+    return a.name.localeCompare(b.name);
+  }
+
+  const aTime = Date.parse(a.updated ?? a.created ?? '');
+  const bTime = Date.parse(b.updated ?? b.created ?? '');
+  const normalizedATime = Number.isFinite(aTime) ? aTime : 0;
+  const normalizedBTime = Number.isFinite(bTime) ? bTime : 0;
+  return normalizedBTime - normalizedATime || a.name.localeCompare(b.name);
+}
+
+export function filterAndSortProjects(
+  projects: readonly StudioProjectSummary[],
+  queryRaw: string,
+  sort: ProjectSortKey,
+): StudioProjectSummary[] {
+  const sorted = [...projects].sort((a, b) => compareProjects(a, b, sort));
   const query = normalize(queryRaw);
-  if (!query) return projects;
+  if (!query) return sorted;
 
-  return projects
-    .map((proj) => {
-      const name = normalize(proj.name);
-      const version = normalize(proj.version);
+  return sorted
+    .map((project) => {
+      const score = Math.max(
+        scoreText(normalize(project.name), query),
+        scoreText(normalize(project.id), query),
+        scoreText(normalize(project.category), query),
+        scoreText(normalize(project.version), query),
+      );
 
-      const score = scoreText(name, query) + (version.includes(query) ? 10 : 0);
-
-      return { proj, score };
+      return { project, score };
     })
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map((x) => x.proj);
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || compareProjects(a.project, b.project, sort))
+    .map((entry) => entry.project);
+}
+
+function getTemplateEntries(catalog: TemplateCatalog): TemplateEntry[] {
+  return catalog.categories.flatMap((category) =>
+    category.templates.map((template) => ({
+      ...template,
+      category: category.id,
+      categoryLabel: category.label,
+    })),
+  );
 }
 
 export function filterAndSortTemplates(
-  entries: TemplateEntry[],
+  catalog: TemplateCatalog,
   queryRaw: string,
 ): TemplateEntry[] {
+  const entries = getTemplateEntries(catalog);
   const query = normalize(queryRaw);
   if (!query) return entries;
 
   return entries
     .map((template) => {
-      const name = normalize(template.name);
-      const version = normalize(template.version);
-      const keyLower = normalize(template.id);
-      const category = normalize(template.category);
-      const templateId = normalize(template.templateId);
-      const description = normalize(template.description);
+      const score = Math.max(
+        scoreText(normalize(template.name), query),
+        scoreText(normalize(template.id), query),
+        scoreText(normalize(template.templateId), query),
+        scoreText(normalize(template.description), query),
+        scoreText(normalize(template.category), query),
+        scoreText(normalize(template.categoryLabel), query),
+      );
 
-      const score =
-        Math.max(
-          scoreText(name, query),
-          scoreText(keyLower, query),
-          scoreText(category, query),
-          scoreText(templateId, query),
-          scoreText(description, query),
-        ) + (version.includes(query) ? 10 : 0);
-
-      return { entry: template, score };
+      return { template, score };
     })
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map((x) => x.entry);
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.template.name.localeCompare(b.template.name))
+    .map((entry) => entry.template);
 }

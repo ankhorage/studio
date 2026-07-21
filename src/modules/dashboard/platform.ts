@@ -2,15 +2,6 @@ function isWeb(): boolean {
   return typeof window !== 'undefined';
 }
 
-export function promptProjectName(defaultName: string): string | null {
-  if (isWeb() && typeof window.prompt === 'function') {
-    const input = window.prompt('Name your new project:', defaultName);
-    return input ?? null;
-  }
-
-  return defaultName;
-}
-
 export function confirmDelete(name: string): boolean {
   if (isWeb() && typeof window.confirm === 'function') {
     return window.confirm(`Delete ${name}?`);

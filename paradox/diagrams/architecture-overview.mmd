@@ -13,17 +13,15 @@ graph TD
   package__ankhorage_studio -.-> module_src_app_index_ts
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
   package__ankhorage_studio -.-> module_src_app_StudioApp_tsx
+  module_src_app_StudioApp_tsx --> module_src_hooks_useProjects_ts
   module_src_app_StudioDashboard_tsx["src/app/StudioDashboard.tsx"]
   package__ankhorage_studio -.-> module_src_app_StudioDashboard_tsx
   module_src_app_StudioDashboard_tsx --> module_src_hooks_useProjects_ts
-  module_src_app_StudioDashboard_tsx --> module_src_hooks_useTemplateSummaries_ts
+  module_src_app_StudioDashboard_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_platform_ts
+  module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_projectIdentity_ts
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_search_ts
-  module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_templates_ts
   module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_types_ts
-  module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-  module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_ProjectCard_tsx
-  module_src_app_StudioDashboard_tsx --> module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
   package__ankhorage_studio -.-> module_src_authFlowContract_test_ts
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
@@ -103,10 +101,11 @@ graph TD
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --> module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
-  package__ankhorage_studio -.-> module_src_hooks_useTemplateSummaries_ts
-  module_src_hooks_useTemplateSummaries_ts --> module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts --> module_src_modules_dashboard_types_ts
+  module_src_hooks_useProjects_ts --> module_src_modules_dashboard_types_ts
+  module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
+  package__ankhorage_studio -.-> module_src_hooks_useTemplateCatalog_ts
+  module_src_hooks_useTemplateCatalog_ts --> module_src_core_constants_ts
+  module_src_hooks_useTemplateCatalog_ts --> module_src_modules_dashboard_types_ts
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
   package__ankhorage_studio -.-> module_src_host_auth_projectAuthHealthService_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_orchestrator_projectManager_ts
@@ -163,6 +162,7 @@ graph TD
   module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_server_ts --> module_src_modules_dashboard_projectIdentity_ts
   module_src_host_http_serverWithSecrets_ts["src/host/http/serverWithSecrets.ts"]
   package__ankhorage_studio -.-> module_src_host_http_serverWithSecrets_ts
   module_src_host_http_serverWithSecrets_ts --> module_src_host_http_authRoutes_ts
@@ -291,6 +291,11 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSafety_test_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectDeletion_test_ts["src/host/orchestrator/projectDeletion.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectDeletion_test_ts
   module_src_host_orchestrator_projectDeletion_test_ts --> module_src_host_orchestrator_projectDeletion_ts
@@ -313,6 +318,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts["src/host/orchestrator/projectManagerDeletion.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectManagerDeletion_test_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -321,6 +327,10 @@ graph TD
   module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_projectStore_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectStore_ts --> module_src_modules_dashboard_types_ts
+  module_src_host_orchestrator_projectStoreSummary_test_ts["src/host/orchestrator/projectStoreSummary.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectStoreSummary_test_ts
+  module_src_host_orchestrator_projectStoreSummary_test_ts --> module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts
@@ -375,6 +385,9 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_templateRegistry_catalog_test_ts
+  module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
   package__ankhorage_studio -.-> module_src_host_templateRegistry_index_ts
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
@@ -448,22 +461,18 @@ graph TD
   module_src_manifestSync_ts --> module_src_index_ts
   module_src_modules_dashboard_platform_ts["src/modules/dashboard/platform.ts"]
   package__ankhorage_studio -.-> module_src_modules_dashboard_platform_ts
+  module_src_modules_dashboard_projectIdentity_test_ts["src/modules/dashboard/projectIdentity.test.ts"]
+  package__ankhorage_studio -.-> module_src_modules_dashboard_projectIdentity_test_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --> module_src_modules_dashboard_projectIdentity_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --> module_src_modules_dashboard_types_ts
+  module_src_modules_dashboard_projectIdentity_ts["src/modules/dashboard/projectIdentity.ts"]
+  package__ankhorage_studio -.-> module_src_modules_dashboard_projectIdentity_ts
+  module_src_modules_dashboard_projectIdentity_ts --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_search_ts["src/modules/dashboard/search.ts"]
   package__ankhorage_studio -.-> module_src_modules_dashboard_search_ts
   module_src_modules_dashboard_search_ts --> module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_templates_ts["src/modules/dashboard/templates.ts"]
-  package__ankhorage_studio -.-> module_src_modules_dashboard_templates_ts
-  module_src_modules_dashboard_templates_ts --> module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_types_ts["src/modules/dashboard/types.ts"]
   package__ankhorage_studio -.-> module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_DashboardSectionHeader_tsx["src/modules/dashboard/ui/DashboardSectionHeader.tsx"]
-  package__ankhorage_studio -.-> module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-  module_src_modules_dashboard_ui_ProjectCard_tsx["src/modules/dashboard/ui/ProjectCard.tsx"]
-  package__ankhorage_studio -.-> module_src_modules_dashboard_ui_ProjectCard_tsx
-  module_src_modules_dashboard_ui_ProjectCard_tsx --> module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
-  package__ankhorage_studio -.-> module_src_modules_dashboard_ui_TemplateCard_tsx
-  module_src_modules_dashboard_ui_TemplateCard_tsx --> module_src_modules_dashboard_types_ts
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
   package__ankhorage_studio -.-> module_src_projectAuthApi_test_ts
   module_src_projectAuthApi_test_ts --> module_src_projectAuthApi_ts

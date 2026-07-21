@@ -1,11 +1,13 @@
-import { useZoraTheme, ZoraProvider } from '@ankhorage/zora';
+import { Icon, Text, useZoraTheme, ZoraProvider } from '@ankhorage/zora';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import { Slot } from 'expo-router';
+import { Slot, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { useProjects } from '../hooks/useProjects';
 
 export function StudioApp() {
   const [fontsLoaded] = useFonts({
@@ -30,13 +32,113 @@ export function StudioApp() {
 }
 
 function StudioAppRootContent() {
-  const { theme } = useZoraTheme();
+  const { theme, mode, setMode } = useZoraTheme();
+  const { installWorkspacePackages } = useProjects();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [installState, setInstallState] = useState<'idle' | 'running' | 'success' | 'error'>(
+    'idle',
+  );
+
+  async function handleInstallWorkspacePackages() {
+    setInstallState('running');
+    setMenuOpen(false);
+    try {
+      await installWorkspacePackages();
+      setInstallState('success');
+    } catch (caught) {
+      console.error(caught);
+      setInstallState('error');
+    }
+  }
 
   return (
     <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
+      <View
+        style={[
+          styles.appBar,
+          { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border },
+        ]}
+      >
+        <Pressable
+          onPress={() => router.push('/')}
+          accessibilityRole="button"
+          accessibilityLabel="Go to projects"
+          style={styles.brand}
+        >
+          <Icon name="cube-outline" provider="Ionicons" size={22} color="primary" />
+          <Text weight="semiBold">Ankh Studio</Text>
+        </Pressable>
+        <View style={styles.appBarActions}>
+          {installState === 'running' ? (
+            <ActivityIndicator color={theme.colors.primary} />
+          ) : installState === 'success' ? (
+            <Text color="primary" variant="caption">
+              Packages installed
+            </Text>
+          ) : installState === 'error' ? (
+            <Text color="danger" variant="caption">
+              Install failed
+            </Text>
+          ) : null}
+          <IconButton
+            label={mode === 'dark' ? 'Use light mode' : 'Use dark mode'}
+            iconName={mode === 'dark' ? 'sunny-outline' : 'moon-outline'}
+            onPress={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+          />
+          <View>
+            <IconButton
+              label="Workspace menu"
+              iconName="ellipsis-horizontal"
+              onPress={() => setMenuOpen((open) => !open)}
+            />
+            {menuOpen ? (
+              <View
+                style={[
+                  styles.workspaceMenu,
+                  { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
+                ]}
+              >
+                <Pressable
+                  onPress={() => void handleInstallWorkspacePackages()}
+                  disabled={installState === 'running'}
+                  accessibilityRole="button"
+                  accessibilityLabel="Install workspace packages"
+                  style={styles.workspaceMenuItem}
+                >
+                  <Icon name="download-outline" provider="Ionicons" size={16} color="primary" />
+                  <Text variant="bodySmall" weight="semiBold">
+                    Install workspace packages
+                  </Text>
+                </Pressable>
+              </View>
+            ) : null}
+          </View>
+        </View>
+      </View>
       <Slot />
       <StatusBar style="light" />
     </View>
+  );
+}
+
+function IconButton(props: { label: string; iconName: string; onPress: () => void }) {
+  const { theme } = useZoraTheme();
+
+  return (
+    <Pressable
+      onPress={props.onPress}
+      accessibilityRole="button"
+      accessibilityLabel={props.label}
+      style={({ pressed }) => [
+        styles.iconButton,
+        {
+          borderColor: theme.colors.border,
+          opacity: pressed ? 0.82 : 1,
+        },
+      ]}
+    >
+      <Icon name={props.iconName} provider="Ionicons" size={18} color="text" />
+    </Pressable>
   );
 }
 
@@ -51,5 +153,51 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     elevation: 0,
+  },
+  appBar: {
+    minHeight: 56,
+    borderBottomWidth: 1,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    zIndex: 2,
+  },
+  brand: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    minHeight: 42,
+  },
+  appBarActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  iconButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  workspaceMenu: {
+    position: 'absolute',
+    right: 0,
+    top: 44,
+    minWidth: 230,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 6,
+    zIndex: 3,
+  },
+  workspaceMenuItem: {
+    minHeight: 38,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 10,
   },
 });

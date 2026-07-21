@@ -198,13 +198,13 @@
             <li>
               <button class="nav-button" type="button" data-target="src/app/StudioApp.tsx">
                 src/app/StudioApp.tsx
-                <small>2 functions</small>
+                <small>4 functions</small>
               </button>
             </li>
             <li>
               <button class="nav-button" type="button" data-target="src/app/StudioDashboard.tsx">
                 src/app/StudioDashboard.tsx
-                <small>12 functions</small>
+                <small>30 functions</small>
               </button>
             </li>
             <li>
@@ -306,17 +306,17 @@
             <li>
               <button class="nav-button" type="button" data-target="src/hooks/useProjects.ts">
                 src/hooks/useProjects.ts
-                <small>16 functions</small>
+                <small>22 functions</small>
               </button>
             </li>
             <li>
               <button
                 class="nav-button"
                 type="button"
-                data-target="src/hooks/useTemplateSummaries.ts"
+                data-target="src/hooks/useTemplateCatalog.ts"
               >
-                src/hooks/useTemplateSummaries.ts
-                <small>4 functions</small>
+                src/hooks/useTemplateCatalog.ts
+                <small>6 functions</small>
               </button>
             </li>
             <li>
@@ -689,6 +689,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/projectCreationSafety.test.ts"
+              >
+                src/host/orchestrator/projectCreationSafety.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/projectDeletion.ts"
               >
                 src/host/orchestrator/projectDeletion.ts
@@ -702,7 +712,7 @@
                 data-target="src/host/orchestrator/projectManager.ts"
               >
                 src/host/orchestrator/projectManager.ts
-                <small>5 functions</small>
+                <small>4 functions</small>
               </button>
             </li>
             <li>
@@ -732,7 +742,7 @@
                 data-target="src/host/orchestrator/projectStore.ts"
               >
                 src/host/orchestrator/projectStore.ts
-                <small>2 functions</small>
+                <small>8 functions</small>
               </button>
             </li>
             <li>
@@ -1008,6 +1018,16 @@
                 data-target="src/modules/dashboard/platform.ts"
               >
                 src/modules/dashboard/platform.ts
+                <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/modules/dashboard/projectIdentity.ts"
+              >
+                src/modules/dashboard/projectIdentity.ts
                 <small>4 functions</small>
               </button>
             </li>
@@ -1018,47 +1038,7 @@
                 data-target="src/modules/dashboard/search.ts"
               >
                 src/modules/dashboard/search.ts
-                <small>4 functions</small>
-              </button>
-            </li>
-            <li>
-              <button
-                class="nav-button"
-                type="button"
-                data-target="src/modules/dashboard/templates.ts"
-              >
-                src/modules/dashboard/templates.ts
-                <small>1 function</small>
-              </button>
-            </li>
-            <li>
-              <button
-                class="nav-button"
-                type="button"
-                data-target="src/modules/dashboard/ui/DashboardSectionHeader.tsx"
-              >
-                src/modules/dashboard/ui/DashboardSectionHeader.tsx
-                <small>1 function</small>
-              </button>
-            </li>
-            <li>
-              <button
-                class="nav-button"
-                type="button"
-                data-target="src/modules/dashboard/ui/ProjectCard.tsx"
-              >
-                src/modules/dashboard/ui/ProjectCard.tsx
-                <small>2 functions</small>
-              </button>
-            </li>
-            <li>
-              <button
-                class="nav-button"
-                type="button"
-                data-target="src/modules/dashboard/ui/TemplateCard.tsx"
-              >
-                src/modules/dashboard/ui/TemplateCard.tsx
-                <small>2 functions</small>
+                <small>6 functions</small>
               </button>
             </li>
             <li>
@@ -1405,7 +1385,7 @@
             <div class="summary">
               <div><strong>84</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>197</strong><span class="muted">modules</span></div>
+              <div><strong>198</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1440,36 +1420,50 @@
               <p><strong>Dependencies:</strong> <code>src/root.ts</code></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
-            <article class="item" data-search="src/app/index.ts StudioApp StudioDashboard">
+            <article
+              class="item"
+              data-search="src/app/index.ts CreateCategoriesScreen CreateCategoryTemplatesScreen CreateProjectFromTemplateScreen ProjectDetailScreen ProjectsOverviewScreen StudioApp StudioDashboard"
+            >
               <h3>src/app/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-              <p><strong>Exports:</strong> <code>StudioApp</code>, <code>StudioDashboard</code></p>
+              <p>
+                <strong>Exports:</strong> <code>CreateCategoriesScreen</code>,
+                <code>CreateCategoryTemplatesScreen</code>,
+                <code>CreateProjectFromTemplateScreen</code>, <code>ProjectDetailScreen</code>,
+                <code>ProjectsOverviewScreen</code>, <code>StudioApp</code>,
+                <code>StudioDashboard</code>
+              </p>
             </article>
-            <article class="item" data-search="src/app/StudioApp.tsx StudioApp">
+            <article
+              class="item"
+              data-search="src/app/StudioApp.tsx src/hooks/useProjects.ts StudioApp"
+            >
               <h3>src/app/StudioApp.tsx</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Dependencies:</strong> <code>src/hooks/useProjects.ts</code></p>
               <p><strong>Exports:</strong> <code>StudioApp</code></p>
             </article>
             <article
               class="item"
-              data-search="src/app/StudioDashboard.tsx src/hooks/useProjects.ts src/hooks/useTemplateSummaries.ts src/modules/dashboard/platform.ts src/modules/dashboard/search.ts src/modules/dashboard/templates.ts src/modules/dashboard/types.ts src/modules/dashboard/ui/DashboardSectionHeader.tsx src/modules/dashboard/ui/ProjectCard.tsx src/modules/dashboard/ui/TemplateCard.tsx StudioDashboard"
+              data-search="src/app/StudioDashboard.tsx src/hooks/useProjects.ts src/hooks/useTemplateCatalog.ts src/modules/dashboard/platform.ts src/modules/dashboard/projectIdentity.ts src/modules/dashboard/search.ts src/modules/dashboard/types.ts CreateCategoriesScreen CreateCategoryTemplatesScreen CreateProjectFromTemplateScreen ProjectDetailScreen ProjectsOverviewScreen StudioDashboard"
             >
               <h3>src/app/StudioDashboard.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/hooks/useProjects.ts</code>,
-                <code>src/hooks/useTemplateSummaries.ts</code>,
+                <code>src/hooks/useTemplateCatalog.ts</code>,
                 <code>src/modules/dashboard/platform.ts</code>,
+                <code>src/modules/dashboard/projectIdentity.ts</code>,
                 <code>src/modules/dashboard/search.ts</code>,
-                <code>src/modules/dashboard/templates.ts</code>,
-                <code>src/modules/dashboard/types.ts</code>,
-                <code>src/modules/dashboard/ui/DashboardSectionHeader.tsx</code>,
-                <code>src/modules/dashboard/ui/ProjectCard.tsx</code>,
-                <code>src/modules/dashboard/ui/TemplateCard.tsx</code>
+                <code>src/modules/dashboard/types.ts</code>
               </p>
-              <p><strong>Exports:</strong> <code>StudioDashboard</code></p>
+              <p>
+                <strong>Exports:</strong> <code>CreateCategoriesScreen</code>,
+                <code>CreateCategoryTemplatesScreen</code>,
+                <code>CreateProjectFromTemplateScreen</code>, <code>ProjectDetailScreen</code>,
+                <code>ProjectsOverviewScreen</code>, <code>StudioDashboard</code>
+              </p>
             </article>
             <article class="item" data-search="src/authFlowContract.test.ts">
               <h3>src/authFlowContract.test.ts</h3>
@@ -1779,30 +1773,33 @@
             </article>
             <article
               class="item"
-              data-search="src/hooks/useProjects.ts src/core/constants.ts CreateProjectInput CreateProjectResponse InstallWorkspacePackagesResponse LaunchProjectResponse Project SyncProjectResponse UpProjectInfrastructureResponse useProjects"
+              data-search="src/hooks/useProjects.ts src/core/constants.ts src/modules/dashboard/types.ts CreateProjectInput CreateProjectResponse InstallWorkspacePackagesResponse LaunchProjectResponse ProjectCreationError SyncProjectResponse UpProjectInfrastructureResponse useProjects"
             >
               <h3>src/hooks/useProjects.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/core/constants.ts</code></p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/core/constants.ts</code>,
+                <code>src/modules/dashboard/types.ts</code>
+              </p>
               <p>
                 <strong>Exports:</strong> <code>CreateProjectInput</code>,
                 <code>CreateProjectResponse</code>, <code>InstallWorkspacePackagesResponse</code>,
-                <code>LaunchProjectResponse</code>, <code>Project</code>,
+                <code>LaunchProjectResponse</code>, <code>ProjectCreationError</code>,
                 <code>SyncProjectResponse</code>, <code>UpProjectInfrastructureResponse</code>,
                 <code>useProjects</code>
               </p>
             </article>
             <article
               class="item"
-              data-search="src/hooks/useTemplateSummaries.ts src/core/constants.ts src/modules/dashboard/types.ts useTemplateSummaries"
+              data-search="src/hooks/useTemplateCatalog.ts src/core/constants.ts src/modules/dashboard/types.ts useTemplateCatalog"
             >
-              <h3>src/hooks/useTemplateSummaries.ts</h3>
+              <h3>src/hooks/useTemplateCatalog.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/core/constants.ts</code>,
                 <code>src/modules/dashboard/types.ts</code>
               </p>
-              <p><strong>Exports:</strong> <code>useTemplateSummaries</code></p>
+              <p><strong>Exports:</strong> <code>useTemplateCatalog</code></p>
             </article>
             <article
               class="item"
@@ -1934,7 +1931,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/orchestrator/studioInfraUp.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
+              data-search="src/host/http/server.ts src/host/http/security.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/resolveMutations.ts src/host/orchestrator/studioInfraUp.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts src/modules/dashboard/projectIdentity.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
             >
               <h3>src/host/http/server.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1947,7 +1944,8 @@
                 <code>src/host/orchestrator/studioInfraUp.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>,
                 <code>src/host/utils/trimOutput.ts</code>,
-                <code>src/host/utils/workspaceRoot.ts</code>
+                <code>src/host/utils/workspaceRoot.ts</code>,
+                <code>src/modules/dashboard/projectIdentity.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>createStudioHostServer</code>,
@@ -1980,7 +1978,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/index.ts assertProjectId BunSupabaseVaultClient ConfigureOAuthProviderInput ConfigureOAuthProviderResult createBunSupabaseVaultClient createStudioHost CreateStudioHostOptions createStudioHostServer getAppsRoot getProjectPath getProjectTemplate getTemplateSummaries isOriginAllowed ModuleManager ProjectAuthHealthResult ProjectAuthHealthService ProjectManager ProjectSecretService ProjectSecretServiceOptions ProjectStore ProjectSummary registerProjectAuthRoutes registerProjectSecretRoutes resolveProjectSecretDatabaseUrl resolveWorkspaceRoot startStudioHostServer StartStudioHostServerOptions startStudioHostServerWithSecrets StudioHost"
+              data-search="src/host/index.ts assertProjectId BunSupabaseVaultClient ConfigureOAuthProviderInput ConfigureOAuthProviderResult createBunSupabaseVaultClient createStudioHost CreateStudioHostOptions createStudioHostServer getAppsRoot getProjectPath getProjectTemplate getTemplateCatalog isOriginAllowed ModuleManager ProjectAuthHealthResult ProjectAuthHealthService ProjectManager ProjectSecretService ProjectSecretServiceOptions ProjectStore ProjectSummary registerProjectAuthRoutes registerProjectSecretRoutes resolveProjectSecretDatabaseUrl resolveWorkspaceRoot startStudioHostServer StartStudioHostServerOptions startStudioHostServerWithSecrets StudioHost"
             >
               <h3>src/host/index.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1992,7 +1990,7 @@
                 <code>createBunSupabaseVaultClient</code>, <code>createStudioHost</code>,
                 <code>CreateStudioHostOptions</code>, <code>createStudioHostServer</code>,
                 <code>getAppsRoot</code>, <code>getProjectPath</code>,
-                <code>getProjectTemplate</code>, <code>getTemplateSummaries</code>,
+                <code>getProjectTemplate</code>, <code>getTemplateCatalog</code>,
                 <code>isOriginAllowed</code>, <code>ModuleManager</code>,
                 <code>ProjectAuthHealthResult</code>, <code>ProjectAuthHealthService</code>,
                 <code>ProjectManager</code>, <code>ProjectSecretService</code>,
@@ -2442,6 +2440,19 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/projectCreationSafety.test.ts src/host/orchestrator/projectManager.ts src/host/templateRegistry/index.ts src/modules/dashboard/projectIdentity.ts"
+            >
+              <h3>src/host/orchestrator/projectCreationSafety.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/templateRegistry/index.ts</code>,
+                <code>src/modules/dashboard/projectIdentity.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/projectDeletion.test.ts src/host/orchestrator/projectDeletion.ts"
             >
               <h3>src/host/orchestrator/projectDeletion.test.ts</h3>
@@ -2465,7 +2476,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/projectManager.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/infraGenerator.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectDeletion.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/resolveMutations.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts ProjectManager"
+              data-search="src/host/orchestrator/projectManager.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/infraGenerator.ts src/host/orchestrator/infraRuntime.ts src/host/orchestrator/projectDeletion.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/resolveMutations.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts src/modules/dashboard/projectIdentity.ts ProjectManager"
             >
               <h3>src/host/orchestrator/projectManager.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2484,7 +2495,8 @@
                 <code>src/host/orchestrator/templates.ts</code>,
                 <code>src/host/orchestrator/workspaceRuntime.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>,
-                <code>src/host/zoraExtensions/index.ts</code>
+                <code>src/host/zoraExtensions/index.ts</code>,
+                <code>src/modules/dashboard/projectIdentity.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>ProjectManager</code></p>
             </article>
@@ -2513,16 +2525,28 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/projectStore.ts src/host/orchestrator/projectPaths.ts ProjectStore ProjectSummary"
+              data-search="src/host/orchestrator/projectStore.ts src/host/orchestrator/projectPaths.ts src/modules/dashboard/types.ts ProjectStore ProjectSummary"
             >
               <h3>src/host/orchestrator/projectStore.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectPaths.ts</code>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectPaths.ts</code>,
+                <code>src/modules/dashboard/types.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>ProjectStore</code>, <code>ProjectSummary</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/projectStoreSummary.test.ts src/host/orchestrator/projectStore.ts"
+            >
+              <h3>src/host/orchestrator/projectStoreSummary.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectStore.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -2713,15 +2737,24 @@
             </article>
             <article
               class="item"
-              data-search="src/host/templateRegistry/index.ts getProjectTemplate getTemplateSummaries ProjectTemplateSelection ProjectTemplateSummary"
+              data-search="src/host/templateRegistry/catalog.test.ts src/host/templateRegistry/index.ts"
+            >
+              <h3>src/host/templateRegistry/catalog.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/host/templateRegistry/index.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/templateRegistry/index.ts getProjectTemplate getTemplateCatalog ProjectTemplateCatalog ProjectTemplateSelection"
             >
               <h3>src/host/templateRegistry/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
                 <strong>Exports:</strong> <code>getProjectTemplate</code>,
-                <code>getTemplateSummaries</code>, <code>ProjectTemplateSelection</code>,
-                <code>ProjectTemplateSummary</code>
+                <code>getTemplateCatalog</code>, <code>ProjectTemplateCatalog</code>,
+                <code>ProjectTemplateSelection</code>
               </p>
             </article>
             <article
@@ -3063,14 +3096,39 @@
             </article>
             <article
               class="item"
-              data-search="src/modules/dashboard/platform.ts confirmDelete openProjectUrl promptProjectName"
+              data-search="src/modules/dashboard/platform.ts confirmDelete openProjectUrl"
             >
               <h3>src/modules/dashboard/platform.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>confirmDelete</code>, <code>openProjectUrl</code>,
-                <code>promptProjectName</code>
+                <strong>Exports:</strong> <code>confirmDelete</code>, <code>openProjectUrl</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/modules/dashboard/projectIdentity.test.ts src/modules/dashboard/projectIdentity.ts src/modules/dashboard/types.ts"
+            >
+              <h3>src/modules/dashboard/projectIdentity.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/modules/dashboard/projectIdentity.ts</code>,
+                <code>src/modules/dashboard/types.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/modules/dashboard/projectIdentity.ts src/modules/dashboard/types.ts deriveProjectId ProjectCreationValidationError validateProjectCreationInput"
+            >
+              <h3>src/modules/dashboard/projectIdentity.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
+              <p>
+                <strong>Exports:</strong> <code>deriveProjectId</code>,
+                <code>ProjectCreationValidationError</code>,
+                <code>validateProjectCreationInput</code>
               </p>
             </article>
             <article
@@ -3087,51 +3145,18 @@
             </article>
             <article
               class="item"
-              data-search="src/modules/dashboard/templates.ts src/modules/dashboard/types.ts getTemplateEntries"
-            >
-              <h3>src/modules/dashboard/templates.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
-              <p><strong>Exports:</strong> <code>getTemplateEntries</code></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/modules/dashboard/types.ts ProjectItem TemplateEntry TemplateSummary"
+              data-search="src/modules/dashboard/types.ts ProjectCreationValidationFailure ProjectCreationValidationResult ProjectSortKey StudioProjectManifest StudioProjectSummary TemplateCatalog TemplateCatalogCategory TemplateEntry"
             >
               <h3>src/modules/dashboard/types.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>ProjectItem</code>, <code>TemplateEntry</code>,
-                <code>TemplateSummary</code>
+                <strong>Exports:</strong> <code>ProjectCreationValidationFailure</code>,
+                <code>ProjectCreationValidationResult</code>, <code>ProjectSortKey</code>,
+                <code>StudioProjectManifest</code>, <code>StudioProjectSummary</code>,
+                <code>TemplateCatalog</code>, <code>TemplateCatalogCategory</code>,
+                <code>TemplateEntry</code>
               </p>
-            </article>
-            <article
-              class="item"
-              data-search="src/modules/dashboard/ui/DashboardSectionHeader.tsx DashboardSectionHeader"
-            >
-              <h3>src/modules/dashboard/ui/DashboardSectionHeader.tsx</h3>
-              <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-              <p><strong>Exports:</strong> <code>DashboardSectionHeader</code></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/modules/dashboard/ui/ProjectCard.tsx src/modules/dashboard/types.ts ProjectCard"
-            >
-              <h3>src/modules/dashboard/ui/ProjectCard.tsx</h3>
-              <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
-              <p><strong>Exports:</strong> <code>ProjectCard</code></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/modules/dashboard/ui/TemplateCard.tsx src/modules/dashboard/types.ts TemplateCard"
-            >
-              <h3>src/modules/dashboard/ui/TemplateCard.tsx</h3>
-              <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/modules/dashboard/types.ts</code></p>
-              <p><strong>Exports:</strong> <code>TemplateCard</code></p>
             </article>
             <article class="item" data-search="src/projectAuthApi.test.ts src/projectAuthApi.ts">
               <h3>src/projectAuthApi.test.ts</h3>
@@ -3244,7 +3269,7 @@
             </article>
             <article
               class="item"
-              data-search="src/root.ts ACTION_REGISTRY ActionDefinition addNodeToTree analyzeProjectAuthHealth AnkhAdminPage AnkhAdminShell AnkhStudio assertMetadataOnlyResponse buildInsertCatalogEntries canAcceptChild cloneWithNewIds createNodeFromCatalogEntry findNodeById findProjectSecretUsages findRawSecretResponseKey generateStudioId getInsertCatalogCategoryLabel InsertCatalogComponentEntry InsertCatalogDisabledReason InsertCatalogDisabledReasonCode InsertCatalogEntry InsertCatalogEntryBase InsertCatalogEntryKind InsertCatalogEntryStatus InsertCatalogRecipeEntry insertNodeAtPlacement InsertNodeAtPlacementArgs InsertNodeAtPlacementResult InsertRecipe InsertRecipeIssue InsertRecipeNode ModuleDefinition moveNodeInTree moveNodeToPlacement MoveNodeToPlacementArgs MoveNodeToPlacementResult NodePlacement PlacementFailureCode PlacementFailureReason PlacementKind PlacementResolutionResult PlacementValidationResult ProjectAuthDiagnostic ProjectAuthDiagnosticSeverity ProjectAuthHealth ProjectAuthHealthStatus ProjectOAuthProviderHealth ProjectOAuthProviderHealthStatus ProjectSecretUsage ProjectSecretUsageCategory ProjectSecretUsageSummary RAW_SECRET_RESPONSE_KEYS RawSecretResponseKeyMatch removeNodeFromTree resolveDefaultInsertPlacement resolveInsertCatalogEntries resolveInsertPlacement STUDIO_INSERT_RECIPES STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME STUDIO_PUBLIC_CONTRACTS StudioActionPayloadField StudioActionPayloadPrimitive StudioActionPayloadSchema StudioAdminRouteId StudioAdminRoutePath StudioAdminStaticRoutePath StudioApp StudioCommand StudioComponentBlueprint StudioComponentMeta StudioComponentMetaRegistry StudioContextValue StudioDashboard StudioEvent StudioIdGenerator StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPackageBoundary StudioPanelId StudioProjectId StudioProvider StudioPublicContract StudioSaveStatus StudioScreenId StudioSelectionState StudioSessionId StudioSessionState ThemeUpdates TPL_SCREEN_EMPTY updateNodeInTree useStudio useStudioAppBarAugmentation validateInsertRecipe validateNodePlacement"
+              data-search="src/root.ts ACTION_REGISTRY ActionDefinition addNodeToTree analyzeProjectAuthHealth AnkhAdminPage AnkhAdminShell AnkhStudio assertMetadataOnlyResponse buildInsertCatalogEntries canAcceptChild cloneWithNewIds CreateCategoriesScreen CreateCategoryTemplatesScreen createNodeFromCatalogEntry CreateProjectFromTemplateScreen findNodeById findProjectSecretUsages findRawSecretResponseKey generateStudioId getInsertCatalogCategoryLabel InsertCatalogComponentEntry InsertCatalogDisabledReason InsertCatalogDisabledReasonCode InsertCatalogEntry InsertCatalogEntryBase InsertCatalogEntryKind InsertCatalogEntryStatus InsertCatalogRecipeEntry insertNodeAtPlacement InsertNodeAtPlacementArgs InsertNodeAtPlacementResult InsertRecipe InsertRecipeIssue InsertRecipeNode ModuleDefinition moveNodeInTree moveNodeToPlacement MoveNodeToPlacementArgs MoveNodeToPlacementResult NodePlacement PlacementFailureCode PlacementFailureReason PlacementKind PlacementResolutionResult PlacementValidationResult ProjectAuthDiagnostic ProjectAuthDiagnosticSeverity ProjectAuthHealth ProjectAuthHealthStatus ProjectDetailScreen ProjectOAuthProviderHealth ProjectOAuthProviderHealthStatus ProjectSecretUsage ProjectSecretUsageCategory ProjectSecretUsageSummary ProjectsOverviewScreen RAW_SECRET_RESPONSE_KEYS RawSecretResponseKeyMatch removeNodeFromTree resolveDefaultInsertPlacement resolveInsertCatalogEntries resolveInsertPlacement STUDIO_INSERT_RECIPES STUDIO_PACKAGE_BOUNDARY STUDIO_PACKAGE_NAME STUDIO_PUBLIC_CONTRACTS StudioActionPayloadField StudioActionPayloadPrimitive StudioActionPayloadSchema StudioAdminRouteId StudioAdminRoutePath StudioAdminStaticRoutePath StudioApp StudioCommand StudioComponentBlueprint StudioComponentMeta StudioComponentMetaRegistry StudioContextValue StudioDashboard StudioEvent StudioIdGenerator StudioLocale StudioManifest StudioMode StudioModuleId StudioNodeId StudioPackageBoundary StudioPanelId StudioProjectId StudioProvider StudioPublicContract StudioSaveStatus StudioScreenId StudioSelectionState StudioSessionId StudioSessionState ThemeUpdates TPL_SCREEN_EMPTY updateNodeInTree useStudio useStudioAppBarAugmentation validateInsertRecipe validateNodePlacement"
             >
               <h3>src/root.ts</h3>
               <p class="muted">Referenced module</p>
@@ -3256,7 +3281,9 @@
                 <code>AnkhAdminShell</code>, <code>AnkhStudio</code>,
                 <code>assertMetadataOnlyResponse</code>, <code>buildInsertCatalogEntries</code>,
                 <code>canAcceptChild</code>, <code>cloneWithNewIds</code>,
-                <code>createNodeFromCatalogEntry</code>, <code>findNodeById</code>,
+                <code>CreateCategoriesScreen</code>, <code>CreateCategoryTemplatesScreen</code>,
+                <code>createNodeFromCatalogEntry</code>,
+                <code>CreateProjectFromTemplateScreen</code>, <code>findNodeById</code>,
                 <code>findProjectSecretUsages</code>, <code>findRawSecretResponseKey</code>,
                 <code>generateStudioId</code>, <code>getInsertCatalogCategoryLabel</code>,
                 <code>InsertCatalogComponentEntry</code>, <code>InsertCatalogDisabledReason</code>,
@@ -3273,11 +3300,13 @@
                 <code>PlacementKind</code>, <code>PlacementResolutionResult</code>,
                 <code>PlacementValidationResult</code>, <code>ProjectAuthDiagnostic</code>,
                 <code>ProjectAuthDiagnosticSeverity</code>, <code>ProjectAuthHealth</code>,
-                <code>ProjectAuthHealthStatus</code>, <code>ProjectOAuthProviderHealth</code>,
+                <code>ProjectAuthHealthStatus</code>, <code>ProjectDetailScreen</code>,
+                <code>ProjectOAuthProviderHealth</code>,
                 <code>ProjectOAuthProviderHealthStatus</code>, <code>ProjectSecretUsage</code>,
                 <code>ProjectSecretUsageCategory</code>, <code>ProjectSecretUsageSummary</code>,
-                <code>RAW_SECRET_RESPONSE_KEYS</code>, <code>RawSecretResponseKeyMatch</code>,
-                <code>removeNodeFromTree</code>, <code>resolveDefaultInsertPlacement</code>,
+                <code>ProjectsOverviewScreen</code>, <code>RAW_SECRET_RESPONSE_KEYS</code>,
+                <code>RawSecretResponseKeyMatch</code>, <code>removeNodeFromTree</code>,
+                <code>resolveDefaultInsertPlacement</code>,
                 <code>resolveInsertCatalogEntries</code>, <code>resolveInsertPlacement</code>,
                 <code>STUDIO_INSERT_RECIPES</code>, <code>STUDIO_PACKAGE_BOUNDARY</code>,
                 <code>STUDIO_PACKAGE_NAME</code>, <code>STUDIO_PUBLIC_CONTRACTS</code>,
@@ -7305,19 +7334,16 @@
                 -.-&gt; module_src_app_index_ts
                 module_src_app_StudioApp_tsx[&quot;src/app/StudioApp.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_app_StudioApp_tsx
+                module_src_app_StudioApp_tsx --&gt; module_src_hooks_useProjects_ts
                 module_src_app_StudioDashboard_tsx[&quot;src/app/StudioDashboard.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_app_StudioDashboard_tsx
                 module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
+                module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateCatalog_ts
                 module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_search_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_templates_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_types_ts
                 module_src_app_StudioDashboard_tsx --&gt;
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-                module_src_app_StudioDashboard_tsx --&gt;
-                module_src_modules_dashboard_ui_ProjectCard_tsx module_src_app_StudioDashboard_tsx
-                --&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
+                module_src_modules_dashboard_projectIdentity_ts module_src_app_StudioDashboard_tsx
+                --&gt; module_src_modules_dashboard_search_ts module_src_app_StudioDashboard_tsx
+                --&gt; module_src_modules_dashboard_types_ts
                 module_src_authFlowContract_test_ts[&quot;src/authFlowContract.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_authFlowContract_test_ts
                 module_src_authSettings_test_ts[&quot;src/authSettings.test.ts&quot;]
@@ -7402,11 +7428,11 @@
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
                 module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
-                module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
-                package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateSummaries_ts
-                module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
-                module_src_hooks_useTemplateSummaries_ts --&gt;
-                module_src_modules_dashboard_types_ts
+                module_src_hooks_useProjects_ts --&gt; module_src_modules_dashboard_types_ts
+                module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateCatalog_ts
+                module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
+                module_src_hooks_useTemplateCatalog_ts --&gt; module_src_modules_dashboard_types_ts
                 module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_auth_projectAuthHealthService_ts
                 module_src_host_auth_projectAuthHealthService_ts --&gt;
@@ -7484,7 +7510,8 @@
                 --&gt; module_src_host_orchestrator_studioInfraUp_ts module_src_host_http_server_ts
                 --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
                 --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
-                module_src_host_utils_workspaceRoot_ts
+                module_src_host_utils_workspaceRoot_ts module_src_host_http_server_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
                 module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
                 module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
@@ -7661,6 +7688,15 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectCreationSafety_test_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
                 module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_orchestrator_projectDeletion_test_ts
@@ -7699,6 +7735,8 @@
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
                 module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_orchestrator_projectManagerDeletion_test_ts
@@ -7710,6 +7748,13 @@
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectStore_ts
                 module_src_host_orchestrator_projectStore_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts
+                module_src_host_orchestrator_projectStore_ts --&gt;
+                module_src_modules_dashboard_types_ts
+                module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectStoreSummary_test_ts
+                module_src_host_orchestrator_projectStoreSummary_test_ts --&gt;
+                module_src_host_orchestrator_projectStore_ts
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_resolveMutations_ts
                 module_src_host_orchestrator_resolveMutations_ts --&gt;
@@ -7790,6 +7835,10 @@
                 module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+                module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_catalog_test_ts
+                module_src_host_templateRegistry_catalog_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -7867,26 +7916,22 @@
                 module_src_manifestSync_ts --&gt; module_src_index_ts
                 module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_modules_dashboard_platform_ts
+                module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_modules_dashboard_projectIdentity_test_ts
+                module_src_modules_dashboard_projectIdentity_test_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
+                module_src_modules_dashboard_projectIdentity_test_ts --&gt;
+                module_src_modules_dashboard_types_ts
+                module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_modules_dashboard_projectIdentity_ts
+                module_src_modules_dashboard_projectIdentity_ts --&gt;
+                module_src_modules_dashboard_types_ts
                 module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_modules_dashboard_search_ts
                 module_src_modules_dashboard_search_ts --&gt; module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
-                package__ankhorage_studio -.-&gt; module_src_modules_dashboard_templates_ts
-                module_src_modules_dashboard_templates_ts --&gt;
-                module_src_modules_dashboard_types_ts
                 module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-                package__ankhorage_studio -.-&gt;
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-                module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-                package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_ProjectCard_tsx
-                module_src_modules_dashboard_ui_ProjectCard_tsx --&gt;
-                module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
-                package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
-                module_src_modules_dashboard_ui_TemplateCard_tsx --&gt;
-                module_src_modules_dashboard_types_ts
                 module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectAuthApi_test_ts
                 module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
@@ -8168,17 +8213,15 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_app_index_ts
   module_src_app_StudioApp_tsx[&quot;src/app/StudioApp.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_app_StudioApp_tsx
+  module_src_app_StudioApp_tsx --&gt; module_src_hooks_useProjects_ts
   module_src_app_StudioDashboard_tsx[&quot;src/app/StudioDashboard.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_app_StudioDashboard_tsx
   module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
+  module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateCatalog_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
+  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_search_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_templates_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_types_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_ProjectCard_tsx
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_authFlowContract_test_ts[&quot;src/authFlowContract.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_authFlowContract_test_ts
   module_src_authSettings_test_ts[&quot;src/authSettings.test.ts&quot;]
@@ -8258,10 +8301,11 @@ graph TD
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateSummaries_ts
-  module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_hooks_useTemplateCatalog_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_auth_projectAuthHealthService_ts
   module_src_host_auth_projectAuthHealthService_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -8318,6 +8362,7 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_server_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_http_serverWithSecrets_ts[&quot;src/host/http/serverWithSecrets.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
@@ -8446,6 +8491,11 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectCreationSafety_test_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectDeletion_test_ts
   module_src_host_orchestrator_projectDeletion_test_ts --&gt; module_src_host_orchestrator_projectDeletion_ts
@@ -8468,6 +8518,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManagerDeletion_test_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
@@ -8476,6 +8527,10 @@ graph TD
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectStore_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectStoreSummary_test_ts
+  module_src_host_orchestrator_projectStoreSummary_test_ts --&gt; module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_catalog_ts
@@ -8530,6 +8585,9 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_catalog_test_ts
+  module_src_host_templateRegistry_catalog_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_index_ts
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
@@ -8603,22 +8661,18 @@ graph TD
   module_src_manifestSync_ts --&gt; module_src_index_ts
   module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_modules_dashboard_platform_ts
+  module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_projectIdentity_test_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_projectIdentity_ts
+  module_src_modules_dashboard_projectIdentity_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_modules_dashboard_search_ts
   module_src_modules_dashboard_search_ts --&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_templates_ts
-  module_src_modules_dashboard_templates_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-  module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_ProjectCard_tsx
-  module_src_modules_dashboard_ui_ProjectCard_tsx --&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
-  package__ankhorage_studio -.-&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
-  module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectAuthApi_test_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
@@ -8878,7 +8932,7 @@ graph TD
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
                 module_src_dnd_state_ts[&quot;src/dnd/state.ts&quot;]
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
-                module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
+                module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
                 module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
@@ -8929,12 +8983,14 @@ graph TD
                 module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
                 module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+                module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
+                module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
@@ -8949,6 +9005,7 @@ graph TD
                 module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
                 module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+                module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -8974,12 +9031,10 @@ graph TD
                 module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
                 module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
                 module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
+                module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+                module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
                 module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
-                module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
                 module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-                module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-                module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
                 module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
                 module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
                 module_src_projectAuthHealth_test_ts[&quot;src/projectAuthHealth.test.ts&quot;]
@@ -9048,33 +9103,30 @@ graph TD
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
+                module_src_app_StudioApp_tsx --&gt; module_src_hooks_useProjects_ts
                 module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
+                module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateCatalog_ts
                 module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_search_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_templates_ts
-                module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_types_ts
                 module_src_app_StudioDashboard_tsx --&gt;
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-                module_src_app_StudioDashboard_tsx --&gt;
-                module_src_modules_dashboard_ui_ProjectCard_tsx module_src_app_StudioDashboard_tsx
-                --&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
-                module_src_authSettings_test_ts --&gt; module_src_authSettings_ts
-                module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDragModel_ts
-                module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDropZones_ts
-                module_src_canvasDragModel_test_ts --&gt; module_src_canvasDragModel_ts
-                module_src_canvasDragModel_test_ts --&gt; module_src_canvasDropZones_ts
-                module_src_canvasDragModel_ts --&gt; module_src_canvasDropZones_ts
-                module_src_canvasDragModel_ts --&gt; module_src_index_ts
-                module_src_canvasDropZones_test_ts --&gt; module_src_canvasDropZones_ts
-                module_src_canvasDropZones_test_ts --&gt; module_src_index_ts
-                module_src_canvasDropZones_ts --&gt; module_src_index_ts module_src_cli_index_ts
-                --&gt; module_src_host_createStudioHost_ts module_src_cli_index_ts --&gt;
-                module_src_host_http_server_ts module_src_cli_index_ts --&gt;
-                module_src_host_templateRegistry_index_ts module_src_cli_index_ts --&gt;
-                module_src_host_utils_workspaceRoot_ts module_src_core_StudioContext_ts --&gt;
-                module_src_index_ts module_src_core_studioManifestDraftModel_test_ts --&gt;
-                module_src_authSettings_ts module_src_core_studioManifestDraftModel_test_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts module_src_app_StudioDashboard_tsx
+                --&gt; module_src_modules_dashboard_search_ts module_src_app_StudioDashboard_tsx
+                --&gt; module_src_modules_dashboard_types_ts module_src_authSettings_test_ts --&gt;
+                module_src_authSettings_ts module_src_canvasDragModel_public_test_ts --&gt;
+                module_src_canvasDragModel_ts module_src_canvasDragModel_public_test_ts --&gt;
+                module_src_canvasDropZones_ts module_src_canvasDragModel_test_ts --&gt;
+                module_src_canvasDragModel_ts module_src_canvasDragModel_test_ts --&gt;
+                module_src_canvasDropZones_ts module_src_canvasDragModel_ts --&gt;
+                module_src_canvasDropZones_ts module_src_canvasDragModel_ts --&gt;
+                module_src_index_ts module_src_canvasDropZones_test_ts --&gt;
+                module_src_canvasDropZones_ts module_src_canvasDropZones_test_ts --&gt;
+                module_src_index_ts module_src_canvasDropZones_ts --&gt; module_src_index_ts
+                module_src_cli_index_ts --&gt; module_src_host_createStudioHost_ts
+                module_src_cli_index_ts --&gt; module_src_host_http_server_ts
+                module_src_cli_index_ts --&gt; module_src_host_templateRegistry_index_ts
+                module_src_cli_index_ts --&gt; module_src_host_utils_workspaceRoot_ts
+                module_src_core_StudioContext_ts --&gt; module_src_index_ts
+                module_src_core_studioManifestDraftModel_test_ts --&gt; module_src_authSettings_ts
+                module_src_core_studioManifestDraftModel_test_ts --&gt;
                 module_src_core_studioManifestDraftModel_ts
                 module_src_core_studioManifestDraftModel_test_ts --&gt; module_src_index_ts
                 module_src_core_studioManifestDraftModel_ts --&gt; module_src_authSettings_ts
@@ -9095,8 +9147,9 @@ graph TD
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_ui_admin_AuthAdminSession_tsx module_src_hooks_useProjects_ts --&gt;
-                module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
-                module_src_core_constants_ts module_src_hooks_useTemplateSummaries_ts --&gt;
+                module_src_core_constants_ts module_src_hooks_useProjects_ts --&gt;
+                module_src_modules_dashboard_types_ts module_src_hooks_useTemplateCatalog_ts --&gt;
+                module_src_core_constants_ts module_src_hooks_useTemplateCatalog_ts --&gt;
                 module_src_modules_dashboard_types_ts
                 module_src_host_auth_projectAuthHealthService_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
@@ -9148,12 +9201,13 @@ graph TD
                 --&gt; module_src_host_orchestrator_studioInfraUp_ts module_src_host_http_server_ts
                 --&gt; module_src_host_templateRegistry_index_ts module_src_host_http_server_ts
                 --&gt; module_src_host_utils_trimOutput_ts module_src_host_http_server_ts --&gt;
-                module_src_host_utils_workspaceRoot_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_http_authRoutes_ts module_src_host_http_serverWithSecrets_ts
-                --&gt; module_src_host_http_secretRoutes_ts
-                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
+                module_src_host_utils_workspaceRoot_ts module_src_host_http_server_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
+                module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
-                module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_secretRoutes_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_http_server_ts module_src_host_http_serverWithSecrets_ts
+                --&gt; module_src_host_orchestrator_moduleManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_http_serverWithSecrets_ts --&gt;
@@ -9236,6 +9290,12 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
                 module_src_host_orchestrator_resolveMutations_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
                 module_src_host_orchestrator_projectDeletion_test_ts --&gt;
                 module_src_host_orchestrator_projectDeletion_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -9267,10 +9327,16 @@ graph TD
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
                 module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_projectStore_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts
+                module_src_host_orchestrator_projectStore_ts --&gt;
+                module_src_modules_dashboard_types_ts
+                module_src_host_orchestrator_projectStoreSummary_test_ts --&gt;
+                module_src_host_orchestrator_projectStore_ts
                 module_src_host_orchestrator_resolveMutations_ts --&gt;
                 module_src_host_modules_catalog_ts module_src_host_orchestrator_resolveMutations_ts
                 --&gt; module_src_host_modules_layout_ts module_src_host_orchestrator_scaffolder_ts
@@ -9318,8 +9384,9 @@ graph TD
                 module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts
-                module_src_host_zoraExtensions_index_ts --&gt;
-                module_src_host_templateRegistry_index_ts module_src_index_test_ts --&gt;
+                module_src_host_templateRegistry_catalog_test_ts --&gt;
+                module_src_host_templateRegistry_index_ts module_src_host_zoraExtensions_index_ts
+                --&gt; module_src_host_templateRegistry_index_ts module_src_index_test_ts --&gt;
                 module_src_index_ts module_src_index_ts --&gt; module_src_authSettings_ts
                 module_src_insertModalModel_public_test_ts --&gt; module_src_index_ts
                 module_src_insertModalModel_public_test_ts --&gt; module_src_insertModalModel_ts
@@ -9345,12 +9412,12 @@ graph TD
                 module_src_manifestSync_test_ts --&gt; module_src_index_ts
                 module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
                 module_src_manifestSync_ts --&gt; module_src_index_ts
-                module_src_modules_dashboard_search_ts --&gt; module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_templates_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_test_ts --&gt;
+                module_src_modules_dashboard_projectIdentity_ts
+                module_src_modules_dashboard_projectIdentity_test_ts --&gt;
                 module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_ui_ProjectCard_tsx --&gt;
-                module_src_modules_dashboard_types_ts
-                module_src_modules_dashboard_ui_TemplateCard_tsx --&gt;
+                module_src_modules_dashboard_projectIdentity_ts --&gt;
+                module_src_modules_dashboard_types_ts module_src_modules_dashboard_search_ts --&gt;
                 module_src_modules_dashboard_types_ts module_src_projectAuthApi_test_ts --&gt;
                 module_src_projectAuthApi_ts module_src_projectAuthApi_ts --&gt;
                 module_src_projectAuthHealth_ts module_src_projectAuthApi_ts --&gt;
@@ -9502,7 +9569,7 @@ graph LR
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
   module_src_dnd_state_ts[&quot;src/dnd/state.ts&quot;]
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
-  module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
+  module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
   module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
@@ -9553,12 +9620,14 @@ graph LR
   module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
   module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+  module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
+  module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
@@ -9573,6 +9642,7 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
   module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+  module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -9598,12 +9668,10 @@ graph LR
   module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
   module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
   module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
+  module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+  module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
   module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
-  module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
   module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
-  module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-  module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-  module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
   module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
   module_src_projectAuthHealth_test_ts[&quot;src/projectAuthHealth.test.ts&quot;]
@@ -9672,15 +9740,13 @@ graph LR
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   module_src_ankhAdmin_public_test_ts --&gt; module_src_root_ts
+  module_src_app_StudioApp_tsx --&gt; module_src_hooks_useProjects_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useProjects_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateSummaries_ts
+  module_src_app_StudioDashboard_tsx --&gt; module_src_hooks_useTemplateCatalog_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_platform_ts
+  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_search_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_templates_ts
   module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_types_ts
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_DashboardSectionHeader_tsx
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_ProjectCard_tsx
-  module_src_app_StudioDashboard_tsx --&gt; module_src_modules_dashboard_ui_TemplateCard_tsx
   module_src_authSettings_test_ts --&gt; module_src_authSettings_ts
   module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDragModel_ts
   module_src_canvasDragModel_public_test_ts --&gt; module_src_canvasDropZones_ts
@@ -9716,8 +9782,9 @@ graph LR
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts --&gt; module_src_core_constants_ts
-  module_src_hooks_useTemplateSummaries_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_hooks_useProjects_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_core_constants_ts
+  module_src_hooks_useTemplateCatalog_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_host_auth_projectAuthHealthService_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_auth_projectAuthHealthService_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_auth_projectAuthHealthService_ts --&gt; module_src_projectAuthHealth_ts
@@ -9752,6 +9819,7 @@ graph LR
   module_src_host_http_server_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_trimOutput_ts
   module_src_host_http_server_ts --&gt; module_src_host_utils_workspaceRoot_ts
+  module_src_host_http_server_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_authRoutes_ts
   module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_secretRoutes_ts
   module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_http_server_ts
@@ -9802,6 +9870,9 @@ graph LR
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectDeletion_test_ts --&gt; module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_manifestSystem_index_ts
@@ -9818,8 +9889,11 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
   module_src_host_orchestrator_projectManagerDeletion_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectStore_ts --&gt; module_src_host_orchestrator_projectPaths_ts
+  module_src_host_orchestrator_projectStore_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_host_orchestrator_projectStoreSummary_test_ts --&gt; module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_manifestSystem_index_ts
@@ -9846,6 +9920,7 @@ graph LR
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_templateRegistry_catalog_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_zoraExtensions_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --&gt; module_src_index_ts
   module_src_index_ts --&gt; module_src_authSettings_ts
@@ -9870,10 +9945,10 @@ graph LR
   module_src_manifestSync_test_ts --&gt; module_src_index_ts
   module_src_manifestSync_test_ts --&gt; module_src_manifestSync_ts
   module_src_manifestSync_ts --&gt; module_src_index_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --&gt; module_src_modules_dashboard_projectIdentity_ts
+  module_src_modules_dashboard_projectIdentity_test_ts --&gt; module_src_modules_dashboard_types_ts
+  module_src_modules_dashboard_projectIdentity_ts --&gt; module_src_modules_dashboard_types_ts
   module_src_modules_dashboard_search_ts --&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_templates_ts --&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_ProjectCard_tsx --&gt; module_src_modules_dashboard_types_ts
-  module_src_modules_dashboard_ui_TemplateCard_tsx --&gt; module_src_modules_dashboard_types_ts
   module_src_projectAuthApi_test_ts --&gt; module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --&gt; module_src_projectAuthHealth_ts
   module_src_projectAuthApi_ts --&gt; module_src_secretResponseGuard_ts
@@ -9996,7 +10071,7 @@ graph LR
                 module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
                 module_src_dnd_state_ts[&quot;src/dnd/state.ts&quot;]
                 module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
-                module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
+                module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
                 module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
                 module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
@@ -10047,12 +10122,14 @@ graph LR
                 module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
                 module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+                module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
+                module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
@@ -10067,6 +10144,7 @@ graph LR
                 module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
                 module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+                module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
                 module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
                 module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
                 module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -10092,12 +10170,10 @@ graph LR
                 module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
                 module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
                 module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
+                module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+                module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
                 module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
-                module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
                 module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
-                module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-                module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-                module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
                 module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
                 module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
                 module_src_projectAuthHealth_test_ts[&quot;src/projectAuthHealth.test.ts&quot;]
@@ -10415,7 +10491,7 @@ graph LR
   module_src_dnd_primitives_ts[&quot;src/dnd/primitives.ts&quot;]
   module_src_dnd_state_ts[&quot;src/dnd/state.ts&quot;]
   module_src_hooks_useProjects_ts[&quot;src/hooks/useProjects.ts&quot;]
-  module_src_hooks_useTemplateSummaries_ts[&quot;src/hooks/useTemplateSummaries.ts&quot;]
+  module_src_hooks_useTemplateCatalog_ts[&quot;src/hooks/useTemplateCatalog.ts&quot;]
   module_src_host_auth_projectAuthHealthService_ts[&quot;src/host/auth/projectAuthHealthService.ts&quot;]
   module_src_host_createStudioHost_ts[&quot;src/host/createStudioHost.ts&quot;]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
@@ -10466,12 +10542,14 @@ graph LR
   module_src_host_orchestrator_infraRuntime_ts[&quot;src/host/orchestrator/infraRuntime.ts&quot;]
   module_src_host_orchestrator_infraValidation_ts[&quot;src/host/orchestrator/infraValidation.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
+  module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_test_ts[&quot;src/host/orchestrator/projectDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectDeletion_ts[&quot;src/host/orchestrator/projectDeletion.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
+  module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
@@ -10486,6 +10564,7 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.test.ts&quot;]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts[&quot;src/host/secrets/trustedOAuthInfraEnvironment.ts&quot;]
   module_src_host_studioInfra_e2e_test_ts[&quot;src/host/studioInfra.e2e.test.ts&quot;]
+  module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
   module_src_host_templateRegistry_index_ts[&quot;src/host/templateRegistry/index.ts&quot;]
   module_src_host_utils_requirementsInference_ts[&quot;src/host/utils/requirementsInference.ts&quot;]
   module_src_host_utils_trimOutput_ts[&quot;src/host/utils/trimOutput.ts&quot;]
@@ -10511,12 +10590,10 @@ graph LR
   module_src_manifestSync_test_ts[&quot;src/manifestSync.test.ts&quot;]
   module_src_manifestSync_ts[&quot;src/manifestSync.ts&quot;]
   module_src_modules_dashboard_platform_ts[&quot;src/modules/dashboard/platform.ts&quot;]
+  module_src_modules_dashboard_projectIdentity_test_ts[&quot;src/modules/dashboard/projectIdentity.test.ts&quot;]
+  module_src_modules_dashboard_projectIdentity_ts[&quot;src/modules/dashboard/projectIdentity.ts&quot;]
   module_src_modules_dashboard_search_ts[&quot;src/modules/dashboard/search.ts&quot;]
-  module_src_modules_dashboard_templates_ts[&quot;src/modules/dashboard/templates.ts&quot;]
   module_src_modules_dashboard_types_ts[&quot;src/modules/dashboard/types.ts&quot;]
-  module_src_modules_dashboard_ui_DashboardSectionHeader_tsx[&quot;src/modules/dashboard/ui/DashboardSectionHeader.tsx&quot;]
-  module_src_modules_dashboard_ui_ProjectCard_tsx[&quot;src/modules/dashboard/ui/ProjectCard.tsx&quot;]
-  module_src_modules_dashboard_ui_TemplateCard_tsx[&quot;src/modules/dashboard/ui/TemplateCard.tsx&quot;]
   module_src_projectAuthApi_test_ts[&quot;src/projectAuthApi.test.ts&quot;]
   module_src_projectAuthApi_ts[&quot;src/projectAuthApi.ts&quot;]
   module_src_projectAuthHealth_test_ts[&quot;src/projectAuthHealth.test.ts&quot;]
@@ -11164,12 +11241,25 @@ sequenceDiagram
             <h2>src/app/StudioApp.tsx</h2>
             <article class="item" data-search="StudioApp src/app/StudioApp.tsx ">
               <h3>StudioApp</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:10:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:12:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioAppRootContent src/app/StudioApp.tsx ">
               <h3>StudioAppRootContent</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:32:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:34:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="handleInstallWorkspacePackages src/app/StudioApp.tsx "
+            >
+              <h3>handleInstallWorkspacePackages</h3>
+              <p class="muted"><code>src/app/StudioApp.tsx:42:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="IconButton src/app/StudioApp.tsx ">
+              <h3>IconButton</h3>
+              <p class="muted"><code>src/app/StudioApp.tsx:124:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11184,65 +11274,158 @@ sequenceDiagram
             <h2>src/app/StudioDashboard.tsx</h2>
             <article class="item" data-search="StudioDashboard src/app/StudioDashboard.tsx ">
               <h3>StudioDashboard</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:26:1</code></p>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:39:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleSync src/app/StudioDashboard.tsx ">
-              <h3>handleSync</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:64:9</code></p>
+            <article class="item" data-search="ProjectsOverviewScreen src/app/StudioDashboard.tsx ">
+              <h3>ProjectsOverviewScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleCreate src/app/StudioDashboard.tsx ">
-              <h3>handleCreate</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:77:9</code></p>
+            <article class="item" data-search="ProjectDetailScreen src/app/StudioDashboard.tsx ">
+              <h3>ProjectDetailScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:127:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleInstallPackages src/app/StudioDashboard.tsx ">
-              <h3>handleInstallPackages</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:98:9</code></p>
+            <article class="item" data-search="runAction src/app/StudioDashboard.tsx ">
+              <h3>runAction</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:143:3</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleReloadInfra src/app/StudioDashboard.tsx ">
-              <h3>handleReloadInfra</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:111:9</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="handleLaunch src/app/StudioDashboard.tsx ">
-              <h3>handleLaunch</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:124:9</code></p>
+            <article class="item" data-search="handleOpenRunningApp src/app/StudioDashboard.tsx ">
+              <h3>handleOpenRunningApp</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:161:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="handleDelete src/app/StudioDashboard.tsx ">
               <h3>handleDelete</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:149:9</code></p>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:178:9</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleLaunchPress src/app/StudioDashboard.tsx ">
-              <h3>handleLaunchPress</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:161:9</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="handleSyncPress src/app/StudioDashboard.tsx ">
-              <h3>handleSyncPress</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:165:9</code></p>
+            <article class="item" data-search="CreateCategoriesScreen src/app/StudioDashboard.tsx ">
+              <h3>CreateCategoriesScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:300:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
               class="item"
-              data-search="handleInstallPackagesPress src/app/StudioDashboard.tsx "
+              data-search="CreateCategoryTemplatesScreen src/app/StudioDashboard.tsx "
             >
-              <h3>handleInstallPackagesPress</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:169:9</code></p>
+              <h3>CreateCategoryTemplatesScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:351:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleReloadInfraPress src/app/StudioDashboard.tsx ">
-              <h3>handleReloadInfraPress</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:173:9</code></p>
+            <article
+              class="item"
+              data-search="CreateProjectFromTemplateScreen src/app/StudioDashboard.tsx "
+            >
+              <h3>CreateProjectFromTemplateScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:396:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article class="item" data-search="handleCreatePress src/app/StudioDashboard.tsx ">
-              <h3>handleCreatePress</h3>
-              <p class="muted"><code>src/app/StudioDashboard.tsx:177:9</code></p>
+            <article class="item" data-search="handleCreate src/app/StudioDashboard.tsx ">
+              <h3>handleCreate</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:412:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="WorkspaceScreen src/app/StudioDashboard.tsx ">
+              <h3>WorkspaceScreen</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:495:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="ProjectOverviewCard src/app/StudioDashboard.tsx ">
+              <h3>ProjectOverviewCard</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:513:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="CategoryCard src/app/StudioDashboard.tsx ">
+              <h3>CategoryCard</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:548:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="TemplateCard src/app/StudioDashboard.tsx ">
+              <h3>TemplateCard</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:579:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="SearchResults src/app/StudioDashboard.tsx ">
+              <h3>SearchResults</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:609:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="LifecycleAction src/app/StudioDashboard.tsx ">
+              <h3>LifecycleAction</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:648:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="PrimaryAction src/app/StudioDashboard.tsx ">
+              <h3>PrimaryAction</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:689:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="SecondaryAction src/app/StudioDashboard.tsx ">
+              <h3>SecondaryAction</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:720:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="SegmentedControl src/app/StudioDashboard.tsx ">
+              <h3>SegmentedControl</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:741:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="MetadataRows src/app/StudioDashboard.tsx ">
+              <h3>MetadataRows</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:778:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="InlineMessage src/app/StudioDashboard.tsx ">
+              <h3>InlineMessage</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:795:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="LoadingState src/app/StudioDashboard.tsx ">
+              <h3>LoadingState</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:808:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="EmptyState src/app/StudioDashboard.tsx ">
+              <h3>EmptyState</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:820:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="useProjectRouteParams src/app/StudioDashboard.tsx ">
+              <h3>useProjectRouteParams</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:840:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="useCategoryRouteParams src/app/StudioDashboard.tsx ">
+              <h3>useCategoryRouteParams</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:845:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="useTemplateRouteParams src/app/StudioDashboard.tsx ">
+              <h3>useTemplateRouteParams</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:851:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="firstParam src/app/StudioDashboard.tsx ">
+              <h3>firstParam</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:860:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isAppCategory src/app/StudioDashboard.tsx ">
+              <h3>isAppCategory</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:864:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="formatCategory src/app/StudioDashboard.tsx ">
+              <h3>formatCategory</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:868:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="formatDate src/app/StudioDashboard.tsx ">
+              <h3>formatDate</h3>
+              <p class="muted"><code>src/app/StudioDashboard.tsx:875:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -11766,22 +11949,47 @@ sequenceDiagram
             <h2>src/hooks/useProjects.ts</h2>
             <article class="item" data-search="isRecord src/hooks/useProjects.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:51:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:56:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isAppCategory src/hooks/useProjects.ts ">
+              <h3>isAppCategory</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:60:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isThemeModeConfig src/hooks/useProjects.ts ">
+              <h3>isThemeModeConfig</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:64:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isThemeConfig src/hooks/useProjects.ts ">
+              <h3>isThemeConfig</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:70:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isActiveThemeMode src/hooks/useProjects.ts ">
+              <h3>isActiveThemeMode</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:80:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isProject src/hooks/useProjects.ts ">
               <h3>isProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:55:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:84:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readJson src/hooks/useProjects.ts ">
               <h3>readJson</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:66:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:100:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="readError src/hooks/useProjects.ts ">
+              <h3>readError</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:104:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseProjectList src/hooks/useProjects.ts ">
               <h3>parseProjectList</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:70:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:112:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11789,12 +11997,20 @@ sequenceDiagram
               data-search="parseCreateProjectResponse src/hooks/useProjects.ts "
             >
               <h3>parseCreateProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:78:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:120:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseProjectCreationFailure src/hooks/useProjects.ts "
+            >
+              <h3>parseProjectCreationFailure</h3>
+              <p class="muted"><code>src/hooks/useProjects.ts:137:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseSyncProjectResponse src/hooks/useProjects.ts ">
               <h3>parseSyncProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:95:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:158:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11802,7 +12018,7 @@ sequenceDiagram
               data-search="parseInstallWorkspacePackagesResponse src/hooks/useProjects.ts "
             >
               <h3>parseInstallWorkspacePackagesResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:103:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:166:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11810,7 +12026,7 @@ sequenceDiagram
               data-search="parseUpProjectInfrastructureResponse src/hooks/useProjects.ts "
             >
               <h3>parseUpProjectInfrastructureResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:116:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:177:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -11818,81 +12034,85 @@ sequenceDiagram
               data-search="parseLaunchProjectResponse src/hooks/useProjects.ts "
             >
               <h3>parseLaunchProjectResponse</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:129:1</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:190:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="useProjects src/hooks/useProjects.ts ">
               <h3>useProjects</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:143:14</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:204:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createProject src/hooks/useProjects.ts ">
               <h3>createProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:164:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:225:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="deleteProject src/hooks/useProjects.ts ">
               <h3>deleteProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:175:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:245:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="syncProject src/hooks/useProjects.ts ">
               <h3>syncProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:183:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:253:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="installWorkspacePackages src/hooks/useProjects.ts ">
               <h3>installWorkspacePackages</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:191:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:261:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="upProjectInfrastructure src/hooks/useProjects.ts ">
               <h3>upProjectInfrastructure</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:199:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:269:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="launchProject src/hooks/useProjects.ts ">
               <h3>launchProject</h3>
-              <p class="muted"><code>src/hooks/useProjects.ts:209:9</code></p>
+              <p class="muted"><code>src/hooks/useProjects.ts:279:9</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
         </section>
         <section
-          id="view-src-hooks-usetemplatesummaries-ts"
+          id="view-src-hooks-usetemplatecatalog-ts"
           class="view"
-          data-view="src/hooks/useTemplateSummaries.ts"
+          data-view="src/hooks/useTemplateCatalog.ts"
           hidden
         >
           <section class="panel">
-            <h2>src/hooks/useTemplateSummaries.ts</h2>
-            <article class="item" data-search="isRecord src/hooks/useTemplateSummaries.ts ">
+            <h2>src/hooks/useTemplateCatalog.ts</h2>
+            <article class="item" data-search="isRecord src/hooks/useTemplateCatalog.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/hooks/useTemplateSummaries.ts:6:1</code></p>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:10:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isAppCategory src/hooks/useTemplateCatalog.ts ">
+              <h3>isAppCategory</h3>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:14:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isHarmony src/hooks/useTemplateCatalog.ts ">
+              <h3>isHarmony</h3>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:18:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="isCatalogCategory src/hooks/useTemplateCatalog.ts ">
+              <h3>isCatalogCategory</h3>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:22:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
               class="item"
-              data-search="isTemplateSummary src/hooks/useTemplateSummaries.ts "
+              data-search="parseTemplateCatalog src/hooks/useTemplateCatalog.ts "
             >
-              <h3>isTemplateSummary</h3>
-              <p class="muted"><code>src/hooks/useTemplateSummaries.ts:10:1</code></p>
+              <h3>parseTemplateCatalog</h3>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:45:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article
-              class="item"
-              data-search="parseTemplateSummaries src/hooks/useTemplateSummaries.ts "
-            >
-              <h3>parseTemplateSummaries</h3>
-              <p class="muted"><code>src/hooks/useTemplateSummaries.ts:22:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="useTemplateSummaries src/hooks/useTemplateSummaries.ts "
-            >
-              <h3>useTemplateSummaries</h3>
-              <p class="muted"><code>src/hooks/useTemplateSummaries.ts:30:1</code></p>
+            <article class="item" data-search="useTemplateCatalog src/hooks/useTemplateCatalog.ts ">
+              <h3>useTemplateCatalog</h3>
+              <p class="muted"><code>src/hooks/useTemplateCatalog.ts:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -12360,17 +12580,17 @@ sequenceDiagram
             <h2>src/host/http/server.ts</h2>
             <article class="item" data-search="exists src/host/http/server.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/http/server.ts:26:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:27:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readSimpleEnvMap src/host/http/server.ts ">
               <h3>readSimpleEnvMap</h3>
-              <p class="muted"><code>src/host/http/server.ts:35:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:36:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readFirstEnvValue src/host/http/server.ts ">
               <h3>readFirstEnvValue</h3>
-              <p class="muted"><code>src/host/http/server.ts:57:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:58:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12378,17 +12598,17 @@ sequenceDiagram
               data-search="resolveProjectTemplateSelection src/host/http/server.ts "
             >
               <h3>resolveProjectTemplateSelection</h3>
-              <p class="muted"><code>src/host/http/server.ts:67:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:68:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createStudioHostServer src/host/http/server.ts ">
               <h3>createStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:81:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:82:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="startStudioHostServer src/host/http/server.ts ">
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:639:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:647:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -12396,7 +12616,7 @@ sequenceDiagram
               data-search="formatRuntimeOutputForResponse src/host/http/server.ts "
             >
               <h3>formatRuntimeOutputForResponse</h3>
-              <p class="muted"><code>src/host/http/server.ts:653:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:661:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -13772,6 +13992,26 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-orchestrator-projectcreationsafety-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/projectCreationSafety.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/projectCreationSafety.test.ts</h2>
+            <article
+              class="item"
+              data-search="catchError src/host/orchestrator/projectCreationSafety.test.ts "
+            >
+              <h3>catchError</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectCreationSafety.test.ts:50:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-orchestrator-projectdeletion-ts"
           class="view"
           data-view="src/host/orchestrator/projectDeletion.ts"
@@ -13882,17 +14122,12 @@ sequenceDiagram
               data-search="isStringRecord src/host/orchestrator/projectManager.ts "
             >
               <h3>isStringRecord</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:483:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="slugify src/host/orchestrator/projectManager.ts ">
-              <h3>slugify</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:492:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:502:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="exists src/host/orchestrator/projectManager.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:503:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:511:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13900,7 +14135,7 @@ sequenceDiagram
               data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedAuthProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:512:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:520:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13908,7 +14143,7 @@ sequenceDiagram
               data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedStorageProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:521:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:529:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14002,9 +14237,54 @@ sequenceDiagram
         >
           <section class="panel">
             <h2>src/host/orchestrator/projectStore.ts</h2>
+            <article class="item" data-search="isRecord src/host/orchestrator/projectStore.ts ">
+              <h3>isRecord</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:180:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isAppCategory src/host/orchestrator/projectStore.ts "
+            >
+              <h3>isAppCategory</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:184:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isThemeModeConfig src/host/orchestrator/projectStore.ts "
+            >
+              <h3>isThemeModeConfig</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:188:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isThemeConfig src/host/orchestrator/projectStore.ts "
+            >
+              <h3>isThemeConfig</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:194:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="parseStudioProjectManifest src/host/orchestrator/projectStore.ts "
+            >
+              <h3>parseStudioProjectManifest</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:204:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveActiveTheme src/host/orchestrator/projectStore.ts "
+            >
+              <h3>resolveActiveTheme</h3>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:223:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="exists src/host/orchestrator/projectStore.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectStore.ts:175:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:232:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14012,7 +14292,7 @@ sequenceDiagram
               data-search="writeJsonAtomic src/host/orchestrator/projectStore.ts "
             >
               <h3>writeJsonAtomic</h3>
-              <p class="muted"><code>src/host/orchestrator/projectStore.ts:184:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectStore.ts:241:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14045,7 +14325,7 @@ sequenceDiagram
             <h2>src/host/orchestrator/scaffolder.ts</h2>
             <article class="item" data-search="exists src/host/orchestrator/scaffolder.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:303:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:306:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14053,7 +14333,7 @@ sequenceDiagram
               data-search="withZoraExtensionDependencies src/host/orchestrator/scaffolder.ts "
             >
               <h3>withZoraExtensionDependencies</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:312:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:315:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14061,12 +14341,12 @@ sequenceDiagram
               data-search="mergePackageJson src/host/orchestrator/scaffolder.ts "
             >
               <h3>mergePackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:325:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:328:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="mergeScripts src/host/orchestrator/scaffolder.ts ">
               <h3>mergeScripts</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:389:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:392:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14708,20 +14988,12 @@ sequenceDiagram
               data-search="createProjectTemplateId src/host/templateRegistry/index.ts "
             >
               <h3>createProjectTemplateId</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:24:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:37:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createSeed src/host/templateRegistry/index.ts ">
               <h3>createSeed</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:28:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="createTemplateManifest src/host/templateRegistry/index.ts "
-            >
-              <h3>createTemplateManifest</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:43:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:41:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14729,7 +15001,7 @@ sequenceDiagram
               data-search="normalizeProjectTemplateManifest src/host/templateRegistry/index.ts "
             >
               <h3>normalizeProjectTemplateManifest</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:55:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:56:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14737,7 +15009,7 @@ sequenceDiagram
               data-search="buildProjectTemplate src/host/templateRegistry/index.ts "
             >
               <h3>buildProjectTemplate</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:80:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:81:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14745,15 +15017,15 @@ sequenceDiagram
               data-search="getProjectTemplate src/host/templateRegistry/index.ts "
             >
               <h3>getProjectTemplate</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:91:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:93:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
               class="item"
-              data-search="getTemplateSummaries src/host/templateRegistry/index.ts "
+              data-search="getTemplateCatalog src/host/templateRegistry/index.ts "
             >
-              <h3>getTemplateSummaries</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:106:1</code></p>
+              <h3>getTemplateCatalog</h3>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:108:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14761,7 +15033,15 @@ sequenceDiagram
               data-search="createTemplateSummaries src/host/templateRegistry/index.ts "
             >
               <h3>createTemplateSummaries</h3>
-              <p class="muted"><code>src/host/templateRegistry/index.ts:109:1</code></p>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:118:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createTemplateCatalog src/host/templateRegistry/index.ts "
+            >
+              <h3>createTemplateCatalog</h3>
+              <p class="muted"><code>src/host/templateRegistry/index.ts:135:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15754,22 +16034,56 @@ sequenceDiagram
               <p class="muted"><code>src/modules/dashboard/platform.ts:1:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article
-              class="item"
-              data-search="promptProjectName src/modules/dashboard/platform.ts "
-            >
-              <h3>promptProjectName</h3>
-              <p class="muted"><code>src/modules/dashboard/platform.ts:5:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
             <article class="item" data-search="confirmDelete src/modules/dashboard/platform.ts ">
               <h3>confirmDelete</h3>
-              <p class="muted"><code>src/modules/dashboard/platform.ts:14:1</code></p>
+              <p class="muted"><code>src/modules/dashboard/platform.ts:5:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="openProjectUrl src/modules/dashboard/platform.ts ">
               <h3>openProjectUrl</h3>
-              <p class="muted"><code>src/modules/dashboard/platform.ts:22:1</code></p>
+              <p class="muted"><code>src/modules/dashboard/platform.ts:13:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-modules-dashboard-projectidentity-ts"
+          class="view"
+          data-view="src/modules/dashboard/projectIdentity.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/modules/dashboard/projectIdentity.ts</h2>
+            <article
+              class="item"
+              data-search="deriveProjectId src/modules/dashboard/projectIdentity.ts "
+            >
+              <h3>deriveProjectId</h3>
+              <p class="muted"><code>src/modules/dashboard/projectIdentity.ts:8:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="normalizeProjectName src/modules/dashboard/projectIdentity.ts "
+            >
+              <h3>normalizeProjectName</h3>
+              <p class="muted"><code>src/modules/dashboard/projectIdentity.ts:17:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isReservedProjectId src/modules/dashboard/projectIdentity.ts "
+            >
+              <h3>isReservedProjectId</h3>
+              <p class="muted"><code>src/modules/dashboard/projectIdentity.ts:21:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="validateProjectCreationInput src/modules/dashboard/projectIdentity.ts "
+            >
+              <h3>validateProjectCreationInput</h3>
+              <p class="muted"><code>src/modules/dashboard/projectIdentity.ts:32:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15792,12 +16106,22 @@ sequenceDiagram
               <p class="muted"><code>src/modules/dashboard/search.ts:7:1</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article class="item" data-search="compareProjects src/modules/dashboard/search.ts ">
+              <h3>compareProjects</h3>
+              <p class="muted"><code>src/modules/dashboard/search.ts:15:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article
               class="item"
               data-search="filterAndSortProjects src/modules/dashboard/search.ts "
             >
               <h3>filterAndSortProjects</h3>
-              <p class="muted"><code>src/modules/dashboard/search.ts:15:1</code></p>
+              <p class="muted"><code>src/modules/dashboard/search.ts:27:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="getTemplateEntries src/modules/dashboard/search.ts ">
+              <h3>getTemplateEntries</h3>
+              <p class="muted"><code>src/modules/dashboard/search.ts:52:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15805,97 +16129,7 @@ sequenceDiagram
               data-search="filterAndSortTemplates src/modules/dashboard/search.ts "
             >
               <h3>filterAndSortTemplates</h3>
-              <p class="muted"><code>src/modules/dashboard/search.ts:33:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
-          id="view-src-modules-dashboard-templates-ts"
-          class="view"
-          data-view="src/modules/dashboard/templates.ts"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/modules/dashboard/templates.ts</h2>
-            <article
-              class="item"
-              data-search="getTemplateEntries src/modules/dashboard/templates.ts "
-            >
-              <h3>getTemplateEntries</h3>
-              <p class="muted"><code>src/modules/dashboard/templates.ts:3:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
-          id="view-src-modules-dashboard-ui-dashboardsectionheader-tsx"
-          class="view"
-          data-view="src/modules/dashboard/ui/DashboardSectionHeader.tsx"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/modules/dashboard/ui/DashboardSectionHeader.tsx</h2>
-            <article
-              class="item"
-              data-search="DashboardSectionHeader src/modules/dashboard/ui/DashboardSectionHeader.tsx "
-            >
-              <h3>DashboardSectionHeader</h3>
-              <p class="muted">
-                <code>src/modules/dashboard/ui/DashboardSectionHeader.tsx:5:1</code>
-              </p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
-          id="view-src-modules-dashboard-ui-projectcard-tsx"
-          class="view"
-          data-view="src/modules/dashboard/ui/ProjectCard.tsx"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/modules/dashboard/ui/ProjectCard.tsx</h2>
-            <article
-              class="item"
-              data-search="ProjectCard src/modules/dashboard/ui/ProjectCard.tsx "
-            >
-              <h3>ProjectCard</h3>
-              <p class="muted"><code>src/modules/dashboard/ui/ProjectCard.tsx:7:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="ActionButton src/modules/dashboard/ui/ProjectCard.tsx "
-            >
-              <h3>ActionButton</h3>
-              <p class="muted"><code>src/modules/dashboard/ui/ProjectCard.tsx:112:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
-          id="view-src-modules-dashboard-ui-templatecard-tsx"
-          class="view"
-          data-view="src/modules/dashboard/ui/TemplateCard.tsx"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/modules/dashboard/ui/TemplateCard.tsx</h2>
-            <article
-              class="item"
-              data-search="formatCategory src/modules/dashboard/ui/TemplateCard.tsx "
-            >
-              <h3>formatCategory</h3>
-              <p class="muted"><code>src/modules/dashboard/ui/TemplateCard.tsx:7:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="TemplateCard src/modules/dashboard/ui/TemplateCard.tsx "
-            >
-              <h3>TemplateCard</h3>
-              <p class="muted"><code>src/modules/dashboard/ui/TemplateCard.tsx:14:1</code></p>
+              <p class="muted"><code>src/modules/dashboard/search.ts:62:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

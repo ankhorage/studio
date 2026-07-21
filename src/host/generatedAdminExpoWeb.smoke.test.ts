@@ -19,7 +19,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateSummaries } from './templateRegistry';
+import { getTemplateCatalog } from './templateRegistry';
 
 const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
 const TEST_TIMEOUT_MS = 240_000;
@@ -157,15 +157,15 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
 
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const template = getTemplateSummaries().find(
-    (candidate) => candidate.category === 'developer_tools',
-  );
+  const template = getTemplateCatalog()
+    .categories.find((candidate) => candidate.id === 'developer_tools')
+    ?.templates.at(0);
   if (!template)
     throw new Error('Published templates package returned no developer-tools template.');
 
   const created = await projectManager.createProject(
     'Generated Admin Web Smoke',
-    { category: template.category, templateId: template.templateId },
+    { category: 'developer_tools', templateId: template.templateId },
     (projectId) => moduleManager.generateModuleRegistry(projectId),
     { includeStudio: true },
   );

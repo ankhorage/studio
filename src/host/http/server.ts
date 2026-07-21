@@ -5,6 +5,7 @@ import Fastify from 'fastify';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { ProjectCreationValidationError } from '../../modules/dashboard/projectIdentity';
 import {
   ensureProjectInfraPortForward,
   InfraScriptExecutionError,
@@ -16,7 +17,7 @@ import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveModuleLayoutMutations } from '../orchestrator/resolveMutations';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
-import { getTemplateSummaries, type ProjectTemplateSelection } from '../templateRegistry';
+import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { isOriginAllowed } from './security';
@@ -104,7 +105,7 @@ export async function createStudioHostServer(args: {
 
   fastify.get('/api/projects', () => projectManager.listProjects());
 
-  fastify.get('/api/templates', () => getTemplateSummaries());
+  fastify.get('/api/templates', () => getTemplateCatalog());
 
   fastify.post('/api/projects', async (req: FastifyRequest, reply: FastifyReply) => {
     const { name, includeStudio = true } = req.body as {
@@ -128,6 +129,13 @@ export async function createStudioHostServer(args: {
       );
       return result;
     } catch (err: unknown) {
+      if (err instanceof ProjectCreationValidationError) {
+        const status =
+          err.reason.code === 'project-id-exists' || err.reason.code === 'project-name-exists'
+            ? 409
+            : 400;
+        return reply.status(status).send(err.reason);
+      }
       const message = err instanceof Error ? err.message : String(err);
       reply.status(500).send({ error: message });
     }

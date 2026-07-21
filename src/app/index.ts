@@ -1,2 +1,9 @@
 export { StudioApp } from './StudioApp';
-export { StudioDashboard } from './StudioDashboard';
+export {
+  CreateCategoriesScreen,
+  CreateCategoryTemplatesScreen,
+  CreateProjectFromTemplateScreen,
+  ProjectDetailScreen,
+  ProjectsOverviewScreen,
+  StudioDashboard,
+} from './StudioDashboard';

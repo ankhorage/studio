@@ -91,12 +91,20 @@
       "path": "src/app/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["StudioApp", "StudioDashboard"]
+      "exports": [
+        "CreateCategoriesScreen",
+        "CreateCategoryTemplatesScreen",
+        "CreateProjectFromTemplateScreen",
+        "ProjectDetailScreen",
+        "ProjectsOverviewScreen",
+        "StudioApp",
+        "StudioDashboard"
+      ]
     },
     {
       "path": "src/app/StudioApp.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/hooks/useProjects.ts"],
       "exports": ["StudioApp"]
     },
     {
@@ -104,16 +112,20 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/hooks/useProjects.ts",
-        "src/hooks/useTemplateSummaries.ts",
+        "src/hooks/useTemplateCatalog.ts",
         "src/modules/dashboard/platform.ts",
+        "src/modules/dashboard/projectIdentity.ts",
         "src/modules/dashboard/search.ts",
-        "src/modules/dashboard/templates.ts",
-        "src/modules/dashboard/types.ts",
-        "src/modules/dashboard/ui/DashboardSectionHeader.tsx",
-        "src/modules/dashboard/ui/ProjectCard.tsx",
-        "src/modules/dashboard/ui/TemplateCard.tsx"
+        "src/modules/dashboard/types.ts"
       ],
-      "exports": ["StudioDashboard"]
+      "exports": [
+        "CreateCategoriesScreen",
+        "CreateCategoryTemplatesScreen",
+        "CreateProjectFromTemplateScreen",
+        "ProjectDetailScreen",
+        "ProjectsOverviewScreen",
+        "StudioDashboard"
+      ]
     },
     {
       "path": "src/authFlowContract.test.ts",
@@ -415,23 +427,23 @@
     {
       "path": "src/hooks/useProjects.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/constants.ts"],
+      "dependencies": ["src/core/constants.ts", "src/modules/dashboard/types.ts"],
       "exports": [
         "CreateProjectInput",
         "CreateProjectResponse",
         "InstallWorkspacePackagesResponse",
         "LaunchProjectResponse",
-        "Project",
+        "ProjectCreationError",
         "SyncProjectResponse",
         "UpProjectInfrastructureResponse",
         "useProjects"
       ]
     },
     {
-      "path": "src/hooks/useTemplateSummaries.ts",
+      "path": "src/hooks/useTemplateCatalog.ts",
       "isEntrypoint": false,
       "dependencies": ["src/core/constants.ts", "src/modules/dashboard/types.ts"],
-      "exports": ["useTemplateSummaries"]
+      "exports": ["useTemplateCatalog"]
     },
     {
       "path": "src/host/auth/projectAuthHealthService.ts",
@@ -536,7 +548,8 @@
         "src/host/orchestrator/studioInfraUp.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/utils/trimOutput.ts",
-        "src/host/utils/workspaceRoot.ts"
+        "src/host/utils/workspaceRoot.ts",
+        "src/modules/dashboard/projectIdentity.ts"
       ],
       "exports": ["createStudioHostServer", "startStudioHostServer", "StartStudioHostServerOptions"]
     },
@@ -575,7 +588,7 @@
         "getAppsRoot",
         "getProjectPath",
         "getProjectTemplate",
-        "getTemplateSummaries",
+        "getTemplateCatalog",
         "isOriginAllowed",
         "ModuleManager",
         "ProjectAuthHealthResult",
@@ -895,6 +908,16 @@
       "exports": ["ModuleManager"]
     },
     {
+      "path": "src/host/orchestrator/projectCreationSafety.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/templateRegistry/index.ts",
+        "src/modules/dashboard/projectIdentity.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/projectDeletion.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/projectDeletion.ts"],
@@ -928,7 +951,8 @@
         "src/host/orchestrator/templates.ts",
         "src/host/orchestrator/workspaceRuntime.ts",
         "src/host/templateRegistry/index.ts",
-        "src/host/zoraExtensions/index.ts"
+        "src/host/zoraExtensions/index.ts",
+        "src/modules/dashboard/projectIdentity.ts"
       ],
       "exports": ["ProjectManager"]
     },
@@ -947,8 +971,14 @@
     {
       "path": "src/host/orchestrator/projectStore.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/projectPaths.ts"],
+      "dependencies": ["src/host/orchestrator/projectPaths.ts", "src/modules/dashboard/types.ts"],
       "exports": ["ProjectStore", "ProjectSummary"]
+    },
+    {
+      "path": "src/host/orchestrator/projectStoreSummary.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/projectStore.ts"],
+      "exports": []
     },
     {
       "path": "src/host/orchestrator/resolveMutations.ts",
@@ -1082,14 +1112,20 @@
       "exports": []
     },
     {
+      "path": "src/host/templateRegistry/catalog.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/templateRegistry/index.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/templateRegistry/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
         "getProjectTemplate",
-        "getTemplateSummaries",
-        "ProjectTemplateSelection",
-        "ProjectTemplateSummary"
+        "getTemplateCatalog",
+        "ProjectTemplateCatalog",
+        "ProjectTemplateSelection"
       ]
     },
     {
@@ -1405,7 +1441,26 @@
       "path": "src/modules/dashboard/platform.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["confirmDelete", "openProjectUrl", "promptProjectName"]
+      "exports": ["confirmDelete", "openProjectUrl"]
+    },
+    {
+      "path": "src/modules/dashboard/projectIdentity.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/modules/dashboard/projectIdentity.ts",
+        "src/modules/dashboard/types.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/modules/dashboard/projectIdentity.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/modules/dashboard/types.ts"],
+      "exports": [
+        "deriveProjectId",
+        "ProjectCreationValidationError",
+        "validateProjectCreationInput"
+      ]
     },
     {
       "path": "src/modules/dashboard/search.ts",
@@ -1414,34 +1469,19 @@
       "exports": ["filterAndSortProjects", "filterAndSortTemplates"]
     },
     {
-      "path": "src/modules/dashboard/templates.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/modules/dashboard/types.ts"],
-      "exports": ["getTemplateEntries"]
-    },
-    {
       "path": "src/modules/dashboard/types.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["ProjectItem", "TemplateEntry", "TemplateSummary"]
-    },
-    {
-      "path": "src/modules/dashboard/ui/DashboardSectionHeader.tsx",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": ["DashboardSectionHeader"]
-    },
-    {
-      "path": "src/modules/dashboard/ui/ProjectCard.tsx",
-      "isEntrypoint": false,
-      "dependencies": ["src/modules/dashboard/types.ts"],
-      "exports": ["ProjectCard"]
-    },
-    {
-      "path": "src/modules/dashboard/ui/TemplateCard.tsx",
-      "isEntrypoint": false,
-      "dependencies": ["src/modules/dashboard/types.ts"],
-      "exports": ["TemplateCard"]
+      "exports": [
+        "ProjectCreationValidationFailure",
+        "ProjectCreationValidationResult",
+        "ProjectSortKey",
+        "StudioProjectManifest",
+        "StudioProjectSummary",
+        "TemplateCatalog",
+        "TemplateCatalogCategory",
+        "TemplateEntry"
+      ]
     },
     {
       "path": "src/projectAuthApi.test.ts",
@@ -1549,7 +1589,10 @@
         "buildInsertCatalogEntries",
         "canAcceptChild",
         "cloneWithNewIds",
+        "CreateCategoriesScreen",
+        "CreateCategoryTemplatesScreen",
         "createNodeFromCatalogEntry",
+        "CreateProjectFromTemplateScreen",
         "findNodeById",
         "findProjectSecretUsages",
         "findRawSecretResponseKey",
@@ -1584,11 +1627,13 @@
         "ProjectAuthDiagnosticSeverity",
         "ProjectAuthHealth",
         "ProjectAuthHealthStatus",
+        "ProjectDetailScreen",
         "ProjectOAuthProviderHealth",
         "ProjectOAuthProviderHealthStatus",
         "ProjectSecretUsage",
         "ProjectSecretUsageCategory",
         "ProjectSecretUsageSummary",
+        "ProjectsOverviewScreen",
         "RAW_SECRET_RESPONSE_KEYS",
         "RawSecretResponseKeyMatch",
         "removeNodeFromTree",
@@ -5308,7 +5353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioApp.tsx",
-        "line": 10,
+        "line": 12,
         "column": 1
       }
     },
@@ -5317,7 +5362,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioApp.tsx",
-        "line": 32,
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "handleInstallWorkspacePackages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioApp.tsx",
+        "line": 42,
+        "column": 3
+      }
+    },
+    {
+      "name": "IconButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioApp.tsx",
+        "line": 124,
         "column": 1
       }
     },
@@ -5326,66 +5389,39 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 26,
+        "line": 39,
         "column": 1
       }
     },
     {
-      "name": "handleSync",
+      "name": "ProjectsOverviewScreen",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 64,
-        "column": 9
+        "line": 43,
+        "column": 1
       }
     },
     {
-      "name": "handleCreate",
+      "name": "ProjectDetailScreen",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 77,
-        "column": 9
+        "line": 127,
+        "column": 1
       }
     },
     {
-      "name": "handleInstallPackages",
+      "name": "runAction",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 98,
-        "column": 9
+        "line": 143,
+        "column": 3
       }
     },
     {
-      "name": "handleReloadInfra",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/StudioDashboard.tsx",
-        "line": 111,
-        "column": 9
-      }
-    },
-    {
-      "name": "handleLaunch",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/StudioDashboard.tsx",
-        "line": 124,
-        "column": 9
-      }
-    },
-    {
-      "name": "handleDelete",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/StudioDashboard.tsx",
-        "line": 149,
-        "column": 9
-      }
-    },
-    {
-      "name": "handleLaunchPress",
+      "name": "handleOpenRunningApp",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
@@ -5394,39 +5430,228 @@
       }
     },
     {
-      "name": "handleSyncPress",
+      "name": "handleDelete",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 165,
+        "line": 178,
         "column": 9
       }
     },
     {
-      "name": "handleInstallPackagesPress",
+      "name": "CreateCategoriesScreen",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 169,
-        "column": 9
+        "line": 300,
+        "column": 1
       }
     },
     {
-      "name": "handleReloadInfraPress",
+      "name": "CreateCategoryTemplatesScreen",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 173,
-        "column": 9
+        "line": 351,
+        "column": 1
       }
     },
     {
-      "name": "handleCreatePress",
+      "name": "CreateProjectFromTemplateScreen",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioDashboard.tsx",
-        "line": 177,
-        "column": 9
+        "line": 396,
+        "column": 1
+      }
+    },
+    {
+      "name": "handleCreate",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 412,
+        "column": 3
+      }
+    },
+    {
+      "name": "WorkspaceScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 495,
+        "column": 1
+      }
+    },
+    {
+      "name": "ProjectOverviewCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 513,
+        "column": 1
+      }
+    },
+    {
+      "name": "CategoryCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 548,
+        "column": 1
+      }
+    },
+    {
+      "name": "TemplateCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 579,
+        "column": 1
+      }
+    },
+    {
+      "name": "SearchResults",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 609,
+        "column": 1
+      }
+    },
+    {
+      "name": "LifecycleAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 648,
+        "column": 1
+      }
+    },
+    {
+      "name": "PrimaryAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 689,
+        "column": 1
+      }
+    },
+    {
+      "name": "SecondaryAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 720,
+        "column": 1
+      }
+    },
+    {
+      "name": "SegmentedControl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 741,
+        "column": 1
+      }
+    },
+    {
+      "name": "MetadataRows",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 778,
+        "column": 1
+      }
+    },
+    {
+      "name": "InlineMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 795,
+        "column": 1
+      }
+    },
+    {
+      "name": "LoadingState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 808,
+        "column": 1
+      }
+    },
+    {
+      "name": "EmptyState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 820,
+        "column": 1
+      }
+    },
+    {
+      "name": "useProjectRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 840,
+        "column": 1
+      }
+    },
+    {
+      "name": "useCategoryRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 845,
+        "column": 1
+      }
+    },
+    {
+      "name": "useTemplateRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 851,
+        "column": 1
+      }
+    },
+    {
+      "name": "firstParam",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 860,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppCategory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 864,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatCategory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 868,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatDate",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioDashboard.tsx",
+        "line": 875,
+        "column": 1
       }
     },
     {
@@ -6055,30 +6280,30 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 51,
+        "line": 56,
         "column": 1
       }
     },
     {
-      "name": "isProject",
+      "name": "isAppCategory",
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 55,
+        "line": 60,
         "column": 1
       }
     },
     {
-      "name": "readJson",
+      "name": "isThemeModeConfig",
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 66,
+        "line": 64,
         "column": 1
       }
     },
     {
-      "name": "parseProjectList",
+      "name": "isThemeConfig",
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
@@ -6087,11 +6312,65 @@
       }
     },
     {
+      "name": "isActiveThemeMode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 80,
+        "column": 1
+      }
+    },
+    {
+      "name": "isProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "readError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 104,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectList",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
       "name": "parseCreateProjectResponse",
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 78,
+        "line": 120,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectCreationFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useProjects.ts",
+        "line": 137,
         "column": 1
       }
     },
@@ -6100,7 +6379,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 95,
+        "line": 158,
         "column": 1
       }
     },
@@ -6109,7 +6388,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 103,
+        "line": 166,
         "column": 1
       }
     },
@@ -6118,7 +6397,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 116,
+        "line": 177,
         "column": 1
       }
     },
@@ -6127,7 +6406,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 129,
+        "line": 190,
         "column": 1
       }
     },
@@ -6136,7 +6415,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 143,
+        "line": 204,
         "column": 14
       }
     },
@@ -6145,7 +6424,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 164,
+        "line": 225,
         "column": 9
       }
     },
@@ -6154,7 +6433,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 175,
+        "line": 245,
         "column": 9
       }
     },
@@ -6163,7 +6442,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 183,
+        "line": 253,
         "column": 9
       }
     },
@@ -6172,7 +6451,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 191,
+        "line": 261,
         "column": 9
       }
     },
@@ -6181,7 +6460,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 199,
+        "line": 269,
         "column": 9
       }
     },
@@ -6190,7 +6469,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/hooks/useProjects.ts",
-        "line": 209,
+        "line": 279,
         "column": 9
       }
     },
@@ -6198,35 +6477,53 @@
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/hooks/useTemplateSummaries.ts",
-        "line": 6,
-        "column": 1
-      }
-    },
-    {
-      "name": "isTemplateSummary",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/hooks/useTemplateSummaries.ts",
+        "filePath": "src/hooks/useTemplateCatalog.ts",
         "line": 10,
         "column": 1
       }
     },
     {
-      "name": "parseTemplateSummaries",
+      "name": "isAppCategory",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/hooks/useTemplateSummaries.ts",
+        "filePath": "src/hooks/useTemplateCatalog.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "isHarmony",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useTemplateCatalog.ts",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCatalogCategory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useTemplateCatalog.ts",
         "line": 22,
         "column": 1
       }
     },
     {
-      "name": "useTemplateSummaries",
+      "name": "parseTemplateCatalog",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/hooks/useTemplateSummaries.ts",
-        "line": 30,
+        "filePath": "src/hooks/useTemplateCatalog.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "useTemplateCatalog",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/hooks/useTemplateCatalog.ts",
+        "line": 57,
         "column": 1
       }
     },
@@ -6667,7 +6964,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 26,
+        "line": 27,
         "column": 1
       }
     },
@@ -6676,7 +6973,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       }
     },
@@ -6685,7 +6982,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 57,
+        "line": 58,
         "column": 1
       }
     },
@@ -6694,7 +6991,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 67,
+        "line": 68,
         "column": 1
       }
     },
@@ -6703,7 +7000,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 81,
+        "line": 82,
         "column": 1
       }
     },
@@ -6712,7 +7009,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 639,
+        "line": 647,
         "column": 1
       }
     },
@@ -6721,7 +7018,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 653,
+        "line": 661,
         "column": 1
       }
     },
@@ -7941,6 +8238,15 @@
       }
     },
     {
+      "name": "catchError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
       "name": "cleanupProjectGeneratedAppImage",
       "description": null,
       "sourceLocation": {
@@ -8044,16 +8350,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 483,
-        "column": 1
-      }
-    },
-    {
-      "name": "slugify",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 492,
+        "line": 502,
         "column": 1
       }
     },
@@ -8062,7 +8359,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 503,
+        "line": 511,
         "column": 1
       }
     },
@@ -8071,7 +8368,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 512,
+        "line": 520,
         "column": 1
       }
     },
@@ -8080,7 +8377,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 521,
+        "line": 529,
         "column": 1
       }
     },
@@ -8148,11 +8445,65 @@
       }
     },
     {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 180,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppCategory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 184,
+        "column": 1
+      }
+    },
+    {
+      "name": "isThemeModeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "isThemeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 194,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseStudioProjectManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 204,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveActiveTheme",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 223,
+        "column": 1
+      }
+    },
+    {
       "name": "exists",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 175,
+        "line": 232,
         "column": 1
       }
     },
@@ -8161,7 +8512,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 184,
+        "line": 241,
         "column": 1
       }
     },
@@ -8179,7 +8530,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 303,
+        "line": 306,
         "column": 1
       }
     },
@@ -8188,7 +8539,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 312,
+        "line": 315,
         "column": 1
       }
     },
@@ -8197,7 +8548,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 325,
+        "line": 328,
         "column": 1
       }
     },
@@ -8206,7 +8557,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 389,
+        "line": 392,
         "column": 1
       }
     },
@@ -8818,7 +9169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 24,
+        "line": 37,
         "column": 1
       }
     },
@@ -8827,16 +9178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 28,
-        "column": 1
-      }
-    },
-    {
-      "name": "createTemplateManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/templateRegistry/index.ts",
-        "line": 43,
+        "line": 41,
         "column": 1
       }
     },
@@ -8845,7 +9187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 55,
+        "line": 56,
         "column": 1
       }
     },
@@ -8854,7 +9196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 80,
+        "line": 81,
         "column": 1
       }
     },
@@ -8863,16 +9205,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 91,
+        "line": 93,
         "column": 1
       }
     },
     {
-      "name": "getTemplateSummaries",
+      "name": "getTemplateCatalog",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 106,
+        "line": 108,
         "column": 1
       }
     },
@@ -8881,7 +9223,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 109,
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTemplateCatalog",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/templateRegistry/index.ts",
+        "line": 135,
         "column": 1
       }
     },
@@ -10155,7 +10506,7 @@
       }
     },
     {
-      "name": "promptProjectName",
+      "name": "confirmDelete",
       "description": null,
       "sourceLocation": {
         "filePath": "src/modules/dashboard/platform.ts",
@@ -10164,20 +10515,47 @@
       }
     },
     {
-      "name": "confirmDelete",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/modules/dashboard/platform.ts",
-        "line": 14,
-        "column": 1
-      }
-    },
-    {
       "name": "openProjectUrl",
       "description": null,
       "sourceLocation": {
         "filePath": "src/modules/dashboard/platform.ts",
-        "line": 22,
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "deriveProjectId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/modules/dashboard/projectIdentity.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeProjectName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/modules/dashboard/projectIdentity.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "isReservedProjectId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/modules/dashboard/projectIdentity.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateProjectCreationInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/modules/dashboard/projectIdentity.ts",
+        "line": 32,
         "column": 1
       }
     },
@@ -10200,7 +10578,7 @@
       }
     },
     {
-      "name": "filterAndSortProjects",
+      "name": "compareProjects",
       "description": null,
       "sourceLocation": {
         "filePath": "src/modules/dashboard/search.ts",
@@ -10209,11 +10587,11 @@
       }
     },
     {
-      "name": "filterAndSortTemplates",
+      "name": "filterAndSortProjects",
       "description": null,
       "sourceLocation": {
         "filePath": "src/modules/dashboard/search.ts",
-        "line": 33,
+        "line": 27,
         "column": 1
       }
     },
@@ -10221,53 +10599,17 @@
       "name": "getTemplateEntries",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/modules/dashboard/templates.ts",
-        "line": 3,
+        "filePath": "src/modules/dashboard/search.ts",
+        "line": 52,
         "column": 1
       }
     },
     {
-      "name": "DashboardSectionHeader",
+      "name": "filterAndSortTemplates",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/modules/dashboard/ui/DashboardSectionHeader.tsx",
-        "line": 5,
-        "column": 1
-      }
-    },
-    {
-      "name": "ProjectCard",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/modules/dashboard/ui/ProjectCard.tsx",
-        "line": 7,
-        "column": 1
-      }
-    },
-    {
-      "name": "ActionButton",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/modules/dashboard/ui/ProjectCard.tsx",
-        "line": 112,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatCategory",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/modules/dashboard/ui/TemplateCard.tsx",
-        "line": 7,
-        "column": 1
-      }
-    },
-    {
-      "name": "TemplateCard",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/modules/dashboard/ui/TemplateCard.tsx",
-        "line": 14,
+        "filePath": "src/modules/dashboard/search.ts",
+        "line": 62,
         "column": 1
       }
     },
@@ -12611,13 +12953,18 @@
         "sourcePath": "src/app/index.ts"
       },
       {
+        "fromPath": "src/app/StudioApp.tsx",
+        "toPath": "src/hooks/useProjects.ts",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
         "fromPath": "src/app/StudioDashboard.tsx",
         "toPath": "src/hooks/useProjects.ts",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
         "fromPath": "src/app/StudioDashboard.tsx",
-        "toPath": "src/hooks/useTemplateSummaries.ts",
+        "toPath": "src/hooks/useTemplateCatalog.ts",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
@@ -12627,32 +12974,17 @@
       },
       {
         "fromPath": "src/app/StudioDashboard.tsx",
+        "toPath": "src/modules/dashboard/projectIdentity.ts",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromPath": "src/app/StudioDashboard.tsx",
         "toPath": "src/modules/dashboard/search.ts",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
         "fromPath": "src/app/StudioDashboard.tsx",
-        "toPath": "src/modules/dashboard/templates.ts",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromPath": "src/app/StudioDashboard.tsx",
         "toPath": "src/modules/dashboard/types.ts",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromPath": "src/app/StudioDashboard.tsx",
-        "toPath": "src/modules/dashboard/ui/DashboardSectionHeader.tsx",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromPath": "src/app/StudioDashboard.tsx",
-        "toPath": "src/modules/dashboard/ui/ProjectCard.tsx",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromPath": "src/app/StudioDashboard.tsx",
-        "toPath": "src/modules/dashboard/ui/TemplateCard.tsx",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
@@ -12791,14 +13123,19 @@
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
-        "fromPath": "src/hooks/useTemplateSummaries.ts",
-        "toPath": "src/core/constants.ts",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "fromPath": "src/hooks/useProjects.ts",
+        "toPath": "src/modules/dashboard/types.ts",
+        "sourcePath": "src/hooks/useProjects.ts"
       },
       {
-        "fromPath": "src/hooks/useTemplateSummaries.ts",
+        "fromPath": "src/hooks/useTemplateCatalog.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
+      },
+      {
+        "fromPath": "src/hooks/useTemplateCatalog.ts",
         "toPath": "src/modules/dashboard/types.ts",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
         "fromPath": "src/host/createStudioHost.ts",
@@ -13122,6 +13459,11 @@
       },
       {
         "fromPath": "src/host/http/server.ts",
+        "toPath": "src/modules/dashboard/projectIdentity.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/orchestrator/infraRuntime.ts",
         "sourcePath": "src/host/http/server.ts"
       },
@@ -13291,9 +13633,29 @@
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toPath": "src/modules/dashboard/projectIdentity.ts",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/projectDeletion.test.ts",
         "toPath": "src/host/orchestrator/projectDeletion.ts",
         "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/modules/dashboard/projectIdentity.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
@@ -13377,8 +13739,18 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectStore.ts",
+        "toPath": "src/modules/dashboard/types.ts",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectStore.ts",
         "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toPath": "src/host/orchestrator/projectStore.ts",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/resolveMutations.ts",
@@ -13491,19 +13863,34 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromPath": "src/host/templateRegistry/catalog.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/templateRegistry/catalog.test.ts"
+      },
+      {
         "fromPath": "src/host/zoraExtensions/index.ts",
         "toPath": "src/host/templateRegistry/index.ts",
         "sourcePath": "src/host/zoraExtensions/index.ts"
       },
       {
+        "fromPath": "src/modules/dashboard/projectIdentity.test.ts",
+        "toPath": "src/modules/dashboard/projectIdentity.ts",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromPath": "src/modules/dashboard/projectIdentity.test.ts",
+        "toPath": "src/modules/dashboard/types.ts",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromPath": "src/modules/dashboard/projectIdentity.ts",
+        "toPath": "src/modules/dashboard/types.ts",
+        "sourcePath": "src/modules/dashboard/projectIdentity.ts"
+      },
+      {
         "fromPath": "src/modules/dashboard/search.ts",
         "toPath": "src/modules/dashboard/types.ts",
         "sourcePath": "src/modules/dashboard/search.ts"
-      },
-      {
-        "fromPath": "src/modules/dashboard/templates.ts",
-        "toPath": "src/modules/dashboard/types.ts",
-        "sourcePath": "src/modules/dashboard/templates.ts"
       },
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
@@ -13694,16 +14081,6 @@
         "fromPath": "src/host/manifestSystem/auth/index.ts",
         "toPath": "src/host/manifestSystem/auth/shared/index.ts",
         "sourcePath": "src/host/manifestSystem/auth/index.ts"
-      },
-      {
-        "fromPath": "src/modules/dashboard/ui/ProjectCard.tsx",
-        "toPath": "src/modules/dashboard/types.ts",
-        "sourcePath": "src/modules/dashboard/ui/ProjectCard.tsx"
-      },
-      {
-        "fromPath": "src/modules/dashboard/ui/TemplateCard.tsx",
-        "toPath": "src/modules/dashboard/types.ts",
-        "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
@@ -17456,39 +17833,81 @@
         "sourcePath": "src/app/StudioApp.tsx"
       },
       {
-        "fromSymbol": "StudioDashboard",
+        "fromSymbol": "StudioAppRootContent",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "StudioAppRootContent",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "handleInstallWorkspacePackages",
+        "toSymbol": "setInstallState",
+        "callExpression": "setInstallState",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "handleInstallWorkspacePackages",
+        "toSymbol": "setMenuOpen",
+        "callExpression": "setMenuOpen",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "handleInstallWorkspacePackages",
+        "toSymbol": "installWorkspacePackages",
+        "callExpression": "installWorkspacePackages",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioApp.tsx",
+        "toSymbol": "setMode",
+        "callExpression": "setMode",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioApp.tsx",
+        "toSymbol": "setMenuOpen",
+        "callExpression": "setMenuOpen",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioApp.tsx",
+        "toSymbol": "handleInstallWorkspacePackages",
+        "callExpression": "handleInstallWorkspacePackages",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "IconButton",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "ProjectsOverviewScreen",
         "toSymbol": "useProjects",
         "callExpression": "useProjects",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "StudioDashboard",
-        "toSymbol": "useTemplateSummaries",
-        "callExpression": "useTemplateSummaries",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromSymbol": "StudioDashboard",
+        "fromSymbol": "ProjectsOverviewScreen",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "StudioDashboard",
+        "fromSymbol": "ProjectsOverviewScreen",
         "toSymbol": "useState",
         "callExpression": "useState",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "StudioDashboard",
+        "fromSymbol": "ProjectsOverviewScreen",
         "toSymbol": "useMemo",
         "callExpression": "useMemo",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "getTemplateEntries",
-        "callExpression": "getTemplateEntries",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
@@ -17499,78 +17918,72 @@
       },
       {
         "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "filterAndSortTemplates",
-        "callExpression": "filterAndSortTemplates",
+        "toSymbol": "setSort",
+        "callExpression": "setSort",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleSync",
-        "toSymbol": "setSyncingProjectId",
-        "callExpression": "setSyncingProjectId",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "setSearchQuery",
+        "callExpression": "setSearchQuery",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleSync",
-        "toSymbol": "syncProject",
-        "callExpression": "syncProject",
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useProjectRouteParams",
+        "callExpression": "useProjectRouteParams",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "promptProjectName",
-        "callExpression": "promptProjectName",
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "setIsCreating",
-        "callExpression": "setIsCreating",
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "createProject",
-        "callExpression": "createProject",
+        "fromSymbol": "runAction",
+        "toSymbol": "setActiveAction",
+        "callExpression": "setActiveAction",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleInstallPackages",
-        "toSymbol": "setInstallingProjectId",
-        "callExpression": "setInstallingProjectId",
+        "fromSymbol": "runAction",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleInstallPackages",
-        "toSymbol": "installWorkspacePackages",
-        "callExpression": "installWorkspacePackages",
+        "fromSymbol": "runAction",
+        "toSymbol": "action",
+        "callExpression": "action",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleReloadInfra",
-        "toSymbol": "setInfraReloadProjectId",
-        "callExpression": "setInfraReloadProjectId",
+        "fromSymbol": "runAction",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleReloadInfra",
-        "toSymbol": "upProjectInfrastructure",
-        "callExpression": "upProjectInfrastructure",
+        "fromSymbol": "handleOpenRunningApp",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleLaunch",
-        "toSymbol": "setLaunchingProjectId",
-        "callExpression": "setLaunchingProjectId",
-        "sourcePath": "src/app/StudioDashboard.tsx"
-      },
-      {
-        "fromSymbol": "handleLaunch",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
         "toSymbol": "launchProject",
         "callExpression": "launchProject",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleLaunch",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
         "toSymbol": "openProjectUrl",
         "callExpression": "openProjectUrl",
         "sourcePath": "src/app/StudioDashboard.tsx"
@@ -17583,86 +17996,290 @@
       },
       {
         "fromSymbol": "handleDelete",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioDashboard.tsx",
         "toSymbol": "deleteProject",
         "callExpression": "deleteProject",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
         "fromSymbol": "onPress",
-        "toSymbol": "deleteProject",
-        "callExpression": "deleteProject",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleLaunchPress",
-        "toSymbol": "handleLaunch",
-        "callExpression": "handleLaunch",
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "formatCategory",
+        "callExpression": "formatCategory",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleSyncPress",
-        "toSymbol": "handleSync",
-        "callExpression": "handleSync",
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "formatDate",
+        "callExpression": "formatDate",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleInstallPackagesPress",
-        "toSymbol": "handleInstallPackages",
-        "callExpression": "handleInstallPackages",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleReloadInfraPress",
-        "toSymbol": "handleReloadInfra",
-        "callExpression": "handleReloadInfra",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "syncProject",
+        "callExpression": "syncProject",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "handleCreatePress",
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "filterAndSortTemplates",
+        "callExpression": "filterAndSortTemplates",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoryTemplatesScreen",
+        "toSymbol": "useCategoryRouteParams",
+        "callExpression": "useCategoryRouteParams",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoryTemplatesScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useTemplateRouteParams",
+        "callExpression": "useTemplateRouteParams",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioDashboard.tsx",
+        "toSymbol": "validateProjectCreationInput",
+        "callExpression": "validateProjectCreationInput",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "deriveProjectId",
+        "callExpression": "deriveProjectId",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "setIsCreating",
+        "callExpression": "setIsCreating",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "setSubmitError",
+        "callExpression": "setSubmitError",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "createProject",
+        "callExpression": "createProject",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioDashboard.tsx",
         "toSymbol": "handleCreate",
         "callExpression": "handleCreate",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "setMode",
-        "callExpression": "setMode",
+        "fromSymbol": "WorkspaceScreen",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "ProjectOverviewCard",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "ProjectOverviewCard",
+        "toSymbol": "formatCategory",
+        "callExpression": "formatCategory",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "ProjectOverviewCard",
+        "toSymbol": "formatDate",
+        "callExpression": "formatDate",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "CategoryCard",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "TemplateCard",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
         "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleLaunchPress",
-        "callExpression": "handleLaunchPress",
+        "toSymbol": "onPress",
+        "callExpression": "props.onPress",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "LifecycleAction",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryAction",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryAction",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "SegmentedControl",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
         "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleSyncPress",
-        "callExpression": "handleSyncPress",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleInstallPackagesPress",
-        "callExpression": "handleInstallPackagesPress",
+        "fromSymbol": "InlineMessage",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleReloadInfraPress",
-        "callExpression": "handleReloadInfraPress",
+        "fromSymbol": "LoadingState",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleDelete",
-        "callExpression": "handleDelete",
+        "fromSymbol": "EmptyState",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
-        "fromSymbol": "src/app/StudioDashboard.tsx",
-        "toSymbol": "handleCreatePress",
-        "callExpression": "handleCreatePress",
+        "fromSymbol": "useProjectRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useProjectRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/StudioDashboard.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
         "sourcePath": "src/app/StudioDashboard.tsx"
       },
       {
@@ -18404,13 +19021,61 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
+        "fromSymbol": "isThemeModeConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "isThemeConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "isThemeConfig",
+        "toSymbol": "isThemeModeConfig",
+        "callExpression": "isThemeModeConfig",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
         "fromSymbol": "isProject",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
+        "fromSymbol": "isProject",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "isProject",
+        "toSymbol": "isThemeConfig",
+        "callExpression": "isThemeConfig",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "isProject",
+        "toSymbol": "isActiveThemeMode",
+        "callExpression": "isActiveThemeMode",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "readError",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
         "fromSymbol": "parseCreateProjectResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "parseProjectCreationFailure",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/hooks/useProjects.ts"
@@ -18483,8 +19148,14 @@
       },
       {
         "fromSymbol": "createProject",
-        "toSymbol": "fetchProjects",
-        "callExpression": "fetchProjects",
+        "toSymbol": "parseProjectCreationFailure",
+        "callExpression": "parseProjectCreationFailure",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "readError",
+        "callExpression": "readError",
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
@@ -18497,6 +19168,12 @@
         "fromSymbol": "createProject",
         "toSymbol": "readJson",
         "callExpression": "readJson",
+        "sourcePath": "src/hooks/useProjects.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "fetchProjects",
+        "callExpression": "fetchProjects",
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
@@ -18566,58 +19243,82 @@
         "sourcePath": "src/hooks/useProjects.ts"
       },
       {
-        "fromSymbol": "isTemplateSummary",
+        "fromSymbol": "isCatalogCategory",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "useTemplateSummaries",
+        "fromSymbol": "isCatalogCategory",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
+      },
+      {
+        "fromSymbol": "isCatalogCategory",
+        "toSymbol": "isHarmony",
+        "callExpression": "isHarmony",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
+      },
+      {
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
+      },
+      {
+        "fromSymbol": "parseTemplateCatalog",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
+      },
+      {
+        "fromSymbol": "useTemplateCatalog",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "useTemplateSummaries",
+        "fromSymbol": "useTemplateCatalog",
         "toSymbol": "useCallback",
         "callExpression": "useCallback",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "src/hooks/useTemplateSummaries.ts",
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
         "toSymbol": "setIsLoading",
         "callExpression": "setIsLoading",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "src/hooks/useTemplateSummaries.ts",
-        "toSymbol": "parseTemplateSummaries",
-        "callExpression": "parseTemplateSummaries",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
+        "toSymbol": "setCatalog",
+        "callExpression": "setCatalog",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "src/hooks/useTemplateSummaries.ts",
-        "toSymbol": "setTemplates",
-        "callExpression": "setTemplates",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
+        "toSymbol": "parseTemplateCatalog",
+        "callExpression": "parseTemplateCatalog",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "src/hooks/useTemplateSummaries.ts",
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
         "toSymbol": "setError",
         "callExpression": "setError",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "useTemplateSummaries",
+        "fromSymbol": "useTemplateCatalog",
         "toSymbol": "useEffect",
         "callExpression": "useEffect",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
-        "fromSymbol": "src/hooks/useTemplateSummaries.ts",
-        "toSymbol": "fetchTemplates",
-        "callExpression": "fetchTemplates",
-        "sourcePath": "src/hooks/useTemplateSummaries.ts"
+        "fromSymbol": "src/hooks/useTemplateCatalog.ts",
+        "toSymbol": "fetchCatalog",
+        "callExpression": "fetchCatalog",
+        "sourcePath": "src/hooks/useTemplateCatalog.ts"
       },
       {
         "fromSymbol": "close",
@@ -18753,8 +19454,8 @@
       },
       {
         "fromSymbol": "createGeneratedAdminProject",
-        "toSymbol": "getTemplateSummaries",
-        "callExpression": "getTemplateSummaries",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -19131,8 +19832,8 @@
       },
       {
         "fromSymbol": "createGeneratedProject",
-        "toSymbol": "getTemplateSummaries",
-        "callExpression": "getTemplateSummaries",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
@@ -19347,8 +20048,8 @@
       },
       {
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
-        "toSymbol": "getTemplateSummaries",
-        "callExpression": "getTemplateSummaries",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
@@ -19527,8 +20228,8 @@
       },
       {
         "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
-        "toSymbol": "getTemplateSummaries",
-        "callExpression": "getTemplateSummaries",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
       },
       {
@@ -20349,8 +21050,8 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "getTemplateSummaries",
-        "callExpression": "getTemplateSummaries",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -22058,6 +22759,72 @@
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "createProject",
+        "callExpression": "manager.createProject",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "catchError",
+        "callExpression": "catchError",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectCreationSafety.test.ts",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -22269,8 +23036,14 @@
       },
       {
         "fromSymbol": "createProject",
-        "toSymbol": "slugify",
-        "callExpression": "slugify",
+        "toSymbol": "listProjects",
+        "callExpression": "this.listProjects",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "validateProjectCreationInput",
+        "callExpression": "validateProjectCreationInput",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -22892,6 +23665,18 @@
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectStore.ts",
+        "toSymbol": "parseStudioProjectManifest",
+        "callExpression": "parseStudioProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStore.ts",
+        "toSymbol": "resolveActiveTheme",
+        "callExpression": "resolveActiveTheme",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
         "fromSymbol": "deleteProject",
         "toSymbol": "getProjectPath",
         "callExpression": "this.getProjectPath",
@@ -23004,6 +23789,78 @@
         "toSymbol": "exists",
         "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "isThemeModeConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "isThemeConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "isThemeConfig",
+        "toSymbol": "isThemeModeConfig",
+        "callExpression": "isThemeModeConfig",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "parseStudioProjectManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "parseStudioProjectManifest",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "listProjects",
+        "callExpression": "new ProjectStore(workspaceRoot).listProjects",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
         "fromSymbol": "scaffoldProject",
@@ -23936,22 +24793,22 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
-        "fromSymbol": "createTemplateManifest",
-        "toSymbol": "normalizeProjectTemplateManifest",
-        "callExpression": "normalizeProjectTemplateManifest",
-        "sourcePath": "src/host/templateRegistry/index.ts"
+        "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/templateRegistry/catalog.test.ts"
       },
       {
-        "fromSymbol": "createTemplateManifest",
-        "toSymbol": "createStarterTemplate",
-        "callExpression": "createStarterTemplate",
-        "sourcePath": "src/host/templateRegistry/index.ts"
+        "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/templateRegistry/catalog.test.ts"
       },
       {
-        "fromSymbol": "createTemplateManifest",
-        "toSymbol": "createSeed",
-        "callExpression": "createSeed",
-        "sourcePath": "src/host/templateRegistry/index.ts"
+        "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/templateRegistry/catalog.test.ts"
       },
       {
         "fromSymbol": "buildProjectTemplate",
@@ -23978,6 +24835,12 @@
         "sourcePath": "src/host/templateRegistry/index.ts"
       },
       {
+        "fromSymbol": "src/host/templateRegistry/index.ts",
+        "toSymbol": "createTemplateCatalog",
+        "callExpression": "createTemplateCatalog",
+        "sourcePath": "src/host/templateRegistry/index.ts"
+      },
+      {
         "fromSymbol": "getProjectTemplate",
         "toSymbol": "buildProjectTemplate",
         "callExpression": "buildProjectTemplate",
@@ -23987,12 +24850,6 @@
         "fromSymbol": "createTemplateSummaries",
         "toSymbol": "listStarterTemplateSummaries",
         "callExpression": "listStarterTemplateSummaries",
-        "sourcePath": "src/host/templateRegistry/index.ts"
-      },
-      {
-        "fromSymbol": "src/host/templateRegistry/index.ts",
-        "toSymbol": "createTemplateManifest",
-        "callExpression": "createTemplateManifest",
         "sourcePath": "src/host/templateRegistry/index.ts"
       },
       {
@@ -24026,12 +24883,6 @@
         "sourcePath": "src/host/utils/workspaceRoot.ts"
       },
       {
-        "fromSymbol": "promptProjectName",
-        "toSymbol": "isWeb",
-        "callExpression": "isWeb",
-        "sourcePath": "src/modules/dashboard/platform.ts"
-      },
-      {
         "fromSymbol": "confirmDelete",
         "toSymbol": "isWeb",
         "callExpression": "isWeb",
@@ -24044,13 +24895,61 @@
         "sourcePath": "src/modules/dashboard/platform.ts"
       },
       {
-        "fromSymbol": "filterAndSortProjects",
-        "toSymbol": "normalize",
-        "callExpression": "normalize",
-        "sourcePath": "src/modules/dashboard/search.ts"
+        "fromSymbol": "src/modules/dashboard/projectIdentity.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromSymbol": "src/modules/dashboard/projectIdentity.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromSymbol": "src/modules/dashboard/projectIdentity.test.ts",
+        "toSymbol": "deriveProjectId",
+        "callExpression": "deriveProjectId",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromSymbol": "src/modules/dashboard/projectIdentity.test.ts",
+        "toSymbol": "validateProjectCreationInput",
+        "callExpression": "validateProjectCreationInput",
+        "sourcePath": "src/modules/dashboard/projectIdentity.test.ts"
+      },
+      {
+        "fromSymbol": "validateProjectCreationInput",
+        "toSymbol": "normalizeProjectName",
+        "callExpression": "normalizeProjectName",
+        "sourcePath": "src/modules/dashboard/projectIdentity.ts"
+      },
+      {
+        "fromSymbol": "validateProjectCreationInput",
+        "toSymbol": "deriveProjectId",
+        "callExpression": "deriveProjectId",
+        "sourcePath": "src/modules/dashboard/projectIdentity.ts"
+      },
+      {
+        "fromSymbol": "validateProjectCreationInput",
+        "toSymbol": "isReservedProjectId",
+        "callExpression": "isReservedProjectId",
+        "sourcePath": "src/modules/dashboard/projectIdentity.ts"
+      },
+      {
+        "fromSymbol": "src/modules/dashboard/projectIdentity.ts",
+        "toSymbol": "normalizeProjectName",
+        "callExpression": "normalizeProjectName",
+        "sourcePath": "src/modules/dashboard/projectIdentity.ts"
       },
       {
         "fromSymbol": "src/modules/dashboard/search.ts",
+        "toSymbol": "compareProjects",
+        "callExpression": "compareProjects",
+        "sourcePath": "src/modules/dashboard/search.ts"
+      },
+      {
+        "fromSymbol": "filterAndSortProjects",
         "toSymbol": "normalize",
         "callExpression": "normalize",
         "sourcePath": "src/modules/dashboard/search.ts"
@@ -24059,6 +24958,18 @@
         "fromSymbol": "src/modules/dashboard/search.ts",
         "toSymbol": "scoreText",
         "callExpression": "scoreText",
+        "sourcePath": "src/modules/dashboard/search.ts"
+      },
+      {
+        "fromSymbol": "src/modules/dashboard/search.ts",
+        "toSymbol": "normalize",
+        "callExpression": "normalize",
+        "sourcePath": "src/modules/dashboard/search.ts"
+      },
+      {
+        "fromSymbol": "filterAndSortTemplates",
+        "toSymbol": "getTemplateEntries",
+        "callExpression": "getTemplateEntries",
         "sourcePath": "src/modules/dashboard/search.ts"
       },
       {
@@ -24894,18 +25805,6 @@
         "toSymbol": "execFileAsync",
         "callExpression": "execFileAsync",
         "sourcePath": "src/host/modules/runtime/LocalFsTargetAdapter.ts"
-      },
-      {
-        "fromSymbol": "src/modules/dashboard/ui/ProjectCard.tsx",
-        "toSymbol": "setShowTooltip",
-        "callExpression": "setShowTooltip",
-        "sourcePath": "src/modules/dashboard/ui/ProjectCard.tsx"
-      },
-      {
-        "fromSymbol": "TemplateCard",
-        "toSymbol": "formatCategory",
-        "callExpression": "formatCategory",
-        "sourcePath": "src/modules/dashboard/ui/TemplateCard.tsx"
       },
       {
         "fromSymbol": "createAuthSettingsWithoutOAuth",

@@ -1,4 +1,12 @@
-export { StudioApp, StudioDashboard } from './app/index.js';
+export {
+  CreateCategoriesScreen,
+  CreateCategoryTemplatesScreen,
+  CreateProjectFromTemplateScreen,
+  ProjectDetailScreen,
+  ProjectsOverviewScreen,
+  StudioApp,
+  StudioDashboard,
+} from './app/index.js';
 export { useStudio } from './core/StudioContext.js';
 export { StudioProvider } from './core/StudioProvider.js';
 export * from './index.js';
