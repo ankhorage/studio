@@ -239,12 +239,18 @@ graph TD
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_generatedImportComposer_test_ts["src/host/layout/generatedImportComposer.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_generatedImportComposer_test_ts
+  module_src_host_layout_generatedImportComposer_test_ts --> module_src_host_layout_generatedImportComposer_ts
+  module_src_host_layout_generatedImportComposer_ts["src/host/layout/generatedImportComposer.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_test_ts["src/host/layout/layoutGenerator.test.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_layoutGenerator_test_ts
   module_src_host_layout_layoutGenerator_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
@@ -286,6 +292,7 @@ graph TD
   module_src_host_layout_templates_rootLayout_test_ts --> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_rootLayout_ts
+  module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_utils_escapeStringLiteral_ts

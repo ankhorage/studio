@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.9.0",
+      "value": "v0.10.0",
       "color": "cb3837"
     },
     {
@@ -757,6 +757,18 @@
       ]
     },
     {
+      "path": "src/host/layout/generatedImportComposer.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/generatedImportComposer.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/layout/generatedImportComposer.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["composeGeneratedImports", "GeneratedImportInput", "GeneratedImportRequirement"]
+    },
+    {
       "path": "src/host/layout/layoutGenerator.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/layoutGenerator.ts"],
@@ -767,12 +779,13 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "src/host/layout/generatedImportComposer.ts",
         "src/host/layout/templates/index.ts",
         "src/host/modules/layout.ts",
         "src/index.ts",
         "src/studioAdminRouteModel.ts"
       ],
-      "exports": ["GeneratedFile", "LayoutGenerationOptions", "LayoutGenerator"]
+      "exports": ["GeneratedAppFileGenerationOptions", "GeneratedAppFileGenerator", "GeneratedFile"]
     },
     {
       "path": "src/host/layout/templates/auth/adapter.ts",
@@ -835,6 +848,7 @@
         "getAuthSessionTs",
         "getIndexRedirectRouteTsx",
         "getNestedLayoutTsx",
+        "getRootLayoutImportRequirements",
         "getRootLayoutTsx",
         "getScreenTsx",
         "getSignOutScreenTsx"
@@ -871,12 +885,13 @@
       "path": "src/host/layout/templates/rootLayout.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/layout/generatedImportComposer.ts",
         "src/host/layout/templates/navigation.ts",
         "src/host/layout/templates/utils/routes.ts",
         "src/host/layout/utils/escapeStringLiteral.ts",
         "src/host/modules/layout.ts"
       ],
-      "exports": ["getRootLayoutTsx"]
+      "exports": ["getRootLayoutImportRequirements", "getRootLayoutTsx"]
     },
     {
       "path": "src/host/layout/templates/screen.ts",
@@ -8520,6 +8535,132 @@
       }
     },
     {
+      "name": "composeGeneratedImports",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseGeneratedImportFragment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseGeneratedImportStatement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseImportClause",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 74,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseNamedImports",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 115,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeGeneratedImportRequirements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "createMutableRequirement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeSingleBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 196,
+        "column": 1
+      }
+    },
+    {
+      "name": "mergeNamedImport",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerLocalBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 239,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderGeneratedImportRequirement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 249,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderImportStatement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 294,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderNamedClause",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 303,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderNamedImport",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedImportComposer.ts",
+        "line": 307,
+        "column": 1
+      }
+    },
+    {
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
@@ -8560,7 +8701,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 44,
+        "line": 46,
         "column": 1
       }
     },
@@ -8569,7 +8710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 58,
+        "line": 60,
         "column": 1
       }
     },
@@ -8578,7 +8719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 65,
+        "line": 67,
         "column": 1
       }
     },
@@ -8587,7 +8728,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 88,
+        "line": 90,
         "column": 11
       }
     },
@@ -8596,7 +8737,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 100,
+        "line": 102,
         "column": 11
       }
     },
@@ -8605,7 +8746,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 421,
+        "line": 422,
         "column": 1
       }
     },
@@ -8614,7 +8755,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 435,
+        "line": 436,
         "column": 1
       }
     },
@@ -8623,7 +8764,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 442,
+        "line": 443,
         "column": 1
       }
     },
@@ -8632,7 +8773,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 465,
+        "line": 466,
         "column": 1
       }
     },
@@ -8641,7 +8782,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 479,
+        "line": 480,
         "column": 1
       }
     },
@@ -8650,7 +8791,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 483,
+        "line": 484,
         "column": 1
       }
     },
@@ -8659,7 +8800,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 527,
+        "line": 528,
         "column": 1
       }
     },
@@ -8668,7 +8809,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 535,
+        "line": 536,
         "column": 1
       }
     },
@@ -8677,7 +8818,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 540,
+        "line": 541,
         "column": 1
       }
     },
@@ -8934,11 +9075,20 @@
       }
     },
     {
+      "name": "getRootLayoutImportRequirements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/templates/rootLayout.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
       "name": "serializeStringArrayLiteral",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 32,
+        "line": 64,
         "column": 1
       }
     },
@@ -8947,7 +9097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 36,
+        "line": 68,
         "column": 1
       }
     },
@@ -8956,7 +9106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 43,
+        "line": 75,
         "column": 1
       }
     },
@@ -15282,6 +15432,11 @@
         "sourcePath": "src/host/http/standalone.ts"
       },
       {
+        "fromPath": "src/host/layout/generatedImportComposer.test.ts",
+        "toPath": "src/host/layout/generatedImportComposer.ts",
+        "sourcePath": "src/host/layout/generatedImportComposer.test.ts"
+      },
+      {
         "fromPath": "src/host/layout/layoutGenerator.test.ts",
         "toPath": "src/host/layout/layoutGenerator.ts",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
@@ -15304,6 +15459,11 @@
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/host/layout/generatedImportComposer.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -15775,6 +15935,11 @@
         "fromPath": "src/host/layout/templates/rootLayout.test.ts",
         "toPath": "src/host/layout/templates/rootLayout.ts",
         "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/rootLayout.ts",
+        "toPath": "src/host/layout/generatedImportComposer.ts",
+        "sourcePath": "src/host/layout/templates/rootLayout.ts"
       },
       {
         "fromPath": "src/host/layout/templates/rootLayout.ts",
@@ -24830,6 +24995,96 @@
         "sourcePath": "src/host/http/standalone.ts"
       },
       {
+        "fromSymbol": "src/host/layout/generatedImportComposer.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/generatedImportComposer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedImportComposer.test.ts",
+        "toSymbol": "composeGeneratedImports",
+        "callExpression": "composeGeneratedImports",
+        "sourcePath": "src/host/layout/generatedImportComposer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedImportComposer.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/generatedImportComposer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedImportComposer.ts",
+        "toSymbol": "parseGeneratedImportFragment",
+        "callExpression": "parseGeneratedImportFragment",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "composeGeneratedImports",
+        "toSymbol": "mergeGeneratedImportRequirements",
+        "callExpression": "mergeGeneratedImportRequirements",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "parseGeneratedImportStatement",
+        "toSymbol": "parseImportClause",
+        "callExpression": "parseImportClause",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "parseImportClause",
+        "toSymbol": "parseNamedImports",
+        "callExpression": "parseNamedImports",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "mergeGeneratedImportRequirements",
+        "toSymbol": "createMutableRequirement",
+        "callExpression": "createMutableRequirement",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "mergeGeneratedImportRequirements",
+        "toSymbol": "mergeSingleBinding",
+        "callExpression": "mergeSingleBinding",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "mergeGeneratedImportRequirements",
+        "toSymbol": "mergeNamedImport",
+        "callExpression": "mergeNamedImport",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "mergeSingleBinding",
+        "toSymbol": "registerLocalBinding",
+        "callExpression": "registerLocalBinding",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "mergeNamedImport",
+        "toSymbol": "registerLocalBinding",
+        "callExpression": "registerLocalBinding",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "renderGeneratedImportRequirement",
+        "toSymbol": "renderImportStatement",
+        "callExpression": "renderImportStatement",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedImportComposer.ts",
+        "toSymbol": "renderNamedImport",
+        "callExpression": "renderNamedImport",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
+        "fromSymbol": "renderGeneratedImportRequirement",
+        "toSymbol": "renderNamedClause",
+        "callExpression": "renderNamedClause",
+        "sourcePath": "src/host/layout/generatedImportComposer.ts"
+      },
+      {
         "fromSymbol": "createOAuthManifest",
         "toSymbol": "createManifest",
         "callExpression": "createManifest",
@@ -24837,8 +25092,8 @@
       },
       {
         "fromSymbol": "getGeneratedAuthAdapter",
-        "toSymbol": "generateAll",
-        "callExpression": "new LayoutGenerator()\n      .generateAll",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator()\n      .generateFiles",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
@@ -24855,8 +25110,8 @@
       },
       {
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
-        "toSymbol": "generateAll",
-        "callExpression": "new LayoutGenerator().generateAll",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator().generateFiles",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
@@ -24914,7 +25169,7 @@
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "resolveAuthLayoutPlan",
         "callExpression": "resolveAuthLayoutPlan",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
@@ -24974,49 +25229,49 @@
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "normalizeRel",
         "callExpression": "normalizeRel",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "getAuthShellLayoutContent",
         "callExpression": "this.getAuthShellLayoutContent",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "getIndexRedirectRouteTsx",
         "callExpression": "getIndexRedirectRouteTsx",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "addStudioAdminRouteFiles",
         "callExpression": "addStudioAdminRouteFiles",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "getGeneratedAuthFileContent",
         "callExpression": "this.getGeneratedAuthFileContent",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "walk",
         "callExpression": "walk",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "prepareNavigatorForGeneratedRoutes",
         "callExpression": "prepareNavigatorForGeneratedRoutes",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromSymbol": "generateAll",
+        "fromSymbol": "generateFiles",
         "toSymbol": "getRootLayoutContent",
         "callExpression": "this.getRootLayoutContent",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
@@ -25025,6 +25280,18 @@
         "fromSymbol": "getAuthShellLayoutContent",
         "toSymbol": "resolveExpoRuntimeLayoutIntegration",
         "callExpression": "resolveExpoRuntimeLayoutIntegration",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getAuthShellLayoutContent",
+        "toSymbol": "composeGeneratedImports",
+        "callExpression": "composeGeneratedImports",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getAuthShellLayoutContent",
+        "toSymbol": "getRootLayoutImportRequirements",
+        "callExpression": "getRootLayoutImportRequirements",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -25073,6 +25340,18 @@
         "fromSymbol": "getRootLayoutContent",
         "toSymbol": "getPackageOwnedRuntimeImports",
         "callExpression": "getPackageOwnedRuntimeImports",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getRootLayoutContent",
+        "toSymbol": "composeGeneratedImports",
+        "callExpression": "composeGeneratedImports",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getRootLayoutContent",
+        "toSymbol": "getRootLayoutImportRequirements",
+        "callExpression": "getRootLayoutImportRequirements",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -26847,8 +27126,8 @@
       },
       {
         "fromSymbol": "rebuildRootLayout",
-        "toSymbol": "generateAll",
-        "callExpression": "this.layout\n      .generateAll",
+        "toSymbol": "generateFiles",
+        "callExpression": "this.appFiles\n      .generateFiles",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -27027,8 +27306,8 @@
       },
       {
         "fromSymbol": "writeGeneratedFiles",
-        "toSymbol": "generateAll",
-        "callExpression": "this.layout.generateAll",
+        "toSymbol": "generateFiles",
+        "callExpression": "this.appFiles.generateFiles",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {

@@ -1,5 +1,6 @@
 import type { AppManifest } from '@ankhorage/contracts';
 
+import type { GeneratedImportRequirement } from '../generatedImportComposer';
 import type { LayoutMutation } from '../../modules/layout';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import type { BuiltNavigatorJsx } from './navigation';
@@ -27,6 +28,33 @@ interface GetRootLayoutTsxArgs {
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
   useStoredAuthSessionCredentialResolver?: boolean;
+}
+
+export function getRootLayoutImportRequirements(
+  includeStudio: boolean,
+): GeneratedImportRequirement[] {
+  return [
+    {
+      source: 'react',
+      namedImports: [
+        { imported: 'ReactNode', typeOnly: true },
+        ...(includeStudio
+          ? [{ imported: 'cloneElement' }, { imported: 'isValidElement' }, { imported: 'useState' }]
+          : []),
+      ],
+    },
+    ...(includeStudio
+      ? [
+          {
+            source: 'react-native',
+            namedImports: [
+              { imported: 'Pressable' },
+              { imported: 'GestureResponderEvent', typeOnly: true },
+            ],
+          },
+        ]
+      : []),
+  ];
 }
 
 function serializeStringArrayLiteral(values: readonly string[]): string {
@@ -304,9 +332,6 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports = includeStudio
-    ? "import { cloneElement, isValidElement, useState, type ReactNode } from 'react';\nimport { Pressable, type GestureResponderEvent } from 'react-native';"
-    : "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -514,7 +539,7 @@ function StudioRuntimeNodeWrapper(props: {
     : '';
 
   return `
-${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
+${allImports}
 
 ${moduleLevelDeclarations}
 

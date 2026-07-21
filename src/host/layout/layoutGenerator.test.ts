@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
-import { LayoutGenerator } from './layoutGenerator';
+import { GeneratedAppFileGenerator } from './layoutGenerator';
 
 function createManifest(): AppManifest {
   return {
@@ -106,15 +106,15 @@ function createScrollableScreenRoot(): UiNode {
 
 function getGeneratedAuthAdapter(manifest: AppManifest): string {
   return (
-    new LayoutGenerator()
-      .generateAll('/tmp/demo', manifest, [], { includeStudio: false })
+    new GeneratedAppFileGenerator()
+      .generateFiles('/tmp/demo', manifest, [], { includeStudio: false })
       .find((file) => file.path === 'src/auth/adapter.ts')?.content ?? ''
   );
 }
 
-describe('LayoutGenerator', () => {
+describe('GeneratedAppFileGenerator', () => {
   test('generates canonical Studio admin route anchors', () => {
-    const files = new LayoutGenerator().generateAll('/tmp/demo', createManifest(), []);
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), []);
     const paths = files.map((file) => file.path).sort();
 
     expect(paths).toContain('src/app/ankh/_layout.tsx');
@@ -143,9 +143,14 @@ describe('LayoutGenerator', () => {
   });
 
   test('generates auth-independent and production-gated Studio admin routes', () => {
-    const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
-      includeStudio: true,
-    });
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      {
+        includeStudio: true,
+      },
+    );
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adminLayout = files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content;
     const adminPage = files.find(
@@ -165,6 +170,24 @@ describe('LayoutGenerator', () => {
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
   });
 
+  test('composes one React import for generated Auth plus Studio root layouts', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      { includeStudio: true },
+    );
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const reactImports = rootLayout.match(/^import .* from 'react';$/gmu) ?? [];
+
+    expect(reactImports).toHaveLength(1);
+    expect(reactImports[0]).toContain('useState');
+    expect(reactImports[0]).toContain('cloneElement');
+    expect(reactImports[0]).toContain('isValidElement');
+    expect(reactImports[0]).toContain('type ReactNode');
+    expect(reactImports[0]?.match(/\buseState\b/gu)?.length).toBe(1);
+  });
+
   test('generates canonical ZORA registry ownership for the running app runtime path', () => {
     const manifest = createManifest();
     const indexScreen = manifest.screens.index;
@@ -173,7 +196,7 @@ describe('LayoutGenerator', () => {
     }
     indexScreen.root = createScrollableScreenRoot();
 
-    const files = new LayoutGenerator().generateAll('/tmp/demo', manifest, [], {
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
       includeStudio: true,
     });
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
@@ -182,7 +205,7 @@ describe('LayoutGenerator', () => {
     expect(rootLayout).toContain(
       "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, useZoraTheme, AppBar } from '@ankhorage/zora';",
     );
-    expect(rootLayout).toContain('createComponentRegistry,');
+    expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
     expect(rootLayout).toContain(
       "import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';",
@@ -223,9 +246,14 @@ describe('LayoutGenerator', () => {
   });
 
   test('generates one canonical OAuth runtime without secret references', () => {
-    const files = new LayoutGenerator().generateAll('/tmp/demo', createOAuthManifest(), [], {
-      includeStudio: false,
-    });
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      {
+        includeStudio: false,
+      },
+    );
     const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
@@ -338,7 +366,7 @@ describe('LayoutGenerator', () => {
   test('does not generate OAuth artifacts when OAuth is disabled', () => {
     const manifest = createOAuthManifest();
     if (manifest.infra.auth?.oauth) manifest.infra.auth.oauth.enabled = false;
-    const files = new LayoutGenerator().generateAll('/tmp/demo', manifest, [], {
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
       includeStudio: false,
     });
     const paths = files.map((file) => file.path);
