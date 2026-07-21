@@ -185,7 +185,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(reactImports[0]).toContain('cloneElement');
     expect(reactImports[0]).toContain('isValidElement');
     expect(reactImports[0]).toContain('type ReactNode');
-    expect(reactImports[0].match(/\buseState\b/gu)?.length).toBe(1);
+    expect(reactImports[0]?.match(/\buseState\b/gu)?.length).toBe(1);
   });
 
   test('generates canonical ZORA registry ownership for the running app runtime path', () => {
