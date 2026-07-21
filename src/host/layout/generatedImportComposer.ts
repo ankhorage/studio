@@ -61,8 +61,7 @@ function parseGeneratedImportStatement(statement: string): GeneratedImportRequir
   }
 
   const fromMatch = statement.match(/^import\s+([\s\S]+?)\s+from\s+(['"])([^'"]+)\2\s*;?$/u);
-  const rawClause = fromMatch?.[1];
-  const source = fromMatch?.[3];
+  const [, rawClause, , source] = fromMatch ?? [];
   if (!rawClause || !source) {
     throw new Error(`Unsupported generated import statement: ${statement}`);
   }
@@ -119,21 +118,26 @@ function parseNamedImports(clause: string, inheritedTypeOnly: boolean): Generate
   const body = clause.replace(/^\{/u, '').replace(/\}$/u, '').trim();
   if (body.length === 0) return [];
 
-  return body.split(',').map((rawSpecifier) => {
-    const trimmed = rawSpecifier.trim();
-    const typeOnly = inheritedTypeOnly || trimmed.startsWith('type ');
-    const specifier = trimmed.startsWith('type ') ? trimmed.slice('type '.length).trim() : trimmed;
-    const [rawImported, rawLocal] = specifier.split(/\s+as\s+/u);
-    const imported = rawImported?.trim();
-    const local = rawLocal?.trim();
-    if (!imported) throw new Error(`Invalid generated named import: ${rawSpecifier}`);
+  return body
+    .split(',')
+    .map((rawSpecifier) => rawSpecifier.trim())
+    .filter(Boolean)
+    .map((trimmed) => {
+      const typeOnly = inheritedTypeOnly || trimmed.startsWith('type ');
+      const specifier = trimmed.startsWith('type ')
+        ? trimmed.slice('type '.length).trim()
+        : trimmed;
+      const [rawImported, rawLocal] = specifier.split(/\s+as\s+/u);
+      const imported = rawImported?.trim();
+      const local = rawLocal?.trim();
+      if (!imported) throw new Error(`Invalid generated named import: ${trimmed}`);
 
-    return {
-      imported,
-      ...(local && local !== imported ? { local } : {}),
-      ...(typeOnly ? { typeOnly: true } : {}),
-    };
-  });
+      return {
+        imported,
+        ...(local && local !== imported ? { local } : {}),
+        ...(typeOnly ? { typeOnly: true } : {}),
+      };
+    });
 }
 
 function mergeGeneratedImportRequirements(
