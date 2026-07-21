@@ -27,7 +27,7 @@ interface MutableImportRequirement {
 }
 
 const IMPORT_STATEMENT_PATTERN =
-  /import\s+(?:type\s+)?[\s\S]*?\s+from\s+(['"])[^'"]+\1\s*;|import\s+(['"])[^'"]+\2\s*;/gu;
+  /import\s+(?:type\s+)?[\s\S]*?\s+from\s+(['"])[^'"]+\1\s*;?|import\s+(['"])[^'"]+\2\s*;?/gu;
 
 export function composeGeneratedImports(inputs: readonly GeneratedImportInput[]): string {
   const requirements = inputs.flatMap((input) =>
@@ -42,7 +42,9 @@ function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirem
   if (trimmed.length === 0) return [];
 
   const statements = trimmed.match(IMPORT_STATEMENT_PATTERN) ?? [];
-  const remainder = statements.reduce((value, statement) => value.replace(statement, ''), trimmed).trim();
+  const remainder = statements
+    .reduce((value, statement) => value.replace(statement, ''), trimmed)
+    .trim();
   if (remainder.length > 0) {
     throw new Error(`Generated import fragment contains unsupported content: ${remainder}`);
   }
@@ -51,20 +53,22 @@ function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirem
 }
 
 function parseGeneratedImportStatement(statement: string): GeneratedImportRequirement {
-  const sideEffectMatch = statement.match(/^import\s+(['"])([^'"]+)\1\s*;$/u);
+  const sideEffectMatch = statement.match(/^import\s+(['"])([^'"]+)\1\s*;?$/u);
   if (sideEffectMatch) {
-    return { source: sideEffectMatch[2], sideEffectOnly: true };
+    const source = sideEffectMatch[2];
+    if (!source) throw new Error(`Invalid side-effect import statement: ${statement}`);
+    return { source, sideEffectOnly: true };
   }
 
-  const fromMatch = statement.match(/^import\s+([\s\S]+?)\s+from\s+(['"])([^'"]+)\2\s*;$/u);
-  if (!fromMatch) {
+  const fromMatch = statement.match(/^import\s+([\s\S]+?)\s+from\s+(['"])([^'"]+)\2\s*;?$/u);
+  const rawClause = fromMatch?.[1];
+  const source = fromMatch?.[3];
+  if (!rawClause || !source) {
     throw new Error(`Unsupported generated import statement: ${statement}`);
   }
 
-  const source = fromMatch[3];
-  const rawClause = fromMatch[1].trim();
   const typeOnly = rawClause.startsWith('type ');
-  const clause = typeOnly ? rawClause.slice('type '.length).trim() : rawClause;
+  const clause = typeOnly ? rawClause.slice('type '.length).trim() : rawClause.trim();
   return parseImportClause(source, clause, typeOnly);
 }
 
@@ -119,7 +123,11 @@ function parseNamedImports(clause: string, inheritedTypeOnly: boolean): Generate
     const trimmed = rawSpecifier.trim();
     const typeOnly = inheritedTypeOnly || trimmed.startsWith('type ');
     const specifier = trimmed.startsWith('type ') ? trimmed.slice('type '.length).trim() : trimmed;
-    const [imported, local] = specifier.split(/\s+as\s+/u).map((value) => value.trim());
+    const [rawImported, rawLocal] = specifier.split(/\s+as\s+/u);
+    const imported = rawImported?.trim();
+    const local = rawLocal?.trim();
+    if (!imported) throw new Error(`Invalid generated named import: ${rawSpecifier}`);
+
     return {
       imported,
       ...(local && local !== imported ? { local } : {}),
@@ -204,8 +212,7 @@ function mergeNamedImport(
   localBindings: Map<string, string>,
 ): void {
   const local = incoming.local ?? incoming.imported;
-  const key = local;
-  const existing = requirement.namedImports.get(key);
+  const existing = requirement.namedImports.get(local);
   if (existing && existing.imported !== incoming.imported) {
     throw new Error(
       `Conflicting named import binding '${local}' for '${requirement.source}': ` +
@@ -214,7 +221,7 @@ function mergeNamedImport(
   }
 
   registerLocalBinding(localBindings, local, `${requirement.source}:${incoming.imported}`);
-  requirement.namedImports.set(key, {
+  requirement.namedImports.set(local, {
     imported: incoming.imported,
     ...(incoming.local ? { local: incoming.local } : {}),
     ...((existing?.typeOnly === false || incoming.typeOnly === false)
@@ -240,14 +247,20 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
 
   if (requirement.namespaceImport) {
     statements.push(
-      renderImportStatement(requirement.source, requirement.defaultImport, `* as ${requirement.namespaceImport}`),
+      renderImportStatement(
+        requirement.source,
+        requirement.defaultImport,
+        `* as ${requirement.namespaceImport}`,
+      ),
     );
   } else if (requirement.defaultImport || valueNamed.length > 0 || typeNamed.length > 0) {
     const named = [
       ...valueNamed.map(renderNamedImport),
       ...typeNamed.map((entry) => `type ${renderNamedImport(entry)}`),
     ];
-    statements.push(renderImportStatement(requirement.source, requirement.defaultImport, renderNamedClause(named)));
+    statements.push(
+      renderImportStatement(requirement.source, requirement.defaultImport, renderNamedClause(named)),
+    );
   }
 
   if (requirement.typeOnlyDefaultImport || requirement.typeOnlyNamespaceImport) {
