@@ -13,6 +13,7 @@ function createManifest(): AppManifest {
       name: 'Demo',
       slug: 'demo',
       version: '1.0.0',
+      category: 'developer_tools',
       themeId: 'default',
     },
     settings: {

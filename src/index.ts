@@ -22,11 +22,29 @@ export type {
   ProjectOAuthProviderHealth,
   ProjectOAuthProviderHealthStatus,
 } from './projectAuthHealth';
+export {
+  deriveProjectId,
+  ProjectCreationValidationError,
+  validateProjectCreationInput,
+} from './projectIdentity';
 export type {
   ProjectSecretUsage,
   ProjectSecretUsageCategory,
   ProjectSecretUsageSummary,
 } from './projectSecretUsage';
+export type {
+  ProjectCreationValidationCode,
+  ProjectCreationValidationFailure,
+  ProjectCreationValidationResult,
+  ProjectSortKey,
+  StudioProjectSummary,
+} from './projectWorkspaceContracts';
+export type {
+  TemplateCatalog,
+  TemplateCatalogCategory,
+  TemplateCatalogTemplate,
+  TemplateEntry,
+} from './templateCatalogContracts';
 
 export const STUDIO_PACKAGE_NAME = '@ankhorage/studio' as const;
 

@@ -14,6 +14,7 @@ function createManifest(
       name: 'Auth app',
       slug: 'auth-app',
       version: '1.0.0',
+      category: 'developer_tools',
       themeId: 'default',
     },
     themes: [],

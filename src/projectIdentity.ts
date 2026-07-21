@@ -1,5 +1,8 @@
-import type { ProjectCreationValidationResult, StudioProjectSummary } from './types';
-import type { ProjectCreationValidationFailure } from './types';
+import type {
+  ProjectCreationValidationFailure,
+  ProjectCreationValidationResult,
+  StudioProjectSummary,
+} from './projectWorkspaceContracts';
 
 const RESERVED_PROJECT_IDS = ['studio'] as const;
 

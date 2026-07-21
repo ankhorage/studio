@@ -1,14 +1,12 @@
-import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts';
-import { APP_CATEGORIES } from '@ankhorage/contracts';
+import type { AppManifest, ThemeConfig } from '@ankhorage/contracts';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import type { StudioProjectManifest, StudioProjectSummary } from '../../modules/dashboard/types';
+import { isAppManifest } from '../../contractGuards';
+import type { StudioProjectSummary } from '../../projectWorkspaceContracts';
 import { getProjectPath } from './projectPaths';
 
 export type ProjectSummary = StudioProjectSummary;
-
-const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
 
 export class ProjectStore {
   constructor(private readonly rootPath: string) {}
@@ -48,7 +46,7 @@ export class ProjectStore {
             }
 
             try {
-              const manifest = parseStudioProjectManifest(
+              const manifest = parseProjectSummaryManifest(
                 JSON.parse(await fs.readFile(ankhConfigPath, 'utf8')),
               );
               const activeTheme = resolveActiveTheme(manifest);
@@ -102,21 +100,37 @@ export class ProjectStore {
     }
 
     if (await exists(manifestPath)) {
-      return JSON.parse(await fs.readFile(manifestPath, 'utf8')) as AppManifest;
+      return parseReadableAppManifest(JSON.parse(await fs.readFile(manifestPath, 'utf8')));
     }
 
     return {
-      /** @todo e.g. 'plugins' missing, check this and cleanup */
-      metadata: { name: projectId, slug: projectId },
+      metadata: {
+        name: projectId,
+        slug: projectId,
+        version: '1.0.0',
+        category: 'developer_tools',
+        themeId: 'default',
+      },
+      settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+      infra: { plugins: [] },
       screens: {},
       navigator: { type: 'stack', routes: [{ name: 'index', screenId: 'index' }] },
-    } as AppManifest;
+      themes: [
+        {
+          id: 'default',
+          name: 'Default',
+          light: { primaryColor: '#2563eb', harmony: 'analogous' },
+          dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
+        },
+      ],
+      activeThemeId: 'default',
+    };
   }
 
   async readStudioManifest(projectId: string): Promise<AppManifest> {
     const studioManifestPath = this.getStudioManifestPath(projectId);
     if (await exists(studioManifestPath)) {
-      return JSON.parse(await fs.readFile(studioManifestPath, 'utf8')) as AppManifest;
+      return parseReadableAppManifest(JSON.parse(await fs.readFile(studioManifestPath, 'utf8')));
     }
 
     return this.readManifest(projectId);
@@ -177,50 +191,23 @@ export class ProjectStore {
   }
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
-
-function isAppCategory(value: unknown): value is AppCategory {
-  return typeof value === 'string' && APP_CATEGORY_SET.has(value);
-}
-
-function isThemeModeConfig(value: unknown): value is ThemeConfig['light'] {
-  return (
-    isRecord(value) && typeof value.primaryColor === 'string' && typeof value.harmony === 'string'
-  );
-}
-
-function isThemeConfig(value: unknown): value is ThemeConfig {
-  return (
-    isRecord(value) &&
-    typeof value.id === 'string' &&
-    typeof value.name === 'string' &&
-    isThemeModeConfig(value.light) &&
-    isThemeModeConfig(value.dark)
-  );
-}
-
-function parseStudioProjectManifest(value: unknown): StudioProjectManifest {
-  if (
-    !isRecord(value) ||
-    !isRecord(value.metadata) ||
-    typeof value.metadata.name !== 'string' ||
-    typeof value.metadata.slug !== 'string' ||
-    typeof value.metadata.version !== 'string' ||
-    typeof value.metadata.themeId !== 'string' ||
-    !isAppCategory(value.metadata.category) ||
-    !Array.isArray(value.themes) ||
-    !value.themes.every(isThemeConfig) ||
-    typeof value.activeThemeId !== 'string'
-  ) {
+function parseProjectSummaryManifest(value: unknown): AppManifest {
+  if (!isAppManifest(value)) {
     throw new Error('Project manifest does not contain canonical Studio metadata.');
   }
 
-  return value as StudioProjectManifest;
+  return value;
 }
 
-function resolveActiveTheme(manifest: StudioProjectManifest): ThemeConfig {
+function parseReadableAppManifest(value: unknown): AppManifest {
+  if (!isAppManifest(value)) {
+    throw new Error('Project manifest is not a canonical AppManifest.');
+  }
+
+  return value;
+}
+
+function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   const activeTheme = manifest.themes.find((theme) => theme.id === manifest.activeThemeId);
   if (!activeTheme) {
     throw new Error(`Manifest active theme '${manifest.activeThemeId}' is missing.`);

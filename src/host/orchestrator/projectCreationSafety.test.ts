@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { expect, test } from 'bun:test';
 
-import { ProjectCreationValidationError } from '../../modules/dashboard/projectIdentity';
+import { ProjectCreationValidationError } from '../../projectIdentity';
 import { getTemplateCatalog } from '../templateRegistry';
 import { ProjectManager } from './projectManager';
 

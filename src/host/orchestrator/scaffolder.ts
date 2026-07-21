@@ -157,17 +157,18 @@ export class ProjectScaffolder {
     slug: string,
     category: AppCategory,
   ) {
-    const manifestWithCategory = {
+    const now = new Date().toISOString();
+    const manifestWithCategory: AppManifest = {
       ...templateData,
       metadata: {
         ...templateData.metadata,
         name: appName,
         slug,
         category,
-        created: new Date().toISOString(),
-        updated: new Date().toISOString(),
+        created: now,
+        updated: now,
       },
-    } as AppManifest;
+    };
     const manifest: AppManifest = applySystemTemplates(manifestWithCategory);
 
     await fs.writeFile(

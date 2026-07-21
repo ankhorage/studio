@@ -27,7 +27,7 @@ This slice still does not move product shell or platform code. In particular, th
 
 - `AnkhStudio`
 - `StudioApp`
-- `StudioDashboard`
+- Studio workspace route screens
 - admin screens
 - panels
 - React Native components

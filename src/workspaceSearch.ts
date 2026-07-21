@@ -1,4 +1,5 @@
-import type { ProjectSortKey, StudioProjectSummary, TemplateCatalog, TemplateEntry } from './types';
+import type { ProjectSortKey, StudioProjectSummary } from './projectWorkspaceContracts';
+import type { TemplateCatalog, TemplateEntry } from './templateCatalogContracts';
 
 function normalize(s: string): string {
   return s.trim().toLowerCase();

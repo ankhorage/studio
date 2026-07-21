@@ -226,7 +226,8 @@
     "supabase-vault"
   ],
   "dependencies": {
-    "@ankhorage/contracts": "^3.0.0",
+    "@ankhorage/contracts": "^4.0.0",
+    "@ankhorage/color-theory": "^0.0.7",
     "@ankhorage/expo-runtime": "^0.0.10",
     "@ankhorage/infra": "^1.0.1",
     "@ankhorage/orchestrator": "^0.2.4",
@@ -236,7 +237,7 @@
     "@ankhorage/runtime": "^0.2.1",
     "@ankhorage/supabase-auth": "^1.1.1",
     "@ankhorage/supabase-vault": "^0.2.0",
-    "@ankhorage/templates": "^2.2.0",
+    "@ankhorage/templates": "^3.0.0",
     "@ankhorage/zora": "^2.8.5",
     "@ankhorage/zora-chess": "^0.1.2",
     "@ankhorage/zora-tabletop": "^0.0.5",

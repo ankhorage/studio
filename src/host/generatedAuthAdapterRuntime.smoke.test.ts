@@ -74,6 +74,7 @@ function createRuntimeSmokeManifest(): AppManifest {
       name: PROJECT_NAME,
       slug: PROJECT_ID,
       version: '1.0.0',
+      category: 'developer_tools',
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },

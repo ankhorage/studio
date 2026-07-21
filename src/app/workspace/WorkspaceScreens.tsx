@@ -1,4 +1,3 @@
-import { APP_CATEGORIES } from '@ankhorage/contracts';
 import type { AppCategory } from '@ankhorage/contracts';
 import { Heading, Icon, Text, useZoraTheme } from '@ankhorage/zora';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -19,26 +18,14 @@ import {
   ProjectCreationError,
   type LaunchProjectResponse,
   useProjects,
-} from '../hooks/useProjects';
-import { useTemplateCatalog } from '../hooks/useTemplateCatalog';
-import { confirmDelete, openProjectUrl } from '../modules/dashboard/platform';
-import {
-  deriveProjectId,
-  validateProjectCreationInput,
-} from '../modules/dashboard/projectIdentity';
-import { filterAndSortProjects, filterAndSortTemplates } from '../modules/dashboard/search';
-import type {
-  ProjectSortKey,
-  StudioProjectSummary,
-  TemplateCatalogCategory,
-  TemplateEntry,
-} from '../modules/dashboard/types';
-
-const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
-
-export function StudioDashboard() {
-  return <ProjectsOverviewScreen />;
-}
+} from '../../hooks/useProjects';
+import { useTemplateCatalog } from '../../hooks/useTemplateCatalog';
+import type { ProjectSortKey, StudioProjectSummary } from '../../projectWorkspaceContracts';
+import type { TemplateCatalogCategory, TemplateEntry } from '../../templateCatalogContracts';
+import { confirmDelete, openProjectUrl } from '../../workspacePlatform';
+import { filterAndSortProjects, filterAndSortTemplates } from '../../workspaceSearch';
+import { resolveCreateProjectFormState } from './createProjectFormState';
+import { resolveWorkspaceCategoryParam } from './routeParams';
 
 export function ProjectsOverviewScreen() {
   const { projects, isLoading, error, refresh } = useProjects();
@@ -349,12 +336,12 @@ export function CreateCategoriesScreen() {
 }
 
 export function CreateCategoryTemplatesScreen() {
-  const { category } = useCategoryRouteParams();
+  const { category, categoryParam } = useCategoryRouteParams();
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
-  const selected = catalog.categories.find((entry) => entry.id === category);
+  const selected = category ? catalog.categories.find((entry) => entry.id === category) : undefined;
 
   return (
-    <WorkspaceScreen title={selected?.label ?? 'Templates'} subtitle="Choose a template.">
+    <WorkspaceScreen title={selected?.label ?? 'Templates'} subtitle={categoryParam}>
       {isLoading ? (
         <LoadingState label="Loading templates" />
       ) : error ? (
@@ -367,7 +354,7 @@ export function CreateCategoryTemplatesScreen() {
       ) : !selected ? (
         <EmptyState
           title="Category not found"
-          detail="The requested template category is not available."
+          detail={`The requested template category "${categoryParam}" is not available.`}
           actionLabel="Back to categories"
           onAction={() => router.replace('/create')}
         />
@@ -394,23 +381,37 @@ export function CreateCategoryTemplatesScreen() {
 }
 
 export function CreateProjectFromTemplateScreen() {
-  const { category, templateId } = useTemplateRouteParams();
+  const { category, categoryParam, templateId } = useTemplateRouteParams();
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
-  const { projects, createProject } = useProjects();
-  const selectedCategory = catalog.categories.find((entry) => entry.id === category);
+  const {
+    projects,
+    isLoading: projectsLoading,
+    error: projectsError,
+    refresh: refreshProjects,
+    createProject,
+  } = useProjects();
+  const selectedCategory = category
+    ? catalog.categories.find((entry) => entry.id === category)
+    : undefined;
   const template = selectedCategory?.templates.find((entry) => entry.templateId === templateId);
   const [projectName, setProjectName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-
-  const validation = useMemo(
-    () => validateProjectCreationInput({ name: projectName, existingProjects: projects }),
-    [projectName, projects],
+  const formState = useMemo(
+    () =>
+      resolveCreateProjectFormState({
+        projectName,
+        existingProjects: projects,
+        projectsLoading,
+        projectsError,
+        templateAvailable: template !== undefined,
+        isCreating,
+      }),
+    [projectName, projects, projectsLoading, projectsError, template, isCreating],
   );
-  const derivedProjectId = deriveProjectId(projectName);
 
   async function handleCreate() {
-    if (!template || !validation.ok) return;
+    if (!category || !template || formState.validation?.ok !== true) return;
     setIsCreating(true);
     setSubmitError(null);
     try {
@@ -431,7 +432,7 @@ export function CreateProjectFromTemplateScreen() {
   }
 
   return (
-    <WorkspaceScreen title="Create Project" subtitle={selectedCategory?.label ?? category}>
+    <WorkspaceScreen title="Create Project" subtitle={selectedCategory?.label ?? categoryParam}>
       {isLoading ? (
         <LoadingState label="Loading template" />
       ) : error ? (
@@ -441,12 +442,19 @@ export function CreateProjectFromTemplateScreen() {
           actionLabel="Retry"
           onAction={refresh}
         />
-      ) : !selectedCategory || !template ? (
+      ) : !selectedCategory ? (
+        <EmptyState
+          title="Category not found"
+          detail={`The requested template category "${categoryParam}" is not available.`}
+          actionLabel="Back to categories"
+          onAction={() => router.replace('/create')}
+        />
+      ) : !template ? (
         <EmptyState
           title="Template not found"
           detail="The selected template is not available."
           actionLabel="Back to templates"
-          onAction={() => router.replace(`/create/${category}`)}
+          onAction={() => router.replace(`/create/${selectedCategory.id}`)}
         />
       ) : (
         <View style={styles.createLayout}>
@@ -473,16 +481,25 @@ export function CreateProjectFromTemplateScreen() {
               />
             </View>
             <MetadataRows
-              rows={[['Project ID', derivedProjectId || 'Derived from project name']]}
+              rows={[['Project ID', formState.derivedProjectId || 'Derived from project name']]}
             />
-            {!validation.ok && projectName.trim() ? (
-              <InlineMessage tone="error" text={validation.reason.message} />
+            {projectsLoading ? (
+              <InlineMessage tone="info" text="Loading existing projects." />
+            ) : null}
+            {projectsError ? (
+              <View style={styles.actionStack}>
+                <InlineMessage tone="error" text={projectsError} />
+                <SecondaryAction label="Retry projects" onPress={refreshProjects} />
+              </View>
+            ) : null}
+            {formState.validation?.ok === false && projectName.trim() ? (
+              <InlineMessage tone="error" text={formState.validation.reason.message} />
             ) : null}
             {submitError ? <InlineMessage tone="error" text={submitError} /> : null}
             <PrimaryAction
               iconName="checkmark-outline"
               label={isCreating ? 'Creating' : 'Create project'}
-              disabled={!validation.ok || isCreating}
+              disabled={!formState.canCreate}
               onPress={() => void handleCreate()}
             />
           </View>
@@ -496,7 +513,10 @@ function WorkspaceScreen(props: { title: string; subtitle: string; children: Rea
   const { theme } = useZoraTheme();
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      edges={['left', 'right', 'bottom']}
+      style={[styles.safeArea, { backgroundColor: theme.colors.background }]}
+    >
       <ScrollView style={styles.scroll} contentContainerStyle={styles.screenContent}>
         <View style={styles.screenHeader}>
           <Heading level={1} text={props.title} />
@@ -792,7 +812,7 @@ function MetadataRows(props: { rows: readonly (readonly [string, string])[] }) {
   );
 }
 
-function InlineMessage(props: { tone: 'success' | 'error'; text: string }) {
+function InlineMessage(props: { tone: 'success' | 'error' | 'info'; text: string }) {
   const { theme } = useZoraTheme();
   const borderColor = props.tone === 'error' ? theme.colors.danger : theme.colors.primary;
 
@@ -844,25 +864,20 @@ function useProjectRouteParams() {
 
 function useCategoryRouteParams() {
   const params = useLocalSearchParams<{ category?: string }>();
-  const category = firstParam(params.category);
-  return { category: isAppCategory(category) ? category : ('developer_tools' as AppCategory) };
+  return resolveWorkspaceCategoryParam(firstParam(params.category));
 }
 
 function useTemplateRouteParams() {
   const params = useLocalSearchParams<{ category?: string; templateId?: string }>();
-  const category = firstParam(params.category);
+  const category = resolveWorkspaceCategoryParam(firstParam(params.category));
   return {
-    category: isAppCategory(category) ? category : ('developer_tools' as AppCategory),
+    ...category,
     templateId: firstParam(params.templateId),
   };
 }
 
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
-}
-
-function isAppCategory(value: string): value is AppCategory {
-  return APP_CATEGORY_SET.has(value);
 }
 
 function formatCategory(category: AppCategory): string {

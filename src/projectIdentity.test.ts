@@ -1,7 +1,7 @@
 import { expect, test } from 'bun:test';
 
 import { deriveProjectId, validateProjectCreationInput } from './projectIdentity';
-import type { StudioProjectSummary } from './types';
+import type { StudioProjectSummary } from './projectWorkspaceContracts';
 
 const existingProjects = [
   {

@@ -1,13 +1,14 @@
 import { Icon, Text, useZoraTheme, ZoraProvider } from '@ankhorage/zora';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import { Slot, router } from 'expo-router';
+import { Stack, router, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { useProjects } from '../hooks/useProjects';
+import { useWorkspaceActions } from '../hooks/useWorkspaceActions';
+import { resolveWorkspaceParentPath } from './workspace/navigation';
 
 export function StudioApp() {
   const [fontsLoaded] = useFonts({
@@ -33,7 +34,9 @@ export function StudioApp() {
 
 function StudioAppRootContent() {
   const { theme, mode, setMode } = useZoraTheme();
-  const { installWorkspacePackages } = useProjects();
+  const { installWorkspacePackages } = useWorkspaceActions();
+  const pathname = usePathname();
+  const parentPath = resolveWorkspaceParentPath(pathname);
   const [menuOpen, setMenuOpen] = useState(false);
   const [installState, setInstallState] = useState<'idle' | 'running' | 'success' | 'error'>(
     'idle',
@@ -51,16 +54,29 @@ function StudioAppRootContent() {
     }
   }
 
+  function handleBack() {
+    if (!parentPath) return;
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace(parentPath);
+  }
+
   return (
     <View style={[styles.root, { backgroundColor: theme.colors.background }]}>
-      <View
+      <SafeAreaView
+        edges={['top', 'left', 'right']}
         style={[
           styles.appBar,
           { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border },
         ]}
       >
+        {parentPath ? (
+          <IconButton label="Back" iconName="chevron-back" onPress={handleBack} />
+        ) : null}
         <Pressable
-          onPress={() => router.push('/')}
+          onPress={() => router.replace('/')}
           accessibilityRole="button"
           accessibilityLabel="Go to projects"
           style={styles.brand}
@@ -114,9 +130,9 @@ function StudioAppRootContent() {
             ) : null}
           </View>
         </View>
-      </View>
-      <Slot />
-      <StatusBar style="light" />
+      </SafeAreaView>
+      <Stack screenOptions={{ headerShown: false }} />
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
     </View>
   );
 }
@@ -169,6 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     minHeight: 42,
+    flexShrink: 1,
   },
   appBarActions: {
     flexDirection: 'row',

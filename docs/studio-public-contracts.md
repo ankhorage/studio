@@ -24,7 +24,7 @@ still does not own:
 
 - `AnkhStudio`
 - `StudioApp`
-- `StudioDashboard`
+- Studio workspace route screens
 - React Native components
 - Expo-specific code
 - generated-app runtime composition code

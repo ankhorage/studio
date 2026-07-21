@@ -44,6 +44,7 @@ function createAdminSmokeManifest(): AppManifest {
       name: 'Generated Admin Web Smoke',
       slug: 'generated-admin-web-smoke',
       version: '1.0.0',
+      category: 'developer_tools',
       themeId: 'theme-1',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },

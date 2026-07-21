@@ -1,14 +1,12 @@
 import type { AppCategory, AppManifest, ThemeConfig } from '@ankhorage/contracts';
-import { APP_CATEGORIES } from '@ankhorage/contracts';
 import { useCallback, useEffect, useState } from 'react';
 
+import { isAppCategory, isColorHarmony } from '../contractGuards';
 import { API_BASE } from '../core/constants';
 import type {
   ProjectCreationValidationFailure,
   StudioProjectSummary,
-} from '../modules/dashboard/types';
-
-const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
+} from '../projectWorkspaceContracts';
 
 export interface CreateProjectResponse {
   success: boolean;
@@ -18,11 +16,6 @@ export interface CreateProjectResponse {
 
 export interface SyncProjectResponse {
   success: boolean;
-}
-
-export interface InstallWorkspacePackagesResponse {
-  success: boolean;
-  scope: 'workspace';
 }
 
 export interface UpProjectInfrastructureResponse {
@@ -57,14 +50,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-function isAppCategory(value: unknown): value is AppCategory {
-  return typeof value === 'string' && APP_CATEGORY_SET.has(value);
-}
-
 function isThemeModeConfig(value: unknown): value is ThemeConfig['light'] {
-  return (
-    isRecord(value) && typeof value.primaryColor === 'string' && typeof value.harmony === 'string'
-  );
+  return isRecord(value) && typeof value.primaryColor === 'string' && isColorHarmony(value.harmony);
 }
 
 function isThemeConfig(value: unknown): value is ThemeConfig {
@@ -163,17 +150,6 @@ function parseSyncProjectResponse(value: unknown): SyncProjectResponse {
   return { success: value.success };
 }
 
-function parseInstallWorkspacePackagesResponse(value: unknown): InstallWorkspacePackagesResponse {
-  if (!isRecord(value) || value.success !== true || value.scope !== 'workspace') {
-    throw new Error('Install packages response was invalid');
-  }
-
-  return {
-    success: true,
-    scope: 'workspace',
-  };
-}
-
 function parseUpProjectInfrastructureResponse(value: unknown): UpProjectInfrastructureResponse {
   if (!isRecord(value) || typeof value.success !== 'boolean') {
     throw new Error('Infrastructure response was invalid');
@@ -258,14 +234,6 @@ export const useProjects = () => {
     return parseSyncProjectResponse(await readJson(res));
   };
 
-  const installWorkspacePackages = async (): Promise<InstallWorkspacePackagesResponse> => {
-    const res = await fetch(`${API_BASE}/workspace/packages/install`, {
-      method: 'POST',
-    });
-    if (!res.ok) throw new Error('Failed to install workspace packages');
-    return parseInstallWorkspacePackagesResponse(await readJson(res));
-  };
-
   const upProjectInfrastructure = async (
     projectId: string,
   ): Promise<UpProjectInfrastructureResponse> => {
@@ -296,7 +264,6 @@ export const useProjects = () => {
     createProject,
     deleteProject,
     syncProject,
-    installWorkspacePackages,
     upProjectInfrastructure,
     launchProject,
   };

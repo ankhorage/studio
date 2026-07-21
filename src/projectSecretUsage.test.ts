@@ -5,7 +5,13 @@ import { findProjectSecretUsages } from './projectSecretUsage';
 
 function createManifest(): AppManifest {
   return {
-    metadata: { name: 'Demo', slug: 'demo', version: '1.0.0', themeId: 'default' },
+    metadata: {
+      name: 'Demo',
+      slug: 'demo',
+      version: '1.0.0',
+      category: 'developer_tools',
+      themeId: 'default',
+    },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
       plugins: [],

@@ -103,7 +103,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     const packageJson = JSON.parse(await readProjectFile(created.path, 'package.json')) as {
       dependencies?: Record<string, string>;
     };
-    expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^3.0.0');
+    expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^4.0.0');
     expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.0.0');
     expect(packageJson.dependencies?.['expo-secure-store']).toBe('~15.0.8');
     expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');

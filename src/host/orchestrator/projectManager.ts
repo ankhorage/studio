@@ -6,7 +6,7 @@ import path from 'path';
 import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
-} from '../../modules/dashboard/projectIdentity';
+} from '../../projectIdentity';
 import { LayoutGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';

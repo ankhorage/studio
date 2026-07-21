@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:351:14`
+Source: `src/index.ts:369:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:261:1`
+Source: `src/index.ts:279:1`
 
 ### Members
 
@@ -26,7 +26,7 @@ Source: `src/index.ts:261:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:573:14`
+Source: `src/index.ts:591:14`
 
 ### Signatures
 
@@ -38,7 +38,7 @@ Source: `src/index.ts:573:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1285:1`
+Source: `src/index.ts:1303:1`
 
 ### Signatures
 
@@ -50,7 +50,7 @@ Source: `src/index.ts:1285:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:732:1`
+Source: `src/index.ts:750:1`
 
 ### Signatures
 
@@ -62,7 +62,7 @@ Source: `src/index.ts:732:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:498:14`
+Source: `src/index.ts:516:14`
 
 ### Signatures
 
@@ -75,7 +75,7 @@ Source: `src/index.ts:498:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1204:1`
+Source: `src/index.ts:1222:1`
 
 ### Signatures
 
@@ -85,11 +85,23 @@ Source: `src/index.ts:1204:1`
   - entry: `InsertCatalogEntry`
   - returns: `UiNode`
 
+## deriveProjectId
+
+Kind: `function`
+Module: `src/projectIdentity.ts`
+Source: `src/projectIdentity.ts:11:1`
+
+### Signatures
+
+- `(projectName: string) => string`
+  - projectName: `string`
+  - returns: `string`
+
 ## findNodeById
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:515:14`
+Source: `src/index.ts:533:14`
 
 ### Signatures
 
@@ -102,7 +114,7 @@ Source: `src/index.ts:515:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:491:14`
+Source: `src/index.ts:509:14`
 
 ### Signatures
 
@@ -114,7 +126,7 @@ Source: `src/index.ts:491:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1130:1`
+Source: `src/index.ts:1148:1`
 
 ### Signatures
 
@@ -126,7 +138,7 @@ Source: `src/index.ts:1130:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:239:1`
+Source: `src/index.ts:257:1`
 
 ### Members
 
@@ -147,7 +159,7 @@ Source: `src/index.ts:239:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:221:1`
+Source: `src/index.ts:239:1`
 
 ### Members
 
@@ -161,19 +173,19 @@ Source: `src/index.ts:221:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:198:1`
+Source: `src/index.ts:216:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:249:1`
+Source: `src/index.ts:267:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:227:1`
+Source: `src/index.ts:245:1`
 
 ### Members
 
@@ -193,19 +205,19 @@ Source: `src/index.ts:227:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:195:1`
+Source: `src/index.ts:213:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:196:1`
+Source: `src/index.ts:214:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:244:1`
+Source: `src/index.ts:262:1`
 
 ### Members
 
@@ -226,7 +238,7 @@ Source: `src/index.ts:244:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:962:1`
+Source: `src/index.ts:980:1`
 
 ### Signatures
 
@@ -238,7 +250,7 @@ Source: `src/index.ts:962:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:905:1`
+Source: `src/index.ts:923:1`
 
 ### Members
 
@@ -253,7 +265,7 @@ Source: `src/index.ts:905:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:912:1`
+Source: `src/index.ts:930:1`
 
 ### Members
 
@@ -266,7 +278,7 @@ Source: `src/index.ts:912:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:206:1`
+Source: `src/index.ts:224:1`
 
 ### Members
 
@@ -282,7 +294,7 @@ Source: `src/index.ts:206:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:214:1`
+Source: `src/index.ts:232:1`
 
 ### Members
 
@@ -297,7 +309,7 @@ Source: `src/index.ts:214:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:201:1`
+Source: `src/index.ts:219:1`
 
 ### Members
 
@@ -310,7 +322,7 @@ Source: `src/index.ts:201:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:269:1`
+Source: `src/index.ts:287:1`
 
 ### Members
 
@@ -325,7 +337,7 @@ Source: `src/index.ts:269:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:606:14`
+Source: `src/index.ts:624:14`
 
 ### Signatures
 
@@ -339,7 +351,7 @@ Source: `src/index.ts:606:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1030:1`
+Source: `src/index.ts:1048:1`
 
 ### Signatures
 
@@ -351,7 +363,7 @@ Source: `src/index.ts:1030:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:989:1`
+Source: `src/index.ts:1007:1`
 
 ### Members
 
@@ -366,7 +378,7 @@ Source: `src/index.ts:989:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:996:1`
+Source: `src/index.ts:1014:1`
 
 ### Members
 
@@ -379,7 +391,7 @@ Source: `src/index.ts:996:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:157:1`
+Source: `src/index.ts:175:1`
 
 ### Members
 
@@ -394,13 +406,13 @@ Source: `src/index.ts:157:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:164:1`
+Source: `src/index.ts:182:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:176:1`
+Source: `src/index.ts:194:1`
 
 ### Members
 
@@ -413,19 +425,19 @@ Source: `src/index.ts:176:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:155:1`
+Source: `src/index.ts:173:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:188:1`
+Source: `src/index.ts:206:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:181:1`
+Source: `src/index.ts:199:1`
 
 ## ProjectAuthDiagnostic
 
@@ -470,6 +482,37 @@ Source: `src/projectAuthHealth.ts:34:1`
 Kind: `unknown`
 Module: `src/projectAuthHealth.ts`
 Source: `src/projectAuthHealth.ts:7:1`
+
+## ProjectCreationValidationCode
+
+Kind: `unknown`
+Module: `src/projectWorkspaceContracts.ts`
+Source: `src/projectWorkspaceContracts.ts:18:1`
+
+## ProjectCreationValidationError
+
+Kind: `type`
+Module: `src/projectIdentity.ts`
+Source: `src/projectIdentity.ts:28:1`
+
+## ProjectCreationValidationFailure
+
+Kind: `type`
+Module: `src/projectWorkspaceContracts.ts`
+Source: `src/projectWorkspaceContracts.ts:25:1`
+
+### Members
+
+| Name    | Kind     | Type                            | Required | Description |
+| ------- | -------- | ------------------------------- | -------- | ----------- |
+| code    | property | `ProjectCreationValidationCode` | yes      |             |
+| message | property | `string`                        | yes      |             |
+
+## ProjectCreationValidationResult
+
+Kind: `unknown`
+Module: `src/projectWorkspaceContracts.ts`
+Source: `src/projectWorkspaceContracts.ts:30:1`
 
 ## ProjectOAuthProviderHealth
 
@@ -532,11 +575,17 @@ Source: `src/projectSecretUsage.ts:14:1`
 | ref    | property | `string`                        | yes      |             |
 | usages | property | `readonly ProjectSecretUsage[]` | yes      |             |
 
+## ProjectSortKey
+
+Kind: `unknown`
+Module: `src/projectWorkspaceContracts.ts`
+Source: `src/projectWorkspaceContracts.ts:16:1`
+
 ## removeNodeFromTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:555:14`
+Source: `src/index.ts:573:14`
 
 ### Signatures
 
@@ -549,7 +598,7 @@ Source: `src/index.ts:555:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:860:1`
+Source: `src/index.ts:878:1`
 
 ### Signatures
 
@@ -561,7 +610,7 @@ Source: `src/index.ts:860:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1327:1`
+Source: `src/index.ts:1345:1`
 
 ### Signatures
 
@@ -573,7 +622,7 @@ Source: `src/index.ts:1327:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:799:1`
+Source: `src/index.ts:817:1`
 
 ### Signatures
 
@@ -585,7 +634,7 @@ Source: `src/index.ts:799:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1097:14`
+Source: `src/index.ts:1115:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -597,25 +646,25 @@ Source: `src/index.ts:1097:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:39:14`
+Source: `src/index.ts:57:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:31:14`
+Source: `src/index.ts:49:14`
 
 ## STUDIO_PUBLIC_CONTRACTS
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:67:14`
+Source: `src/index.ts:85:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:253:1`
+Source: `src/index.ts:271:1`
 
 ### Members
 
@@ -629,43 +678,43 @@ Source: `src/index.ts:253:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:251:1`
+Source: `src/index.ts:269:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:259:1`
+Source: `src/index.ts:277:1`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:99:1`
+Source: `src/index.ts:117:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:122:1`
+Source: `src/index.ts:140:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:111:1`
+Source: `src/index.ts:129:1`
 
 ## StudioCommand
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:294:1`
+Source: `src/index.ts:312:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:278:1`
+Source: `src/index.ts:296:1`
 
 ### Members
 
@@ -678,7 +727,7 @@ Source: `src/index.ts:278:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:283:1`
+Source: `src/index.ts:301:1`
 
 ### Members
 
@@ -693,13 +742,13 @@ Source: `src/index.ts:283:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:290:1`
+Source: `src/index.ts:308:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:310:1`
+Source: `src/index.ts:328:1`
 
 ### Members
 
@@ -762,49 +811,49 @@ Source: `src/index.ts:310:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:303:1`
+Source: `src/index.ts:321:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:292:1`
+Source: `src/index.ts:310:1`
 
 ## StudioLocale
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:94:1`
+Source: `src/index.ts:112:1`
 
 ## StudioManifest
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:124:1`
+Source: `src/index.ts:142:1`
 
 ## StudioMode
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:96:1`
+Source: `src/index.ts:114:1`
 
 ## StudioModuleId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:93:1`
+Source: `src/index.ts:111:1`
 
 ## StudioNodeId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:91:1`
+Source: `src/index.ts:109:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:33:1`
+Source: `src/index.ts:51:1`
 
 ### Members
 
@@ -818,37 +867,58 @@ Source: `src/index.ts:33:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:98:1`
+Source: `src/index.ts:116:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:89:1`
+Source: `src/index.ts:107:1`
+
+## StudioProjectSummary
+
+Kind: `type`
+Module: `src/projectWorkspaceContracts.ts`
+Source: `src/projectWorkspaceContracts.ts:3:1`
+
+### Members
+
+| Name            | Kind     | Type                                                                                                                                                                                                                                                                                                                                                                                                                                          | Required | Description |
+| --------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| activeTheme     | property | `ThemeConfig`                                                                                                                                                                                                                                                                                                                                                                                                                                 | yes      |             |
+| activeThemeMode | property | `"dark" \| "light" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                              | no       |             |
+| category        | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes      |             |
+| created         | property | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | no       |             |
+| id              | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| isAnkhApp       | property | `boolean`                                                                                                                                                                                                                                                                                                                                                                                                                                     | yes      |             |
+| name            | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| path            | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| updated         | property | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | no       |             |
+| version         | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
 
 ## StudioPublicContract
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:87:1`
+Source: `src/index.ts:105:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:97:1`
+Source: `src/index.ts:115:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:92:1`
+Source: `src/index.ts:110:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:135:1`
+Source: `src/index.ts:153:1`
 
 ### Members
 
@@ -864,13 +934,13 @@ Source: `src/index.ts:135:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:90:1`
+Source: `src/index.ts:108:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:143:1`
+Source: `src/index.ts:161:1`
 
 ### Members
 
@@ -886,23 +956,75 @@ Source: `src/index.ts:143:1`
 | sessionId            | property | `string \| undefined` | no       |             |
 | studioMode           | property | `StudioMode`          | yes      |             |
 
+## TemplateCatalog
+
+Kind: `type`
+Module: `src/templateCatalogContracts.ts`
+Source: `src/templateCatalogContracts.ts:21:1`
+
+### Members
+
+| Name       | Kind     | Type                        | Required | Description |
+| ---------- | -------- | --------------------------- | -------- | ----------- |
+| categories | property | `TemplateCatalogCategory[]` | yes      |             |
+
+## TemplateCatalogCategory
+
+Kind: `type`
+Module: `src/templateCatalogContracts.ts`
+Source: `src/templateCatalogContracts.ts:10:1`
+
+### Members
+
+| Name          | Kind     | Type                                                                                                                                                                                                                                                                                                                                                                                                                                          | Required | Description |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| focusAreas    | property | `readonly string[]`                                                                                                                                                                                                                                                                                                                                                                                                                           | yes      |             |
+| harmony       | property | `"monochromatic" \| "analogous" \| "complementary" \| "triadic" \| "tetradic" \| "splitComplementary"`                                                                                                                                                                                                                                                                                                                                        | yes      |             |
+| id            | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes      |             |
+| label         | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| primaryColor  | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| summary       | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| templateCount | property | `number`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| templates     | property | `TemplateCatalogTemplate[]`                                                                                                                                                                                                                                                                                                                                                                                                                   | yes      |             |
+
+## TemplateCatalogTemplate
+
+Kind: `type`
+Module: `src/templateCatalogContracts.ts`
+Source: `src/templateCatalogContracts.ts:3:1`
+
+### Members
+
+| Name        | Kind     | Type     | Required | Description |
+| ----------- | -------- | -------- | -------- | ----------- |
+| description | property | `string` | yes      |             |
+| id          | property | `string` | yes      |             |
+| name        | property | `string` | yes      |             |
+| templateId  | property | `string` | yes      |             |
+
+## TemplateEntry
+
+Kind: `unknown`
+Module: `src/templateCatalogContracts.ts`
+Source: `src/templateCatalogContracts.ts:25:1`
+
 ## ThemeUpdates
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:130:1`
+Source: `src/index.ts:148:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:443:14`
+Source: `src/index.ts:461:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:527:14`
+Source: `src/index.ts:545:14`
 
 ### Signatures
 
@@ -916,7 +1038,7 @@ Source: `src/index.ts:527:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1147:1`
+Source: `src/index.ts:1165:1`
 
 ### Signatures
 
@@ -929,10 +1051,22 @@ Source: `src/index.ts:1147:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:744:1`
+Source: `src/index.ts:762:1`
 
 ### Signatures
 
 - `(args: { root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }) => PlacementValidationResult`
   - args: `{ root: UiNode; placement: NodePlacement; childType: string; componentMeta: StudioComponentMetaRegistry; }`
   - returns: `PlacementValidationResult`
+
+## validateProjectCreationInput
+
+Kind: `function`
+Module: `src/projectIdentity.ts`
+Source: `src/projectIdentity.ts:35:1`
+
+### Signatures
+
+- `(args: { name: string; existingProjects: readonly StudioProjectSummary[]; }) => ProjectCreationValidationResult`
+  - args: `{ name: string; existingProjects: readonly StudioProjectSummary[]; }`
+  - returns: `ProjectCreationValidationResult`

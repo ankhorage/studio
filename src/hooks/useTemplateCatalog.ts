@@ -1,22 +1,11 @@
-import type { AppCategory, ThemeConfig } from '@ankhorage/contracts';
-import { APP_CATEGORIES } from '@ankhorage/contracts';
 import { useCallback, useEffect, useState } from 'react';
 
+import { isAppCategory, isColorHarmony } from '../contractGuards';
 import { API_BASE } from '../core/constants';
-import type { TemplateCatalog, TemplateCatalogCategory } from '../modules/dashboard/types';
-
-const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
+import type { TemplateCatalog, TemplateCatalogCategory } from '../templateCatalogContracts';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
-}
-
-function isAppCategory(value: unknown): value is AppCategory {
-  return typeof value === 'string' && APP_CATEGORY_SET.has(value);
-}
-
-function isHarmony(value: unknown): value is ThemeConfig['light']['harmony'] {
-  return typeof value === 'string';
 }
 
 function isCatalogCategory(value: unknown): value is TemplateCatalogCategory {
@@ -28,7 +17,7 @@ function isCatalogCategory(value: unknown): value is TemplateCatalogCategory {
     Array.isArray(value.focusAreas) &&
     value.focusAreas.every((entry) => typeof entry === 'string') &&
     typeof value.primaryColor === 'string' &&
-    isHarmony(value.harmony) &&
+    isColorHarmony(value.harmony) &&
     typeof value.templateCount === 'number' &&
     Array.isArray(value.templates) &&
     value.templates.every(
