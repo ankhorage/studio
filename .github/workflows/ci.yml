@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Run generated app web smoke test
-        run: ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts
+        run: CHROME_PATH=/usr/bin/google-chrome ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts
 
       - name: Run typecheck
         run: |
