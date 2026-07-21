@@ -14,7 +14,7 @@ import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { AppManifest } from '@ankhorage/contracts';
+import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
@@ -78,11 +78,7 @@ function createAdminSmokeManifest(): AppManifest {
       dashboard: {
         id: 'dashboard',
         name: 'Dashboard',
-        root: {
-          id: 'dashboard-root',
-          type: 'Page',
-          props: { title: 'Dashboard' },
-        },
+        root: createScrollableRuntimeScreenRoot(),
       },
     },
     themes: [
@@ -95,6 +91,34 @@ function createAdminSmokeManifest(): AppManifest {
     ],
     activeThemeId: 'theme-1',
     activeThemeMode: 'light',
+  };
+}
+
+function createScrollableRuntimeScreenRoot(): UiNode {
+  return {
+    id: 'dashboard-root',
+    type: 'Screen',
+    props: {
+      scroll: true,
+      width: 'wide',
+    },
+    children: [
+      {
+        id: 'dashboard-runtime-section',
+        type: 'ScreenSection',
+        props: {
+          title: 'Scrollable Runtime Screen',
+          description: 'Rendered through the generated-app runtime registry.',
+        },
+        children: Array.from({ length: 16 }, (_, index) => ({
+          id: `dashboard-runtime-row-${index}`,
+          type: 'Text',
+          props: {
+            children: `Generated runtime row ${index + 1}`,
+          },
+        })),
+      },
+    ],
   };
 }
 
@@ -125,10 +149,22 @@ adminWebSmokeTest(
       chromeProcess = spawnChrome(chromePath, debugPort);
       const page = await openChromePage(debugPort);
       try {
-        for (const route of ['/', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
+        for (const route of ['/', '/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
           await page.navigate(`${appUrl}${route}`);
           await Bun.sleep(ROUTE_SETTLE_MS);
-          expect(await page.readBodyText()).not.toContain('Maximum update depth exceeded');
+          const bodyText =
+            route === '/dashboard'
+              ? await waitForBodyText(
+                  page,
+                  (text) => text.includes('Scrollable Runtime Screen'),
+                  HTTP_TIMEOUT_MS,
+                )
+              : await page.readBodyText();
+          expect(bodyText).not.toContain('Maximum update depth exceeded');
+          if (route === '/dashboard') {
+            expect(bodyText).toContain('Scrollable Runtime Screen');
+            expect(bodyText).toContain('Generated runtime row 16');
+          }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
         }
@@ -421,6 +457,23 @@ async function waitForHttp(
     }
   }
   throw new Error(`Timed out waiting for ${url}.${getDiagnostics()}`);
+}
+
+async function waitForBodyText(
+  page: ChromePage,
+  predicate: (bodyText: string) => boolean,
+  timeoutMs: number,
+): Promise<string> {
+  const start = Date.now();
+  let bodyText = '';
+
+  while (Date.now() - start < timeoutMs) {
+    bodyText = await page.readBodyText();
+    if (predicate(bodyText)) return bodyText;
+    await Bun.sleep(500);
+  }
+
+  return bodyText;
 }
 
 function resolveChromePath(): string {

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.8.0",
+      "value": "v0.8.1",
       "color": "cb3837"
     },
     {
@@ -1867,32 +1867,29 @@
       "path": "src/runtime/appExtensionRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["APP_EXTENSION_COMPONENT_REGISTRY"]
+      "exports": ["STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"]
     },
     {
       "path": "src/runtime/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
-        "APP_EXTENSION_COMPONENT_REGISTRY",
         "ComponentRegistry",
         "createComponentRegistry",
         "createStudioActionSuppressionConfig",
         "createStudioPreviewComponentRegistry",
         "createStudioPreviewRuntimeConfig",
-        "DEFAULT_COMPONENT_REGISTRY",
         "executeRuntimeAction",
         "resolveStudioLocalizationPreview",
         "shouldSuppressStudioRuntimeActions",
+        "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY",
         "STUDIO_PREVIEW_COMPONENT_REGISTRY",
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput",
         "StudioPreviewRegistryOptions",
         "StudioPreviewRuntimeConfigOptions",
-        "SURFACE_COMPONENT_REGISTRY",
         "useRuntimeAction",
-        "UseRuntimeActionOptions",
-        "ZORA_COMPONENT_REGISTRY"
+        "UseRuntimeActionOptions"
       ]
     },
     {
@@ -1908,7 +1905,7 @@
     {
       "path": "src/runtime/previewRegistry.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/runtime/appExtensionRegistry.ts"],
       "exports": [
         "createStudioPreviewComponentRegistry",
         "STUDIO_PREVIEW_COMPONENT_REGISTRY",
@@ -1924,14 +1921,11 @@
     {
       "path": "src/runtime/registry.tsx",
       "isEntrypoint": false,
-      "dependencies": ["src/runtime/appExtensionRegistry.ts"],
+      "dependencies": [],
       "exports": [
-        "APP_EXTENSION_COMPONENT_REGISTRY",
         "ComponentRegistry",
         "createComponentRegistry",
-        "DEFAULT_COMPONENT_REGISTRY",
-        "SURFACE_COMPONENT_REGISTRY",
-        "ZORA_COMPONENT_REGISTRY"
+        "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"
       ]
     },
     {
@@ -7800,11 +7794,20 @@
       }
     },
     {
+      "name": "createScrollableRuntimeScreenRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 97,
+        "column": 1
+      }
+    },
+    {
       "name": "createGeneratedAdminProject",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 147,
+        "line": 183,
         "column": 1
       }
     },
@@ -7813,7 +7816,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 186,
+        "line": 222,
         "column": 1
       }
     },
@@ -7822,7 +7825,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 215,
+        "line": 251,
         "column": 1
       }
     },
@@ -7831,7 +7834,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 233,
+        "line": 269,
         "column": 1
       }
     },
@@ -7840,7 +7843,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 249,
+        "line": 285,
         "column": 1
       }
     },
@@ -7849,7 +7852,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 265,
+        "line": 301,
         "column": 1
       }
     },
@@ -7858,7 +7861,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 278,
+        "line": 314,
         "column": 1
       }
     },
@@ -7867,7 +7870,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 296,
+        "line": 332,
         "column": 1
       }
     },
@@ -7876,7 +7879,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 333,
+        "line": 369,
         "column": 1
       }
     },
@@ -7885,7 +7888,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 348,
+        "line": 384,
         "column": 1
       }
     },
@@ -7894,7 +7897,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 357,
+        "line": 393,
         "column": 1
       }
     },
@@ -7903,7 +7906,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 368,
+        "line": 404,
         "column": 1
       }
     },
@@ -7912,7 +7915,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 376,
+        "line": 412,
         "column": 1
       }
     },
@@ -7921,7 +7924,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 393,
+        "line": 429,
         "column": 1
       }
     },
@@ -7930,7 +7933,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 405,
+        "line": 441,
         "column": 1
       }
     },
@@ -7939,7 +7942,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 409,
+        "line": 445,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForBodyText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 462,
         "column": 1
       }
     },
@@ -7948,7 +7960,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 426,
+        "line": 479,
         "column": 1
       }
     },
@@ -7957,7 +7969,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 432,
+        "line": 485,
         "column": 1
       }
     },
@@ -7966,7 +7978,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 438,
+        "line": 491,
         "column": 1
       }
     },
@@ -7975,7 +7987,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 454,
+        "line": 507,
         "column": 1
       }
     },
@@ -7984,7 +7996,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 559,
+        "line": 612,
         "column": 1
       }
     },
@@ -7993,7 +8005,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 574,
+        "line": 627,
         "column": 1
       }
     },
@@ -8002,7 +8014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 578,
+        "line": 631,
         "column": 1
       }
     },
@@ -8011,7 +8023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 587,
+        "line": 640,
         "column": 1
       }
     },
@@ -8020,7 +8032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 598,
+        "line": 651,
         "column": 1
       }
     },
@@ -8511,11 +8523,20 @@
       }
     },
     {
-      "name": "getGeneratedAuthAdapter",
+      "name": "createScrollableScreenRoot",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
         "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "getGeneratedAuthAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.test.ts",
+        "line": 107,
         "column": 1
       }
     },
@@ -8533,7 +8554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 59,
+        "line": 58,
         "column": 1
       }
     },
@@ -8542,7 +8563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 70,
+        "line": 65,
         "column": 1
       }
     },
@@ -8551,7 +8572,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 93,
+        "line": 88,
         "column": 11
       }
     },
@@ -8560,7 +8581,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 105,
+        "line": 100,
         "column": 11
       }
     },
@@ -8569,7 +8590,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 419,
+        "line": 421,
         "column": 1
       }
     },
@@ -8578,7 +8599,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 433,
+        "line": 435,
         "column": 1
       }
     },
@@ -8587,7 +8608,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 440,
+        "line": 442,
         "column": 1
       }
     },
@@ -8596,7 +8617,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 463,
+        "line": 465,
         "column": 1
       }
     },
@@ -8605,7 +8626,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 477,
+        "line": 479,
         "column": 1
       }
     },
@@ -8614,7 +8635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 481,
+        "line": 483,
         "column": 1
       }
     },
@@ -8623,7 +8644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 525,
+        "line": 527,
         "column": 1
       }
     },
@@ -8632,7 +8653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 533,
+        "line": 535,
         "column": 1
       }
     },
@@ -8641,7 +8662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 538,
+        "line": 540,
         "column": 1
       }
     },
@@ -9811,7 +9832,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 90,
+        "line": 92,
         "column": 1
       }
     },
@@ -9820,7 +9841,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 98,
+        "line": 100,
         "column": 1
       }
     },
@@ -9829,7 +9850,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 140,
+        "line": 142,
         "column": 1
       }
     },
@@ -9838,7 +9859,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 154,
+        "line": 156,
         "column": 1
       }
     },
@@ -9847,7 +9868,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 167,
+        "line": 169,
         "column": 1
       }
     },
@@ -9856,7 +9877,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 189,
+        "line": 191,
         "column": 1
       }
     },
@@ -9865,7 +9886,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 199,
+        "line": 201,
         "column": 1
       }
     },
@@ -9874,7 +9895,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 203,
+        "line": 205,
         "column": 1
       }
     },
@@ -9883,7 +9904,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 208,
+        "line": 210,
         "column": 1
       }
     },
@@ -9892,7 +9913,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 222,
+        "line": 224,
         "column": 1
       }
     },
@@ -9901,7 +9922,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 258,
+        "line": 260,
         "column": 1
       }
     },
@@ -9910,7 +9931,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 266,
+        "line": 268,
         "column": 1
       }
     },
@@ -9919,7 +9940,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 290,
+        "line": 292,
         "column": 1
       }
     },
@@ -9928,7 +9949,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 379,
+        "line": 381,
         "column": 1
       }
     },
@@ -9937,7 +9958,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 403,
+        "line": 405,
         "column": 1
       }
     },
@@ -9946,7 +9967,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 408,
+        "line": 410,
         "column": 1
       }
     },
@@ -9955,7 +9976,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 423,
+        "line": 425,
         "column": 1
       }
     },
@@ -12484,7 +12505,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/previewRegistry.ts",
-        "line": 8,
+        "line": 10,
         "column": 14
       }
     },
@@ -14931,6 +14952,11 @@
         "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/useRuntimeAction.ts",
         "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/previewRegistry.ts",
+        "toPath": "src/runtime/appExtensionRegistry.ts",
+        "sourcePath": "src/runtime/previewRegistry.ts"
       },
       {
         "fromPath": "src/runtime/previewRuntimeConfig.ts",
@@ -22066,6 +22092,12 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromSymbol": "createAdminSmokeManifest",
+        "toSymbol": "createScrollableRuntimeScreenRoot",
+        "callExpression": "createScrollableRuntimeScreenRoot",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "adminWebSmokeTest",
         "callExpression": "adminWebSmokeTest",
@@ -22147,6 +22179,12 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "navigate",
         "callExpression": "page.navigate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "waitForBodyText",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22435,6 +22473,18 @@
         "fromSymbol": "waitForHttp",
         "toSymbol": "getDiagnostics",
         "callExpression": "getDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "readBodyText",
+        "callExpression": "page.readBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "predicate",
+        "callExpression": "predicate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23722,12 +23772,6 @@
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
-        "fromSymbol": "src/runtime/registry.tsx",
-        "toSymbol": "createComponentRegistry",
-        "callExpression": "createComponentRegistry",
-        "sourcePath": "src/runtime/registry.tsx"
-      },
-      {
         "fromSymbol": "executeRuntimeAction",
         "toSymbol": "executeExpoRuntimeAction",
         "callExpression": "executeExpoRuntimeAction",
@@ -24625,6 +24669,12 @@
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "createOAuthManifest",
         "callExpression": "createOAuthManifest",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "createScrollableScreenRoot",
+        "callExpression": "createScrollableScreenRoot",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {

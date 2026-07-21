@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { AppManifest } from '@ankhorage/contracts';
+import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import { LayoutGenerator } from './layoutGenerator';
@@ -76,6 +76,34 @@ function createOAuthManifest(): AppManifest {
   };
 }
 
+function createScrollableScreenRoot(): UiNode {
+  return {
+    id: 'root',
+    type: 'Screen',
+    props: {
+      scroll: true,
+      width: 'wide',
+    },
+    children: [
+      {
+        id: 'runtime-section',
+        type: 'ScreenSection',
+        props: {
+          title: 'Scrollable Runtime Screen',
+          description: 'Rendered through the generated-app runtime path.',
+        },
+        children: Array.from({ length: 12 }, (_, index) => ({
+          id: `runtime-row-${index}`,
+          type: 'Text',
+          props: {
+            children: `Runtime row ${index + 1}`,
+          },
+        })),
+      },
+    ],
+  };
+}
+
 function getGeneratedAuthAdapter(manifest: AppManifest): string {
   return (
     new LayoutGenerator()
@@ -135,6 +163,51 @@ describe('LayoutGenerator', () => {
     expect(adminPage).toContain('if (!__DEV__)');
     expect(adminPage).toContain('<Redirect href="/" />');
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+  });
+
+  test('generates canonical ZORA registry ownership for the running app runtime path', () => {
+    const manifest = createManifest();
+    const indexScreen = manifest.screens.index;
+    if (!indexScreen) {
+      throw new Error('Test manifest is missing the index screen.');
+    }
+    indexScreen.root = createScrollableScreenRoot();
+
+    const files = new LayoutGenerator().generateAll('/tmp/demo', manifest, [], {
+      includeStudio: true,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const screen = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain(
+      "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, useZoraTheme, AppBar } from '@ankhorage/zora';",
+    );
+    expect(rootLayout).toContain('createComponentRegistry,');
+    expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
+    expect(rootLayout).toContain(
+      "import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';",
+    );
+    expect(rootLayout).toContain(`const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
+  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
+  GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
+);`);
+    expect(rootLayout).toContain(`const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);`);
+    expect(rootLayout).toContain('registry: runtimeComponentRegistry');
+    expect(rootLayout).toContain(
+      '<GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>',
+    );
+    expect(rootLayout).toContain('<RuntimeRendererConfigProvider value={generatedRuntimeConfig}>');
+    expect(rootLayout).not.toContain('STUDIO_ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('BASE_ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as STUDIO_ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('ZORA_COMPONENT_REGISTRY as BASE_ZORA_COMPONENT_REGISTRY');
+    expect(rootLayout).not.toContain('SURFACE_COMPONENT_REGISTRY');
+    expect(screen).toContain('<RuntimeScreen');
+    expect(screen).toContain('screen={screenConfig}');
+    expect(screen).toContain('<RuntimeRendererConfigProvider value={runtimeRendererConfig}>');
   });
 
   test('derives Studio admin route files from the canonical registry', () => {

@@ -438,7 +438,7 @@
                 data-target="src/host/generatedAdminExpoWeb.smoke.test.ts"
               >
                 src/host/generatedAdminExpoWeb.smoke.test.ts
-                <small>26 functions</small>
+                <small>28 functions</small>
               </button>
             </li>
             <li>
@@ -522,7 +522,7 @@
                 data-target="src/host/layout/layoutGenerator.test.ts"
               >
                 src/host/layout/layoutGenerator.test.ts
-                <small>3 functions</small>
+                <small>4 functions</small>
               </button>
             </li>
             <li>
@@ -3661,35 +3661,34 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/appExtensionRegistry.ts APP_EXTENSION_COMPONENT_REGISTRY"
+              data-search="src/runtime/appExtensionRegistry.ts STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"
             >
               <h3>src/runtime/appExtensionRegistry.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-              <p><strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code></p>
+              <p><strong>Exports:</strong> <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code></p>
             </article>
             <article
               class="item"
-              data-search="src/runtime/index.ts APP_EXTENSION_COMPONENT_REGISTRY ComponentRegistry createComponentRegistry createStudioActionSuppressionConfig createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig DEFAULT_COMPONENT_REGISTRY executeRuntimeAction resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions STUDIO_PREVIEW_COMPONENT_REGISTRY StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions SURFACE_COMPONENT_REGISTRY useRuntimeAction UseRuntimeActionOptions ZORA_COMPONENT_REGISTRY"
+              data-search="src/runtime/index.ts ComponentRegistry createComponentRegistry createStudioActionSuppressionConfig createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig executeRuntimeAction resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_PREVIEW_COMPONENT_REGISTRY StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions useRuntimeAction UseRuntimeActionOptions"
             >
               <h3>src/runtime/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code>,
-                <code>ComponentRegistry</code>, <code>createComponentRegistry</code>,
+                <strong>Exports:</strong> <code>ComponentRegistry</code>,
+                <code>createComponentRegistry</code>,
                 <code>createStudioActionSuppressionConfig</code>,
                 <code>createStudioPreviewComponentRegistry</code>,
-                <code>createStudioPreviewRuntimeConfig</code>,
-                <code>DEFAULT_COMPONENT_REGISTRY</code>, <code>executeRuntimeAction</code>,
+                <code>createStudioPreviewRuntimeConfig</code>, <code>executeRuntimeAction</code>,
                 <code>resolveStudioLocalizationPreview</code>,
                 <code>shouldSuppressStudioRuntimeActions</code>,
+                <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code>,
                 <code>STUDIO_PREVIEW_COMPONENT_REGISTRY</code>,
                 <code>StudioLocalizationPreview</code>, <code>StudioLocalizationPreviewInput</code>,
                 <code>StudioPreviewRegistryOptions</code>,
-                <code>StudioPreviewRuntimeConfigOptions</code>,
-                <code>SURFACE_COMPONENT_REGISTRY</code>, <code>useRuntimeAction</code>,
-                <code>UseRuntimeActionOptions</code>, <code>ZORA_COMPONENT_REGISTRY</code>
+                <code>StudioPreviewRuntimeConfigOptions</code>, <code>useRuntimeAction</code>,
+                <code>UseRuntimeActionOptions</code>
               </p>
             </article>
             <article
@@ -3706,11 +3705,11 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/previewRegistry.ts createStudioPreviewComponentRegistry STUDIO_PREVIEW_COMPONENT_REGISTRY StudioPreviewRegistryOptions"
+              data-search="src/runtime/previewRegistry.ts src/runtime/appExtensionRegistry.ts createStudioPreviewComponentRegistry STUDIO_PREVIEW_COMPONENT_REGISTRY StudioPreviewRegistryOptions"
             >
               <h3>src/runtime/previewRegistry.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Dependencies:</strong> <code>src/runtime/appExtensionRegistry.ts</code></p>
               <p>
                 <strong>Exports:</strong> <code>createStudioPreviewComponentRegistry</code>,
                 <code>STUDIO_PREVIEW_COMPONENT_REGISTRY</code>,
@@ -3734,16 +3733,15 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/registry.tsx src/runtime/appExtensionRegistry.ts APP_EXTENSION_COMPONENT_REGISTRY ComponentRegistry createComponentRegistry DEFAULT_COMPONENT_REGISTRY SURFACE_COMPONENT_REGISTRY ZORA_COMPONENT_REGISTRY"
+              data-search="src/runtime/registry.tsx ComponentRegistry createComponentRegistry STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"
             >
               <h3>src/runtime/registry.tsx</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/runtime/appExtensionRegistry.ts</code></p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>APP_EXTENSION_COMPONENT_REGISTRY</code>,
-                <code>ComponentRegistry</code>, <code>createComponentRegistry</code>,
-                <code>DEFAULT_COMPONENT_REGISTRY</code>, <code>SURFACE_COMPONENT_REGISTRY</code>,
-                <code>ZORA_COMPONENT_REGISTRY</code>
+                <strong>Exports:</strong> <code>ComponentRegistry</code>,
+                <code>createComponentRegistry</code>,
+                <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code>
               </p>
             </article>
             <article class="item" data-search="src/runtime/runtimeActions.ts executeRuntimeAction">
@@ -8883,6 +8881,8 @@
                 package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_previewRegistry_ts
+                module_src_runtime_previewRegistry_ts --&gt;
+                module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
@@ -8890,7 +8890,6 @@
                 --&gt; module_src_runtime_previewRegistry_ts
                 module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
-                module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
@@ -9694,13 +9693,13 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRegistry_ts
+  module_src_runtime_previewRegistry_ts --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
-  module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
@@ -10475,10 +10474,11 @@ graph TD
                 module_src_projectSecretUsage_test_ts --&gt; module_src_projectSecretUsage_ts
                 module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
                 module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+                module_src_runtime_previewRegistry_ts --&gt;
+                module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
-                --&gt; module_src_runtime_previewRegistry_ts module_src_runtime_registry_tsx --&gt;
-                module_src_runtime_appExtensionRegistry_ts module_src_runtime_useRuntimeAction_ts
+                --&gt; module_src_runtime_previewRegistry_ts module_src_runtime_useRuntimeAction_ts
                 --&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtimeDiagnosticsModel_test_ts --&gt;
                 module_src_runtimeDiagnosticsModel_ts module_src_runtimeLocalization_public_test_ts
@@ -11057,9 +11057,9 @@ graph LR
   module_src_projectSecretUsage_test_ts --&gt; module_src_projectSecretUsage_ts
   module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
   module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+  module_src_runtime_previewRegistry_ts --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
-  module_src_runtime_registry_tsx --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --&gt; module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --&gt; module_src_runtimeLocalization_ts
@@ -13959,10 +13959,18 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="createScrollableRuntimeScreenRoot src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>createScrollableRuntimeScreenRoot</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:97:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="createGeneratedAdminProject src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createGeneratedAdminProject</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:147:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:183:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13970,7 +13978,7 @@ sequenceDiagram
               data-search="copyGeneratedDirectDependencies src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyGeneratedDirectDependencies</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:186:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:222:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13978,7 +13986,7 @@ sequenceDiagram
               data-search="writeSmokeMetroConfig src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeMetroConfig</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:215:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:251:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13986,7 +13994,7 @@ sequenceDiagram
               data-search="reservePort src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:233:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:269:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13994,7 +14002,7 @@ sequenceDiagram
               data-search="spawnExpoWeb src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnExpoWeb</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:249:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:285:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14002,7 +14010,7 @@ sequenceDiagram
               data-search="waitForExpoWebUrl src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:265:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:301:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14010,7 +14018,7 @@ sequenceDiagram
               data-search="linkSmokeNodeModules src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkSmokeNodeModules</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:278:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:314:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14018,7 +14026,7 @@ sequenceDiagram
               data-search="linkNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:296:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:332:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14026,7 +14034,7 @@ sequenceDiagram
               data-search="linkScopedNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkScopedNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:333:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:369:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14034,7 +14042,7 @@ sequenceDiagram
               data-search="symlinkIfMissing src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>symlinkIfMissing</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:348:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:384:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14042,7 +14050,7 @@ sequenceDiagram
               data-search="copyNodeModuleEntry src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyNodeModuleEntry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:357:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:393:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14050,7 +14058,7 @@ sequenceDiagram
               data-search="copyNodeModulePackage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyNodeModulePackage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:368:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:404:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14058,7 +14066,7 @@ sequenceDiagram
               data-search="resolveSmokeNodeModuleSource src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveSmokeNodeModuleSource</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:376:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:412:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14066,7 +14074,7 @@ sequenceDiagram
               data-search="getNodeModuleTargetPath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>getNodeModuleTargetPath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:393:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:429:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14074,7 +14082,7 @@ sequenceDiagram
               data-search="isNodeErrorWithCode src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isNodeErrorWithCode</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:405:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:441:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14082,7 +14090,15 @@ sequenceDiagram
               data-search="waitForHttp src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:409:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:445:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="waitForBodyText src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>waitForBodyText</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:462:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14090,7 +14106,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:426:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:479:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14098,7 +14114,7 @@ sequenceDiagram
               data-search="readEnvString src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:432:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:485:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14106,7 +14122,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:438:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:491:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14114,7 +14130,7 @@ sequenceDiagram
               data-search="openChromePage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:454:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:507:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14122,7 +14138,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:559:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:612:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14130,7 +14146,7 @@ sequenceDiagram
               data-search="isRecord src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:574:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:627:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14138,7 +14154,7 @@ sequenceDiagram
               data-search="stopProcess src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:578:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:631:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14146,7 +14162,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:587:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:640:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14154,7 +14170,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:598:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:651:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14682,10 +14698,18 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="createScrollableScreenRoot src/host/layout/layoutGenerator.test.ts "
+            >
+              <h3>createScrollableScreenRoot</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:79:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="getGeneratedAuthAdapter src/host/layout/layoutGenerator.test.ts "
             >
               <h3>getGeneratedAuthAdapter</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:79:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:107:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14711,7 +14735,7 @@ sequenceDiagram
               data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:59:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:58:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14719,7 +14743,7 @@ sequenceDiagram
               data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>mergeRuntimeModuleDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:70:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:65:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14727,12 +14751,12 @@ sequenceDiagram
               data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>addStudioAdminRouteFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:93:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:88:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
               <h3>walk</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:105:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:100:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14740,7 +14764,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:419:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:421:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14748,7 +14772,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:433:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:435:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14756,7 +14780,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:440:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:442:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14764,12 +14788,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:463:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:465:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:477:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:479:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14777,7 +14801,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:481:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:483:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14785,7 +14809,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:525:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:527:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14793,7 +14817,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:533:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:535:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14801,7 +14825,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:538:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:540:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16190,7 +16214,7 @@ sequenceDiagram
               data-search="serializeStringLiteral src/host/orchestrator/templates.ts "
             >
               <h3>serializeStringLiteral</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:90:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:92:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16198,7 +16222,7 @@ sequenceDiagram
               data-search="serializeJsValue src/host/orchestrator/templates.ts "
             >
               <h3>serializeJsValue</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:98:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:100:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16206,7 +16230,7 @@ sequenceDiagram
               data-search="serializeSplashScreenPlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeSplashScreenPlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:140:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:142:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16214,7 +16238,7 @@ sequenceDiagram
               data-search="serializeRuntimePlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeRuntimePlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:154:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:156:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16222,7 +16246,7 @@ sequenceDiagram
               data-search="serializePluginsWithRuntimePlan src/host/orchestrator/templates.ts "
             >
               <h3>serializePluginsWithRuntimePlan</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:167:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:169:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16230,7 +16254,7 @@ sequenceDiagram
               data-search="createNativeIdentifierSegment src/host/orchestrator/templates.ts "
             >
               <h3>createNativeIdentifierSegment</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:189:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:191:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16238,7 +16262,7 @@ sequenceDiagram
               data-search="createNativeApplicationId src/host/orchestrator/templates.ts "
             >
               <h3>createNativeApplicationId</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:199:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:201:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16246,7 +16270,7 @@ sequenceDiagram
               data-search="createExpoScheme src/host/orchestrator/templates.ts "
             >
               <h3>createExpoScheme</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:203:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:205:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16254,12 +16278,12 @@ sequenceDiagram
               data-search="serializeAndroidConfig src/host/orchestrator/templates.ts "
             >
               <h3>serializeAndroidConfig</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:208:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:210:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getAppConfigTs src/host/orchestrator/templates.ts ">
               <h3>getAppConfigTs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:222:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:224:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16267,7 +16291,7 @@ sequenceDiagram
               data-search="getMetroConfigJs src/host/orchestrator/templates.ts "
             >
               <h3>getMetroConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:258:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:260:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16275,12 +16299,12 @@ sequenceDiagram
               data-search="getBabelConfigJs src/host/orchestrator/templates.ts "
             >
               <h3>getBabelConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:266:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:268:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPackageJson src/host/orchestrator/templates.ts ">
               <h3>getPackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:290:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:292:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16288,22 +16312,22 @@ sequenceDiagram
               data-search="getEslintConfigMjs src/host/orchestrator/templates.ts "
             >
               <h3>getEslintConfigMjs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:379:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:381:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPrettierRcJs src/host/orchestrator/templates.ts ">
               <h3>getPrettierRcJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:403:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:405:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getIndexJs src/host/orchestrator/templates.ts ">
               <h3>getIndexJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:408:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:410:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getTsConfigJson src/host/orchestrator/templates.ts ">
               <h3>getTsConfigJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:423:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:425:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -18484,7 +18508,7 @@ sequenceDiagram
               data-search="createStudioPreviewComponentRegistry src/runtime/previewRegistry.ts "
             >
               <h3>createStudioPreviewComponentRegistry</h3>
-              <p class="muted"><code>src/runtime/previewRegistry.ts:8:14</code></p>
+              <p class="muted"><code>src/runtime/previewRegistry.ts:10:14</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

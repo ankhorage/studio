@@ -10,7 +10,9 @@ export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
 const CONTRACTS_VERSION = '^4.0.0';
+const RUNTIME_VERSION = '^0.3.0';
 const SUPABASE_AUTH_VERSION = '^1.0.0';
+const ZORA_VERSION = '^2.8.7';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 
@@ -320,7 +322,7 @@ export function getPackageJson(args: {
     dependencies: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
       '@ankhorage/data-sources': 'latest',
-      '@ankhorage/runtime': '^0.2.0',
+      '@ankhorage/runtime': RUNTIME_VERSION,
       '@ankhorage/studio': 'latest',
       ...(authProvider === 'supabase'
         ? {
@@ -330,7 +332,7 @@ export function getPackageJson(args: {
           }
         : {}),
       ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),
-      '@ankhorage/zora': 'latest',
+      '@ankhorage/zora': ZORA_VERSION,
       ...runtimeDependencies,
       ...(includeStudio
         ? {
