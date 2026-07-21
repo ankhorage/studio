@@ -1,4 +1,4 @@
-export { getRootLayoutTsx } from './rootLayout';
+export { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
 export { getNestedLayoutTsx } from './nestedLayout';
 export { getScreenTsx } from './screen';
 export { buildNavigatorJsx } from './navigation';
