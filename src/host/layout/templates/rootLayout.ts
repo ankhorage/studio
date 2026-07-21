@@ -64,6 +64,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const providersEnd = [...pluginProvidersEnd, ...runtimeProviderEnd].join('\n    ');
 
   const finalJsx = providersStart ? `{${providersStart}{output}${providersEnd}}` : '{output}';
+  const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');
 
   const authRuntimeConstants = authRuntime
     ? `
@@ -77,7 +78,7 @@ const AUTH_PUBLIC_ROUTES = ${serializeStringArrayLiteral(authRuntime.publicRoute
 const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
 
 function normalizeRoutePath(pathname: string): string {
-  const normalized = pathname.replace(/\\\/+$/, '');
+  const normalized = pathname.replace(/\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
@@ -117,14 +118,14 @@ function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady:
 
   const appHeaderHelpers = `
 function normalizeAppHeaderPath(pathname: string): string {
-  const normalized = pathname.replace(/\\\/+$/, '');
+  const normalized = pathname.replace(/\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
 function getAppHeaderSegments(pathname: string): string[] {
   const normalized = normalizeAppHeaderPath(pathname);
   if (normalized === '/') return ['index'];
-  return normalized.replace(/^\\\/+/, '').split('/').filter(Boolean);
+  return normalized.replace(/^\\/+/, '').split('/').filter(Boolean);
 }
 
 function findRouteBySegments(navigator: NavigatorSpec, segments: string[]): RouteDefinition | null {
@@ -350,27 +351,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = includeStudio
-    ? `const { executeAction } = useRuntimeAction();
-  const { previewMode, selectedNodeId, selectNode } = useStudio();
-
-  const generatedRuntimeConfig = useMemo(
-    () => ({
-      disableActions: !previewMode,
-      executeAction,
-      registry: runtimeComponentRegistry,
-      executeOperation,
-      wrapNode: wrapStudioRuntimeNode,
-    }),
-    [executeAction, executeOperation, previewMode],
-  );
-
-  const runtimeContent = (
-    <RuntimeRendererConfigProvider value={generatedRuntimeConfig}>
-      {appContent}
-    </RuntimeRendererConfigProvider>
-  );`
-    : `const { executeAction } = useRuntimeAction();
+  const runtimeContentDeclaration = `const { executeAction } = useRuntimeAction();
 
   const generatedRuntimeConfig = useMemo(
     () => ({
@@ -673,12 +654,24 @@ function StudioShell({
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
   );
+  const studioRuntimeConfig = useMemo(
+    () => ({
+      disableActions: !previewMode,
+      wrapNode: wrapStudioRuntimeNode,
+    }),
+    [previewMode],
+  );
+  const studioOutput = (
+    <RuntimeRendererConfigProvider value={studioRuntimeConfig}>
+      {output}
+    </RuntimeRendererConfigProvider>
+  );
 
   return (
     <GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>
       <SafeAreaProvider>
         <AppShell header={header}>
-          ${finalJsx}
+          ${studioFinalJsx}
         </AppShell>
         <GeneratedStatusBar />
       </SafeAreaProvider>
