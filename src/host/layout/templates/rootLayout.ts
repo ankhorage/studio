@@ -64,6 +64,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
   const providersEnd = [...pluginProvidersEnd, ...runtimeProviderEnd].join('\n    ');
 
   const finalJsx = providersStart ? `{${providersStart}{output}${providersEnd}}` : '{output}';
+  const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');
 
   const authRuntimeConstants = authRuntime
     ? `
@@ -303,7 +304,9 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports = "import type { ReactNode } from 'react';";
+  const rootLayoutTypeImports = includeStudio
+    ? "import { cloneElement, isValidElement, useState, type ReactNode } from 'react';\nimport { Pressable, type GestureResponderEvent } from 'react-native';"
+    : "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -437,6 +440,78 @@ const shouldMountAppHeader =
   const indentedStudioShellBlock =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
   const indentedInnerNavigationJsx = indentGeneratedBlock(innerNavigation.jsx, '    ');
+  const studioSelectionRuntimeHelpers = includeStudio
+    ? `const studioSelectionInteractionStyle = { display: 'contents' as const };
+
+function wrapStudioRuntimeNode(args: {
+  readonly node: { readonly id?: string };
+  readonly rendered: ReactNode;
+  readonly isRoot: boolean;
+}): ReactNode {
+  return (
+    <StudioRuntimeNodeWrapper
+      nodeId={args.node.id}
+      rendered={args.rendered}
+    />
+  );
+}
+
+function StudioRuntimeNodeWrapper(props: {
+  readonly nodeId?: string;
+  readonly rendered: ReactNode;
+}): ReactNode {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const { previewMode, selectedNodeId, selectNode } = useStudio();
+  const { theme } = useZoraTheme();
+
+  if (previewMode || !props.nodeId) {
+    return props.rendered;
+  }
+
+  const selected = selectedNodeId === props.nodeId;
+  const selectionStyle = selected
+    ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
+    : isFocused
+      ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
+      : isHovered
+        ? { boxShadow: \`0 0 0 1px \${theme.colors.primary}\` }
+        : undefined;
+
+  const renderedNode = isValidElement<{ readonly style?: unknown; readonly onPress?: unknown }>(
+    props.rendered,
+  )
+    ? cloneElement(props.rendered, {
+        style: [props.rendered.props.style, selectionStyle],
+        onPress: (event: GestureResponderEvent) => {
+          event.stopPropagation();
+          selectNode(props.nodeId ?? null);
+        },
+      })
+    : props.rendered;
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={\`Select \${props.nodeId}\`}
+      accessibilityState={{ selected }}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onPress={(event: GestureResponderEvent) => {
+        event.stopPropagation();
+        selectNode(props.nodeId ?? null);
+      }}
+      style={studioSelectionInteractionStyle}
+    >
+      {renderedNode}
+    </Pressable>
+  );
+}
+
+`
+    : '';
 
   return `
 ${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
@@ -449,7 +524,7 @@ const runtimeComponentRegistry = createComponentRegistry(
   APP_EXTENSION_COMPONENT_REGISTRY,
 );
 
-function resolveZoraProviderTheme(
+${studioSelectionRuntimeHelpers}function resolveZoraProviderTheme(
   theme: AppManifest['themes'][number],
   mode: NonNullable<AppManifest['activeThemeMode']>,
 ) {
@@ -579,12 +654,24 @@ function StudioShell({
     studioRuntimeManifest.activeThemeMode,
     activeThemeMode,
   );
+  const studioRuntimeConfig = useMemo(
+    () => ({
+      disableActions: !previewMode,
+      wrapNode: wrapStudioRuntimeNode,
+    }),
+    [previewMode],
+  );
+  const studioOutput = (
+    <RuntimeRendererConfigProvider value={studioRuntimeConfig}>
+      {output}
+    </RuntimeRendererConfigProvider>
+  );
 
   return (
     <GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>
       <SafeAreaProvider>
         <AppShell header={header}>
-          ${finalJsx}
+          ${studioFinalJsx}
         </AppShell>
         <GeneratedStatusBar />
       </SafeAreaProvider>

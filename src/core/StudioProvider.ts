@@ -30,6 +30,7 @@ import {
   type ThemeUpdates,
 } from '../index';
 import { createStudioManifestSignature } from '../manifestSync';
+import { resolveStudioSelectedNodeId } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
 import { StudioContext } from './StudioContext';
@@ -125,6 +126,13 @@ export const StudioProvider = ({
     () => resolveActiveRootNode(manifest, activeScreenId),
     [activeScreenId, manifest],
   );
+
+  useEffect(() => {
+    const nextSelectedNodeId = resolveStudioSelectedNodeId(rootNode, selectedNodeId);
+    if (selectedNodeId !== nextSelectedNodeId) {
+      selectNode(nextSelectedNodeId);
+    }
+  }, [rootNode, selectedNodeId]);
 
   const updateNode = useCallback(
     (nodeId: StudioNodeId, props: Record<string, unknown>) => {

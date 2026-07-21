@@ -1276,7 +1276,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/studioSelectionModel.ts">
                 src/studioSelectionModel.ts
-                <small>1 function</small>
+                <small>7 functions</small>
               </button>
             </li>
             <li>
@@ -1468,6 +1468,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/ui/studioAppBarModel.ts">
+                src/ui/studioAppBarModel.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
               <button
                 class="nav-button"
                 type="button"
@@ -1499,7 +1505,7 @@
             <div class="summary">
               <div><strong>96</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>216</strong><span class="muted">modules</span></div>
+              <div><strong>217</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -1944,7 +1950,7 @@
             </article>
             <article
               class="item"
-              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps"
+              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts src/studioSelectionModel.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps"
             >
               <h3>src/core/StudioProvider.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1953,7 +1959,8 @@
                 <code>src/core/constants.ts</code>, <code>src/core/StudioContext.ts</code>,
                 <code>src/core/studioManifestDraftModel.ts</code>,
                 <code>src/core/studioManifestPersistenceModel.ts</code>, <code>src/index.ts</code>,
-                <code>src/manifestSync.ts</code>, <code>src/ui/admin/AuthAdminSession.tsx</code>
+                <code>src/manifestSync.ts</code>, <code>src/studioSelectionModel.ts</code>,
+                <code>src/ui/admin/AuthAdminSession.tsx</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioProvider</code>,
@@ -3899,14 +3906,18 @@
             </article>
             <article
               class="item"
-              data-search="src/studioSelectionModel.ts createStudioSelectionProviderProps CreateStudioSelectionProviderPropsArgs StudioSelectionProviderAdapterProps"
+              data-search="src/studioSelectionModel.ts createStudioSelectionContext createStudioSelectionProviderProps CreateStudioSelectionProviderPropsArgs resolveStudioSelectedNodeId resolveStudioSelectionParentNodeId StudioSelectionContext StudioSelectionProviderAdapterProps"
             >
               <h3>src/studioSelectionModel.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>createStudioSelectionProviderProps</code>,
+                <strong>Exports:</strong> <code>createStudioSelectionContext</code>,
+                <code>createStudioSelectionProviderProps</code>,
                 <code>CreateStudioSelectionProviderPropsArgs</code>,
+                <code>resolveStudioSelectedNodeId</code>,
+                <code>resolveStudioSelectionParentNodeId</code>,
+                <code>StudioSelectionContext</code>,
                 <code>StudioSelectionProviderAdapterProps</code>
               </p>
             </article>
@@ -4284,21 +4295,38 @@
               <p><strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code></p>
               <p><strong>Exports:</strong> <code>AnkhStudio</code>, <code>AnkhStudioProps</code></p>
             </article>
-            <article class="item" data-search="src/ui/useStudioAppBarAugmentation.test.ts">
-              <h3>src/ui/useStudioAppBarAugmentation.test.ts</h3>
+            <article
+              class="item"
+              data-search="src/ui/studioAppBarModel.ts resolveStudioAppBarContextActions ResolveStudioAppBarContextActionsArgs StudioAppBarContextAction"
+            >
+              <h3>src/ui/studioAppBarModel.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>resolveStudioAppBarContextActions</code>,
+                <code>ResolveStudioAppBarContextActionsArgs</code>,
+                <code>StudioAppBarContextAction</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/useStudioAppBarAugmentation.test.ts src/ui/studioAppBarModel.ts"
+            >
+              <h3>src/ui/useStudioAppBarAugmentation.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/ui/studioAppBarModel.ts</code></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
-              data-search="src/ui/useStudioAppBarAugmentation.ts src/core/StudioContext.ts src/studioAdminRouteModel.ts StudioAppBarAugmentation useStudioAppBarAugmentation"
+              data-search="src/ui/useStudioAppBarAugmentation.ts src/core/StudioContext.ts src/studioAdminRouteModel.ts src/studioSelectionModel.ts src/ui/studioAppBarModel.ts StudioAppBarAugmentation useStudioAppBarAugmentation"
             >
               <h3>src/ui/useStudioAppBarAugmentation.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
-                <code>src/studioAdminRouteModel.ts</code>
+                <code>src/studioAdminRouteModel.ts</code>, <code>src/studioSelectionModel.ts</code>,
+                <code>src/ui/studioAppBarModel.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioAppBarAugmentation</code>,
@@ -8313,6 +8341,7 @@
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_studioSelectionModel_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_ui_admin_AuthAdminSession_tsx
                 module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_dnd_index_ts
@@ -9088,13 +9117,20 @@
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
                 module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_studioAppBarModel_ts
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_test_ts
+                module_src_ui_useStudioAppBarAugmentation_test_ts --&gt;
+                module_src_ui_studioAppBarModel_ts
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
                 module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
                 module_src_ui_useStudioAppBarAugmentation_ts --&gt;
-                module_src_studioAdminRouteModel_ts
+                module_src_studioAdminRouteModel_ts module_src_ui_useStudioAppBarAugmentation_ts
+                --&gt; module_src_studioSelectionModel_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_ui_studioAppBarModel_ts
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
                 module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -9255,6 +9291,7 @@ graph TD
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_dnd_index_ts
@@ -9858,12 +9895,17 @@ graph TD
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_test_ts
+  module_src_ui_useStudioAppBarAugmentation_test_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_useStudioAppBarAugmentation_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_studioSelectionModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
@@ -10096,6 +10138,7 @@ graph TD
                 module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
                 module_src_ui_admin_pages_ThemeAdminPage_tsx[&quot;src/ui/admin/pages/ThemeAdminPage.tsx&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
@@ -10185,6 +10228,7 @@ graph TD
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_studioSelectionModel_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_ui_admin_AuthAdminSession_tsx module_src_hooks_useProjects_ts --&gt;
                 module_src_contractGuards_ts module_src_hooks_useProjects_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useProjects_ts --&gt;
@@ -10576,9 +10620,14 @@ graph TD
                 module_src_ui_admin_pages_adminThemeHarmony_ts
                 module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt;
                 module_src_ui_admin_pages_adminThemeModel_ts module_src_ui_AnkhStudio_ts --&gt;
-                module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
-                module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_ts --&gt;
-                module_src_studioAdminRouteModel_ts module_src_utils_treeUtils_ts --&gt;
+                module_src_core_StudioContext_ts module_src_ui_useStudioAppBarAugmentation_test_ts
+                --&gt; module_src_ui_studioAppBarModel_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_studioAdminRouteModel_ts module_src_ui_useStudioAppBarAugmentation_ts
+                --&gt; module_src_studioSelectionModel_ts
+                module_src_ui_useStudioAppBarAugmentation_ts --&gt;
+                module_src_ui_studioAppBarModel_ts module_src_utils_treeUtils_ts --&gt;
                 module_src_index_ts module_src_workspacePlatform_test_ts --&gt;
                 module_src_workspacePlatform_ts module_src_workspaceSearch_ts --&gt;
                 module_src_projectWorkspaceContracts_ts module_src_workspaceSearch_ts --&gt;
@@ -10798,6 +10847,7 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
   module_src_ui_admin_pages_ThemeAdminPage_tsx[&quot;src/ui/admin/pages/ThemeAdminPage.tsx&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
@@ -10868,6 +10918,7 @@ graph LR
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
@@ -11128,8 +11179,11 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt; module_src_ui_admin_pages_adminThemeHarmony_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --&gt; module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts --&gt; module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_test_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_studioSelectionModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --&gt; module_src_ui_studioAppBarModel_ts
   module_src_utils_treeUtils_ts --&gt; module_src_index_ts
   module_src_workspacePlatform_test_ts --&gt; module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts --&gt; module_src_projectWorkspaceContracts_ts
@@ -11351,6 +11405,7 @@ graph LR
                 module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
                 module_src_ui_admin_pages_ThemeAdminPage_tsx[&quot;src/ui/admin/pages/ThemeAdminPage.tsx&quot;]
                 module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+                module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
                 module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
                 module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
@@ -11820,6 +11875,7 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_test_ts[&quot;src/ui/admin/pages/ThemeAdminPage.test.ts&quot;]
   module_src_ui_admin_pages_ThemeAdminPage_tsx[&quot;src/ui/admin/pages/ThemeAdminPage.tsx&quot;]
   module_src_ui_AnkhStudio_ts[&quot;src/ui/AnkhStudio.ts&quot;]
+  module_src_ui_studioAppBarModel_ts[&quot;src/ui/studioAppBarModel.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_test_ts[&quot;src/ui/useStudioAppBarAugmentation.test.ts&quot;]
   module_src_ui_useStudioAppBarAugmentation_ts[&quot;src/ui/useStudioAppBarAugmentation.ts&quot;]
   module_src_utils_treeUtils_ts[&quot;src/utils/treeUtils.ts&quot;]
@@ -12236,89 +12292,6 @@ sequenceDiagram
             </article>
             <article
               class="item"
-              data-search="resolveInsertPlacement sequence diagrams/sequences/resolve-insert-placement.mmd"
-            >
-              <h3>resolveInsertPlacement sequence</h3>
-              <p class="muted"><code>diagrams/sequences/resolve-insert-placement.mmd</code></p>
-              <div class="mermaid">
-                sequenceDiagram participant participant_canAcceptChild as canAcceptChild participant
-                participant_findNodeById as findNodeById participant participant_findNodeWithParent
-                as findNodeWithParent participant participant_normalizeRel as normalizeRel
-                participant participant_resolveInsertPlacement as resolveInsertPlacement participant
-                participant_resolveRouteScreenFilePath as resolveRouteScreenFilePath participant
-                participant_validateNodePlacement as validateNodePlacement participant
-                participant_visit as visit
-                participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent:
-                findNodeWithParent() participant_findNodeWithParent-&gt;&gt;participant_visit:
-                visit() participant_visit-&gt;&gt;participant_visit: visit()
-                participant_visit-&gt;&gt;participant_visit: visit()
-                participant_visit-&gt;&gt;participant_visit: visit()
-                participant_visit-&gt;&gt;participant_resolveRouteScreenFilePath:
-                resolveRouteScreenFilePath()
-                participant_resolveRouteScreenFilePath-&gt;&gt;participant_normalizeRel:
-                normalizeRel()
-                participant_normalizeRel--&gt;&gt;participant_resolveRouteScreenFilePath: return
-                participant_resolveRouteScreenFilePath--&gt;&gt;participant_visit: return
-                participant_visit--&gt;&gt;participant_visit: return
-                participant_visit--&gt;&gt;participant_visit: return
-                participant_visit--&gt;&gt;participant_visit: return
-                participant_visit--&gt;&gt;participant_findNodeWithParent: return
-                participant_findNodeWithParent-&gt;&gt;participant_visit: visit()
-                participant_visit--&gt;&gt;participant_findNodeWithParent: return
-                participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
-                participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement:
-                validateNodePlacement()
-                participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
-                participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
-                participant_findNodeById--&gt;&gt;participant_findNodeById: return
-                participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
-                participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild:
-                canAcceptChild()
-                participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
-                participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement:
-                return
-              </div>
-              <details>
-                <summary>View Mermaid source</summary>
-                <pre>
-sequenceDiagram
-  participant participant_canAcceptChild as canAcceptChild
-  participant participant_findNodeById as findNodeById
-  participant participant_findNodeWithParent as findNodeWithParent
-  participant participant_normalizeRel as normalizeRel
-  participant participant_resolveInsertPlacement as resolveInsertPlacement
-  participant participant_resolveRouteScreenFilePath as resolveRouteScreenFilePath
-  participant participant_validateNodePlacement as validateNodePlacement
-  participant participant_visit as visit
-  participant_resolveInsertPlacement-&gt;&gt;participant_findNodeWithParent: findNodeWithParent()
-  participant_findNodeWithParent-&gt;&gt;participant_visit: visit()
-  participant_visit-&gt;&gt;participant_visit: visit()
-  participant_visit-&gt;&gt;participant_visit: visit()
-  participant_visit-&gt;&gt;participant_visit: visit()
-  participant_visit-&gt;&gt;participant_resolveRouteScreenFilePath: resolveRouteScreenFilePath()
-  participant_resolveRouteScreenFilePath-&gt;&gt;participant_normalizeRel: normalizeRel()
-  participant_normalizeRel--&gt;&gt;participant_resolveRouteScreenFilePath: return
-  participant_resolveRouteScreenFilePath--&gt;&gt;participant_visit: return
-  participant_visit--&gt;&gt;participant_visit: return
-  participant_visit--&gt;&gt;participant_visit: return
-  participant_visit--&gt;&gt;participant_visit: return
-  participant_visit--&gt;&gt;participant_findNodeWithParent: return
-  participant_findNodeWithParent-&gt;&gt;participant_visit: visit()
-  participant_visit--&gt;&gt;participant_findNodeWithParent: return
-  participant_findNodeWithParent--&gt;&gt;participant_resolveInsertPlacement: return
-  participant_resolveInsertPlacement-&gt;&gt;participant_validateNodePlacement: validateNodePlacement()
-  participant_validateNodePlacement-&gt;&gt;participant_findNodeById: findNodeById()
-  participant_findNodeById-&gt;&gt;participant_findNodeById: findNodeById()
-  participant_findNodeById--&gt;&gt;participant_findNodeById: return
-  participant_findNodeById--&gt;&gt;participant_validateNodePlacement: return
-  participant_validateNodePlacement-&gt;&gt;participant_canAcceptChild: canAcceptChild()
-  participant_canAcceptChild--&gt;&gt;participant_validateNodePlacement: return
-  participant_validateNodePlacement--&gt;&gt;participant_resolveInsertPlacement: return
-</pre>
-              </details>
-            </article>
-            <article
-              class="item"
               data-search="updateNodeInTree sequence diagrams/sequences/update-node-in-tree.mmd"
             >
               <h3>updateNodeInTree sequence</h3>
@@ -12355,12 +12328,14 @@ sequenceDiagram
                 participant_visit-&gt;&gt;participant_visit: visit()
                 participant_visit-&gt;&gt;participant_visit: visit()
                 participant_visit-&gt;&gt;participant_visit: visit()
+                participant_visit-&gt;&gt;participant_visit: visit()
                 participant_visit-&gt;&gt;participant_resolveRouteScreenFilePath:
                 resolveRouteScreenFilePath()
                 participant_resolveRouteScreenFilePath-&gt;&gt;participant_normalizeRel:
                 normalizeRel()
                 participant_normalizeRel--&gt;&gt;participant_resolveRouteScreenFilePath: return
                 participant_resolveRouteScreenFilePath--&gt;&gt;participant_visit: return
+                participant_visit--&gt;&gt;participant_visit: return
                 participant_visit--&gt;&gt;participant_visit: return
                 participant_visit--&gt;&gt;participant_visit: return
                 participant_visit--&gt;&gt;participant_visit: return
@@ -12378,10 +12353,12 @@ sequenceDiagram
   participant_visit-&gt;&gt;participant_visit: visit()
   participant_visit-&gt;&gt;participant_visit: visit()
   participant_visit-&gt;&gt;participant_visit: visit()
+  participant_visit-&gt;&gt;participant_visit: visit()
   participant_visit-&gt;&gt;participant_resolveRouteScreenFilePath: resolveRouteScreenFilePath()
   participant_resolveRouteScreenFilePath-&gt;&gt;participant_normalizeRel: normalizeRel()
   participant_normalizeRel--&gt;&gt;participant_resolveRouteScreenFilePath: return
   participant_resolveRouteScreenFilePath--&gt;&gt;participant_visit: return
+  participant_visit--&gt;&gt;participant_visit: return
   participant_visit--&gt;&gt;participant_visit: return
   participant_visit--&gt;&gt;participant_visit: return
   participant_visit--&gt;&gt;participant_visit: return
@@ -13675,22 +13652,22 @@ sequenceDiagram
             <h2>src/core/StudioProvider.ts</h2>
             <article class="item" data-search="noop src/core/StudioProvider.ts ">
               <h3>noop</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:54:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:55:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
               <h3>noopAsync</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:55:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:56:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
               <h3>resolveActiveRootNode</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:58:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:59:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
               <h3>StudioProvider</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:81:14</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:82:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13698,32 +13675,32 @@ sequenceDiagram
               data-search="useStudioManifestPersistence src/core/StudioProvider.ts "
             >
               <h3>useStudioManifestPersistence</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:277:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:285:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestStudioManifest src/core/StudioProvider.ts ">
               <h3>requestStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:378:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:386:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="saveStudioManifest src/core/StudioProvider.ts ">
               <h3>saveStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:387:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:395:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts ">
               <h3>readPersistenceJson</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:400:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:408:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createPersistenceError src/core/StudioProvider.ts ">
               <h3>createPersistenceError</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:408:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:416:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts ">
               <h3>toPersistenceMessage</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:415:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:423:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -18808,12 +18785,51 @@ sequenceDiagram
         >
           <section class="panel">
             <h2>src/studioSelectionModel.ts</h2>
+            <article class="item" data-search="containsUiNode src/studioSelectionModel.ts ">
+              <h3>containsUiNode</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:24:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="visit src/studioSelectionModel.ts ">
+              <h3>visit</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:28:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveStudioSelectionParentNodeId src/studioSelectionModel.ts "
+            >
+              <h3>resolveStudioSelectionParentNodeId</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:41:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="visit src/studioSelectionModel.ts ">
+              <h3>visit</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:48:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveStudioSelectedNodeId src/studioSelectionModel.ts "
+            >
+              <h3>resolveStudioSelectedNodeId</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:62:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createStudioSelectionContext src/studioSelectionModel.ts "
+            >
+              <h3>createStudioSelectionContext</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:69:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article
               class="item"
               data-search="createStudioSelectionProviderProps src/studioSelectionModel.ts "
             >
               <h3>createStudioSelectionProviderProps</h3>
-              <p class="muted"><code>src/studioSelectionModel.ts:16:1</code></p>
+              <p class="muted"><code>src/studioSelectionModel.ts:83:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -19804,6 +19820,24 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-ui-studioappbarmodel-ts"
+          class="view"
+          data-view="src/ui/studioAppBarModel.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/studioAppBarModel.ts</h2>
+            <article
+              class="item"
+              data-search="resolveStudioAppBarContextActions src/ui/studioAppBarModel.ts "
+            >
+              <h3>resolveStudioAppBarContextActions</h3>
+              <p class="muted"><code>src/ui/studioAppBarModel.ts:11:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-ui-usestudioappbaraugmentation-ts"
           class="view"
           data-view="src/ui/useStudioAppBarAugmentation.ts"
@@ -19816,7 +19850,7 @@ sequenceDiagram
               data-search="useStudioAppBarAugmentation src/ui/useStudioAppBarAugmentation.ts "
             >
               <h3>useStudioAppBarAugmentation</h3>
-              <p class="muted"><code>src/ui/useStudioAppBarAugmentation.ts:18:1</code></p>
+              <p class="muted"><code>src/ui/useStudioAppBarAugmentation.ts:21:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

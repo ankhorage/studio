@@ -26,6 +26,13 @@ test('owns Studio draft hydration and autosave through the host manifest boundar
   expect(source).not.toContain('pendingSaveRef');
 });
 
+test('reconciles stale selected node ids against the canonical active root', () => {
+  expect(source).toContain('resolveStudioSelectedNodeId(rootNode, selectedNodeId)');
+  expect(source).toContain('if (selectedNodeId !== nextSelectedNodeId)');
+  expect(source).toContain('selectNode(nextSelectedNodeId)');
+  expect(source).toContain('}, [rootNode, selectedNodeId]);');
+});
+
 test('owns the stable Auth admin session for the Studio project lifetime', () => {
   expect(source).toContain('AuthAdminSessionProvider');
   expect(source).toContain('key: projectId');
