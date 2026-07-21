@@ -39,11 +39,7 @@ export function getRootLayoutImportRequirements(
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
         ...(includeStudio
-          ? [
-              { imported: 'cloneElement' },
-              { imported: 'isValidElement' },
-              { imported: 'useState' },
-            ]
+          ? [{ imported: 'cloneElement' }, { imported: 'isValidElement' }, { imported: 'useState' }]
           : []),
       ],
     },
