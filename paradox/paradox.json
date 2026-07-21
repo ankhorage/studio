@@ -1875,7 +1875,6 @@
       "dependencies": [],
       "exports": [
         "ComponentRegistry",
-        "createComponentRegistry",
         "createStudioActionSuppressionConfig",
         "createStudioPreviewComponentRegistry",
         "createStudioPreviewRuntimeConfig",
@@ -1922,11 +1921,7 @@
       "path": "src/runtime/registry.tsx",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": [
-        "ComponentRegistry",
-        "createComponentRegistry",
-        "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"
-      ]
+      "exports": ["ComponentRegistry", "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"]
     },
     {
       "path": "src/runtime/runtimeActions.ts",
