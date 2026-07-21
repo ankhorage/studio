@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.10.0",
+      "value": "v0.10.1",
       "color": "cb3837"
     },
     {
@@ -859,6 +859,15 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/utils/escapeStringLiteral.ts"],
       "exports": ["buildNavigatorJsx", "BuiltNavigatorJsx"]
+    },
+    {
+      "path": "src/host/layout/templates/nestedLayout.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/layout/templates/navigation.ts",
+        "src/host/layout/templates/nestedLayout.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/nestedLayout.ts",
@@ -9048,6 +9057,15 @@
       }
     },
     {
+      "name": "createNavigator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/templates/nestedLayout.test.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
       "name": "getNestedLayoutTsx",
       "description": null,
       "sourceLocation": {
@@ -9061,7 +9079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/nestedLayout.ts",
-        "line": 56,
+        "line": 63,
         "column": 1
       }
     },
@@ -9088,7 +9106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 64,
+        "line": 60,
         "column": 1
       }
     },
@@ -9097,7 +9115,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 68,
+        "line": 64,
         "column": 1
       }
     },
@@ -9106,7 +9124,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 75,
+        "line": 71,
         "column": 1
       }
     },
@@ -15915,6 +15933,16 @@
         "fromPath": "src/host/layout/templates/navigation.ts",
         "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
         "sourcePath": "src/host/layout/templates/navigation.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/nestedLayout.test.ts",
+        "toPath": "src/host/layout/templates/navigation.ts",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/nestedLayout.test.ts",
+        "toPath": "src/host/layout/templates/nestedLayout.ts",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/nestedLayout.ts",
@@ -29403,6 +29431,30 @@
         "toSymbol": "buildScreenOptionsConstName",
         "callExpression": "buildScreenOptionsConstName",
         "sourcePath": "src/host/layout/templates/navigation.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/nestedLayout.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/nestedLayout.test.ts",
+        "toSymbol": "getNestedLayoutTsx",
+        "callExpression": "getNestedLayoutTsx",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/nestedLayout.test.ts",
+        "toSymbol": "createNavigator",
+        "callExpression": "createNavigator",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/nestedLayout.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/templates/nestedLayout.test.ts"
       },
       {
         "fromSymbol": "getNestedLayoutTsx",

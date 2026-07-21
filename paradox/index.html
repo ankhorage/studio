@@ -619,6 +619,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/layout/templates/nestedLayout.test.ts"
+              >
+                src/host/layout/templates/nestedLayout.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/layout/templates/nestedLayout.ts"
               >
                 src/host/layout/templates/nestedLayout.ts
@@ -1515,7 +1525,7 @@
             <div class="summary">
               <div><strong>96</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>219</strong><span class="muted">modules</span></div>
+              <div><strong>220</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2481,6 +2491,18 @@
                 <strong>Exports:</strong> <code>buildNavigatorJsx</code>,
                 <code>BuiltNavigatorJsx</code>
               </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/layout/templates/nestedLayout.test.ts src/host/layout/templates/navigation.ts src/host/layout/templates/nestedLayout.ts"
+            >
+              <h3>src/host/layout/templates/nestedLayout.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/layout/templates/navigation.ts</code>,
+                <code>src/host/layout/templates/nestedLayout.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -8562,6 +8584,13 @@
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_navigation_ts
                 module_src_host_layout_templates_navigation_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
+                module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_layout_templates_nestedLayout_test_ts
+                module_src_host_layout_templates_nestedLayout_test_ts --&gt;
+                module_src_host_layout_templates_navigation_ts
+                module_src_host_layout_templates_nestedLayout_test_ts --&gt;
+                module_src_host_layout_templates_nestedLayout_ts
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_nestedLayout_ts
                 module_src_host_layout_templates_nestedLayout_ts --&gt;
@@ -9480,6 +9509,10 @@ graph TD
   module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_navigation_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_nestedLayout_test_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --&gt; module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --&gt; module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
@@ -10058,6 +10091,7 @@ graph TD
                 module_src_host_layout_templates_auth_signOut_ts[&quot;src/host/layout/templates/auth/signOut.ts&quot;]
                 module_src_host_layout_templates_index_ts[&quot;src/host/layout/templates/index.ts&quot;]
                 module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
+                module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
@@ -10390,6 +10424,10 @@ graph TD
                 module_src_host_layout_utils_escapeStringLiteral_ts
                 module_src_host_layout_templates_navigation_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
+                module_src_host_layout_templates_nestedLayout_test_ts --&gt;
+                module_src_host_layout_templates_navigation_ts
+                module_src_host_layout_templates_nestedLayout_test_ts --&gt;
+                module_src_host_layout_templates_nestedLayout_ts
                 module_src_host_layout_templates_nestedLayout_ts --&gt;
                 module_src_host_layout_templates_navigation_ts
                 module_src_host_layout_templates_nestedLayout_ts --&gt;
@@ -10775,6 +10813,7 @@ graph LR
   module_src_host_layout_templates_auth_signOut_ts[&quot;src/host/layout/templates/auth/signOut.ts&quot;]
   module_src_host_layout_templates_index_ts[&quot;src/host/layout/templates/index.ts&quot;]
   module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
+  module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
@@ -11056,6 +11095,8 @@ graph LR
   module_src_host_layout_templates_auth_screen_ts --&gt; module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_auth_screen_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_navigation_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --&gt; module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --&gt; module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
@@ -11338,6 +11379,7 @@ graph LR
                 module_src_host_layout_templates_auth_signOut_ts[&quot;src/host/layout/templates/auth/signOut.ts&quot;]
                 module_src_host_layout_templates_index_ts[&quot;src/host/layout/templates/index.ts&quot;]
                 module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
+                module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
@@ -11810,6 +11852,7 @@ graph LR
   module_src_host_layout_templates_auth_signOut_ts[&quot;src/host/layout/templates/auth/signOut.ts&quot;]
   module_src_host_layout_templates_index_ts[&quot;src/host/layout/templates/index.ts&quot;]
   module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
+  module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
@@ -15273,6 +15316,24 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-layout-templates-nestedlayout-test-ts"
+          class="view"
+          data-view="src/host/layout/templates/nestedLayout.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/layout/templates/nestedLayout.test.ts</h2>
+            <article
+              class="item"
+              data-search="createNavigator src/host/layout/templates/nestedLayout.test.ts "
+            >
+              <h3>createNavigator</h3>
+              <p class="muted"><code>src/host/layout/templates/nestedLayout.test.ts:12:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-layout-templates-nestedlayout-ts"
           class="view"
           data-view="src/host/layout/templates/nestedLayout.ts"
@@ -15293,7 +15354,7 @@ sequenceDiagram
               data-search="resolveGeneratedInitialRouteName src/host/layout/templates/nestedLayout.ts "
             >
               <h3>resolveGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/templates/nestedLayout.ts:56:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/nestedLayout.ts:63:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15337,7 +15398,7 @@ sequenceDiagram
               data-search="serializeStringArrayLiteral src/host/layout/templates/rootLayout.ts "
             >
               <h3>serializeStringArrayLiteral</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:64:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:60:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15345,7 +15406,7 @@ sequenceDiagram
               data-search="indentGeneratedBlock src/host/layout/templates/rootLayout.ts "
             >
               <h3>indentGeneratedBlock</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:68:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:64:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15353,7 +15414,7 @@ sequenceDiagram
               data-search="getRootLayoutTsx src/host/layout/templates/rootLayout.ts "
             >
               <h3>getRootLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:75:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:71:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

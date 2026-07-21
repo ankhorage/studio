@@ -6,6 +6,13 @@ import { joinNonEmptyLines } from './utils/strings';
 export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: BuiltNavigatorJsx }) {
   const { node, navigator } = args;
   const themeHook = navigator.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
+  const moduleDeclarations = navigator.usesTheme ? '' : navigator.declarations;
+  const scopedDeclarations = navigator.usesTheme
+    ? navigator.declarations
+        .split('\n')
+        .map((line) => (line.length > 0 ? `  ${line}` : line))
+        .join('\n')
+    : '';
 
   const imports = joinNonEmptyLines([
     navigator.usesZoraNavigationRouteMap
@@ -43,10 +50,10 @@ export const unstable_settings = {
   initialRouteName: '${resolveGeneratedInitialRouteName(node)}',
 };
 
-${navigator.declarations}
+${moduleDeclarations}
 
 export default function Layout() {
-${themeHook}  return (
+${themeHook}${scopedDeclarations ? `${scopedDeclarations}\n` : ''}  return (
     ${navigator.jsx}
   );
 }
