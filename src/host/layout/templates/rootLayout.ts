@@ -77,7 +77,7 @@ const AUTH_PUBLIC_ROUTES = ${serializeStringArrayLiteral(authRuntime.publicRoute
 const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
 
 function normalizeRoutePath(pathname: string): string {
-  const normalized = pathname.replace(/\\/+$/, '');
+  const normalized = pathname.replace(/\\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
@@ -117,14 +117,14 @@ function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady:
 
   const appHeaderHelpers = `
 function normalizeAppHeaderPath(pathname: string): string {
-  const normalized = pathname.replace(/\\/+$/, '');
+  const normalized = pathname.replace(/\\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
 function getAppHeaderSegments(pathname: string): string[] {
   const normalized = normalizeAppHeaderPath(pathname);
   if (normalized === '/') return ['index'];
-  return normalized.replace(/^\\/+/, '').split('/').filter(Boolean);
+  return normalized.replace(/^\\\/+/, '').split('/').filter(Boolean);
 }
 
 function findRouteBySegments(navigator: NavigatorSpec, segments: string[]): RouteDefinition | null {
@@ -304,7 +304,7 @@ useEffect(() => {
   }, [onReady]);`
     : '';
   const rootLayoutTypeImports = includeStudio
-    ? "import { cloneElement, isValidElement, useState, type ReactNode } from 'react';"
+    ? "import { cloneElement, isValidElement, useState, type ReactNode } from 'react';\nimport { Pressable, type GestureResponderEvent } from 'react-native';"
     : "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
@@ -460,7 +460,9 @@ const shouldMountAppHeader =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
   const indentedInnerNavigationJsx = indentGeneratedBlock(innerNavigation.jsx, '    ');
   const studioSelectionRuntimeHelpers = includeStudio
-    ? `function wrapStudioRuntimeNode(args: {
+    ? `const studioSelectionInteractionStyle = { display: 'contents' as const };
+
+function wrapStudioRuntimeNode(args: {
   readonly node: { readonly id?: string };
   readonly rendered: ReactNode;
   readonly isRoot: boolean;
@@ -488,67 +490,43 @@ function StudioRuntimeNodeWrapper(props: {
 
   const selected = selectedNodeId === props.nodeId;
   const selectionStyle = selected
-    ? {
-        borderWidth: 2,
-        borderColor: theme.colors.primary,
-      }
+    ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
     : isFocused
-      ? {
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-        }
+      ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
       : isHovered
-        ? {
-            borderWidth: 1,
-            borderColor: theme.colors.primary,
-          }
+        ? { boxShadow: \`0 0 0 1px \${theme.colors.primary}\` }
         : undefined;
 
-  const renderedElementProps = isValidElement(props.rendered) ? props.rendered.props : undefined;
-  const renderedNode = isValidElement(props.rendered)
+  const renderedNode = isValidElement<{ readonly style?: unknown; readonly onPress?: unknown }>(
+    props.rendered,
+  )
     ? cloneElement(props.rendered, {
-        ...renderedElementProps,
-        accessibilityRole: 'button',
-        accessibilityState: {
-          ...(renderedElementProps?.accessibilityState ?? {}),
-          selected,
-        },
-        onHoverIn: (event: unknown) => {
-          setIsHovered(true);
-          if (typeof renderedElementProps?.onHoverIn === 'function') {
-            renderedElementProps.onHoverIn(event);
-          }
-        },
-        onHoverOut: (event: unknown) => {
-          setIsHovered(false);
-          if (typeof renderedElementProps?.onHoverOut === 'function') {
-            renderedElementProps.onHoverOut(event);
-          }
-        },
-        onFocus: (event: unknown) => {
-          setIsFocused(true);
-          if (typeof renderedElementProps?.onFocus === 'function') {
-            renderedElementProps.onFocus(event);
-          }
-        },
-        onBlur: (event: unknown) => {
-          setIsFocused(false);
-          if (typeof renderedElementProps?.onBlur === 'function') {
-            renderedElementProps.onBlur(event);
-          }
-        },
-        onPress: (event: unknown) => {
-          event.stopPropagation?.();
+        style: [props.rendered.props.style, selectionStyle],
+        onPress: (event: GestureResponderEvent) => {
+          event.stopPropagation();
           selectNode(props.nodeId ?? null);
-          if (typeof renderedElementProps?.onPress === 'function') {
-            renderedElementProps.onPress(event);
-          }
         },
-        style: [renderedElementProps?.style, selectionStyle],
       })
     : props.rendered;
 
-  return renderedNode;
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={\`Select \${props.nodeId}\`}
+      accessibilityState={{ selected }}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onPress={(event: GestureResponderEvent) => {
+        event.stopPropagation();
+        selectNode(props.nodeId ?? null);
+      }}
+      style={studioSelectionInteractionStyle}
+    >
+      {renderedNode}
+    </Pressable>
+  );
 }
 
 `
