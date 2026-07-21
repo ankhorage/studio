@@ -248,7 +248,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/app/StudioApp.tsx">
                 src/app/StudioApp.tsx
-                <small>6 functions</small>
+                <small>7 functions</small>
               </button>
             </li>
             <li>
@@ -998,7 +998,7 @@
                 data-target="src/host/studioWorkspaceExpoWeb.smoke.test.ts"
               >
                 src/host/studioWorkspaceExpoWeb.smoke.test.ts
-                <small>12 functions</small>
+                <small>16 functions</small>
               </button>
             </li>
             <li>
@@ -3022,11 +3022,14 @@
             </article>
             <article
               class="item"
-              data-search="src/host/studioWorkspaceExpoWeb.smoke.test.ts src/host/templateRegistry/index.ts"
+              data-search="src/host/studioWorkspaceExpoWeb.smoke.test.ts src/host/http/serverWithSecrets.ts src/host/templateRegistry/index.ts"
             >
               <h3>src/host/studioWorkspaceExpoWeb.smoke.test.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/host/templateRegistry/index.ts</code></p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/http/serverWithSecrets.ts</code>,
+                <code>src/host/templateRegistry/index.ts</code>
+              </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
@@ -8741,6 +8744,8 @@
                 package__ankhorage_studio -.-&gt;
                 module_src_host_studioWorkspaceExpoWeb_smoke_test_ts
                 module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt;
+                module_src_host_http_serverWithSecrets_ts
+                module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
                 module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_catalog_test_ts
@@ -9556,6 +9561,7 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts[&quot;src/host/studioWorkspaceExpoWeb.smoke.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_studioWorkspaceExpoWeb_smoke_test_ts
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_catalog_test_ts[&quot;src/host/templateRegistry/catalog.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_templateRegistry_catalog_test_ts
@@ -10422,6 +10428,8 @@ graph TD
                 module_src_host_studioInfra_e2e_test_ts --&gt;
                 module_src_host_secrets_trustedOAuthInfraEnvironment_ts
                 module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt;
+                module_src_host_http_serverWithSecrets_ts
+                module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
                 module_src_host_templateRegistry_catalog_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts module_src_host_templateRegistry_index_ts
@@ -11007,6 +11015,7 @@ graph LR
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --&gt; module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_catalog_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_index_ts --&gt; module_src_templateCatalogContracts_ts
@@ -12652,14 +12661,19 @@ sequenceDiagram
               <p class="muted"><code>src/app/StudioApp.tsx:57:3</code></p>
               <p class="empty">No description available.</p>
             </article>
+            <article class="item" data-search="AppBarBrand src/app/StudioApp.tsx ">
+              <h3>AppBarBrand</h3>
+              <p class="muted"><code>src/app/StudioApp.tsx:124:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article class="item" data-search="IconButton src/app/StudioApp.tsx ">
               <h3>IconButton</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:132:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:143:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="WorkspaceMenuItem src/app/StudioApp.tsx ">
               <h3>WorkspaceMenuItem</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:156:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:167:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -16779,10 +16793,42 @@ sequenceDiagram
             <h2>src/host/studioWorkspaceExpoWeb.smoke.test.ts</h2>
             <article
               class="item"
+              data-search="getSmokeTemplateSelection src/host/studioWorkspaceExpoWeb.smoke.test.ts "
+            >
+              <h3>getSmokeTemplateSelection</h3>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:117:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createSmokeWorkspaceFixture src/host/studioWorkspaceExpoWeb.smoke.test.ts "
+            >
+              <h3>createSmokeWorkspaceFixture</h3>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:126:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createSmokeManifest src/host/studioWorkspaceExpoWeb.smoke.test.ts "
+            >
+              <h3>createSmokeManifest</h3>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:154:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="spawnStudioExpoWeb src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>spawnStudioExpoWeb</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:78:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:201:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRouteText src/host/studioWorkspaceExpoWeb.smoke.test.ts "
+            >
+              <h3>expectRouteText</h3>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:219:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16790,15 +16836,7 @@ sequenceDiagram
               data-search="reservePort src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:92:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="waitForExpoWebUrl src/host/studioWorkspaceExpoWeb.smoke.test.ts "
-            >
-              <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:108:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:240:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16806,7 +16844,15 @@ sequenceDiagram
               data-search="resolveChromePath src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:121:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:256:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="canAccess src/host/studioWorkspaceExpoWeb.smoke.test.ts "
+            >
+              <h3>canAccess</h3>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:279:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16814,7 +16860,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:127:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:288:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16822,7 +16868,7 @@ sequenceDiagram
               data-search="openChromePage src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:143:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:305:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16830,7 +16876,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:248:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:422:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16838,7 +16884,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:261:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:439:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16846,7 +16892,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:276:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:454:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16854,7 +16900,7 @@ sequenceDiagram
               data-search="stopProcess src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:287:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:465:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16862,7 +16908,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:296:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:474:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16870,7 +16916,7 @@ sequenceDiagram
               data-search="isRecord src/host/studioWorkspaceExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:302:1</code></p>
+              <p class="muted"><code>src/host/studioWorkspaceExpoWeb.smoke.test.ts:480:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

@@ -75,15 +75,7 @@ function StudioAppRootContent() {
         {parentPath ? (
           <IconButton label="Back" iconName="chevron-back" onPress={handleBack} />
         ) : null}
-        <Pressable
-          onPress={() => router.replace('/')}
-          accessibilityRole="button"
-          accessibilityLabel="Go to projects"
-          style={styles.brand}
-        >
-          <Icon name="cube-outline" provider="Ionicons" size={22} color="primary" />
-          <Text weight="semiBold">Ankh Studio</Text>
-        </Pressable>
+        <AppBarBrand />
         <View style={styles.appBarActions}>
           {installState === 'running' ? (
             <ActivityIndicator color={theme.colors.primary} />
@@ -126,6 +118,25 @@ function StudioAppRootContent() {
       <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
     </View>
+  );
+}
+
+function AppBarBrand() {
+  const { theme } = useZoraTheme();
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <Pressable
+      onPress={() => router.replace('/')}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      accessibilityRole="button"
+      accessibilityLabel="Go to projects"
+      style={[styles.brand, { borderColor: focused ? theme.colors.primary : 'transparent' }]}
+    >
+      <Icon name="cube-outline" provider="Ionicons" size={22} color="primary" />
+      <Text weight="semiBold">Ankh Studio</Text>
+    </Pressable>
   );
 }
 
@@ -201,10 +212,13 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   brand: {
+    borderWidth: 1,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     minHeight: 42,
+    paddingHorizontal: 8,
     flexShrink: 1,
   },
   appBarActions: {

@@ -208,6 +208,7 @@
     "test": "bun test",
     "test:e2e": "bun run test:e2e:infra",
     "test:e2e:infra": "ANKH_STUDIO_INFRA_E2E=1 bun test src/host/studioInfra.e2e.test.ts",
+    "test:smoke:studio-web": "ANKH_STUDIO_WORKSPACE_WEB_SMOKE=1 bun test src/host/studioWorkspaceExpoWeb.smoke.test.ts",
     "docs": "paradox",
     "changeset": "changeset",
     "changeset:status": "changeset status --since=origin/main",

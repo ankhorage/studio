@@ -1245,7 +1245,7 @@
     {
       "path": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/templateRegistry/index.ts"],
+      "dependencies": ["src/host/http/serverWithSecrets.ts", "src/host/templateRegistry/index.ts"],
       "exports": []
     },
     {
@@ -6117,11 +6117,20 @@
       }
     },
     {
+      "name": "AppBarBrand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioApp.tsx",
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
       "name": "IconButton",
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioApp.tsx",
-        "line": 132,
+        "line": 143,
         "column": 1
       }
     },
@@ -6130,7 +6139,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioApp.tsx",
-        "line": 156,
+        "line": 167,
         "column": 1
       }
     },
@@ -10392,11 +10401,47 @@
       }
     },
     {
+      "name": "getSmokeTemplateSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 117,
+        "column": 1
+      }
+    },
+    {
+      "name": "createSmokeWorkspaceFixture",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 126,
+        "column": 1
+      }
+    },
+    {
+      "name": "createSmokeManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 154,
+        "column": 1
+      }
+    },
+    {
       "name": "spawnStudioExpoWeb",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 78,
+        "line": 201,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRouteText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 219,
         "column": 1
       }
     },
@@ -10405,16 +10450,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 92,
-        "column": 1
-      }
-    },
-    {
-      "name": "waitForExpoWebUrl",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 108,
+        "line": 240,
         "column": 1
       }
     },
@@ -10423,7 +10459,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 121,
+        "line": 256,
+        "column": 1
+      }
+    },
+    {
+      "name": "canAccess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 279,
         "column": 1
       }
     },
@@ -10432,7 +10477,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 127,
+        "line": 288,
         "column": 1
       }
     },
@@ -10441,7 +10486,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 143,
+        "line": 305,
         "column": 1
       }
     },
@@ -10450,7 +10495,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 248,
+        "line": 422,
         "column": 1
       }
     },
@@ -10459,7 +10504,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 261,
+        "line": 439,
         "column": 1
       }
     },
@@ -10468,7 +10513,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 276,
+        "line": 454,
         "column": 1
       }
     },
@@ -10477,7 +10522,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 287,
+        "line": 465,
         "column": 1
       }
     },
@@ -10486,7 +10531,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 296,
+        "line": 474,
         "column": 1
       }
     },
@@ -10495,7 +10540,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "line": 302,
+        "line": 480,
         "column": 1
       }
     },
@@ -14836,6 +14881,11 @@
         "fromPath": "src/host/studioInfra.e2e.test.ts",
         "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toPath": "src/host/http/serverWithSecrets.ts",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
         "fromPath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
@@ -20900,6 +20950,24 @@
         "sourcePath": "src/app/StudioApp.tsx"
       },
       {
+        "fromSymbol": "AppBarBrand",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "AppBarBrand",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioApp.tsx",
+        "toSymbol": "setFocused",
+        "callExpression": "setFocused",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
         "fromSymbol": "IconButton",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
@@ -20909,12 +20977,6 @@
         "fromSymbol": "IconButton",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/app/StudioApp.tsx"
-      },
-      {
-        "fromSymbol": "src/app/StudioApp.tsx",
-        "toSymbol": "setFocused",
-        "callExpression": "setFocused",
         "sourcePath": "src/app/StudioApp.tsx"
       },
       {
@@ -23349,14 +23411,44 @@
       },
       {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
         "toSymbol": "reservePort",
         "callExpression": "reservePort",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "toSymbol": "getTemplateCatalog",
-        "callExpression": "getTemplateCatalog",
+        "toSymbol": "getSmokeTemplateSelection",
+        "callExpression": "getSmokeTemplateSelection",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "createSmokeWorkspaceFixture",
+        "callExpression": "createSmokeWorkspaceFixture",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "startStudioHostServerWithSecrets",
+        "callExpression": "startStudioHostServerWithSecrets",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForHttp",
+        "callExpression": "waitForHttp",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
@@ -23373,8 +23465,8 @@
       },
       {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "toSymbol": "waitForExpoWebUrl",
-        "callExpression": "waitForExpoWebUrl",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
@@ -23397,20 +23489,8 @@
       },
       {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "toSymbol": "navigate",
-        "callExpression": "page.navigate",
-        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "toSymbol": "readBodyText",
-        "callExpression": "page.readBodyText",
-        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
+        "toSymbol": "expectRouteText",
+        "callExpression": "expectRouteText",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
@@ -23426,9 +23506,57 @@
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "getSmokeTemplateSelection",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createSmokeWorkspaceFixture",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createSmokeWorkspaceFixture",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createSmokeWorkspaceFixture",
+        "toSymbol": "createSmokeManifest",
+        "callExpression": "createSmokeManifest",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "spawnStudioExpoWeb",
         "toSymbol": "spawn",
         "callExpression": "spawn",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectRouteText",
+        "toSymbol": "navigate",
+        "callExpression": "page.navigate",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectRouteText",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "page.waitForBodyText",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectRouteText",
+        "toSymbol": "expect",
+        "callExpression": "expect",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
@@ -23450,9 +23578,15 @@
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
-        "fromSymbol": "waitForExpoWebUrl",
-        "toSymbol": "formatProcessOutput",
-        "callExpression": "formatProcessOutput",
+        "fromSymbol": "resolveChromePath",
+        "toSymbol": "canAccess",
+        "callExpression": "canAccess",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "canAccess",
+        "toSymbol": "access",
+        "callExpression": "access",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
@@ -23510,6 +23644,18 @@
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "readBodyText",
+        "callExpression": "this.readBodyText",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "predicate",
+        "callExpression": "predicate",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
         "toSymbol": "parseChromeProtocolMessage",
         "callExpression": "parseChromeProtocolMessage",
@@ -23531,6 +23677,12 @@
         "fromSymbol": "handleMessage",
         "toSymbol": "resolve",
         "callExpression": "pending.resolve",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForHttp",
+        "toSymbol": "getDiagnostics",
+        "callExpression": "getDiagnostics",
         "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
       },
       {
