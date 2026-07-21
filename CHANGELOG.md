@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.2
+
+### Patch Changes
+
+- 3cc49da: Fix generated nested navigator layouts so theme-dependent screen option declarations are scoped after `useZoraTheme()`, preventing `theme is not defined` crashes during Expo static rendering and infrastructure startup.
+
 ## 0.10.1
 
 ### Patch Changes
