@@ -4,9 +4,9 @@ import type { StudioProjectSummary } from '../../projectWorkspaceContracts';
 import { resolveCreateProjectFormState } from './createProjectFormState';
 
 const existingProject = {
-  id: 'spotify',
-  name: 'Spotify',
-  path: '/workspace/apps/spotify',
+  id: 'release-monitor',
+  name: 'Release Monitor',
+  path: '/workspace/apps/release-monitor',
   version: '1.0.0',
   isAnkhApp: true,
   category: 'music_audio',
@@ -22,7 +22,7 @@ const existingProjects = [existingProject] satisfies StudioProjectSummary[];
 
 test('does not enter a valid creation state while projects are loading', () => {
   const state = resolveCreateProjectFormState({
-    projectName: 'Spotify',
+    projectName: 'Release Monitor',
     existingProjects: [],
     projectsLoading: true,
     projectsError: null,
@@ -37,7 +37,7 @@ test('does not enter a valid creation state while projects are loading', () => {
 
 test('surfaces project list failure as non-creatable', () => {
   const state = resolveCreateProjectFormState({
-    projectName: 'Spot the fly',
+    projectName: 'Infra Health',
     existingProjects: [],
     projectsLoading: false,
     projectsError: 'Could not connect',
@@ -53,7 +53,7 @@ test('surfaces project list failure as non-creatable', () => {
 test('blocks duplicate names, duplicate IDs, and reserved studio ID after projects load', () => {
   expect(
     resolveCreateProjectFormState({
-      projectName: 'Spotify',
+      projectName: 'Release Monitor',
       existingProjects,
       projectsLoading: false,
       projectsError: null,
@@ -81,11 +81,11 @@ test('blocks duplicate names, duplicate IDs, and reserved studio ID after projec
 
   expect(
     resolveCreateProjectFormState({
-      projectName: 'Spot the fly',
+      projectName: 'Infra Health',
       existingProjects: [
         {
           ...existingProject,
-          id: 'spot-the-fly',
+          id: 'infra-health',
           name: 'Other',
         },
       ],
@@ -110,7 +110,7 @@ test('blocks duplicate names, duplicate IDs, and reserved studio ID after projec
 
 test('enables creation only after template and project data are ready', () => {
   const state = resolveCreateProjectFormState({
-    projectName: 'Spot the fly',
+    projectName: 'Infra Health',
     existingProjects,
     projectsLoading: false,
     projectsError: null,
@@ -118,7 +118,7 @@ test('enables creation only after template and project data are ready', () => {
     isCreating: false,
   });
 
-  expect(state.derivedProjectId).toBe('spot-the-fly');
-  expect(state.validation).toEqual({ ok: true, projectId: 'spot-the-fly' });
+  expect(state.derivedProjectId).toBe('infra-health');
+  expect(state.validation).toEqual({ ok: true, projectId: 'infra-health' });
   expect(state.canCreate).toBe(true);
 });

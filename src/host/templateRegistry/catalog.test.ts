@@ -13,9 +13,14 @@ test('exposes one grouped template catalog without template versions', () => {
   expect(developerTools?.templates.length).toBeGreaterThan(0);
 
   const [template] = developerTools?.templates ?? [];
-  expect(typeof template?.id).toBe('string');
-  expect(typeof template?.templateId).toBe('string');
-  expect(typeof template?.name).toBe('string');
-  expect(typeof template?.description).toBe('string');
-  expect(template !== undefined && 'version' in template).toBe(false);
+  expect(template).toBeDefined();
+  if (!template) return;
+
+  expect(Object.keys(template).sort()).toEqual(['description', 'id', 'name', 'templateId']);
+  expect(typeof template.id).toBe('string');
+  expect(typeof template.templateId).toBe('string');
+  expect(typeof template.name).toBe('string');
+  expect(typeof template.description).toBe('string');
+  expect('category' in template).toBe(false);
+  expect('version' in template).toBe(false);
 });

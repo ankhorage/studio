@@ -21,8 +21,8 @@ const existingProjects = [
 ] satisfies StudioProjectSummary[];
 
 test('derives project IDs with the shared canonical rules', () => {
-  expect(deriveProjectId('Spotify')).toBe('spotify');
-  expect(deriveProjectId('Spot the fly')).toBe('spot-the-fly');
+  expect(deriveProjectId('Release Monitor')).toBe('release-monitor');
+  expect(deriveProjectId('Infra Health')).toBe('infra-health');
 });
 
 test('validates duplicate and reserved project identities', () => {

@@ -114,18 +114,10 @@ function StudioAppRootContent() {
                   { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
                 ]}
               >
-                <Pressable
+                <WorkspaceMenuItem
                   onPress={() => void handleInstallWorkspacePackages()}
                   disabled={installState === 'running'}
-                  accessibilityRole="button"
-                  accessibilityLabel="Install workspace packages"
-                  style={styles.workspaceMenuItem}
-                >
-                  <Icon name="download-outline" provider="Ionicons" size={16} color="primary" />
-                  <Text variant="bodySmall" weight="semiBold">
-                    Install workspace packages
-                  </Text>
-                </Pressable>
+                />
               </View>
             ) : null}
           </View>
@@ -139,21 +131,49 @@ function StudioAppRootContent() {
 
 function IconButton(props: { label: string; iconName: string; onPress: () => void }) {
   const { theme } = useZoraTheme();
+  const [focused, setFocused] = useState(false);
 
   return (
     <Pressable
       onPress={props.onPress}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       accessibilityRole="button"
       accessibilityLabel={props.label}
       style={({ pressed }) => [
         styles.iconButton,
         {
-          borderColor: theme.colors.border,
+          borderColor: focused ? theme.colors.primary : theme.colors.border,
           opacity: pressed ? 0.82 : 1,
         },
       ]}
     >
       <Icon name={props.iconName} provider="Ionicons" size={18} color="text" />
+    </Pressable>
+  );
+}
+
+function WorkspaceMenuItem(props: { disabled: boolean; onPress: () => void }) {
+  const { theme } = useZoraTheme();
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <Pressable
+      onPress={props.onPress}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      disabled={props.disabled}
+      accessibilityRole="button"
+      accessibilityLabel="Install workspace packages"
+      style={[
+        styles.workspaceMenuItem,
+        { borderColor: focused ? theme.colors.primary : 'transparent' },
+      ]}
+    >
+      <Icon name="download-outline" provider="Ionicons" size={16} color="primary" />
+      <Text variant="bodySmall" weight="semiBold">
+        Install workspace packages
+      </Text>
     </Pressable>
   );
 }
@@ -212,6 +232,8 @@ const styles = StyleSheet.create({
   },
   workspaceMenuItem: {
     minHeight: 38,
+    borderWidth: 1,
+    borderRadius: 6,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,

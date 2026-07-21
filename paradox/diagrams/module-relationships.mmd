@@ -16,7 +16,7 @@ graph LR
   module_src_app_workspace_navigation_ts["src/app/workspace/navigation.ts"]
   module_src_app_workspace_routeParams_test_ts["src/app/workspace/routeParams.test.ts"]
   module_src_app_workspace_routeParams_ts["src/app/workspace/routeParams.ts"]
-  module_src_app_workspace_WorkspaceScreens_tsx["src/app/workspace/WorkspaceScreens.tsx"]
+  module_src_app_workspace_WorkspacePrimitives_tsx["src/app/workspace/WorkspacePrimitives.tsx"]
   module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
   module_src_authSettings_ts["src/authSettings.ts"]
@@ -26,6 +26,7 @@ graph LR
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
+  module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   module_src_contractGuards_ts["src/contractGuards.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
@@ -114,6 +115,7 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts["src/host/secrets/trustedOAuthInfraEnvironment.test.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts["src/host/secrets/trustedOAuthInfraEnvironment.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
   module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
@@ -210,9 +212,28 @@ graph LR
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
+  module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
   module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
   module_src_workspaceSearch_ts["src/workspaceSearch.ts"]
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_workspaceSearch_ts
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_routeParams_ts
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_createProjectFormState_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_routeParams_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
+  module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectDetailScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_ProjectDetailScreen_tsx --> module_src_workspacePlatform_ts
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_projectWorkspaceContracts_ts
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_StudioApp_tsx --> module_src_app_workspace_navigation_ts
   module_src_app_StudioApp_tsx --> module_src_hooks_useWorkspaceActions_ts
   module_src_app_workspace_createProjectFormState_test_ts --> module_src_app_workspace_createProjectFormState_ts
@@ -222,14 +243,8 @@ graph LR
   module_src_app_workspace_navigation_test_ts --> module_src_app_workspace_navigation_ts
   module_src_app_workspace_routeParams_test_ts --> module_src_app_workspace_routeParams_ts
   module_src_app_workspace_routeParams_ts --> module_src_contractGuards_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_app_workspace_createProjectFormState_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_app_workspace_routeParams_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_hooks_useProjects_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_hooks_useTemplateCatalog_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_projectWorkspaceContracts_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_templateCatalogContracts_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_workspacePlatform_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_workspaceSearch_ts
+  module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_projectWorkspaceContracts_ts
+  module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_templateCatalogContracts_ts
   module_src_authSettings_test_ts --> module_src_authSettings_ts
   module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
   module_src_canvasDragModel_public_test_ts --> module_src_canvasDropZones_ts
@@ -244,6 +259,7 @@ graph LR
   module_src_cli_index_ts --> module_src_host_http_server_ts
   module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
   module_src_core_studioManifestDraftModel_test_ts --> module_src_authSettings_ts
   module_src_core_studioManifestDraftModel_test_ts --> module_src_core_studioManifestDraftModel_ts
@@ -408,7 +424,9 @@ graph LR
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_templateRegistry_index_ts --> module_src_templateCatalogContracts_ts
   module_src_host_zoraExtensions_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts --> module_src_authSettings_ts
@@ -523,5 +541,6 @@ graph LR
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts
+  module_src_workspacePlatform_test_ts --> module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts --> module_src_projectWorkspaceContracts_ts
   module_src_workspaceSearch_ts --> module_src_templateCatalogContracts_ts

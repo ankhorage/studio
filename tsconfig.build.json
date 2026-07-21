@@ -20,7 +20,7 @@
     "src/app/CreateCategoriesScreen.tsx",
     "src/app/CreateCategoryTemplatesScreen.tsx",
     "src/app/CreateProjectFromTemplateScreen.tsx",
-    "src/app/workspace/WorkspaceScreens.tsx",
+    "src/app/workspace/WorkspacePrimitives.tsx",
     "src/app/workspace/createProjectFormState.ts",
     "src/app/workspace/navigation.ts",
     "src/app/workspace/routeParams.ts",

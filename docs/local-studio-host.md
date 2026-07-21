@@ -14,7 +14,7 @@ This starts the loopback-only HTTP host on `127.0.0.1:3000` and the first-party 
 
 The host resolves the nearest package named `@ankhorage/studio` that contains an `apps/` directory. Generated projects live in `apps/<project-id>`; `apps/studio` is reserved for the first-party Studio workspace app.
 
-Project IDs are derived from project names with the shared Studio project identity model. For example, `Spotify` derives to `spotify` and `Spot the fly` derives to `spot-the-fly`. The ID `studio` is reserved, and names that derive to `studio` are rejected before any filesystem mutation.
+Project IDs are derived from project names with the shared Studio project identity model. For example, `Release Monitor` derives to `release-monitor` and `Infra Health` derives to `infra-health`. The ID `studio` is reserved, and names that derive to `studio` are rejected before any filesystem mutation.
 
 The Studio workspace app owns project lifecycle management: listing projects, creating projects, opening a selected project detail screen, synchronizing generated project files, starting generated infrastructure, opening the infrastructure-hosted running app, deleting projects after confirmation, and installing workspace packages.
 

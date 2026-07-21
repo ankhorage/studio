@@ -8,6 +8,13 @@ import { getProjectPath } from './projectPaths';
 
 export type ProjectSummary = StudioProjectSummary;
 
+export class ProjectManifestNotFoundError extends Error {
+  constructor(projectId: string) {
+    super(`Project '${projectId}' is missing canonical ankh.config.json.`);
+    this.name = 'ProjectManifestNotFoundError';
+  }
+}
+
 export class ProjectStore {
   constructor(private readonly rootPath: string) {}
 
@@ -103,28 +110,7 @@ export class ProjectStore {
       return parseReadableAppManifest(JSON.parse(await fs.readFile(manifestPath, 'utf8')));
     }
 
-    return {
-      metadata: {
-        name: projectId,
-        slug: projectId,
-        version: '1.0.0',
-        category: 'developer_tools',
-        themeId: 'default',
-      },
-      settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-      infra: { plugins: [] },
-      screens: {},
-      navigator: { type: 'stack', routes: [{ name: 'index', screenId: 'index' }] },
-      themes: [
-        {
-          id: 'default',
-          name: 'Default',
-          light: { primaryColor: '#2563eb', harmony: 'analogous' },
-          dark: { primaryColor: '#60a5fa', harmony: 'analogous' },
-        },
-      ],
-      activeThemeId: 'default',
-    };
+    throw new ProjectManifestNotFoundError(projectId);
   }
 
   async readStudioManifest(projectId: string): Promise<AppManifest> {

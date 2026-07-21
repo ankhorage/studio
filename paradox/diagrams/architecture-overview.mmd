@@ -11,16 +11,34 @@ graph TD
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
   module_src_app_CreateCategoriesScreen_tsx["src/app/CreateCategoriesScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateCategoriesScreen_tsx
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
+  module_src_app_CreateCategoriesScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_CreateCategoryTemplatesScreen_tsx["src/app/CreateCategoryTemplatesScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateCategoryTemplatesScreen_tsx
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_routeParams_ts
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateCategoryTemplatesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_CreateProjectFromTemplateScreen_tsx["src/app/CreateProjectFromTemplateScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_CreateProjectFromTemplateScreen_tsx
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_createProjectFormState_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_routeParams_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_CreateProjectFromTemplateScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
   module_src_app_index_ts["src/app/index.ts"]
   package__ankhorage_studio -.-> module_src_app_index_ts
   module_src_app_ProjectDetailScreen_tsx["src/app/ProjectDetailScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_ProjectDetailScreen_tsx
+  module_src_app_ProjectDetailScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectDetailScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_ProjectDetailScreen_tsx --> module_src_workspacePlatform_ts
   module_src_app_ProjectsOverviewScreen_tsx["src/app/ProjectsOverviewScreen.tsx"]
   package__ankhorage_studio -.-> module_src_app_ProjectsOverviewScreen_tsx
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_hooks_useProjects_ts
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_projectWorkspaceContracts_ts
+  module_src_app_ProjectsOverviewScreen_tsx --> module_src_workspaceSearch_ts
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
   package__ankhorage_studio -.-> module_src_app_StudioApp_tsx
   module_src_app_StudioApp_tsx --> module_src_app_workspace_navigation_ts
@@ -46,16 +64,10 @@ graph TD
   module_src_app_workspace_routeParams_ts["src/app/workspace/routeParams.ts"]
   package__ankhorage_studio -.-> module_src_app_workspace_routeParams_ts
   module_src_app_workspace_routeParams_ts --> module_src_contractGuards_ts
-  module_src_app_workspace_WorkspaceScreens_tsx["src/app/workspace/WorkspaceScreens.tsx"]
-  package__ankhorage_studio -.-> module_src_app_workspace_WorkspaceScreens_tsx
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_app_workspace_createProjectFormState_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_app_workspace_routeParams_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_hooks_useProjects_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_hooks_useTemplateCatalog_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_projectWorkspaceContracts_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_templateCatalogContracts_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_workspacePlatform_ts
-  module_src_app_workspace_WorkspaceScreens_tsx --> module_src_workspaceSearch_ts
+  module_src_app_workspace_WorkspacePrimitives_tsx["src/app/workspace/WorkspacePrimitives.tsx"]
+  package__ankhorage_studio -.-> module_src_app_workspace_WorkspacePrimitives_tsx
+  module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_projectWorkspaceContracts_ts
+  module_src_app_workspace_WorkspacePrimitives_tsx --> module_src_templateCatalogContracts_ts
   module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
   package__ankhorage_studio -.-> module_src_authFlowContract_test_ts
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
@@ -88,6 +100,9 @@ graph TD
   module_src_cli_index_ts --> module_src_host_http_server_ts
   module_src_cli_index_ts --> module_src_host_templateRegistry_index_ts
   module_src_cli_index_ts --> module_src_host_utils_workspaceRoot_ts
+  module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
+  package__ankhorage_studio -.-> module_src_contractGuards_test_ts
+  module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_contractGuards_ts["src/contractGuards.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_ts
   module_src_core_constants_ts["src/core/constants.ts"]
@@ -428,11 +443,15 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_studioWorkspaceExpoWeb_smoke_test_ts
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
   package__ankhorage_studio -.-> module_src_host_templateRegistry_catalog_test_ts
   module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
   package__ankhorage_studio -.-> module_src_host_templateRegistry_index_ts
+  module_src_host_templateRegistry_index_ts --> module_src_templateCatalogContracts_ts
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
   package__ankhorage_studio -.-> module_src_host_utils_requirementsInference_ts
   module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
@@ -734,6 +753,9 @@ graph TD
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts
+  module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
+  package__ankhorage_studio -.-> module_src_workspacePlatform_test_ts
+  module_src_workspacePlatform_test_ts --> module_src_workspacePlatform_ts
   module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
   package__ankhorage_studio -.-> module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts["src/workspaceSearch.ts"]

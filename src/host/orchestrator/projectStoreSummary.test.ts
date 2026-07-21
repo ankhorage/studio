@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { expect, test } from 'bun:test';
 
-import { ProjectStore } from './projectStore';
+import { ProjectManifestNotFoundError, ProjectStore } from './projectStore';
 
 test('project summary reads canonical category, active theme, and timestamps', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-project-summary-'));
@@ -54,3 +54,27 @@ test('project summary reads canonical category, active theme, and timestamps', a
     activeTheme: { id: 'default', name: 'Default' },
   });
 });
+
+test('missing project manifests are rejected instead of synthesized', async () => {
+  const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-project-missing-manifest-'));
+  const projectRoot = path.join(workspaceRoot, 'apps', 'demo');
+  await mkdir(projectRoot, { recursive: true });
+  await writeFile(path.join(projectRoot, 'package.json'), JSON.stringify({ name: 'demo' }));
+
+  const store = new ProjectStore(workspaceRoot);
+  const error = await catchError(store.readManifest('demo'));
+
+  expect(error).toBeInstanceOf(ProjectManifestNotFoundError);
+  expect(error instanceof Error ? error.message : '').toContain(
+    "Project 'demo' is missing canonical ankh.config.json.",
+  );
+});
+
+async function catchError(promise: Promise<unknown>): Promise<unknown> {
+  try {
+    await promise;
+    return null;
+  } catch (caught) {
+    return caught;
+  }
+}

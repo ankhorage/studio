@@ -90,19 +90,33 @@
     {
       "path": "src/app/CreateCategoriesScreen.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/hooks/useTemplateCatalog.ts",
+        "src/workspaceSearch.ts"
+      ],
       "exports": ["CreateCategoriesScreen"]
     },
     {
       "path": "src/app/CreateCategoryTemplatesScreen.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/app/workspace/routeParams.ts",
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/hooks/useTemplateCatalog.ts"
+      ],
       "exports": ["CreateCategoryTemplatesScreen"]
     },
     {
       "path": "src/app/CreateProjectFromTemplateScreen.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/app/workspace/createProjectFormState.ts",
+        "src/app/workspace/routeParams.ts",
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/hooks/useProjects.ts",
+        "src/hooks/useTemplateCatalog.ts"
+      ],
       "exports": ["CreateProjectFromTemplateScreen"]
     },
     {
@@ -121,13 +135,22 @@
     {
       "path": "src/app/ProjectDetailScreen.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/hooks/useProjects.ts",
+        "src/workspacePlatform.ts"
+      ],
       "exports": ["ProjectDetailScreen"]
     },
     {
       "path": "src/app/ProjectsOverviewScreen.tsx",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/app/workspace/WorkspacePrimitives.tsx",
+        "src/hooks/useProjects.ts",
+        "src/projectWorkspaceContracts.ts",
+        "src/workspaceSearch.ts"
+      ],
       "exports": ["ProjectsOverviewScreen"]
     },
     {
@@ -182,24 +205,27 @@
       "exports": ["resolveWorkspaceCategoryParam", "WorkspaceCategoryParam"]
     },
     {
-      "path": "src/app/workspace/WorkspaceScreens.tsx",
+      "path": "src/app/workspace/WorkspacePrimitives.tsx",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/app/workspace/createProjectFormState.ts",
-        "src/app/workspace/routeParams.ts",
-        "src/hooks/useProjects.ts",
-        "src/hooks/useTemplateCatalog.ts",
-        "src/projectWorkspaceContracts.ts",
-        "src/templateCatalogContracts.ts",
-        "src/workspacePlatform.ts",
-        "src/workspaceSearch.ts"
-      ],
+      "dependencies": ["src/projectWorkspaceContracts.ts", "src/templateCatalogContracts.ts"],
       "exports": [
-        "CreateCategoriesScreen",
-        "CreateCategoryTemplatesScreen",
-        "CreateProjectFromTemplateScreen",
-        "ProjectDetailScreen",
-        "ProjectsOverviewScreen"
+        "CategoryCard",
+        "EmptyState",
+        "formatCategory",
+        "formatDate",
+        "InlineMessage",
+        "LifecycleAction",
+        "LoadingState",
+        "MetadataRows",
+        "PrimaryAction",
+        "ProjectOverviewCard",
+        "SearchResults",
+        "SecondaryAction",
+        "SegmentedControl",
+        "styles",
+        "TemplateCard",
+        "ThemedWorkspaceTextInput",
+        "WorkspaceScreen"
       ]
     },
     {
@@ -279,6 +305,12 @@
         "src/host/utils/workspaceRoot.ts"
       ],
       "exports": ["default"]
+    },
+    {
+      "path": "src/contractGuards.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/contractGuards.ts"],
+      "exports": []
     },
     {
       "path": "src/contractGuards.ts",
@@ -1071,7 +1103,7 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/projectWorkspaceContracts.ts"
       ],
-      "exports": ["ProjectStore", "ProjectSummary"]
+      "exports": ["ProjectManifestNotFoundError", "ProjectStore", "ProjectSummary"]
     },
     {
       "path": "src/host/orchestrator/projectStoreSummary.test.ts",
@@ -1211,6 +1243,12 @@
       "exports": []
     },
     {
+      "path": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/templateRegistry/index.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/templateRegistry/catalog.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/templateRegistry/index.ts"],
@@ -1219,13 +1257,8 @@
     {
       "path": "src/host/templateRegistry/index.ts",
       "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "getProjectTemplate",
-        "getTemplateCatalog",
-        "ProjectTemplateCatalog",
-        "ProjectTemplateSelection"
-      ]
+      "dependencies": ["src/templateCatalogContracts.ts"],
+      "exports": ["getProjectTemplate", "getTemplateCatalog", "ProjectTemplateSelection"]
     },
     {
       "path": "src/host/utils/requirementsInference.ts",
@@ -2326,10 +2359,23 @@
       ]
     },
     {
+      "path": "src/workspacePlatform.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/workspacePlatform.ts"],
+      "exports": []
+    },
+    {
       "path": "src/workspacePlatform.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["confirmDelete", "openProjectUrl"]
+      "exports": [
+        "confirmDelete",
+        "createDeleteConfirmation",
+        "DeleteConfirmationAlert",
+        "DeleteConfirmationButton",
+        "DeleteConfirmationDependencies",
+        "openProjectUrl"
+      ]
     },
     {
       "path": "src/workspaceSearch.ts",
@@ -5900,6 +5946,141 @@
   "components": [],
   "sourceFunctions": [
     {
+      "name": "CreateCategoriesScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateCategoriesScreen.tsx",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "CreateCategoryTemplatesScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateCategoryTemplatesScreen.tsx",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "useCategoryRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateCategoryTemplatesScreen.tsx",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "firstParam",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateCategoryTemplatesScreen.tsx",
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "CreateProjectFromTemplateScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "handleCreate",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "line": 52,
+        "column": 3
+      }
+    },
+    {
+      "name": "useTemplateRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "line": 149,
+        "column": 1
+      }
+    },
+    {
+      "name": "firstParam",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "ProjectDetailScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "runAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 36,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleOpenRunningApp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 54,
+        "column": 9
+      }
+    },
+    {
+      "name": "handleDelete",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 71,
+        "column": 9
+      }
+    },
+    {
+      "name": "useProjectRouteParams",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 181,
+        "column": 1
+      }
+    },
+    {
+      "name": "firstParam",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectDetailScreen.tsx",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "ProjectsOverviewScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/ProjectsOverviewScreen.tsx",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
       "name": "StudioApp",
       "description": null,
       "sourceLocation": {
@@ -5940,7 +6121,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/app/StudioApp.tsx",
-        "line": 140,
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "WorkspaceMenuItem",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/StudioApp.tsx",
+        "line": 156,
         "column": 1
       }
     },
@@ -5981,92 +6171,20 @@
       }
     },
     {
-      "name": "ProjectsOverviewScreen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 30,
-        "column": 1
-      }
-    },
-    {
-      "name": "ProjectDetailScreen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 114,
-        "column": 1
-      }
-    },
-    {
-      "name": "runAction",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 130,
-        "column": 3
-      }
-    },
-    {
-      "name": "handleOpenRunningApp",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 148,
-        "column": 9
-      }
-    },
-    {
-      "name": "handleDelete",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 165,
-        "column": 9
-      }
-    },
-    {
-      "name": "CreateCategoriesScreen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 287,
-        "column": 1
-      }
-    },
-    {
-      "name": "CreateCategoryTemplatesScreen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 338,
-        "column": 1
-      }
-    },
-    {
-      "name": "CreateProjectFromTemplateScreen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 383,
-        "column": 1
-      }
-    },
-    {
-      "name": "handleCreate",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 413,
-        "column": 3
-      }
-    },
-    {
       "name": "WorkspaceScreen",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 512,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemedWorkspaceTextInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 45,
         "column": 1
       }
     },
@@ -6074,8 +6192,8 @@
       "name": "ProjectOverviewCard",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 533,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 75,
         "column": 1
       }
     },
@@ -6083,8 +6201,8 @@
       "name": "CategoryCard",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 568,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 113,
         "column": 1
       }
     },
@@ -6092,8 +6210,8 @@
       "name": "TemplateCard",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 599,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 147,
         "column": 1
       }
     },
@@ -6101,8 +6219,8 @@
       "name": "SearchResults",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 629,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 180,
         "column": 1
       }
     },
@@ -6110,8 +6228,8 @@
       "name": "LifecycleAction",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 668,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 219,
         "column": 1
       }
     },
@@ -6119,8 +6237,8 @@
       "name": "PrimaryAction",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 709,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 263,
         "column": 1
       }
     },
@@ -6128,8 +6246,8 @@
       "name": "SecondaryAction",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 740,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 297,
         "column": 1
       }
     },
@@ -6137,8 +6255,17 @@
       "name": "SegmentedControl",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 761,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 321,
+        "column": 1
+      }
+    },
+    {
+      "name": "SegmentedOption",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 345,
         "column": 1
       }
     },
@@ -6146,8 +6273,8 @@
       "name": "MetadataRows",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 798,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 378,
         "column": 1
       }
     },
@@ -6155,8 +6282,8 @@
       "name": "InlineMessage",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 815,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 395,
         "column": 1
       }
     },
@@ -6164,8 +6291,8 @@
       "name": "LoadingState",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 828,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 408,
         "column": 1
       }
     },
@@ -6173,44 +6300,8 @@
       "name": "EmptyState",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 840,
-        "column": 1
-      }
-    },
-    {
-      "name": "useProjectRouteParams",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 860,
-        "column": 1
-      }
-    },
-    {
-      "name": "useCategoryRouteParams",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 865,
-        "column": 1
-      }
-    },
-    {
-      "name": "useTemplateRouteParams",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 870,
-        "column": 1
-      }
-    },
-    {
-      "name": "firstParam",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 879,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 420,
         "column": 1
       }
     },
@@ -6218,8 +6309,8 @@
       "name": "formatCategory",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 883,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 440,
         "column": 1
       }
     },
@@ -6227,8 +6318,8 @@
       "name": "formatDate",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/app/workspace/WorkspaceScreens.tsx",
-        "line": 890,
+        "filePath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "line": 447,
         "column": 1
       }
     },
@@ -6620,70 +6711,25 @@
       }
     },
     {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.test.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "withPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.test.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
       "name": "isAppCategory",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 22,
-        "column": 1
-      }
-    },
-    {
-      "name": "isColorHarmony",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 26,
-        "column": 1
-      }
-    },
-    {
-      "name": "isRecord",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 30,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNavigatorType",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 34,
-        "column": 1
-      }
-    },
-    {
-      "name": "isThemeModeConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 38,
-        "column": 1
-      }
-    },
-    {
-      "name": "isThemeConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 42,
-        "column": 1
-      }
-    },
-    {
-      "name": "isUiNode",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 52,
-        "column": 1
-      }
-    },
-    {
-      "name": "isScreenSpec",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
@@ -6692,34 +6738,70 @@
       }
     },
     {
-      "name": "isRouteDefinition",
+      "name": "isColorHarmony",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 76,
+        "line": 69,
         "column": 1
       }
     },
     {
-      "name": "isNavigatorSpec",
+      "name": "isRecord",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 90,
+        "line": 73,
         "column": 1
       }
     },
     {
-      "name": "isInfraManifest",
+      "name": "isOptionalString",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 101,
+        "line": 77,
         "column": 1
       }
     },
     {
-      "name": "isAppSettings",
+      "name": "isOptionalNumber",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOptionalBoolean",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStringArray",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "isManifestValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 93,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNavigatorType",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
@@ -6728,11 +6810,479 @@
       }
     },
     {
+      "name": "isThemeModeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "isThemeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "isUiNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 128,
+        "column": 1
+      }
+    },
+    {
+      "name": "isScreenSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 148,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRouteDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 163,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNavigatorSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSplashScreenModeSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 189,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSplashScreenSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 201,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDeploymentSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 209,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDatabaseSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 215,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStorageSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 224,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStateSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNetworkingSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 242,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthFlow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 278,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthOAuthConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 291,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthProfileSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 314,
+        "column": 1
+      }
+    },
+    {
+      "name": "isInfraManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 331,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppSettings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 346,
+        "column": 1
+      }
+    },
+    {
       "name": "isScreenRegistry",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 121,
+        "line": 357,
+        "column": 1
+      }
+    },
+    {
+      "name": "isIconSpec",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 361,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSecretRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 373,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCredentialRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 377,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAdapterRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 387,
+        "column": 1
+      }
+    },
+    {
+      "name": "isScreenRequirements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 398,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppDataManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 414,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppApiDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 422,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppApiEndpointDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 444,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppApiAuthRequirement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 462,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAppApiResourceDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 473,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDbCollectionDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 487,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataSourceRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 507,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataSourceConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 511,
+        "column": 1
+      }
+    },
+    {
+      "name": "isManagedApiResourceConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 545,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataEndpointRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 559,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataEndpointConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 563,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataOperationConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 579,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataOperationRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 599,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataOperationParameter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 608,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataOperationResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 621,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataSchemaSlot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 633,
+        "column": 1
+      }
+    },
+    {
+      "name": "isComponentDataBindingRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 637,
+        "column": 1
+      }
+    },
+    {
+      "name": "isComponentDataBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 641,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPropBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 656,
+        "column": 1
+      }
+    },
+    {
+      "name": "isEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 668,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingValueSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 686,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingOperationRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 699,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingFallback",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 708,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingLifecycleBehavior",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 716,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOptionalBindingTransforms",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 726,
+        "column": 1
+      }
+    },
+    {
+      "name": "isScreenDataLoaderDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 734,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingInputMap",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 750,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingInputValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 754,
         "column": 1
       }
     },
@@ -6741,7 +7291,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 125,
+        "line": 769,
         "column": 1
       }
     },
@@ -9144,7 +9694,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 194,
+        "line": 180,
         "column": 1
       }
     },
@@ -9153,7 +9703,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 202,
+        "line": 188,
         "column": 1
       }
     },
@@ -9162,7 +9712,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 210,
+        "line": 196,
         "column": 1
       }
     },
@@ -9171,7 +9721,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 219,
+        "line": 205,
         "column": 1
       }
     },
@@ -9180,7 +9730,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 228,
+        "line": 214,
+        "column": 1
+      }
+    },
+    {
+      "name": "catchError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "line": 73,
         "column": 1
       }
     },
@@ -9833,11 +10392,119 @@
       }
     },
     {
+      "name": "spawnStudioExpoWeb",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "reservePort",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForExpoWebUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChromePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 121,
+        "column": 1
+      }
+    },
+    {
+      "name": "spawnChrome",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "openChromePage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 143,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForHttp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 248,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseChromeProtocolMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 261,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 276,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 287,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 296,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "line": 302,
+        "column": 1
+      }
+    },
+    {
       "name": "createProjectTemplateId",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 37,
+        "line": 24,
         "column": 1
       }
     },
@@ -9846,7 +10513,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 41,
+        "line": 28,
         "column": 1
       }
     },
@@ -9855,7 +10522,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 56,
+        "line": 43,
         "column": 1
       }
     },
@@ -9864,7 +10531,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 81,
+        "line": 68,
         "column": 1
       }
     },
@@ -9873,7 +10540,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 93,
+        "line": 80,
         "column": 1
       }
     },
@@ -9882,16 +10549,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 108,
+        "line": 95,
         "column": 1
       }
     },
     {
-      "name": "createTemplateSummaries",
+      "name": "createTemplateIndex",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 118,
+        "line": 105,
         "column": 1
       }
     },
@@ -9900,7 +10567,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/templateRegistry/index.ts",
-        "line": 135,
+        "line": 122,
         "column": 1
       }
     },
@@ -13055,11 +13722,20 @@
       }
     },
     {
+      "name": "createDeleteConfirmation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/workspacePlatform.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
       "name": "confirmDelete",
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspacePlatform.ts",
-        "line": 5,
+        "line": 45,
         "column": 1
       }
     },
@@ -13068,7 +13744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/workspacePlatform.ts",
-        "line": 13,
+        "line": 66,
         "column": 1
       }
     },
@@ -13345,6 +14021,11 @@
         "fromPath": "src/canvasDropZones.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/canvasDropZones.ts"
+      },
+      {
+        "fromPath": "src/contractGuards.test.ts",
+        "toPath": "src/contractGuards.ts",
+        "sourcePath": "src/contractGuards.test.ts"
       },
       {
         "fromPath": "src/index.test.ts",
@@ -13657,6 +14338,11 @@
         "sourcePath": "src/studioSelectionModel.test.ts"
       },
       {
+        "fromPath": "src/workspacePlatform.test.ts",
+        "toPath": "src/workspacePlatform.ts",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
         "fromPath": "src/workspaceSearch.ts",
         "toPath": "src/projectWorkspaceContracts.ts",
         "sourcePath": "src/workspaceSearch.ts"
@@ -13668,17 +14354,57 @@
       },
       {
         "fromPath": "src/app/CreateCategoriesScreen.tsx",
-        "toPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "toPath": "src/hooks/useTemplateCatalog.ts",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateCategoriesScreen.tsx",
+        "toPath": "src/workspaceSearch.ts",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateCategoriesScreen.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
         "sourcePath": "src/app/CreateCategoriesScreen.tsx"
       },
       {
         "fromPath": "src/app/CreateCategoryTemplatesScreen.tsx",
-        "toPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "toPath": "src/hooks/useTemplateCatalog.ts",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateCategoryTemplatesScreen.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateCategoryTemplatesScreen.tsx",
+        "toPath": "src/app/workspace/routeParams.ts",
         "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
       },
       {
         "fromPath": "src/app/CreateProjectFromTemplateScreen.tsx",
-        "toPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "toPath": "src/hooks/useProjects.ts",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toPath": "src/hooks/useTemplateCatalog.ts",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toPath": "src/app/workspace/createProjectFormState.ts",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toPath": "src/app/workspace/routeParams.ts",
         "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
       },
       {
@@ -13713,12 +14439,37 @@
       },
       {
         "fromPath": "src/app/ProjectDetailScreen.tsx",
-        "toPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "toPath": "src/hooks/useProjects.ts",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectDetailScreen.tsx",
+        "toPath": "src/workspacePlatform.ts",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectDetailScreen.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
         "sourcePath": "src/app/ProjectDetailScreen.tsx"
       },
       {
         "fromPath": "src/app/ProjectsOverviewScreen.tsx",
-        "toPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "toPath": "src/hooks/useProjects.ts",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectsOverviewScreen.tsx",
+        "toPath": "src/projectWorkspaceContracts.ts",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectsOverviewScreen.tsx",
+        "toPath": "src/workspaceSearch.ts",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromPath": "src/app/ProjectsOverviewScreen.tsx",
+        "toPath": "src/app/workspace/WorkspacePrimitives.tsx",
         "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
       },
       {
@@ -14087,6 +14838,11 @@
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
+        "fromPath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
         "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/actionSuppression.ts",
         "sourcePath": "src/runtime/index.ts"
@@ -14202,44 +14958,14 @@
         "sourcePath": "src/app/workspace/routeParams.ts"
       },
       {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/hooks/useProjects.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/hooks/useTemplateCatalog.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "fromPath": "src/app/workspace/WorkspacePrimitives.tsx",
         "toPath": "src/projectWorkspaceContracts.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
+        "fromPath": "src/app/workspace/WorkspacePrimitives.tsx",
         "toPath": "src/templateCatalogContracts.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/workspacePlatform.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/workspaceSearch.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/app/workspace/createProjectFormState.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromPath": "src/app/workspace/WorkspaceScreens.tsx",
-        "toPath": "src/app/workspace/routeParams.ts",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromPath": "src/host/auth/projectAuthHealthService.ts",
@@ -14710,6 +15436,11 @@
         "fromPath": "src/host/templateRegistry/catalog.test.ts",
         "toPath": "src/host/templateRegistry/index.ts",
         "sourcePath": "src/host/templateRegistry/catalog.test.ts"
+      },
+      {
+        "fromPath": "src/host/templateRegistry/index.ts",
+        "toPath": "src/templateCatalogContracts.ts",
+        "sourcePath": "src/host/templateRegistry/index.ts"
       },
       {
         "fromPath": "src/host/zoraExtensions/index.ts",
@@ -15807,6 +16538,48 @@
         "sourcePath": "src/canvasDropZones.ts"
       },
       {
+        "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "isAppManifest",
+        "callExpression": "isAppManifest",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "withPath",
+        "callExpression": "withPath",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "withPath",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "isManifestValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
         "fromSymbol": "isThemeModeConfig",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -15837,9 +16610,27 @@
         "sourcePath": "src/contractGuards.ts"
       },
       {
+        "fromSymbol": "isUiNode",
+        "toSymbol": "isBindingValueSource",
+        "callExpression": "isBindingValueSource",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isUiNode",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
         "fromSymbol": "isScreenSpec",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenSpec",
+        "toSymbol": "isScreenRequirements",
+        "callExpression": "isScreenRequirements",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -15852,6 +16643,12 @@
         "fromSymbol": "isRouteDefinition",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isRouteDefinition",
+        "toSymbol": "isIconSpec",
+        "callExpression": "isIconSpec",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -15873,9 +16670,219 @@
         "sourcePath": "src/contractGuards.ts"
       },
       {
+        "fromSymbol": "isSplashScreenModeSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isSplashScreenModeSpec",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isSplashScreenModeSpec",
+        "toSymbol": "isOptionalNumber",
+        "callExpression": "isOptionalNumber",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isSplashScreenSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isSplashScreenSpec",
+        "toSymbol": "isSplashScreenModeSpec",
+        "callExpression": "isSplashScreenModeSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDeploymentSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDatabaseSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isStorageSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isStorageSpec",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isStateSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isNetworkingSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isNetworkingSpec",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthSpec",
+        "toSymbol": "isAuthFlow",
+        "callExpression": "isAuthFlow",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthSpec",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthSpec",
+        "toSymbol": "isAuthOAuthConfig",
+        "callExpression": "isAuthOAuthConfig",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthSpec",
+        "toSymbol": "isAuthProfileSpec",
+        "callExpression": "isAuthProfileSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthFlow",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthFlow",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthOAuthConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isOptionalBoolean",
+        "callExpression": "isOptionalBoolean",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isIconSpec",
+        "callExpression": "isIconSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isSecretRef",
+        "callExpression": "isSecretRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthProfileSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthProfileSpec",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAuthProfileSpec",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
         "fromSymbol": "isInfraManifest",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isDeploymentSpec",
+        "callExpression": "isDeploymentSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isAuthSpec",
+        "callExpression": "isAuthSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isDatabaseSpec",
+        "callExpression": "isDatabaseSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isStorageSpec",
+        "callExpression": "isStorageSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isStateSpec",
+        "callExpression": "isStateSpec",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isInfraManifest",
+        "toSymbol": "isNetworkingSpec",
+        "callExpression": "isNetworkingSpec",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -15891,6 +16898,594 @@
         "sourcePath": "src/contractGuards.ts"
       },
       {
+        "fromSymbol": "isIconSpec",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isIconSpec",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isCredentialRef",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isCredentialRef",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAdapterRef",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAdapterRef",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAdapterRef",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenRequirements",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppDataManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiDefinition",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiDefinition",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiDefinition",
+        "toSymbol": "isAppApiAuthRequirement",
+        "callExpression": "isAppApiAuthRequirement",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiDefinition",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiDefinition",
+        "toSymbol": "isAppApiResourceDefinition",
+        "callExpression": "isAppApiResourceDefinition",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isDataOperationRequest",
+        "callExpression": "isDataOperationRequest",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isDataOperationResponse",
+        "callExpression": "isDataOperationResponse",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isAppApiAuthRequirement",
+        "callExpression": "isAppApiAuthRequirement",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiEndpointDefinition",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiAuthRequirement",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiAuthRequirement",
+        "toSymbol": "isOptionalBoolean",
+        "callExpression": "isOptionalBoolean",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiAuthRequirement",
+        "toSymbol": "isStringArray",
+        "callExpression": "isStringArray",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiAuthRequirement",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiAuthRequirement",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiResourceDefinition",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiResourceDefinition",
+        "toSymbol": "isDbCollectionDefinition",
+        "callExpression": "isDbCollectionDefinition",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppApiResourceDefinition",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDbCollectionDefinition",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDbCollectionDefinition",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.ts",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceRegistry",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isCredentialRef",
+        "callExpression": "isCredentialRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isDataEndpointRegistry",
+        "callExpression": "isDataEndpointRegistry",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isAdapterRef",
+        "callExpression": "isAdapterRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isManagedApiResourceConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isManagedApiResourceConfig",
+        "toSymbol": "isDbCollectionDefinition",
+        "callExpression": "isDbCollectionDefinition",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isManagedApiResourceConfig",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataEndpointRegistry",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataEndpointConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataEndpointConfig",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataEndpointConfig",
+        "toSymbol": "isCredentialRef",
+        "callExpression": "isCredentialRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataEndpointConfig",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isDataOperationRequest",
+        "callExpression": "isDataOperationRequest",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isDataOperationResponse",
+        "callExpression": "isDataOperationResponse",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isCredentialRef",
+        "callExpression": "isCredentialRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationConfig",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationRequest",
+        "toSymbol": "isDataSchemaSlot",
+        "callExpression": "isDataSchemaSlot",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationParameter",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationParameter",
+        "toSymbol": "isDataSchemaSlot",
+        "callExpression": "isDataSchemaSlot",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationParameter",
+        "toSymbol": "isOptionalBoolean",
+        "callExpression": "isOptionalBoolean",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationParameter",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationParameter",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationResponse",
+        "toSymbol": "isDataSchemaSlot",
+        "callExpression": "isDataSchemaSlot",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataOperationResponse",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSchemaSlot",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isComponentDataBindingRegistry",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isComponentDataBinding",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isComponentDataBinding",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isPropBinding",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isPropBinding",
+        "toSymbol": "isBindingValueSource",
+        "callExpression": "isBindingValueSource",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isPropBinding",
+        "toSymbol": "isBindingFallback",
+        "callExpression": "isBindingFallback",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isPropBinding",
+        "toSymbol": "isBindingLifecycleBehavior",
+        "callExpression": "isBindingLifecycleBehavior",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isPropBinding",
+        "toSymbol": "isOptionalBindingTransforms",
+        "callExpression": "isOptionalBindingTransforms",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isEventBinding",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isEventBinding",
+        "toSymbol": "isBindingOperationRef",
+        "callExpression": "isBindingOperationRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isEventBinding",
+        "toSymbol": "isBindingInputMap",
+        "callExpression": "isBindingInputMap",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isEventBinding",
+        "toSymbol": "isBindingValueSource",
+        "callExpression": "isBindingValueSource",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isEventBinding",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingValueSource",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingValueSource",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingValueSource",
+        "toSymbol": "isBindingOperationRef",
+        "callExpression": "isBindingOperationRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingValueSource",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingOperationRef",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingOperationRef",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingFallback",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingFallback",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingFallback",
+        "toSymbol": "isBindingValueSource",
+        "callExpression": "isBindingValueSource",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingLifecycleBehavior",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingLifecycleBehavior",
+        "toSymbol": "isBindingFallback",
+        "callExpression": "isBindingFallback",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingLifecycleBehavior",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenDataLoaderDefinition",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenDataLoaderDefinition",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenDataLoaderDefinition",
+        "toSymbol": "isBindingOperationRef",
+        "callExpression": "isBindingOperationRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isScreenDataLoaderDefinition",
+        "toSymbol": "isBindingInputMap",
+        "callExpression": "isBindingInputMap",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputMap",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputValue",
+        "toSymbol": "isManifestValue",
+        "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputValue",
+        "toSymbol": "isBindingInputMap",
+        "callExpression": "isBindingInputMap",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputValue",
+        "toSymbol": "isBindingValueSource",
+        "callExpression": "isBindingValueSource",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isBindingInputValue",
+        "toSymbol": "isOptionalBindingTransforms",
+        "callExpression": "isOptionalBindingTransforms",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
         "fromSymbol": "isAppManifest",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -15900,6 +17495,12 @@
         "fromSymbol": "isAppManifest",
         "toSymbol": "isAppCategory",
         "callExpression": "isAppCategory",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppManifest",
+        "toSymbol": "isSplashScreenSpec",
+        "callExpression": "isSplashScreenSpec",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -15918,6 +17519,24 @@
         "fromSymbol": "isAppManifest",
         "toSymbol": "isScreenRegistry",
         "callExpression": "isScreenRegistry",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppManifest",
+        "toSymbol": "isAppDataManifest",
+        "callExpression": "isAppDataManifest",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppManifest",
+        "toSymbol": "isDataSourceRegistry",
+        "callExpression": "isDataSourceRegistry",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isAppManifest",
+        "toSymbol": "isComponentDataBindingRegistry",
+        "callExpression": "isComponentDataBindingRegistry",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -18813,9 +20432,69 @@
         "sourcePath": "src/studioSelectionModel.ts"
       },
       {
+        "fromSymbol": "src/workspacePlatform.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.test.ts",
+        "toSymbol": "createDeleteConfirmation",
+        "callExpression": "createDeleteConfirmation",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.test.ts",
+        "toSymbol": "confirmDelete",
+        "callExpression": "confirmDelete",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.test.ts",
+        "toSymbol": "onPress",
+        "callExpression": "destructive?.onPress",
+        "sourcePath": "src/workspacePlatform.test.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.ts",
+        "toSymbol": "confirm",
+        "callExpression": "dependencies.confirm",
+        "sourcePath": "src/workspacePlatform.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.ts",
+        "toSymbol": "onConfirm",
+        "callExpression": "onConfirm",
+        "sourcePath": "src/workspacePlatform.ts"
+      },
+      {
+        "fromSymbol": "src/workspacePlatform.ts",
+        "toSymbol": "alert",
+        "callExpression": "dependencies.alert",
+        "sourcePath": "src/workspacePlatform.ts"
+      },
+      {
         "fromSymbol": "confirmDelete",
         "toSymbol": "isWeb",
         "callExpression": "isWeb",
+        "sourcePath": "src/workspacePlatform.ts"
+      },
+      {
+        "fromSymbol": "confirmDelete",
+        "toSymbol": "__function",
+        "callExpression": "createDeleteConfirmation({\n    alert:\n      alert ??\n      (() => {\n        // Web confirmations are handled above; native callers inject Alert.alert.\n      }),\n    confirm: webConfirm,\n    isWeb: isWeb(),\n  })",
+        "sourcePath": "src/workspacePlatform.ts"
+      },
+      {
+        "fromSymbol": "confirmDelete",
+        "toSymbol": "createDeleteConfirmation",
+        "callExpression": "createDeleteConfirmation",
         "sourcePath": "src/workspacePlatform.ts"
       },
       {
@@ -18859,6 +20538,294 @@
         "toSymbol": "normalize",
         "callExpression": "normalize",
         "sourcePath": "src/workspaceSearch.ts"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoriesScreen",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/CreateCategoriesScreen.tsx",
+        "toSymbol": "filterAndSortTemplates",
+        "callExpression": "filterAndSortTemplates",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/CreateCategoriesScreen.tsx",
+        "toSymbol": "setSearchQuery",
+        "callExpression": "setSearchQuery",
+        "sourcePath": "src/app/CreateCategoriesScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoryTemplatesScreen",
+        "toSymbol": "useCategoryRouteParams",
+        "callExpression": "useCategoryRouteParams",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateCategoryTemplatesScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "resolveWorkspaceCategoryParam",
+        "callExpression": "resolveWorkspaceCategoryParam",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromSymbol": "useCategoryRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/CreateCategoryTemplatesScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useTemplateRouteParams",
+        "callExpression": "useTemplateRouteParams",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useTemplateCatalog",
+        "callExpression": "useTemplateCatalog",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "CreateProjectFromTemplateScreen",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toSymbol": "resolveCreateProjectFormState",
+        "callExpression": "resolveCreateProjectFormState",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "setIsCreating",
+        "callExpression": "setIsCreating",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "setSubmitError",
+        "callExpression": "setSubmitError",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "handleCreate",
+        "toSymbol": "createProject",
+        "callExpression": "createProject",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/CreateProjectFromTemplateScreen.tsx",
+        "toSymbol": "handleCreate",
+        "callExpression": "handleCreate",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "resolveWorkspaceCategoryParam",
+        "callExpression": "resolveWorkspaceCategoryParam",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "useTemplateRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/CreateProjectFromTemplateScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useProjectRouteParams",
+        "callExpression": "useProjectRouteParams",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "runAction",
+        "toSymbol": "setActiveAction",
+        "callExpression": "setActiveAction",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "runAction",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "runAction",
+        "toSymbol": "action",
+        "callExpression": "action",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "runAction",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "handleOpenRunningApp",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "launchProject",
+        "callExpression": "launchProject",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "openProjectUrl",
+        "callExpression": "openProjectUrl",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "handleDelete",
+        "toSymbol": "confirmDelete",
+        "callExpression": "confirmDelete",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "runAction",
+        "callExpression": "runAction",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "deleteProject",
+        "callExpression": "deleteProject",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "formatCategory",
+        "callExpression": "formatCategory",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectDetailScreen",
+        "toSymbol": "formatDate",
+        "callExpression": "formatDate",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "syncProject",
+        "callExpression": "syncProject",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectDetailScreen.tsx",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "useProjectRouteParams",
+        "toSymbol": "useLocalSearchParams",
+        "callExpression": "useLocalSearchParams",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "useProjectRouteParams",
+        "toSymbol": "firstParam",
+        "callExpression": "firstParam",
+        "sourcePath": "src/app/ProjectDetailScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectsOverviewScreen",
+        "toSymbol": "useProjects",
+        "callExpression": "useProjects",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectsOverviewScreen",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromSymbol": "ProjectsOverviewScreen",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectsOverviewScreen.tsx",
+        "toSymbol": "filterAndSortProjects",
+        "callExpression": "filterAndSortProjects",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectsOverviewScreen.tsx",
+        "toSymbol": "setSort",
+        "callExpression": "setSort",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
+      },
+      {
+        "fromSymbol": "src/app/ProjectsOverviewScreen.tsx",
+        "toSymbol": "setSearchQuery",
+        "callExpression": "setSearchQuery",
+        "sourcePath": "src/app/ProjectsOverviewScreen.tsx"
       },
       {
         "fromSymbol": "StudioApp",
@@ -18936,6 +20903,30 @@
         "fromSymbol": "IconButton",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "IconButton",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "src/app/StudioApp.tsx",
+        "toSymbol": "setFocused",
+        "callExpression": "setFocused",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "WorkspaceMenuItem",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/StudioApp.tsx"
+      },
+      {
+        "fromSymbol": "WorkspaceMenuItem",
+        "toSymbol": "useState",
+        "callExpression": "useState",
         "sourcePath": "src/app/StudioApp.tsx"
       },
       {
@@ -21351,6 +23342,204 @@
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "studioWorkspaceWebSmokeTest",
+        "callExpression": "studioWorkspaceWebSmokeTest",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "reservePort",
+        "callExpression": "reservePort",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "spawnStudioExpoWeb",
+        "callExpression": "spawnStudioExpoWeb",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "collectProcessOutput",
+        "callExpression": "collectProcessOutput",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForExpoWebUrl",
+        "callExpression": "waitForExpoWebUrl",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "spawnChrome",
+        "callExpression": "spawnChrome",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "resolveChromePath",
+        "callExpression": "resolveChromePath",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "openChromePage",
+        "callExpression": "openChromePage",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "navigate",
+        "callExpression": "page.navigate",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "readBodyText",
+        "callExpression": "page.readBodyText",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "close",
+        "callExpression": "page.close",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnStudioExpoWeb",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForExpoWebUrl",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnChrome",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "spawnChrome",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "openChromePage",
+        "toSymbol": "waitForHttp",
+        "callExpression": "waitForHttp",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "openChromePage",
+        "toSymbol": "send",
+        "callExpression": "page.send",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "handleMessage",
+        "callExpression": "this.handleMessage",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "navigate",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "navigate",
+        "toSymbol": "waitForLoad",
+        "callExpression": "this.waitForLoad",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyText",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyText",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/studioWorkspaceExpoWeb.smoke.test.ts",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "reject",
+        "callExpression": "pending.reject",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "resolve",
+        "callExpression": "pending.resolve",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "parseChromeProtocolMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/studioWorkspaceExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "createStudioActionSuppressionConfig",
         "toSymbol": "shouldSuppressStudioRuntimeActions",
         "callExpression": "shouldSuppressStudioRuntimeActions",
@@ -21621,394 +23810,172 @@
         "sourcePath": "src/app/workspace/routeParams.ts"
       },
       {
-        "fromSymbol": "ProjectsOverviewScreen",
-        "toSymbol": "useProjects",
-        "callExpression": "useProjects",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectsOverviewScreen",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectsOverviewScreen",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectsOverviewScreen",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "filterAndSortProjects",
-        "callExpression": "filterAndSortProjects",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "setSort",
-        "callExpression": "setSort",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "setSearchQuery",
-        "callExpression": "setSearchQuery",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectDetailScreen",
-        "toSymbol": "useProjectRouteParams",
-        "callExpression": "useProjectRouteParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectDetailScreen",
-        "toSymbol": "useProjects",
-        "callExpression": "useProjects",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectDetailScreen",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "runAction",
-        "toSymbol": "setActiveAction",
-        "callExpression": "setActiveAction",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "runAction",
-        "toSymbol": "setMessage",
-        "callExpression": "setMessage",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "runAction",
-        "toSymbol": "action",
-        "callExpression": "action",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "runAction",
-        "toSymbol": "refresh",
-        "callExpression": "refresh",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleOpenRunningApp",
-        "toSymbol": "runAction",
-        "callExpression": "runAction",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "launchProject",
-        "callExpression": "launchProject",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "openProjectUrl",
-        "callExpression": "openProjectUrl",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleDelete",
-        "toSymbol": "confirmDelete",
-        "callExpression": "confirmDelete",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleDelete",
-        "toSymbol": "runAction",
-        "callExpression": "runAction",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "deleteProject",
-        "callExpression": "deleteProject",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "onPress",
-        "toSymbol": "runAction",
-        "callExpression": "runAction",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectDetailScreen",
-        "toSymbol": "formatCategory",
-        "callExpression": "formatCategory",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "ProjectDetailScreen",
-        "toSymbol": "formatDate",
-        "callExpression": "formatDate",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "runAction",
-        "callExpression": "runAction",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "syncProject",
-        "callExpression": "syncProject",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "upProjectInfrastructure",
-        "callExpression": "upProjectInfrastructure",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateCategoriesScreen",
-        "toSymbol": "useTemplateCatalog",
-        "callExpression": "useTemplateCatalog",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateCategoriesScreen",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateCategoriesScreen",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "filterAndSortTemplates",
-        "callExpression": "filterAndSortTemplates",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateCategoryTemplatesScreen",
-        "toSymbol": "useCategoryRouteParams",
-        "callExpression": "useCategoryRouteParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateCategoryTemplatesScreen",
-        "toSymbol": "useTemplateCatalog",
-        "callExpression": "useTemplateCatalog",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateProjectFromTemplateScreen",
-        "toSymbol": "useTemplateRouteParams",
-        "callExpression": "useTemplateRouteParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateProjectFromTemplateScreen",
-        "toSymbol": "useTemplateCatalog",
-        "callExpression": "useTemplateCatalog",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateProjectFromTemplateScreen",
-        "toSymbol": "useProjects",
-        "callExpression": "useProjects",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateProjectFromTemplateScreen",
-        "toSymbol": "useState",
-        "callExpression": "useState",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "CreateProjectFromTemplateScreen",
-        "toSymbol": "useMemo",
-        "callExpression": "useMemo",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "resolveCreateProjectFormState",
-        "callExpression": "resolveCreateProjectFormState",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "setIsCreating",
-        "callExpression": "setIsCreating",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "setSubmitError",
-        "callExpression": "setSubmitError",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "handleCreate",
-        "toSymbol": "createProject",
-        "callExpression": "createProject",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
-        "toSymbol": "handleCreate",
-        "callExpression": "handleCreate",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
         "fromSymbol": "WorkspaceScreen",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "ThemedWorkspaceTextInput",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "ThemedWorkspaceTextInput",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/app/workspace/WorkspacePrimitives.tsx",
+        "toSymbol": "setFocused",
+        "callExpression": "setFocused",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/app/workspace/WorkspacePrimitives.tsx",
+        "toSymbol": "onBlur",
+        "callExpression": "onBlur",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/app/workspace/WorkspacePrimitives.tsx",
+        "toSymbol": "onFocus",
+        "callExpression": "onFocus",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "ProjectOverviewCard",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "ProjectOverviewCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "ProjectOverviewCard",
         "toSymbol": "formatCategory",
         "callExpression": "formatCategory",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "ProjectOverviewCard",
         "toSymbol": "formatDate",
         "callExpression": "formatDate",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "CategoryCard",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "CategoryCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "TemplateCard",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
+        "fromSymbol": "TemplateCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/app/workspace/WorkspacePrimitives.tsx",
         "toSymbol": "onPress",
         "callExpression": "props.onPress",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "LifecycleAction",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "LifecycleAction",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "PrimaryAction",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "PrimaryAction",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "SecondaryAction",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "SecondaryAction",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "SegmentedControl",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
-        "fromSymbol": "src/app/workspace/WorkspaceScreens.tsx",
+        "fromSymbol": "SegmentedOption",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "SegmentedOption",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
+      },
+      {
+        "fromSymbol": "src/app/workspace/WorkspacePrimitives.tsx",
         "toSymbol": "onChange",
         "callExpression": "props.onChange",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "InlineMessage",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "LoadingState",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "EmptyState",
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useProjectRouteParams",
-        "toSymbol": "useLocalSearchParams",
-        "callExpression": "useLocalSearchParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useProjectRouteParams",
-        "toSymbol": "firstParam",
-        "callExpression": "firstParam",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useCategoryRouteParams",
-        "toSymbol": "useLocalSearchParams",
-        "callExpression": "useLocalSearchParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useCategoryRouteParams",
-        "toSymbol": "resolveWorkspaceCategoryParam",
-        "callExpression": "resolveWorkspaceCategoryParam",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useCategoryRouteParams",
-        "toSymbol": "firstParam",
-        "callExpression": "firstParam",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useTemplateRouteParams",
-        "toSymbol": "useLocalSearchParams",
-        "callExpression": "useLocalSearchParams",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useTemplateRouteParams",
-        "toSymbol": "resolveWorkspaceCategoryParam",
-        "callExpression": "resolveWorkspaceCategoryParam",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
-      },
-      {
-        "fromSymbol": "useTemplateRouteParams",
-        "toSymbol": "firstParam",
-        "callExpression": "firstParam",
-        "sourcePath": "src/app/workspace/WorkspaceScreens.tsx"
+        "sourcePath": "src/app/workspace/WorkspacePrimitives.tsx"
       },
       {
         "fromSymbol": "get",
@@ -25023,6 +26990,18 @@
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "catchError",
+        "callExpression": "catchError",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "readManifest",
+        "callExpression": "store.readManifest",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
         "fromSymbol": "scaffoldProject",
         "toSymbol": "writePackageJson",
         "callExpression": "this.writePackageJson",
@@ -25990,8 +27969,8 @@
       },
       {
         "fromSymbol": "src/host/templateRegistry/index.ts",
-        "toSymbol": "createTemplateSummaries",
-        "callExpression": "createTemplateSummaries",
+        "toSymbol": "createTemplateIndex",
+        "callExpression": "createTemplateIndex",
         "sourcePath": "src/host/templateRegistry/index.ts"
       },
       {
@@ -26007,7 +27986,7 @@
         "sourcePath": "src/host/templateRegistry/index.ts"
       },
       {
-        "fromSymbol": "createTemplateSummaries",
+        "fromSymbol": "createTemplateIndex",
         "toSymbol": "listStarterTemplateSummaries",
         "callExpression": "listStarterTemplateSummaries",
         "sourcePath": "src/host/templateRegistry/index.ts"
