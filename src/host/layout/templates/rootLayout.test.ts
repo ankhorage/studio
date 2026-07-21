@@ -150,7 +150,9 @@ test('uses layout-neutral selection instrumentation and disables runtime actions
   expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
   expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
   expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
-  expect(generated).toContain("const studioSelectionInteractionStyle = { display: 'contents' as const };");
+  expect(generated).toContain(
+    "const studioSelectionInteractionStyle = { display: 'contents' as const };",
+  );
   expect(generated).toContain('<Pressable');
   expect(generated).toContain('style={studioSelectionInteractionStyle}');
   expect(generated).toContain('boxShadow:');
