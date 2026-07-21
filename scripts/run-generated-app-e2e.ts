@@ -8,7 +8,9 @@ const CHROME_CANDIDATES = [
   '/usr/bin/chromium-browser',
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   '/Applications/Chromium.app/Contents/MacOS/Chromium',
-].filter((candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0);
+].filter(
+  (candidate): candidate is string => typeof candidate === 'string' && candidate.length > 0,
+);
 
 async function resolveChromePath(): Promise<string> {
   for (const candidate of CHROME_CANDIDATES) {
