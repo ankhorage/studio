@@ -1,4 +1,4 @@
-export interface GeneratedNamedImport {
+interface GeneratedNamedImport {
   readonly imported: string;
   readonly local?: string;
   readonly typeOnly?: boolean;
@@ -55,7 +55,7 @@ function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirem
 function parseGeneratedImportStatement(statement: string): GeneratedImportRequirement {
   const sideEffectMatch = statement.match(/^import\s+(['"])([^'"]+)\1\s*;?$/u);
   if (sideEffectMatch) {
-    const source = sideEffectMatch[2];
+    const [, , source] = sideEffectMatch;
     if (!source) throw new Error(`Invalid side-effect import statement: ${statement}`);
     return { source, sideEffectOnly: true };
   }
