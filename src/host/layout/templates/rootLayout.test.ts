@@ -124,7 +124,7 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('true;');
 });
 
-test('uses selection-aware runtime wrapping and disables runtime actions outside preview mode', () => {
+test('uses layout-neutral selection instrumentation and disables runtime actions outside preview', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -150,8 +150,15 @@ test('uses selection-aware runtime wrapping and disables runtime actions outside
   expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
   expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
   expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
-  expect(generated).toContain('accessibilityRole:');
-  expect(generated).toContain('style: [renderedElementProps?.style, selectionStyle]');
+  expect(generated).toContain("const studioSelectionInteractionStyle = { display: 'contents' as const };");
+  expect(generated).toContain('<Pressable');
+  expect(generated).toContain('style={studioSelectionInteractionStyle}');
+  expect(generated).toContain('boxShadow:');
+  expect(generated).toContain('style: [props.rendered.props.style, selectionStyle]');
+  expect(generated).toContain('onPress: (event: GestureResponderEvent) => {');
+  expect(generated).toContain('onPress={(event: GestureResponderEvent) => {');
+  expect(generated).not.toContain('borderWidth:');
+  expect(generated).not.toContain('(event: unknown)');
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {
@@ -179,5 +186,7 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('useStudio');
   expect(generated).not.toContain('wrapStudioRuntimeNode');
   expect(generated).not.toContain('selectionStyle');
+  expect(generated).not.toContain('Pressable');
+  expect(generated).not.toContain('GestureResponderEvent');
   expect(generated).not.toContain('disableActions: !previewMode');
 });
