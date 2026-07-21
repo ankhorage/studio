@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.8.1
+
+### Patch Changes
+
+- eab6a51: Update RUNTIME (release trigger)
+
 ## 0.8.0
 
 ### Minor Changes
