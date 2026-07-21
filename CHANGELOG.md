@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.8.0
+
+### Minor Changes
+
+- e0011ac: Rebuild the Studio workspace dashboard around real project lifecycle routes, grouped template catalog data, canonical project category summaries, and shared project ID validation.
+
 ## 0.7.1
 
 ### Patch Changes
