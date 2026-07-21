@@ -163,6 +163,47 @@ test('uses layout-neutral selection instrumentation and disables runtime actions
   expect(generated).not.toContain('(event: unknown)');
 });
 
+test('scopes Studio runtime selection config below StudioProvider', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+  });
+
+  const rootLayoutIndex = generated.indexOf('export default function RootLayout()');
+  const studioShellIndex = generated.indexOf('function StudioShell({');
+  const rootLayoutSource = generated.slice(rootLayoutIndex, studioShellIndex);
+  const studioShellSource = generated.slice(studioShellIndex);
+
+  expect(rootLayoutIndex).toBeGreaterThanOrEqual(0);
+  expect(studioShellIndex).toBeGreaterThan(rootLayoutIndex);
+  expect(rootLayoutSource).not.toContain('useStudio()');
+  expect(rootLayoutSource).not.toContain('disableActions: !previewMode');
+  expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
+  expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
+  expect(studioShellSource).toContain('disableActions: !previewMode');
+  expect(studioShellSource).toContain('wrapNode: wrapStudioRuntimeNode');
+  expect(studioShellSource).toContain(
+    '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
+  );
+  expect(studioShellSource).toContain('const studioOutput = (');
+});
+
 test('keeps generated apps Studio-independent when includeStudio is false', () => {
   const generated = getRootLayoutTsx({
     manifest: {
