@@ -7,10 +7,12 @@ sequenceDiagram
   participant_visit->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
   participant_visit->>participant_resolveRouteScreenFilePath: resolveRouteScreenFilePath()
   participant_resolveRouteScreenFilePath->>participant_normalizeRel: normalizeRel()
   participant_normalizeRel-->>participant_resolveRouteScreenFilePath: return
   participant_resolveRouteScreenFilePath-->>participant_visit: return
+  participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return

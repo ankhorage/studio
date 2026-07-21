@@ -745,12 +745,17 @@ graph TD
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_studioAppBarModel_ts["src/ui/studioAppBarModel.ts"]
+  package__ankhorage_studio -.-> module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_test_ts
+  module_src_ui_useStudioAppBarAugmentation_test_ts --> module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioSelectionModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_studioAppBarModel_ts
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
   package__ankhorage_studio -.-> module_src_utils_treeUtils_ts
   module_src_utils_treeUtils_ts --> module_src_index_ts

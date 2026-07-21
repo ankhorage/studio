@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.8.1",
+      "value": "v0.9.0",
       "color": "cb3837"
     },
     {
@@ -2053,8 +2053,11 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
+        "createStudioSelectionContext",
         "createStudioSelectionProviderProps",
         "CreateStudioSelectionProviderPropsArgs",
+        "resolveStudioSelectionParentNodeId",
+        "StudioSelectionContext",
         "StudioSelectionProviderAdapterProps"
       ]
     },
@@ -2323,15 +2326,30 @@
       "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
-      "path": "src/ui/useStudioAppBarAugmentation.test.ts",
+      "path": "src/ui/studioAppBarModel.ts",
       "isEntrypoint": false,
       "dependencies": [],
+      "exports": [
+        "resolveStudioAppBarContextActions",
+        "ResolveStudioAppBarContextActionsArgs",
+        "StudioAppBarContextAction"
+      ]
+    },
+    {
+      "path": "src/ui/useStudioAppBarAugmentation.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/studioAppBarModel.ts"],
       "exports": []
     },
     {
       "path": "src/ui/useStudioAppBarAugmentation.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/StudioContext.ts", "src/studioAdminRouteModel.ts"],
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/studioAdminRouteModel.ts",
+        "src/studioSelectionModel.ts",
+        "src/ui/studioAppBarModel.ts"
+      ],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
     {
@@ -12775,11 +12793,38 @@
       }
     },
     {
+      "name": "resolveStudioSelectionParentNodeId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "visit",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 31,
+        "column": 9
+      }
+    },
+    {
+      "name": "createStudioSelectionContext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioSelectionProviderProps",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
-        "line": 16,
+        "line": 58,
         "column": 1
       }
     },
@@ -13765,11 +13810,20 @@
       }
     },
     {
+      "name": "resolveStudioAppBarContextActions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/studioAppBarModel.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
       "name": "useStudioAppBarAugmentation",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 18,
+        "line": 21,
         "column": 1
       }
     },
@@ -14979,6 +15033,11 @@
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.test.ts",
+        "toPath": "src/ui/studioAppBarModel.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
+      },
+      {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -14986,6 +15045,16 @@
       {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/studioSelectionModel.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/ui/studioAppBarModel.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -20497,6 +20566,36 @@
         "sourcePath": "src/studioSelectionModel.test.ts"
       },
       {
+        "fromSymbol": "src/studioSelectionModel.test.ts",
+        "toSymbol": "resolveStudioSelectionParentNodeId",
+        "callExpression": "resolveStudioSelectionParentNodeId",
+        "sourcePath": "src/studioSelectionModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioSelectionModel.test.ts",
+        "toSymbol": "createStudioSelectionContext",
+        "callExpression": "createStudioSelectionContext",
+        "sourcePath": "src/studioSelectionModel.test.ts"
+      },
+      {
+        "fromSymbol": "visit",
+        "toSymbol": "visit",
+        "callExpression": "visit",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSelectionParentNodeId",
+        "toSymbol": "visit",
+        "callExpression": "visit",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioSelectionContext",
+        "toSymbol": "resolveStudioSelectionParentNodeId",
+        "callExpression": "resolveStudioSelectionParentNodeId",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
         "fromSymbol": "src/studioSelectionModel.ts",
         "toSymbol": "selectNode",
         "callExpression": "selectNode",
@@ -23869,6 +23968,12 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
       },
       {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.test.ts",
+        "toSymbol": "resolveStudioAppBarContextActions",
+        "callExpression": "resolveStudioAppBarContextActions",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
+      },
+      {
         "fromSymbol": "useStudioAppBarAugmentation",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
@@ -23914,6 +24019,30 @@
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
         "toSymbol": "setActivePanelId",
         "callExpression": "studio.setActivePanelId",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "createStudioSelectionContext",
+        "callExpression": "createStudioSelectionContext",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "createStudioPropertiesRoutePath",
+        "callExpression": "createStudioPropertiesRoutePath",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "selectNode",
+        "callExpression": "studio.selectNode",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "resolveStudioAppBarContextActions",
+        "callExpression": "resolveStudioAppBarContextActions",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {

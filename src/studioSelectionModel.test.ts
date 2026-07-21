@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createStudioSelectionProviderProps } from './studioSelectionModel';
+import {
+  createStudioSelectionContext,
+  createStudioSelectionProviderProps,
+  resolveStudioSelectionParentNodeId,
+} from './studioSelectionModel';
 
 describe('studioSelectionModel', () => {
   test('creates disabled preview selection props', () => {
@@ -55,5 +59,45 @@ describe('studioSelectionModel', () => {
     props.onSelectionChange([]);
 
     expect(selected).toEqual([null]);
+  });
+
+  test('resolves parent node ids for descendants and root nodes', () => {
+    const root = {
+      id: 'root',
+      type: 'Screen',
+      props: {},
+      children: [
+        {
+          id: 'section',
+          type: 'Section',
+          props: {},
+          children: [{ id: 'text', type: 'Text', props: {} }],
+        },
+      ],
+    };
+
+    expect(resolveStudioSelectionParentNodeId(root, 'section')).toBe('root');
+    expect(resolveStudioSelectionParentNodeId(root, 'text')).toBe('section');
+    expect(resolveStudioSelectionParentNodeId(root, 'missing')).toBeNull();
+    expect(resolveStudioSelectionParentNodeId(root, null)).toBeNull();
+  });
+
+  test('creates a selection context that exposes parent selection availability', () => {
+    const root = {
+      id: 'root',
+      type: 'Screen',
+      props: {},
+      children: [{ id: 'child', type: 'View', props: {} }],
+    };
+
+    const selection = createStudioSelectionContext({ rootNode: root, selectedNodeId: 'child' });
+
+    expect(selection.selectedNodeId).toBe('child');
+    expect(selection.parentNodeId).toBe('root');
+    expect(selection.canSelectParent).toBe(true);
+
+    const empty = createStudioSelectionContext({ rootNode: root, selectedNodeId: 'root' });
+    expect(empty.parentNodeId).toBeNull();
+    expect(empty.canSelectParent).toBe(false);
   });
 });

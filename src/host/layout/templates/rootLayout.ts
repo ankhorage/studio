@@ -303,7 +303,8 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports = "import type { ReactNode } from 'react';";
+  const rootLayoutTypeImports =
+    "import type { ReactNode } from 'react';\nimport { Pressable } from 'react-native';\nimport { StyleSheet } from 'react-native';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -349,14 +350,17 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
 }
 `;
   const runtimeContentDeclaration = `const { executeAction } = useRuntimeAction();
+  const { previewMode, selectedNodeId, selectNode } = useStudio();
 
   const generatedRuntimeConfig = useMemo(
     () => ({
+      disableActions: !previewMode,
       executeAction,
       registry: runtimeComponentRegistry,
       executeOperation,
+      wrapNode: wrapStudioRuntimeNode,
     }),
-    [executeAction, executeOperation],
+    [executeAction, executeOperation, previewMode],
   );
 
   const runtimeContent = (
@@ -448,6 +452,60 @@ const runtimeComponentRegistry = createComponentRegistry(
   ZORA_COMPONENT_REGISTRY,
   APP_EXTENSION_COMPONENT_REGISTRY,
 );
+
+const studioSelectionStyles = StyleSheet.create({
+  selectionPressable: {
+    borderRadius: 4,
+  },
+});
+
+function wrapStudioRuntimeNode(args: {
+  readonly node: { readonly id?: string };
+  readonly rendered: ReactNode;
+  readonly isRoot: boolean;
+}): ReactNode {
+  return (
+    <StudioRuntimeNodeWrapper
+      nodeId={args.node.id}
+      rendered={args.rendered}
+    />
+  );
+}
+
+function StudioRuntimeNodeWrapper(props: {
+  readonly nodeId?: string;
+  readonly rendered: ReactNode;
+}): ReactNode {
+  const { previewMode, selectedNodeId, selectNode } = useStudio();
+  const { theme } = useZoraTheme();
+
+  if (previewMode || !props.nodeId) {
+    return props.rendered;
+  }
+
+  const selected = selectedNodeId === props.nodeId;
+  const selectionStyle = selected
+    ? {
+        borderWidth: 2,
+        borderColor: theme.colors.primary,
+      }
+    : undefined;
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={\`Select \${props.nodeId}\`}
+      hitSlop={6}
+      onPress={(event) => {
+        event.stopPropagation?.();
+        selectNode(props.nodeId ?? null);
+      }}
+      style={[studioSelectionStyles.selectionPressable, selectionStyle]}
+    >
+      {props.rendered}
+    </Pressable>
+  );
+}
 
 function resolveZoraProviderTheme(
   theme: AppManifest['themes'][number],

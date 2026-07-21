@@ -123,3 +123,32 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('!isStudioAdminPath(appPathname) &&');
   expect(generated).toContain('true;');
 });
+
+test('uses selection-aware runtime wrapping and disables runtime actions outside preview mode', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+  });
+
+  expect(generated).toContain('disableActions: !previewMode');
+  expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
+  expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
+  expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
+  expect(generated).toContain('accessibilityRole="button"');
+});
