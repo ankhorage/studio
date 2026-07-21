@@ -55,13 +55,8 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   }, [selection.parentNodeId, studio]);
 
   const contextActions = resolveStudioAppBarContextActions({
-    pathname,
     selectedNodeId: selection.selectedNodeId,
     parentNodeId: selection.parentNodeId,
-    onAdministration: openAdministration,
-    onProperties: openProperties,
-    onSelectParent: selectParent,
-    onClearSelection: clearSelection,
   });
 
   const actions = isStudioAdminPath(pathname)

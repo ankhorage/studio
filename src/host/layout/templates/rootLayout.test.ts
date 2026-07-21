@@ -150,5 +150,7 @@ test('uses selection-aware runtime wrapping and disables runtime actions outside
   expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
   expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
   expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
+  expect(generated).toContain('selectionHost');
+  expect(generated).toContain('selectionOverlay');
   expect(generated).toContain('accessibilityRole="button"');
 });

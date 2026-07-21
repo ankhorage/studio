@@ -304,7 +304,7 @@ useEffect(() => {
   }, [onReady]);`
     : '';
   const rootLayoutTypeImports =
-    "import type { ReactNode } from 'react';\nimport { Pressable } from 'react-native';\nimport { StyleSheet } from 'react-native';";
+    "import { useState, type ReactNode } from 'react';\nimport { Pressable, View } from 'react-native';\nimport { StyleSheet } from 'react-native';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -454,8 +454,22 @@ const runtimeComponentRegistry = createComponentRegistry(
 );
 
 const studioSelectionStyles = StyleSheet.create({
+  selectionHost: {
+    position: 'relative',
+    borderRadius: 4,
+  },
   selectionPressable: {
     borderRadius: 4,
+  },
+  selectionOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 4,
+    borderWidth: 0,
+    pointerEvents: 'none',
   },
 });
 
@@ -476,6 +490,8 @@ function StudioRuntimeNodeWrapper(props: {
   readonly nodeId?: string;
   readonly rendered: ReactNode;
 }): ReactNode {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const { previewMode, selectedNodeId, selectNode } = useStudio();
   const { theme } = useZoraTheme();
 
@@ -484,26 +500,49 @@ function StudioRuntimeNodeWrapper(props: {
   }
 
   const selected = selectedNodeId === props.nodeId;
-  const selectionStyle = selected
+  const selectionOverlayStyle = selected
     ? {
         borderWidth: 2,
         borderColor: theme.colors.primary,
       }
-    : undefined;
+    : isFocused
+      ? {
+          borderWidth: 2,
+          borderColor: theme.colors.primary,
+        }
+      : isHovered
+        ? {
+            borderWidth: 1,
+            borderColor: theme.colors.primary,
+          }
+        : undefined;
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={\`Select \${props.nodeId}\`}
-      hitSlop={6}
-      onPress={(event) => {
-        event.stopPropagation?.();
-        selectNode(props.nodeId ?? null);
-      }}
-      style={[studioSelectionStyles.selectionPressable, selectionStyle]}
-    >
-      {props.rendered}
-    </Pressable>
+    <View style={studioSelectionStyles.selectionHost}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={\`Select \${props.nodeId}\`}
+        accessibilityState={{ selected }}
+        hitSlop={6}
+        onHoverIn={() => setIsHovered(true)}
+        onHoverOut={() => setIsHovered(false)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onPressIn={() => setIsFocused(true)}
+        onPressOut={() => setIsFocused(false)}
+        onPress={(event) => {
+          event.stopPropagation?.();
+          selectNode(props.nodeId ?? null);
+        }}
+        style={studioSelectionStyles.selectionPressable}
+      >
+        {props.rendered}
+      </Pressable>
+      <View
+        pointerEvents="none"
+        style={[studioSelectionStyles.selectionOverlay, selectionOverlayStyle]}
+      />
+    </View>
   );
 }
 

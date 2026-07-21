@@ -24,13 +24,8 @@ test('uses the URL as the admin route source of truth', () => {
 
 test('resolves contextual app bar actions for selected nodes', () => {
   const actions = resolveStudioAppBarContextActions({
-    pathname: '/preview',
     selectedNodeId: 'child',
     parentNodeId: 'root',
-    onAdministration: () => undefined,
-    onProperties: () => undefined,
-    onSelectParent: () => undefined,
-    onClearSelection: () => undefined,
   });
 
   expect(actions).toEqual([
@@ -42,17 +37,21 @@ test('resolves contextual app bar actions for selected nodes', () => {
 
 test('omits parent selection when no parent is available', () => {
   const actions = resolveStudioAppBarContextActions({
-    pathname: '/preview',
     selectedNodeId: 'root',
     parentNodeId: null,
-    onAdministration: () => undefined,
-    onProperties: () => undefined,
-    onSelectParent: () => undefined,
-    onClearSelection: () => undefined,
   });
 
   expect(actions).toEqual([
     { id: 'properties', label: 'Properties' },
     { id: 'clearSelection', label: 'Clear selection' },
   ]);
+});
+
+test('returns no contextual app bar actions when no valid selection exists', () => {
+  const actions = resolveStudioAppBarContextActions({
+    selectedNodeId: null,
+    parentNodeId: null,
+  });
+
+  expect(actions).toEqual([]);
 });

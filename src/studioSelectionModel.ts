@@ -21,11 +21,28 @@ export interface StudioSelectionContext {
 
 const EMPTY_IDS: readonly string[] = [];
 
+function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null): boolean {
+  if (!rootNode || !selectedNodeId) return false;
+  if (rootNode.id === selectedNodeId) return true;
+
+  const visit = (node: UiNode): boolean => {
+    if (node.id === selectedNodeId) return true;
+    for (const child of node.children ?? []) {
+      if (visit(child)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  return visit(rootNode);
+}
+
 export function resolveStudioSelectionParentNodeId(
   rootNode: UiNode | null,
   selectedNodeId: string | null,
 ): string | null {
-  if (!rootNode || !selectedNodeId) return null;
+  if (!rootNode || !selectedNodeId || !containsUiNode(rootNode, selectedNodeId)) return null;
   if (rootNode.id === selectedNodeId) return null;
 
   const visit = (node: UiNode, parentId: string | null): string | null => {
@@ -46,10 +63,12 @@ export function createStudioSelectionContext(args: {
   readonly rootNode: UiNode | null;
   readonly selectedNodeId: string | null;
 }): StudioSelectionContext {
-  const parentNodeId = resolveStudioSelectionParentNodeId(args.rootNode, args.selectedNodeId);
+  const isValidSelection = containsUiNode(args.rootNode, args.selectedNodeId);
+  const selectedNodeId = isValidSelection ? args.selectedNodeId : null;
+  const parentNodeId = resolveStudioSelectionParentNodeId(args.rootNode, selectedNodeId);
 
   return {
-    selectedNodeId: args.selectedNodeId,
+    selectedNodeId,
     parentNodeId,
     canSelectParent: parentNodeId !== null,
   };

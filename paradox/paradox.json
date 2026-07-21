@@ -12793,7 +12793,7 @@
       }
     },
     {
-      "name": "resolveStudioSelectionParentNodeId",
+      "name": "containsUiNode",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
@@ -12806,7 +12806,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
-        "line": 31,
+        "line": 28,
+        "column": 9
+      }
+    },
+    {
+      "name": "resolveStudioSelectionParentNodeId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "visit",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 48,
         "column": 9
       }
     },
@@ -12815,7 +12833,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
-        "line": 45,
+        "line": 62,
         "column": 1
       }
     },
@@ -12824,7 +12842,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
-        "line": 58,
+        "line": 77,
         "column": 1
       }
     },
@@ -13814,7 +13832,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/studioAppBarModel.ts",
-        "line": 16,
+        "line": 11,
         "column": 1
       }
     },
@@ -20584,9 +20602,27 @@
         "sourcePath": "src/studioSelectionModel.ts"
       },
       {
+        "fromSymbol": "containsUiNode",
+        "toSymbol": "visit",
+        "callExpression": "visit",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSelectionParentNodeId",
+        "toSymbol": "containsUiNode",
+        "callExpression": "containsUiNode",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
         "fromSymbol": "resolveStudioSelectionParentNodeId",
         "toSymbol": "visit",
         "callExpression": "visit",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioSelectionContext",
+        "toSymbol": "containsUiNode",
+        "callExpression": "containsUiNode",
         "sourcePath": "src/studioSelectionModel.ts"
       },
       {

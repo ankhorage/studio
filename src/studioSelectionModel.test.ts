@@ -100,4 +100,19 @@ describe('studioSelectionModel', () => {
     expect(empty.parentNodeId).toBeNull();
     expect(empty.canSelectParent).toBe(false);
   });
+
+  test('reconciles stale selections against the current root node', () => {
+    const root = {
+      id: 'root',
+      type: 'Screen',
+      props: {},
+      children: [{ id: 'child', type: 'View', props: {} }],
+    };
+
+    const selection = createStudioSelectionContext({ rootNode: root, selectedNodeId: 'missing' });
+
+    expect(selection.selectedNodeId).toBeNull();
+    expect(selection.parentNodeId).toBeNull();
+    expect(selection.canSelectParent).toBe(false);
+  });
 });
