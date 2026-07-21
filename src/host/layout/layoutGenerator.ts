@@ -16,6 +16,7 @@ import {
   type EnabledAuthLayoutPlan,
   resolveAuthLayoutPlan,
 } from './auth/resolveAuthLayoutPlan';
+import { composeGeneratedImports } from './generatedImportComposer';
 import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
@@ -26,6 +27,7 @@ import {
   getAuthSessionTs,
   getIndexRedirectRouteTsx,
   getNestedLayoutTsx,
+  getRootLayoutImportRequirements,
   getRootLayoutTsx,
   getScreenTsx,
   getSignOutScreenTsx,
@@ -36,7 +38,7 @@ export interface GeneratedFile {
   content: string;
 }
 
-export interface LayoutGenerationOptions {
+export interface GeneratedAppFileGenerationOptions {
   includeStudio?: boolean;
   runtimePlan?: ExpoRuntimePlan;
 }
@@ -69,12 +71,12 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
     .join('\n\n');
 }
 
-export class LayoutGenerator {
-  generateAll(
+export class GeneratedAppFileGenerator {
+  generateFiles(
     _projectRoot: string,
     manifest: AppManifest,
     mutations: LayoutMutation[],
-    options: LayoutGenerationOptions = {},
+    options: GeneratedAppFileGenerationOptions = {},
   ): GeneratedFile[] {
     const files: GeneratedFile[] = [];
     const { includeStudio = true, runtimePlan } = options;
@@ -238,7 +240,8 @@ export class LayoutGenerator {
     const pluginHooks = mutations.flatMap((m) => m.hooks);
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
 
-    const allImports = [
+    const allImports = composeGeneratedImports([
+      ...getRootLayoutImportRequirements(includeStudio),
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
       `import { ${[
@@ -257,8 +260,7 @@ export class LayoutGenerator {
       `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
-      `
-import { authAdapter } from '@/auth/adapter';`,
+      `import { authAdapter } from '@/auth/adapter';`,
       `import {
   bootstrapAuthSession,
   getStoredAuthSession,
@@ -274,9 +276,7 @@ import { authAdapter } from '@/auth/adapter';`,
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
       ...pluginImports,
-    ]
-      .filter(Boolean)
-      .join('\n');
+    ]);
 
     const allHooks = pluginHooks.join('\n  ');
 
@@ -346,7 +346,6 @@ import { authAdapter } from '@/auth/adapter';`,
       `import React, { useEffect, useMemo, useRef } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
-      '',
       getPackageOwnedRuntimeImports(),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
@@ -359,9 +358,11 @@ import { authAdapter } from '@/auth/adapter';`,
     const pluginImports = mutations.flatMap((m) => m.imports);
     const pluginHooks = mutations.flatMap((m) => m.hooks);
 
-    const allImports = [...coreImports, ...pluginImports]
-      .filter((value) => value !== '')
-      .join('\n');
+    const allImports = composeGeneratedImports([
+      ...getRootLayoutImportRequirements(includeStudio),
+      ...coreImports,
+      ...pluginImports,
+    ]);
 
     const allHooks = pluginHooks.join('\n  ');
 
