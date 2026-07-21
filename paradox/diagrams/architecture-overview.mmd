@@ -280,6 +280,10 @@ graph TD
   module_src_host_layout_templates_navigation_ts["src/host/layout/templates/navigation.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_navigation_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_nestedLayout_test_ts["src/host/layout/templates/nestedLayout.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_nestedLayout_test_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --> module_src_host_layout_templates_navigation_ts
+  module_src_host_layout_templates_nestedLayout_test_ts --> module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts["src/host/layout/templates/nestedLayout.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_navigation_ts
