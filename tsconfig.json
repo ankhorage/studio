@@ -16,12 +16,6 @@
     "types": ["bun", "node"],
     "jsx": "react-jsx"
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "scripts/**/*.ts",
-    "knip.config.ts",
-    "paradox.config.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "knip.config.ts", "paradox.config.ts"],
   "exclude": ["dist", "node_modules", "apps/studio/node_modules", "apps/studio/dist"]
 }
