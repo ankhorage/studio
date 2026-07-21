@@ -23,15 +23,22 @@ test('declares generated runtime registries before composing them', () => {
       usesZoraNavigationRouteMap: false,
     },
     includeStudio: false,
-    runtimeModuleDeclarations: `const APP_EXTENSION_COMPONENT_REGISTRY = {};
-const ZORA_COMPONENT_REGISTRY = {};`,
+    runtimeModuleDeclarations: `const ZORA_COMPONENT_REGISTRY = {};
+const APP_EXTENSION_COMPONENT_REGISTRY = {};
+const createComponentRegistry = () => ({});`,
   });
 
   const registryDeclarationIndex = generated.indexOf('const ZORA_COMPONENT_REGISTRY = {};');
-  const registryCompositionIndex = generated.indexOf('const runtimeComponentRegistry = {');
+  const registryCompositionIndex = generated.indexOf(
+    'const runtimeComponentRegistry = createComponentRegistry(',
+  );
 
   expect(registryDeclarationIndex).toBeGreaterThanOrEqual(0);
   expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
+  expect(generated).toContain(`const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);`);
 });
 
 test('initializes the Studio provider with the runtime manifest', () => {

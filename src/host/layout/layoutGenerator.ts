@@ -43,26 +43,21 @@ export interface LayoutGenerationOptions {
 
 function getPackageOwnedRuntimeImports(): string {
   return `import {
+  createComponentRegistry,
   createRuntimeDataSourceOperationExecutor,
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';
 import {
-  APP_EXTENSION_COMPONENT_REGISTRY as STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
-  createComponentRegistry,
+  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   useRuntimeAction,
-  ZORA_COMPONENT_REGISTRY as STUDIO_ZORA_COMPONENT_REGISTRY,
 } from '@ankhorage/studio/runtime';
 import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';`;
 }
 
 function getGeneratedRuntimeRegistryDeclarations(): string {
-  return `const APP_EXTENSION_COMPONENT_REGISTRY = {
-  ...STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
-  ...GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-};
-const ZORA_COMPONENT_REGISTRY = createComponentRegistry(
-  STUDIO_ZORA_COMPONENT_REGISTRY,
+  return `const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
+  STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`;
 }
@@ -246,7 +241,13 @@ export class LayoutGenerator {
     const allImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
-      `import { ${['AppShell', 'ZoraProvider', 'useZoraTheme', includeStudio ? 'AppBar' : '']
+      `import { ${[
+        'AppShell',
+        'ZoraProvider',
+        'ZORA_COMPONENT_REGISTRY',
+        'useZoraTheme',
+        includeStudio ? 'AppBar' : '',
+      ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
@@ -326,6 +327,7 @@ import { authAdapter } from '@/auth/adapter';`,
       `import { ${[
         'AppShell',
         'ZoraProvider',
+        'ZORA_COMPONENT_REGISTRY',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
         needsZoraTabBar ? 'ZoraTabBar' : '',

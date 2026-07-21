@@ -444,10 +444,10 @@ ${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
 ${moduleLevelDeclarations}
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
-const runtimeComponentRegistry = {
-  ...ZORA_COMPONENT_REGISTRY,
-  ...APP_EXTENSION_COMPONENT_REGISTRY,
-};
+const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);
 
 function resolveZoraProviderTheme(
   theme: AppManifest['themes'][number],
