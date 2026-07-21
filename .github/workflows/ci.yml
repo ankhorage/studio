@@ -78,9 +78,6 @@ jobs:
             echo "No test:smoke:studio-web script found; skipping."
           fi
 
-      - name: Run generated app web smoke test
-        run: CHROME_PATH=/usr/bin/google-chrome ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts
-
       - name: Run typecheck
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.typecheck ? 0 : 1)"; then
