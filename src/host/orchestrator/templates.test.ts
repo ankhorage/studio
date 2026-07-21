@@ -10,7 +10,7 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/contracts']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.0');
     expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.0.0');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');

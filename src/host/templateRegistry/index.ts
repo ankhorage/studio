@@ -3,23 +3,23 @@ import {
   CATEGORY_PRESETS,
   createStarterTemplate,
   listStarterTemplateSummaries,
-  type StarterTemplateSummary,
   type TemplateSeed,
 } from '@ankhorage/templates';
+
+import type {
+  TemplateCatalog,
+  TemplateCatalogCategory,
+  TemplateCatalogTemplate,
+} from '../../templateCatalogContracts';
 
 export interface ProjectTemplateSelection {
   category: AppCategory;
   templateId: string;
 }
 
-export interface ProjectTemplateSummary {
-  id: string;
+type IndexedProjectTemplate = TemplateCatalogTemplate & {
   category: AppCategory;
-  templateId: string;
-  name: string;
-  description: string;
-  version: string;
-}
+};
 
 function createProjectTemplateId(selection: ProjectTemplateSelection): string {
   return `${selection.category}/${selection.templateId}`;
@@ -38,18 +38,6 @@ function createSeed(category: AppCategory): TemplateSeed {
     primaryColor: preset.primaryColor,
     harmony: preset.harmony,
   };
-}
-
-function createTemplateManifest(summary: StarterTemplateSummary): AppManifest {
-  return normalizeProjectTemplateManifest(
-    {
-      category: summary.category,
-      templateId: summary.id,
-    },
-    createStarterTemplate(createSeed(summary.category), {
-      templateId: summary.id,
-    }),
-  );
 }
 
 function normalizeProjectTemplateManifest(
@@ -86,10 +74,11 @@ function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest 
   );
 }
 
-const PROJECT_TEMPLATE_SUMMARIES = createTemplateSummaries();
+const PROJECT_TEMPLATE_INDEX = createTemplateIndex();
+const PROJECT_TEMPLATE_CATALOG = createTemplateCatalog();
 
 export function getProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
-  const summary = PROJECT_TEMPLATE_SUMMARIES.find(
+  const summary = PROJECT_TEMPLATE_INDEX.find(
     (template) =>
       template.category === selection.category && template.templateId === selection.templateId,
   );
@@ -103,12 +92,18 @@ export function getProjectTemplate(selection: ProjectTemplateSelection): AppMani
   return buildProjectTemplate(selection);
 }
 
-export function getTemplateSummaries(): ProjectTemplateSummary[] {
-  return [...PROJECT_TEMPLATE_SUMMARIES];
+export function getTemplateCatalog(): TemplateCatalog {
+  return {
+    categories: PROJECT_TEMPLATE_CATALOG.categories.map((category) => ({
+      ...category,
+      focusAreas: [...category.focusAreas],
+      templates: category.templates.map((template) => ({ ...template })),
+    })),
+  };
 }
-function createTemplateSummaries(): readonly ProjectTemplateSummary[] {
+
+function createTemplateIndex(): readonly IndexedProjectTemplate[] {
   return listStarterTemplateSummaries().map((summary) => {
-    const manifest = createTemplateManifest(summary);
     const selection = {
       category: summary.category,
       templateId: summary.id,
@@ -120,7 +115,28 @@ function createTemplateSummaries(): readonly ProjectTemplateSummary[] {
       templateId: summary.id,
       name: summary.label,
       description: summary.description,
-      version: manifest.metadata.version,
     };
   });
+}
+
+function createTemplateCatalog(): TemplateCatalog {
+  const categories = Object.entries(CATEGORY_PRESETS).map(([categoryId, preset]) => {
+    const category = categoryId as AppCategory;
+    const templates: TemplateCatalogTemplate[] = PROJECT_TEMPLATE_INDEX.filter(
+      (summary) => summary.category === category,
+    ).map(({ category: _category, ...template }) => template);
+
+    return {
+      id: category,
+      label: preset.label,
+      summary: preset.summary,
+      focusAreas: [...preset.focusAreas],
+      primaryColor: preset.primaryColor,
+      harmony: preset.harmony,
+      templateCount: templates.length,
+      templates,
+    } satisfies TemplateCatalogCategory;
+  });
+
+  return { categories };
 }

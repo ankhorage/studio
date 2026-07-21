@@ -34,7 +34,13 @@ function manifest(args: {
   const flow = args.flow === null ? undefined : (args.flow ?? TEST_AUTH_FLOW);
 
   return {
-    metadata: { name: 'Test', slug: 'test', version: '1.0.0', themeId: 'default' },
+    metadata: {
+      name: 'Test',
+      slug: 'test',
+      version: '1.0.0',
+      category: 'developer_tools',
+      themeId: 'default',
+    },
     themes: [],
     activeThemeId: 'default',
     infra: {

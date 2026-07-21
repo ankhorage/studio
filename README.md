@@ -38,3 +38,4 @@ Manage Studio development and projects through the Ankh CLI.
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)
 - [validateInsertRecipe sequence](././paradox/diagrams/sequences/validate-insert-recipe.mmd)
 - [validateNodePlacement sequence](././paradox/diagrams/sequences/validate-node-placement.mmd)
+- [validateProjectCreationInput sequence](././paradox/diagrams/sequences/validate-project-creation-input.mmd)

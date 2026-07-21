@@ -2,9 +2,21 @@ graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
   module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
+  module_src_app_CreateCategoriesScreen_tsx["src/app/CreateCategoriesScreen.tsx"]
+  module_src_app_CreateCategoryTemplatesScreen_tsx["src/app/CreateCategoryTemplatesScreen.tsx"]
+  module_src_app_CreateProjectFromTemplateScreen_tsx["src/app/CreateProjectFromTemplateScreen.tsx"]
   module_src_app_index_ts["src/app/index.ts"]
+  module_src_app_ProjectDetailScreen_tsx["src/app/ProjectDetailScreen.tsx"]
+  module_src_app_ProjectsOverviewScreen_tsx["src/app/ProjectsOverviewScreen.tsx"]
   module_src_app_StudioApp_tsx["src/app/StudioApp.tsx"]
-  module_src_app_StudioDashboard_tsx["src/app/StudioDashboard.tsx"]
+  module_src_app_studioWorkspaceRoutes_test_ts["src/app/studioWorkspaceRoutes.test.ts"]
+  module_src_app_workspace_createProjectFormState_test_ts["src/app/workspace/createProjectFormState.test.ts"]
+  module_src_app_workspace_createProjectFormState_ts["src/app/workspace/createProjectFormState.ts"]
+  module_src_app_workspace_navigation_test_ts["src/app/workspace/navigation.test.ts"]
+  module_src_app_workspace_navigation_ts["src/app/workspace/navigation.ts"]
+  module_src_app_workspace_routeParams_test_ts["src/app/workspace/routeParams.test.ts"]
+  module_src_app_workspace_routeParams_ts["src/app/workspace/routeParams.ts"]
+  module_src_app_workspace_WorkspacePrimitives_tsx["src/app/workspace/WorkspacePrimitives.tsx"]
   module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
   module_src_authSettings_ts["src/authSettings.ts"]
@@ -14,6 +26,8 @@ graph LR
   module_src_canvasDropZones_test_ts["src/canvasDropZones.test.ts"]
   module_src_canvasDropZones_ts["src/canvasDropZones.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
+  module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
+  module_src_contractGuards_ts["src/contractGuards.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
   module_src_core_studioManifestDraftModel_test_ts["src/core/studioManifestDraftModel.test.ts"]
@@ -27,7 +41,8 @@ graph LR
   module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
   module_src_dnd_state_ts["src/dnd/state.ts"]
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
-  module_src_hooks_useTemplateSummaries_ts["src/hooks/useTemplateSummaries.ts"]
+  module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
+  module_src_hooks_useWorkspaceActions_ts["src/hooks/useWorkspaceActions.ts"]
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
@@ -78,12 +93,14 @@ graph LR
   module_src_host_orchestrator_infraRuntime_ts["src/host/orchestrator/infraRuntime.ts"]
   module_src_host_orchestrator_infraValidation_ts["src/host/orchestrator/infraValidation.ts"]
   module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
+  module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
   module_src_host_orchestrator_projectDeletion_test_ts["src/host/orchestrator/projectDeletion.test.ts"]
   module_src_host_orchestrator_projectDeletion_ts["src/host/orchestrator/projectDeletion.ts"]
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
   module_src_host_orchestrator_projectManagerDeletion_test_ts["src/host/orchestrator/projectManagerDeletion.test.ts"]
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
   module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
+  module_src_host_orchestrator_projectStoreSummary_test_ts["src/host/orchestrator/projectStoreSummary.test.ts"]
   module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
   module_src_host_orchestrator_scaffolder_ts["src/host/orchestrator/scaffolder.ts"]
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
@@ -98,6 +115,8 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts["src/host/secrets/trustedOAuthInfraEnvironment.test.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts["src/host/secrets/trustedOAuthInfraEnvironment.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
+  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
+  module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
   module_src_host_templateRegistry_index_ts["src/host/templateRegistry/index.ts"]
   module_src_host_utils_requirementsInference_ts["src/host/utils/requirementsInference.ts"]
   module_src_host_utils_trimOutput_ts["src/host/utils/trimOutput.ts"]
@@ -122,21 +141,17 @@ graph LR
   module_src_manifestState_ts["src/manifestState.ts"]
   module_src_manifestSync_test_ts["src/manifestSync.test.ts"]
   module_src_manifestSync_ts["src/manifestSync.ts"]
-  module_src_modules_dashboard_platform_ts["src/modules/dashboard/platform.ts"]
-  module_src_modules_dashboard_search_ts["src/modules/dashboard/search.ts"]
-  module_src_modules_dashboard_templates_ts["src/modules/dashboard/templates.ts"]
-  module_src_modules_dashboard_types_ts["src/modules/dashboard/types.ts"]
-  module_src_modules_dashboard_ui_DashboardSectionHeader_tsx["src/modules/dashboard/ui/DashboardSectionHeader.tsx"]
-  module_src_modules_dashboard_ui_ProjectCard_tsx["src/modules/dashboard/ui/ProjectCard.tsx"]
-  module_src_modules_dashboard_ui_TemplateCard_tsx["src/modules/dashboard/ui/TemplateCard.tsx"]
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
   module_src_projectAuthHealth_test_ts["src/projectAuthHealth.test.ts"]
   module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
+  module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
+  module_src_projectIdentity_ts["src/projectIdentity.ts"]
   module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
   module_src_projectSecretApi_ts["src/projectSecretApi.ts"]
   module_src_projectSecretUsage_test_ts["src/projectSecretUsage.test.ts"]
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
+  module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
   module_src_root_test_ts["src/root.test.ts"]
   module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
@@ -164,6 +179,7 @@ graph LR
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
+  module_src_templateCatalogContracts_ts["src/templateCatalogContracts.ts"]
   module_src_ui_admin_adminPagePrimitives_tsx["src/ui/admin/adminPagePrimitives.tsx"]
   module_src_ui_admin_adminPageUtils_ts["src/ui/admin/adminPageUtils.ts"]
   module_src_ui_admin_AnkhAdminPage_test_ts["src/ui/admin/AnkhAdminPage.test.ts"]
@@ -196,6 +212,9 @@ graph LR
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
+  module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
+  module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
+  module_src_workspaceSearch_ts["src/workspaceSearch.ts"]
   export_ACTION_REGISTRY["ACTION_REGISTRY"]
   module_src_index_ts --> export_ACTION_REGISTRY
   export_ActionDefinition["ActionDefinition"]
@@ -220,6 +239,8 @@ graph LR
   export_createNodeFromCatalogEntry -.-> export_InsertCatalogEntry
   export_createNodeFromCatalogEntry -.-> export_StudioComponentMetaRegistry
   export_createNodeFromCatalogEntry -.-> export_StudioIdGenerator
+  export_deriveProjectId["deriveProjectId"]
+  module_src_projectIdentity_ts --> export_deriveProjectId
   export_findNodeById["findNodeById"]
   module_src_index_ts --> export_findNodeById
   export_generateStudioId["generateStudioId"]
@@ -312,6 +333,15 @@ graph LR
   export_ProjectAuthHealth -.-> export_ProjectOAuthProviderHealth
   export_ProjectAuthHealthStatus["ProjectAuthHealthStatus"]
   module_src_projectAuthHealth_ts --> export_ProjectAuthHealthStatus
+  export_ProjectCreationValidationCode["ProjectCreationValidationCode"]
+  module_src_projectWorkspaceContracts_ts --> export_ProjectCreationValidationCode
+  export_ProjectCreationValidationError["ProjectCreationValidationError"]
+  module_src_projectIdentity_ts --> export_ProjectCreationValidationError
+  export_ProjectCreationValidationFailure["ProjectCreationValidationFailure"]
+  module_src_projectWorkspaceContracts_ts --> export_ProjectCreationValidationFailure
+  export_ProjectCreationValidationFailure -.-> export_ProjectCreationValidationCode
+  export_ProjectCreationValidationResult["ProjectCreationValidationResult"]
+  module_src_projectWorkspaceContracts_ts --> export_ProjectCreationValidationResult
   export_ProjectOAuthProviderHealth["ProjectOAuthProviderHealth"]
   module_src_projectAuthHealth_ts --> export_ProjectOAuthProviderHealth
   export_ProjectOAuthProviderHealth -.-> export_ProjectOAuthProviderHealthStatus
@@ -325,6 +355,8 @@ graph LR
   export_ProjectSecretUsageSummary["ProjectSecretUsageSummary"]
   module_src_projectSecretUsage_ts --> export_ProjectSecretUsageSummary
   export_ProjectSecretUsageSummary -.-> export_ProjectSecretUsage
+  export_ProjectSortKey["ProjectSortKey"]
+  module_src_projectWorkspaceContracts_ts --> export_ProjectSortKey
   export_removeNodeFromTree["removeNodeFromTree"]
   module_src_index_ts --> export_removeNodeFromTree
   export_resolveDefaultInsertPlacement["resolveDefaultInsertPlacement"]
@@ -404,6 +436,8 @@ graph LR
   module_src_index_ts --> export_StudioPanelId
   export_StudioProjectId["StudioProjectId"]
   module_src_index_ts --> export_StudioProjectId
+  export_StudioProjectSummary["StudioProjectSummary"]
+  module_src_projectWorkspaceContracts_ts --> export_StudioProjectSummary
   export_StudioPublicContract["StudioPublicContract"]
   module_src_index_ts --> export_StudioPublicContract
   export_StudioSaveStatus["StudioSaveStatus"]
@@ -420,6 +454,16 @@ graph LR
   module_src_index_ts --> export_StudioSessionState
   export_StudioSessionState -.-> export_StudioMode
   export_StudioSessionState -.-> export_StudioSaveStatus
+  export_TemplateCatalog["TemplateCatalog"]
+  module_src_templateCatalogContracts_ts --> export_TemplateCatalog
+  export_TemplateCatalog -.-> export_TemplateCatalogCategory
+  export_TemplateCatalogCategory["TemplateCatalogCategory"]
+  module_src_templateCatalogContracts_ts --> export_TemplateCatalogCategory
+  export_TemplateCatalogCategory -.-> export_TemplateCatalogTemplate
+  export_TemplateCatalogTemplate["TemplateCatalogTemplate"]
+  module_src_templateCatalogContracts_ts --> export_TemplateCatalogTemplate
+  export_TemplateEntry["TemplateEntry"]
+  module_src_templateCatalogContracts_ts --> export_TemplateEntry
   export_ThemeUpdates["ThemeUpdates"]
   module_src_index_ts --> export_ThemeUpdates
   export_TPL_SCREEN_EMPTY["TPL_SCREEN_EMPTY"]
@@ -436,3 +480,7 @@ graph LR
   export_validateNodePlacement -.-> export_NodePlacement
   export_validateNodePlacement -.-> export_PlacementValidationResult
   export_validateNodePlacement -.-> export_StudioComponentMetaRegistry
+  export_validateProjectCreationInput["validateProjectCreationInput"]
+  module_src_projectIdentity_ts --> export_validateProjectCreationInput
+  export_validateProjectCreationInput -.-> export_ProjectCreationValidationResult
+  export_validateProjectCreationInput -.-> export_StudioProjectSummary

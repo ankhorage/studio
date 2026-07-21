@@ -1,10 +1,11 @@
-import type { AppCategory, AppManifest } from '@ankhorage/contracts';
 import cors from '@fastify/cors';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { isAppCategory, isAppManifest } from '../../contractGuards';
+import { ProjectCreationValidationError } from '../../projectIdentity';
 import {
   ensureProjectInfraPortForward,
   InfraScriptExecutionError,
@@ -16,7 +17,7 @@ import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveModuleLayoutMutations } from '../orchestrator/resolveMutations';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
-import { getTemplateSummaries, type ProjectTemplateSelection } from '../templateRegistry';
+import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { isOriginAllowed } from './security';
@@ -72,8 +73,12 @@ function resolveProjectTemplateSelection(body: {
     return null;
   }
 
+  if (!isAppCategory(body.category)) {
+    return null;
+  }
+
   return {
-    category: body.category as AppCategory,
+    category: body.category,
     templateId: body.templateId,
   };
 }
@@ -104,7 +109,7 @@ export async function createStudioHostServer(args: {
 
   fastify.get('/api/projects', () => projectManager.listProjects());
 
-  fastify.get('/api/templates', () => getTemplateSummaries());
+  fastify.get('/api/templates', () => getTemplateCatalog());
 
   fastify.post('/api/projects', async (req: FastifyRequest, reply: FastifyReply) => {
     const { name, includeStudio = true } = req.body as {
@@ -128,6 +133,13 @@ export async function createStudioHostServer(args: {
       );
       return result;
     } catch (err: unknown) {
+      if (err instanceof ProjectCreationValidationError) {
+        const status =
+          err.reason.code === 'project-id-exists' || err.reason.code === 'project-name-exists'
+            ? 409
+            : 400;
+        return reply.status(status).send(err.reason);
+      }
       const message = err instanceof Error ? err.message : String(err);
       reply.status(500).send({ error: message });
     }
@@ -356,16 +368,15 @@ export async function createStudioHostServer(args: {
     '/api/projects/:id/studio/manifest',
     async (req: FastifyRequest, reply: FastifyReply) => {
       const { id } = req.params as { id: string };
-      const manifest = req.body as AppManifest | null;
 
-      if (!manifest) {
+      if (!isAppManifest(req.body)) {
         return reply.status(400).send({ error: 'Manifest body required' });
       }
 
       try {
         return await projectManager.saveStudioManifest({
           projectId: id,
-          manifest,
+          manifest: req.body,
         });
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
@@ -378,16 +389,15 @@ export async function createStudioHostServer(args: {
     '/api/projects/:id/studio/runtime',
     async (req: FastifyRequest, reply: FastifyReply) => {
       const { id } = req.params as { id: string };
-      const manifest = req.body as AppManifest | null;
 
-      if (!manifest) {
+      if (!isAppManifest(req.body)) {
         return reply.status(400).send({ error: 'Manifest body required' });
       }
 
       try {
         return await projectManager.syncStudioRuntime({
           projectId: id,
-          manifest,
+          manifest: req.body,
         });
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
@@ -478,19 +488,18 @@ export async function createStudioHostServer(args: {
   // PUT (Save) Manifest
   fastify.put('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const manifest = req.body as AppManifest | null;
 
-    if (!manifest) {
+    if (!isAppManifest(req.body)) {
       return reply.status(400).send({ error: 'Manifest body required' });
     }
 
     try {
-      const activeModules = manifest.infra.plugins;
+      const activeModules = req.body.infra.plugins;
       const mutations = resolveModuleLayoutMutations(activeModules);
 
       return await projectManager.saveProjectManifest({
         projectId: id,
-        manifest,
+        manifest: req.body,
         mutations,
         regenerateRouterFiles: true,
       });

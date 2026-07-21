@@ -6,7 +6,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateSummaries } from './templateRegistry';
+import { getTemplateCatalog } from './templateRegistry';
 
 async function collectSourceFiles(root: string): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
@@ -30,14 +30,15 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
 
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const [template] = getTemplateSummaries();
-  if (template === undefined) {
+  const category = getTemplateCatalog().categories.find((entry) => entry.templates.length > 0);
+  const [template] = category?.templates ?? [];
+  if (category === undefined || template === undefined) {
     throw new Error('Published templates package returned no templates.');
   }
 
   const created = await projectManager.createProject(
     'Host Smoke App',
-    { category: template.category, templateId: template.templateId },
+    { category: category.id, templateId: template.templateId },
     (projectId) => moduleManager.generateModuleRegistry(projectId),
   );
   expect(created.success).toBe(true);

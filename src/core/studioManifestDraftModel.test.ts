@@ -10,7 +10,13 @@ import {
 
 function createManifest(): StudioManifest {
   return {
-    metadata: { name: 'Demo', slug: 'demo', version: '1.0.0', themeId: 'theme-1' },
+    metadata: {
+      name: 'Demo',
+      slug: 'demo',
+      version: '1.0.0',
+      category: 'developer_tools',
+      themeId: 'theme-1',
+    },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
       plugins: [],

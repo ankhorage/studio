@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "name": "Ankhorage Studio",
+    "slug": "ankhorage-studio",
+    "version": "1.0.1",
+    "category": "developer_tools",
+    "themeId": "studio-default"
+  },
+  "themes": [
+    {
+      "id": "studio-default",
+      "name": "Studio Default",
+      "light": {
+        "primaryColor": "#2563EB",
+        "harmony": "analogous"
+      },
+      "dark": {
+        "primaryColor": "#60A5FA",
+        "harmony": "analogous"
+      }
+    }
+  ],
+  "activeThemeId": "studio-default",
+  "activeThemeMode": "dark",
+  "infra": {
+    "plugins": []
+  },
+  "navigator": {
+    "type": "stack",
+    "initialRouteName": "index",
+    "routes": [
+      {
+        "name": "index",
+        "path": "/",
+        "screenId": "projects"
+      },
+      {
+        "name": "projects/[projectId]",
+        "path": "/projects/:projectId",
+        "screenId": "project-detail"
+      },
+      {
+        "name": "create",
+        "path": "/create",
+        "screenId": "create-categories"
+      },
+      {
+        "name": "create/[category]",
+        "path": "/create/:category",
+        "screenId": "create-category-templates"
+      },
+      {
+        "name": "create/[category]/[templateId]",
+        "path": "/create/:category/:templateId",
+        "screenId": "create-project"
+      }
+    ]
+  },
+  "screens": {
+    "projects": {
+      "id": "projects",
+      "name": "Projects",
+      "title": "Projects",
+      "description": "Studio workspace project overview.",
+      "root": {
+        "id": "projects-root",
+        "type": "StudioWorkspaceRoute"
+      }
+    },
+    "project-detail": {
+      "id": "project-detail",
+      "name": "Project Detail",
+      "title": "Project Detail",
+      "description": "Generated project lifecycle controls.",
+      "root": {
+        "id": "project-detail-root",
+        "type": "StudioWorkspaceRoute"
+      }
+    },
+    "create-categories": {
+      "id": "create-categories",
+      "name": "Create Categories",
+      "title": "New Project",
+      "description": "Choose a project category.",
+      "root": {
+        "id": "create-categories-root",
+        "type": "StudioWorkspaceRoute"
+      }
+    },
+    "create-category-templates": {
+      "id": "create-category-templates",
+      "name": "Create Category Templates",
+      "title": "Templates",
+      "description": "Choose a template from one category.",
+      "root": {
+        "id": "create-category-templates-root",
+        "type": "StudioWorkspaceRoute"
+      }
+    },
+    "create-project": {
+      "id": "create-project",
+      "name": "Create Project",
+      "title": "Create Project",
+      "description": "Name and create a generated project.",
+      "root": {
+        "id": "create-project-root",
+        "type": "StudioWorkspaceRoute"
+      }
+    }
+  },
+  "settings": {
+    "localization": {
+      "defaultLocale": "en",
+      "locales": ["en"]
+    }
+  }
+}

@@ -9,7 +9,7 @@ import {
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
-const CONTRACTS_VERSION = '^3.0.0';
+const CONTRACTS_VERSION = '^4.0.0';
 const SUPABASE_AUTH_VERSION = '^1.0.0';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';

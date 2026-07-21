@@ -3,6 +3,10 @@ import { type ExpoRuntimePlan, resolveExpoRuntimePlan } from '@ankhorage/expo-ru
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import {
+  ProjectCreationValidationError,
+  validateProjectCreationInput,
+} from '../../projectIdentity';
 import { LayoutGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
@@ -119,11 +123,20 @@ export class ProjectManager {
     options: { includeStudio?: boolean } = {},
   ) {
     const { includeStudio = true } = options;
-    const slug = slugify(name);
+    const existingProjects = await this.listProjects();
+    const validation = validateProjectCreationInput({ name, existingProjects });
+    if (!validation.ok) {
+      throw new ProjectCreationValidationError(validation.reason);
+    }
+
+    const slug = validation.projectId;
     const projectPath = getProjectPath(this.rootPath, slug);
 
     if (await exists(projectPath)) {
-      throw new Error(`Project ID '${slug}' is already taken.`);
+      throw new ProjectCreationValidationError({
+        code: 'project-id-exists',
+        message: `Project ID '${slug}' already exists.`,
+      });
     }
 
     const templateData = this.scaffolder.getTemplate(templateSelection);
@@ -145,7 +158,13 @@ export class ProjectManager {
     // The orchestrator should pass mutations when calling rebuild/sync.
     // For creation we default to "no mutations"; your template-driven module installs
     // will run via orchestrator anyway.
-    const manifest = await this.scaffolder.finalizeManifest(projectPath, templateData, name, slug);
+    const manifest = await this.scaffolder.finalizeManifest(
+      projectPath,
+      templateData,
+      name,
+      slug,
+      templateSelection.category,
+    );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
 
     // 3) generate router files based on manifest (no module layout mutations at creation)
@@ -486,17 +505,6 @@ function isStringRecord(value: unknown): value is Record<string, string> {
     value !== null &&
     !Array.isArray(value) &&
     Object.values(value).every((entry) => typeof entry === 'string')
-  );
-}
-
-function slugify(name: string) {
-  return (
-    name
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9-]/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '') || 'untitled-app'
   );
 }
 

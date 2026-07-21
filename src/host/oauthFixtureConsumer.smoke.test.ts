@@ -7,7 +7,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateSummaries } from './templateRegistry';
+import { getTemplateCatalog } from './templateRegistry';
 
 const SECRET_SENTINEL = 'sentinel-phase3-consumer-secret-do-not-leak';
 const PROJECT_NAME = 'OAuth Fixture Consumer';
@@ -48,16 +48,16 @@ test('generates the released Google and Apple OAuth fixture through the real hos
 
     const projectManager = new ProjectManager(workspaceRoot);
     const moduleManager = new ModuleManager(workspaceRoot);
-    const template = getTemplateSummaries().find(
-      (candidate) => candidate.category === 'developer_tools',
-    );
+    const template = getTemplateCatalog()
+      .categories.find((candidate) => candidate.id === 'developer_tools')
+      ?.templates.at(0);
     if (!template) {
       throw new Error('Published templates package returned no developer-tools template.');
     }
 
     const created = await projectManager.createProject(
       PROJECT_NAME,
-      { category: template.category, templateId: template.templateId },
+      { category: 'developer_tools', templateId: template.templateId },
       (projectId) => moduleManager.generateModuleRegistry(projectId),
       { includeStudio: false },
     );
@@ -103,7 +103,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     const packageJson = JSON.parse(await readProjectFile(created.path, 'package.json')) as {
       dependencies?: Record<string, string>;
     };
-    expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^3.0.0');
+    expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^4.0.0');
     expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.0.0');
     expect(packageJson.dependencies?.['expo-secure-store']).toBe('~15.0.8');
     expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');

@@ -10,7 +10,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
-import { getTemplateSummaries } from './templateRegistry';
+import { getTemplateCatalog } from './templateRegistry';
 
 const execFile = promisify(execFileCallback);
 const PROJECT_NAME = 'Generated Auth Runtime';
@@ -74,6 +74,7 @@ function createRuntimeSmokeManifest(): AppManifest {
       name: PROJECT_NAME,
       slug: PROJECT_ID,
       version: '1.0.0',
+      category: 'developer_tools',
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
@@ -128,16 +129,16 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
 
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
-  const template = getTemplateSummaries().find(
-    (candidate) => candidate.category === 'developer_tools',
-  );
+  const template = getTemplateCatalog()
+    .categories.find((candidate) => candidate.id === 'developer_tools')
+    ?.templates.at(0);
   if (!template) {
     throw new Error('Published templates package returned no developer-tools template.');
   }
 
   const created = await projectManager.createProject(
     PROJECT_NAME,
-    { category: template.category, templateId: template.templateId },
+    { category: 'developer_tools', templateId: template.templateId },
     (projectId) => moduleManager.generateModuleRegistry(projectId),
     { includeStudio: false },
   );

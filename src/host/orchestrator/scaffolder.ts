@@ -1,4 +1,4 @@
-import type { AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
+import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -155,17 +155,21 @@ export class ProjectScaffolder {
     templateData: AppManifest,
     appName: string,
     slug: string,
+    category: AppCategory,
   ) {
-    const manifest: AppManifest = applySystemTemplates({
+    const now = new Date().toISOString();
+    const manifestWithCategory: AppManifest = {
       ...templateData,
       metadata: {
         ...templateData.metadata,
         name: appName,
         slug,
-        created: new Date().toISOString(),
-        updated: new Date().toISOString(),
+        category,
+        created: now,
+        updated: now,
       },
-    });
+    };
+    const manifest: AppManifest = applySystemTemplates(manifestWithCategory);
 
     await fs.writeFile(
       path.join(projectPath, 'ankh.config.json'),
