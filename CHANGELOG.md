@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.1
+
+### Patch Changes
+
+- ce8c673: Centralize generated root-layout import composition so Auth and Studio features share one deduplicated import block and cannot emit duplicate React bindings.
+
 ## 0.10.0
 
 ### Minor Changes
