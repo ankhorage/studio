@@ -405,6 +405,7 @@
         "src/core/studioManifestPersistenceModel.ts",
         "src/index.ts",
         "src/manifestSync.ts",
+        "src/studioSelectionModel.ts",
         "src/ui/admin/AuthAdminSession.tsx"
       ],
       "exports": ["StudioProvider", "StudioProviderProps"]
@@ -2056,6 +2057,7 @@
         "createStudioSelectionContext",
         "createStudioSelectionProviderProps",
         "CreateStudioSelectionProviderPropsArgs",
+        "resolveStudioSelectedNodeId",
         "resolveStudioSelectionParentNodeId",
         "StudioSelectionContext",
         "StudioSelectionProviderAdapterProps"
@@ -7451,7 +7453,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 54,
+        "line": 55,
         "column": 7
       }
     },
@@ -7460,7 +7462,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 55,
+        "line": 56,
         "column": 7
       }
     },
@@ -7469,7 +7471,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 58,
+        "line": 59,
         "column": 7
       }
     },
@@ -7478,7 +7480,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 81,
+        "line": 82,
         "column": 14
       }
     },
@@ -7487,7 +7489,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 277,
+        "line": 285,
         "column": 1
       }
     },
@@ -7496,7 +7498,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 378,
+        "line": 386,
         "column": 1
       }
     },
@@ -7505,7 +7507,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 387,
+        "line": 395,
         "column": 1
       }
     },
@@ -7514,7 +7516,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 400,
+        "line": 408,
         "column": 1
       }
     },
@@ -7523,7 +7525,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 408,
+        "line": 416,
         "column": 1
       }
     },
@@ -7532,7 +7534,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 415,
+        "line": 423,
         "column": 1
       }
     },
@@ -12829,7 +12831,7 @@
       }
     },
     {
-      "name": "createStudioSelectionContext",
+      "name": "resolveStudioSelectedNodeId",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
@@ -12838,11 +12840,20 @@
       }
     },
     {
+      "name": "createStudioSelectionContext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioSelectionModel.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioSelectionProviderProps",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioSelectionModel.ts",
-        "line": 77,
+        "line": 83,
         "column": 1
       }
     },
@@ -14708,6 +14719,11 @@
       {
         "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/manifestSync.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/studioSelectionModel.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -20596,6 +20612,12 @@
         "sourcePath": "src/studioSelectionModel.test.ts"
       },
       {
+        "fromSymbol": "src/studioSelectionModel.test.ts",
+        "toSymbol": "resolveStudioSelectedNodeId",
+        "callExpression": "resolveStudioSelectedNodeId",
+        "sourcePath": "src/studioSelectionModel.test.ts"
+      },
+      {
         "fromSymbol": "visit",
         "toSymbol": "visit",
         "callExpression": "visit",
@@ -20620,9 +20642,15 @@
         "sourcePath": "src/studioSelectionModel.ts"
       },
       {
-        "fromSymbol": "createStudioSelectionContext",
+        "fromSymbol": "resolveStudioSelectedNodeId",
         "toSymbol": "containsUiNode",
         "callExpression": "containsUiNode",
+        "sourcePath": "src/studioSelectionModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioSelectionContext",
+        "toSymbol": "resolveStudioSelectedNodeId",
+        "callExpression": "resolveStudioSelectedNodeId",
         "sourcePath": "src/studioSelectionModel.ts"
       },
       {
@@ -21709,6 +21737,24 @@
         "fromSymbol": "src/core/StudioProvider.ts",
         "toSymbol": "resolveActiveRootNode",
         "callExpression": "resolveActiveRootNode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "resolveStudioSelectedNodeId",
+        "callExpression": "resolveStudioSelectedNodeId",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "selectNode",
+        "callExpression": "selectNode",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {

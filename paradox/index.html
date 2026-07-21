@@ -1276,7 +1276,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/studioSelectionModel.ts">
                 src/studioSelectionModel.ts
-                <small>6 functions</small>
+                <small>7 functions</small>
               </button>
             </li>
             <li>
@@ -1950,7 +1950,7 @@
             </article>
             <article
               class="item"
-              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps"
+              data-search="src/core/StudioProvider.ts src/authSettings.ts src/core/constants.ts src/core/StudioContext.ts src/core/studioManifestDraftModel.ts src/core/studioManifestPersistenceModel.ts src/index.ts src/manifestSync.ts src/studioSelectionModel.ts src/ui/admin/AuthAdminSession.tsx StudioProvider StudioProviderProps"
             >
               <h3>src/core/StudioProvider.ts</h3>
               <p class="muted">Referenced module</p>
@@ -1959,7 +1959,8 @@
                 <code>src/core/constants.ts</code>, <code>src/core/StudioContext.ts</code>,
                 <code>src/core/studioManifestDraftModel.ts</code>,
                 <code>src/core/studioManifestPersistenceModel.ts</code>, <code>src/index.ts</code>,
-                <code>src/manifestSync.ts</code>, <code>src/ui/admin/AuthAdminSession.tsx</code>
+                <code>src/manifestSync.ts</code>, <code>src/studioSelectionModel.ts</code>,
+                <code>src/ui/admin/AuthAdminSession.tsx</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>StudioProvider</code>,
@@ -3905,7 +3906,7 @@
             </article>
             <article
               class="item"
-              data-search="src/studioSelectionModel.ts createStudioSelectionContext createStudioSelectionProviderProps CreateStudioSelectionProviderPropsArgs resolveStudioSelectionParentNodeId StudioSelectionContext StudioSelectionProviderAdapterProps"
+              data-search="src/studioSelectionModel.ts createStudioSelectionContext createStudioSelectionProviderProps CreateStudioSelectionProviderPropsArgs resolveStudioSelectedNodeId resolveStudioSelectionParentNodeId StudioSelectionContext StudioSelectionProviderAdapterProps"
             >
               <h3>src/studioSelectionModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -3914,6 +3915,7 @@
                 <strong>Exports:</strong> <code>createStudioSelectionContext</code>,
                 <code>createStudioSelectionProviderProps</code>,
                 <code>CreateStudioSelectionProviderPropsArgs</code>,
+                <code>resolveStudioSelectedNodeId</code>,
                 <code>resolveStudioSelectionParentNodeId</code>,
                 <code>StudioSelectionContext</code>,
                 <code>StudioSelectionProviderAdapterProps</code>
@@ -8339,6 +8341,7 @@
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_studioSelectionModel_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_ui_admin_AuthAdminSession_tsx
                 module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;] package__ankhorage_studio
                 -.-&gt; module_src_dnd_index_ts
@@ -9288,6 +9291,7 @@ graph TD
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_dnd_index_ts[&quot;src/dnd/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_dnd_index_ts
@@ -10224,6 +10228,7 @@ graph TD
                 module_src_core_studioManifestPersistenceModel_ts module_src_core_StudioProvider_ts
                 --&gt; module_src_index_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_manifestSync_ts module_src_core_StudioProvider_ts --&gt;
+                module_src_studioSelectionModel_ts module_src_core_StudioProvider_ts --&gt;
                 module_src_ui_admin_AuthAdminSession_tsx module_src_hooks_useProjects_ts --&gt;
                 module_src_contractGuards_ts module_src_hooks_useProjects_ts --&gt;
                 module_src_core_constants_ts module_src_hooks_useProjects_ts --&gt;
@@ -10913,6 +10918,7 @@ graph LR
   module_src_core_StudioProvider_ts --&gt; module_src_core_studioManifestPersistenceModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_index_ts
   module_src_core_StudioProvider_ts --&gt; module_src_manifestSync_ts
+  module_src_core_StudioProvider_ts --&gt; module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_hooks_useProjects_ts --&gt; module_src_contractGuards_ts
   module_src_hooks_useProjects_ts --&gt; module_src_core_constants_ts
@@ -13646,22 +13652,22 @@ sequenceDiagram
             <h2>src/core/StudioProvider.ts</h2>
             <article class="item" data-search="noop src/core/StudioProvider.ts ">
               <h3>noop</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:54:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:55:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="noopAsync src/core/StudioProvider.ts ">
               <h3>noopAsync</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:55:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:56:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveActiveRootNode src/core/StudioProvider.ts ">
               <h3>resolveActiveRootNode</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:58:7</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:59:7</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioProvider src/core/StudioProvider.ts ">
               <h3>StudioProvider</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:81:14</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:82:14</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -13669,32 +13675,32 @@ sequenceDiagram
               data-search="useStudioManifestPersistence src/core/StudioProvider.ts "
             >
               <h3>useStudioManifestPersistence</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:277:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:285:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestStudioManifest src/core/StudioProvider.ts ">
               <h3>requestStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:378:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:386:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="saveStudioManifest src/core/StudioProvider.ts ">
               <h3>saveStudioManifest</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:387:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:395:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readPersistenceJson src/core/StudioProvider.ts ">
               <h3>readPersistenceJson</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:400:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:408:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createPersistenceError src/core/StudioProvider.ts ">
               <h3>createPersistenceError</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:408:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:416:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toPersistenceMessage src/core/StudioProvider.ts ">
               <h3>toPersistenceMessage</h3>
-              <p class="muted"><code>src/core/StudioProvider.ts:415:1</code></p>
+              <p class="muted"><code>src/core/StudioProvider.ts:423:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -18804,10 +18810,18 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="resolveStudioSelectedNodeId src/studioSelectionModel.ts "
+            >
+              <h3>resolveStudioSelectedNodeId</h3>
+              <p class="muted"><code>src/studioSelectionModel.ts:62:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="createStudioSelectionContext src/studioSelectionModel.ts "
             >
               <h3>createStudioSelectionContext</h3>
-              <p class="muted"><code>src/studioSelectionModel.ts:62:1</code></p>
+              <p class="muted"><code>src/studioSelectionModel.ts:69:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -18815,7 +18829,7 @@ sequenceDiagram
               data-search="createStudioSelectionProviderProps src/studioSelectionModel.ts "
             >
               <h3>createStudioSelectionProviderProps</h3>
-              <p class="muted"><code>src/studioSelectionModel.ts:77:1</code></p>
+              <p class="muted"><code>src/studioSelectionModel.ts:83:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

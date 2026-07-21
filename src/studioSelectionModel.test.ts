@@ -3,6 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import {
   createStudioSelectionContext,
   createStudioSelectionProviderProps,
+  resolveStudioSelectedNodeId,
   resolveStudioSelectionParentNodeId,
 } from './studioSelectionModel';
 
@@ -114,5 +115,7 @@ describe('studioSelectionModel', () => {
     expect(selection.selectedNodeId).toBeNull();
     expect(selection.parentNodeId).toBeNull();
     expect(selection.canSelectParent).toBe(false);
+    expect(resolveStudioSelectedNodeId(root, 'missing')).toBeNull();
+    expect(resolveStudioSelectedNodeId(root, 'child')).toBe('child');
   });
 });

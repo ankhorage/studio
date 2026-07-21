@@ -303,8 +303,9 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const rootLayoutTypeImports =
-    "import { useState, type ReactNode } from 'react';\nimport { Pressable, View } from 'react-native';\nimport { StyleSheet } from 'react-native';";
+  const rootLayoutTypeImports = includeStudio
+    ? "import { cloneElement, isValidElement, useState, type ReactNode } from 'react';"
+    : "import type { ReactNode } from 'react';";
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -349,7 +350,8 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeAction } = useRuntimeAction();
+  const runtimeContentDeclaration = includeStudio
+    ? `const { executeAction } = useRuntimeAction();
   const { previewMode, selectedNodeId, selectNode } = useStudio();
 
   const generatedRuntimeConfig = useMemo(
@@ -361,6 +363,22 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
       wrapNode: wrapStudioRuntimeNode,
     }),
     [executeAction, executeOperation, previewMode],
+  );
+
+  const runtimeContent = (
+    <RuntimeRendererConfigProvider value={generatedRuntimeConfig}>
+      {appContent}
+    </RuntimeRendererConfigProvider>
+  );`
+    : `const { executeAction } = useRuntimeAction();
+
+  const generatedRuntimeConfig = useMemo(
+    () => ({
+      executeAction,
+      registry: runtimeComponentRegistry,
+      executeOperation,
+    }),
+    [executeAction, executeOperation],
   );
 
   const runtimeContent = (
@@ -441,39 +459,8 @@ const shouldMountAppHeader =
   const indentedStudioShellBlock =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
   const indentedInnerNavigationJsx = indentGeneratedBlock(innerNavigation.jsx, '    ');
-
-  return `
-${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
-
-${moduleLevelDeclarations}
-
-const fallbackManifest = ankhConfig as unknown as AppManifest;
-const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);
-
-const studioSelectionStyles = StyleSheet.create({
-  selectionHost: {
-    position: 'relative',
-    borderRadius: 4,
-  },
-  selectionPressable: {
-    borderRadius: 4,
-  },
-  selectionOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderRadius: 4,
-    borderWidth: 0,
-    pointerEvents: 'none',
-  },
-});
-
-function wrapStudioRuntimeNode(args: {
+  const studioSelectionRuntimeHelpers = includeStudio
+    ? `function wrapStudioRuntimeNode(args: {
   readonly node: { readonly id?: string };
   readonly rendered: ReactNode;
   readonly isRoot: boolean;
@@ -500,7 +487,7 @@ function StudioRuntimeNodeWrapper(props: {
   }
 
   const selected = selectedNodeId === props.nodeId;
-  const selectionOverlayStyle = selected
+  const selectionStyle = selected
     ? {
         borderWidth: 2,
         borderColor: theme.colors.primary,
@@ -517,36 +504,68 @@ function StudioRuntimeNodeWrapper(props: {
           }
         : undefined;
 
-  return (
-    <View style={studioSelectionStyles.selectionHost}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={\`Select \${props.nodeId}\`}
-        accessibilityState={{ selected }}
-        hitSlop={6}
-        onHoverIn={() => setIsHovered(true)}
-        onHoverOut={() => setIsHovered(false)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onPressIn={() => setIsFocused(true)}
-        onPressOut={() => setIsFocused(false)}
-        onPress={(event) => {
+  const renderedElementProps = isValidElement(props.rendered) ? props.rendered.props : undefined;
+  const renderedNode = isValidElement(props.rendered)
+    ? cloneElement(props.rendered, {
+        ...renderedElementProps,
+        accessibilityRole: 'button',
+        accessibilityState: {
+          ...(renderedElementProps?.accessibilityState ?? {}),
+          selected,
+        },
+        onHoverIn: (event: unknown) => {
+          setIsHovered(true);
+          if (typeof renderedElementProps?.onHoverIn === 'function') {
+            renderedElementProps.onHoverIn(event);
+          }
+        },
+        onHoverOut: (event: unknown) => {
+          setIsHovered(false);
+          if (typeof renderedElementProps?.onHoverOut === 'function') {
+            renderedElementProps.onHoverOut(event);
+          }
+        },
+        onFocus: (event: unknown) => {
+          setIsFocused(true);
+          if (typeof renderedElementProps?.onFocus === 'function') {
+            renderedElementProps.onFocus(event);
+          }
+        },
+        onBlur: (event: unknown) => {
+          setIsFocused(false);
+          if (typeof renderedElementProps?.onBlur === 'function') {
+            renderedElementProps.onBlur(event);
+          }
+        },
+        onPress: (event: unknown) => {
           event.stopPropagation?.();
           selectNode(props.nodeId ?? null);
-        }}
-        style={studioSelectionStyles.selectionPressable}
-      >
-        {props.rendered}
-      </Pressable>
-      <View
-        pointerEvents="none"
-        style={[studioSelectionStyles.selectionOverlay, selectionOverlayStyle]}
-      />
-    </View>
-  );
+          if (typeof renderedElementProps?.onPress === 'function') {
+            renderedElementProps.onPress(event);
+          }
+        },
+        style: [renderedElementProps?.style, selectionStyle],
+      })
+    : props.rendered;
+
+  return renderedNode;
 }
 
-function resolveZoraProviderTheme(
+`
+    : '';
+
+  return `
+${rootLayoutTypeImports ? `${rootLayoutTypeImports}\n` : ''}${allImports}
+
+${moduleLevelDeclarations}
+
+const fallbackManifest = ankhConfig as unknown as AppManifest;
+const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);
+
+${studioSelectionRuntimeHelpers}function resolveZoraProviderTheme(
   theme: AppManifest['themes'][number],
   mode: NonNullable<AppManifest['activeThemeMode']>,
 ) {

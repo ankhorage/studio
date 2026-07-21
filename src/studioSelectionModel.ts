@@ -59,12 +59,18 @@ export function resolveStudioSelectionParentNodeId(
   return visit(rootNode, null);
 }
 
+export function resolveStudioSelectedNodeId(
+  rootNode: UiNode | null,
+  selectedNodeId: string | null,
+): string | null {
+  return containsUiNode(rootNode, selectedNodeId) ? selectedNodeId : null;
+}
+
 export function createStudioSelectionContext(args: {
   readonly rootNode: UiNode | null;
   readonly selectedNodeId: string | null;
 }): StudioSelectionContext {
-  const isValidSelection = containsUiNode(args.rootNode, args.selectedNodeId);
-  const selectedNodeId = isValidSelection ? args.selectedNodeId : null;
+  const selectedNodeId = resolveStudioSelectedNodeId(args.rootNode, args.selectedNodeId);
   const parentNodeId = resolveStudioSelectionParentNodeId(args.rootNode, selectedNodeId);
 
   return {

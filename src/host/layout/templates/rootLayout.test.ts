@@ -150,7 +150,34 @@ test('uses selection-aware runtime wrapping and disables runtime actions outside
   expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
   expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
   expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
-  expect(generated).toContain('selectionHost');
-  expect(generated).toContain('selectionOverlay');
-  expect(generated).toContain('accessibilityRole="button"');
+  expect(generated).toContain('accessibilityRole:');
+  expect(generated).toContain('style: [renderedElementProps?.style, selectionStyle]');
+});
+
+test('keeps generated apps Studio-independent when includeStudio is false', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: false,
+  });
+
+  expect(generated).not.toContain('useStudio');
+  expect(generated).not.toContain('wrapStudioRuntimeNode');
+  expect(generated).not.toContain('selectionStyle');
+  expect(generated).not.toContain('disableActions: !previewMode');
 });
