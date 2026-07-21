@@ -7,7 +7,7 @@ import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
 } from '../../projectIdentity';
-import { LayoutGenerator } from '../layout/layoutGenerator';
+import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
 import type { ProjectTemplateSelection } from '../templateRegistry';
@@ -31,7 +31,7 @@ interface ProjectManagerDependencies {
 export class ProjectManager {
   private readonly store: ProjectStore;
   private readonly scaffolder: ProjectScaffolder;
-  private readonly layout: LayoutGenerator;
+  private readonly appFiles: GeneratedAppFileGenerator;
   private readonly dependencies: ProjectManagerDependencies;
 
   private readonly appsRoot: string;
@@ -43,7 +43,7 @@ export class ProjectManager {
     this.appsRoot = getAppsRoot(rootPath);
     this.store = new ProjectStore(rootPath);
     this.scaffolder = new ProjectScaffolder(rootPath);
-    this.layout = new LayoutGenerator();
+    this.appFiles = new GeneratedAppFileGenerator();
     this.dependencies = {
       runProjectInfraScript,
       cleanupProjectGeneratedAppImage,
@@ -310,8 +310,8 @@ export class ProjectManager {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const runtimePlan = resolveExpoRuntimePlan(manifest);
 
-    const rootOnly = this.layout
-      .generateAll(projectPath, manifest, mutations, {
+    const rootOnly = this.appFiles
+      .generateFiles(projectPath, manifest, mutations, {
         includeStudio: await this.shouldIncludeStudio(projectPath),
         runtimePlan,
       })
@@ -453,7 +453,7 @@ export class ProjectManager {
     mutations: LayoutMutation[],
     options: { includeStudio: boolean; runtimePlan: ExpoRuntimePlan },
   ) {
-    const generated = this.layout.generateAll(projectPath, manifest, mutations, {
+    const generated = this.appFiles.generateFiles(projectPath, manifest, mutations, {
       includeStudio: options.includeStudio,
       runtimePlan: options.runtimePlan,
     });
