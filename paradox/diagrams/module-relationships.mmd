@@ -65,6 +65,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
+  module_src_host_layout_templates_auth_navigation_ts["src/host/layout/templates/auth/navigation.ts"]
   module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
   module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
   module_src_host_layout_templates_auth_session_ts["src/host/layout/templates/auth/session.ts"]
@@ -73,7 +74,6 @@ graph LR
   module_src_host_layout_templates_navigation_ts["src/host/layout/templates/navigation.ts"]
   module_src_host_layout_templates_nestedLayout_test_ts["src/host/layout/templates/nestedLayout.test.ts"]
   module_src_host_layout_templates_nestedLayout_ts["src/host/layout/templates/nestedLayout.ts"]
-  module_src_host_layout_templates_redirect_ts["src/host/layout/templates/redirect.ts"]
   module_src_host_layout_templates_rootLayout_test_ts["src/host/layout/templates/rootLayout.test.ts"]
   module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
   module_src_host_layout_templates_screen_ts["src/host/layout/templates/screen.ts"]
@@ -298,6 +298,7 @@ graph LR
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_http_serverWithSecrets_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
@@ -357,7 +358,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts --> module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_utils_strings_ts
-  module_src_host_layout_templates_redirect_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_rootLayout_test_ts --> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts

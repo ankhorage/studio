@@ -438,7 +438,7 @@
                 data-target="src/host/generatedAdminExpoWeb.smoke.test.ts"
               >
                 src/host/generatedAdminExpoWeb.smoke.test.ts
-                <small>28 functions</small>
+                <small>29 functions</small>
               </button>
             </li>
             <li>
@@ -512,7 +512,7 @@
                 data-target="src/host/layout/auth/resolveAuthLayoutPlan.ts"
               >
                 src/host/layout/auth/resolveAuthLayoutPlan.ts
-                <small>21 functions</small>
+                <small>25 functions</small>
               </button>
             </li>
             <li>
@@ -532,7 +532,7 @@
                 data-target="src/host/layout/layoutGenerator.test.ts"
               >
                 src/host/layout/layoutGenerator.test.ts
-                <small>4 functions</small>
+                <small>5 functions</small>
               </button>
             </li>
             <li>
@@ -542,7 +542,7 @@
                 data-target="src/host/layout/layoutGenerator.ts"
               >
                 src/host/layout/layoutGenerator.ts
-                <small>14 functions</small>
+                <small>16 functions</small>
               </button>
             </li>
             <li>
@@ -562,6 +562,16 @@
                 data-target="src/host/layout/templates/auth/callback.ts"
               >
                 src/host/layout/templates/auth/callback.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/layout/templates/auth/navigation.ts"
+              >
+                src/host/layout/templates/auth/navigation.ts
                 <small>1 function</small>
               </button>
             </li>
@@ -612,7 +622,7 @@
                 data-target="src/host/layout/templates/navigation.ts"
               >
                 src/host/layout/templates/navigation.ts
-                <small>18 functions</small>
+                <small>22 functions</small>
               </button>
             </li>
             <li>
@@ -633,16 +643,6 @@
               >
                 src/host/layout/templates/nestedLayout.ts
                 <small>2 functions</small>
-              </button>
-            </li>
-            <li>
-              <button
-                class="nav-button"
-                type="button"
-                data-target="src/host/layout/templates/redirect.ts"
-              >
-                src/host/layout/templates/redirect.ts
-                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -2147,12 +2147,13 @@
             </article>
             <article
               class="item"
-              data-search="src/host/generatedAdminExpoWeb.smoke.test.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/templateRegistry/index.ts"
+              data-search="src/host/generatedAdminExpoWeb.smoke.test.ts src/host/http/serverWithSecrets.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/templateRegistry/index.ts"
             >
               <h3>src/host/generatedAdminExpoWeb.smoke.test.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <code>src/host/orchestrator/moduleManager.ts</code>,
+                <strong>Dependencies:</strong> <code>src/host/http/serverWithSecrets.ts</code>,
+                <code>src/host/orchestrator/moduleManager.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
                 <code>src/host/templateRegistry/index.ts</code>
               </p>
@@ -2416,6 +2417,15 @@
             </article>
             <article
               class="item"
+              data-search="src/host/layout/templates/auth/navigation.ts getAuthNavigationTsx"
+            >
+              <h3>src/host/layout/templates/auth/navigation.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>getAuthNavigationTsx</code></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/layout/templates/auth/oauth.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/utils/escapeStringLiteral.ts getAuthOAuthRuntimeTs"
             >
               <h3>src/host/layout/templates/auth/oauth.ts</h3>
@@ -2462,7 +2472,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/layout/templates/index.ts buildNavigatorJsx BuiltNavigatorJsx getAuthAdapterTs getAuthOAuthCallbackTsx getAuthOAuthRuntimeTs getAuthScreenTsx getAuthSessionTs getIndexRedirectRouteTsx getNestedLayoutTsx getRootLayoutImportRequirements getRootLayoutTsx getScreenTsx getSignOutScreenTsx"
+              data-search="src/host/layout/templates/index.ts buildNavigatorJsx BuiltNavigatorJsx getAuthAdapterTs getAuthNavigationTsx getAuthOAuthCallbackTsx getAuthOAuthRuntimeTs getAuthScreenTsx getAuthSessionTs getNestedLayoutTsx getRootLayoutImportRequirements getRootLayoutTsx getScreenTsx getSignOutScreenTsx"
             >
               <h3>src/host/layout/templates/index.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2470,9 +2480,9 @@
               <p>
                 <strong>Exports:</strong> <code>buildNavigatorJsx</code>,
                 <code>BuiltNavigatorJsx</code>, <code>getAuthAdapterTs</code>,
-                <code>getAuthOAuthCallbackTsx</code>, <code>getAuthOAuthRuntimeTs</code>,
-                <code>getAuthScreenTsx</code>, <code>getAuthSessionTs</code>,
-                <code>getIndexRedirectRouteTsx</code>, <code>getNestedLayoutTsx</code>,
+                <code>getAuthNavigationTsx</code>, <code>getAuthOAuthCallbackTsx</code>,
+                <code>getAuthOAuthRuntimeTs</code>, <code>getAuthScreenTsx</code>,
+                <code>getAuthSessionTs</code>, <code>getNestedLayoutTsx</code>,
                 <code>getRootLayoutImportRequirements</code>, <code>getRootLayoutTsx</code>,
                 <code>getScreenTsx</code>, <code>getSignOutScreenTsx</code>
               </p>
@@ -2515,18 +2525,6 @@
                 <code>src/host/layout/templates/utils/strings.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>getNestedLayoutTsx</code></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/host/layout/templates/redirect.ts src/host/layout/utils/escapeStringLiteral.ts getIndexRedirectRouteTsx"
-            >
-              <h3>src/host/layout/templates/redirect.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p>
-                <strong>Dependencies:</strong>
-                <code>src/host/layout/utils/escapeStringLiteral.ts</code>
-              </p>
-              <p><strong>Exports:</strong> <code>getIndexRedirectRouteTsx</code></p>
             </article>
             <article
               class="item"
@@ -8443,6 +8441,8 @@
                 package__ankhorage_studio -.-&gt;
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
+                module_src_host_http_serverWithSecrets_ts
+                module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
@@ -8558,6 +8558,9 @@
                 module_src_host_layout_templates_utils_routes_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
+                module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_layout_templates_auth_navigation_ts
                 module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_oauth_ts
                 module_src_host_layout_templates_auth_oauth_ts --&gt;
@@ -8597,10 +8600,6 @@
                 module_src_host_layout_templates_navigation_ts
                 module_src_host_layout_templates_nestedLayout_ts --&gt;
                 module_src_host_layout_templates_utils_strings_ts
-                module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-                package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
-                module_src_host_layout_templates_redirect_ts --&gt;
-                module_src_host_layout_utils_escapeStringLiteral_ts
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_layout_templates_rootLayout_test_ts
@@ -9404,6 +9403,7 @@ graph TD
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts[&quot;src/host/generatedAdminExpoWeb.smoke.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_generatedAdminExpoWeb_smoke_test_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
@@ -9490,6 +9490,8 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_callback_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_navigation_ts
   module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_oauth_ts
   module_src_host_layout_templates_auth_oauth_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -9517,9 +9519,6 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_utils_strings_ts
-  module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
-  module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_rootLayout_test_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
@@ -10085,6 +10084,7 @@ graph TD
                 module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
+                module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
                 module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
                 module_src_host_layout_templates_auth_screen_ts[&quot;src/host/layout/templates/auth/screen.ts&quot;]
                 module_src_host_layout_templates_auth_session_ts[&quot;src/host/layout/templates/auth/session.ts&quot;]
@@ -10093,7 +10093,6 @@ graph TD
                 module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
-                module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -10341,6 +10340,8 @@ graph TD
                 module_src_host_createStudioHost_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
+                module_src_host_http_serverWithSecrets_ts
+                module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
                 module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt;
                 module_src_host_orchestrator_projectManager_ts
@@ -10432,8 +10433,6 @@ graph TD
                 module_src_host_layout_templates_navigation_ts
                 module_src_host_layout_templates_nestedLayout_ts --&gt;
                 module_src_host_layout_templates_utils_strings_ts
-                module_src_host_layout_templates_redirect_ts --&gt;
-                module_src_host_layout_utils_escapeStringLiteral_ts
                 module_src_host_layout_templates_rootLayout_test_ts --&gt;
                 module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_ts --&gt;
@@ -10807,6 +10806,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
+  module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
   module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
   module_src_host_layout_templates_auth_screen_ts[&quot;src/host/layout/templates/auth/screen.ts&quot;]
   module_src_host_layout_templates_auth_session_ts[&quot;src/host/layout/templates/auth/session.ts&quot;]
@@ -10815,7 +10815,6 @@ graph LR
   module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
-  module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -11040,6 +11039,7 @@ graph LR
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
@@ -11099,7 +11099,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts --&gt; module_src_host_layout_templates_nestedLayout_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_utils_strings_ts
-  module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
@@ -11373,6 +11372,7 @@ graph LR
                 module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
+                module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
                 module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
                 module_src_host_layout_templates_auth_screen_ts[&quot;src/host/layout/templates/auth/screen.ts&quot;]
                 module_src_host_layout_templates_auth_session_ts[&quot;src/host/layout/templates/auth/session.ts&quot;]
@@ -11381,7 +11381,6 @@ graph LR
                 module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
-                module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -11846,6 +11845,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
+  module_src_host_layout_templates_auth_navigation_ts[&quot;src/host/layout/templates/auth/navigation.ts&quot;]
   module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
   module_src_host_layout_templates_auth_screen_ts[&quot;src/host/layout/templates/auth/screen.ts&quot;]
   module_src_host_layout_templates_auth_session_ts[&quot;src/host/layout/templates/auth/session.ts&quot;]
@@ -11854,7 +11854,6 @@ graph LR
   module_src_host_layout_templates_navigation_ts[&quot;src/host/layout/templates/navigation.ts&quot;]
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
-  module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -14047,7 +14046,7 @@ sequenceDiagram
               data-search="createAdminSmokeManifest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createAdminSmokeManifest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:41:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14055,7 +14054,7 @@ sequenceDiagram
               data-search="createScrollableRuntimeScreenRoot src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createScrollableRuntimeScreenRoot</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:97:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:99:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14063,7 +14062,7 @@ sequenceDiagram
               data-search="createGeneratedAdminProject src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createGeneratedAdminProject</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:183:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:208:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14071,7 +14070,15 @@ sequenceDiagram
               data-search="copyGeneratedDirectDependencies src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyGeneratedDirectDependencies</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:222:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:248:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="linkLocalStudioPackage src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>linkLocalStudioPackage</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:280:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14079,7 +14086,7 @@ sequenceDiagram
               data-search="writeSmokeMetroConfig src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeMetroConfig</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:251:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:286:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14087,7 +14094,7 @@ sequenceDiagram
               data-search="reservePort src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:269:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:317:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14095,7 +14102,7 @@ sequenceDiagram
               data-search="spawnExpoWeb src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnExpoWeb</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:285:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:333:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14103,7 +14110,7 @@ sequenceDiagram
               data-search="waitForExpoWebUrl src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:301:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:353:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14111,7 +14118,7 @@ sequenceDiagram
               data-search="linkSmokeNodeModules src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkSmokeNodeModules</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:314:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:366:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14119,7 +14126,7 @@ sequenceDiagram
               data-search="linkNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:332:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:384:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14127,7 +14134,7 @@ sequenceDiagram
               data-search="linkScopedNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkScopedNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:369:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:421:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14135,7 +14142,7 @@ sequenceDiagram
               data-search="symlinkIfMissing src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>symlinkIfMissing</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:384:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:436:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14143,7 +14150,7 @@ sequenceDiagram
               data-search="copyNodeModuleEntry src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyNodeModuleEntry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:393:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:445:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14151,7 +14158,7 @@ sequenceDiagram
               data-search="copyNodeModulePackage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>copyNodeModulePackage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:404:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:456:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14159,7 +14166,7 @@ sequenceDiagram
               data-search="resolveSmokeNodeModuleSource src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveSmokeNodeModuleSource</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:412:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:464:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14167,7 +14174,7 @@ sequenceDiagram
               data-search="getNodeModuleTargetPath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>getNodeModuleTargetPath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:429:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:481:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14175,7 +14182,7 @@ sequenceDiagram
               data-search="isNodeErrorWithCode src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isNodeErrorWithCode</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:441:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:493:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14183,7 +14190,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:445:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:497:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14191,7 +14198,7 @@ sequenceDiagram
               data-search="waitForBodyText src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForBodyText</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:462:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:514:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14199,7 +14206,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:479:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:531:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14207,7 +14214,7 @@ sequenceDiagram
               data-search="readEnvString src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:485:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:537:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14215,7 +14222,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:491:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:543:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14223,7 +14230,7 @@ sequenceDiagram
               data-search="openChromePage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:507:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:559:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14231,7 +14238,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:612:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:706:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14239,7 +14246,7 @@ sequenceDiagram
               data-search="isRecord src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:627:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:721:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14247,7 +14254,7 @@ sequenceDiagram
               data-search="stopProcess src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:631:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:725:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14255,7 +14262,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:640:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:734:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14263,7 +14270,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:651:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:745:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14581,7 +14588,7 @@ sequenceDiagram
             >
               <h3>createOAuth</h3>
               <p class="muted">
-                <code>src/host/layout/auth/resolveAuthLayoutPlan.test.ts:49:1</code>
+                <code>src/host/layout/auth/resolveAuthLayoutPlan.test.ts:51:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -14600,7 +14607,7 @@ sequenceDiagram
               data-search="resolveAuthLayoutPlan src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>resolveAuthLayoutPlan</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:81:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:94:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14608,7 +14615,7 @@ sequenceDiagram
               data-search="resolveOAuthLayoutPlan src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>resolveOAuthLayoutPlan</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:176:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:194:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14616,7 +14623,7 @@ sequenceDiagram
               data-search="resolveGeneratedOAuthProvider src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>resolveGeneratedOAuthProvider</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:203:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:221:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14624,7 +14631,7 @@ sequenceDiagram
               data-search="normalizeCanonicalCallbackRoute src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>normalizeCanonicalCallbackRoute</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:236:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:254:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14632,7 +14639,7 @@ sequenceDiagram
               data-search="uniqueNonEmpty src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>uniqueNonEmpty</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:250:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:268:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14640,7 +14647,7 @@ sequenceDiagram
               data-search="createDisabledPlan src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>createDisabledPlan</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:254:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:272:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14648,7 +14655,7 @@ sequenceDiagram
               data-search="buildGeneratedFilePlans src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>buildGeneratedFilePlans</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:263:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:281:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14656,7 +14663,7 @@ sequenceDiagram
               data-search="collectAuthScreenFiles src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>collectAuthScreenFiles</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:304:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:326:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14664,7 +14671,39 @@ sequenceDiagram
               data-search="visit src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>visit</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:315:9</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:337:9</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="collectRouteAccess src/host/layout/auth/resolveAuthLayoutPlan.ts "
+            >
+              <h3>collectRouteAccess</h3>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:364:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveRouteAccess src/host/layout/auth/resolveAuthLayoutPlan.ts "
+            >
+              <h3>resolveRouteAccess</h3>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:384:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="joinRoutePath src/host/layout/auth/resolveAuthLayoutPlan.ts "
+            >
+              <h3>joinRoutePath</h3>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:396:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isRouteGroup src/host/layout/auth/resolveAuthLayoutPlan.ts "
+            >
+              <h3>isRouteGroup</h3>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:404:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14672,7 +14711,7 @@ sequenceDiagram
               data-search="resolveRouteScreenFilePath src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>resolveRouteScreenFilePath</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:342:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:408:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14680,7 +14719,7 @@ sequenceDiagram
               data-search="getGroupedAuthNavigators src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>getGroupedAuthNavigators</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:349:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:415:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14688,7 +14727,7 @@ sequenceDiagram
               data-search="ensureAuthSignOutRoute src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>ensureAuthSignOutRoute</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:369:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:435:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14696,7 +14735,7 @@ sequenceDiagram
               data-search="ensureGlobalAuthEntryRoutes src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>ensureGlobalAuthEntryRoutes</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:393:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:459:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14704,7 +14743,7 @@ sequenceDiagram
               data-search="ensureGlobalAuthEntryRoute src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>ensureGlobalAuthEntryRoute</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:413:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:479:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14712,7 +14751,7 @@ sequenceDiagram
               data-search="partitionRootNavigatorForAuth src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>partitionRootNavigatorForAuth</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:440:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:506:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14720,7 +14759,7 @@ sequenceDiagram
               data-search="buildGeneratedAuthRoute src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>buildGeneratedAuthRoute</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:468:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:534:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14728,7 +14767,7 @@ sequenceDiagram
               data-search="collectPublicRoutes src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>collectPublicRoutes</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:485:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:551:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14736,7 +14775,7 @@ sequenceDiagram
               data-search="visit src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>visit</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:504:9</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:570:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14744,7 +14783,7 @@ sequenceDiagram
               data-search="hasRouteName src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>hasRouteName</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:523:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:589:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14752,7 +14791,7 @@ sequenceDiagram
               data-search="normalizeRel src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:537:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:603:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14760,7 +14799,7 @@ sequenceDiagram
               data-search="authFlowPathToRouteName src/host/layout/auth/resolveAuthLayoutPlan.ts "
             >
               <h3>authFlowPathToRouteName</h3>
-              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:541:1</code></p>
+              <p class="muted"><code>src/host/layout/auth/resolveAuthLayoutPlan.ts:607:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14913,10 +14952,18 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="createNestedProductsAuthManifest src/host/layout/layoutGenerator.test.ts "
+            >
+              <h3>createNestedProductsAuthManifest</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:79:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="createScrollableScreenRoot src/host/layout/layoutGenerator.test.ts "
             >
               <h3>createScrollableScreenRoot</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:79:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:134:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14924,7 +14971,7 @@ sequenceDiagram
               data-search="getGeneratedAuthAdapter src/host/layout/layoutGenerator.test.ts "
             >
               <h3>getGeneratedAuthAdapter</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:107:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.test.ts:162:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -14979,7 +15026,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:422:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:445:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14987,7 +15034,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:436:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:459:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14995,7 +15042,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:443:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:466:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15003,12 +15050,28 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:466:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:489:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:480:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:503:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="generatedRelToRouteSegments src/host/layout/layoutGenerator.ts "
+            >
+              <h3>generatedRelToRouteSegments</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:507:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isGeneratedRouteGroup src/host/layout/layoutGenerator.ts "
+            >
+              <h3>isGeneratedRouteGroup</h3>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:516:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15016,7 +15079,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:484:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:520:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15024,7 +15087,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:528:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:564:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15032,7 +15095,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:536:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:572:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15040,7 +15103,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:541:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:577:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15077,6 +15140,24 @@ sequenceDiagram
             >
               <h3>getAuthOAuthCallbackTsx</h3>
               <p class="muted"><code>src/host/layout/templates/auth/callback.ts:4:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-layout-templates-auth-navigation-ts"
+          class="view"
+          data-view="src/host/layout/templates/auth/navigation.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/layout/templates/auth/navigation.ts</h2>
+            <article
+              class="item"
+              data-search="getAuthNavigationTsx src/host/layout/templates/auth/navigation.ts "
+            >
+              <h3>getAuthNavigationTsx</h3>
+              <p class="muted"><code>src/host/layout/templates/auth/navigation.ts:1:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15174,7 +15255,7 @@ sequenceDiagram
               data-search="getNavigatorHeaderShownTsx src/host/layout/templates/navigation.ts "
             >
               <h3>getNavigatorHeaderShownTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:15:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:26:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15182,7 +15263,7 @@ sequenceDiagram
               data-search="getTabsOptionsTsx src/host/layout/templates/navigation.ts "
             >
               <h3>getTabsOptionsTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:19:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:30:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15190,7 +15271,7 @@ sequenceDiagram
               data-search="getDrawerOptionsTsx src/host/layout/templates/navigation.ts "
             >
               <h3>getDrawerOptionsTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:31:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:42:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15198,7 +15279,7 @@ sequenceDiagram
               data-search="getStackOptionsTsx src/host/layout/templates/navigation.ts "
             >
               <h3>getStackOptionsTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:46:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15206,7 +15287,7 @@ sequenceDiagram
               data-search="buildNavigatorJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildNavigatorJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:52:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:63:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15214,7 +15295,7 @@ sequenceDiagram
               data-search="buildTabsNavigatorJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildTabsNavigatorJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:70:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:82:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15222,7 +15303,7 @@ sequenceDiagram
               data-search="buildDrawerNavigatorJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildDrawerNavigatorJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:139:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:160:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15230,7 +15311,36 @@ sequenceDiagram
               data-search="buildStackNavigatorJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildStackNavigatorJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:208:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:238:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createRouteAuthResolver src/host/layout/templates/navigation.ts "
+            >
+              <h3>createRouteAuthResolver</h3>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:274:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="segmentsToHref src/host/layout/templates/navigation.ts "
+            >
+              <h3>segmentsToHref</h3>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:310:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isRouteGroup src/host/layout/templates/navigation.ts "
+            >
+              <h3>isRouteGroup</h3>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:318:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="indentJsx src/host/layout/templates/navigation.ts ">
+              <h3>indentJsx</h3>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:322:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15238,7 +15348,7 @@ sequenceDiagram
               data-search="buildTabsScreenJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildTabsScreenJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:241:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:329:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15246,7 +15356,7 @@ sequenceDiagram
               data-search="buildTabsScreenFallbackJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildTabsScreenFallbackJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:259:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:347:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15254,7 +15364,7 @@ sequenceDiagram
               data-search="buildDrawerScreenJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildDrawerScreenJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:297:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:385:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15262,7 +15372,7 @@ sequenceDiagram
               data-search="buildDrawerScreenFallbackJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildDrawerScreenFallbackJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:315:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:403:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15270,7 +15380,7 @@ sequenceDiagram
               data-search="buildStackScreenJsx src/host/layout/templates/navigation.ts "
             >
               <h3>buildStackScreenJsx</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:355:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:443:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15278,7 +15388,7 @@ sequenceDiagram
               data-search="resolveRouteLabel src/host/layout/templates/navigation.ts "
             >
               <h3>resolveRouteLabel</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:386:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:474:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15286,7 +15396,7 @@ sequenceDiagram
               data-search="buildRouteMapDeclaration src/host/layout/templates/navigation.ts "
             >
               <h3>buildRouteMapDeclaration</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:391:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:479:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15294,7 +15404,7 @@ sequenceDiagram
               data-search="buildRouteIconLiteral src/host/layout/templates/navigation.ts "
             >
               <h3>buildRouteIconLiteral</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:412:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:500:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15302,7 +15412,7 @@ sequenceDiagram
               data-search="buildScreenOptionsConstName src/host/layout/templates/navigation.ts "
             >
               <h3>buildScreenOptionsConstName</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:423:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:511:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15310,7 +15420,7 @@ sequenceDiagram
               data-search="buildScreenIconFunctionName src/host/layout/templates/navigation.ts "
             >
               <h3>buildScreenIconFunctionName</h3>
-              <p class="muted"><code>src/host/layout/templates/navigation.ts:435:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/navigation.ts:523:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15354,25 +15464,7 @@ sequenceDiagram
               data-search="resolveGeneratedInitialRouteName src/host/layout/templates/nestedLayout.ts "
             >
               <h3>resolveGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/templates/nestedLayout.ts:63:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-          </section>
-        </section>
-        <section
-          id="view-src-host-layout-templates-redirect-ts"
-          class="view"
-          data-view="src/host/layout/templates/redirect.ts"
-          hidden
-        >
-          <section class="panel">
-            <h2>src/host/layout/templates/redirect.ts</h2>
-            <article
-              class="item"
-              data-search="getIndexRedirectRouteTsx src/host/layout/templates/redirect.ts "
-            >
-              <h3>getIndexRedirectRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/redirect.ts:3:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/nestedLayout.ts:69:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
