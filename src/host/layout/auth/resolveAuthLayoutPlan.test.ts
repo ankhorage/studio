@@ -9,6 +9,7 @@ function createManifest(
     flow?: AuthFlowConfig;
     navigator?: AppManifest['navigator'];
     oauth?: AuthOAuthConfig;
+    scope?: 'none' | 'global' | 'integrated';
     screens?: AppManifest['screens'];
   } = {},
 ): AppManifest {
@@ -24,7 +25,7 @@ function createManifest(
     activeThemeId: 'default',
     infra: {
       auth: {
-        scope: 'global',
+        scope: args.scope ?? 'global',
         provider: 'supabase',
         ...(args.flow ? { flow: args.flow } : {}),
         ...(args.oauth ? { oauth: args.oauth } : {}),
@@ -99,8 +100,20 @@ describe('resolveAuthLayoutPlan', () => {
     expect(plan.signUpRouteName).toBe('register');
     expect(plan.signOutRouteName).toBe('logout');
     expect(plan.postSignInRouteName).toBe('dashboard');
-    expect(plan.publicRoutes).toContain('login');
-    expect(plan.authNavigator.routes.map((route) => route.name)).toEqual(['login', 'register']);
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/app/login.tsx',
+      kind: 'auth-screen',
+      routeName: 'login',
+      screenId: 'screen-auth-sign-in',
+      authMode: 'signIn',
+    });
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/app/register.tsx',
+      kind: 'auth-screen',
+      routeName: 'register',
+      screenId: 'screen-auth-sign-up',
+      authMode: 'signUp',
+    });
   });
 
   it('plans one sanitized OAuth runtime and callback from infra.auth.oauth', () => {
@@ -127,13 +140,16 @@ describe('resolveAuthLayoutPlan', () => {
       path: 'src/app/_auth-bootstrap.tsx',
       kind: 'auth-bootstrap',
     });
-    expect(plan.publicRoutes).toContain('sign-in');
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/auth/navigation.tsx',
+      kind: 'navigation',
+    });
     expect(plan.generatedFiles).toContainEqual({
       path: 'src/auth/oauth.ts',
       kind: 'oauth-runtime',
     });
     expect(plan.generatedFiles).toContainEqual({
-      path: 'src/app/(auth)/auth/callback.tsx',
+      path: 'src/app/auth/callback.tsx',
       kind: 'oauth-callback',
       routeName: 'auth/callback',
     });
@@ -181,7 +197,7 @@ describe('resolveAuthLayoutPlan', () => {
     ).toThrow('not supported by Supabase Auth');
   });
 
-  it('keeps public routes in both auth and app trees while protecting app-only routes', () => {
+  it('keeps public routes single-owned while protecting app-only routes', () => {
     const plan = resolveAuthLayoutPlan({
       manifest: createManifest({
         navigator: {
@@ -214,13 +230,88 @@ describe('resolveAuthLayoutPlan', () => {
       'about',
       'sign-out',
     ]);
-    expect(plan.authNavigator.routes.map((route) => route.name)).toEqual([
-      'about',
-      'sign-in',
-      'sign-up',
-    ]);
+    expect(plan.authScreenFiles.map((file) => file.routeName)).toEqual(['sign-in', 'sign-up']);
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'about',
+      path: '/about',
+      access: 'public',
+    });
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'home',
+      path: '/home',
+      access: 'protected',
+    });
     expect(plan.routeTopology.publicRoutePatterns.map((route) => route.path)).toEqual(['/about']);
-    expect(plan.routeTopology.protectedRoutePatterns.map((route) => route.path)).toEqual(['/home']);
+    expect(plan.routeTopology.protectedRoutePatterns.map((route) => route.path)).toContain('/home');
+  });
+
+  it('keeps unguarded app routes public in integrated auth scope', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        scope: 'integrated',
+        navigator: {
+          type: 'stack',
+          initialRouteName: 'home',
+          routes: [
+            { name: 'home', screenId: 'home' },
+            { name: 'account', screenId: 'account', guards: ['authenticated'] },
+          ],
+        },
+        screens: {
+          home: {
+            id: 'home',
+            name: 'Home',
+            root: { id: 'home-root', type: 'Page' },
+          },
+          account: {
+            id: 'account',
+            name: 'Account',
+            root: { id: 'account-root', type: 'Page' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.scope).toBe('integrated');
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'home',
+      path: '/home',
+      access: 'public',
+    });
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'account',
+      path: '/account',
+      access: 'protected',
+    });
+  });
+
+  it('disables auth generation for none scope', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({ scope: 'none' }),
+    });
+
+    expect(plan.enabled).toBe(false);
+  });
+
+  it('rejects RouteDefinition.path until generated Expo Router path ownership is supported', () => {
+    expect(() =>
+      resolveAuthLayoutPlan({
+        manifest: createManifest({
+          navigator: {
+            type: 'stack',
+            routes: [
+              {
+                name: 'dashboard',
+                path: 'app-dashboard',
+                screenId: 'dashboard',
+              },
+            ] as AppManifest['navigator']['routes'],
+          },
+        }),
+      }),
+    ).toThrow('RouteDefinition.path is not supported');
   });
 
   it('creates dynamic route patterns and preserves nested initial route topology', () => {
@@ -300,7 +391,7 @@ describe('resolveAuthLayoutPlan', () => {
     });
   });
 
-  it('copies nested public routes by path without colliding on duplicate segment names', () => {
+  it('classifies nested public routes by path without colliding on duplicate segment names', () => {
     const plan = resolveAuthLayoutPlan({
       manifest: createManifest({
         flow: {
@@ -357,12 +448,16 @@ describe('resolveAuthLayoutPlan', () => {
 
     expect(plan.enabled).toBe(true);
     if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
-    const authAccount = plan.authNavigator.routes.find((route) => route.name === 'account');
-    const authMarketing = plan.authNavigator.routes.find((route) => route.name === 'marketing');
-
-    expect(authAccount?.navigator?.routes.map((route) => route.name)).toEqual(['help']);
-    expect(authAccount?.navigator?.initialRouteName).toBe('help');
-    expect(authMarketing).toBeUndefined();
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'account/help',
+      path: '/account/help',
+      access: 'public',
+    });
+    expect(plan.routeAccess).toContainEqual({
+      routeName: 'marketing/help',
+      path: '/marketing/help',
+      access: 'protected',
+    });
     expect(plan.routeTopology.publicRoutePatterns).toContainEqual({
       path: '/account/help',
       pattern: '^/account/help$',

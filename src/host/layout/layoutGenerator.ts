@@ -21,11 +21,11 @@ import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
   getAuthAdapterTs,
+  getAuthNavigationTsx,
   getAuthOAuthCallbackTsx,
   getAuthOAuthRuntimeTs,
   getAuthScreenTsx,
   getAuthSessionTs,
-  getIndexRedirectRouteTsx,
   getNestedLayoutTsx,
   getRootLayoutImportRequirements,
   getRootLayoutTsx,
@@ -103,7 +103,17 @@ export class GeneratedAppFileGenerator {
       if (currentRel !== '') {
         files.push({
           path: normalizeRel(path.join(appRootRel, currentRel, '_layout.tsx')),
-          content: this.getLayoutTemplate(node, manifest, includeStudio),
+          content: this.getLayoutTemplate(
+            node,
+            manifest,
+            includeStudio,
+            authLayoutPlan.enabled
+              ? {
+                  routeAccess: authLayoutPlan.routeAccess,
+                  routeSegments: generatedRelToRouteSegments(currentRel),
+                }
+              : undefined,
+          ),
         });
       }
 
@@ -174,27 +184,16 @@ export class GeneratedAppFileGenerator {
         ),
       });
 
-      if (authLayoutPlan.postSignInRoute !== '/') {
-        files.push({
-          path: normalizeRel(path.join('src/app/index.tsx')),
-          content: getIndexRedirectRouteTsx(authLayoutPlan.postSignInRoute),
-        });
-      }
-
       addStudioAdminRouteFiles();
 
       for (const generatedAuthFile of authLayoutPlan.generatedFiles) {
         files.push({
           path: generatedAuthFile.path,
-          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan),
+          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan, manifest),
         });
       }
 
       walk(prepareNavigatorForGeneratedRoutes(authLayoutPlan.appNavigator), '(app)');
-
-      if (authLayoutPlan.authNavigator.routes.length > 0) {
-        walk(prepareNavigatorForGeneratedRoutes(authLayoutPlan.authNavigator), '(auth)');
-      }
     } else {
       files.push({
         path: normalizeRel(path.join('src/app/_layout.tsx')),
@@ -215,16 +214,16 @@ export class GeneratedAppFileGenerator {
     includeStudio: boolean,
     runtimePlan?: ExpoRuntimePlan,
   ): string {
-    const innerNavigationJsx = `<GeneratedAuthNavigation
-      authState={authState}
-      isStudioAdminRoute={${includeStudio ? 'isStudioAdminRoute' : 'false'}}
-    />`;
+    const innerNavigationJsx = `<GeneratedAuthNavigationProvider state={authState}>
+      <GeneratedAuthNavigation
+        authState={authState}
+        isStudioAdminRoute={${includeStudio ? 'isStudioAdminRoute' : 'false'}}
+      />
+    </GeneratedAuthNavigationProvider>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {
   headerShown: false,
 };
-
-type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';
 
 function GeneratedAuthNavigation({
   authState,
@@ -238,12 +237,20 @@ function GeneratedAuthNavigation({
       <Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>
         <Stack.Screen key="bootstrap" name="_auth-bootstrap" />
       </Stack.Protected>
-      <Stack.Protected guard={authState === 'authenticated'}>
+      <Stack.Protected guard={authState !== 'pending'}>
         <Stack.Screen key="app" name="(app)" />
       </Stack.Protected>
       <Stack.Protected guard={authState === 'unauthenticated'}>
-        <Stack.Screen key="auth" name="(auth)" />
+        <Stack.Screen key="sign-in" name="${authLayoutPlan.signInRouteName}" />
+        <Stack.Screen key="sign-up" name="${authLayoutPlan.signUpRouteName}" />
       </Stack.Protected>${
+        authLayoutPlan.oauth
+          ? `
+      <Stack.Protected guard={authState !== 'authenticated'}>
+        <Stack.Screen key="oauth-callback" name="${authLayoutPlan.oauth.callbackRouteName}" />
+      </Stack.Protected>`
+          : ''
+      }${
         includeStudio
           ? `
       <Stack.Protected guard={isStudioAdminRoute}>
@@ -261,6 +268,7 @@ function GeneratedAuthNavigation({
       usesZoraTabBar: false,
       usesZoraDrawerContent: false,
       usesZoraNavigationRouteMap: false,
+      usesGeneratedAuthNavigationState: false,
     };
 
     const pluginImports = mutations.flatMap((m) => m.imports);
@@ -284,10 +292,11 @@ function GeneratedAuthNavigation({
       `import { Stack, useGlobalSearchParams, usePathname, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useEffect, useMemo, useRef, useState } from 'react';`,
-      `import { AppState, Platform } from 'react-native';`,
+      `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       `import { authAdapter } from '@/auth/adapter';`,
+      `import { GeneratedAuthNavigationProvider, type GeneratedAuthNavigationState } from '@/auth/navigation';`,
       `import {
   bootstrapAuthSession,
   getStoredAuthSession,
@@ -413,6 +422,7 @@ function GeneratedAuthNavigation({
   private getGeneratedAuthFileContent(
     filePlan: AuthGeneratedFilePlan,
     authLayoutPlan: EnabledAuthLayoutPlan,
+    manifest: AppManifest,
   ): string {
     switch (filePlan.kind) {
       case 'adapter':
@@ -421,6 +431,8 @@ function GeneratedAuthNavigation({
         });
       case 'session':
         return getAuthSessionTs();
+      case 'navigation':
+        return getAuthNavigationTsx();
       case 'oauth-runtime':
         if (!authLayoutPlan.oauth) {
           throw new Error('OAuth runtime generation requires an OAuth layout plan.');
@@ -434,13 +446,42 @@ function GeneratedAuthNavigation({
         return getAuthBootstrapScreenTsx();
       case 'sign-out':
         return getSignOutScreenTsx();
+      case 'auth-screen':
+        if (!filePlan.authMode) {
+          throw new Error('Auth screen generation requires an auth mode.');
+        }
+        return getAuthScreenTsx({
+          initialMode: filePlan.authMode,
+          screenName: filePlan.authMode === 'signUp' ? 'SignUp' : 'SignIn',
+          title: filePlan.authMode === 'signUp' ? 'Sign up' : 'Sign in',
+          signInRoute: authLayoutPlan.signInRoute,
+          signUpRoute: authLayoutPlan.signUpRoute,
+          signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
+          signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+            'email',
+            'password',
+          ],
+          signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
+          signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+          oauthProviders: authLayoutPlan.oauth?.providers,
+        });
       default:
-        throw new Error(`Unsupported generated auth file kind: ${filePlan.kind}`);
+        throw new Error('Unsupported generated auth file kind.');
     }
   }
 
-  private getLayoutTemplate(node: NavigatorSpec, manifest: AppManifest, includeStudio: boolean) {
-    const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
+  private getLayoutTemplate(
+    node: NavigatorSpec,
+    manifest: AppManifest,
+    includeStudio: boolean,
+    auth:
+      | {
+          routeAccess: EnabledAuthLayoutPlan['routeAccess'];
+          routeSegments: string[];
+        }
+      | undefined,
+  ) {
+    const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio, auth });
     return getNestedLayoutTsx({
       node,
       navigator,
@@ -531,6 +572,19 @@ export default function AnkhAdminRoute() {
 
 function normalizeRel(p: string) {
   return p.replace(/\\/g, '/');
+}
+
+function generatedRelToRouteSegments(currentRel: string): string[] {
+  return normalizeRel(currentRel)
+    .split('/')
+    .map((segment) => segment.trim())
+    .filter(
+      (segment) => segment.length > 0 && segment !== '(app)' && !isGeneratedRouteGroup(segment),
+    );
+}
+
+function isGeneratedRouteGroup(segment: string): boolean {
+  return segment.startsWith('(') && segment.endsWith(')');
 }
 
 function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): NavigatorSpec {

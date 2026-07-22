@@ -11,15 +11,14 @@ import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
 const AUTH_ADAPTER_FILE_PATH = 'src/auth/adapter.ts';
+const AUTH_NAVIGATION_FILE_PATH = 'src/auth/navigation.tsx';
 const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
 const AUTH_BOOTSTRAP_ROUTE_FILE_PATH = 'src/app/_auth-bootstrap.tsx';
-const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
 const DEFAULT_SIGN_IN_SCREEN_ID = 'screen-auth-sign-in';
-const DEFAULT_SIGN_IN_LABEL = 'Sign in';
 const DEFAULT_SIGN_UP_SCREEN_ID = 'screen-auth-sign-up';
-const DEFAULT_SIGN_UP_LABEL = 'Sign up';
-const PUBLIC_GUARD = 'public';
+const PUBLIC_GUARDS = new Set(['public', 'guest']);
+const PROTECTED_GUARDS = new Set(['protected', 'authenticated']);
 
 export interface ResolveAuthLayoutPlanInput {
   manifest: AppManifest;
@@ -27,6 +26,7 @@ export interface ResolveAuthLayoutPlanInput {
 
 type AuthGeneratedFileKind =
   | 'adapter'
+  | 'navigation'
   | 'session'
   | 'sign-out'
   | 'auth-screen'
@@ -72,9 +72,12 @@ interface AuthRouteTopologyPlan {
   postSignInRoutePath: string;
 }
 
-interface AuthPublicRoutePlan {
+type GeneratedRouteAccess = 'public' | 'protected' | 'auth';
+
+interface AuthRouteAccessPlan {
   routeName: string;
   path: string;
+  access: GeneratedRouteAccess;
 }
 
 interface BaseAuthLayoutPlan {
@@ -89,6 +92,7 @@ interface DisabledAuthLayoutPlan extends BaseAuthLayoutPlan {
 
 export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   enabled: true;
+  scope: 'global' | 'integrated';
   provider: 'supabase';
   signInRoute: string;
   signInRouteName: string;
@@ -100,8 +104,8 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   postSignInRouteName: string;
   oauth?: AuthOAuthLayoutPlan;
   appNavigator: NavigatorSpec;
-  authNavigator: NavigatorSpec;
   routeTopology: AuthRouteTopologyPlan;
+  routeAccess: AuthRouteAccessPlan[];
 }
 
 export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
@@ -109,9 +113,11 @@ export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
 export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLayoutPlan {
   const { manifest } = input;
   const { auth } = manifest.infra;
-  if (auth?.scope !== 'global' || auth.provider !== 'supabase') {
+  if (auth?.provider !== 'supabase' || (auth.scope !== 'global' && auth.scope !== 'integrated')) {
     return createDisabledPlan();
   }
+
+  assertNoCustomRoutePaths(manifest.navigator);
 
   const flow = resolveAuthFlow(auth.flow);
   const signInRoute = flow.signInRoute.trim();
@@ -132,55 +138,30 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
   }
 
   const oauth = resolveOAuthLayoutPlan(auth.oauth);
-  const authRouteNames = {
-    signInRouteName,
-    signUpRouteName,
-  };
-  const publicRoutePlans = collectPublicRoutePlans(
-    manifest,
-    flow.unauthorizedRoute,
-    signInRouteName,
-    signUpRouteName,
+  const includeSignOutRoute = !hasRouteName(manifest.navigator.routes, signOutRouteName);
+  const appNavigator = ensureAuthSignOutRoute(
+    manifest.navigator,
+    includeSignOutRoute,
+    signOutRouteName,
   );
-  const publicRoutes = publicRoutePlans.map((route) => route.routeName);
-  const groupedNavigators = getGroupedAuthNavigators(manifest);
-  const hasSignOutRoute = groupedNavigators
-    ? groupedNavigators.appNavigator.routes.some((route) => route.name === signOutRouteName)
-    : manifest.navigator.routes.some((route) => route.name === signOutRouteName);
-  const includeSignOutRoute = !hasSignOutRoute;
-
-  const partitionedNavigators = groupedNavigators
-    ? partitionGroupedNavigatorsForAuth(groupedNavigators, {
-        includeSignOutRoute,
-        publicRoutePlans,
-        signInRouteName,
-        signUpRouteName,
-        signOutRouteName,
-      })
-    : partitionRootNavigatorForAuth(
-        manifest,
-        authRouteNames,
-        publicRoutePlans,
-        includeSignOutRoute,
-        signOutRouteName,
-      );
-
-  const authNavigator = groupedNavigators
-    ? partitionedNavigators.authNavigator
-    : ensureGlobalAuthEntryRoutes(partitionedNavigators.authNavigator, authRouteNames);
+  const routeAccess = collectRouteAccessPlans(appNavigator, auth.scope);
+  const publicRoutes = routeAccess
+    .filter((route) => route.access === 'public')
+    .map((route) => route.routeName);
+  const authScreenFiles = buildAuthScreenFilePlans(signInRouteName, signUpRouteName);
   const routeTopology = createAuthRouteTopologyPlan({
-    appNavigator: partitionedNavigators.appNavigator,
-    authNavigator,
+    appNavigator,
     callbackRouteName: oauth?.callbackRouteName,
     flowUnauthorizedRoute: flow.unauthorizedRoute,
     postSignInRoute,
-    publicRoutePlans,
+    routeAccess,
     signInRouteName,
     signUpRouteName,
   });
 
   return {
     enabled: true,
+    scope: auth.scope,
     provider: 'supabase',
     signInRoute,
     signInRouteName,
@@ -192,20 +173,20 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     postSignInRouteName,
     ...(oauth ? { oauth } : {}),
     publicRoutes,
-    appNavigator: partitionedNavigators.appNavigator,
-    authNavigator,
+    appNavigator,
     routeTopology,
-    generatedFiles: buildGeneratedFilePlans(includeSignOutRoute, signOutRouteName, oauth),
-    authScreenFiles: [
-      ...collectAuthScreenFiles(partitionedNavigators.appNavigator, '(app)', {
+    routeAccess,
+    generatedFiles: [
+      ...buildGeneratedFilePlans({
+        includeSignOutRoute,
+        signOutRouteName,
         signInRouteName,
         signUpRouteName,
+        oauth,
       }),
-      ...collectAuthScreenFiles(authNavigator, '(auth)', {
-        signInRouteName,
-        signUpRouteName,
-      }),
+      ...authScreenFiles,
     ],
+    authScreenFiles,
   };
 }
 
@@ -296,11 +277,13 @@ function createDisabledPlan(): DisabledAuthLayoutPlan {
   };
 }
 
-function buildGeneratedFilePlans(
-  includeSignOutRoute: boolean,
-  signOutRouteName: string,
-  oauth: AuthOAuthLayoutPlan | undefined,
-): AuthGeneratedFilePlan[] {
+function buildGeneratedFilePlans(args: {
+  includeSignOutRoute: boolean;
+  signOutRouteName: string;
+  signInRouteName: string;
+  signUpRouteName: string;
+  oauth: AuthOAuthLayoutPlan | undefined;
+}): AuthGeneratedFilePlan[] {
   const generatedFiles: AuthGeneratedFilePlan[] = [
     {
       path: AUTH_BOOTSTRAP_ROUTE_FILE_PATH,
@@ -311,72 +294,68 @@ function buildGeneratedFilePlans(
       kind: 'adapter',
     },
     {
+      path: AUTH_NAVIGATION_FILE_PATH,
+      kind: 'navigation',
+    },
+    {
       path: AUTH_SESSION_FILE_PATH,
       kind: 'session',
     },
   ];
 
-  if (oauth) {
+  if (args.oauth) {
     generatedFiles.push(
       {
         path: AUTH_OAUTH_RUNTIME_FILE_PATH,
         kind: 'oauth-runtime',
       },
       {
-        path: normalizeRel(path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`)),
+        path: resolveRootRouteScreenFilePath(args.oauth.callbackRouteName),
         kind: 'oauth-callback',
-        routeName: oauth.callbackRouteName,
+        routeName: args.oauth.callbackRouteName,
       },
     );
   }
 
-  if (includeSignOutRoute) {
+  if (args.includeSignOutRoute) {
     generatedFiles.push({
-      path: AUTH_SIGN_OUT_FILE_PATH,
+      path: resolveGroupedAppRouteScreenFilePath(args.signOutRouteName),
       kind: 'sign-out',
-      routeName: signOutRouteName,
+      routeName: args.signOutRouteName,
     });
   }
 
   return generatedFiles;
 }
 
-function collectAuthScreenFiles(
-  navigator: NavigatorSpec,
-  currentRel: string,
-  authRouteNames: {
-    signInRouteName: string;
-    signUpRouteName: string;
-  },
+function buildAuthScreenFilePlans(
+  signInRouteName: string,
+  signUpRouteName: string,
 ): AuthGeneratedFilePlan[] {
-  const { signInRouteName, signUpRouteName } = authRouteNames;
-  const files: AuthGeneratedFilePlan[] = [];
+  return [
+    {
+      path: resolveRootRouteScreenFilePath(signInRouteName),
+      kind: 'auth-screen',
+      routeName: signInRouteName,
+      screenId: DEFAULT_SIGN_IN_SCREEN_ID,
+      authMode: 'signIn',
+    },
+    {
+      path: resolveRootRouteScreenFilePath(signUpRouteName),
+      kind: 'auth-screen',
+      routeName: signUpRouteName,
+      screenId: DEFAULT_SIGN_UP_SCREEN_ID,
+      authMode: 'signUp',
+    },
+  ];
+}
 
-  const visit = (node: NavigatorSpec, parentRel: string) => {
-    for (const route of node.routes) {
-      const nextRel = parentRel ? path.join(parentRel, route.name) : route.name;
+function resolveRootRouteScreenFilePath(routeName: string): string {
+  return resolveRouteScreenFilePath(routeName);
+}
 
-      if (route.navigator) {
-        visit(route.navigator, nextRel);
-        continue;
-      }
-
-      if (!route.screenId || (route.name !== signInRouteName && route.name !== signUpRouteName)) {
-        continue;
-      }
-
-      files.push({
-        path: resolveRouteScreenFilePath(nextRel),
-        kind: 'auth-screen',
-        routeName: route.name,
-        screenId: route.screenId,
-        authMode: route.name === signUpRouteName ? 'signUp' : 'signIn',
-      });
-    }
-  };
-
-  visit(navigator, currentRel);
-  return files;
+function resolveGroupedAppRouteScreenFilePath(routeName: string): string {
+  return resolveRouteScreenFilePath(path.join('(app)', routeName));
 }
 
 function resolveRouteScreenFilePath(routeRel: string): string {
@@ -384,26 +363,6 @@ function resolveRouteScreenFilePath(routeRel: string): string {
   const dirRel = path.dirname(routeRel);
   const targetDirRel = dirRel === '.' ? '' : dirRel;
   return normalizeRel(path.join(APP_ROOT_REL, targetDirRel, fileName));
-}
-
-function getGroupedAuthNavigators(
-  manifest: AppManifest,
-): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } | null {
-  if (manifest.navigator.type !== 'stack') {
-    return null;
-  }
-
-  const appGroup = manifest.navigator.routes.find((route) => route.name === '(app)');
-  const authGroup = manifest.navigator.routes.find((route) => route.name === '(auth)');
-
-  if (!appGroup?.navigator || !authGroup?.navigator) {
-    return null;
-  }
-
-  return {
-    appNavigator: appGroup.navigator,
-    authNavigator: authGroup.navigator,
-  };
 }
 
 function ensureAuthSignOutRoute(
@@ -430,309 +389,82 @@ function ensureAuthSignOutRoute(
   };
 }
 
-function ensureGlobalAuthEntryRoutes(
+function collectRouteAccessPlans(
   navigator: NavigatorSpec,
-  authRouteNames: {
-    signInRouteName: string;
-    signUpRouteName: string;
-  },
-): NavigatorSpec {
-  const withSignIn = ensureGlobalAuthEntryRoute(navigator, {
-    routeName: authRouteNames.signInRouteName,
-    routeLabel: DEFAULT_SIGN_IN_LABEL,
-    defaultScreenId: DEFAULT_SIGN_IN_SCREEN_ID,
-  });
-
-  return ensureGlobalAuthEntryRoute(withSignIn, {
-    routeName: authRouteNames.signUpRouteName,
-    routeLabel: DEFAULT_SIGN_UP_LABEL,
-    defaultScreenId: DEFAULT_SIGN_UP_SCREEN_ID,
-  });
-}
-
-function ensureGlobalAuthEntryRoute(
-  navigator: NavigatorSpec,
-  args: {
-    routeName: string;
-    routeLabel: string;
-    defaultScreenId: string;
-  },
-): NavigatorSpec {
-  const { routeName, routeLabel, defaultScreenId } = args;
-  if (hasRouteName(navigator.routes, routeName)) {
-    return navigator;
-  }
-
-  return {
-    ...navigator,
-    routes: [
-      ...navigator.routes,
-      buildGeneratedAuthRoute({
-        routeName,
-        routeLabel,
-        screenId: defaultScreenId,
-        navigatorType: navigator.type,
-      }),
-    ],
-  };
-}
-
-function partitionRootNavigatorForAuth(
-  manifest: AppManifest,
-  authRouteNames: {
-    signInRouteName: string;
-    signUpRouteName: string;
-  },
-  publicRoutePlans: readonly AuthPublicRoutePlan[],
-  includeAuthSignOutRoute: boolean,
-  signOutRouteName: string,
-): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
-  const publicPathSet = new Set(publicRoutePlans.map((route) => route.path));
-  const authEntryPathSet = new Set([
-    routeNameToHref(authRouteNames.signInRouteName),
-    routeNameToHref(authRouteNames.signUpRouteName),
-  ]);
-  const appNavigatorWithoutAuthEntries = filterNavigatorRoutesByPath(
-    manifest.navigator,
-    authEntryPathSet,
-    'exclude',
-  );
-  const authNavigatorPublicRoutes = filterNavigatorRoutesByPath(
-    manifest.navigator,
-    publicPathSet,
-    'include',
-  );
-
-  const appNavigator = ensureAuthSignOutRoute(
-    appNavigatorWithoutAuthEntries,
-    includeAuthSignOutRoute,
-    signOutRouteName,
-  );
-  const authNavigator: NavigatorSpec = {
-    type: 'stack',
-    initialRouteName: authRouteNames.signInRouteName,
-    routes: [...authNavigatorPublicRoutes.routes],
-  };
-
-  return { appNavigator, authNavigator };
-}
-
-function partitionGroupedNavigatorsForAuth(
-  groupedNavigators: { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec },
-  args: {
-    publicRoutePlans: readonly AuthPublicRoutePlan[];
-    includeSignOutRoute: boolean;
-    signInRouteName: string;
-    signUpRouteName: string;
-    signOutRouteName: string;
-  },
-): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
-  const publicPathSet = new Set(args.publicRoutePlans.map((route) => route.path));
-  const authEntryPathSet = new Set([
-    routeNameToHref(args.signInRouteName),
-    routeNameToHref(args.signUpRouteName),
-  ]);
-  const appNavigator = ensureAuthSignOutRoute(
-    filterNavigatorRoutesByPath(groupedNavigators.appNavigator, authEntryPathSet, 'exclude'),
-    args.includeSignOutRoute,
-    args.signOutRouteName,
-  );
-  const existingAuthPaths = new Set(
-    collectRoutePatterns(groupedNavigators.authNavigator).map((route) => route.path),
-  );
-  const copiedPublicNavigator = filterNavigatorRoutesByPath(
-    groupedNavigators.appNavigator,
-    new Set([...publicPathSet].filter((routePath) => !existingAuthPaths.has(routePath))),
-    'include',
-  );
-  const authNavigator = ensureGlobalAuthEntryRoutes(
-    {
-      ...groupedNavigators.authNavigator,
-      routes: [...groupedNavigators.authNavigator.routes, ...copiedPublicNavigator.routes],
-    },
-    {
-      signInRouteName: args.signInRouteName,
-      signUpRouteName: args.signUpRouteName,
-    },
-  );
-
-  return { appNavigator, authNavigator };
-}
-
-function filterNavigatorRoutesByPath(
-  navigator: NavigatorSpec,
-  routePathSet: ReadonlySet<string>,
-  mode: 'include' | 'exclude',
-): NavigatorSpec {
-  const routes = filterRoutesByPath(navigator.routes, [], routePathSet, mode);
-  return {
-    ...navigator,
-    ...(resolveNavigatorInitialRouteName(navigator.initialRouteName, routes)
-      ? { initialRouteName: resolveNavigatorInitialRouteName(navigator.initialRouteName, routes) }
-      : {}),
-    routes,
-  };
-}
-
-function filterRoutesByPath(
-  routes: readonly RouteDefinition[],
-  parentSegments: readonly string[],
-  routePathSet: ReadonlySet<string>,
-  mode: 'include' | 'exclude',
-): RouteDefinition[] {
-  const nextRoutes: RouteDefinition[] = [];
-
-  for (const route of routes) {
-    const routeSegments = [...parentSegments, route.name];
-    const routePath = segmentsToHref(routeSegments);
-    const routeMatches = route.screenId ? routePathSet.has(routePath) : false;
-    const nextNavigator = route.navigator
-      ? filterNavigatorRoutesByPathWithSegments(route.navigator, routeSegments, routePathSet, mode)
-      : undefined;
-    const hasKeptChildren = (nextNavigator?.routes.length ?? 0) > 0;
-    const keepRoute =
-      mode === 'include'
-        ? routeMatches || hasKeptChildren
-        : (!routeMatches && route.screenId !== undefined) ||
-          hasKeptChildren ||
-          (!route.screenId && !route.navigator);
-
-    if (!keepRoute) continue;
-
-    nextRoutes.push({
-      ...route,
-      ...(nextNavigator ? { navigator: nextNavigator } : {}),
-    });
-  }
-
-  return nextRoutes;
-}
-
-function filterNavigatorRoutesByPathWithSegments(
-  navigator: NavigatorSpec,
-  parentSegments: readonly string[],
-  routePathSet: ReadonlySet<string>,
-  mode: 'include' | 'exclude',
-): NavigatorSpec {
-  const routes = filterRoutesByPath(navigator.routes, parentSegments, routePathSet, mode);
-  return {
-    ...navigator,
-    ...(resolveNavigatorInitialRouteName(navigator.initialRouteName, routes)
-      ? { initialRouteName: resolveNavigatorInitialRouteName(navigator.initialRouteName, routes) }
-      : {}),
-    routes,
-  };
-}
-
-function resolveNavigatorInitialRouteName(
-  initialRouteName: string | undefined,
-  routes: readonly RouteDefinition[],
-): string | undefined {
-  if (initialRouteName && routes.some((route) => route.name === initialRouteName)) {
-    return initialRouteName;
-  }
-
-  return routes[0]?.name;
-}
-
-function buildGeneratedAuthRoute(args: {
-  routeName: string;
-  routeLabel: string;
-  screenId: string;
-  navigatorType: NavigatorSpec['type'];
-}): RouteDefinition {
-  const { routeName, routeLabel, screenId, navigatorType } = args;
-
-  return {
-    name: routeName,
-    label: routeLabel,
-    screenId,
-    guards: [PUBLIC_GUARD],
-    ...(navigatorType === 'tabs' ? { hideInTabBar: true } : {}),
-  };
-}
-
-function collectPublicRoutePlans(
-  manifest: AppManifest,
-  unauthorizedRoute: string | undefined,
-  signInRouteName: string,
-  signUpRouteName: string,
-): AuthPublicRoutePlan[] {
-  const unauthorizedRouteName = authFlowPathToRouteName(
-    unauthorizedRoute?.trim() ?? signInRouteName,
-  );
-  const publicRoutes = new Map<string, AuthPublicRoutePlan>();
-  addPublicRoutePlan(publicRoutes, signInRouteName);
-  addPublicRoutePlan(publicRoutes, signUpRouteName);
-  addPublicRoutePlan(publicRoutes, unauthorizedRouteName || signInRouteName);
+  scope: 'global' | 'integrated',
+): AuthRouteAccessPlan[] {
+  const routeAccess = new Map<string, AuthRouteAccessPlan>();
+  const defaultAccess: Extract<GeneratedRouteAccess, 'public' | 'protected'> =
+    scope === 'global' ? 'protected' : 'public';
 
   const visit = (
     routes: readonly RouteDefinition[],
     parentSegments: readonly string[],
-    hasPublicAncestor: boolean,
+    inheritedAccess: Extract<GeneratedRouteAccess, 'public' | 'protected'>,
   ) => {
     for (const route of routes) {
       const routeSegments = [...parentSegments, route.name];
-      const routeName = routeSegments.filter((segment) => !isRouteGroup(segment)).join('/');
       const routePath = segmentsToHref(routeSegments);
-      const normalizedGuards = (route.guards ?? []).map((guard) => guard.trim().toLowerCase());
-      const isPublicRoute =
-        hasPublicAncestor ||
-        normalizedGuards.some((guard) => guard === 'public' || guard === 'guest');
+      const routeName = routeSegments.filter((segment) => !isRouteGroup(segment)).join('/');
+      const access = resolveRouteAccess(route, inheritedAccess);
 
-      if (isPublicRoute && route.screenId) {
-        publicRoutes.set(routePath, { routeName, path: routePath });
-      }
+      routeAccess.set(routePath, {
+        routeName: routeName || 'index',
+        path: routePath,
+        access,
+      });
 
       if (route.navigator?.routes) {
-        visit(route.navigator.routes, routeSegments, isPublicRoute);
+        visit(route.navigator.routes, routeSegments, access);
       }
     }
   };
 
-  visit(manifest.navigator.routes, [], false);
-
-  return [...publicRoutes.values()];
+  visit(navigator.routes, [], defaultAccess);
+  return [...routeAccess.values()].sort((left, right) => left.path.localeCompare(right.path));
 }
 
-function addPublicRoutePlan(
-  publicRoutes: Map<string, AuthPublicRoutePlan>,
-  routeName: string,
-): void {
-  const path = routeNameToHref(routeName);
-  publicRoutes.set(path, { routeName, path });
+function resolveRouteAccess(
+  route: RouteDefinition,
+  inheritedAccess: Extract<GeneratedRouteAccess, 'public' | 'protected'>,
+): Extract<GeneratedRouteAccess, 'public' | 'protected'> {
+  const guards = (route.guards ?? []).map((guard) => guard.trim().toLowerCase());
+  if (guards.some((guard) => PROTECTED_GUARDS.has(guard))) {
+    return 'protected';
+  }
+  if (guards.some((guard) => PUBLIC_GUARDS.has(guard))) {
+    return 'public';
+  }
+  return inheritedAccess;
 }
 
 function createAuthRouteTopologyPlan(args: {
   appNavigator: NavigatorSpec;
-  authNavigator: NavigatorSpec;
   callbackRouteName: string | undefined;
   flowUnauthorizedRoute: string | undefined;
   postSignInRoute: string;
-  publicRoutePlans: readonly AuthPublicRoutePlan[];
+  routeAccess: readonly AuthRouteAccessPlan[];
   signInRouteName: string;
   signUpRouteName: string;
 }): AuthRouteTopologyPlan {
-  const appRoutePatterns = collectRoutePatterns(args.appNavigator);
-  const authEntryPaths = new Set([
-    routeNameToHref(args.signInRouteName),
-    routeNameToHref(args.signUpRouteName),
-  ]);
+  const appRoutePatterns = collectScreenRoutePatterns(args.appNavigator);
+  const protectedRoutePatterns = uniqueRoutePatterns(
+    args.routeAccess
+      .filter((route) => route.access === 'protected')
+      .map((route) => buildRoutePattern(route.path)),
+  );
+  const publicRoutePatterns = uniqueRoutePatterns(
+    args.routeAccess
+      .filter((route) => route.access === 'public')
+      .map((route) => buildRoutePattern(route.path)),
+  );
+  const authEntryRoutePatterns = [
+    buildRoutePattern(routeNameToHref(args.signInRouteName)),
+    buildRoutePattern(routeNameToHref(args.signUpRouteName)),
+  ];
   const callbackRoutePatterns = args.callbackRouteName
     ? [buildRoutePattern(routeNameToHref(args.callbackRouteName))]
     : [];
-  const publicRoutePatterns = uniqueRoutePatterns(
-    args.publicRoutePlans
-      .map((routePlan) => buildRoutePattern(routePlan.path))
-      .filter((routePattern) => !authEntryPaths.has(routePattern.path)),
-  );
-  const authEntryRoutePatterns = [...authEntryPaths].map((routePath) =>
-    buildRoutePattern(routePath),
-  );
-  const publicPathSet = new Set(publicRoutePatterns.map((routePattern) => routePattern.path));
-  const protectedRoutePatterns = appRoutePatterns.filter(
-    (routePattern) => !publicPathSet.has(routePattern.path),
-  );
   const unauthorizedRoutePath = routeNameToHref(
     authFlowPathToRouteName(args.flowUnauthorizedRoute?.trim() ?? args.signInRouteName),
   );
@@ -758,7 +490,7 @@ function createAuthRouteTopologyPlan(args: {
   };
 }
 
-function collectRoutePatterns(navigator: NavigatorSpec): AuthRoutePatternPlan[] {
+function collectScreenRoutePatterns(navigator: NavigatorSpec): AuthRoutePatternPlan[] {
   const patterns: AuthRoutePatternPlan[] = [];
 
   const visit = (node: NavigatorSpec, parentSegments: string[]) => {
@@ -784,6 +516,28 @@ function uniqueRoutePatterns(patterns: readonly AuthRoutePatternPlan[]): AuthRou
     byPath.set(pattern.path, pattern);
   }
   return [...byPath.values()].sort((left, right) => left.path.localeCompare(right.path));
+}
+
+function assertNoCustomRoutePaths(navigator: NavigatorSpec): void {
+  const visit = (routes: readonly RouteDefinition[], parentSegments: readonly string[]) => {
+    for (const route of routes) {
+      const routePath = (route as { path?: unknown }).path;
+      if (typeof routePath === 'string' && routePath.trim().length > 0) {
+        const routeName = [...parentSegments, route.name]
+          .filter((segment) => !isRouteGroup(segment))
+          .join('/');
+        throw new Error(
+          `RouteDefinition.path is not supported by generated Expo Router layout yet for route "${routeName || route.name}". Use route.name until route.path support is implemented.`,
+        );
+      }
+
+      if (route.navigator) {
+        visit(route.navigator.routes, [...parentSegments, route.name]);
+      }
+    }
+  };
+
+  visit(navigator.routes, []);
 }
 
 function segmentsToHref(segments: readonly string[]): string {
@@ -866,7 +620,7 @@ function assertRouteTarget(
   throw new Error(`Auth ${label} "${routePath}" does not match a generated route.`);
 }
 
-function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {
+function hasRouteName(routes: readonly RouteDefinition[], routeName: string): boolean {
   for (const route of routes) {
     if (route.name === routeName) {
       return true;

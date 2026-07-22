@@ -10,6 +10,17 @@ export interface BuiltNavigatorJsx {
   usesZoraTabBar: boolean;
   usesZoraDrawerContent: boolean;
   usesZoraNavigationRouteMap: boolean;
+  usesGeneratedAuthNavigationState?: boolean;
+}
+
+interface RouteAccessPlan {
+  path: string;
+  access: 'public' | 'protected' | 'auth';
+}
+
+interface NavigatorAuthJsxOptions {
+  routeAccess: readonly RouteAccessPlan[];
+  routeSegments?: readonly string[];
 }
 
 function getNavigatorHeaderShownTsx(includeStudio: boolean): string {
@@ -53,33 +64,36 @@ export function buildNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
   includeStudio: boolean;
+  auth?: NavigatorAuthJsxOptions;
 }): BuiltNavigatorJsx {
-  const { navigator, manifest, includeStudio } = args;
+  const { navigator, manifest, includeStudio, auth } = args;
 
   if (navigator.type === 'tabs') {
-    return buildTabsNavigatorJsx({ navigator, manifest, includeStudio });
+    return buildTabsNavigatorJsx({ navigator, manifest, includeStudio, auth });
   }
 
   if (navigator.type === 'drawer') {
-    return buildDrawerNavigatorJsx({ navigator, manifest, includeStudio });
+    return buildDrawerNavigatorJsx({ navigator, manifest, includeStudio, auth });
   }
 
-  return buildStackNavigatorJsx({ navigator, manifest, includeStudio });
+  return buildStackNavigatorJsx({ navigator, manifest, includeStudio, auth });
 }
 
 function buildTabsNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
   includeStudio: boolean;
+  auth?: NavigatorAuthJsxOptions;
 }): BuiltNavigatorJsx {
-  const { navigator, manifest, includeStudio } = args;
+  const { navigator, manifest, includeStudio, auth } = args;
   const hasHiddenRoutes = navigator.routes.some((route) => route.hideInTabBar === true);
   const headerShown = getNavigatorHeaderShownTsx(includeStudio);
+  const routeAuth = createRouteAuthResolver(auth);
 
   if (!hasHiddenRoutes) {
     const routeMapDeclaration = buildRouteMapDeclaration({ routes: navigator.routes, manifest });
     const screenTemplates = navigator.routes.map((route, index) =>
-      buildTabsScreenJsx(route, manifest, index),
+      routeAuth.wrapScreenJsx(route, buildTabsScreenJsx(route, manifest, index), 'Tabs', index),
     );
     const declarations = [
       routeMapDeclaration,
@@ -105,11 +119,17 @@ ${screens}
       usesZoraTabBar: true,
       usesZoraDrawerContent: false,
       usesZoraNavigationRouteMap: true,
+      usesGeneratedAuthNavigationState: routeAuth.usesAuthState,
     };
   }
 
   const screenTemplates = navigator.routes.map((route, index) =>
-    buildTabsScreenFallbackJsx(route, manifest, index),
+    routeAuth.wrapScreenJsx(
+      route,
+      buildTabsScreenFallbackJsx(route, manifest, index),
+      'Tabs',
+      index,
+    ),
   );
   const declarations = screenTemplates
     .map((screen) => screen.declaration)
@@ -133,6 +153,7 @@ ${screens}
     usesZoraTabBar: false,
     usesZoraDrawerContent: false,
     usesZoraNavigationRouteMap: false,
+    usesGeneratedAuthNavigationState: routeAuth.usesAuthState,
   };
 }
 
@@ -140,15 +161,17 @@ function buildDrawerNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
   includeStudio: boolean;
+  auth?: NavigatorAuthJsxOptions;
 }): BuiltNavigatorJsx {
-  const { navigator, manifest, includeStudio } = args;
+  const { navigator, manifest, includeStudio, auth } = args;
   const hasHiddenRoutes = navigator.routes.some((route) => route.hideInTabBar === true);
   const headerShown = getNavigatorHeaderShownTsx(includeStudio);
+  const routeAuth = createRouteAuthResolver(auth);
 
   if (!hasHiddenRoutes) {
     const routeMapDeclaration = buildRouteMapDeclaration({ routes: navigator.routes, manifest });
     const screenTemplates = navigator.routes.map((route, index) =>
-      buildDrawerScreenJsx(route, manifest, index),
+      routeAuth.wrapScreenJsx(route, buildDrawerScreenJsx(route, manifest, index), 'Drawer', index),
     );
     const declarations = [
       routeMapDeclaration,
@@ -174,11 +197,17 @@ ${screens}
       usesZoraTabBar: false,
       usesZoraDrawerContent: true,
       usesZoraNavigationRouteMap: true,
+      usesGeneratedAuthNavigationState: routeAuth.usesAuthState,
     };
   }
 
   const screenTemplates = navigator.routes.map((route, index) =>
-    buildDrawerScreenFallbackJsx(route, manifest, index),
+    routeAuth.wrapScreenJsx(
+      route,
+      buildDrawerScreenFallbackJsx(route, manifest, index),
+      'Drawer',
+      index,
+    ),
   );
   const declarations = screenTemplates
     .map((screen) => screen.declaration)
@@ -202,6 +231,7 @@ ${screens}
     usesZoraTabBar: false,
     usesZoraDrawerContent: false,
     usesZoraNavigationRouteMap: false,
+    usesGeneratedAuthNavigationState: routeAuth.usesAuthState,
   };
 }
 
@@ -209,10 +239,12 @@ function buildStackNavigatorJsx(args: {
   navigator: NavigatorSpec;
   manifest: AppManifest;
   includeStudio: boolean;
+  auth?: NavigatorAuthJsxOptions;
 }): BuiltNavigatorJsx {
-  const { navigator, manifest, includeStudio } = args;
+  const { navigator, manifest, includeStudio, auth } = args;
+  const routeAuth = createRouteAuthResolver(auth);
   const screenTemplates = navigator.routes.map((route, index) =>
-    buildStackScreenJsx(route, manifest, index),
+    routeAuth.wrapScreenJsx(route, buildStackScreenJsx(route, manifest, index), 'Stack', index),
   );
   const declarations = screenTemplates
     .map((screen) => screen.declaration)
@@ -235,7 +267,63 @@ ${screens}
     usesZoraTabBar: false,
     usesZoraDrawerContent: false,
     usesZoraNavigationRouteMap: false,
+    usesGeneratedAuthNavigationState: routeAuth.usesAuthState,
   };
+}
+
+function createRouteAuthResolver(auth: NavigatorAuthJsxOptions | undefined): {
+  usesAuthState: boolean;
+  wrapScreenJsx(
+    route: RouteDefinition,
+    screen: { declaration: string; jsx: string },
+    navigatorName: 'Stack' | 'Tabs' | 'Drawer',
+    index: number,
+  ): { declaration: string; jsx: string };
+} {
+  const accessByPath = new Map(
+    (auth?.routeAccess ?? []).map((route) => [route.path, route.access]),
+  );
+  const parentSegments = auth?.routeSegments ?? [];
+  let usesAuthState = false;
+
+  return {
+    get usesAuthState() {
+      return usesAuthState;
+    },
+    wrapScreenJsx(route, screen, navigatorName, index) {
+      const routePath = segmentsToHref([...parentSegments, route.name]);
+      if (accessByPath.get(routePath) !== 'protected') {
+        return screen;
+      }
+
+      usesAuthState = true;
+      return {
+        declaration: screen.declaration,
+        jsx: `      <${navigatorName}.Protected key="${route.name}-auth-boundary-${index}" guard={authState === 'authenticated'}>
+${indentJsx(screen.jsx, '  ')}
+      </${navigatorName}.Protected>`,
+      };
+    },
+  };
+}
+
+function segmentsToHref(segments: readonly string[]): string {
+  const pathSegments = segments
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0 && segment !== 'index' && !isRouteGroup(segment));
+
+  return pathSegments.length === 0 ? '/' : `/${pathSegments.join('/')}`;
+}
+
+function isRouteGroup(segment: string): boolean {
+  return segment.startsWith('(') && segment.endsWith(')');
+}
+
+function indentJsx(value: string, indent: string): string {
+  return value
+    .split('\n')
+    .map((line) => (line.length > 0 ? `${indent}${line}` : line))
+    .join('\n');
 }
 
 function buildTabsScreenJsx(

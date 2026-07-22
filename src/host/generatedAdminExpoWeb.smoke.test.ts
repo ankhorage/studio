@@ -190,7 +190,7 @@ adminWebSmokeTest(
         expect(pendingRedirect).toContain('/dashboard?tab=activity');
 
         await page.writeLocalStorageItem('ankh.auth.smokeSignIn', '1');
-        await page.navigate(`${appUrl}/sign-in`);
+        await page.reload();
         const restoredBodyText = await waitForBodyText(
           page,
           (text) => text.includes('Scrollable Runtime Screen'),
@@ -286,7 +286,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
 
 async function installFixtureAuthEntryRoute(projectRoot: string): Promise<void> {
   await writeFile(
-    path.join(projectRoot, 'src', 'app', '(auth)', 'sign-in.tsx'),
+    path.join(projectRoot, 'src', 'app', 'sign-in.tsx'),
     `import type { AuthSession } from '@ankhorage/contracts/auth';
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
@@ -310,9 +310,7 @@ export default function FixtureSignInRoute() {
     if (Platform.OS !== 'web') return;
     if (localStorage.getItem('ankh.auth.smokeSignIn') !== '1') return;
     localStorage.removeItem('ankh.auth.smokeSignIn');
-    void setStoredAuthSession(createFixtureSession()).then(() => {
-      location.reload();
-    });
+    void setStoredAuthSession(createFixtureSession());
   }, []);
 
   return (

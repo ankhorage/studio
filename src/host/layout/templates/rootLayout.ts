@@ -246,45 +246,6 @@ function createRouteLocationHref(
 function replaceAuthRoute(router: ReturnType<typeof useRouter>, target: string): void {
   const href = createRouteLocationHref(target) as Parameters<typeof router.replace>[0];
   router.replace(href);
-  scheduleWebAuthRouteLocationReconciliation(target);
-}
-
-function scheduleWebAuthRouteLocationReconciliation(target: string): void {
-  const normalizedTarget = normalizeRouteLocation(target);
-  if (Platform.OS !== 'web' || !normalizedTarget.includes('?')) return;
-
-  const reconcile = () => reconcileWebAuthRouteLocation(normalizedTarget);
-  const reconcileAfterRouteSettles = () => {
-    setTimeout(reconcile, 0);
-    setTimeout(reconcile, 50);
-    setTimeout(reconcile, 250);
-  };
-  const requestAnimationFrame = Reflect.get(globalThis, 'requestAnimationFrame');
-  if (typeof requestAnimationFrame === 'function') {
-    requestAnimationFrame(reconcileAfterRouteSettles);
-    return;
-  }
-
-  reconcileAfterRouteSettles();
-}
-
-function reconcileWebAuthRouteLocation(target: string): void {
-  const location = Reflect.get(globalThis, 'location');
-  const history = Reflect.get(globalThis, 'history');
-  if (typeof location !== 'object' || location === null) return;
-  if (typeof history !== 'object' || history === null) return;
-
-  const pathname = Reflect.get(location, 'pathname');
-  const search = Reflect.get(location, 'search');
-  if (typeof pathname !== 'string' || typeof search !== 'string') return;
-  if (normalizeRoutePath(pathname) !== normalizeRoutePath(target)) return;
-
-  const [targetWithoutHash = target] = target.split('#');
-  if (\`\${pathname}\${search}\` === targetWithoutHash) return;
-
-  const replaceState = Reflect.get(history, 'replaceState');
-  if (typeof replaceState !== 'function') return;
-  replaceState.call(history, Reflect.get(history, 'state'), '', target);
 }
 
 function shouldCapturePendingAuthRedirect(
@@ -299,16 +260,6 @@ function shouldCapturePendingAuthRedirect(
 async function getStoredPendingAuthRedirect(): Promise<string | null> {
   const value = await authSessionStorage.getItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
   return value ? normalizeRouteLocation(value) : null;
-}
-
-function getStoredPendingAuthRedirectSnapshot(): string | null {
-  if (Platform.OS !== 'web') return null;
-  const storage = Reflect.get(globalThis, 'localStorage');
-  if (typeof storage !== 'object' || storage === null) return null;
-  const getItem = Reflect.get(storage, 'getItem');
-  if (typeof getItem !== 'function') return null;
-  const value = getItem.call(storage, PENDING_AUTH_REDIRECT_STORAGE_KEY);
-  return typeof value === 'string' ? normalizeRouteLocation(value) : null;
 }
 
 async function setStoredPendingAuthRedirect(location: string): Promise<void> {
@@ -489,8 +440,7 @@ if (shouldCapturePendingAuthRedirect(authState, currentAuthLocation)) {
 }
 
 function applyResolvedAuthState(nextAuthState: GeneratedAuthNavigationState): void {
-  const pendingRedirectSnapshot =
-    pendingAuthRedirectLocationRef.current ?? getStoredPendingAuthRedirectSnapshot();
+  const pendingRedirectSnapshot = pendingAuthRedirectLocationRef.current;
   if (
     nextAuthState === 'authenticated' &&
     pendingRedirectSnapshot &&

@@ -158,7 +158,9 @@ describe('GeneratedAppFileGenerator', () => {
     )?.content;
 
     expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
-    expect(rootLayout).toContain("type GeneratedAuthNavigationState = 'pending'");
+    expect(rootLayout).toContain(
+      "import { GeneratedAuthNavigationProvider, type GeneratedAuthNavigationState } from '@/auth/navigation';",
+    );
     expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
     expect(rootLayout).toContain(
       "<Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>",
@@ -262,13 +264,17 @@ describe('GeneratedAppFileGenerator', () => {
         includeStudio: false,
       },
     );
-    const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
+    const callbackFiles = files.filter((file) => file.path === 'src/app/auth/callback.tsx');
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
     const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
     const session = files.find((file) => file.path === 'src/auth/session.ts')?.content ?? '';
     const authScreens = files
-      .filter((file) => file.path.includes('(auth)') && file.path.endsWith('.tsx'))
+      .filter(
+        (file) =>
+          (file.path === 'src/app/sign-in.tsx' || file.path === 'src/app/sign-up.tsx') &&
+          file.path.endsWith('.tsx'),
+      )
       .map((file) => file.content)
       .join('\n');
     const allGeneratedSource = files.map((file) => file.content).join('\n');
@@ -307,22 +313,34 @@ describe('GeneratedAppFileGenerator', () => {
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const bootstrap =
       files.find((file) => file.path === 'src/app/_auth-bootstrap.tsx')?.content ?? '';
-    const signIn = files.find((file) => file.path === 'src/app/(auth)/sign-in.tsx')?.content ?? '';
-    const callback =
-      files.find((file) => file.path === 'src/app/(auth)/auth/callback.tsx')?.content ?? '';
+    const appLayout =
+      files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
+    const signIn = files.find((file) => file.path === 'src/app/sign-in.tsx')?.content ?? '';
+    const callback = files.find((file) => file.path === 'src/app/auth/callback.tsx')?.content ?? '';
     const signOut = files.find((file) => file.path === 'src/app/(app)/sign-out.tsx')?.content ?? '';
 
-    expect(rootLayout).toContain("type GeneratedAuthNavigationState = 'pending'");
+    expect(rootLayout).toContain(
+      "import { GeneratedAuthNavigationProvider, type GeneratedAuthNavigationState } from '@/auth/navigation';",
+    );
     expect(rootLayout).toContain("authState === 'pending'");
     expect(rootLayout).toContain('<Stack screenOptions={rootStackScreenOptions}>');
     expect(rootLayout).toContain(
       "<Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>",
     );
     expect(rootLayout).toContain('<Stack.Screen key="bootstrap" name="_auth-bootstrap" />');
-    expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
+    expect(rootLayout).toContain("<Stack.Protected guard={authState !== 'pending'}>");
     expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
-    expect(rootLayout).toContain('<Stack.Screen key="auth" name="(auth)" />');
+    expect(rootLayout).toContain('<Stack.Screen key="sign-in" name="sign-in" />');
+    expect(rootLayout).toContain('<Stack.Screen key="sign-up" name="sign-up" />');
+    expect(rootLayout).not.toContain('<Stack.Screen key="auth" name="(auth)" />');
+    expect(appLayout).toContain(
+      "import { useGeneratedAuthNavigationState } from '@/auth/navigation';",
+    );
+    expect(appLayout).toContain('const authState = useGeneratedAuthNavigationState();');
+    expect(appLayout).toContain(
+      '<Stack.Protected key="dashboard-auth-boundary-0" guard={authState === \'authenticated\'}>',
+    );
     expect(rootLayout).toContain('const isResolvingAuthenticatedRedirect =');
     expect(rootLayout).toContain('const shouldUseBootstrapAuthTree =');
     expect(rootLayout).toContain("shouldUseBootstrapAuthTree ? 'pending' : authState");
@@ -342,8 +360,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('new URLSearchParams(search)');
     expect(rootLayout).toContain('replaceAuthRoute(router, authRedirectTarget)');
     expect(rootLayout).toContain('!matchesRoutePatterns(normalized, AUTH_APP_ROUTE_PATTERNS)');
-    expect(rootLayout).toContain("Platform.OS !== 'web'");
-    expect(rootLayout).toContain("Reflect.get(history, 'replaceState')");
+    expect(rootLayout).not.toContain("Reflect.get(history, 'replaceState')");
     expect(rootLayout).toContain('createCurrentAuthLocation(pathname, authRouteSearchParams)');
     expect(rootLayout).toContain(
       'shouldCapturePendingAuthRedirect(authState, currentAuthLocation)',
@@ -353,7 +370,7 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(rootLayout).toContain('function applyResolvedAuthState(');
     expect(rootLayout).toContain('applyResolvedAuthState(resolveGeneratedAuthNavigationState())');
-    expect(rootLayout).toContain('getStoredPendingAuthRedirectSnapshot()');
+    expect(rootLayout).not.toContain('getStoredPendingAuthRedirectSnapshot()');
     expect(rootLayout).toContain('pendingAuthRedirectLocationRef.current = currentAuthLocation');
     expect(rootLayout).toContain('setPendingAuthRedirect(pendingAuthRedirectLocationRef.current)');
     expect(rootLayout).toContain('pendingAuthRedirectLocationRef.current = null');

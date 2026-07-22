@@ -97,7 +97,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     ]);
 
     const generatedFiles = await collectRelativeFiles(created.path);
-    const callbackPath = `src/app/(auth)/${OAUTH_CALLBACK_ROUTE}.tsx`;
+    const callbackPath = `src/app/${OAUTH_CALLBACK_ROUTE}.tsx`;
     expect(generatedFiles.filter((file) => file === callbackPath)).toEqual([callbackPath]);
 
     const packageJson = JSON.parse(await readProjectFile(created.path, 'package.json')) as {
@@ -139,7 +139,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).not.toContain('POST_SIGN_IN_ROUTE');
     expect(callback).not.toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
-    const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
+    const signInScreen = await readProjectFile(created.path, 'src/app/sign-in.tsx');
     expect(signInScreen).toContain('OAuthProviderList');
     expect(signInScreen).toContain('generatedOAuthProviderItems');
     expect(signInScreen).toContain('startOAuthAuthorization(providerId)');
