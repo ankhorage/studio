@@ -9,6 +9,7 @@ function createAuthRuntime() {
     signInRouteName: 'sign-in',
     signUpRoute: 'sign-up',
     signUpRouteName: 'sign-up',
+    signOutRouteName: 'sign-out',
     postSignInRoute: 'products',
     publicRoutes: ['sign-in', 'sign-up'],
     routeTopology: {

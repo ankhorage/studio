@@ -1,6 +1,9 @@
 sequenceDiagram
+  participant participant_buildRoutePattern as buildRoutePattern
   participant participant_normalizeRel as normalizeRel
+  participant participant_normalizeRoutePath as normalizeRoutePath
   participant participant_resolveRouteScreenFilePath as resolveRouteScreenFilePath
+  participant participant_segmentsToHref as segmentsToHref
   participant participant_validateInsertRecipe as validateInsertRecipe
   participant participant_visit as visit
   participant_validateInsertRecipe->>participant_visit: visit()
@@ -12,6 +15,12 @@ sequenceDiagram
   participant_resolveRouteScreenFilePath->>participant_normalizeRel: normalizeRel()
   participant_normalizeRel-->>participant_resolveRouteScreenFilePath: return
   participant_resolveRouteScreenFilePath-->>participant_visit: return
+  participant_visit->>participant_segmentsToHref: segmentsToHref()
+  participant_segmentsToHref-->>participant_visit: return
+  participant_visit->>participant_buildRoutePattern: buildRoutePattern()
+  participant_buildRoutePattern->>participant_normalizeRoutePath: normalizeRoutePath()
+  participant_normalizeRoutePath-->>participant_buildRoutePattern: return
+  participant_buildRoutePattern-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return

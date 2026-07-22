@@ -127,7 +127,7 @@ describe('resolveAuthLayoutPlan', () => {
       path: 'src/app/_auth-bootstrap.tsx',
       kind: 'auth-bootstrap',
     });
-    expect(plan.publicRoutes).toContain('auth');
+    expect(plan.publicRoutes).toContain('sign-in');
     expect(plan.generatedFiles).toContainEqual({
       path: 'src/auth/oauth.ts',
       kind: 'oauth-runtime',
@@ -297,6 +297,83 @@ describe('resolveAuthLayoutPlan', () => {
     expect(plan.routeTopology.publicRoutePatterns).toContainEqual({
       path: '/profile',
       pattern: '^/profile$',
+    });
+  });
+
+  it('copies nested public routes by path without colliding on duplicate segment names', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        flow: {
+          signInRoute: 'sign-in',
+          signUpRoute: 'sign-up',
+          signOutRoute: 'sign-out',
+          postSignInRoute: 'account/settings',
+          unauthorizedRoute: 'sign-in',
+        },
+        navigator: {
+          type: 'stack',
+          initialRouteName: 'account',
+          routes: [
+            {
+              name: 'account',
+              navigator: {
+                type: 'stack',
+                initialRouteName: 'settings',
+                routes: [
+                  { name: 'settings', screenId: 'account-settings' },
+                  { name: 'help', screenId: 'account-help', guards: ['public'] },
+                ],
+              },
+            },
+            {
+              name: 'marketing',
+              navigator: {
+                type: 'stack',
+                initialRouteName: 'help',
+                routes: [{ name: 'help', screenId: 'marketing-help' }],
+              },
+            },
+          ],
+        },
+        screens: {
+          'account-settings': {
+            id: 'account-settings',
+            name: 'Account settings',
+            root: { id: 'account-settings-root', type: 'Page' },
+          },
+          'account-help': {
+            id: 'account-help',
+            name: 'Account help',
+            root: { id: 'account-help-root', type: 'Page' },
+          },
+          'marketing-help': {
+            id: 'marketing-help',
+            name: 'Marketing help',
+            root: { id: 'marketing-help-root', type: 'Page' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    const authAccount = plan.authNavigator.routes.find((route) => route.name === 'account');
+    const authMarketing = plan.authNavigator.routes.find((route) => route.name === 'marketing');
+
+    expect(authAccount?.navigator?.routes.map((route) => route.name)).toEqual(['help']);
+    expect(authAccount?.navigator?.initialRouteName).toBe('help');
+    expect(authMarketing).toBeUndefined();
+    expect(plan.routeTopology.publicRoutePatterns).toContainEqual({
+      path: '/account/help',
+      pattern: '^/account/help$',
+    });
+    expect(plan.routeTopology.publicRoutePatterns).not.toContainEqual({
+      path: '/marketing/help',
+      pattern: '^/marketing/help$',
+    });
+    expect(plan.routeTopology.protectedRoutePatterns).toContainEqual({
+      path: '/account/settings',
+      pattern: '^/account/settings$',
     });
   });
 

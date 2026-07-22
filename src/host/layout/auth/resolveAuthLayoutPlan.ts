@@ -72,6 +72,11 @@ interface AuthRouteTopologyPlan {
   postSignInRoutePath: string;
 }
 
+interface AuthPublicRoutePlan {
+  routeName: string;
+  path: string;
+}
+
 interface BaseAuthLayoutPlan {
   publicRoutes: string[];
   generatedFiles: AuthGeneratedFilePlan[];
@@ -131,13 +136,13 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     signInRouteName,
     signUpRouteName,
   };
-  const publicRoutes = collectPublicRoutes(
+  const publicRoutePlans = collectPublicRoutePlans(
     manifest,
     flow.unauthorizedRoute,
     signInRouteName,
     signUpRouteName,
-    oauth?.callbackTopLevelRouteName,
   );
+  const publicRoutes = publicRoutePlans.map((route) => route.routeName);
   const groupedNavigators = getGroupedAuthNavigators(manifest);
   const hasSignOutRoute = groupedNavigators
     ? groupedNavigators.appNavigator.routes.some((route) => route.name === signOutRouteName)
@@ -147,7 +152,7 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
   const partitionedNavigators = groupedNavigators
     ? partitionGroupedNavigatorsForAuth(groupedNavigators, {
         includeSignOutRoute,
-        publicRoutes,
+        publicRoutePlans,
         signInRouteName,
         signUpRouteName,
         signOutRouteName,
@@ -155,7 +160,7 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     : partitionRootNavigatorForAuth(
         manifest,
         authRouteNames,
-        publicRoutes,
+        publicRoutePlans,
         includeSignOutRoute,
         signOutRouteName,
       );
@@ -169,6 +174,7 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     callbackRouteName: oauth?.callbackRouteName,
     flowUnauthorizedRoute: flow.unauthorizedRoute,
     postSignInRoute,
+    publicRoutePlans,
     signInRouteName,
     signUpRouteName,
   });
@@ -477,32 +483,35 @@ function partitionRootNavigatorForAuth(
     signInRouteName: string;
     signUpRouteName: string;
   },
-  publicRoutes: string[],
+  publicRoutePlans: readonly AuthPublicRoutePlan[],
   includeAuthSignOutRoute: boolean,
   signOutRouteName: string,
 ): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
-  const publicRouteSet = new Set(publicRoutes);
-  const authEntryRouteSet = new Set([
-    authRouteNames.signInRouteName,
-    authRouteNames.signUpRouteName,
+  const publicPathSet = new Set(publicRoutePlans.map((route) => route.path));
+  const authEntryPathSet = new Set([
+    routeNameToHref(authRouteNames.signInRouteName),
+    routeNameToHref(authRouteNames.signUpRouteName),
   ]);
-  const appRoutes = manifest.navigator.routes.filter((route) => !authEntryRouteSet.has(route.name));
-  const authRoutes = manifest.navigator.routes.filter(
-    (route) => publicRouteSet.has(route.name) || authEntryRouteSet.has(route.name),
+  const appNavigatorWithoutAuthEntries = filterNavigatorRoutesByPath(
+    manifest.navigator,
+    authEntryPathSet,
+    'exclude',
+  );
+  const authNavigatorPublicRoutes = filterNavigatorRoutesByPath(
+    manifest.navigator,
+    publicPathSet,
+    'include',
   );
 
   const appNavigator = ensureAuthSignOutRoute(
-    {
-      ...manifest.navigator,
-      routes: [...appRoutes],
-    },
+    appNavigatorWithoutAuthEntries,
     includeAuthSignOutRoute,
     signOutRouteName,
   );
   const authNavigator: NavigatorSpec = {
     type: 'stack',
     initialRouteName: authRouteNames.signInRouteName,
-    routes: [...authRoutes],
+    routes: [...authNavigatorPublicRoutes.routes],
   };
 
   return { appNavigator, authNavigator };
@@ -511,32 +520,35 @@ function partitionRootNavigatorForAuth(
 function partitionGroupedNavigatorsForAuth(
   groupedNavigators: { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec },
   args: {
-    publicRoutes: string[];
+    publicRoutePlans: readonly AuthPublicRoutePlan[];
     includeSignOutRoute: boolean;
     signInRouteName: string;
     signUpRouteName: string;
     signOutRouteName: string;
   },
 ): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
-  const publicRouteSet = new Set(args.publicRoutes);
+  const publicPathSet = new Set(args.publicRoutePlans.map((route) => route.path));
+  const authEntryPathSet = new Set([
+    routeNameToHref(args.signInRouteName),
+    routeNameToHref(args.signUpRouteName),
+  ]);
   const appNavigator = ensureAuthSignOutRoute(
-    {
-      ...groupedNavigators.appNavigator,
-      routes: groupedNavigators.appNavigator.routes.filter(
-        (route) => route.name !== args.signInRouteName && route.name !== args.signUpRouteName,
-      ),
-    },
+    filterNavigatorRoutesByPath(groupedNavigators.appNavigator, authEntryPathSet, 'exclude'),
     args.includeSignOutRoute,
     args.signOutRouteName,
   );
-  const authRouteNames = new Set(groupedNavigators.authNavigator.routes.map((route) => route.name));
-  const copiedPublicRoutes = groupedNavigators.appNavigator.routes.filter(
-    (route) => publicRouteSet.has(route.name) && !authRouteNames.has(route.name),
+  const existingAuthPaths = new Set(
+    collectRoutePatterns(groupedNavigators.authNavigator).map((route) => route.path),
+  );
+  const copiedPublicNavigator = filterNavigatorRoutesByPath(
+    groupedNavigators.appNavigator,
+    new Set([...publicPathSet].filter((routePath) => !existingAuthPaths.has(routePath))),
+    'include',
   );
   const authNavigator = ensureGlobalAuthEntryRoutes(
     {
       ...groupedNavigators.authNavigator,
-      routes: [...groupedNavigators.authNavigator.routes, ...copiedPublicRoutes],
+      routes: [...groupedNavigators.authNavigator.routes, ...copiedPublicNavigator.routes],
     },
     {
       signInRouteName: args.signInRouteName,
@@ -545,6 +557,82 @@ function partitionGroupedNavigatorsForAuth(
   );
 
   return { appNavigator, authNavigator };
+}
+
+function filterNavigatorRoutesByPath(
+  navigator: NavigatorSpec,
+  routePathSet: ReadonlySet<string>,
+  mode: 'include' | 'exclude',
+): NavigatorSpec {
+  const routes = filterRoutesByPath(navigator.routes, [], routePathSet, mode);
+  return {
+    ...navigator,
+    ...(resolveNavigatorInitialRouteName(navigator.initialRouteName, routes)
+      ? { initialRouteName: resolveNavigatorInitialRouteName(navigator.initialRouteName, routes) }
+      : {}),
+    routes,
+  };
+}
+
+function filterRoutesByPath(
+  routes: readonly RouteDefinition[],
+  parentSegments: readonly string[],
+  routePathSet: ReadonlySet<string>,
+  mode: 'include' | 'exclude',
+): RouteDefinition[] {
+  const nextRoutes: RouteDefinition[] = [];
+
+  for (const route of routes) {
+    const routeSegments = [...parentSegments, route.name];
+    const routePath = segmentsToHref(routeSegments);
+    const routeMatches = route.screenId ? routePathSet.has(routePath) : false;
+    const nextNavigator = route.navigator
+      ? filterNavigatorRoutesByPathWithSegments(route.navigator, routeSegments, routePathSet, mode)
+      : undefined;
+    const hasKeptChildren = (nextNavigator?.routes.length ?? 0) > 0;
+    const keepRoute =
+      mode === 'include'
+        ? routeMatches || hasKeptChildren
+        : (!routeMatches && route.screenId !== undefined) ||
+          hasKeptChildren ||
+          (!route.screenId && !route.navigator);
+
+    if (!keepRoute) continue;
+
+    nextRoutes.push({
+      ...route,
+      ...(nextNavigator ? { navigator: nextNavigator } : {}),
+    });
+  }
+
+  return nextRoutes;
+}
+
+function filterNavigatorRoutesByPathWithSegments(
+  navigator: NavigatorSpec,
+  parentSegments: readonly string[],
+  routePathSet: ReadonlySet<string>,
+  mode: 'include' | 'exclude',
+): NavigatorSpec {
+  const routes = filterRoutesByPath(navigator.routes, parentSegments, routePathSet, mode);
+  return {
+    ...navigator,
+    ...(resolveNavigatorInitialRouteName(navigator.initialRouteName, routes)
+      ? { initialRouteName: resolveNavigatorInitialRouteName(navigator.initialRouteName, routes) }
+      : {}),
+    routes,
+  };
+}
+
+function resolveNavigatorInitialRouteName(
+  initialRouteName: string | undefined,
+  routes: readonly RouteDefinition[],
+): string | undefined {
+  if (initialRouteName && routes.some((route) => route.name === initialRouteName)) {
+    return initialRouteName;
+  }
+
+  return routes[0]?.name;
 }
 
 function buildGeneratedAuthRoute(args: {
@@ -564,42 +652,55 @@ function buildGeneratedAuthRoute(args: {
   };
 }
 
-function collectPublicRoutes(
+function collectPublicRoutePlans(
   manifest: AppManifest,
   unauthorizedRoute: string | undefined,
   signInRouteName: string,
   signUpRouteName: string,
-  oauthCallbackTopLevelRouteName: string | undefined,
-): string[] {
+): AuthPublicRoutePlan[] {
   const unauthorizedRouteName = authFlowPathToRouteName(
     unauthorizedRoute?.trim() ?? signInRouteName,
   );
-  const publicRoutes = new Set<string>([
-    signInRouteName,
-    signUpRouteName,
-    unauthorizedRouteName || signInRouteName,
-  ]);
-  if (oauthCallbackTopLevelRouteName) {
-    publicRoutes.add(oauthCallbackTopLevelRouteName);
-  }
+  const publicRoutes = new Map<string, AuthPublicRoutePlan>();
+  addPublicRoutePlan(publicRoutes, signInRouteName);
+  addPublicRoutePlan(publicRoutes, signUpRouteName);
+  addPublicRoutePlan(publicRoutes, unauthorizedRouteName || signInRouteName);
 
-  const visit = (routes: RouteDefinition[]) => {
+  const visit = (
+    routes: readonly RouteDefinition[],
+    parentSegments: readonly string[],
+    hasPublicAncestor: boolean,
+  ) => {
     for (const route of routes) {
+      const routeSegments = [...parentSegments, route.name];
+      const routeName = routeSegments.filter((segment) => !isRouteGroup(segment)).join('/');
+      const routePath = segmentsToHref(routeSegments);
       const normalizedGuards = (route.guards ?? []).map((guard) => guard.trim().toLowerCase());
+      const isPublicRoute =
+        hasPublicAncestor ||
+        normalizedGuards.some((guard) => guard === 'public' || guard === 'guest');
 
-      if (normalizedGuards.some((guard) => guard === 'public' || guard === 'guest')) {
-        publicRoutes.add(route.name);
+      if (isPublicRoute && route.screenId) {
+        publicRoutes.set(routePath, { routeName, path: routePath });
       }
 
       if (route.navigator?.routes) {
-        visit(route.navigator.routes);
+        visit(route.navigator.routes, routeSegments, isPublicRoute);
       }
     }
   };
 
-  visit(manifest.navigator.routes);
+  visit(manifest.navigator.routes, [], false);
 
-  return [...publicRoutes];
+  return [...publicRoutes.values()];
+}
+
+function addPublicRoutePlan(
+  publicRoutes: Map<string, AuthPublicRoutePlan>,
+  routeName: string,
+): void {
+  const path = routeNameToHref(routeName);
+  publicRoutes.set(path, { routeName, path });
 }
 
 function createAuthRouteTopologyPlan(args: {
@@ -608,11 +709,11 @@ function createAuthRouteTopologyPlan(args: {
   callbackRouteName: string | undefined;
   flowUnauthorizedRoute: string | undefined;
   postSignInRoute: string;
+  publicRoutePlans: readonly AuthPublicRoutePlan[];
   signInRouteName: string;
   signUpRouteName: string;
 }): AuthRouteTopologyPlan {
   const appRoutePatterns = collectRoutePatterns(args.appNavigator);
-  const authRoutePatterns = collectRoutePatterns(args.authNavigator);
   const authEntryPaths = new Set([
     routeNameToHref(args.signInRouteName),
     routeNameToHref(args.signUpRouteName),
@@ -620,8 +721,10 @@ function createAuthRouteTopologyPlan(args: {
   const callbackRoutePatterns = args.callbackRouteName
     ? [buildRoutePattern(routeNameToHref(args.callbackRouteName))]
     : [];
-  const publicRoutePatterns = authRoutePatterns.filter(
-    (routePattern) => !authEntryPaths.has(routePattern.path),
+  const publicRoutePatterns = uniqueRoutePatterns(
+    args.publicRoutePlans
+      .map((routePlan) => buildRoutePattern(routePlan.path))
+      .filter((routePattern) => !authEntryPaths.has(routePattern.path)),
   );
   const authEntryRoutePatterns = [...authEntryPaths].map((routePath) =>
     buildRoutePattern(routePath),

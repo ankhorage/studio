@@ -4,13 +4,14 @@ import type { GeneratedImportRequirement } from '../generatedImportComposer';
 import type { LayoutMutation } from '../../modules/layout';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import type { BuiltNavigatorJsx } from './navigation';
-import { routeNameToGroupedHref, routeNameToHref } from './utils/routes';
+import { routeNameToHref } from './utils/routes';
 
 interface RootLayoutAuthRuntimeConfig {
   signInRoute: string;
   signInRouteName: string;
   signUpRoute: string;
   signUpRouteName: string;
+  signOutRouteName: string;
   postSignInRoute: string;
   publicRoutes: string[];
   routeTopology: {
@@ -120,8 +121,9 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     ? `
 const AUTH_SIGN_IN_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signInRouteName)}';
 const AUTH_SIGN_UP_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signUpRouteName)}';
+const AUTH_SIGN_OUT_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.signOutRouteName))}';
 const AUTH_POST_SIGN_IN_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.postSignInRoute))}';
-const AUTH_POST_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGroupedHref(authRuntime.postSignInRoute, 'app'))}';
+const AUTH_POST_SIGN_IN_ROUTE_TARGET = AUTH_POST_SIGN_IN_ROUTE_PATH;
 const AUTH_UNAUTHORIZED_ROUTE_TARGET = '${escapeStringLiteral(authRuntime.routeTopology.unauthorizedRoutePath)}';
 const AUTH_APP_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.appRoutePatterns)};
 const AUTH_PROTECTED_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.protectedRoutePatterns)};
@@ -129,11 +131,22 @@ const AUTH_PUBLIC_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.r
 const AUTH_ENTRY_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.authEntryRoutePatterns)};
 const AUTH_CALLBACK_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.callbackRoutePatterns)};
 const PENDING_AUTH_REDIRECT_STORAGE_KEY = 'ankh.auth.pendingRedirect.v1';
-const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
 
 function normalizeRoutePath(pathname: string): string {
-  const normalized = pathname.replace(/\\/+$/, '');
+  const [pathOnly = '/'] = pathname.split(/[?#]/u);
+  const normalized = pathOnly.replace(/\\/+$/, '');
   return normalized === '' ? '/' : normalized;
+}
+
+function normalizeRouteLocation(location: string): string {
+  const trimmed = location.trim();
+  if (!trimmed) return '/';
+  const [pathWithMaybeSearch = '/', hash = ''] = trimmed.split('#');
+  const [pathOnly = '/', search = ''] = pathWithMaybeSearch.split('?');
+  const normalizedPath = normalizeRoutePath(pathOnly);
+  const normalizedSearch = search ? \`?\${search}\` : '';
+  const normalizedHash = hash ? \`#\${hash}\` : '';
+  return \`\${normalizedPath}\${normalizedSearch}\${normalizedHash}\`;
 }
 
 function getTopLevelRoute(pathname: string): string {
@@ -151,42 +164,183 @@ function matchesRoutePatterns(
   return patterns.some((routePattern) => new RegExp(routePattern.pattern).test(normalized));
 }
 
-function getStoredPendingAuthRedirect(): string | null {
-  if (typeof window === 'undefined') return null;
-  return window.sessionStorage.getItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
+function getRoutePatternParamNames(routePath: string): Set<string> {
+  const paramNames = new Set<string>();
+  for (const segment of routePath.split('/')) {
+    if (segment.startsWith('[[...') && segment.endsWith(']]')) {
+      paramNames.add(segment.slice(5, -2));
+    } else if (segment.startsWith('[...') && segment.endsWith(']')) {
+      paramNames.add(segment.slice(4, -1));
+    } else if (segment.startsWith('[') && segment.endsWith(']')) {
+      paramNames.add(segment.slice(1, -1));
+    }
+  }
+  return paramNames;
 }
 
-function setStoredPendingAuthRedirect(pathname: string): void {
-  if (typeof window === 'undefined') return;
-  if (!matchesRoutePatterns(pathname, AUTH_PROTECTED_ROUTE_PATTERNS)) return;
-  window.sessionStorage.setItem(PENDING_AUTH_REDIRECT_STORAGE_KEY, normalizeRoutePath(pathname));
+function getMatchedRouteParamNames(
+  pathname: string,
+  patterns: readonly { readonly path: string; readonly pattern: string }[],
+): Set<string> {
+  const normalized = normalizeRoutePath(pathname);
+  const matchedPattern = patterns.find((routePattern) =>
+    new RegExp(routePattern.pattern).test(normalized),
+  );
+  return matchedPattern ? getRoutePatternParamNames(matchedPattern.path) : new Set<string>();
 }
 
-function clearStoredPendingAuthRedirect(): void {
-  if (typeof window === 'undefined') return;
-  window.sessionStorage.removeItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
+function createRouteSearch(
+  params: Record<string, string | string[] | undefined>,
+  excludedParamNames: ReadonlySet<string>,
+): string {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (excludedParamNames.has(key)) continue;
+    const values = Array.isArray(value) ? value : [value];
+    for (const item of values) {
+      if (typeof item === 'string') {
+        search.append(key, item);
+      }
+    }
+  }
+  const serialized = search.toString();
+  return serialized ? \`?\${serialized}\` : '';
+}
+
+function createCurrentAuthLocation(
+  pathname: string,
+  params: Record<string, string | string[] | undefined>,
+): string {
+  const routeParamNames = getMatchedRouteParamNames(pathname, [
+    ...AUTH_APP_ROUTE_PATTERNS,
+    ...AUTH_PUBLIC_ROUTE_PATTERNS,
+    ...AUTH_ENTRY_ROUTE_PATTERNS,
+    ...AUTH_CALLBACK_ROUTE_PATTERNS,
+  ]);
+  return normalizeRouteLocation(\`\${normalizeRoutePath(pathname)}\${createRouteSearch(params, routeParamNames)}\`);
+}
+
+function createRouteLocationHref(
+  location: string,
+): string | { pathname: string; params: Record<string, string | string[]> } {
+  const normalizedLocation = normalizeRouteLocation(location);
+  const [pathWithSearch = '/'] = normalizedLocation.split('#');
+  const [pathname = '/', search = ''] = pathWithSearch.split('?');
+  if (!search) return normalizedLocation;
+
+  const params: Record<string, string | string[]> = {};
+  const searchParams = new URLSearchParams(search);
+  for (const key of new Set(searchParams.keys())) {
+    const values = searchParams.getAll(key);
+    if (values.length === 1) {
+      const [value = ''] = values;
+      params[key] = value;
+    } else {
+      params[key] = values;
+    }
+  }
+
+  return { pathname: normalizeRoutePath(pathname), params };
+}
+
+function replaceAuthRoute(router: ReturnType<typeof useRouter>, target: string): void {
+  const href = createRouteLocationHref(target) as Parameters<typeof router.replace>[0];
+  router.replace(href);
+  scheduleWebAuthRouteLocationReconciliation(target);
+}
+
+function scheduleWebAuthRouteLocationReconciliation(target: string): void {
+  const normalizedTarget = normalizeRouteLocation(target);
+  if (Platform.OS !== 'web' || !normalizedTarget.includes('?')) return;
+
+  const reconcile = () => reconcileWebAuthRouteLocation(normalizedTarget);
+  const reconcileAfterRouteSettles = () => {
+    setTimeout(reconcile, 0);
+    setTimeout(reconcile, 50);
+    setTimeout(reconcile, 250);
+  };
+  const requestAnimationFrame = Reflect.get(globalThis, 'requestAnimationFrame');
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(reconcileAfterRouteSettles);
+    return;
+  }
+
+  reconcileAfterRouteSettles();
+}
+
+function reconcileWebAuthRouteLocation(target: string): void {
+  const location = Reflect.get(globalThis, 'location');
+  const history = Reflect.get(globalThis, 'history');
+  if (typeof location !== 'object' || location === null) return;
+  if (typeof history !== 'object' || history === null) return;
+
+  const pathname = Reflect.get(location, 'pathname');
+  const search = Reflect.get(location, 'search');
+  if (typeof pathname !== 'string' || typeof search !== 'string') return;
+  if (normalizeRoutePath(pathname) !== normalizeRoutePath(target)) return;
+
+  const [targetWithoutHash = target] = target.split('#');
+  if (\`\${pathname}\${search}\` === targetWithoutHash) return;
+
+  const replaceState = Reflect.get(history, 'replaceState');
+  if (typeof replaceState !== 'function') return;
+  replaceState.call(history, Reflect.get(history, 'state'), '', target);
+}
+
+function shouldCapturePendingAuthRedirect(
+  authState: GeneratedAuthNavigationState,
+  location: string,
+): boolean {
+  if (authState === 'authenticated') return false;
+  if (normalizeRoutePath(location) === AUTH_SIGN_OUT_ROUTE_PATH) return false;
+  return matchesRoutePatterns(location, AUTH_PROTECTED_ROUTE_PATTERNS);
+}
+
+async function getStoredPendingAuthRedirect(): Promise<string | null> {
+  const value = await authSessionStorage.getItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
+  return value ? normalizeRouteLocation(value) : null;
+}
+
+function getStoredPendingAuthRedirectSnapshot(): string | null {
+  if (Platform.OS !== 'web') return null;
+  const storage = Reflect.get(globalThis, 'localStorage');
+  if (typeof storage !== 'object' || storage === null) return null;
+  const getItem = Reflect.get(storage, 'getItem');
+  if (typeof getItem !== 'function') return null;
+  const value = getItem.call(storage, PENDING_AUTH_REDIRECT_STORAGE_KEY);
+  return typeof value === 'string' ? normalizeRouteLocation(value) : null;
+}
+
+async function setStoredPendingAuthRedirect(location: string): Promise<void> {
+  if (!matchesRoutePatterns(location, AUTH_PROTECTED_ROUTE_PATTERNS)) return;
+  await authSessionStorage.setItem(
+    PENDING_AUTH_REDIRECT_STORAGE_KEY,
+    normalizeRouteLocation(location),
+  );
+}
+
+async function clearStoredPendingAuthRedirect(): Promise<void> {
+  await authSessionStorage.removeItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
 }
 
 function resolveGeneratedAuthNavigationState(): GeneratedAuthNavigationState {
-  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
-  if (!authEnforced) return 'authenticated';
   return isAuthenticated() ? 'authenticated' : 'unauthenticated';
 }
 
 function resolveAuthenticatedRouteTarget(pathname: string, pendingRedirect: string | null): string | null {
   const normalized = normalizeRoutePath(pathname);
   if (
+    pendingRedirect &&
+    matchesRoutePatterns(pendingRedirect, AUTH_APP_ROUTE_PATTERNS) &&
+    !matchesRoutePatterns(normalized, AUTH_APP_ROUTE_PATTERNS)
+  ) {
+    return pendingRedirect;
+  }
+
+  if (
     matchesRoutePatterns(normalized, AUTH_ENTRY_ROUTE_PATTERNS) ||
     matchesRoutePatterns(normalized, AUTH_CALLBACK_ROUTE_PATTERNS)
   ) {
-    if (pendingRedirect && matchesRoutePatterns(pendingRedirect, AUTH_APP_ROUTE_PATTERNS)) {
-      return pendingRedirect;
-    }
-
-    return AUTH_POST_SIGN_IN_ROUTE_TARGET;
-  }
-
-  if (normalized === '/' && AUTH_POST_SIGN_IN_ROUTE_PATH !== '/') {
     return AUTH_POST_SIGN_IN_ROUTE_TARGET;
   }
 
@@ -217,8 +371,6 @@ function isAuthRoute(pathname: string): boolean {
 }
 
 function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady: boolean): boolean {
-  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
-  if (!authEnforced) return true;
   if (!isAuthRuntimeReady) return false;
   if (!isAuthenticated()) return false;
   return !isAuthRoute(pathname);
@@ -319,23 +471,46 @@ function resolveStudioAppHeaderTitle(args: {
     ? `
 const router = useRouter();
 const pathname = usePathname();
-const [authState, setAuthState] = useState<GeneratedAuthNavigationState>(() =>
-  __DEV__ && AUTH_DISABLE_IN_DEV ? 'authenticated' : 'pending',
+const authRouteSearchParams = useGlobalSearchParams<
+  Record<string, string | string[] | undefined>
+>();
+const authRouteSearchParamsKey = JSON.stringify(authRouteSearchParams);
+const currentAuthLocation = useMemo(
+  () => createCurrentAuthLocation(pathname, authRouteSearchParams),
+  [authRouteSearchParams, authRouteSearchParamsKey, pathname],
 );
+const [authState, setAuthState] = useState<GeneratedAuthNavigationState>('pending');
+const [pendingAuthRedirect, setPendingAuthRedirect] = useState<string | null>(null);
+const [pendingAuthRedirectReady, setPendingAuthRedirectReady] = useState(false);
+const pendingAuthRedirectLocationRef = useRef<string | null>(null);
+
+if (shouldCapturePendingAuthRedirect(authState, currentAuthLocation)) {
+  pendingAuthRedirectLocationRef.current = currentAuthLocation;
+}
+
+function applyResolvedAuthState(nextAuthState: GeneratedAuthNavigationState): void {
+  const pendingRedirectSnapshot =
+    pendingAuthRedirectLocationRef.current ?? getStoredPendingAuthRedirectSnapshot();
+  if (
+    nextAuthState === 'authenticated' &&
+    pendingRedirectSnapshot &&
+    matchesRoutePatterns(pendingRedirectSnapshot, AUTH_APP_ROUTE_PATTERNS)
+  ) {
+    setPendingAuthRedirect(pendingRedirectSnapshot);
+    setPendingAuthRedirectReady(true);
+  }
+
+  setAuthState(nextAuthState);
+}
 
 useEffect(() => {
   const mountController = new AbortController();
 
   void (async () => {
-    if (__DEV__ && AUTH_DISABLE_IN_DEV) {
-      setAuthState('authenticated');
-      return;
-    }
-
     await bootstrapAuthSession();
     await refreshAuthSessionIfNeeded(authAdapter);
     if (mountController.signal.aborted) return;
-    setAuthState(resolveGeneratedAuthNavigationState());
+    applyResolvedAuthState(resolveGeneratedAuthNavigationState());
   })();
 
   return () => {
@@ -345,17 +520,16 @@ useEffect(() => {
 
 useEffect(() => {
   return subscribeToAuthSessionChanges(() => {
-    setAuthState(resolveGeneratedAuthNavigationState());
+    applyResolvedAuthState(resolveGeneratedAuthNavigationState());
   });
 }, []);
 
 useEffect(() => {
   const subscription = AppState.addEventListener('change', (nextState) => {
     if (nextState !== 'active') return;
-    if (__DEV__ && AUTH_DISABLE_IN_DEV) return;
     void refreshAuthSessionIfNeeded(authAdapter)
         .then(() => {
-          setAuthState(resolveGeneratedAuthNavigationState());
+          applyResolvedAuthState(resolveGeneratedAuthNavigationState());
       })
       .catch(() => undefined);
   });
@@ -365,31 +539,88 @@ useEffect(() => {
   };
 }, []);
 
+useEffect(() => {
+  const mountController = new AbortController();
+
+  if (authState !== 'authenticated') {
+    setPendingAuthRedirect(null);
+    setPendingAuthRedirectReady(false);
+    return;
+  }
+
+  setPendingAuthRedirectReady(false);
+  if (
+    pendingAuthRedirectLocationRef.current &&
+    matchesRoutePatterns(pendingAuthRedirectLocationRef.current, AUTH_APP_ROUTE_PATTERNS)
+  ) {
+    setPendingAuthRedirect(pendingAuthRedirectLocationRef.current);
+    setPendingAuthRedirectReady(true);
+    return;
+  }
+
+  void getStoredPendingAuthRedirect()
+    .then((storedRedirect) => {
+      if (mountController.signal.aborted) return;
+      setPendingAuthRedirect(storedRedirect);
+      setPendingAuthRedirectReady(true);
+    })
+    .catch(() => {
+      if (mountController.signal.aborted) return;
+      setPendingAuthRedirect(null);
+      setPendingAuthRedirectReady(true);
+    });
+
+  return () => {
+    mountController.abort();
+  };
+}, [authState]);
+
 const isAuthRuntimeReady = authState !== 'pending';
-const pendingAuthRedirect =
-  authState === 'authenticated' ? getStoredPendingAuthRedirect() : null;
+const isResolvingAuthenticatedRedirect =
+  authState === 'authenticated' && !pendingAuthRedirectReady;
 const authRedirectTarget =
-  authState === 'pending'${includeStudio ? ' || isStudioAdminPath(pathname)' : ''}
+  authState === 'pending' ||
+  isResolvingAuthenticatedRedirect${includeStudio ? ' || isStudioAdminPath(pathname)' : ''}
     ? null
     : authState === 'authenticated'
       ? resolveAuthenticatedRouteTarget(pathname, pendingAuthRedirect)
       : resolveUnauthenticatedRouteTarget(pathname);
+const shouldUseBootstrapAuthTree =
+  authState === 'pending' ||
+  isResolvingAuthenticatedRedirect ||
+  authRedirectTarget !== null;
 const effectiveAuthState: GeneratedAuthNavigationState =
-  authRedirectTarget === null ? authState : 'pending';
+  shouldUseBootstrapAuthTree ? 'pending' : authState;
 
 useEffect(() => {
   if (authRedirectTarget === null) return;
-  if (authState === 'unauthenticated') {
-    setStoredPendingAuthRedirect(pathname);
-  } else if (authState === 'authenticated') {
-    clearStoredPendingAuthRedirect();
-  }
+  const redirectController = new AbortController();
 
-  if (normalizeRoutePath(pathname) !== normalizeRoutePath(authRedirectTarget)) {
-    router.replace(authRedirectTarget);
-    return;
-  }
-}, [authRedirectTarget, authState, pathname, router]);
+  void (async () => {
+    if (authState === 'unauthenticated') {
+      await setStoredPendingAuthRedirect(
+        pendingAuthRedirectLocationRef.current ?? currentAuthLocation,
+      );
+    } else if (authState === 'authenticated') {
+      pendingAuthRedirectLocationRef.current = null;
+      await clearStoredPendingAuthRedirect();
+    }
+
+    if (redirectController.signal.aborted) return;
+    if (normalizeRoutePath(pathname) !== normalizeRoutePath(authRedirectTarget)) {
+      replaceAuthRoute(router, authRedirectTarget);
+    }
+  })().catch(() => {
+    if (redirectController.signal.aborted) return;
+    if (normalizeRoutePath(pathname) !== normalizeRoutePath(authRedirectTarget)) {
+      replaceAuthRoute(router, authRedirectTarget);
+    }
+  });
+
+  return () => {
+    redirectController.abort();
+  };
+}, [authRedirectTarget, authState, currentAuthLocation, pathname, router]);
 `
     : '';
   const rootHookBlock = [allHooks, authRuntimeHook.trim()].filter(Boolean).join('\n\n');

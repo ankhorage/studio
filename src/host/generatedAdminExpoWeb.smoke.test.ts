@@ -10,7 +10,8 @@ import {
   symlink,
   writeFile,
 } from 'node:fs/promises';
-import { createServer } from 'node:net';
+import { createServer as createHttpServer, type Server as HttpServer } from 'node:http';
+import { createServer as createNetServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -38,6 +39,12 @@ interface ChromeProtocolMessage {
   readonly params?: unknown;
   readonly result?: unknown;
   readonly error?: unknown;
+}
+
+interface ProtectedMountProbe {
+  readonly url: string;
+  readonly getRequestCount: () => number;
+  readonly close: () => Promise<void>;
 }
 
 function createAdminSmokeManifest(): AppManifest {
@@ -132,6 +139,7 @@ adminWebSmokeTest(
     const debugPort = await reservePort();
     const expoPort = await reservePort();
     let studioHost: FastifyInstance | null = null;
+    let protectedMountProbe: ProtectedMountProbe | null = null;
     let expoProcess: ChildProcessWithoutNullStreams | null = null;
     let chromeProcess: ChildProcessWithoutNullStreams | null = null;
     const expoOutput: string[] = [];
@@ -139,6 +147,10 @@ adminWebSmokeTest(
     try {
       const projectRoot = await createGeneratedAdminProject(workspaceRoot);
       const apiUrl = `http://127.0.0.1:${hostPort}/api`;
+      await installFixtureAuthAdapter(projectRoot);
+      await installFixtureAuthEntryRoute(projectRoot);
+      protectedMountProbe = await startProtectedMountProbeServer();
+      await installProtectedMountProbe(projectRoot, protectedMountProbe.url);
       const rootLayout = await readFile(
         path.join(projectRoot, 'src', 'app', '_layout.tsx'),
         'utf8',
@@ -162,8 +174,34 @@ adminWebSmokeTest(
       chromeProcess = spawnChrome(chromePath, debugPort);
       const page = await openChromePage(debugPort);
       try {
-        await page.navigate(appUrl);
-        await page.seedAuthSession();
+        await page.navigate(`${appUrl}/dashboard?tab=activity`);
+        await Bun.sleep(ROUTE_SETTLE_MS);
+        await waitForLocation(page, (location) => location.includes('/sign-in'), HTTP_TIMEOUT_MS);
+        const unauthenticatedBody = await page.readBodyText();
+        expect(unauthenticatedBody).not.toContain('Scrollable Runtime Screen');
+        expect(unauthenticatedBody).not.toContain('Generated runtime row 16');
+        expect(protectedMountProbe.getRequestCount()).toBe(0);
+        const pendingRedirect = await waitForStorageItem(
+          page,
+          'ankh.auth.pendingRedirect.v1',
+          (value) => value?.includes('/dashboard?tab=activity') ?? false,
+          HTTP_TIMEOUT_MS,
+        );
+        expect(pendingRedirect).toContain('/dashboard?tab=activity');
+
+        await page.writeLocalStorageItem('ankh.auth.smokeSignIn', '1');
+        await page.navigate(`${appUrl}/sign-in`);
+        const restoredBodyText = await waitForBodyText(
+          page,
+          (text) => text.includes('Scrollable Runtime Screen'),
+          HTTP_TIMEOUT_MS,
+        );
+        const restoredLocation = await page.readLocation();
+        expect(restoredBodyText).toContain('Generated runtime row 16');
+        expect(restoredLocation).toContain('/dashboard');
+        expect(restoredLocation).toContain('tab=activity');
+        expect(protectedMountProbe.getRequestCount()).toBeGreaterThan(0);
+
         for (const route of ['/', '/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
           await page.navigate(`${appUrl}${route}`);
           await Bun.sleep(ROUTE_SETTLE_MS);
@@ -197,6 +235,7 @@ adminWebSmokeTest(
     } finally {
       stopProcess(chromeProcess);
       stopProcess(expoProcess);
+      await protectedMountProbe?.close();
       await studioHost?.close();
       await rm(workspaceRoot, { force: true, recursive: true });
     }
@@ -243,6 +282,100 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   await writeSmokeMetroConfig(created.path);
 
   return created.path;
+}
+
+async function installFixtureAuthEntryRoute(projectRoot: string): Promise<void> {
+  await writeFile(
+    path.join(projectRoot, 'src', 'app', '(auth)', 'sign-in.tsx'),
+    `import type { AuthSession } from '@ankhorage/contracts/auth';
+import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+import { Platform, Text, View } from 'react-native';
+
+import { setStoredAuthSession } from '@/auth/session';
+
+function createFixtureSession(): AuthSession {
+  return {
+    accessToken: 'admin-web-smoke-access-token',
+    expiresAt: Date.now() + 3600000,
+    user: {
+      id: 'admin-web-smoke-user',
+      email: 'admin-web-smoke@example.test',
+    },
+  };
+}
+
+export default function FixtureSignInRoute() {
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    if (localStorage.getItem('ankh.auth.smokeSignIn') !== '1') return;
+    localStorage.removeItem('ankh.auth.smokeSignIn');
+    void setStoredAuthSession(createFixtureSession()).then(() => {
+      location.reload();
+    });
+  }, []);
+
+  return (
+    <View>
+      <Stack.Screen options={{ title: 'Sign in' }} />
+      <Text>Sign in</Text>
+    </View>
+  );
+}
+`,
+  );
+}
+
+async function installFixtureAuthAdapter(projectRoot: string): Promise<void> {
+  await writeFile(
+    path.join(projectRoot, 'src', 'auth', 'adapter.ts'),
+    `import type { AuthAdapter, AuthSession } from '@ankhorage/contracts/auth';
+
+function createFixtureSession(): AuthSession {
+  return {
+    accessToken: 'admin-web-smoke-access-token',
+    expiresAt: Date.now() + 3600000,
+    user: {
+      id: 'admin-web-smoke-user',
+      email: 'admin-web-smoke@example.test',
+    },
+  };
+}
+
+export const authAdapter: AuthAdapter = {
+  capabilities: {
+    signInIdentifiers: ['email'],
+    supportsSignUp: true,
+    supportsPasswordReset: false,
+    supportsOtp: false,
+    supportsSessionRefresh: false,
+  },
+  signIn: () => Promise.resolve({ ok: true, data: createFixtureSession() }),
+  signUp: () => Promise.resolve({ ok: true, data: createFixtureSession() }),
+  signOut: () => Promise.resolve({ ok: true, data: undefined }),
+  getSession: () => Promise.resolve({ ok: true, data: null }),
+  refreshSession: () => Promise.resolve({ ok: true, data: createFixtureSession() }),
+};
+`,
+  );
+}
+
+async function installProtectedMountProbe(projectRoot: string, probeUrl: string): Promise<void> {
+  const dashboardPath = path.join(projectRoot, 'src', 'app', '(app)', 'dashboard.tsx');
+  const dashboardSource = await readFile(dashboardPath, 'utf8');
+  const withImport = dashboardSource.replace(
+    "import { useMemo } from 'react';",
+    "import { useEffect, useMemo } from 'react';",
+  );
+  const withProbe = withImport.replace(
+    '  const currentScreenId =',
+    `  useEffect(() => {
+    void fetch(${JSON.stringify(probeUrl)}).catch(() => undefined);
+  }, []);
+
+  const currentScreenId =`,
+  );
+  await writeFile(dashboardPath, withProbe);
 }
 
 async function forceSinglePageWebOutput(projectRoot: string): Promise<void> {
@@ -324,7 +457,7 @@ module.exports = config;
 
 async function reservePort(): Promise<number> {
   return new Promise((resolve, reject) => {
-    const server = createServer();
+    const server = createNetServer();
     server.on('error', reject);
     server.listen(0, '127.0.0.1', () => {
       const address = server.address();
@@ -334,6 +467,46 @@ async function reservePort(): Promise<number> {
         return;
       }
       server.close(() => reject(new Error('Could not reserve local port.')));
+    });
+  });
+}
+
+async function startProtectedMountProbeServer(): Promise<ProtectedMountProbe> {
+  const port = await reservePort();
+  let requestCount = 0;
+  const server = createHttpServer((request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    if (request.method === 'OPTIONS') {
+      response.writeHead(204);
+      response.end();
+      return;
+    }
+    requestCount += 1;
+    response.writeHead(204);
+    response.end();
+  });
+
+  await new Promise<void>((resolve, reject) => {
+    server.on('error', reject);
+    server.listen(port, '127.0.0.1', () => resolve());
+  });
+
+  return {
+    url: `http://127.0.0.1:${port}/protected-mounted`,
+    getRequestCount: () => requestCount,
+    close: () => closeHttpServer(server),
+  };
+}
+
+function closeHttpServer(server: HttpServer): Promise<void> {
+  return new Promise((resolve, reject) => {
+    server.close((error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve();
     });
   });
 }
@@ -351,7 +524,6 @@ function spawnExpoWeb(args: {
       BROWSER: 'none',
       CI: '1',
       EXPO_NO_TELEMETRY: '1',
-      EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV: 'true',
       EXPO_PUBLIC_API_URL: args.apiUrl,
       NODE_ENV: 'development',
     },
@@ -534,7 +706,55 @@ async function waitForBodyText(
     await Bun.sleep(500);
   }
 
-  return bodyText;
+  throw new Error(
+    [
+      'Timed out waiting for body text.',
+      `Location: ${await page.readLocation()}`,
+      `Body: ${bodyText}`,
+      `HTML: ${await page.readBodyHtml()}`,
+      `Browser errors: ${page.errors.join('\n')}`,
+      `Network errors: ${page.networkErrors.join('\n')}`,
+    ].join('\n'),
+  );
+}
+
+async function waitForLocation(
+  page: ChromePage,
+  predicate: (location: string) => boolean,
+  timeoutMs: number,
+): Promise<string> {
+  const start = Date.now();
+  let location = '';
+
+  while (Date.now() - start < timeoutMs) {
+    location = await page.readLocation();
+    if (predicate(location)) return location;
+    await Bun.sleep(500);
+  }
+
+  return location;
+}
+
+async function waitForStorageItem(
+  page: ChromePage,
+  key: string,
+  predicate: (value: string | null) => boolean,
+  timeoutMs: number,
+): Promise<string> {
+  const start = Date.now();
+  let value: string | null = null;
+
+  while (Date.now() - start < timeoutMs) {
+    value = await page.readLocalStorageItem(key);
+    if (predicate(value) && value !== null) return value;
+    await Bun.sleep(500);
+  }
+
+  throw new Error(
+    `Timed out waiting for localStorage item ${key}. Last value: ${JSON.stringify(
+      value,
+    )}. Location: ${await page.readLocation()}. Body: ${await page.readBodyText()}`,
+  );
 }
 
 function resolveChromePath(): string {
@@ -608,6 +828,54 @@ class ChromePage {
     await this.waitForLoad();
   }
 
+  async reload(): Promise<void> {
+    await this.send('Page.reload', { ignoreCache: true });
+    await this.waitForLoad();
+  }
+
+  async submitSignInForm(email: string, password: string): Promise<void> {
+    await this.focusSignInInput(0);
+    await this.send('Input.insertText', { text: email });
+    await this.focusSignInInput(1);
+    await this.send('Input.insertText', { text: password });
+
+    const result = await this.send('Runtime.evaluate', {
+      expression: `(() => {
+        const signInButton = [...document.querySelectorAll('button, [role="button"]')]
+          .find((element) => (element.textContent ?? '').trim() === 'Sign in');
+        if (!(signInButton instanceof HTMLElement)) {
+          throw new Error('Generated sign-in submit button was not found.');
+        }
+        setTimeout(() => signInButton.click(), 0);
+        return true;
+      })()`,
+      returnByValue: true,
+    });
+    if (!isRecord(result) || isRecord(result.exceptionDetails)) {
+      throw new Error(`Failed to submit generated sign-in form: ${JSON.stringify(result)}`);
+    }
+  }
+
+  private async focusSignInInput(index: number): Promise<void> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: `(() => {
+        const inputs = [...document.querySelectorAll('input')];
+        const input = inputs[${index}];
+        if (!(input instanceof HTMLInputElement)) {
+          throw new Error('Generated sign-in input ${index} was not found.');
+        }
+        input.focus();
+        return true;
+      })()`,
+      returnByValue: true,
+    });
+    if (!isRecord(result) || isRecord(result.exceptionDetails)) {
+      throw new Error(
+        `Failed to focus generated sign-in input ${index}: ${JSON.stringify(result)}`,
+      );
+    }
+  }
+
   async readBodyText(): Promise<string> {
     const result = await this.send('Runtime.evaluate', {
       expression: 'document.body?.innerText ?? ""',
@@ -644,13 +912,21 @@ class ChromePage {
     return typeof value === 'string' ? value : '';
   }
 
-  async seedAuthSession(): Promise<void> {
+  async readLocalStorageItem(key: string): Promise<string | null> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: `localStorage.getItem(${JSON.stringify(key)})`,
+      returnByValue: true,
+    });
+    if (!isRecord(result)) return null;
+    const nestedResult = result.result;
+    if (!isRecord(nestedResult)) return null;
+    const { value } = nestedResult;
+    return typeof value === 'string' ? value : null;
+  }
+
+  async writeLocalStorageItem(key: string, value: string): Promise<void> {
     await this.send('Runtime.evaluate', {
-      expression: `localStorage.setItem('ankh.auth.session.v1', JSON.stringify({
-        accessToken: 'admin-web-smoke-access-token',
-        expiresAt: Date.now() + 3600000,
-        user: { id: 'admin-web-smoke-user', email: 'admin-web-smoke@example.test' }
-      }))`,
+      expression: `localStorage.setItem(${JSON.stringify(key)}, ${JSON.stringify(value)})`,
       returnByValue: true,
     });
   }

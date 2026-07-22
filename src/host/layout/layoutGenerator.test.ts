@@ -163,7 +163,9 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain(
       "<Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>",
     );
-    expect(rootLayout).toContain('authRedirectTarget === null ? authState :');
+    expect(rootLayout).toContain('const isResolvingAuthenticatedRedirect =');
+    expect(rootLayout).toContain('const shouldUseBootstrapAuthTree =');
+    expect(rootLayout).toContain("shouldUseBootstrapAuthTree ? 'pending' : authState");
     expect(rootLayout).not.toContain('if (isStudioAdminPath(pathname)) return;');
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
@@ -321,9 +323,48 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
     expect(rootLayout).toContain('<Stack.Screen key="auth" name="(auth)" />');
-    expect(rootLayout).toContain('authRedirectTarget === null ? authState :');
-    expect(rootLayout).toContain('setStoredPendingAuthRedirect(pathname)');
-    expect(rootLayout).toContain('clearStoredPendingAuthRedirect()');
+    expect(rootLayout).toContain('const isResolvingAuthenticatedRedirect =');
+    expect(rootLayout).toContain('const shouldUseBootstrapAuthTree =');
+    expect(rootLayout).toContain("shouldUseBootstrapAuthTree ? 'pending' : authState");
+    expect(rootLayout).toContain(
+      "const [authState, setAuthState] = useState<GeneratedAuthNavigationState>('pending');",
+    );
+    expect(rootLayout).toContain('authSessionStorage.getItem(PENDING_AUTH_REDIRECT_STORAGE_KEY)');
+    expect(rootLayout).toContain('authSessionStorage.setItem(');
+    expect(rootLayout).toContain(
+      'authSessionStorage.removeItem(PENDING_AUTH_REDIRECT_STORAGE_KEY)',
+    );
+    expect(rootLayout).toContain(
+      'const AUTH_POST_SIGN_IN_ROUTE_TARGET = AUTH_POST_SIGN_IN_ROUTE_PATH;',
+    );
+    expect(rootLayout).not.toContain("normalized === '/' && AUTH_POST_SIGN_IN_ROUTE_PATH !== '/'");
+    expect(rootLayout).toContain('function createRouteLocationHref(');
+    expect(rootLayout).toContain('new URLSearchParams(search)');
+    expect(rootLayout).toContain('replaceAuthRoute(router, authRedirectTarget)');
+    expect(rootLayout).toContain('!matchesRoutePatterns(normalized, AUTH_APP_ROUTE_PATTERNS)');
+    expect(rootLayout).toContain("Platform.OS !== 'web'");
+    expect(rootLayout).toContain("Reflect.get(history, 'replaceState')");
+    expect(rootLayout).toContain('createCurrentAuthLocation(pathname, authRouteSearchParams)');
+    expect(rootLayout).toContain(
+      'shouldCapturePendingAuthRedirect(authState, currentAuthLocation)',
+    );
+    expect(rootLayout).toContain(
+      'const pendingAuthRedirectLocationRef = useRef<string | null>(null)',
+    );
+    expect(rootLayout).toContain('function applyResolvedAuthState(');
+    expect(rootLayout).toContain('applyResolvedAuthState(resolveGeneratedAuthNavigationState())');
+    expect(rootLayout).toContain('getStoredPendingAuthRedirectSnapshot()');
+    expect(rootLayout).toContain('pendingAuthRedirectLocationRef.current = currentAuthLocation');
+    expect(rootLayout).toContain('setPendingAuthRedirect(pendingAuthRedirectLocationRef.current)');
+    expect(rootLayout).toContain('pendingAuthRedirectLocationRef.current = null');
+    expect(rootLayout).toContain('await setStoredPendingAuthRedirect(');
+    expect(rootLayout).toContain('pendingAuthRedirectLocationRef.current ?? currentAuthLocation');
+    expect(rootLayout).toContain('await clearStoredPendingAuthRedirect()');
+    expect(rootLayout).toContain('redirectController.signal.aborted');
+    expect(rootLayout).toContain('pendingAuthRedirectReady');
+    expect(rootLayout).not.toContain('AUTH_DISABLE_IN_DEV');
+    expect(rootLayout).not.toContain("return 'authenticated';");
+    expect(rootLayout).not.toContain('window.sessionStorage');
     expect(bootstrap).toContain('function GeneratedAuthBootstrapRoute()');
     expect(bootstrap).toContain('<ActivityIndicator color={theme.colors.primary} />');
     expect(signIn).toContain('await setStoredAuthSession(result.data);');

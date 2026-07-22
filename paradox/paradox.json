@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.10.1",
+      "value": "v0.10.2",
       "color": "cb3837"
     },
     {
@@ -596,6 +596,7 @@
       "path": "src/host/generatedAdminExpoWeb.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/http/serverWithSecrets.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/templateRegistry/index.ts"
@@ -739,7 +740,10 @@
     {
       "path": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/layout/auth/resolveAuthLayoutPlan.ts"],
+      "dependencies": [
+        "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
       "exports": []
     },
     {
@@ -7828,7 +7832,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 41,
+        "line": 50,
         "column": 1
       }
     },
@@ -7837,7 +7841,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 97,
+        "line": 106,
         "column": 1
       }
     },
@@ -7846,7 +7850,43 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 183,
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "installFixtureAuthEntryRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 287,
+        "column": 1
+      }
+    },
+    {
+      "name": "installFixtureAuthAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 329,
+        "column": 1
+      }
+    },
+    {
+      "name": "installProtectedMountProbe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 363,
+        "column": 1
+      }
+    },
+    {
+      "name": "forceSinglePageWebOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 381,
         "column": 1
       }
     },
@@ -7855,7 +7895,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 222,
+        "line": 387,
+        "column": 1
+      }
+    },
+    {
+      "name": "linkLocalStudioPackage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 418,
         "column": 1
       }
     },
@@ -7864,7 +7913,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 251,
+        "line": 424,
         "column": 1
       }
     },
@@ -7873,7 +7922,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 269,
+        "line": 458,
+        "column": 1
+      }
+    },
+    {
+      "name": "startProtectedMountProbeServer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 474,
+        "column": 1
+      }
+    },
+    {
+      "name": "closeHttpServer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 502,
         "column": 1
       }
     },
@@ -7882,7 +7949,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 285,
+        "line": 514,
         "column": 1
       }
     },
@@ -7891,7 +7958,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 301,
+        "line": 534,
         "column": 1
       }
     },
@@ -7900,7 +7967,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 314,
+        "line": 547,
         "column": 1
       }
     },
@@ -7909,7 +7976,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 332,
+        "line": 565,
         "column": 1
       }
     },
@@ -7918,7 +7985,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 369,
+        "line": 602,
         "column": 1
       }
     },
@@ -7927,7 +7994,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 384,
+        "line": 617,
         "column": 1
       }
     },
@@ -7936,7 +8003,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 393,
+        "line": 626,
         "column": 1
       }
     },
@@ -7945,7 +8012,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 404,
+        "line": 637,
         "column": 1
       }
     },
@@ -7954,7 +8021,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 412,
+        "line": 645,
         "column": 1
       }
     },
@@ -7963,7 +8030,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 429,
+        "line": 662,
         "column": 1
       }
     },
@@ -7972,7 +8039,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 441,
+        "line": 674,
         "column": 1
       }
     },
@@ -7981,7 +8048,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 445,
+        "line": 678,
         "column": 1
       }
     },
@@ -7990,7 +8057,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 462,
+        "line": 695,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForLocation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 721,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForStorageItem",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 738,
         "column": 1
       }
     },
@@ -7999,7 +8084,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 479,
+        "line": 760,
         "column": 1
       }
     },
@@ -8008,7 +8093,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 485,
+        "line": 766,
         "column": 1
       }
     },
@@ -8017,7 +8102,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 491,
+        "line": 772,
         "column": 1
       }
     },
@@ -8026,7 +8111,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 507,
+        "line": 788,
         "column": 1
       }
     },
@@ -8035,7 +8120,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 612,
+        "line": 992,
         "column": 1
       }
     },
@@ -8044,7 +8129,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 627,
+        "line": 1007,
         "column": 1
       }
     },
@@ -8053,7 +8138,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 631,
+        "line": 1011,
         "column": 1
       }
     },
@@ -8062,7 +8147,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 640,
+        "line": 1020,
         "column": 1
       }
     },
@@ -8071,7 +8156,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 651,
+        "line": 1031,
         "column": 1
       }
     },
@@ -8341,7 +8426,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
-        "line": 6,
+        "line": 7,
         "column": 1
       }
     },
@@ -8350,7 +8435,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
-        "line": 49,
+        "line": 53,
         "column": 1
       }
     },
@@ -8359,7 +8444,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 81,
+        "line": 109,
         "column": 1
       }
     },
@@ -8368,7 +8453,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 176,
+        "line": 212,
         "column": 1
       }
     },
@@ -8377,7 +8462,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 203,
+        "line": 239,
         "column": 1
       }
     },
@@ -8386,7 +8471,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 236,
+        "line": 272,
         "column": 1
       }
     },
@@ -8395,7 +8480,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 250,
+        "line": 286,
         "column": 1
       }
     },
@@ -8404,7 +8489,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 254,
+        "line": 290,
         "column": 1
       }
     },
@@ -8413,7 +8498,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 263,
+        "line": 299,
         "column": 1
       }
     },
@@ -8422,7 +8507,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 304,
+        "line": 344,
         "column": 1
       }
     },
@@ -8431,7 +8516,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 315,
+        "line": 355,
         "column": 9
       }
     },
@@ -8440,7 +8525,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 342,
+        "line": 382,
         "column": 1
       }
     },
@@ -8449,7 +8534,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 349,
+        "line": 389,
         "column": 1
       }
     },
@@ -8458,7 +8543,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 369,
+        "line": 409,
         "column": 1
       }
     },
@@ -8467,7 +8552,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 393,
+        "line": 433,
         "column": 1
       }
     },
@@ -8476,7 +8561,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 413,
+        "line": 453,
         "column": 1
       }
     },
@@ -8485,7 +8570,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 440,
+        "line": 480,
+        "column": 1
+      }
+    },
+    {
+      "name": "partitionGroupedNavigatorsForAuth",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 520,
+        "column": 1
+      }
+    },
+    {
+      "name": "filterNavigatorRoutesByPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 562,
+        "column": 1
+      }
+    },
+    {
+      "name": "filterRoutesByPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 577,
+        "column": 1
+      }
+    },
+    {
+      "name": "filterNavigatorRoutesByPathWithSegments",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 611,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveNavigatorInitialRouteName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 627,
         "column": 1
       }
     },
@@ -8494,16 +8624,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 468,
+        "line": 638,
         "column": 1
       }
     },
     {
-      "name": "collectPublicRoutes",
+      "name": "collectPublicRoutePlans",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 485,
+        "line": 655,
         "column": 1
       }
     },
@@ -8512,8 +8642,125 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 504,
+        "line": 669,
         "column": 9
+      }
+    },
+    {
+      "name": "addPublicRoutePlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 698,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthRouteTopologyPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 706,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectRoutePatterns",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 761,
+        "column": 1
+      }
+    },
+    {
+      "name": "visit",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 764,
+        "column": 9
+      }
+    },
+    {
+      "name": "uniqueRoutePatterns",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 781,
+        "column": 1
+      }
+    },
+    {
+      "name": "segmentsToHref",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 789,
+        "column": 1
+      }
+    },
+    {
+      "name": "routeNameToHref",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 797,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRouteGroup",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 801,
+        "column": 1
+      }
+    },
+    {
+      "name": "buildRoutePattern",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 805,
+        "column": 1
+      }
+    },
+    {
+      "name": "routeSegmentToPattern",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 819,
+        "column": 1
+      }
+    },
+    {
+      "name": "escapeRegExp",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 835,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 839,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertRouteTarget",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "line": 848,
+        "column": 1
       }
     },
     {
@@ -8521,7 +8768,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 523,
+        "line": 869,
         "column": 1
       }
     },
@@ -8530,7 +8777,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 537,
+        "line": 883,
         "column": 1
       }
     },
@@ -8539,7 +8786,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
-        "line": 541,
+        "line": 887,
         "column": 1
       }
     },
@@ -8755,7 +9002,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 422,
+        "line": 451,
+        "column": 1
+      }
+    },
+    {
+      "name": "getAuthBootstrapScreenTsx",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGenerator.ts",
+        "line": 465,
         "column": 1
       }
     },
@@ -8764,7 +9020,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 436,
+        "line": 488,
         "column": 1
       }
     },
@@ -8773,7 +9029,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 443,
+        "line": 495,
         "column": 1
       }
     },
@@ -8782,7 +9038,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 466,
+        "line": 518,
         "column": 1
       }
     },
@@ -8791,7 +9047,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 480,
+        "line": 532,
         "column": 1
       }
     },
@@ -8800,7 +9056,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 484,
+        "line": 536,
         "column": 1
       }
     },
@@ -8809,7 +9065,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 528,
+        "line": 580,
         "column": 1
       }
     },
@@ -8818,7 +9074,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 536,
+        "line": 588,
         "column": 1
       }
     },
@@ -8827,7 +9083,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 541,
+        "line": 593,
         "column": 1
       }
     },
@@ -9093,20 +9349,29 @@
       }
     },
     {
-      "name": "getRootLayoutImportRequirements",
+      "name": "createAuthRuntime",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 33,
+        "filePath": "src/host/layout/templates/rootLayout.test.ts",
+        "line": 6,
         "column": 1
       }
     },
     {
-      "name": "serializeStringArrayLiteral",
+      "name": "getRootLayoutImportRequirements",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 60,
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializeRoutePatternsLiteral",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/templates/rootLayout.ts",
+        "line": 70,
         "column": 1
       }
     },
@@ -9115,7 +9380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 64,
+        "line": 87,
         "column": 1
       }
     },
@@ -9124,7 +9389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 71,
+        "line": 94,
         "column": 1
       }
     },
@@ -14981,6 +15246,11 @@
       },
       {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/http/serverWithSecrets.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
@@ -15868,6 +16138,11 @@
         "fromPath": "src/ui/admin/AuthAdminSession.tsx",
         "toPath": "src/ui/admin/pages/adminAuthSessionModel.ts",
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
+      },
+      {
+        "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
       },
       {
         "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
@@ -22498,6 +22773,30 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "installFixtureAuthAdapter",
+        "callExpression": "installFixtureAuthAdapter",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "installFixtureAuthEntryRoute",
+        "callExpression": "installFixtureAuthEntryRoute",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "startProtectedMountProbeServer",
+        "callExpression": "startProtectedMountProbeServer",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "installProtectedMountProbe",
+        "callExpression": "installProtectedMountProbe",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -22506,6 +22805,18 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "startStudioHostServerWithSecrets",
+        "callExpression": "startStudioHostServerWithSecrets",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForHttp",
+        "callExpression": "waitForHttp",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22552,14 +22863,56 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "waitForBodyText",
-        "callExpression": "waitForBodyText",
+        "toSymbol": "waitForLocation",
+        "callExpression": "waitForLocation",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "readBodyText",
         "callExpression": "page.readBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "getRequestCount",
+        "callExpression": "protectedMountProbe.getRequestCount",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForStorageItem",
+        "callExpression": "waitForStorageItem",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "writeLocalStorageItem",
+        "callExpression": "page.writeLocalStorageItem",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "waitForBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "readLocation",
+        "callExpression": "page.readLocation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "readBodyHtml",
+        "callExpression": "page.readBodyHtml",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22572,6 +22925,12 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "stopProcess",
         "callExpression": "stopProcess",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "close",
+        "callExpression": "protectedMountProbe?.close",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22636,6 +22995,18 @@
       },
       {
         "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "forceSinglePageWebOutput",
+        "callExpression": "forceSinglePageWebOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "linkLocalStudioPackage",
+        "callExpression": "linkLocalStudioPackage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
         "toSymbol": "copyGeneratedDirectDependencies",
         "callExpression": "copyGeneratedDirectDependencies",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -22644,6 +23015,42 @@
         "fromSymbol": "createGeneratedAdminProject",
         "toSymbol": "writeSmokeMetroConfig",
         "callExpression": "writeSmokeMetroConfig",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installFixtureAuthEntryRoute",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installFixtureAuthAdapter",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installProtectedMountProbe",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installProtectedMountProbe",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "forceSinglePageWebOutput",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "forceSinglePageWebOutput",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22659,6 +23066,18 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "linkLocalStudioPackage",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "linkLocalStudioPackage",
+        "toSymbol": "symlinkIfMissing",
+        "callExpression": "symlinkIfMissing",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "writeSmokeMetroConfig",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
@@ -22666,8 +23085,8 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "createServer",
-        "callExpression": "createServer",
+        "toSymbol": "createNetServer",
+        "callExpression": "createNetServer",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22680,6 +23099,24 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "reject",
         "callExpression": "reject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "startProtectedMountProbeServer",
+        "toSymbol": "reservePort",
+        "callExpression": "reservePort",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "startProtectedMountProbeServer",
+        "toSymbol": "createHttpServer",
+        "callExpression": "createHttpServer",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "close",
+        "toSymbol": "closeHttpServer",
+        "callExpression": "closeHttpServer",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22857,6 +23294,54 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "readLocation",
+        "callExpression": "page.readLocation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyText",
+        "toSymbol": "readBodyHtml",
+        "callExpression": "page.readBodyHtml",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForLocation",
+        "toSymbol": "readLocation",
+        "callExpression": "page.readLocation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForLocation",
+        "toSymbol": "predicate",
+        "callExpression": "predicate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStorageItem",
+        "toSymbol": "readLocalStorageItem",
+        "callExpression": "page.readLocalStorageItem",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStorageItem",
+        "toSymbol": "predicate",
+        "callExpression": "predicate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStorageItem",
+        "toSymbol": "readLocation",
+        "callExpression": "page.readLocation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStorageItem",
+        "toSymbol": "readBodyText",
+        "callExpression": "page.readBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "resolveChromePath",
         "toSymbol": "readEnvString",
         "callExpression": "readEnvString",
@@ -22905,6 +23390,48 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "reload",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "reload",
+        "toSymbol": "waitForLoad",
+        "callExpression": "this.waitForLoad",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "submitSignInForm",
+        "toSymbol": "focusSignInInput",
+        "callExpression": "this.focusSignInInput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "submitSignInForm",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "submitSignInForm",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "focusSignInInput",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "focusSignInInput",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "readBodyText",
         "toSymbol": "send",
         "callExpression": "this.send",
@@ -22914,6 +23441,48 @@
         "fromSymbol": "readBodyText",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyHtml",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readBodyHtml",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readLocation",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readLocation",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readLocalStorageItem",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readLocalStorageItem",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeLocalStorageItem",
+        "toSymbol": "send",
+        "callExpression": "this.send",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -25422,6 +25991,12 @@
         "fromSymbol": "getGeneratedAuthFileContent",
         "toSymbol": "getAuthOAuthCallbackTsx",
         "callExpression": "getAuthOAuthCallbackTsx",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getGeneratedAuthFileContent",
+        "toSymbol": "getAuthBootstrapScreenTsx",
+        "callExpression": "getAuthBootstrapScreenTsx",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -29043,6 +29618,12 @@
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
       },
       {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
+        "toSymbol": "getProjectTemplate",
+        "callExpression": "getProjectTemplate",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts"
+      },
+      {
         "fromSymbol": "resolveAuthLayoutPlan",
         "toSymbol": "createDisabledPlan",
         "callExpression": "createDisabledPlan",
@@ -29068,8 +29649,8 @@
       },
       {
         "fromSymbol": "resolveAuthLayoutPlan",
-        "toSymbol": "collectPublicRoutes",
-        "callExpression": "collectPublicRoutes",
+        "toSymbol": "collectPublicRoutePlans",
+        "callExpression": "collectPublicRoutePlans",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -29080,8 +29661,14 @@
       },
       {
         "fromSymbol": "resolveAuthLayoutPlan",
-        "toSymbol": "ensureAuthSignOutRoute",
-        "callExpression": "ensureAuthSignOutRoute",
+        "toSymbol": "partitionGroupedNavigatorsForAuth",
+        "callExpression": "partitionGroupedNavigatorsForAuth",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "resolveAuthLayoutPlan",
+        "toSymbol": "partitionRootNavigatorForAuth",
+        "callExpression": "partitionRootNavigatorForAuth",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -29092,8 +29679,8 @@
       },
       {
         "fromSymbol": "resolveAuthLayoutPlan",
-        "toSymbol": "partitionRootNavigatorForAuth",
-        "callExpression": "partitionRootNavigatorForAuth",
+        "toSymbol": "createAuthRouteTopologyPlan",
+        "callExpression": "createAuthRouteTopologyPlan",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -29182,20 +29769,200 @@
       },
       {
         "fromSymbol": "partitionRootNavigatorForAuth",
+        "toSymbol": "routeNameToHref",
+        "callExpression": "routeNameToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionRootNavigatorForAuth",
+        "toSymbol": "filterNavigatorRoutesByPath",
+        "callExpression": "filterNavigatorRoutesByPath",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionRootNavigatorForAuth",
         "toSymbol": "ensureAuthSignOutRoute",
         "callExpression": "ensureAuthSignOutRoute",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
-        "fromSymbol": "collectPublicRoutes",
+        "fromSymbol": "partitionGroupedNavigatorsForAuth",
+        "toSymbol": "routeNameToHref",
+        "callExpression": "routeNameToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionGroupedNavigatorsForAuth",
+        "toSymbol": "ensureAuthSignOutRoute",
+        "callExpression": "ensureAuthSignOutRoute",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionGroupedNavigatorsForAuth",
+        "toSymbol": "filterNavigatorRoutesByPath",
+        "callExpression": "filterNavigatorRoutesByPath",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionGroupedNavigatorsForAuth",
+        "toSymbol": "collectRoutePatterns",
+        "callExpression": "collectRoutePatterns",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "partitionGroupedNavigatorsForAuth",
+        "toSymbol": "ensureGlobalAuthEntryRoutes",
+        "callExpression": "ensureGlobalAuthEntryRoutes",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterNavigatorRoutesByPath",
+        "toSymbol": "filterRoutesByPath",
+        "callExpression": "filterRoutesByPath",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterNavigatorRoutesByPath",
+        "toSymbol": "resolveNavigatorInitialRouteName",
+        "callExpression": "resolveNavigatorInitialRouteName",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterRoutesByPath",
+        "toSymbol": "segmentsToHref",
+        "callExpression": "segmentsToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterRoutesByPath",
+        "toSymbol": "filterNavigatorRoutesByPathWithSegments",
+        "callExpression": "filterNavigatorRoutesByPathWithSegments",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterNavigatorRoutesByPathWithSegments",
+        "toSymbol": "filterRoutesByPath",
+        "callExpression": "filterRoutesByPath",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "filterNavigatorRoutesByPathWithSegments",
+        "toSymbol": "resolveNavigatorInitialRouteName",
+        "callExpression": "resolveNavigatorInitialRouteName",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "collectPublicRoutePlans",
         "toSymbol": "authFlowPathToRouteName",
         "callExpression": "authFlowPathToRouteName",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
-        "fromSymbol": "collectPublicRoutes",
+        "fromSymbol": "collectPublicRoutePlans",
+        "toSymbol": "addPublicRoutePlan",
+        "callExpression": "addPublicRoutePlan",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "toSymbol": "isRouteGroup",
+        "callExpression": "isRouteGroup",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "visit",
+        "toSymbol": "segmentsToHref",
+        "callExpression": "segmentsToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "collectPublicRoutePlans",
         "toSymbol": "visit",
         "callExpression": "visit",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "addPublicRoutePlan",
+        "toSymbol": "routeNameToHref",
+        "callExpression": "routeNameToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "collectRoutePatterns",
+        "callExpression": "collectRoutePatterns",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "routeNameToHref",
+        "callExpression": "routeNameToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "buildRoutePattern",
+        "callExpression": "buildRoutePattern",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "uniqueRoutePatterns",
+        "callExpression": "uniqueRoutePatterns",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "toSymbol": "buildRoutePattern",
+        "callExpression": "buildRoutePattern",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "authFlowPathToRouteName",
+        "callExpression": "authFlowPathToRouteName",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "createAuthRouteTopologyPlan",
+        "toSymbol": "assertRouteTarget",
+        "callExpression": "assertRouteTarget",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "visit",
+        "toSymbol": "buildRoutePattern",
+        "callExpression": "buildRoutePattern",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "collectRoutePatterns",
+        "toSymbol": "visit",
+        "callExpression": "visit",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "collectRoutePatterns",
+        "toSymbol": "uniqueRoutePatterns",
+        "callExpression": "uniqueRoutePatterns",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "routeNameToHref",
+        "toSymbol": "segmentsToHref",
+        "callExpression": "segmentsToHref",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "buildRoutePattern",
+        "toSymbol": "normalizeRoutePath",
+        "callExpression": "normalizeRoutePath",
+        "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
+      },
+      {
+        "fromSymbol": "routeSegmentToPattern",
+        "toSymbol": "escapeRegExp",
+        "callExpression": "escapeRegExp",
         "sourcePath": "src/host/layout/auth/resolveAuthLayoutPlan.ts"
       },
       {
@@ -29493,6 +30260,12 @@
         "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
       },
       {
+        "fromSymbol": "src/host/layout/templates/rootLayout.test.ts",
+        "toSymbol": "createAuthRuntime",
+        "callExpression": "createAuthRuntime",
+        "sourcePath": "src/host/layout/templates/rootLayout.test.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/templates/rootLayout.ts",
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
@@ -29512,14 +30285,8 @@
       },
       {
         "fromSymbol": "getRootLayoutTsx",
-        "toSymbol": "routeNameToGroupedHref",
-        "callExpression": "routeNameToGroupedHref",
-        "sourcePath": "src/host/layout/templates/rootLayout.ts"
-      },
-      {
-        "fromSymbol": "getRootLayoutTsx",
-        "toSymbol": "serializeStringArrayLiteral",
-        "callExpression": "serializeStringArrayLiteral",
+        "toSymbol": "serializeRoutePatternsLiteral",
+        "callExpression": "serializeRoutePatternsLiteral",
         "sourcePath": "src/host/layout/templates/rootLayout.ts"
       },
       {
@@ -31450,12 +32217,6 @@
       },
       {
         "fromSymbol": "getAuthScreenTsx",
-        "toSymbol": "routeNameToGroupedHref",
-        "callExpression": "routeNameToGroupedHref",
-        "sourcePath": "src/host/layout/templates/auth/screen.ts"
-      },
-      {
-        "fromSymbol": "getAuthScreenTsx",
         "toSymbol": "serializeStringArrayLiteral",
         "callExpression": "serializeStringArrayLiteral",
         "sourcePath": "src/host/layout/templates/auth/screen.ts"
@@ -31464,6 +32225,12 @@
         "fromSymbol": "getAuthScreenTsx",
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
+        "sourcePath": "src/host/layout/templates/auth/screen.ts"
+      },
+      {
+        "fromSymbol": "getAuthScreenTsx",
+        "toSymbol": "routeNameToGroupedHref",
+        "callExpression": "routeNameToGroupedHref",
         "sourcePath": "src/host/layout/templates/auth/screen.ts"
       }
     ],
