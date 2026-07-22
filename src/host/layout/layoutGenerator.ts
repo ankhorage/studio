@@ -21,11 +21,11 @@ import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
   getAuthAdapterTs,
+  getAuthNavigationTsx,
   getAuthOAuthCallbackTsx,
   getAuthOAuthRuntimeTs,
   getAuthScreenTsx,
   getAuthSessionTs,
-  getIndexRedirectRouteTsx,
   getNestedLayoutTsx,
   getRootLayoutImportRequirements,
   getRootLayoutTsx,
@@ -103,7 +103,17 @@ export class GeneratedAppFileGenerator {
       if (currentRel !== '') {
         files.push({
           path: normalizeRel(path.join(appRootRel, currentRel, '_layout.tsx')),
-          content: this.getLayoutTemplate(node, manifest, includeStudio),
+          content: this.getLayoutTemplate(
+            node,
+            manifest,
+            includeStudio,
+            authLayoutPlan.enabled
+              ? {
+                  routeAccess: authLayoutPlan.routeAccess,
+                  routeSegments: generatedRelToRouteSegments(currentRel),
+                }
+              : undefined,
+          ),
         });
       }
 
@@ -175,13 +185,6 @@ export class GeneratedAppFileGenerator {
         ),
       });
 
-      if (authLayoutPlan.postSignInRoute !== '/') {
-        files.push({
-          path: normalizeRel(path.join('src/app/index.tsx')),
-          content: getIndexRedirectRouteTsx(authLayoutPlan.postSignInRoute),
-        });
-      }
-
       addStudioAdminRouteFiles();
 
       for (const generatedAuthFile of authLayoutPlan.generatedFiles) {
@@ -220,10 +223,16 @@ export class GeneratedAppFileGenerator {
       ? `
   <Stack.Screen key="ankh" name="ankh" />`
       : '';
-    const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
-  <Stack.Screen key="app" name="(app)" />
-  <Stack.Screen key="auth" name="(auth)" />${studioAdminStackScreen}
-</Stack>`;
+    const innerNavigationJsx = `<GeneratedAuthNavigationProvider state={authState}>
+  <Stack screenOptions={rootStackScreenOptions}>
+    <Stack.Protected guard={authState === 'authenticated'}>
+      <Stack.Screen key="app" name="(app)" />
+    </Stack.Protected>
+    <Stack.Protected guard={authState !== 'authenticated'}>
+      <Stack.Screen key="auth" name="(auth)" />
+    </Stack.Protected>${studioAdminStackScreen}
+  </Stack>
+</GeneratedAuthNavigationProvider>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {
   headerShown: false,
@@ -234,6 +243,7 @@ export class GeneratedAppFileGenerator {
       usesZoraTabBar: false,
       usesZoraDrawerContent: false,
       usesZoraNavigationRouteMap: false,
+      usesGeneratedAuthNavigationState: true,
     };
 
     const pluginImports = mutations.flatMap((m) => m.imports);
@@ -268,6 +278,7 @@ export class GeneratedAppFileGenerator {
   refreshAuthSessionIfNeeded,
   subscribeToAuthSessionChanges,
 } from '@/auth/session';`,
+      `import { GeneratedAuthNavigationProvider, type GeneratedAuthNavigationState } from '@/auth/navigation';`,
       getPackageOwnedRuntimeImports(),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
@@ -393,6 +404,8 @@ export class GeneratedAppFileGenerator {
         });
       case 'session':
         return getAuthSessionTs();
+      case 'navigation':
+        return getAuthNavigationTsx();
       case 'oauth-runtime':
         if (!authLayoutPlan.oauth) {
           throw new Error('OAuth runtime generation requires an OAuth layout plan.');
@@ -410,8 +423,18 @@ export class GeneratedAppFileGenerator {
     }
   }
 
-  private getLayoutTemplate(node: NavigatorSpec, manifest: AppManifest, includeStudio: boolean) {
-    const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
+  private getLayoutTemplate(
+    node: NavigatorSpec,
+    manifest: AppManifest,
+    includeStudio: boolean,
+    auth:
+      | {
+          routeAccess: EnabledAuthLayoutPlan['routeAccess'];
+          routeSegments: string[];
+        }
+      | undefined,
+  ) {
+    const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio, auth });
     return getNestedLayoutTsx({
       node,
       navigator,
@@ -479,6 +502,19 @@ export default function AnkhAdminRoute() {
 
 function normalizeRel(p: string) {
   return p.replace(/\\/g, '/');
+}
+
+function generatedRelToRouteSegments(currentRel: string): string[] {
+  return normalizeRel(currentRel)
+    .split('/')
+    .map((segment) => segment.trim())
+    .filter(
+      (segment) => segment.length > 0 && segment !== '(app)' && !isGeneratedRouteGroup(segment),
+    );
+}
+
+function isGeneratedRouteGroup(segment: string): boolean {
+  return segment.startsWith('(') && segment.endsWith(')');
 }
 
 function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): NavigatorSpec {

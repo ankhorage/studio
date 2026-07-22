@@ -16,7 +16,9 @@ import path from 'node:path';
 
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
+import type { FastifyInstance } from 'fastify';
 
+import { startStudioHostServerWithSecrets } from './http/serverWithSecrets';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { getTemplateCatalog } from './templateRegistry';
@@ -126,22 +128,35 @@ adminWebSmokeTest(
   'loads generated Studio admin routes through Expo web without a theme update loop',
   async () => {
     const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-admin-web-smoke-'));
+    const hostPort = await reservePort();
     const debugPort = await reservePort();
+    let studioHost: FastifyInstance | null = null;
     let expoProcess: ChildProcessWithoutNullStreams | null = null;
     let chromeProcess: ChildProcessWithoutNullStreams | null = null;
     const expoOutput: string[] = [];
 
     try {
       const projectRoot = await createGeneratedAdminProject(workspaceRoot);
+      const apiUrl = `http://127.0.0.1:${hostPort}/api`;
       const rootLayout = await readFile(
         path.join(projectRoot, 'src', 'app', '_layout.tsx'),
         'utf8',
       );
       expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
+      expect(rootLayout).toContain('GeneratedAuthNavigationProvider');
+      expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
+      expect(rootLayout).toContain("<Stack.Protected guard={authState !== 'authenticated'}>");
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
 
-      expoProcess = spawnExpoWeb(projectRoot);
+      studioHost = await startStudioHostServerWithSecrets({
+        projectRoot: workspaceRoot,
+        port: hostPort,
+        host: '127.0.0.1',
+      });
+      await waitForHttp(`${apiUrl}/projects`, HTTP_TIMEOUT_MS);
+
+      expoProcess = spawnExpoWeb({ projectRoot, apiUrl });
       collectProcessOutput(expoProcess, expoOutput);
       const appUrl = await waitForExpoWebUrl(expoOutput, HTTP_TIMEOUT_MS);
 
@@ -149,6 +164,7 @@ adminWebSmokeTest(
       chromeProcess = spawnChrome(chromePath, debugPort);
       const page = await openChromePage(debugPort);
       try {
+        await page.seedAuthSessionOnNewDocument();
         for (const route of ['/', '/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
           await page.navigate(`${appUrl}${route}`);
           await Bun.sleep(ROUTE_SETTLE_MS);
@@ -162,8 +178,16 @@ adminWebSmokeTest(
               : await page.readBodyText();
           expect(bodyText).not.toContain('Maximum update depth exceeded');
           if (route === '/dashboard') {
-            expect(bodyText).toContain('Scrollable Runtime Screen');
-            expect(bodyText).toContain('Generated runtime row 16');
+            const diagnostics = [
+              bodyText,
+              await page.readLocation(),
+              await page.readBodyHtml(),
+              ...page.networkErrors,
+              ...page.errors,
+              formatProcessOutput(expoOutput),
+            ].join('\n');
+            expect(diagnostics).toContain('Scrollable Runtime Screen');
+            expect(diagnostics).toContain('Generated runtime row 16');
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
@@ -174,6 +198,7 @@ adminWebSmokeTest(
     } finally {
       stopProcess(chromeProcess);
       stopProcess(expoProcess);
+      await studioHost?.close();
       await rm(workspaceRoot, { force: true, recursive: true });
     }
   },
@@ -213,6 +238,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   });
   await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
   await linkSmokeNodeModules(created.path);
+  await linkLocalStudioPackage(created.path);
   await copyGeneratedDirectDependencies(created.path, workspaceRoot);
   await writeSmokeMetroConfig(created.path);
 
@@ -233,7 +259,10 @@ async function copyGeneratedDirectDependencies(
     ...new Set([
       ...Object.keys(packageJson.dependencies ?? {}),
       ...Object.keys(packageJson.devDependencies ?? {}),
+      '@babel/runtime',
       '@expo/metro-runtime',
+      '@react-navigation/native',
+      'fbjs',
       'metro-runtime',
     ]),
   ];
@@ -248,17 +277,36 @@ async function copyGeneratedDirectDependencies(
   );
 }
 
+async function linkLocalStudioPackage(projectRoot: string): Promise<void> {
+  const targetScopeRoot = path.join(projectRoot, 'node_modules', '@ankhorage');
+  await mkdir(targetScopeRoot, { recursive: true });
+  await symlinkIfMissing(process.cwd(), path.join(targetScopeRoot, 'studio'));
+}
+
 async function writeSmokeMetroConfig(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(projectRoot, 'metro.config.js'),
     `const path = require('node:path');
 const { getDefaultConfig } = require('expo/metro-config');
 
+const studioRoot = ${JSON.stringify(process.cwd())};
 const config = getDefaultConfig(__dirname);
+config.resolver.disableHierarchicalLookup = true;
 config.resolver.unstable_enableSymlinks = true;
+config.resolver.emptyModulePath = path.resolve(
+  __dirname,
+  'node_modules/metro-runtime/src/modules/empty-module.js',
+);
+config.resolver.extraNodeModules = {
+  '@ankhorage/studio': studioRoot,
+};
 config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, 'node_modules'),
   path.resolve(__dirname, '../../node_modules'),
+];
+config.watchFolders = [
+  path.resolve(__dirname, '../..'),
+  studioRoot,
 ];
 
 module.exports = config;
@@ -282,16 +330,20 @@ async function reservePort(): Promise<number> {
   });
 }
 
-function spawnExpoWeb(projectRoot: string): ChildProcessWithoutNullStreams {
+function spawnExpoWeb(args: {
+  readonly projectRoot: string;
+  readonly apiUrl: string;
+}): ChildProcessWithoutNullStreams {
   const expoBin = path.join(process.cwd(), 'apps', 'studio', 'node_modules', '.bin', 'expo');
   return spawn(expoBin, ['start', '--web', '--localhost'], {
-    cwd: projectRoot,
+    cwd: args.projectRoot,
     env: {
       ...process.env,
       BROWSER: 'none',
       CI: '1',
       EXPO_NO_TELEMETRY: '1',
       EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV: 'true',
+      EXPO_PUBLIC_API_URL: args.apiUrl,
       NODE_ENV: 'development',
     },
     detached: true,
@@ -514,11 +566,14 @@ async function openChromePage(debugPort: number): Promise<ChromePage> {
   await page.ready;
   await page.send('Page.enable');
   await page.send('Runtime.enable');
+  await page.send('Log.enable');
+  await page.send('Network.enable');
   return page;
 }
 
 class ChromePage {
   readonly errors: string[] = [];
+  readonly networkErrors: string[] = [];
   readonly ready: Promise<void>;
   private nextId = 1;
   private readonly pending = new Map<
@@ -554,6 +609,40 @@ class ChromePage {
     if (!isRecord(nestedResult)) return '';
     const { value } = nestedResult;
     return typeof value === 'string' ? value : '';
+  }
+
+  async readBodyHtml(): Promise<string> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: 'document.body?.innerHTML ?? ""',
+      returnByValue: true,
+    });
+    if (!isRecord(result)) return '';
+    const nestedResult = result.result;
+    if (!isRecord(nestedResult)) return '';
+    const { value } = nestedResult;
+    return typeof value === 'string' ? value : '';
+  }
+
+  async readLocation(): Promise<string> {
+    const result = await this.send('Runtime.evaluate', {
+      expression: 'location.href',
+      returnByValue: true,
+    });
+    if (!isRecord(result)) return '';
+    const nestedResult = result.result;
+    if (!isRecord(nestedResult)) return '';
+    const { value } = nestedResult;
+    return typeof value === 'string' ? value : '';
+  }
+
+  async seedAuthSessionOnNewDocument(): Promise<void> {
+    await this.send('Page.addScriptToEvaluateOnNewDocument', {
+      source: `localStorage.setItem('ankh.auth.session.v1', JSON.stringify({
+        accessToken: 'admin-web-smoke-access-token',
+        expiresAt: Date.now() + 3600000,
+        user: { id: 'admin-web-smoke-user', email: 'admin-web-smoke@example.test' }
+      }));`,
+    });
   }
 
   send(method: string, params?: Readonly<Record<string, unknown>>): Promise<unknown> {
@@ -605,6 +694,11 @@ class ChromePage {
 
     if (message.method === 'Runtime.exceptionThrown' || message.method === 'Log.entryAdded') {
       this.errors.push(JSON.stringify(message.params));
+      return;
+    }
+
+    if (message.method === 'Network.loadingFailed') {
+      this.networkErrors.push(JSON.stringify(message.params));
     }
   }
 }

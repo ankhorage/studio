@@ -76,6 +76,61 @@ function createOAuthManifest(): AppManifest {
   };
 }
 
+function createNestedProductsAuthManifest(): AppManifest {
+  return {
+    ...createManifest(),
+    infra: {
+      plugins: [],
+      auth: {
+        scope: 'global',
+        provider: 'supabase',
+        flow: {
+          signInRoute: 'sign-in',
+          signUpRoute: 'sign-up',
+          signOutRoute: 'sign-out',
+          postSignInRoute: 'products',
+          unauthorizedRoute: 'sign-in',
+        },
+      },
+    },
+    navigator: {
+      type: 'tabs',
+      initialRouteName: 'products',
+      routes: [
+        {
+          name: 'products',
+          navigator: {
+            type: 'stack',
+            initialRouteName: 'index',
+            routes: [
+              { name: 'index', screenId: 'products' },
+              { name: '[id]', screenId: 'product-detail' },
+              { name: 'create', screenId: 'product-create', hideInTabBar: true },
+            ],
+          },
+        },
+      ],
+    },
+    screens: {
+      products: {
+        id: 'products',
+        name: 'Products',
+        root: { id: 'products-root', type: 'Page' },
+      },
+      'product-detail': {
+        id: 'product-detail',
+        name: 'Product detail',
+        root: { id: 'product-detail-root', type: 'Page' },
+      },
+      'product-create': {
+        id: 'product-create',
+        name: 'Product create',
+        root: { id: 'product-create-root', type: 'Page' },
+      },
+    },
+  };
+}
+
 function createScrollableScreenRoot(): UiNode {
   return {
     id: 'root',
@@ -168,6 +223,43 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminPage).toContain('if (!__DEV__)');
     expect(adminPage).toContain('<Redirect href="/" />');
     expect(adminPage).toContain('<AnkhAdminPage routeId="auth-providers" />');
+  });
+
+  test('generates auth boundaries without post-sign-in index redirects', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createNestedProductsAuthManifest(),
+      [],
+      { includeStudio: false },
+    );
+    const paths = files.map((file) => file.path).sort();
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const productsLayout =
+      files.find((file) => file.path === 'src/app/(app)/(tabs)/products/_layout.tsx')?.content ??
+      '';
+
+    expect(paths).toContain('src/auth/navigation.tsx');
+    expect(paths).not.toContain('src/app/index.tsx');
+    expect(rootLayout).toContain(
+      "import { GeneratedAuthNavigationProvider, type GeneratedAuthNavigationState } from '@/auth/navigation';",
+    );
+    expect(rootLayout).toContain("if (!isAuthRuntimeReady) return 'pending';");
+    expect(rootLayout).toContain('<GeneratedAuthNavigationProvider state={authState}>');
+    expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
+    expect(rootLayout).toContain("<Stack.Protected guard={authState !== 'authenticated'}>");
+    expect(rootLayout).toContain(
+      '<InnerContent authState={authState} onReady={handleInnerContentReady} />',
+    );
+    expect(productsLayout).toContain("initialRouteName: 'index'");
+    expect(productsLayout).toContain(
+      "import { useGeneratedAuthNavigationState } from '@/auth/navigation';",
+    );
+    expect(productsLayout).toContain(
+      '<Stack.Protected key="index-auth-boundary-0" guard={authState === \'authenticated\'}>',
+    );
+    expect(productsLayout).toContain('<Stack.Screen key="index" name="index"');
+    expect(productsLayout).not.toContain('headerLeft');
+    expect(productsLayout).not.toContain('headerBackVisible');
   });
 
   test('composes one React import for generated Auth plus Studio root layouts', () => {

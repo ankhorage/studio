@@ -239,6 +239,10 @@ const rootNavigationKey = getRootNavigationKey(rootNavigationState);
 const [authSessionVersion, setAuthSessionVersion] = useState(0);
 const [isAuthRuntimeReady, setIsAuthRuntimeReady] = useState(false);
 const [isInnerContentReady, setIsInnerContentReady] = useState(false);
+const authState = useMemo(() => {
+  if (!isAuthRuntimeReady) return 'pending';
+  return isAuthenticated() ? 'authenticated' : 'unauthenticated';
+}, [authSessionVersion, isAuthRuntimeReady]);
 
 useEffect(() => {
   const mountController = new AbortController();
@@ -322,10 +326,12 @@ useEffect(() => {
   const indentedRootHookBlock = rootHookBlock.length > 0 ? indentGeneratedBlock(rootHookBlock) : '';
 
   const innerContentNode = authRuntime
-    ? '<InnerContent onReady={handleInnerContentReady} />'
+    ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
 
-  const innerContentSignature = authRuntime ? '{ onReady }: { onReady?: () => void }' : '';
+  const innerContentSignature = authRuntime
+    ? '{ authState, onReady }: { authState: GeneratedAuthNavigationState; onReady?: () => void }'
+    : '';
   const innerContentReadyHook = authRuntime
     ? `
   useEffect(() => {

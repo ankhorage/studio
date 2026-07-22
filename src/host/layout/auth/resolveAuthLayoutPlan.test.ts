@@ -6,7 +6,9 @@ import { resolveAuthLayoutPlan } from './resolveAuthLayoutPlan';
 function createManifest(
   args: {
     flow?: AuthFlowConfig;
+    navigator?: AppManifest['navigator'];
     oauth?: AuthOAuthConfig;
+    screens?: AppManifest['screens'];
   } = {},
 ): AppManifest {
   return {
@@ -28,12 +30,12 @@ function createManifest(
       },
       plugins: [],
     },
-    navigator: {
+    navigator: args.navigator ?? {
       type: 'stack',
       initialRouteName: 'dashboard',
       routes: [{ name: 'dashboard', screenId: 'dashboard' }],
     },
-    screens: {
+    screens: args.screens ?? {
       dashboard: {
         id: 'dashboard',
         name: 'Dashboard',
@@ -125,6 +127,10 @@ describe('resolveAuthLayoutPlan', () => {
       kind: 'oauth-runtime',
     });
     expect(plan.generatedFiles).toContainEqual({
+      path: 'src/auth/navigation.tsx',
+      kind: 'navigation',
+    });
+    expect(plan.generatedFiles).toContainEqual({
       path: 'src/app/(auth)/auth/callback.tsx',
       kind: 'oauth-callback',
       routeName: 'auth/callback',
@@ -171,5 +177,67 @@ describe('resolveAuthLayoutPlan', () => {
         }),
       }),
     ).toThrow('not supported by Supabase Auth');
+  });
+
+  it('preserves nested app initial routes while marking app-only route access protected', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        flow: {
+          signInRoute: 'sign-in',
+          signUpRoute: 'sign-up',
+          signOutRoute: 'sign-out',
+          postSignInRoute: 'products',
+          unauthorizedRoute: 'sign-in',
+        },
+        navigator: {
+          type: 'tabs',
+          initialRouteName: 'products',
+          routes: [
+            {
+              name: 'products',
+              navigator: {
+                type: 'stack',
+                initialRouteName: 'index',
+                routes: [
+                  { name: 'index', screenId: 'products' },
+                  { name: '[id]', screenId: 'product-detail' },
+                  { name: 'create', screenId: 'product-create', hideInTabBar: true },
+                ],
+              },
+            },
+          ],
+        },
+        screens: {
+          products: {
+            id: 'products',
+            name: 'Products',
+            root: { id: 'products-root', type: 'Screen' },
+          },
+          'product-detail': {
+            id: 'product-detail',
+            name: 'Product detail',
+            root: { id: 'product-detail-root', type: 'Screen' },
+          },
+          'product-create': {
+            id: 'product-create',
+            name: 'Product create',
+            root: { id: 'product-create-root', type: 'Screen' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.appNavigator.initialRouteName).toBe('products');
+    expect(
+      plan.appNavigator.routes.find((route) => route.name === 'products')?.navigator,
+    ).toMatchObject({
+      type: 'stack',
+      initialRouteName: 'index',
+    });
+    expect(plan.routeAccess).toContainEqual({ path: '/products', access: 'protected' });
+    expect(plan.routeAccess).toContainEqual({ path: '/products/[id]', access: 'protected' });
+    expect(plan.routeAccess).toContainEqual({ path: '/products/create', access: 'protected' });
   });
 });
