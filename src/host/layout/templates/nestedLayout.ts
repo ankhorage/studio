@@ -6,9 +6,6 @@ import { joinNonEmptyLines } from './utils/strings';
 export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: BuiltNavigatorJsx }) {
   const { node, navigator } = args;
   const themeHook = navigator.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
-  const authStateHook = navigator.usesGeneratedAuthNavigationState
-    ? '  const authState = useGeneratedAuthNavigationState();\n'
-    : '';
   const moduleDeclarations = navigator.usesTheme ? '' : navigator.declarations;
   const scopedDeclarations = navigator.usesTheme
     ? navigator.declarations
@@ -40,9 +37,6 @@ export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: Built
     navigator.usesZoraDrawerContent
       ? `import type { DrawerContentComponentProps } from '@react-navigation/drawer';`
       : '',
-    navigator.usesGeneratedAuthNavigationState
-      ? `import { useGeneratedAuthNavigationState } from '@/auth/navigation';`
-      : '',
     node.type === 'drawer'
       ? `import { Drawer } from 'expo-router/drawer';`
       : node.type === 'tabs'
@@ -59,7 +53,7 @@ export const unstable_settings = {
 ${moduleDeclarations}
 
 export default function Layout() {
-${themeHook}${authStateHook}${scopedDeclarations ? `${scopedDeclarations}\n` : ''}  return (
+${themeHook}${scopedDeclarations ? `${scopedDeclarations}\n` : ''}  return (
     ${navigator.jsx}
   );
 }
