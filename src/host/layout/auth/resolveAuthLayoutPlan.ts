@@ -11,7 +11,6 @@ import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
 const AUTH_ADAPTER_FILE_PATH = 'src/auth/adapter.ts';
-const AUTH_NAVIGATION_FILE_PATH = 'src/auth/navigation.tsx';
 const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
 const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
@@ -26,13 +25,7 @@ export interface ResolveAuthLayoutPlanInput {
 }
 
 type AuthGeneratedFileKind =
-  | 'adapter'
-  | 'session'
-  | 'navigation'
-  | 'sign-out'
-  | 'auth-screen'
-  | 'oauth-runtime'
-  | 'oauth-callback';
+  'adapter' | 'session' | 'sign-out' | 'auth-screen' | 'oauth-runtime' | 'oauth-callback';
 
 export interface AuthGeneratedFilePlan {
   path: string;
@@ -55,11 +48,6 @@ export interface AuthOAuthLayoutPlan {
   callbackRouteName: string;
   callbackTopLevelRouteName: string;
   providers: GeneratedOAuthProviderPlan[];
-}
-
-interface AuthRouteAccessPlan {
-  path: string;
-  access: 'public' | 'protected' | 'auth';
 }
 
 interface BaseAuthLayoutPlan {
@@ -86,7 +74,6 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   oauth?: AuthOAuthLayoutPlan;
   appNavigator: NavigatorSpec;
   authNavigator: NavigatorSpec;
-  routeAccess: AuthRouteAccessPlan[];
 }
 
 export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
@@ -156,10 +143,6 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
         signInRouteName,
         signUpRouteName,
       });
-  const routeAccess = [
-    ...collectRouteAccess(partitionedNavigators.appNavigator, '', 'protected'),
-    ...collectRouteAccess(authNavigator, '', 'auth'),
-  ];
 
   return {
     enabled: true,
@@ -176,7 +159,6 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     publicRoutes,
     appNavigator: partitionedNavigators.appNavigator,
     authNavigator,
-    routeAccess,
     generatedFiles: buildGeneratedFilePlans(includeSignOutRoute, signOutRouteName, oauth),
     authScreenFiles: [
       ...collectAuthScreenFiles(partitionedNavigators.appNavigator, '(app)', {
@@ -289,10 +271,6 @@ function buildGeneratedFilePlans(
       kind: 'adapter',
     },
     {
-      path: AUTH_NAVIGATION_FILE_PATH,
-      kind: 'navigation',
-    },
-    {
       path: AUTH_SESSION_FILE_PATH,
       kind: 'session',
     },
@@ -359,50 +337,6 @@ function collectAuthScreenFiles(
 
   visit(navigator, currentRel);
   return files;
-}
-
-function collectRouteAccess(
-  navigator: NavigatorSpec,
-  parentPath: string,
-  defaultAccess: AuthRouteAccessPlan['access'],
-): AuthRouteAccessPlan[] {
-  const routeAccess: AuthRouteAccessPlan[] = [];
-
-  for (const route of navigator.routes) {
-    const path = joinRoutePath(parentPath, route.name);
-    const access = resolveRouteAccess(route, defaultAccess);
-    routeAccess.push({ path, access });
-
-    if (route.navigator) {
-      routeAccess.push(...collectRouteAccess(route.navigator, path, access));
-    }
-  }
-
-  return routeAccess;
-}
-
-function resolveRouteAccess(
-  route: RouteDefinition,
-  fallback: AuthRouteAccessPlan['access'],
-): AuthRouteAccessPlan['access'] {
-  const normalizedGuards = (route.guards ?? []).map((guard) => guard.trim().toLowerCase());
-  if (normalizedGuards.some((guard) => guard === 'public' || guard === 'guest')) {
-    return 'public';
-  }
-
-  return fallback;
-}
-
-function joinRoutePath(parentPath: string, routeName: string): string {
-  const segments = [...parentPath.split('/'), routeName]
-    .map((segment) => segment.trim())
-    .filter((segment) => segment.length > 0 && segment !== 'index' && !isRouteGroup(segment));
-
-  return segments.length === 0 ? '/' : `/${segments.join('/')}`;
-}
-
-function isRouteGroup(segment: string): boolean {
-  return segment.startsWith('(') && segment.endsWith(')');
 }
 
 function resolveRouteScreenFilePath(routeRel: string): string {
