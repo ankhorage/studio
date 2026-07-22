@@ -136,12 +136,14 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).toContain('callbackUrl ?? (await Linking.getInitialURL())');
     expect(callback).toContain('const handledRef = useRef(false);');
     expect(callback).toContain('const outcome = await completeOAuthCallback(deliveredUrl);');
-    expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
+    expect(callback).not.toContain('POST_SIGN_IN_ROUTE');
+    expect(callback).not.toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
     expect(signInScreen).toContain('OAuthProviderList');
     expect(signInScreen).toContain('generatedOAuthProviderItems');
     expect(signInScreen).toContain('startOAuthAuthorization(providerId)');
+    expect(signInScreen).not.toContain('POST_SIGN_IN_ROUTE');
     expect(signInScreen).toContain('or continue with password');
 
     const session = await readProjectFile(created.path, 'src/auth/session.ts');

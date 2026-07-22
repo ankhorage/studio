@@ -3,6 +3,29 @@ import { expect, test } from 'bun:test';
 
 import { getRootLayoutTsx } from './rootLayout';
 
+function createAuthRuntime() {
+  return {
+    signInRoute: 'sign-in',
+    signInRouteName: 'sign-in',
+    signUpRoute: 'sign-up',
+    signUpRouteName: 'sign-up',
+    postSignInRoute: 'products',
+    publicRoutes: ['sign-in', 'sign-up'],
+    routeTopology: {
+      appRoutePatterns: [{ path: '/products', pattern: '^/products$' }],
+      protectedRoutePatterns: [{ path: '/products', pattern: '^/products$' }],
+      publicRoutePatterns: [],
+      authEntryRoutePatterns: [
+        { path: '/sign-in', pattern: '^/sign-in$' },
+        { path: '/sign-up', pattern: '^/sign-up$' },
+      ],
+      callbackRoutePatterns: [],
+      unauthorizedRoutePath: '/sign-in',
+      postSignInRoutePath: '/products',
+    },
+  };
+}
+
 test('declares generated runtime registries before composing them', () => {
   const generated = getRootLayoutTsx({
     manifest: {
@@ -61,14 +84,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
       usesZoraNavigationRouteMap: false,
     },
     includeStudio: true,
-    authRuntime: {
-      signInRoute: 'sign-in',
-      signInRouteName: 'sign-in',
-      signUpRoute: 'sign-up',
-      signUpRouteName: 'sign-up',
-      postSignInRoute: 'products',
-      publicRoutes: ['sign-in', 'sign-up'],
-    },
+    authRuntime: createAuthRuntime(),
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');

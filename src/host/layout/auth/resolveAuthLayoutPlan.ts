@@ -13,6 +13,7 @@ const APP_ROOT_REL = 'src/app';
 const AUTH_ADAPTER_FILE_PATH = 'src/auth/adapter.ts';
 const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
+const AUTH_BOOTSTRAP_ROUTE_FILE_PATH = 'src/app/_auth-bootstrap.tsx';
 const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
 const DEFAULT_SIGN_IN_SCREEN_ID = 'screen-auth-sign-in';
 const DEFAULT_SIGN_IN_LABEL = 'Sign in';
@@ -25,7 +26,13 @@ export interface ResolveAuthLayoutPlanInput {
 }
 
 type AuthGeneratedFileKind =
-  'adapter' | 'session' | 'sign-out' | 'auth-screen' | 'oauth-runtime' | 'oauth-callback';
+  | 'adapter'
+  | 'session'
+  | 'sign-out'
+  | 'auth-screen'
+  | 'oauth-runtime'
+  | 'oauth-callback'
+  | 'auth-bootstrap';
 
 export interface AuthGeneratedFilePlan {
   path: string;
@@ -48,6 +55,21 @@ export interface AuthOAuthLayoutPlan {
   callbackRouteName: string;
   callbackTopLevelRouteName: string;
   providers: GeneratedOAuthProviderPlan[];
+}
+
+interface AuthRoutePatternPlan {
+  path: string;
+  pattern: string;
+}
+
+interface AuthRouteTopologyPlan {
+  appRoutePatterns: AuthRoutePatternPlan[];
+  protectedRoutePatterns: AuthRoutePatternPlan[];
+  publicRoutePatterns: AuthRoutePatternPlan[];
+  authEntryRoutePatterns: AuthRoutePatternPlan[];
+  callbackRoutePatterns: AuthRoutePatternPlan[];
+  unauthorizedRoutePath: string;
+  postSignInRoutePath: string;
 }
 
 interface BaseAuthLayoutPlan {
@@ -74,6 +96,7 @@ export interface EnabledAuthLayoutPlan extends BaseAuthLayoutPlan {
   oauth?: AuthOAuthLayoutPlan;
   appNavigator: NavigatorSpec;
   authNavigator: NavigatorSpec;
+  routeTopology: AuthRouteTopologyPlan;
 }
 
 export type AuthLayoutPlan = DisabledAuthLayoutPlan | EnabledAuthLayoutPlan;
@@ -104,6 +127,10 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
   }
 
   const oauth = resolveOAuthLayoutPlan(auth.oauth);
+  const authRouteNames = {
+    signInRouteName,
+    signUpRouteName,
+  };
   const publicRoutes = collectPublicRoutes(
     manifest,
     flow.unauthorizedRoute,
@@ -118,20 +145,16 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
   const includeSignOutRoute = !hasSignOutRoute;
 
   const partitionedNavigators = groupedNavigators
-    ? {
-        appNavigator: ensureAuthSignOutRoute(
-          groupedNavigators.appNavigator,
-          includeSignOutRoute,
-          signOutRouteName,
-        ),
-        authNavigator: ensureGlobalAuthEntryRoutes(groupedNavigators.authNavigator, {
-          signInRouteName,
-          signUpRouteName,
-        }),
-      }
+    ? partitionGroupedNavigatorsForAuth(groupedNavigators, {
+        includeSignOutRoute,
+        publicRoutes,
+        signInRouteName,
+        signUpRouteName,
+        signOutRouteName,
+      })
     : partitionRootNavigatorForAuth(
         manifest,
-        signInRouteName,
+        authRouteNames,
         publicRoutes,
         includeSignOutRoute,
         signOutRouteName,
@@ -139,10 +162,16 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
 
   const authNavigator = groupedNavigators
     ? partitionedNavigators.authNavigator
-    : ensureGlobalAuthEntryRoutes(partitionedNavigators.authNavigator, {
-        signInRouteName,
-        signUpRouteName,
-      });
+    : ensureGlobalAuthEntryRoutes(partitionedNavigators.authNavigator, authRouteNames);
+  const routeTopology = createAuthRouteTopologyPlan({
+    appNavigator: partitionedNavigators.appNavigator,
+    authNavigator,
+    callbackRouteName: oauth?.callbackRouteName,
+    flowUnauthorizedRoute: flow.unauthorizedRoute,
+    postSignInRoute,
+    signInRouteName,
+    signUpRouteName,
+  });
 
   return {
     enabled: true,
@@ -159,6 +188,7 @@ export function resolveAuthLayoutPlan(input: ResolveAuthLayoutPlanInput): AuthLa
     publicRoutes,
     appNavigator: partitionedNavigators.appNavigator,
     authNavigator,
+    routeTopology,
     generatedFiles: buildGeneratedFilePlans(includeSignOutRoute, signOutRouteName, oauth),
     authScreenFiles: [
       ...collectAuthScreenFiles(partitionedNavigators.appNavigator, '(app)', {
@@ -266,6 +296,10 @@ function buildGeneratedFilePlans(
   oauth: AuthOAuthLayoutPlan | undefined,
 ): AuthGeneratedFilePlan[] {
   const generatedFiles: AuthGeneratedFilePlan[] = [
+    {
+      path: AUTH_BOOTSTRAP_ROUTE_FILE_PATH,
+      kind: 'auth-bootstrap',
+    },
     {
       path: AUTH_ADAPTER_FILE_PATH,
       kind: 'adapter',
@@ -439,14 +473,23 @@ function ensureGlobalAuthEntryRoute(
 
 function partitionRootNavigatorForAuth(
   manifest: AppManifest,
-  signInRoute: string,
+  authRouteNames: {
+    signInRouteName: string;
+    signUpRouteName: string;
+  },
   publicRoutes: string[],
   includeAuthSignOutRoute: boolean,
   signOutRouteName: string,
 ): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
   const publicRouteSet = new Set(publicRoutes);
-  const appRoutes = manifest.navigator.routes.filter((route) => !publicRouteSet.has(route.name));
-  const authRoutes = manifest.navigator.routes.filter((route) => publicRouteSet.has(route.name));
+  const authEntryRouteSet = new Set([
+    authRouteNames.signInRouteName,
+    authRouteNames.signUpRouteName,
+  ]);
+  const appRoutes = manifest.navigator.routes.filter((route) => !authEntryRouteSet.has(route.name));
+  const authRoutes = manifest.navigator.routes.filter(
+    (route) => publicRouteSet.has(route.name) || authEntryRouteSet.has(route.name),
+  );
 
   const appNavigator = ensureAuthSignOutRoute(
     {
@@ -458,9 +501,48 @@ function partitionRootNavigatorForAuth(
   );
   const authNavigator: NavigatorSpec = {
     type: 'stack',
-    initialRouteName: signInRoute,
+    initialRouteName: authRouteNames.signInRouteName,
     routes: [...authRoutes],
   };
+
+  return { appNavigator, authNavigator };
+}
+
+function partitionGroupedNavigatorsForAuth(
+  groupedNavigators: { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec },
+  args: {
+    publicRoutes: string[];
+    includeSignOutRoute: boolean;
+    signInRouteName: string;
+    signUpRouteName: string;
+    signOutRouteName: string;
+  },
+): { appNavigator: NavigatorSpec; authNavigator: NavigatorSpec } {
+  const publicRouteSet = new Set(args.publicRoutes);
+  const appNavigator = ensureAuthSignOutRoute(
+    {
+      ...groupedNavigators.appNavigator,
+      routes: groupedNavigators.appNavigator.routes.filter(
+        (route) => route.name !== args.signInRouteName && route.name !== args.signUpRouteName,
+      ),
+    },
+    args.includeSignOutRoute,
+    args.signOutRouteName,
+  );
+  const authRouteNames = new Set(groupedNavigators.authNavigator.routes.map((route) => route.name));
+  const copiedPublicRoutes = groupedNavigators.appNavigator.routes.filter(
+    (route) => publicRouteSet.has(route.name) && !authRouteNames.has(route.name),
+  );
+  const authNavigator = ensureGlobalAuthEntryRoutes(
+    {
+      ...groupedNavigators.authNavigator,
+      routes: [...groupedNavigators.authNavigator.routes, ...copiedPublicRoutes],
+    },
+    {
+      signInRouteName: args.signInRouteName,
+      signUpRouteName: args.signUpRouteName,
+    },
+  );
 
   return { appNavigator, authNavigator };
 }
@@ -518,6 +600,167 @@ function collectPublicRoutes(
   visit(manifest.navigator.routes);
 
   return [...publicRoutes];
+}
+
+function createAuthRouteTopologyPlan(args: {
+  appNavigator: NavigatorSpec;
+  authNavigator: NavigatorSpec;
+  callbackRouteName: string | undefined;
+  flowUnauthorizedRoute: string | undefined;
+  postSignInRoute: string;
+  signInRouteName: string;
+  signUpRouteName: string;
+}): AuthRouteTopologyPlan {
+  const appRoutePatterns = collectRoutePatterns(args.appNavigator);
+  const authRoutePatterns = collectRoutePatterns(args.authNavigator);
+  const authEntryPaths = new Set([
+    routeNameToHref(args.signInRouteName),
+    routeNameToHref(args.signUpRouteName),
+  ]);
+  const callbackRoutePatterns = args.callbackRouteName
+    ? [buildRoutePattern(routeNameToHref(args.callbackRouteName))]
+    : [];
+  const publicRoutePatterns = authRoutePatterns.filter(
+    (routePattern) => !authEntryPaths.has(routePattern.path),
+  );
+  const authEntryRoutePatterns = [...authEntryPaths].map((routePath) =>
+    buildRoutePattern(routePath),
+  );
+  const publicPathSet = new Set(publicRoutePatterns.map((routePattern) => routePattern.path));
+  const protectedRoutePatterns = appRoutePatterns.filter(
+    (routePattern) => !publicPathSet.has(routePattern.path),
+  );
+  const unauthorizedRoutePath = routeNameToHref(
+    authFlowPathToRouteName(args.flowUnauthorizedRoute?.trim() ?? args.signInRouteName),
+  );
+  const postSignInRoutePath = routeNameToHref(authFlowPathToRouteName(args.postSignInRoute));
+
+  assertRouteTarget('unauthorizedRoute', unauthorizedRoutePath, [
+    ...authEntryRoutePatterns,
+    ...publicRoutePatterns,
+    ...callbackRoutePatterns,
+  ]);
+  assertRouteTarget('postSignInRoute', postSignInRoutePath, appRoutePatterns, {
+    allowRoot: true,
+  });
+
+  return {
+    appRoutePatterns,
+    protectedRoutePatterns,
+    publicRoutePatterns,
+    authEntryRoutePatterns,
+    callbackRoutePatterns,
+    unauthorizedRoutePath,
+    postSignInRoutePath,
+  };
+}
+
+function collectRoutePatterns(navigator: NavigatorSpec): AuthRoutePatternPlan[] {
+  const patterns: AuthRoutePatternPlan[] = [];
+
+  const visit = (node: NavigatorSpec, parentSegments: string[]) => {
+    for (const route of node.routes) {
+      const routeSegments = [...parentSegments, route.name];
+      if (route.screenId) {
+        patterns.push(buildRoutePattern(segmentsToHref(routeSegments)));
+      }
+
+      if (route.navigator) {
+        visit(route.navigator, routeSegments);
+      }
+    }
+  };
+
+  visit(navigator, []);
+  return uniqueRoutePatterns(patterns);
+}
+
+function uniqueRoutePatterns(patterns: readonly AuthRoutePatternPlan[]): AuthRoutePatternPlan[] {
+  const byPath = new Map<string, AuthRoutePatternPlan>();
+  for (const pattern of patterns) {
+    byPath.set(pattern.path, pattern);
+  }
+  return [...byPath.values()].sort((left, right) => left.path.localeCompare(right.path));
+}
+
+function segmentsToHref(segments: readonly string[]): string {
+  const pathSegments = segments
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0 && segment !== 'index' && !isRouteGroup(segment));
+
+  return pathSegments.length === 0 ? '/' : `/${pathSegments.join('/')}`;
+}
+
+function routeNameToHref(routeName: string): string {
+  return segmentsToHref(routeName.split('/'));
+}
+
+function isRouteGroup(segment: string): boolean {
+  return segment.startsWith('(') && segment.endsWith(')');
+}
+
+function buildRoutePattern(routePath: string): AuthRoutePatternPlan {
+  const normalizedPath = normalizeRoutePath(routePath);
+  if (normalizedPath === '/') {
+    return { path: '/', pattern: '^/$' };
+  }
+
+  const patternSegments = normalizedPath.replace(/^\/+/, '').split('/').map(routeSegmentToPattern);
+
+  return {
+    path: normalizedPath,
+    pattern: `^/${patternSegments.join('/')}$`,
+  };
+}
+
+function routeSegmentToPattern(segment: string): string {
+  if (segment.startsWith('[[...') && segment.endsWith(']]')) {
+    return '.*';
+  }
+
+  if (segment.startsWith('[...') && segment.endsWith(']')) {
+    return '.+';
+  }
+
+  if (segment.startsWith('[') && segment.endsWith(']')) {
+    return '[^/]+';
+  }
+
+  return escapeRegExp(segment);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
+
+function normalizeRoutePath(routePath: string): string {
+  const normalized = routePath.trim().replace(/\/+/gu, '/').replace(/\/+$/u, '');
+  if (!normalized || normalized === 'index') {
+    return '/';
+  }
+
+  return normalized.startsWith('/') ? normalized : `/${normalized}`;
+}
+
+function assertRouteTarget(
+  label: string,
+  routePath: string,
+  patterns: readonly AuthRoutePatternPlan[],
+  options: { allowRoot?: boolean } = {},
+): void {
+  if (routePath === '/' && options.allowRoot === true) {
+    return;
+  }
+
+  if (
+    patterns.some(
+      (pattern) => pattern.path === routePath || new RegExp(pattern.pattern).test(routePath),
+    )
+  ) {
+    return;
+  }
+
+  throw new Error(`Auth ${label} "${routePath}" does not match a generated route.`);
 }
 
 function hasRouteName(routes: RouteDefinition[], routeName: string): boolean {

@@ -13,6 +13,15 @@ interface RootLayoutAuthRuntimeConfig {
   signUpRouteName: string;
   postSignInRoute: string;
   publicRoutes: string[];
+  routeTopology: {
+    appRoutePatterns: { path: string; pattern: string }[];
+    protectedRoutePatterns: { path: string; pattern: string }[];
+    publicRoutePatterns: { path: string; pattern: string }[];
+    authEntryRoutePatterns: { path: string; pattern: string }[];
+    callbackRoutePatterns: { path: string; pattern: string }[];
+    unauthorizedRoutePath: string;
+    postSignInRoutePath: string;
+  };
 }
 
 interface GetRootLayoutTsxArgs {
@@ -57,8 +66,21 @@ export function getRootLayoutImportRequirements(
   ];
 }
 
-function serializeStringArrayLiteral(values: readonly string[]): string {
-  return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
+function serializeRoutePatternsLiteral(
+  values: readonly { readonly path: string; readonly pattern: string }[],
+): string {
+  if (values.length === 0) {
+    return '[]';
+  }
+
+  return `[
+${values
+  .map(
+    (value) =>
+      `  { path: '${escapeStringLiteral(value.path)}', pattern: '${escapeStringLiteral(value.pattern)}' },`,
+  )
+  .join('\n')}
+]`;
 }
 
 function indentGeneratedBlock(content: string, indent = '  '): string {
@@ -98,11 +120,15 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     ? `
 const AUTH_SIGN_IN_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signInRouteName)}';
 const AUTH_SIGN_UP_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signUpRouteName)}';
-const AUTH_SIGN_IN_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.signInRoute))}';
-const AUTH_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGroupedHref(authRuntime.signInRoute, 'auth'))}';
 const AUTH_POST_SIGN_IN_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.postSignInRoute))}';
 const AUTH_POST_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGroupedHref(authRuntime.postSignInRoute, 'app'))}';
-const AUTH_PUBLIC_ROUTES = ${serializeStringArrayLiteral(authRuntime.publicRoutes)};
+const AUTH_UNAUTHORIZED_ROUTE_TARGET = '${escapeStringLiteral(authRuntime.routeTopology.unauthorizedRoutePath)}';
+const AUTH_APP_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.appRoutePatterns)};
+const AUTH_PROTECTED_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.protectedRoutePatterns)};
+const AUTH_PUBLIC_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.publicRoutePatterns)};
+const AUTH_ENTRY_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.authEntryRoutePatterns)};
+const AUTH_CALLBACK_ROUTE_PATTERNS = ${serializeRoutePatternsLiteral(authRuntime.routeTopology.callbackRoutePatterns)};
+const PENDING_AUTH_REDIRECT_STORAGE_KEY = 'ankh.auth.pendingRedirect.v1';
 const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
 
 function normalizeRoutePath(pathname: string): string {
@@ -117,8 +143,67 @@ function getTopLevelRoute(pathname: string): string {
   return topLevelRoute;
 }
 
-function getRootNavigationKey(state: { key?: string } | null | undefined): string {
-  return state?.key ?? '';
+function matchesRoutePatterns(
+  pathname: string,
+  patterns: readonly { readonly pattern: string }[],
+): boolean {
+  const normalized = normalizeRoutePath(pathname);
+  return patterns.some((routePattern) => new RegExp(routePattern.pattern).test(normalized));
+}
+
+function getStoredPendingAuthRedirect(): string | null {
+  if (typeof window === 'undefined') return null;
+  return window.sessionStorage.getItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
+}
+
+function setStoredPendingAuthRedirect(pathname: string): void {
+  if (typeof window === 'undefined') return;
+  if (!matchesRoutePatterns(pathname, AUTH_PROTECTED_ROUTE_PATTERNS)) return;
+  window.sessionStorage.setItem(PENDING_AUTH_REDIRECT_STORAGE_KEY, normalizeRoutePath(pathname));
+}
+
+function clearStoredPendingAuthRedirect(): void {
+  if (typeof window === 'undefined') return;
+  window.sessionStorage.removeItem(PENDING_AUTH_REDIRECT_STORAGE_KEY);
+}
+
+function resolveGeneratedAuthNavigationState(): GeneratedAuthNavigationState {
+  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
+  if (!authEnforced) return 'authenticated';
+  return isAuthenticated() ? 'authenticated' : 'unauthenticated';
+}
+
+function resolveAuthenticatedRouteTarget(pathname: string, pendingRedirect: string | null): string | null {
+  const normalized = normalizeRoutePath(pathname);
+  if (
+    matchesRoutePatterns(normalized, AUTH_ENTRY_ROUTE_PATTERNS) ||
+    matchesRoutePatterns(normalized, AUTH_CALLBACK_ROUTE_PATTERNS)
+  ) {
+    if (pendingRedirect && matchesRoutePatterns(pendingRedirect, AUTH_APP_ROUTE_PATTERNS)) {
+      return pendingRedirect;
+    }
+
+    return AUTH_POST_SIGN_IN_ROUTE_TARGET;
+  }
+
+  if (normalized === '/' && AUTH_POST_SIGN_IN_ROUTE_PATH !== '/') {
+    return AUTH_POST_SIGN_IN_ROUTE_TARGET;
+  }
+
+  return null;
+}
+
+function resolveUnauthenticatedRouteTarget(pathname: string): string | null {
+  const normalized = normalizeRoutePath(pathname);
+  if (
+    matchesRoutePatterns(normalized, AUTH_ENTRY_ROUTE_PATTERNS) ||
+    matchesRoutePatterns(normalized, AUTH_CALLBACK_ROUTE_PATTERNS) ||
+    matchesRoutePatterns(normalized, AUTH_PUBLIC_ROUTE_PATTERNS)
+  ) {
+    return null;
+  }
+
+  return AUTH_UNAUTHORIZED_ROUTE_TARGET;
 }
 ${
   includeStudio
@@ -233,22 +318,24 @@ function resolveStudioAppHeaderTitle(args: {
   const authRuntimeHook = authRuntime
     ? `
 const router = useRouter();
-const rootNavigationState = useRootNavigationState();
 const pathname = usePathname();
-const rootNavigationKey = getRootNavigationKey(rootNavigationState);
-const [authSessionVersion, setAuthSessionVersion] = useState(0);
-const [isAuthRuntimeReady, setIsAuthRuntimeReady] = useState(false);
-const [isInnerContentReady, setIsInnerContentReady] = useState(false);
+const [authState, setAuthState] = useState<GeneratedAuthNavigationState>(() =>
+  __DEV__ && AUTH_DISABLE_IN_DEV ? 'authenticated' : 'pending',
+);
 
 useEffect(() => {
   const mountController = new AbortController();
 
   void (async () => {
+    if (__DEV__ && AUTH_DISABLE_IN_DEV) {
+      setAuthState('authenticated');
+      return;
+    }
+
     await bootstrapAuthSession();
     await refreshAuthSessionIfNeeded(authAdapter);
     if (mountController.signal.aborted) return;
-    setIsAuthRuntimeReady(true);
-    setAuthSessionVersion((value) => value + 1);
+    setAuthState(resolveGeneratedAuthNavigationState());
   })();
 
   return () => {
@@ -258,14 +345,19 @@ useEffect(() => {
 
 useEffect(() => {
   return subscribeToAuthSessionChanges(() => {
-    setAuthSessionVersion((value) => value + 1);
+    setAuthState(resolveGeneratedAuthNavigationState());
   });
 }, []);
 
 useEffect(() => {
   const subscription = AppState.addEventListener('change', (nextState) => {
     if (nextState !== 'active') return;
-    void refreshAuthSessionIfNeeded(authAdapter).catch(() => undefined);
+    if (__DEV__ && AUTH_DISABLE_IN_DEV) return;
+    void refreshAuthSessionIfNeeded(authAdapter)
+        .then(() => {
+          setAuthState(resolveGeneratedAuthNavigationState());
+      })
+      .catch(() => undefined);
   });
 
   return () => {
@@ -273,65 +365,53 @@ useEffect(() => {
   };
 }, []);
 
+const isAuthRuntimeReady = authState !== 'pending';
+const pendingAuthRedirect =
+  authState === 'authenticated' ? getStoredPendingAuthRedirect() : null;
+const authRedirectTarget =
+  authState === 'pending'${includeStudio ? ' || isStudioAdminPath(pathname)' : ''}
+    ? null
+    : authState === 'authenticated'
+      ? resolveAuthenticatedRouteTarget(pathname, pendingAuthRedirect)
+      : resolveUnauthenticatedRouteTarget(pathname);
+const effectiveAuthState: GeneratedAuthNavigationState =
+  authRedirectTarget === null ? authState : 'pending';
+
 useEffect(() => {
-  if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
-  ${includeStudio ? 'if (isStudioAdminPath(pathname)) return;' : ''}
+  if (authRedirectTarget === null) return;
+  if (authState === 'unauthenticated') {
+    setStoredPendingAuthRedirect(pathname);
+  } else if (authState === 'authenticated') {
+    clearStoredPendingAuthRedirect();
+  }
 
-  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
-  if (!authEnforced) return;
-
-  const authenticated = isAuthenticated();
-  const activeTopLevelRoute = getTopLevelRoute(pathname);
-  const isPublicRoute = AUTH_PUBLIC_ROUTES.includes(activeTopLevelRoute);
-  const currentPath = normalizeRoutePath(pathname);
-  const signInPath = normalizeRoutePath(AUTH_SIGN_IN_ROUTE_PATH);
-  const postSignInPath = normalizeRoutePath(AUTH_POST_SIGN_IN_ROUTE_PATH);
-
-  if (!authenticated && !isPublicRoute) {
-    if (currentPath !== signInPath) {
-      router.replace(AUTH_SIGN_IN_ROUTE_TARGET);
-    }
+  if (normalizeRoutePath(pathname) !== normalizeRoutePath(authRedirectTarget)) {
+    router.replace(authRedirectTarget);
     return;
   }
-
-  if (authenticated && currentPath === '/' && postSignInPath !== '/') {
-    router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
-    return;
-  }
-
-  if (
-    authenticated &&
-    (activeTopLevelRoute === AUTH_SIGN_IN_ROUTE_SEGMENT ||
-      activeTopLevelRoute === AUTH_SIGN_UP_ROUTE_SEGMENT)
-  ) {
-    if (currentPath !== postSignInPath) {
-      router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
-    }
-  }
-}, [
-  router,
-  isInnerContentReady,
-  rootNavigationKey,
-  pathname,
-  authSessionVersion,
-  isAuthRuntimeReady,
-]);
+}, [authRedirectTarget, authState, pathname, router]);
 `
     : '';
   const rootHookBlock = [allHooks, authRuntimeHook.trim()].filter(Boolean).join('\n\n');
   const indentedRootHookBlock = rootHookBlock.length > 0 ? indentGeneratedBlock(rootHookBlock) : '';
 
   const innerContentNode = authRuntime
-    ? '<InnerContent onReady={handleInnerContentReady} />'
+    ? `<InnerContent
+      authState={effectiveAuthState}
+      isStudioAdminRoute={${includeStudio ? '__DEV__ && isStudioAdminPath(pathname)' : 'false'}}
+    />`
     : '<InnerContent />';
 
-  const innerContentSignature = authRuntime ? '{ onReady }: { onReady?: () => void }' : '';
-  const innerContentReadyHook = authRuntime
-    ? `
-  useEffect(() => {
-    onReady?.();
-  }, [onReady]);`
+  const innerContentSignature = authRuntime
+    ? `{
+  authState,
+  isStudioAdminRoute,
+}: {
+  authState: GeneratedAuthNavigationState;
+  isStudioAdminRoute: boolean;
+}`
     : '';
+  const innerContentReadyHook = '';
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -429,17 +509,7 @@ const shouldMountAppHeader =
     : '';
   const indentedStudioRuntimeLines =
     studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';
-  const handleInnerContentReadyDeclaration = authRuntime
-    ? `const handleInnerContentReady = useCallback(() => {
-  setIsInnerContentReady(true);
-}, []);`
-    : '';
-  const indentedHandleInnerContentReadyDeclaration =
-    handleInnerContentReadyDeclaration.length > 0
-      ? `${indentGeneratedBlock(handleInnerContentReadyDeclaration)}
-
-`
-      : '';
+  const indentedHandleInnerContentReadyDeclaration = '';
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (

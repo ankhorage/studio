@@ -1,9 +1,8 @@
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 
-export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInRoute: string }) {
+export function getAuthOAuthCallbackTsx(args: { signInRoute: string }) {
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
-  const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
   return `import * as Linking from 'expo-linking';
 import { Stack, useRouter } from 'expo-router';
@@ -15,7 +14,6 @@ import { Text, useZoraTheme } from '@ankhorage/zora';
 import { completeOAuthCallback } from '@/auth/oauth';
 
 const SIGN_IN_ROUTE = '${signInTarget}';
-const POST_SIGN_IN_ROUTE = '${postSignInTarget}';
 const webBrowserCompletion =
   Platform.OS === 'web' ? WebBrowser.maybeCompleteAuthSession() : null;
 const callbackScreenOptions = { title: 'Completing sign in' };
@@ -41,7 +39,6 @@ export default function OAuthCallbackScreen() {
       if (!active) return;
 
       if (outcome.status === 'authenticated') {
-        router.replace(POST_SIGN_IN_ROUTE);
         return;
       }
 

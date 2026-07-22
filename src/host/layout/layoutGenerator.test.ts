@@ -157,8 +157,14 @@ describe('GeneratedAppFileGenerator', () => {
       (file) => file.path === 'src/app/ankh/auth/providers.tsx',
     )?.content;
 
-    expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
-    expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
+    expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
+    expect(rootLayout).toContain("type GeneratedAuthNavigationState = 'pending'");
+    expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
+    expect(rootLayout).toContain(
+      "<Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>",
+    );
+    expect(rootLayout).toContain('authRedirectTarget === null ? authState :');
+    expect(rootLayout).not.toContain('if (isStudioAdminPath(pathname)) return;');
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
@@ -285,6 +291,49 @@ describe('GeneratedAppFileGenerator', () => {
     expect(allGeneratedSource).not.toContain('credentialsRef');
     expect(allGeneratedSource).not.toContain('clientSecret');
     expect(allGeneratedSource).not.toContain('serviceRole');
+  });
+
+  test('generates an auth boundary that does not mount protected and auth trees together', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles(
+      '/tmp/demo',
+      createOAuthManifest(),
+      [],
+      {
+        includeStudio: false,
+      },
+    );
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const bootstrap =
+      files.find((file) => file.path === 'src/app/_auth-bootstrap.tsx')?.content ?? '';
+    const signIn = files.find((file) => file.path === 'src/app/(auth)/sign-in.tsx')?.content ?? '';
+    const callback =
+      files.find((file) => file.path === 'src/app/(auth)/auth/callback.tsx')?.content ?? '';
+    const signOut = files.find((file) => file.path === 'src/app/(app)/sign-out.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain("type GeneratedAuthNavigationState = 'pending'");
+    expect(rootLayout).toContain("authState === 'pending'");
+    expect(rootLayout).toContain('<Stack screenOptions={rootStackScreenOptions}>');
+    expect(rootLayout).toContain(
+      "<Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>",
+    );
+    expect(rootLayout).toContain('<Stack.Screen key="bootstrap" name="_auth-bootstrap" />');
+    expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
+    expect(rootLayout).toContain('<Stack.Screen key="app" name="(app)" />');
+    expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
+    expect(rootLayout).toContain('<Stack.Screen key="auth" name="(auth)" />');
+    expect(rootLayout).toContain('authRedirectTarget === null ? authState :');
+    expect(rootLayout).toContain('setStoredPendingAuthRedirect(pathname)');
+    expect(rootLayout).toContain('clearStoredPendingAuthRedirect()');
+    expect(bootstrap).toContain('function GeneratedAuthBootstrapRoute()');
+    expect(bootstrap).toContain('<ActivityIndicator color={theme.colors.primary} />');
+    expect(signIn).toContain('await setStoredAuthSession(result.data);');
+    expect(signIn).not.toContain('POST_SIGN_IN_ROUTE');
+    expect(signIn).not.toContain('router.replace(POST_SIGN_IN_ROUTE)');
+    expect(callback).not.toContain('POST_SIGN_IN_ROUTE');
+    expect(callback).not.toContain('router.replace(POST_SIGN_IN_ROUTE)');
+    expect(signOut).toContain('await clearStoredAuthSession();');
+    expect(signOut).not.toContain('useRouter');
+    expect(signOut).not.toContain('router.replace');
   });
 
   test('generates a Supabase Auth adapter that only reads Expo public env statically', () => {

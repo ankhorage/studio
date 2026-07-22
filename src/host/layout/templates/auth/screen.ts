@@ -16,7 +16,6 @@ export function getAuthScreenTsx(args: {
   title?: string;
   signInRoute: string;
   signUpRoute: string;
-  postSignInRoute: string;
   signInIdentifiers: string[];
   signUpRequiredFields: string[];
   signUpOptionalFields: string[];
@@ -29,7 +28,6 @@ export function getAuthScreenTsx(args: {
     title,
     signInRoute,
     signUpRoute,
-    postSignInRoute,
     signInIdentifiers,
     signUpRequiredFields,
     signUpOptionalFields,
@@ -38,13 +36,11 @@ export function getAuthScreenTsx(args: {
   } = args;
   const safeName = toSafeComponentName(screenName);
   const oauthEnabled = oauthProviders.length > 0;
-  const postSignInTarget = routeNameToGroupedHref(postSignInRoute, 'app');
   const signUpSessionMessage =
     signUpPolicy === 'autoSignIn'
-      ? `        await setStoredAuthSession(result.data);
-        router.replace(POST_SIGN_IN_ROUTE);`
+      ? `        await setStoredAuthSession(result.data);`
       : `        await clearStoredAuthSession();
-        router.replace(SIGN_IN_ROUTE);`;
+        setInfo('Account created. Sign in after verifying your account.');`;
   const oauthImport = oauthEnabled
     ? `import {
   generatedOAuthProviderItems,
@@ -64,7 +60,6 @@ export function getAuthScreenTsx(args: {
     try {
       const outcome = await startOAuthAuthorization(providerId);
       if (outcome.status === 'authenticated') {
-        router.replace(POST_SIGN_IN_ROUTE);
         return;
       }
       if (outcome.status === 'cancelled') {
@@ -130,7 +125,6 @@ const SIGN_UP_REQUIRED_FIELDS: string[] = ${serializeStringArrayLiteral(signUpRe
 const SIGN_UP_OPTIONAL_FIELDS: string[] = ${serializeStringArrayLiteral(signUpOptionalFields)};
 const SIGN_IN_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signInRoute, 'auth'))}';
 const SIGN_UP_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signUpRoute, 'auth'))}';
-const POST_SIGN_IN_ROUTE = '${escapeStringLiteral(postSignInTarget)}';
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 const authScreenOptions = {
   title: '${escapeStringLiteral(title ?? screenName)}',
@@ -274,7 +268,6 @@ ${oauthHandler}
         }
 
         await setStoredAuthSession(result.data);
-        router.replace(POST_SIGN_IN_ROUTE);
         return;
       }
 
@@ -298,7 +291,7 @@ ${signUpSessionMessage}
         return;
       }
 
-      router.replace(SIGN_IN_ROUTE);
+      setInfo('Account created. Sign in to continue.');
     } catch (caught) {
       setError(getErrorMessage(caught));
     } finally {

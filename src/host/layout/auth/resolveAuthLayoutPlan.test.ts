@@ -1,12 +1,15 @@
 import type { AppManifest, AuthFlowConfig, AuthOAuthConfig } from '@ankhorage/contracts';
 import { describe, expect, it } from 'bun:test';
 
+import { getProjectTemplate } from '../../templateRegistry';
 import { resolveAuthLayoutPlan } from './resolveAuthLayoutPlan';
 
 function createManifest(
   args: {
     flow?: AuthFlowConfig;
+    navigator?: AppManifest['navigator'];
     oauth?: AuthOAuthConfig;
+    screens?: AppManifest['screens'];
   } = {},
 ): AppManifest {
   return {
@@ -33,7 +36,8 @@ function createManifest(
       initialRouteName: 'dashboard',
       routes: [{ name: 'dashboard', screenId: 'dashboard' }],
     },
-    screens: {
+    ...(args.navigator ? { navigator: args.navigator } : {}),
+    screens: args.screens ?? {
       dashboard: {
         id: 'dashboard',
         name: 'Dashboard',
@@ -119,6 +123,10 @@ describe('resolveAuthLayoutPlan', () => {
         },
       ],
     });
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/app/_auth-bootstrap.tsx',
+      kind: 'auth-bootstrap',
+    });
     expect(plan.publicRoutes).toContain('auth');
     expect(plan.generatedFiles).toContainEqual({
       path: 'src/auth/oauth.ts',
@@ -171,5 +179,225 @@ describe('resolveAuthLayoutPlan', () => {
         }),
       }),
     ).toThrow('not supported by Supabase Auth');
+  });
+
+  it('keeps public routes in both auth and app trees while protecting app-only routes', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        navigator: {
+          type: 'tabs',
+          initialRouteName: 'home',
+          routes: [
+            { name: 'home', screenId: 'home' },
+            { name: 'about', screenId: 'about', guards: ['public'] },
+          ],
+        },
+        screens: {
+          home: {
+            id: 'home',
+            name: 'Home',
+            root: { id: 'home-root', type: 'Page' },
+          },
+          about: {
+            id: 'about',
+            name: 'About',
+            root: { id: 'about-root', type: 'Page' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.appNavigator.routes.map((route) => route.name)).toEqual([
+      'home',
+      'about',
+      'sign-out',
+    ]);
+    expect(plan.authNavigator.routes.map((route) => route.name)).toEqual([
+      'about',
+      'sign-in',
+      'sign-up',
+    ]);
+    expect(plan.routeTopology.publicRoutePatterns.map((route) => route.path)).toEqual(['/about']);
+    expect(plan.routeTopology.protectedRoutePatterns.map((route) => route.path)).toEqual(['/home']);
+  });
+
+  it('creates dynamic route patterns and preserves nested initial route topology', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        flow: {
+          signInRoute: 'sign-in',
+          signUpRoute: 'sign-up',
+          signOutRoute: 'sign-out',
+          postSignInRoute: 'products',
+          unauthorizedRoute: 'sign-in',
+        },
+        navigator: {
+          type: 'tabs',
+          initialRouteName: 'products',
+          routes: [
+            {
+              name: 'products',
+              navigator: {
+                type: 'stack',
+                initialRouteName: 'index',
+                routes: [
+                  { name: 'index', screenId: 'products' },
+                  { name: '[id]', screenId: 'product-detail' },
+                  { name: 'create', screenId: 'product-create', hideInTabBar: true },
+                ],
+              },
+            },
+            { name: 'profile', screenId: 'profile', guards: ['guest'] },
+          ],
+        },
+        screens: {
+          products: {
+            id: 'products',
+            name: 'Products',
+            root: { id: 'products-root', type: 'Page' },
+          },
+          'product-detail': {
+            id: 'product-detail',
+            name: 'Product detail',
+            root: { id: 'product-detail-root', type: 'Page' },
+          },
+          'product-create': {
+            id: 'product-create',
+            name: 'Product create',
+            root: { id: 'product-create-root', type: 'Page' },
+          },
+          profile: {
+            id: 'profile',
+            name: 'Profile',
+            root: { id: 'profile-root', type: 'Page' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.appNavigator.initialRouteName).toBe('products');
+    expect(
+      plan.appNavigator.routes.find((route) => route.name === 'products')?.navigator,
+    ).toMatchObject({
+      type: 'stack',
+      initialRouteName: 'index',
+    });
+    expect(plan.routeTopology.appRoutePatterns).toContainEqual({
+      path: '/products/[id]',
+      pattern: '^/products/[^/]+$',
+    });
+    expect(plan.routeTopology.appRoutePatterns).toContainEqual({
+      path: '/products/create',
+      pattern: '^/products/create$',
+    });
+    expect(plan.routeTopology.publicRoutePatterns).toContainEqual({
+      path: '/profile',
+      pattern: '^/profile$',
+    });
+  });
+
+  it('validates concrete redirect targets against dynamic route patterns', () => {
+    const plan = resolveAuthLayoutPlan({
+      manifest: createManifest({
+        flow: {
+          signInRoute: 'sign-in',
+          signUpRoute: 'sign-up',
+          signOutRoute: 'sign-out',
+          postSignInRoute: 'products/sample-product',
+          unauthorizedRoute: 'sign-in',
+        },
+        navigator: {
+          type: 'stack',
+          initialRouteName: 'products',
+          routes: [
+            {
+              name: 'products',
+              navigator: {
+                type: 'stack',
+                initialRouteName: '[id]',
+                routes: [{ name: '[id]', screenId: 'product-detail' }],
+              },
+            },
+          ],
+        },
+        screens: {
+          'product-detail': {
+            id: 'product-detail',
+            name: 'Product detail',
+            root: { id: 'product-detail-root', type: 'Page' },
+          },
+        },
+      }),
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.routeTopology.postSignInRoutePath).toBe('/products/sample-product');
+  });
+
+  it('rejects redirect targets that do not resolve to generated route topology', () => {
+    expect(() =>
+      resolveAuthLayoutPlan({
+        manifest: createManifest({
+          flow: {
+            signInRoute: 'sign-in',
+            signUpRoute: 'sign-up',
+            signOutRoute: 'sign-out',
+            postSignInRoute: 'missing',
+            unauthorizedRoute: 'sign-in',
+          },
+        }),
+      }),
+    ).toThrow('postSignInRoute "/missing" does not match a generated route');
+  });
+
+  it('uses Nutrition Scanner only as a regression fixture for nested products stack topology', () => {
+    const manifest = getProjectTemplate({
+      category: 'food_drink',
+      templateId: 'nutrition-catalog-scan',
+    });
+    const plan = resolveAuthLayoutPlan({
+      manifest: {
+        ...manifest,
+        infra: {
+          ...manifest.infra,
+          auth: {
+            scope: 'global',
+            provider: 'supabase',
+            flow: {
+              signInRoute: 'sign-in',
+              signUpRoute: 'sign-up',
+              signOutRoute: 'sign-out',
+              postSignInRoute: 'products',
+              unauthorizedRoute: 'sign-in',
+            },
+          },
+        },
+      },
+    });
+
+    expect(plan.enabled).toBe(true);
+    if (!plan.enabled) throw new Error('Expected auth layout to be enabled.');
+    expect(plan.appNavigator.type).toBe('tabs');
+    expect(plan.appNavigator.initialRouteName).toBe('products');
+    const productsRoute = plan.appNavigator.routes.find((route) => route.name === 'products');
+    expect(productsRoute?.navigator?.type).toBe('stack');
+    expect(productsRoute?.navigator?.initialRouteName).toBe('index');
+    expect(plan.routeTopology.appRoutePatterns).toContainEqual({
+      path: '/products',
+      pattern: '^/products$',
+    });
+    expect(plan.routeTopology.appRoutePatterns).toContainEqual({
+      path: '/products/[id]',
+      pattern: '^/products/[^/]+$',
+    });
+    expect(plan.routeTopology.appRoutePatterns).toContainEqual({
+      path: '/products/create',
+      pattern: '^/products/create$',
+    });
   });
 });

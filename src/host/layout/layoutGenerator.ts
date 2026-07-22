@@ -137,7 +137,6 @@ export class GeneratedAppFileGenerator {
               title: authScreenPlan.authMode === 'signUp' ? 'Sign up' : 'Sign in',
               signInRoute: authLayoutPlan.signInRoute,
               signUpRoute: authLayoutPlan.signUpRoute,
-              postSignInRoute: authLayoutPlan.postSignInRoute,
               signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
               signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
                 'email',
@@ -216,18 +215,46 @@ export class GeneratedAppFileGenerator {
     includeStudio: boolean,
     runtimePlan?: ExpoRuntimePlan,
   ): string {
-    const studioAdminStackScreen = includeStudio
-      ? `
-  <Stack.Screen key="ankh" name="ankh" />`
-      : '';
-    const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
-  <Stack.Screen key="app" name="(app)" />
-  <Stack.Screen key="auth" name="(auth)" />${studioAdminStackScreen}
-</Stack>`;
+    const innerNavigationJsx = `<GeneratedAuthNavigation
+      authState={authState}
+      isStudioAdminRoute={${includeStudio ? 'isStudioAdminRoute' : 'false'}}
+    />`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {
   headerShown: false,
-};`,
+};
+
+type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';
+
+function GeneratedAuthNavigation({
+  authState,
+  isStudioAdminRoute,
+}: {
+  authState: GeneratedAuthNavigationState;
+  isStudioAdminRoute: boolean;
+}) {
+  return (
+    <Stack screenOptions={rootStackScreenOptions}>
+      <Stack.Protected guard={authState === 'pending' && !isStudioAdminRoute}>
+        <Stack.Screen key="bootstrap" name="_auth-bootstrap" />
+      </Stack.Protected>
+      <Stack.Protected guard={authState === 'authenticated'}>
+        <Stack.Screen key="app" name="(app)" />
+      </Stack.Protected>
+      <Stack.Protected guard={authState === 'unauthenticated'}>
+        <Stack.Screen key="auth" name="(auth)" />
+      </Stack.Protected>${
+        includeStudio
+          ? `
+      <Stack.Protected guard={isStudioAdminRoute}>
+        <Stack.Screen key="ankh" name="ankh" />
+      </Stack.Protected>`
+          : ''
+      }
+    </Stack>
+  );
+}
+`,
       jsx: innerNavigationJsx,
       usesTheme: false,
       usesIcon: false,
@@ -254,9 +281,9 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import { useCallback, useEffect, useMemo, useRef, useState } from 'react';`,
+      `import { useEffect, useMemo, useRef, useState } from 'react';`,
       `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
@@ -401,8 +428,9 @@ export class GeneratedAppFileGenerator {
       case 'oauth-callback':
         return getAuthOAuthCallbackTsx({
           signInRoute: authLayoutPlan.signInRoute,
-          postSignInRoute: authLayoutPlan.postSignInRoute,
         });
+      case 'auth-bootstrap':
+        return getAuthBootstrapScreenTsx();
       case 'sign-out':
         return getSignOutScreenTsx();
       default:
@@ -429,6 +457,29 @@ export default function AnkhLayout() {
   }
 
   return <AnkhAdminShell />;
+}
+`;
+}
+
+function getAuthBootstrapScreenTsx(): string {
+  return `import { useZoraTheme } from '@ankhorage/zora';
+import { ActivityIndicator, View } from 'react-native';
+
+export default function GeneratedAuthBootstrapRoute() {
+  const { theme } = useZoraTheme();
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.colors.background,
+      }}
+    >
+      <ActivityIndicator color={theme.colors.primary} />
+    </View>
+  );
 }
 `;
 }
