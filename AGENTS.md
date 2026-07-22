@@ -6,6 +6,48 @@ This file applies to the whole `ankhorage/studio` repository.
 
 `@ankhorage/studio` is the standalone Studio authoring package and the owner of the local Studio host. Keep reusable authoring/model helpers package-neutral, while host-only filesystem, process, project-generation, infrastructure, and HTTP behavior stays isolated under `src/host/`.
 
+## Architectural north star: `apps/studio` becomes a real Ankhorage app
+
+`apps/studio` is converging toward being a first-class Ankhorage app built from the same platform primitives as any other Ankhorage app, not a bespoke parallel application with its own special runtime, navigation, auth, UI, data, or module architecture.
+
+**Every coding change in this repository must move the codebase closer to that goal, or at minimum preserve a clear and direct convergence path.** A locally convenient Studio-only implementation that makes this convergence harder is architecturally incorrect even if it works functionally.
+
+Before implementing anything, ask:
+
+> Could this capability be expressed through the same manifests, ZORA patterns, Runtime rendering/action/data bindings, adapters, module contracts, route planning, and generated-app infrastructure that a normal Ankhorage app uses?
+
+Prefer making the owning Ankhorage primitive capable enough first, then consume it from Studio.
+
+Required direction:
+
+- `apps/studio` should increasingly consume the same manifest-driven screen/navigation model as generated apps.
+- Studio UI should increasingly be composed from ZORA components and patterns instead of bespoke Studio-only UI primitives.
+- User interactions should increasingly flow through normal Runtime action/event bindings instead of Studio-specific direct wiring.
+- Data access should increasingly flow through the same data-source and Runtime binding contracts used by ordinary Ankhorage apps.
+- Authentication UI should be ordinary app UI, for example ZORA `SignInScreen` / `SignUpScreen` patterns bound to canonical auth actions. Auth adapters own auth capabilities and session behavior, not special auth UI ownership.
+- Route access policy may be derived from auth scope and guards, but application routes should come from the canonical app route topology rather than parallel auth-specific copies.
+- Modules should contribute through the same module contracts intended for generated apps instead of adding Studio-only integration paths.
+- Studio administration capabilities should become normal app capabilities/configuration wherever practical, with Studio-specific behavior expressed as app configuration, route/module contributions, and authoring metadata rather than a separate framework.
+- Shared functionality needed by Studio and generated apps belongs in the appropriate shared package (`contracts`, `runtime`, `zora`, `surface`, platform runtime packages, modules, etc.), not duplicated locally in Studio.
+- Do not introduce new architecture that depends on `ankhorage4` or preserves it as a compatibility path.
+
+The target convergence is:
+
+```txt
+Ankhorage app model
+  manifests + contracts
+  ZORA components/patterns
+  Runtime rendering + action/data binding
+  adapters + modules
+  canonical route/navigation generation
+          |
+          +--> generated customer apps
+          |
+          +--> apps/studio
+```
+
+When reviewing or handing off work, explicitly consider whether the change reduces the architectural distance between `apps/studio` and a normal Ankhorage app.
+
 ## Repository facts
 
 - Package name: `@ankhorage/studio`.
@@ -58,13 +100,13 @@ Avoid:
 
 Do not import concrete Zora metadata into this package. When placement or catalog logic needs component rules, accept `StudioComponentMetaRegistry` from the caller.
 
-This keeps `@ankhorage/studio` usable by hosts other than the current `ankhorage4` transition host.
+This keeps `@ankhorage/studio` usable by any Ankhorage app host, including the converging `apps/studio` application.
 
 ### Keep runtime boundaries clear
 
 Do not move generic runtime rendering behavior into Studio. Runtime rendering belongs to `@ankhorage/runtime` and platform/runtime planning belongs to packages such as `@ankhorage/expo-runtime`.
 
-Studio may define authoring contracts that refer to manifests, but it should not own generated app runtime implementation.
+Studio may define authoring contracts that refer to manifests, but generic generated-app runtime behavior should live in the appropriate Runtime/platform package whenever it is reusable by ordinary Ankhorage apps. Do not solve shared app-runtime needs as Studio-only infrastructure.
 
 ## Source organization
 
@@ -187,7 +229,8 @@ Do not add large runtime dependencies casually. For new dependencies:
 
 - justify why Studio needs it directly
 - prefer caller injection for host/platform/runtime concerns
-- avoid bringing generated-app/runtime/product host concerns into this package
+- avoid bringing generic generated-app/runtime concerns into `@ankhorage/studio` when they belong in shared Ankhorage packages
+- prefer dependencies and abstractions that reduce the gap between `apps/studio` and a normal Ankhorage app
 
 ## Working style for agents
 
@@ -197,6 +240,7 @@ Before coding:
 2. inspect related tests and docs
 3. identify the owning package boundary
 4. identify whether a changeset is needed
+5. state how the change moves `apps/studio` closer to being a normal Ankhorage app, or why the chosen boundary is necessary for that convergence
 
 While coding:
 
@@ -205,6 +249,8 @@ While coding:
 3. avoid host/runtime/platform coupling
 4. update tests with behavior
 5. update docs/changeset for public package changes
+6. prefer shared Ankhorage primitives over new Studio-only paths
+7. do not introduce a bespoke Studio solution when the same capability should exist for generated apps
 
 Before final handoff:
 
@@ -213,37 +259,48 @@ Before final handoff:
 3. mention public API changes
 4. mention changeset path
 5. mention any follow-up issue needed
+6. state the convergence impact: how the work reduced the architectural distance between `apps/studio` and a normal Ankhorage app
 
 ## Common pitfalls
 
 - Editing generated `README.md` manually.
 - Importing Zora into package-neutral Studio helpers.
 - Moving React hook lifecycle into the manifest-state model.
-- Adding Supabase, Expo Router, DnD, or generated-app runtime implementation code.
+- Adding Supabase, Expo Router, DnD, or generated-app runtime implementation code to the wrong package boundary.
 - Adding public exports without tests, causing Knip failures.
 - Forgetting a changeset for public package changes.
 - Treating `ankhorage4` transition host behavior as package-owned behavior.
+- Building a Studio-only auth, navigation, data, action, module, or UI path that ordinary Ankhorage apps cannot use.
+- Solving a missing shared capability locally in Studio instead of improving the owning Ankhorage package first.
 
 ## Current architectural direction
 
-Keep this separation:
+Keep this separation while converging `apps/studio` onto the same app platform:
 
 ```txt
-Studio
-  authoring contracts, product contracts, package-neutral authoring/model helpers
+@ankhorage/studio
+  authoring contracts, product contracts, package-neutral authoring/model helpers,
+  Studio-specific authoring capabilities, local host ownership
+
+apps/studio
+  first-class Ankhorage app consuming manifests, ZORA, Runtime, bindings,
+  adapters, modules, and canonical navigation like generated apps
 
 ZORA
-  app-facing UI + static component metadata
+  app-facing UI, reusable components/patterns, static component metadata
 
 Runtime
-  manifest rendering, registry, action/data binding
+  manifest rendering, registry, canonical action/data binding execution
 
 Platform runtime packages
   Expo/native adapters, permission/capability planning, config plugins
 
-ankhorage4
-  transition/integration host consuming extracted packages
-
 Generated apps
-  output consumers of manifests, runtime, ZORA, and platform packages
+  output consumers of manifests, Runtime, ZORA, adapters, modules, and platform packages
+```
+
+The long-term direction is convergence, not coexistence of two app architectures:
+
+```txt
+apps/studio  ---> same Ankhorage application model ---> generated apps
 ```
