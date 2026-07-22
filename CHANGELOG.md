@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.3
+
+### Patch Changes
+
+- 1d57fd9: Generate auth-enabled apps with a pending auth navigation boundary so protected routes remain unmounted until authentication resolves.
+
 ## 0.10.2
 
 ### Patch Changes
