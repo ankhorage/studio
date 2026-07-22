@@ -517,7 +517,6 @@ function StudioRuntimeNodeWrapper(props: {
 
   return (
     <Pressable
-      accessibilityRole="button"
       accessibilityLabel={\`Select \${props.nodeId}\`}
       accessibilityState={{ selected }}
       onHoverIn={() => setIsHovered(true)}
