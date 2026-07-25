@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.9
+
+### Patch Changes
+
+- c5664c2: Repair the generated Expo web smoke harness so generated Studio apps hydrate consistently in Chrome during validation.
+
 ## 0.10.8
 
 ### Patch Changes
