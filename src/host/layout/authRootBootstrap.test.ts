@@ -86,7 +86,8 @@ describe('generated auth root bootstrap', () => {
     const files = generateAuthFiles('products');
     const rootRedirect = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
-    const appLayout = files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
+    const appLayout =
+      files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
     const tabsLayout =
       files.find((file) => file.path === 'src/app/(app)/(tabs)/_layout.tsx')?.content ?? '';
 
