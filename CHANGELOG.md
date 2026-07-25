@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.5
+
+### Patch Changes
+
+- adb13a6: Generate auth-enabled apps with a canonical root route and a pending authentication boundary so protected content cannot mount before session bootstrap completes.
+
 ## 0.10.4
 
 ### Patch Changes
