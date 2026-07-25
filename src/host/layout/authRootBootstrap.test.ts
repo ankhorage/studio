@@ -82,11 +82,19 @@ describe('generated auth root bootstrap', () => {
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
   });
 
-  test('keeps a non-root post-sign-in redirect canonical', () => {
+  test('anchors a non-root post-sign-in route as the initial navigator history entry', () => {
     const files = generateAuthFiles('products');
     const rootRedirect = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const appLayout = files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
+    const tabsLayout =
+      files.find((file) => file.path === 'src/app/(app)/(tabs)/_layout.tsx')?.content ?? '';
 
-    expect(rootRedirect).toContain("<Redirect href={'/products'} />");
+    expect(rootRedirect).toContain("<Redirect href={'/products'} withAnchor />");
+    expect(rootRedirect).not.toContain("<Redirect href={'/products'} />");
+    expect(rootLayout).toContain("initialRouteName: '(app)'");
+    expect(appLayout).toContain("initialRouteName: '(tabs)'");
+    expect(tabsLayout).toContain("initialRouteName: 'products'");
     expect(files.map((file) => file.path)).toContain('src/app/(app)/(tabs)/products.tsx');
   });
 });
