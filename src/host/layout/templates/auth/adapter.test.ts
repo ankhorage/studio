@@ -3,11 +3,14 @@ import { describe, expect, test } from 'bun:test';
 import { getAuthAdapterTs } from './adapter';
 
 describe('getAuthAdapterTs', () => {
-  test('keeps Expo public environment reads static while narrowing their generated type', () => {
+  test('keeps Expo public environment reads static while typing generated process env', () => {
     const source = getAuthAdapterTs();
 
-    expect(source).toContain('process.env.EXPO_PUBLIC_SUPABASE_URL as string | undefined');
-    expect(source).toContain('process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY as string | undefined');
+    expect(source).toContain('declare const process: {');
+    expect(source).toContain('readonly EXPO_PUBLIC_SUPABASE_URL?: string;');
+    expect(source).toContain('readonly EXPO_PUBLIC_SUPABASE_ANON_KEY?: string;');
+    expect(source).toContain('process.env.EXPO_PUBLIC_SUPABASE_URL?.trim()');
+    expect(source).toContain('process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim()');
     expect(source).not.toContain('globalThis.process');
     expect(source).not.toContain('env[');
   });
