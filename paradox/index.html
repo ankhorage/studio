@@ -519,6 +519,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/layout/authRootBootstrap.test.ts"
+              >
+                src/host/layout/authRootBootstrap.test.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/layout/generatedImportComposer.ts"
               >
                 src/host/layout/generatedImportComposer.ts
@@ -1525,7 +1535,7 @@
             <div class="summary">
               <div><strong>96</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>220</strong><span class="muted">modules</span></div>
+              <div><strong>222</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2342,6 +2352,15 @@
             </article>
             <article
               class="item"
+              data-search="src/host/layout/authRootBootstrap.test.ts src/host/layout/layoutGenerator.ts"
+            >
+              <h3>src/host/layout/authRootBootstrap.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/host/layout/layoutGenerator.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/layout/generatedImportComposer.test.ts src/host/layout/generatedImportComposer.ts"
             >
               <h3>src/host/layout/generatedImportComposer.test.ts</h3>
@@ -2375,7 +2394,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/generatedImportComposer.ts src/host/layout/templates/index.ts src/host/modules/layout.ts src/index.ts src/studioAdminRouteModel.ts GeneratedAppFileGenerationOptions GeneratedAppFileGenerator GeneratedFile"
+              data-search="src/host/layout/layoutGenerator.ts src/host/layout/auth/resolveAuthLayoutPlan.ts src/host/layout/generatedImportComposer.ts src/host/layout/templates/index.ts src/host/layout/templates/utils/routes.ts src/host/modules/layout.ts src/index.ts src/studioAdminRouteModel.ts GeneratedAppFileGenerationOptions GeneratedAppFileGenerator GeneratedFile"
             >
               <h3>src/host/layout/layoutGenerator.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2384,6 +2403,7 @@
                 <code>src/host/layout/auth/resolveAuthLayoutPlan.ts</code>,
                 <code>src/host/layout/generatedImportComposer.ts</code>,
                 <code>src/host/layout/templates/index.ts</code>,
+                <code>src/host/layout/templates/utils/routes.ts</code>,
                 <code>src/host/modules/layout.ts</code>, <code>src/index.ts</code>,
                 <code>src/studioAdminRouteModel.ts</code>
               </p>
@@ -2527,6 +2547,17 @@
                 <code>src/host/layout/utils/escapeStringLiteral.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>getIndexRedirectRouteTsx</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/layout/templates/rootLayout.selectionDom.test.ts src/host/layout/templates/rootLayout.ts"
+            >
+              <h3>src/host/layout/templates/rootLayout.selectionDom.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/layout/templates/rootLayout.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -8528,6 +8559,10 @@
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+                module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_layout_authRootBootstrap_test_ts
+                module_src_host_layout_authRootBootstrap_test_ts --&gt;
+                module_src_host_layout_layoutGenerator_ts
                 module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_layout_generatedImportComposer_test_ts
@@ -8547,9 +8582,10 @@
                 module_src_host_layout_generatedImportComposer_ts
                 module_src_host_layout_layoutGenerator_ts --&gt;
                 module_src_host_layout_templates_index_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_host_modules_layout_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_index_ts module_src_host_layout_layoutGenerator_ts --&gt;
-                module_src_studioAdminRouteModel_ts
+                --&gt; module_src_host_layout_templates_utils_routes_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_ts
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
@@ -8601,6 +8637,11 @@
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
                 module_src_host_layout_templates_redirect_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt;
+                module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_layout_templates_rootLayout_test_ts
@@ -9468,6 +9509,9 @@ graph TD
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_layout_authRootBootstrap_test_ts
+  module_src_host_layout_authRootBootstrap_test_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_generatedImportComposer_test_ts
   module_src_host_layout_generatedImportComposer_test_ts --&gt; module_src_host_layout_generatedImportComposer_ts
@@ -9481,6 +9525,7 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_index_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
@@ -9520,6 +9565,9 @@ graph TD
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
   module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_rootLayout_selectionDom_test_ts
+  module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_rootLayout_test_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
@@ -10079,6 +10127,7 @@ graph TD
                 module_src_host_index_ts[&quot;src/host/index.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
+                module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
                 module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
                 module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
                 module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
@@ -10094,6 +10143,7 @@ graph TD
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -10394,6 +10444,8 @@ graph TD
                 module_src_host_http_serverWithSecrets_ts
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --&gt;
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+                module_src_host_layout_authRootBootstrap_test_ts --&gt;
+                module_src_host_layout_layoutGenerator_ts
                 module_src_host_layout_generatedImportComposer_test_ts --&gt;
                 module_src_host_layout_generatedImportComposer_ts
                 module_src_host_layout_layoutGenerator_test_ts --&gt;
@@ -10403,9 +10455,10 @@ graph TD
                 module_src_host_layout_generatedImportComposer_ts
                 module_src_host_layout_layoutGenerator_ts --&gt;
                 module_src_host_layout_templates_index_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_host_modules_layout_ts module_src_host_layout_layoutGenerator_ts
-                --&gt; module_src_index_ts module_src_host_layout_layoutGenerator_ts --&gt;
-                module_src_studioAdminRouteModel_ts
+                --&gt; module_src_host_layout_templates_utils_routes_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
+                module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
                 module_src_host_layout_templates_utils_routes_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
@@ -10434,6 +10487,8 @@ graph TD
                 module_src_host_layout_templates_utils_strings_ts
                 module_src_host_layout_templates_redirect_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt;
+                module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_test_ts --&gt;
                 module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_ts --&gt;
@@ -10801,6 +10856,7 @@ graph LR
   module_src_host_index_ts[&quot;src/host/index.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
+  module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
   module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
   module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
   module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
@@ -10816,6 +10872,7 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
+  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -11078,11 +11135,13 @@ graph LR
   module_src_host_http_serverWithSecrets_ts --&gt; module_src_host_utils_workspaceRoot_ts
   module_src_host_http_standalone_ts --&gt; module_src_host_http_serverWithSecrets_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_authRootBootstrap_test_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_generatedImportComposer_test_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_test_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_index_ts
+  module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
@@ -11100,6 +11159,7 @@ graph LR
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
@@ -11367,6 +11427,7 @@ graph LR
                 module_src_host_index_ts[&quot;src/host/index.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
                 module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
+                module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
                 module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
                 module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
                 module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
@@ -11382,6 +11443,7 @@ graph LR
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
+                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -11840,6 +11902,7 @@ graph LR
   module_src_host_index_ts[&quot;src/host/index.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.test.ts&quot;]
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts[&quot;src/host/layout/auth/resolveAuthLayoutPlan.ts&quot;]
+  module_src_host_layout_authRootBootstrap_test_ts[&quot;src/host/layout/authRootBootstrap.test.ts&quot;]
   module_src_host_layout_generatedImportComposer_test_ts[&quot;src/host/layout/generatedImportComposer.test.ts&quot;]
   module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
   module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
@@ -11855,6 +11918,7 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
+  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -14766,6 +14830,32 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-layout-authrootbootstrap-test-ts"
+          class="view"
+          data-view="src/host/layout/authRootBootstrap.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/layout/authRootBootstrap.test.ts</h2>
+            <article
+              class="item"
+              data-search="createAuthManifest src/host/layout/authRootBootstrap.test.ts "
+            >
+              <h3>createAuthManifest</h3>
+              <p class="muted"><code>src/host/layout/authRootBootstrap.test.ts:6:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="generateAuthFiles src/host/layout/authRootBootstrap.test.ts "
+            >
+              <h3>generateAuthFiles</h3>
+              <p class="muted"><code>src/host/layout/authRootBootstrap.test.ts:57:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-layout-generatedimportcomposer-ts"
           class="view"
           data-view="src/host/layout/generatedImportComposer.ts"
@@ -14942,7 +15032,7 @@ sequenceDiagram
               data-search="getPackageOwnedRuntimeImports src/host/layout/layoutGenerator.ts "
             >
               <h3>getPackageOwnedRuntimeImports</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:46:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:47:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14950,7 +15040,7 @@ sequenceDiagram
               data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:60:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:61:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14958,7 +15048,7 @@ sequenceDiagram
               data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>mergeRuntimeModuleDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:67:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:68:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14966,12 +15056,12 @@ sequenceDiagram
               data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>addStudioAdminRouteFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:90:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:91:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
               <h3>walk</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:102:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:103:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14979,7 +15069,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:422:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:428:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14987,7 +15077,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:436:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:442:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14995,7 +15085,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:443:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:449:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15003,12 +15093,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:466:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:472:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:480:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:486:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15016,7 +15106,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:484:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:490:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15024,7 +15114,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:528:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:534:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15032,7 +15122,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:536:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:542:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15040,7 +15130,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:541:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:547:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
