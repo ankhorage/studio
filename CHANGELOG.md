@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.8
+
+### Patch Changes
+
+- c6b687a: Keep generated auth root entries navigation-neutral so the root layout alone canonicalizes authenticated `/` launches without synthetic Back history or `initial=false` workarounds.
+
 ## 0.10.7
 
 ### Patch Changes
