@@ -16,10 +16,15 @@ import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';
 
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
 
-${oauthProviderDeclaration}const supabaseUrl =
-  (process.env.EXPO_PUBLIC_SUPABASE_URL as string | undefined)?.trim() ?? '';
-const supabaseAnonKey =
-  (process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY as string | undefined)?.trim() ?? '';
+declare const process: {
+  readonly env: {
+    readonly EXPO_PUBLIC_SUPABASE_URL?: string;
+    readonly EXPO_PUBLIC_SUPABASE_ANON_KEY?: string;
+  };
+};
+
+${oauthProviderDeclaration}const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? '';
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? '';
 
 export const authAdapter: AuthAdapter =
   supabaseUrl.length > 0 && supabaseAnonKey.length > 0
