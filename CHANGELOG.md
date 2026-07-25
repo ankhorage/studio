@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.10.7
+
+### Patch Changes
+
+- 85fad68: Anchor generated non-root auth redirects so the configured initial screen remains the root of navigator history without an erroneous Back button.
+
 ## 0.10.6
 
 ### Patch Changes
