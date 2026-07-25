@@ -3,17 +3,23 @@ interface AuthAdapterTemplateOptions {
 }
 
 export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
-  const oauthProviders = JSON.stringify(options.oauthProviders ?? []);
+  const oauthProviders = options.oauthProviders ?? [];
+  const oauthProviderDeclaration =
+    oauthProviders.length > 0
+      ? `const generatedOAuthProviders = ${JSON.stringify(oauthProviders)} as const;\n\n`
+      : '';
+  const oauthProviderProperty =
+    oauthProviders.length > 0 ? '\n        oauthProviders: generatedOAuthProviders,' : '';
 
   return `import type { AuthAdapter, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
 import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';
 
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
 
-const generatedOAuthProviders = ${oauthProviders} as const;
-
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? '';
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? '';
+${oauthProviderDeclaration}const supabaseUrl =
+  (process.env.EXPO_PUBLIC_SUPABASE_URL as string | undefined)?.trim() ?? '';
+const supabaseAnonKey =
+  (process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY as string | undefined)?.trim() ?? '';
 
 export const authAdapter: AuthAdapter =
   supabaseUrl.length > 0 && supabaseAnonKey.length > 0
@@ -21,10 +27,7 @@ export const authAdapter: AuthAdapter =
         url: supabaseUrl,
         anonKey: supabaseAnonKey,
         storage: authSessionStorage,
-        storageKey: AUTH_SESSION_STORAGE_KEY,
-        ...(generatedOAuthProviders.length > 0
-          ? { oauthProviders: generatedOAuthProviders }
-          : {}),
+        storageKey: AUTH_SESSION_STORAGE_KEY,${oauthProviderProperty}
       })
     : createMissingSupabaseAuthAdapter();
 
