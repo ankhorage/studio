@@ -1,6 +1,5 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import {
-  cp,
   mkdir,
   mkdtemp,
   readdir,
@@ -10,7 +9,13 @@ import {
   symlink,
   writeFile,
 } from 'node:fs/promises';
-import { createServer } from 'node:net';
+import {
+  createServer as createHttpServer,
+  type IncomingMessage,
+  type Server,
+  type ServerResponse,
+} from 'node:http';
+import { createServer as createNetServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -129,10 +134,16 @@ adminWebSmokeTest(
     const debugPort = await reservePort();
     let expoProcess: ChildProcessWithoutNullStreams | null = null;
     let chromeProcess: ChildProcessWithoutNullStreams | null = null;
+    let studioApi: SmokeStudioApiServer | null = null;
     const expoOutput: string[] = [];
+    const manifest = createAdminSmokeManifest();
 
     try {
       const projectRoot = await createGeneratedAdminProject(workspaceRoot);
+      studioApi = await startSmokeStudioApi({
+        manifest,
+        projectId: manifest.metadata.slug,
+      });
       const rootLayout = await readFile(
         path.join(projectRoot, 'src', 'app', '_layout.tsx'),
         'utf8',
@@ -141,7 +152,7 @@ adminWebSmokeTest(
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
 
-      expoProcess = spawnExpoWeb(projectRoot);
+      expoProcess = spawnExpoWeb(projectRoot, studioApi.apiBase);
       collectProcessOutput(expoProcess, expoOutput);
       const appUrl = await waitForExpoWebUrl(expoOutput, HTTP_TIMEOUT_MS);
 
@@ -172,6 +183,7 @@ adminWebSmokeTest(
         page.close();
       }
     } finally {
+      await studioApi?.close();
       stopProcess(chromeProcess);
       stopProcess(expoProcess);
       await rm(workspaceRoot, { force: true, recursive: true });
@@ -213,42 +225,13 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   });
   await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
   await linkSmokeNodeModules(created.path);
-  await copyGeneratedDirectDependencies(created.path, workspaceRoot);
   await writeSmokeMetroConfig(created.path);
 
   return created.path;
 }
 
-async function copyGeneratedDirectDependencies(
-  projectRoot: string,
-  workspaceRoot: string,
-): Promise<void> {
-  const packageJson = JSON.parse(
-    await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
-  ) as {
-    dependencies?: Record<string, string>;
-    devDependencies?: Record<string, string>;
-  };
-  const packageNames = [
-    ...new Set([
-      ...Object.keys(packageJson.dependencies ?? {}),
-      ...Object.keys(packageJson.devDependencies ?? {}),
-      '@expo/metro-runtime',
-      'metro-runtime',
-    ]),
-  ];
-
-  await Promise.all(
-    packageNames
-      .filter((packageName) => packageName !== '@ankhorage/studio')
-      .map(async (packageName) => {
-        await copyNodeModulePackage(packageName, path.join(workspaceRoot, 'node_modules'));
-        await copyNodeModulePackage(packageName, path.join(projectRoot, 'node_modules'));
-      }),
-  );
-}
-
 async function writeSmokeMetroConfig(projectRoot: string): Promise<void> {
+  const repositoryRoot = process.cwd();
   await writeFile(
     path.join(projectRoot, 'metro.config.js'),
     `const path = require('node:path');
@@ -260,6 +243,10 @@ config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, 'node_modules'),
   path.resolve(__dirname, '../../node_modules'),
 ];
+config.watchFolders = [
+  path.resolve(__dirname, '../../node_modules'),
+  ${JSON.stringify(repositoryRoot)},
+];
 
 module.exports = config;
 `,
@@ -268,7 +255,7 @@ module.exports = config;
 
 async function reservePort(): Promise<number> {
   return new Promise((resolve, reject) => {
-    const server = createServer();
+    const server = createNetServer();
     server.on('error', reject);
     server.listen(0, '127.0.0.1', () => {
       const address = server.address();
@@ -282,7 +269,7 @@ async function reservePort(): Promise<number> {
   });
 }
 
-function spawnExpoWeb(projectRoot: string): ChildProcessWithoutNullStreams {
+function spawnExpoWeb(projectRoot: string, apiBase: string): ChildProcessWithoutNullStreams {
   const expoBin = path.join(process.cwd(), 'apps', 'studio', 'node_modules', '.bin', 'expo');
   return spawn(expoBin, ['start', '--web', '--localhost'], {
     cwd: projectRoot,
@@ -292,10 +279,133 @@ function spawnExpoWeb(projectRoot: string): ChildProcessWithoutNullStreams {
       CI: '1',
       EXPO_NO_TELEMETRY: '1',
       EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV: 'true',
+      EXPO_PUBLIC_API_URL: apiBase,
       NODE_ENV: 'development',
     },
     detached: true,
   });
+}
+
+interface SmokeStudioApiServer {
+  readonly apiBase: string;
+  readonly close: () => Promise<void>;
+}
+
+async function startSmokeStudioApi(args: {
+  readonly manifest: AppManifest;
+  readonly projectId: string;
+}): Promise<SmokeStudioApiServer> {
+  const { projectId } = args;
+  let { manifest } = args;
+  const manifestPath = `/api/projects/${encodeURIComponent(projectId)}/studio/manifest`;
+  const server = createHttpServer((request, response) => {
+    void handleSmokeStudioApiRequest({
+      manifest,
+      manifestPath,
+      request,
+      response,
+      updateManifest: (nextManifest) => {
+        manifest = nextManifest;
+      },
+    });
+  });
+  const port = await listenOnLocalhost(server);
+  return {
+    apiBase: `http://127.0.0.1:${port}/api`,
+    close: () => closeHttpServer(server),
+  };
+}
+
+async function handleSmokeStudioApiRequest(args: {
+  readonly manifest: AppManifest;
+  readonly manifestPath: string;
+  readonly request: IncomingMessage;
+  readonly response: ServerResponse;
+  readonly updateManifest: (manifest: AppManifest) => void;
+}): Promise<void> {
+  const method = args.request.method ?? 'GET';
+  const url = new URL(args.request.url ?? '/', 'http://127.0.0.1');
+  writeCorsHeaders(args.response);
+  if (method === 'OPTIONS') {
+    args.response.statusCode = 204;
+    args.response.end();
+    return;
+  }
+
+  if (url.pathname !== args.manifestPath) {
+    writeJsonResponse(args.response, 404, { error: 'Not found' });
+    return;
+  }
+
+  if (method === 'GET') {
+    writeJsonResponse(args.response, 200, args.manifest);
+    return;
+  }
+
+  if (method === 'PUT') {
+    const parsed = await readJsonRequest(args.request);
+    if (!isRecord(parsed)) {
+      writeJsonResponse(args.response, 400, { error: 'Invalid manifest payload' });
+      return;
+    }
+    args.updateManifest(parsed as unknown as AppManifest);
+    writeJsonResponse(args.response, 200, parsed);
+    return;
+  }
+
+  writeJsonResponse(args.response, 405, { error: 'Method not allowed' });
+}
+
+function listenOnLocalhost(server: Server): Promise<number> {
+  return new Promise((resolve, reject) => {
+    server.on('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address();
+      if (typeof address === 'object' && address !== null) {
+        resolve(address.port);
+        return;
+      }
+      reject(new Error('Smoke Studio API did not bind a TCP port.'));
+    });
+  });
+}
+
+function closeHttpServer(server: Server): Promise<void> {
+  return new Promise((resolve, reject) => {
+    server.close((error) => {
+      if (error) reject(error);
+      else resolve();
+    });
+  });
+}
+
+function readJsonRequest(request: IncomingMessage): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    request.on('data', (chunk: Buffer) => chunks.push(chunk));
+    request.on('error', reject);
+    request.on('end', () => {
+      const text = Buffer.concat(chunks).toString('utf8');
+      try {
+        resolve(text.length > 0 ? JSON.parse(text) : null);
+      } catch (error) {
+        reject(error instanceof Error ? error : new Error('Invalid JSON request body.'));
+      }
+    });
+  });
+}
+
+function writeJsonResponse(response: ServerResponse, status: number, value: unknown): void {
+  response.statusCode = status;
+  writeCorsHeaders(response);
+  response.setHeader('Content-Type', 'application/json');
+  response.end(JSON.stringify(value));
+}
+
+function writeCorsHeaders(response: ServerResponse): void {
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  response.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  response.setHeader('Access-Control-Allow-Origin', '*');
 }
 
 async function waitForExpoWebUrl(output: readonly string[], timeoutMs: number): Promise<string> {
@@ -321,11 +431,6 @@ async function linkSmokeNodeModules(workspaceRoot: string): Promise<void> {
   await linkNodeModuleEntries({
     sourceRoot: path.join(process.cwd(), 'node_modules', '.bun', 'node_modules'),
     targetRoot: nodeModulesRoot,
-  });
-  await copyNodeModuleEntry({
-    sourceRoot: path.join(process.cwd(), 'node_modules', '.bun', 'node_modules'),
-    targetRoot: nodeModulesRoot,
-    packageName: 'expo-router',
   });
 }
 
@@ -388,54 +493,6 @@ async function symlinkIfMissing(source: string, target: string): Promise<void> {
     if (isNodeErrorWithCode(error, 'EEXIST')) return;
     throw error;
   }
-}
-
-async function copyNodeModuleEntry(args: {
-  readonly sourceRoot: string;
-  readonly targetRoot: string;
-  readonly packageName: string;
-}): Promise<void> {
-  const source = await realpath(path.join(args.sourceRoot, args.packageName));
-  const target = path.join(args.targetRoot, args.packageName);
-  await rm(target, { force: true, recursive: true });
-  await cp(source, target, { recursive: true });
-}
-
-async function copyNodeModulePackage(packageName: string, targetRoot: string): Promise<void> {
-  const source = await resolveSmokeNodeModuleSource(packageName);
-  const target = getNodeModuleTargetPath(targetRoot, packageName);
-  await mkdir(path.dirname(target), { recursive: true });
-  await rm(target, { force: true, recursive: true });
-  await cp(source, target, { recursive: true });
-}
-
-async function resolveSmokeNodeModuleSource(packageName: string): Promise<string> {
-  const candidateRoots = [
-    path.join(process.cwd(), 'node_modules', '.bun', 'node_modules'),
-    path.join(process.cwd(), 'apps', 'studio', 'node_modules'),
-  ];
-  for (const candidateRoot of candidateRoots) {
-    const candidate = getNodeModuleTargetPath(candidateRoot, packageName);
-    try {
-      return await realpath(candidate);
-    } catch {
-      continue;
-    }
-  }
-
-  throw new Error(`Could not resolve smoke node module ${packageName}.`);
-}
-
-function getNodeModuleTargetPath(root: string, packageName: string): string {
-  if (packageName.startsWith('@')) {
-    const [scopeName, scopedPackageName] = packageName.split('/');
-    if (!scopeName || !scopedPackageName) {
-      throw new Error(`Invalid scoped package name: ${packageName}`);
-    }
-    return path.join(root, scopeName, scopedPackageName);
-  }
-
-  return path.join(root, packageName);
 }
 
 function isNodeErrorWithCode(error: unknown, code: string): boolean {
