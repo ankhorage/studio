@@ -32,6 +32,7 @@ import {
   getScreenTsx,
   getSignOutScreenTsx,
 } from './templates';
+import { routeNameToHref } from './templates/utils/routes';
 
 export interface GeneratedFile {
   path: string;
@@ -175,10 +176,11 @@ export class GeneratedAppFileGenerator {
         ),
       });
 
-      if (authLayoutPlan.postSignInRoute !== '/') {
+      const postSignInHref = routeNameToHref(authLayoutPlan.postSignInRoute);
+      if (postSignInHref !== '/') {
         files.push({
           path: normalizeRel(path.join('src/app/index.tsx')),
-          content: getIndexRedirectRouteTsx(authLayoutPlan.postSignInRoute),
+          content: getIndexRedirectRouteTsx(postSignInHref),
         });
       }
 
@@ -221,8 +223,12 @@ export class GeneratedAppFileGenerator {
   <Stack.Screen key="ankh" name="ankh" />`
       : '';
     const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
-  <Stack.Screen key="app" name="(app)" />
-  <Stack.Screen key="auth" name="(auth)" />${studioAdminStackScreen}
+  <Stack.Protected guard={authState === 'authenticated'}>
+    <Stack.Screen key="app" name="(app)" />
+  </Stack.Protected>
+  <Stack.Protected guard={authState === 'unauthenticated'}>
+    <Stack.Screen key="auth" name="(auth)" />
+  </Stack.Protected>${studioAdminStackScreen}
 </Stack>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {

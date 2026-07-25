@@ -105,8 +105,14 @@ const AUTH_POST_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGrouped
 const AUTH_PUBLIC_ROUTES = ${serializeStringArrayLiteral(authRuntime.publicRoutes)};
 const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
 
+type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';
+
+function isGeneratedAuthEnforced(): boolean {
+  return !__DEV__ || !AUTH_DISABLE_IN_DEV;
+}
+
 function normalizeRoutePath(pathname: string): string {
-  const normalized = pathname.replace(/\\/+$/, '');
+  const normalized = pathname.replace(/\\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
@@ -132,8 +138,7 @@ function isAuthRoute(pathname: string): boolean {
 }
 
 function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady: boolean): boolean {
-  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
-  if (!authEnforced) return true;
+  if (!isGeneratedAuthEnforced()) return true;
   if (!isAuthRuntimeReady) return false;
   if (!isAuthenticated()) return false;
   return !isAuthRoute(pathname);
@@ -146,14 +151,14 @@ function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady:
 
   const appHeaderHelpers = `
 function normalizeAppHeaderPath(pathname: string): string {
-  const normalized = pathname.replace(/\\/+$/, '');
+  const normalized = pathname.replace(/\\\/+$/, '');
   return normalized === '' ? '/' : normalized;
 }
 
 function getAppHeaderSegments(pathname: string): string[] {
   const normalized = normalizeAppHeaderPath(pathname);
   if (normalized === '/') return ['index'];
-  return normalized.replace(/^\\/+/, '').split('/').filter(Boolean);
+  return normalized.replace(/^\\\/+/, '').split('/').filter(Boolean);
 }
 
 function findRouteBySegments(navigator: NavigatorSpec, segments: string[]): RouteDefinition | null {
@@ -239,6 +244,11 @@ const rootNavigationKey = getRootNavigationKey(rootNavigationState);
 const [authSessionVersion, setAuthSessionVersion] = useState(0);
 const [isAuthRuntimeReady, setIsAuthRuntimeReady] = useState(false);
 const [isInnerContentReady, setIsInnerContentReady] = useState(false);
+const authState = useMemo<GeneratedAuthNavigationState>(() => {
+  if (!isGeneratedAuthEnforced()) return 'authenticated';
+  if (!isAuthRuntimeReady) return 'pending';
+  return isAuthenticated() ? 'authenticated' : 'unauthenticated';
+}, [authSessionVersion, isAuthRuntimeReady]);
 
 useEffect(() => {
   const mountController = new AbortController();
@@ -277,8 +287,7 @@ useEffect(() => {
   if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
   ${includeStudio ? 'if (isStudioAdminPath(pathname)) return;' : ''}
 
-  const authEnforced = !__DEV__ || !AUTH_DISABLE_IN_DEV;
-  if (!authEnforced) return;
+  if (!isGeneratedAuthEnforced()) return;
 
   const authenticated = isAuthenticated();
   const activeTopLevelRoute = getTopLevelRoute(pathname);
@@ -322,15 +331,24 @@ useEffect(() => {
   const indentedRootHookBlock = rootHookBlock.length > 0 ? indentGeneratedBlock(rootHookBlock) : '';
 
   const innerContentNode = authRuntime
-    ? '<InnerContent onReady={handleInnerContentReady} />'
+    ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
 
-  const innerContentSignature = authRuntime ? '{ onReady }: { onReady?: () => void }' : '';
+  const innerContentSignature = authRuntime
+    ? '{ authState, onReady }: { authState: GeneratedAuthNavigationState; onReady?: () => void }'
+    : '';
   const innerContentReadyHook = authRuntime
     ? `
   useEffect(() => {
     onReady?.();
   }, [onReady]);`
+    : '';
+  const innerContentPendingBoundary = authRuntime
+    ? `
+  if (authState === 'pending') {
+    return null;
+  }
+`
     : '';
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
@@ -771,7 +789,7 @@ function GeneratedStatusBar() {
 }
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
-${innerThemeHook}  return (
+${innerContentPendingBoundary}${innerThemeHook}  return (
 ${indentedInnerNavigationJsx}
   );
 }
