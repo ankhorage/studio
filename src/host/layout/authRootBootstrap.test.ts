@@ -82,20 +82,28 @@ describe('generated auth root bootstrap', () => {
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
   });
 
-  test('anchors a non-root post-sign-in route as the initial navigator history entry', () => {
+  test('keeps non-root / matchable while the root layout alone canonicalizes navigation', () => {
     const files = generateAuthFiles('products');
-    const rootRedirect = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
+    const paths = files.map((file) => file.path);
+    const rootEntry = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const appLayout =
       files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
     const tabsLayout =
       files.find((file) => file.path === 'src/app/(app)/(tabs)/_layout.tsx')?.content ?? '';
 
-    expect(rootRedirect).toContain("<Redirect href={'/products'} withAnchor />");
-    expect(rootRedirect).not.toContain("<Redirect href={'/products'} />");
+    expect(paths).toContain('src/app/index.tsx');
+    expect(rootEntry).toContain("canonicalizes / to '/products'");
+    expect(rootEntry).toContain('return null;');
+    expect(rootEntry).not.toContain('expo-router');
+    expect(rootEntry).not.toContain('Redirect');
+    expect(rootEntry).not.toContain('withAnchor');
+    expect(rootEntry).not.toContain('initial=');
+    expect(rootLayout).toContain("authenticated && currentPath === '/' && postSignInPath !== '/'");
+    expect(rootLayout).toContain('router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);');
     expect(rootLayout).toContain("initialRouteName: '(app)'");
     expect(appLayout).toContain("initialRouteName: '(tabs)'");
     expect(tabsLayout).toContain("initialRouteName: 'products'");
-    expect(files.map((file) => file.path)).toContain('src/app/(app)/(tabs)/products.tsx');
+    expect(paths).toContain('src/app/(app)/(tabs)/products.tsx');
   });
 });
