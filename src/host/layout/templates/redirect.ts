@@ -4,7 +4,7 @@ export function getIndexRedirectRouteTsx(href: string): string {
   return `import { Redirect } from 'expo-router';
 
 export default function IndexRoute() {
-  return <Redirect href={'${escapeStringLiteral(href)}'} />;
+  return <Redirect href={'${escapeStringLiteral(href)}'} withAnchor />;
 }
 `;
 }
