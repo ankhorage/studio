@@ -12,7 +12,11 @@ The RFC established:
 - Component-owned suppression preserves private uncontrolled state.
 - `disabled` props alter authored styling and expose disabled accessibility semantics.
 
-This validation re-evaluates the unexecuted integration items with corrected ownership findings and a real Android probe harness.
+This document updates the earlier provisional evidence with executed Android emulator results from the disposable probe.
+
+## Initial Evidence State
+
+The first version of this document was committed before manual execution and classified most integration items as `UNEXECUTED`. That provisional classification is superseded by the executed results recorded below.
 
 ## Corrected Package Ownership Matrix
 
@@ -27,7 +31,7 @@ Runtime node types in the Studio preview registry resolve through `ZORA_COMPONEN
 | `Tabs`                                        | `Tabs`              | ZORA           | ZORA → ZORA `Button` per tab                     | ZORA `Button` / Surface `ButtonBase`    | guard tab `onValueChange`             | ZORA `TabsProps`, ZORA `ButtonProps`, `ButtonBaseProps`              | ZORA `Tabs` passes to internal `Button`         |
 | `Select`                                      | `Select`            | ZORA           | ZORA → `@react-native-picker/picker`             | external `Picker`                       | guard `onValueChange`                 | ZORA `SelectProps`                                                   | not forwarded; guard inside ZORA component      |
 | `Input`                                       | `Input`             | ZORA           | ZORA → Surface `TextInput`                       | Surface `TextInput`                     | guard `onChangeText`                  | ZORA `InputProps`, Surface `TextInputProps`                          | ZORA forwards `...props` to `Surface.TextInput` |
-| `Textarea`                                    | `Textarea`          | ZORA           | ZORA / Surface                                   | Surface `TextInput`                     | guard `onChangeText`                  | ZORA `TextareaProps`, Surface `TextInputProps`                       | forwarded via Surface prop chain                |
+| `Textarea`                                    | `Textarea`          | ZORA           | ZORA / Surface                                   | Surface `TextInput`                     | guard `onChangeText`                  | `TextareaProps`, Surface `TextInputProps`                            | forwarded via Surface prop chain                |
 | `Modal`                                       | `Modal`             | ZORA           | ZORA → Surface `Modal`                           | Surface `Modal` (`Pressable` backdrop)  | omit backdrop `onPress` / `onDismiss` | ZORA `ModalProps`, Surface `ModalProps`                              | ZORA forwards `...props` to `Surface.Modal`     |
 | `Drawer`                                      | `Drawer`            | ZORA           | ZORA → Surface `Drawer`                          | Surface `Drawer` (`Pressable` backdrop) | omit backdrop `onPress` / `onDismiss` | ZORA `DrawerProps`, Surface `DrawerProps`                            | ZORA forwards `...props` to `Surface.Drawer`    |
 | `ScrollArea`                                  | Surface only        | Surface        | None                                             | React Native `ScrollView`               | preserve native scroll                | Surface `ScrollAreaProps`                                            | not applicable                                  |
@@ -106,6 +110,8 @@ Evidence:
 - Mount/unmount logs (`[COMPONENT_MOUNT]` / `[COMPONENT_UNMOUNT]`) show no remount on mode toggle
 - `[MODE_CHANGE]` / `[CONTRACT_POLICY]` logs confirm policy transition
 
+The runtime tree is created inside `ProbeScreen` through `useMemo(() => createUiNode(...), [])` so the authored Button callback can reference `setActionCount` while preserving stable node identity across mode changes.
+
 ## Selected Marker/Tap Architecture
 
 ### Candidate A: passive touch-path observation
@@ -120,6 +126,8 @@ The probe implements this with:
 
 - Per-node `Marker` (`wrapNode`) emitting `[MARKER-RECORD]` on `onTouchStart`
 - Root `GestureDetector` with `Gesture.Tap().maxDuration(500)` emitting `[TAP-SELECT]`
+
+Selection commitment is guarded by `mode === 'edit'`; Preview toggles do not commit Studio selection.
 
 ### Candidate C: public responder capture with delayed commitment
 
@@ -139,139 +147,236 @@ Rejected. Any wrapper that claims responder ownership risks blocking ScrollView 
 
 ## Component Identity Evidence
 
-The probe confirms stable component identity across mode transitions:
+Manually observed in Android emulator:
 
-- `[COMPONENT_MOUNT]` appears once per cooperative component at startup
-- Mode toggles emit `[MODE_CHANGE]` and `[CONTRACT_POLICY]` but no `[COMPONENT_UNMOUNT]` or `[COMPONENT_MOUNT]`
-- React keys remain bound to stable `node.id` values
+- Runtime node IDs remained stable across mode transitions.
+- React keys remained stable.
+- Mode changes did not replace the Runtime tree.
+- No component remount was observed during Edit/Preview transitions.
+- The `useMemo`-wrapped `rootNode` preserves identity while allowing authored callbacks to reference React state setters.
 
 ## Button Edit Result
 
-**EXECUTED**: No. This was not manually executed on the Android emulator in this pass.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**Expected behavior from probe design**:
+Observed behavior:
 
-- In passive/edit mode, `CooperativeButton` omits `onPress` handler.
-- A stationary tap on the Button should commit selection of `button-node` via root RNGH Tap.
-- `BUTTON_PRESS` should not execute.
-- Authored styling (`backgroundColor: '#2196f3'`, `padding`, `borderRadius`) remains unchanged.
+- Button is selectable in Edit.
+- Studio selection occurs once for a stationary tap.
+- Authored Button action does not execute.
+- Action counter remains unchanged.
+- Passive appearance remains visually enabled rather than disabled.
 
-**UNEXECUTED** — requires manual emulator interaction.
+Relevant diagnostics:
+
+- `[BUTTON_HANDLER]` records component-level Pressable activation.
+- No `[BUTTON_ACTION]` in passive mode.
+- No `[TAP-SELECT]` in Preview; Edit produces exactly one selection.
 
 ## Button Preview Result
 
-**EXECUTED**: No.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**Expected behavior**:
+Observed behavior:
 
-- In Preview/enabled mode, `CooperativeButton` restores `onPress`.
-- A tap should execute `onPress` exactly once.
-- No Studio selection should occur.
+- Button label shows enabled mode.
+- Authored Button action executes exactly once.
+- Visible Action counter increments by exactly 1.
+- Studio selection remains unchanged.
+- No Preview `[TAP-SELECT]`.
+- Runtime component identity remains stable.
 
-**UNEXECUTED** — requires manual emulator interaction.
+Harness repair note: the initial probe defect was that the module-scoped `rootNode` supplied no Button `onPress` callback. This was repaired by constructing the Runtime tree through stable `useMemo(() => createUiNode(...), [])` inside `ProbeScreen`, with the authored callback:
+
+```ts
+onPress: () => {
+  console.log('[BUTTON_ACTION]');
+  setActionCount((count) => count + 1);
+};
+```
 
 ## Disclosure State-Preservation Result
 
-**EXECUTED**: No.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**Expected behavior**:
+Verified transition:
 
-- Disclosure starts closed in Preview.
-- Toggle opens it; `DISCLOSURE_TOGGLE` fires once.
-- Switch to Edit/passive without remount; Disclosure remains open.
-- Tap trigger in Edit: node selected once; `DISCLOSURE_TOGGLE` does not fire; Disclosure stays open.
-- Return to Preview without remount; tap closes normally.
+1. Disclosure starts closed in Preview.
+2. Tap opens it; authored toggle executes once.
+3. Switch to Edit/passive without remount; Disclosure remains open.
+4. Tap trigger in Edit: Runtime node is selected once.
+5. Disclosure does not toggle in passive mode.
+6. Return to Preview without remount; tap closes normally.
 
-**UNEXECUTED** — requires manual emulator interaction.
+This confirms:
 
-## Input Result
+- private uncontrolled state is preserved
+- no external controlled-state conversion
+- component-owned passive suppression works
+- authored disclosure behavior is restored in Preview
 
-**EXECUTED**: No.
+## Input Edit Result
 
-**Expected behavior**:
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-- In Edit/passive: `CooperativeInput` sets `editable={false}` and `readOnly={true}` and guards `onChangeText`.
-- A tap should select the input node.
-- Keyboard input should not change the value.
-- In Preview: typing changes the value once per keystroke; no Studio selection.
+Observed behavior:
 
-**UNEXECUTED** — requires manual emulator interaction. Note: the RFC noted that Android soft-keyboard input may bypass `readOnly` alone; the contract requires the component to guard its own `onChangeText` handler.
+- Input node can be selected in Edit.
+- Raw native text events may be emitted.
+- Component-owned guard prevents accepted value mutation.
+- Visible value remains unchanged.
+- No disabled visual styling is applied.
 
-## Outer-Scroll Result
+Distinction:
 
-**EXECUTED**: No.
+- raw native input event: may occur
+- accepted component value change: does not occur in Edit
 
-The probe contains an outer `ScrollView` outside the Runtime tree. A root RNGH Tap recognizer is intended to fail on movement, allowing the outer ScrollView to scroll. After a movement gesture, a stationary tap should select the deepest touched Runtime node.
+## Input Preview Result
 
-**UNEXECUTED** — requires manual emulator interaction.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-## Nested-Scroll Result
+Observed behavior:
 
-**EXECUTED**: No.
+- typing changes the visible value
+- accepted input callback executes
+- no Studio selection is committed
+- component identity remains stable
 
-The probe contains a nested `ScrollView` inside the Runtime node tree. Inner scrolling should remain functional in both Edit and Preview. Stationary taps inside the inner area should select the deepest touched Runtime node. Scroll gestures should not commit selection.
+## Stationary Runtime-Node Selection
 
-**UNEXECUTED** — requires manual emulator interaction.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-## Long-Press Result
+Architecture:
 
-**EXECUTED**: No.
+```text
+per-node touch recording through wrapNode
++
+root RNGH stationary Tap commitment
+```
 
-**Expected behavior**:
+Observed behavior:
 
-- In Edit/passive: `CooperativeLongPress`omits `onPress` and `onLongPress`. Long press should execute no authored callback. Whether a long press selects the node depends on root RNGH Tap behavior; a stationary long touch that does not exceed tap gesture expectations may record the node but should not double-activate.
-- In Preview: long press executes `LONG_PRESS` exactly once; no normal tap callback; no Studio selection.
+- stationary Edit tap selects the intended Runtime node
+- selection commits once
+- Preview does not commit Studio selection
 
-**UNEXECUTED** — requires manual emulator interaction.
+## Movement Cancellation
 
-## Authored-Drag Result
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**EXECUTED**: No.
+Observed behavior:
 
-`CooperativeDrag` in the probe demonstrates authored drag suppression by removing `onPress` in passive mode. Because the probe does not implement actual drag gesture bindings (no stateful position manipulation), authored drag result remains validated only at the component contract level.
+- movement does not commit a stationary-tap selection
+- stale touched-node state does not cause a later incorrect selection
+- subsequent stationary taps select the current intended node
 
-**UNEXECUTED** — requires manual emulator interaction with a stateful authored-drag fixture.
+## Runtime ScrollView Result
 
-## Movement-Versus-Selection Result
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**EXECUTED**: No.
+The Runtime-rendered white `ScrollView` scrolls normally in both Edit and Preview. Scroll movement does not commit selection.
 
-**Expected behavior**:
+## Nested Runtime ScrollView Result
 
-- Movement exceeding RNGH Tap `maxDuration`/distance cancels the root tap.
-- The deepest node recorded by `Marker` during touch start is preserved but not committed.
-- No selection occurs after scrolling.
-- Stationary taps commit exactly once.
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-**UNEXECUTED** — requires manual emulator interaction.
+The nested green `ScrollView` inside the Runtime tree scrolls normally. Inner scrolling remains functional and does not commit selection.
 
-## Authored Appearance Comparison
+## Plain Control ScrollView Result
 
-**EXECUTED**: Partially (probe styling inspection only; no pixel-level screenshot comparison was performed).
+**EXECUTED**: PASS — manually executed in Android emulator.
 
-The probe uses identical style objects for passive and enabled states:
+The `Plain control ScrollView` outside Runtime and outside the Studio tap-selection wrapper scrolls normally. This fixture proves scrolling is not broken by the root gesture architecture.
 
-- Button: `backgroundColor`, `padding`, `borderRadius` are unchanged; `buttonPassive` only sets `opacity: 1`.
-- Disclosure: identical colors, padding, border radius; `disclosurePassive` sets `opacity: 1`.
-- Input: identical border, padding, font size; `inputPassive` sets `backgroundColor: '#fff'`.
+## Structural Scrolling with Studio Tap Selection
 
-No `disabled` styling is applied. `enabled` is not set to `false` anywhere in the probe.
+**EXECUTED**: PASS — manually executed in Android emulator.
+
+Scrolling continues to work with Studio tap selection enabled. Movement does not commit a selection after scroll release.
+
+## Long-Press Edit Result
+
+**EXECUTED**: PASS — manually executed in Android emulator.
+
+Observed behavior:
+
+- authored long-press behavior is suppressed
+- no normal authored tap action is triggered
+- no double activation occurs
+
+Selection side effect during Edit long press: not separately recorded.
+
+## Long-Press Preview Result
+
+**EXECUTED**: PASS — manually executed in Android emulator.
+
+Observed behavior:
+
+- authored long press executes normally
+- normal tap action does not also execute
+- Studio selection does not occur
+
+## Authored Drag Edit Result
+
+**EXECUTED**: PASS — manually executed in Android emulator.
+
+Observed behavior:
+
+- purple object does not move
+- authored drag is suppressed
+- passive mode does not execute drag behavior
+- stationary Edit tap may still select the Runtime drag node
+
+## Authored Drag Preview Result
+
+**EXECUTED**: PASS — manually executed in Android emulator.
+
+Observed behavior:
+
+- purple draggable fixture moves
+- authored drag behavior is active
+- enabled-mode drag restoration works
+
+## Authored Appearance
+
+**EXECUTED**: PASS by manual visual inspection**
+
+Observed behavior:
+
+- no disabled styling
+- controls remain visually enabled
+- dimensions and layout remain stable
+- Button, Disclosure, Input, and drag fixture do not visibly change solely because of passive policy
+
+This is manual visual inspection, not a pixel-perfect screenshot comparison.
 
 ## UIAutomator Metadata
 
-**EXECUTED**: No.
+**EXECUTED**: NOT EXECUTED**
 
-UIAutomator has not been run in this pass.
+UIAutomator has not been run after the final probe repairs. Do not infer UIAutomator results from visual inspection.
 
 ## TalkBack Status
 
-**EXECUTED**: No.
+**EXECUTED**: NOT EXECUTED**
 
 TalkBack was not enabled or manually observed. Accessibility semantics for the cooperative contract remain separately pending.
 
+## Supported Harness Controls
+
+The repaired probe exposes deterministic controls:
+
+- Safe-area-aware header
+- Edit/Preview mode switch
+- Studio tap-selection ON/OFF switch
+- Compact diagnostics showing selected node, action counters, scroll offsets
+- Cooperative Runtime fixtures
+- Runtime ScrollView, nested Runtime ScrollView, and plain control ScrollView
+
 ## Unsupported-Component Fallback
 
-Selected fallback: **unsupported components retain authored interaction, and Studio must visibly mark them unsupported.**
+Selected fallback: **unsupported components retain authored behavior, and Studio must visibly mark them unsupported.**
 
 Justification: silently passing `interactionPolicy` to unaware components is undefined behavior. Components without explicit capability declaration and component-side enforcement must not enter passive suppression. Studio must maintain an explicit allowlist and communicate unsupported status rather than silently failing.
 
@@ -314,26 +419,39 @@ Studio must:
 4. Switch to `'enabled'` in Preview mode.
 5. Maintain an explicit allowlist of component types that support the contract.
 6. Wrap Runtime output through `wrapNode` for touch-recording markers.
-7. Visibly mark unsupported components when Edit mode would otherwise leave them interactive.
+7. Guard root tap selection commitment with `mode === 'edit'`.
+8. Visibly mark unsupported components when Edit mode would otherwise leave them interactive.
 
-## r> RuntimeNodeObserver Status
+## RuntimeNodeObserver Status
 
 `RuntimeNodeObserver` remains unnecessary. The marker selection model uses existing `wrapNode` and explicit touch recording; no node enumeration or measurement loop is required.
 
 ## Exact Final Outcome
 
-**COMPONENT CONTRACT VALID, VALIDATION INCOMPLETE**
+**ANDROID CONTRACT INTEGRATION VALIDATED**
 
-Reasoning:
+The Android integration validates the cooperative interaction contract.
 
-- The cooperative component contract is valid at the model level: component-owned suppression, private uncontrolled state preservation, and explicit `resolveNodeProps` injection were all designed and implemented in the disposable probe.
-- `wrapNode` integration is proven.
-- The Runtime extension points (`resolveNodeProps`, `wrapNode`, `RuntimeRendererConfigProvider`) all exist in the installed `@ankhorage/runtime` and were exercised in probe design.
-- The probe demonstrates stable component identity across mode transitions.
-- The corrected ownership matrix shows Surface and ZORA changes are required for production adoption.
-- Eighth and subsequent required manual Android tests (engaged tap selection, outer/nested scroll, long press, authored drag, movement cancellation, Disclosure state preservation, Input suppression/restoration, UIAutomator metadata, TalkBack) were not manually executed in this pass.
+The existing Runtime `resolveNodeProps` extension point can deliver `interactionPolicy: 'enabled' | 'passive'` to explicitly declared-capable Runtime node types without a Runtime public API change.
 
-The contract is not approved for production implementation under this result.
+Cooperative components can suppress their own authored activation, editing, private state transitions, long press, and manipulation gestures while preserving component identity, private uncontrolled state, authored visual appearance, and structural scrolling.
+
+Per-node touch recording combined with a root RNGH stationary-tap recognizer can commit Runtime-node selection in Edit while movement cancels selection and ScrollView gestures remain functional.
+
+Preview restores normal authored interaction and does not commit Studio selection.
+
+`RuntimeNodeObserver` remains unnecessary.
+
+## Remaining Limitations
+
+This validation does not establish:
+
+- actual TalkBack speech behavior
+- complete accessibility neutrality
+- arbitrary unsupported third-party component safety
+- automatic capability inference
+- behavior on components that do not implement the policy
+- web parity of every native gesture result
 
 ## Committed File
 
