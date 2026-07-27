@@ -327,11 +327,7 @@ Component-local state transitions (e.g., DisclosureSection's `setInternalOpen(!i
 | Action-shaped onPress   | Once | _(no output)_             | Action count unchanged                |
 | Disclosure              | Once | `[LOG] DISCLOSURE TOGGLE` | Disclosure count 0 → 1; Closed → Open |
 
-**Verdict:**
-
-- Runtime-action suppression alone does NOT suppress plain authored callbacks.
-- Disclosure component-local state continues to toggle.
-- Only action-shaped values and string action IDs are suppressed.
+**Classification:** Behavioral simulation supported by installed Runtime source inspection. Probe A reproduced the classification with a local helper rather than executing an end-to-end `RuntimeRenderer` render.
 
 ### Probe B: Component inert props
 
@@ -387,16 +383,21 @@ Component-local state transitions (e.g., DisclosureSection's `setInternalOpen(!i
 
 **Verdict:**
 
-- A minimal generic contract (`interactionPolicy`) can work when components cooperate.
-- The cooperative copy preserves the same rendered layout in Edit and Preview.
-- This proves feasibility of the contract but requires ZORA/Surface component changes.
+- Cooperative authored-activation suppression: PASS.
+- Cooperative local-state suppression: PASS.
+- Preview restoration: PASS.
+- State preservation with externally managed state: PASS.
+- Marker-path integration with cooperative components: NOT EXECUTED.
+
+Probe C did not use event-path markers, so it did not validate the complete selection-plus-suppression flow.
 
 ## Button Edit/Preview Result
 
 ### Edit mode
 
 - `disabled` prop suppresses authored activation.
-- Visual layout preserved (grayed styling).
+- Layout preservation: PASS — dimensions/layout remain stable.
+- Authored visual appearance preservation: FAIL — control renders with disabled/gray styling.
 - Accessibility reports `enabled="false"`.
 - **Limitation:** `disabled` is semantically heavy — it announces inability to interact, not inspection.
 
@@ -412,8 +413,9 @@ Component-local state transitions (e.g., DisclosureSection's `setInternalOpen(!i
 ### Edit mode
 
 - `disabled` prop suppresses toggle.
-- Controlled mode (`open` + noop `onOpenChange`) preserves visual state and suppresses toggle.
-- Component-local `useState` cannot be suppressed without controlled mode or component cooperation.
+- Already controlled component: when authored props already contain `open` and `onOpenChange`, a registry adapter can suppress changes by replacing or withholding `onOpenChange`. State remains owned externally.
+- Uncontrolled component with a public `disabled` or inert prop: the component can suppress its own internal toggle while retaining its internal state. This requires component cooperation.
+- Uncontrolled component without an inert prop: a registry adapter cannot preserve and freeze its private internal state.
 
 ### Preview mode
 
@@ -422,7 +424,7 @@ Component-local state transitions (e.g., DisclosureSection's `setInternalOpen(!i
 
 ## State Preservation Across Mode Changes
 
-### Tested transition: Preview → Edit
+### Tested transition: Preview → Edit (controlled props)
 
 1. Start Preview, toggle Cooperative Disclosure open.
 2. Switch to Edit (`interactionPolicy="inspect"`).
@@ -430,11 +432,13 @@ Component-local state transitions (e.g., DisclosureSection's `setInternalOpen(!i
 4. Switch back to Preview (`interactionPolicy="enabled"`).
 5. Tap disclosure — toggles Closed.
 
-**Result:** State preserved across mode changes when using controlled props.
+**Result:** State preserved across mode changes when props remain controlled and state is externally managed.
 
 ### Risk identified
 
 If a component is uncontrolled in Preview and switched to controlled in Edit without parent-managed state, the component may reset to its default value on mode entry.
+
+A registry adapter can inject props before rendering, but it cannot read a component's private uncontrolled state. Therefore an adapter cannot reliably inject the current open value into an uncontrolled Disclosure.
 
 ## Input/Textarea Result
 
@@ -451,46 +455,50 @@ If a component is uncontrolled in Preview and switched to controlled in Edit wit
 
 ## Nested-Scroll Result
 
-- Not explicitly tested with nested ScrollView in this pass.
-- Based on React native ScrollView behavior, nested scroll should continue working because marker capture uses `onResponderStart` on a View overlay, not gesture recognizer competition with ScrollView.
+Status: NOT EXECUTED
+
+Hypothesis only: the current marker approach may preserve nested scrolling,
+but this was not executed in this pass.
+
+Do not treat the hypothesis as a result.
 
 ## Drag Policy and Result
 
-**Decision:** Authored drag is preserved as authored activation in Edit mode. Studio selection does not interfere with authored drag because:
+Status: NOT EXECUTED
 
-1. Marker capture uses `onResponderStart` (touch start), not a competing gesture recognizer.
-2. RNGH Pan/LongPress gestures in the probe did not interfere with authored Pressable taps.
-3. No authored draggable components exist in ZORA/Surface to validate.
+Proposed policy:
+Authored drag should be governed independently from tap activation.
 
-If Studio later needs authored drag governance, it should be explicit and separate from selection.
+No authored draggable ZORA or Surface component was available, and authored drag was not executed.
 
 ## Long-Press Result
 
-**Decision:** Authored long press is preserved as authored activation in Edit mode.
+Status: NOT EXECUTED
 
-**Rationale:**
+Double-activation risk: UNRESOLVED
 
-- Long press is a distinct gesture from tap.
-- Marker capture uses `onResponderStart`, which fires on touch start, not release.
-- A long-press gesture recognizer waits for the long-press timeout before activating.
-- If a user long-presses an authored component, the authored long press should fire.
-- If a user taps and releases quickly, marker capture fires for selection.
+Design hypothesis (not executed):
+Long press may be preserved as authored activation in Edit mode because
+marker capture uses `onResponderStart` on touch start while authored
+long-press recognizers wait for the timeout.
 
-**Double-activation risk:** None identified with this split. Selection captures on touch start; authored long press activates after timeout. They do not both fire on the same gesture.
+No executed long-press result supports that conclusion.
 
 ## Accessibility Result
 
-### During Probe B (disabled props)
+### Platform accessibility metadata
 
-- UIAutomator reported `enabled="false"` on disabled controls.
-- Android TalkBack would announce "disabled" for Button and Disclosure.
-- This is semantically incorrect for inspection mode.
+- UIAutomator exposed disabled platform semantics during Probe B.
+- UIAutomator reported `enabled="false"` for disabled controls.
+- UIAutomator accessibility metadata: FAIL for neutral inspection semantics.
+- Actual TalkBack behavior: NOT EXECUTED.
 
-### During Probe C (cooperative component)
+A disabled announcement by TalkBack is expected but was not directly tested.
 
-- Custom components used standard `Pressable` with `disabled={interactionPolicy === 'inspect'}`.
-- Same `enabled="false"` accessibility annotation.
-- No extra focusable nodes introduced by marker overlay in Probe A-C (markers were not used in these probes).
+### Marker overlay
+
+- No extra focusable nodes introduced by marker overlay in Probe A-C
+  (markers were not used in these probes).
 
 ### Discussion
 
@@ -514,13 +522,41 @@ interface InteractionPolicyAdapter {
 }
 ```
 
-**Minimum affected components:**
+**Registry adapter boundary:**
+
+A registry adapter is useful only as a policy translation layer. It can map policy to:
+
+- Button → inert/activation-suppression capability
+- Input/Textarea → `readOnly`
+- Controlled Disclosure → suppress `onOpenChange`
+- Controlled Tabs → suppress `onValueChange`
+- Select → component-supported inert behavior
+
+A registry adapter cannot independently suppress arbitrary component-local behavior.
+
+**Minimum cooperation boundary:**
+
+```text
+Runtime:
+carries generic policy and invokes declared adapters
+
+Registry:
+maps policy only for explicitly supported components
+
+Component:
+owns suppression of private callbacks, gestures, and internal state
+
+Studio:
+chooses policy and owns selection behavior
+```
+
+**Minimum affected components for adapter mapping:**
 
 - Button / IconButton — inject `disabled` when `policy === 'inspect'`.
-- DisclosureSection — inject controlled `open` with noop `onOpenChange` when `policy === 'inspect'` and uncontrolled.
+- DisclosureSection — already controlled: suppress `onOpenChange`. Uncontrolled with inert prop: component-owned suppression. Uncontrolled without inert prop: not possible without component changes.
 - Input / Textarea — inject `readOnly` when `policy === 'inspect'`.
 - Select — inject `disabled` (no controlled fallback available).
-- Tabs — inject controlled `value` with noop `onChange` when uncontrolled.
+- Tabs — already controlled: suppress `onValueChange`. Uncontrolled: not possible without component changes.
 - Modal / Drawer — no activation suppression needed (controlled by `visible`).
 - ScrollArea — no change (structural).
 
@@ -529,12 +565,14 @@ interface InteractionPolicyAdapter {
 - Arbitrary third-party components without adapter registration.
 - Components with internal state and no controlled API (without component changes).
 - Custom gesture handlers inside authored components.
+- Uncontrolled private state that the adapter cannot read.
 
 **What must not be in the contract:**
 
 - `Studio`, `editor`, `selection`, `chrome` semantics in shared APIs.
 - Global geometry observation.
 - Blind prop injection without adapter.
+- Adapter-driven freezing of uncontrolled private state.
 
 ## Limitations
 
@@ -557,18 +595,35 @@ Executed evidence proves:
 
 ### Evidence summary
 
-| Requirement                                  | Result                                                                        |
-| -------------------------------------------- | ----------------------------------------------------------------------------- |
-| Suppress Runtime actions                     | PASS — `disableActions` works for action-shaped values                        |
-| Suppress component-local Disclosure state    | FAIL — plain callbacks preserved; `disabled` required                         |
-| Preserve visual layout                       | PASS — `disabled`/`readOnly` preserve layout                                  |
-| Preserve component state across Edit/Preview | PASS — controlled props preserve state                                        |
-| Restore Preview behavior                     | PASS — plain callbacks execute normally in Preview                            |
-| Preserve outer scroll                        | PASS — ScrollView scrolls unaffected                                          |
-| Preserve nested scroll                       | NOT EXECUTED — no nested ScrollView in probe                                  |
-| Drag policy                                  | NOT EXECUTED — no authored draggable components                               |
-| Long-press arbitration                       | PARTIAL — split between selection (tap) and authored (long press) is feasible |
-| Accessibility neutrality                     | FAIL — `disabled` announces inability, not inspection                         |
+| Requirement                                                  | Result                                                                       |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Suppress Runtime action-shaped actions                       | PASS — `disableActions` works for action-shaped values                       |
+| Suppress arbitrary plain callbacks through Runtime alone     | FAIL — plain callbacks preserved by design                                   |
+| Suppress cooperative component-local interaction             | PASS — `disabled`/`readOnly`/controlled mode with cooperation                |
+| Suppress arbitrary uncooperative component-local interaction | FAIL — component-local state cannot be intercepted without component support |
+| Preserve layout dimensions                                   | PASS — `disabled`/`readOnly` preserve layout dimensions                      |
+| Preserve authored visual appearance with disabled            | FAIL — control renders with disabled/gray styling                            |
+| Preserve controlled component state                          | PASS — controlled props preserve externally managed state                    |
+| Preserve private uncontrolled state through registry adapter | FAIL / NOT POSSIBLE WITHOUT COMPONENT COOPERATION                            |
+| Restore Preview behavior                                     | PASS — plain callbacks execute normally in Preview                           |
+| Preserve outer scroll                                        | PASS — ScrollView scrolls unaffected                                         |
+| Preserve nested scroll                                       | NOT EXECUTED                                                                 |
+| Authored drag                                                | NOT EXECUTED                                                                 |
+| Long-press arbitration                                       | NOT EXECUTED                                                                 |
+| Double-activation risk                                       | UNRESOLVED                                                                   |
+| Neutral accessibility metadata                               | FAIL — `disabled` announces inability, not inspection                        |
+| Actual TalkBack validation                                   | NOT EXECUTED                                                                 |
+| Marker plus cooperative suppression integration              | NOT EXECUTED                                                                 |
+
+**Tightened conclusion:**
+
+The evidence establishes that Runtime-owned action suppression is insufficient for arbitrary authored interaction.
+
+A registry adapter is useful only as a policy translation layer. It maps policy to declared component capabilities but cannot independently suppress arbitrary component-local behavior.
+
+The component that owns a private callback, gesture, or uncontrolled state transition must expose a generic way to suppress that interaction while preserving its current state and visual representation.
+
+No concrete shared API is approved yet.
 
 ### RuntimeNodeObserver
 
