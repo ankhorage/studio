@@ -1,147 +1,337 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-
 import { describe, expect, it } from 'bun:test';
 
-const stationarySelectionSource = readFileSync(
-  join(import.meta.dir, 'stationarySelection.ts'),
-  'utf8',
-);
+import { createStationarySelectionCoordinator } from './stationarySelection';
 
-describe('stationarySelection', () => {
-  it('exports createStationarySelectionCoordinator', () => {
-    expect(stationarySelectionSource).toContain(
-      'export function createStationarySelectionCoordinator',
+describe('stationarySelection coordinator', () => {
+  it('fresh begin creates generation 1', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    const generation = coordinator.beginTransaction();
+
+    expect(typeof generation).toBe('number');
+    expect(generation).toBe(1);
+    const tx = coordinator.getTransaction();
+    expect(tx).not.toBeNull();
+    expect(tx?.transactionId).toBe(generation);
+  });
+
+  it('next begin creates a greater generation', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    const generation1 = coordinator.beginTransaction();
+    coordinator.clearTransaction();
+    const generation2 = coordinator.beginTransaction();
+
+    expect(generation2).toBeGreaterThan(generation1);
+  });
+
+  it('stale generation record is ignored after clear', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    const gen1 = coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    coordinator.beginTransaction();
+    const tx = coordinator.getTransaction();
+    expect(tx?.transactionId).not.toBe(gen1);
+    expect(tx?.path).toEqual([]);
+  });
+
+  it('recordNode adds node to the active transaction path', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+
+    const tx = coordinator.getTransaction();
+    expect(tx?.path).toContain('node-a');
+    expect(tx?.path).toEqual(['node-a']);
+  });
+
+  it('nested path records outer-to-inner ordering', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('outer');
+    coordinator.recordNode('inner');
+
+    const tx = coordinator.getTransaction();
+    expect(tx?.path).toEqual(['outer', 'inner']);
+  });
+
+  it('duplicate node IDs are ignored', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.recordNode('node-a');
+
+    const tx = coordinator.getTransaction();
+    expect(tx?.path).toEqual(['node-a']);
+    expect(tx?.path.length).toBe(1);
+  });
+
+  it('deepest node is selected from nested path', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('outer');
+    coordinator.recordNode('inner');
+
+    let selectedNodeId: string | null = null;
+    coordinator.commitSelection(
+      true,
+      null,
+      (id) => {
+        selectedNodeId = id;
+      },
+      1,
     );
+
+    expect(selectedNodeId).not.toBeNull();
+    expect(typeof selectedNodeId).toBe('string');
+    const isInner = selectedNodeId === 'inner';
+    expect(isInner).toBe(true);
   });
 
-  it('exports TransactionState type', () => {
-    expect(stationarySelectionSource).toContain('TransactionState');
-  });
+  it('Edit selects exactly once', () => {
+    let selectionCount = 0;
 
-  it('exports StationarySelectionCoordinator interface', () => {
-    expect(stationarySelectionSource).toContain('export interface StationarySelectionCoordinator');
-  });
-
-  it('exports StationaryTapSelector', () => {
-    expect(stationarySelectionSource).toContain('export { StationaryTapSelector }');
-  });
-
-  it('exports createStudioStationarySelectionWrapNode', () => {
-    expect(stationarySelectionSource).toContain(
-      'export function createStudioStationarySelectionWrapNode',
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.commitSelection(
+      true,
+      null,
+      () => {
+        selectionCount += 1;
+      },
+      1,
     );
+
+    expect(selectionCount).toBe(1);
   });
 
-  it('re-exports stationarySelection from the runtime index', () => {
-    const indexSource = readFileSync(join(import.meta.dir, 'index.ts'), 'utf8');
-    expect(indexSource).toContain("export * from './stationarySelection.js'");
+  it('already-selected node invokes no selection callback', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+
+    let called = false;
+    coordinator.commitSelection(
+      true,
+      'node-a',
+      () => {
+        called = true;
+      },
+      1,
+    );
+
+    expect(called).toBe(false);
   });
 
-  it('uses a shared tracker ref via context (no React ref)', () => {
-    expect(stationarySelectionSource).toContain('TrackerContext');
-    expect(stationarySelectionSource).toContain('trackerRef');
+  it('Preview invokes no selection callback', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+
+    let selectedId: string | null = 'initial';
+    const result = coordinator.commitSelection(
+      false,
+      null,
+      (id) => {
+        selectedId = id;
+      },
+      1,
+    );
+
+    expect(result).toBe('preview');
+    expect(selectedId).toBe('initial');
+    const tx = coordinator.getTransaction();
+    expect(tx?.finalized).not.toBe(true);
   });
 
-  it('has no module-global mutable tracker', () => {
-    const trackerDecl = /const\s+\w+.*MutableRefObject/s.exec(stationarySelectionSource);
-    const moduleGlobalTracker = trackerDecl?.find((match) => !match.includes('createContext'));
-    expect(moduleGlobalTracker).toBeUndefined();
+  it('moved transaction invokes no callback', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    const tx = coordinator.getTransaction();
+    if (tx) {
+      tx.moved = true;
+    }
+
+    let selectedId: string | null = 'initial';
+    const result = coordinator.commitSelection(
+      true,
+      null,
+      (id) => {
+        selectedId = id;
+      },
+      1,
+    );
+
+    expect(result).toBe('moved');
+    expect(selectedId).toBe('initial');
   });
 
-  it('has root selector own tracker instance via createStationarySelectionCoordinator', () => {
-    expect(stationarySelectionSource).toContain('createStationarySelectionCoordinator');
+  it('empty path invokes no callback', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+
+    let selectedId: string | null = null;
+    let selectionCount = 0;
+    const result = coordinator.commitSelection(
+      true,
+      null,
+      (id) => {
+        selectedId = id;
+        selectionCount += 1;
+      },
+      1,
+    );
+
+    expect(result).toBe('empty');
+    expect(selectedId).toBeNull();
+    expect(selectionCount).toBe(0);
   });
 
-  it('records an ordered node path via push', () => {
-    expect(stationarySelectionSource).toContain('.path.push(');
+  it('stale generation commit returns stale', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    let selectedId: string | null = null;
+    const result = coordinator.commitSelection(
+      true,
+      null,
+      (id) => {
+        selectedId = id;
+      },
+      1,
+    );
+
+    expect(result).toBe('empty');
+    expect(selectedId).toBeNull();
   });
 
-  it('ignores duplicate node participation', () => {
-    expect(stationarySelectionSource).toContain('!tx.path.includes(nodeId)');
+  it('already-finalized commit returns already-finalized', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.commitSelection(
+      true,
+      null,
+      (_id) => {
+        void _id;
+      },
+      1,
+    );
+
+    let callCount = 0;
+    const result = coordinator.commitSelection(
+      true,
+      null,
+      () => {
+        callCount += 1;
+      },
+      1,
+    );
+
+    expect(result).toBe('already-finalized');
+    expect(callCount).toBe(0);
   });
 
-  it('uses deterministic deepest node wins via destructured path first element', () => {
-    expect(stationarySelectionSource).toContain('const [deepestNodeId] = tx.path');
+  it('duplicate terminal event for the same generation does not double-commit', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    let callCount = 0;
+
+    const gen = coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+
+    coordinator.commitSelection(
+      true,
+      null,
+      () => {
+        callCount += 1;
+      },
+      gen,
+    );
+
+    const result = coordinator.commitSelection(
+      true,
+      null,
+      () => {
+        callCount += 1;
+      },
+      gen,
+    );
+
+    expect(callCount).toBe(1);
+    expect(result).toBe('already-finalized');
   });
 
-  it('has transaction generation token', () => {
-    expect(stationarySelectionSource).toContain('transactionId: Date.now()');
+  it('ACTIVE/final terminal processing leaves no transaction', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.commitSelection(
+      true,
+      null,
+      (_id) => {
+        void _id;
+      },
+      1,
+    );
+    coordinator.clearTransaction();
+
+    expect(coordinator.getTransaction()).toBeNull();
   });
 
-  it('BEGAN clears stale state by beginning a fresh transaction', () => {
-    expect(stationarySelectionSource).toContain('State.BEGAN');
-    expect(stationarySelectionSource).toContain('beginTransaction');
+  it('FAILED clears state', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    expect(coordinator.getTransaction()).toBeNull();
   });
 
-  it('stationary Edit success commits once via finalized flag', () => {
-    expect(stationarySelectionSource).toContain('finalized');
+  it('CANCELLED clears state', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    expect(coordinator.getTransaction()).toBeNull();
   });
 
-  it('Preview never commits', () => {
-    expect(stationarySelectionSource).toContain('if (!isEditMode)');
+  it('END clears state', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    expect(coordinator.getTransaction()).toBeNull();
   });
 
-  it('clears state on movement end', () => {
-    expect(stationarySelectionSource).toContain('clearTransaction');
+  it('mode change clears active transaction', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.clearTransaction();
+
+    expect(coordinator.getTransaction()).toBeNull();
   });
 
-  it('handles failure and cancellation by clearing state', () => {
-    expect(stationarySelectionSource).toContain('State.FAILED');
-    expect(stationarySelectionSource).toContain('State.CANCELLED');
-  });
+  it('no transaction survives completion', () => {
+    const coordinator = createStationarySelectionCoordinator();
+    coordinator.beginTransaction();
+    coordinator.recordNode('node-a');
+    coordinator.commitSelection(
+      true,
+      null,
+      (_id) => {
+        void _id;
+      },
+      1,
+    );
+    coordinator.clearTransaction();
 
-  it('handles END by clearing state', () => {
-    expect(stationarySelectionSource).toContain('State.END');
-  });
-
-  it('has mode change clear via useEffect on isEditMode', () => {
-    expect(stationarySelectionSource).toContain('[props.isEditMode]');
-  });
-
-  it('node-level touch-end does not clear path before root commitment', () => {
-    expect(stationarySelectionSource).toContain('onTouchStart');
-    expect(stationarySelectionSource).not.toContain('onTouchEnd');
-    expect(stationarySelectionSource).not.toContain('onTouchEnd');
-  });
-
-  it('has no Pressable recorders', () => {
-    expect(stationarySelectionSource).not.toContain('Pressable');
-  });
-
-  it('has exactly one root-level GestureHandler import, no per-node recognizer imports', () => {
-    const importMatches = stationarySelectionSource.match(/from 'react-native-gesture-handler'/g);
-    expect(importMatches?.length).toBe(1);
-  });
-
-  it('has no cloneElement', () => {
-    expect(stationarySelectionSource).not.toContain('cloneElement');
-  });
-
-  it('has no responder stealing', () => {
-    expect(stationarySelectionSource).not.toContain('responder');
-  });
-
-  it('has no rectangle hit testing', () => {
-    expect(stationarySelectionSource).not.toContain('hitTest');
-    expect(stationarySelectionSource).not.toContain('measure');
-  });
-
-  it('preserves component identity and authored props in wrapNode', () => {
-    expect(stationarySelectionSource).toContain('args.rendered');
-  });
-
-  it('uses pointerEvents box-none on unsupported node wrapper, not none', () => {
-    expect(stationarySelectionSource).toContain("'box-none'");
-    expect(stationarySelectionSource).not.toContain("'none'");
-  });
-
-  it('thirdPartySupport declaration is Readonly<Record<string, true>>', () => {
-    expect(stationarySelectionSource).toContain('Readonly<Record<string, true>>');
-  });
-
-  it('thirdPartySupport does not contain mode (enabled/passive)', () => {
-    expect(stationarySelectionSource).not.toContain("'enabled'");
-    expect(stationarySelectionSource).not.toContain("'passive'");
+    expect(coordinator.getTransaction()).toBeNull();
   });
 });

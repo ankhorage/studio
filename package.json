@@ -245,7 +245,7 @@
     "@ankhorage/zora-tabletop": "^0.0.5",
     "@fastify/cors": "^11.2.0",
     "fastify": "^5.7.4",
-    "react-native-gesture-handler": "^3.1.0"
+    "react-native-gesture-handler": "~2.28.0"
   },
   "peerDependencies": {
     "@expo/vector-icons": "^15.0.3",

@@ -3,7 +3,6 @@ import type { ComponentRegistry, RuntimeRendererConfig } from '@ankhorage/runtim
 import { shouldSuppressStudioRuntimeActions } from './actionSuppression';
 import { createStudioInteractionPolicyResolver } from './interactionPolicy';
 import { createStudioPreviewComponentRegistry } from './previewRegistry';
-import { createStudioStationarySelectionWrapNode } from './stationarySelection';
 
 export interface StudioPreviewRuntimeConfigOptions {
   readonly previewMode: boolean;
@@ -15,7 +14,6 @@ export const createStudioPreviewRuntimeConfig = (
 ): RuntimeRendererConfig => ({
   disableActions: shouldSuppressStudioRuntimeActions(options.previewMode),
   registry: createStudioPreviewComponentRegistry({ components: options.components }),
-  wrapNode: createStudioStationarySelectionWrapNode({ previewMode: options.previewMode }),
   resolveNodeProps: createStudioInteractionPolicyResolver({
     previewMode: options.previewMode,
   }),

@@ -57,11 +57,6 @@ export function getRootLayoutImportRequirements(
             source: '@ankhorage/studio/runtime',
             namedImports: [
               { imported: 'createStudioInteractionPolicyResolver' },
-            ],
-          },
-          {
-            source: '@ankhorage/studio/runtime/stationarySelection',
-            namedImports: [
               { imported: 'createStudioStationarySelectionWrapNode' },
               { imported: 'StationaryTapSelector' },
             ],
