@@ -425,11 +425,11 @@ async function linkSmokeNodeModules(workspaceRoot: string): Promise<void> {
   const nodeModulesRoot = path.join(workspaceRoot, 'node_modules');
   await mkdir(nodeModulesRoot, { recursive: true });
   await linkNodeModuleEntries({
-    sourceRoot: path.join(process.cwd(), 'apps', 'studio', 'node_modules'),
+    sourceRoot: path.join(process.cwd(), 'node_modules', '.bun', 'node_modules'),
     targetRoot: nodeModulesRoot,
   });
   await linkNodeModuleEntries({
-    sourceRoot: path.join(process.cwd(), 'node_modules', '.bun', 'node_modules'),
+    sourceRoot: path.join(process.cwd(), 'apps', 'studio', 'node_modules'),
     targetRoot: nodeModulesRoot,
   });
 }

@@ -59,8 +59,8 @@ function StudioNodeTouchRecorder(props: {
             borderWidth: 1,
             borderColor: '#ef4444',
             borderStyle: 'dashed',
-            pointerEvents: 'none',
           },
+          pointerEvents: 'none',
         })
       : null,
     props.children,
@@ -88,8 +88,9 @@ export function createStudioStationarySelectionWrapNode(options?: {
     }
 
     const isSupported =
-      args.node.type in ZORA_COMPONENT_REGISTRY ||
-      (thirdPartySupport != null && args.node.type in thirdPartySupport);
+      Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, args.node.type) ||
+      (thirdPartySupport != null &&
+        Object.prototype.hasOwnProperty.call(thirdPartySupport, args.node.type));
 
     const showUnsupportedIndicator = isEditMode && !isSupported;
 

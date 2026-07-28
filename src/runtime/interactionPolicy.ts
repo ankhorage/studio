@@ -20,7 +20,8 @@ export function createStudioInteractionPolicyResolver(
   const resolver = createInteractionPolicyResolver({
     previewMode,
     thirdPartySupport,
-    isSupportedNodeType: (nodeType) => nodeType in ZORA_COMPONENT_REGISTRY,
+    isSupportedNodeType: (nodeType) =>
+      Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType),
   });
 
   if (!existingResolver) {

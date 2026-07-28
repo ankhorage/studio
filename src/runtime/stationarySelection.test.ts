@@ -73,6 +73,18 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain("pointerEvents: 'none'");
   });
 
+  it('places pointerEvents as a View prop, not inside style', () => {
+    const indicatorMatch = /React\.createElement\(View,\s*\{[^}]*style:\s*\{[^}]*\}[^}]*\}\)/.exec(
+      source,
+    );
+    expect(indicatorMatch).not.toBeNull();
+    const indicatorBlock = indicatorMatch?.[0] ?? '';
+    expect(indicatorBlock).toContain("pointerEvents: 'none'");
+    const styleBlock = /style:\s*\{([^}]*)\}/.exec(indicatorBlock);
+    expect(styleBlock).toBeTruthy();
+    expect(styleBlock?.[1]).not.toContain('pointerEvents');
+  });
+
   it('uses lazy coordinator creation', () => {
     expect(source).toContain(
       'const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);',

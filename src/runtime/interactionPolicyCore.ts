@@ -20,7 +20,7 @@ function classifyComponent(
     return 'zora-builtin';
   }
 
-  if (nodeType in thirdPartySupport) {
+  if (Object.prototype.hasOwnProperty.call(thirdPartySupport, nodeType)) {
     return 'third-party-supported';
   }
 

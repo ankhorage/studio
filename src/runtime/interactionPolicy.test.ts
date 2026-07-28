@@ -142,6 +142,17 @@ describe('interactionPolicyCore', () => {
     expect(previewResult.interactionPolicy).toBe('enabled');
   });
 
+  it('isComponentSupported returns false for inherited prototype names', () => {
+    expect(isComponentSupported('constructor', {}, () => false)).toBe(false);
+    expect(isComponentSupported('toString', {}, () => false)).toBe(false);
+    expect(isComponentSupported('valueOf', {}, () => false)).toBe(false);
+    expect(isComponentSupported('__proto__', {}, () => false)).toBe(false);
+  });
+
+  it('isComponentSupported returns true for an explicit own third-party entry', () => {
+    expect(isComponentSupported('CustomWidget', { CustomWidget: true }, () => false)).toBe(true);
+  });
+
   it('isComponentSupported returns true for zora-builtin', () => {
     expect(isComponentSupported('Text', {}, () => true)).toBe(true);
   });
@@ -162,7 +173,9 @@ describe('interactionPolicy production adapter', () => {
   it('derives support from the actual ZORA_COMPONENT_REGISTRY', () => {
     expect(source).toContain("from '@ankhorage/zora'");
     expect(source).toContain('ZORA_COMPONENT_REGISTRY');
-    expect(source).toContain('nodeType in ZORA_COMPONENT_REGISTRY');
+    expect(source).toContain(
+      'Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType)',
+    );
   });
 
   it('delegates classification to the pure core', () => {

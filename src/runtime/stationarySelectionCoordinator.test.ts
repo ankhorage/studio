@@ -42,16 +42,24 @@ describe('stationarySelectionCoordinator', () => {
     coordinator.recordNode('node-a', gen1);
     coordinator.clearTransaction();
 
+    const gen2 = coordinator.beginTransaction();
+    coordinator.recordNode('node-a', gen2);
+
+    let selectedNodeId: string | null = null;
     const result = coordinator.commitSelection(
       true,
       null,
-      () => {
-        void 0;
+      (id) => {
+        selectedNodeId = id;
       },
       gen1,
     );
 
-    expect(result).toBe('empty');
+    expect(result).toBe('stale');
+    expect(selectedNodeId).toBeNull();
+    const tx = coordinator.getTransaction();
+    expect(tx?.transactionId).toBe(gen2);
+    expect(tx?.path).toEqual(['node-a']);
   });
 
   it('duplicate node rejected', () => {
@@ -80,17 +88,19 @@ describe('stationarySelectionCoordinator', () => {
     coordinator.recordNode('inner', gen);
     coordinator.recordNode('outer', gen);
 
-    let selectedNodeId: string | null = null;
+    let selectedNodeId = '';
     coordinator.commitSelection(
       true,
       null,
       (id) => {
-        selectedNodeId = id;
+        if (id !== null) {
+          selectedNodeId = id;
+        }
       },
       gen,
     );
 
-    expect(selectedNodeId as unknown as string).toBe('inner');
+    expect(selectedNodeId).toBe('inner');
   });
 
   it('Edit commit once', () => {

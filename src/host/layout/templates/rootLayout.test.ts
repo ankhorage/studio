@@ -154,7 +154,7 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).toContain('wrapNode: studioWrapNode');
   expect(generated).toContain('selectedNodeId');
   expect(generated).toContain('selectNode');
-  expect(generated).toContain('studioThirdPartySupport');
+  expect(generated).toContain('STUDIO_EMPTY_THIRD_PARTY_SUPPORT');
   expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
   expect(generated).not.toContain('<Pressable');
   expect(generated).not.toContain('cloneElement');
@@ -226,12 +226,20 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(rootLayoutSource).not.toContain('disableActions: !previewMode');
   expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
+  expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
+  expect(studioShellSource).toContain('createStudioStationarySelectionWrapNode');
+  expect(studioShellSource).toContain('STUDIO_EMPTY_THIRD_PARTY_SUPPORT');
+  expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
+  expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');
   expect(studioShellSource).toContain('disableActions: !previewMode');
   expect(studioShellSource).toContain('wrapNode: studioWrapNode');
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );
   expect(studioShellSource).toContain('const studioOutput = (');
+  expect(studioShellSource).toContain(
+    '[previewMode, studioWrapNode, studioResolveNodeProps]',
+  );
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {

@@ -436,6 +436,9 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
+    includeStudio
+      ? 'const STUDIO_EMPTY_THIRD_PARTY_SUPPORT = {} as const;'
+      : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)
@@ -615,42 +618,49 @@ function StudioShell({
     if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
   }, [appLocation, appPathname, setLastNonAdminLocation]);
 
-  const studioThirdPartySupport = {} as const;
-  const studioWrapNode = createStudioStationarySelectionWrapNode({
-    previewMode,
-    thirdPartySupport: studioThirdPartySupport,
-  });
-  const studioResolveNodeProps = createStudioInteractionPolicyResolver({
-    previewMode,
-    thirdPartySupport: studioThirdPartySupport,
-  });
-  const appHeaderTitle = resolveStudioAppHeaderTitle({
-    runtimeManifest,
-    studioManifest,
-    previewMode,
-    activeScreenId,
-    pathname: appPathname,
-  });
-  const header = shouldMountAppHeader ? (
-    <StudioAppHeader appHeaderTitle={appHeaderTitle} />
-  ) : undefined;
-  const studioRuntimeManifest = studioManifest ?? runtimeManifest;
-  const activeStudioTheme =
-    studioRuntimeManifest.themes.find(
-      (theme) => theme.id === studioRuntimeManifest.activeThemeId,
-    ) ?? activeTheme;
-  const activeStudioThemeMode = resolveThemeMode(
-    studioRuntimeManifest.activeThemeMode,
-    activeThemeMode,
-  );
-  const studioRuntimeConfig = useMemo(
-    () => ({
-      disableActions: !previewMode,
-      wrapNode: studioWrapNode,
-      resolveNodeProps: studioResolveNodeProps,
-    }),
-    [previewMode],
-  );
+   const studioWrapNode = useMemo(
+     () =>
+       createStudioStationarySelectionWrapNode({
+         previewMode,
+         thirdPartySupport: STUDIO_EMPTY_THIRD_PARTY_SUPPORT,
+       }),
+     [previewMode],
+   );
+   const studioResolveNodeProps = useMemo(
+     () =>
+       createStudioInteractionPolicyResolver({
+         previewMode,
+         thirdPartySupport: STUDIO_EMPTY_THIRD_PARTY_SUPPORT,
+       }),
+     [previewMode],
+   );
+   const appHeaderTitle = resolveStudioAppHeaderTitle({
+     runtimeManifest,
+     studioManifest,
+     previewMode,
+     activeScreenId,
+     pathname: appPathname,
+   });
+   const header = shouldMountAppHeader ? (
+     <StudioAppHeader appHeaderTitle={appHeaderTitle} />
+   ) : undefined;
+   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
+   const activeStudioTheme =
+     studioRuntimeManifest.themes.find(
+       (theme) => theme.id === studioRuntimeManifest.activeThemeId,
+     ) ?? activeTheme;
+   const activeStudioThemeMode = resolveThemeMode(
+     studioRuntimeManifest.activeThemeMode,
+     activeThemeMode,
+   );
+   const studioRuntimeConfig = useMemo(
+     () => ({
+       disableActions: !previewMode,
+       wrapNode: studioWrapNode,
+       resolveNodeProps: studioResolveNodeProps,
+     }),
+     [previewMode, studioWrapNode, studioResolveNodeProps],
+   );
   const studioOutput = (
     <StationaryTapSelector
       isEditMode={!previewMode}
