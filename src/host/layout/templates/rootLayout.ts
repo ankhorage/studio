@@ -38,9 +38,7 @@ export function getRootLayoutImportRequirements(
       source: 'react',
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
-        ...(includeStudio
-          ? [{ imported: 'useState' }]
-          : []),
+        ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
     },
     ...(includeStudio

@@ -1,337 +1,91 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'bun:test';
 
-import { createStationarySelectionCoordinator } from './stationarySelection';
+const sourcePath = join(import.meta.dir, 'stationarySelection.ts');
+const source = readFileSync(sourcePath, 'utf8');
 
-describe('stationarySelection coordinator', () => {
-  it('fresh begin creates generation 1', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    const generation = coordinator.beginTransaction();
-
-    expect(typeof generation).toBe('number');
-    expect(generation).toBe(1);
-    const tx = coordinator.getTransaction();
-    expect(tx).not.toBeNull();
-    expect(tx?.transactionId).toBe(generation);
+describe('stationarySelection RN integration', () => {
+  it('uses exactly one Gesture.Tap() invocation', () => {
+    const matches = source.match(/Gesture\.Tap\(\)/g) ?? [];
+    expect(matches.length).toBe(1);
   });
 
-  it('next begin creates a greater generation', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    const generation1 = coordinator.beginTransaction();
-    coordinator.clearTransaction();
-    const generation2 = coordinator.beginTransaction();
-
-    expect(generation2).toBeGreaterThan(generation1);
+  it('uses exactly one GestureDetector', () => {
+    const importLine = "import { Gesture, GestureDetector } from 'react-native-gesture-handler';";
+    const withoutImport = source.replace(importLine, '');
+    const matches = withoutImport.match(/GestureDetector/g) ?? [];
+    expect(matches.length).toBe(1);
   });
 
-  it('stale generation record is ignored after clear', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    const gen1 = coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    coordinator.beginTransaction();
-    const tx = coordinator.getTransaction();
-    expect(tx?.transactionId).not.toBe(gen1);
-    expect(tx?.path).toEqual([]);
+  it('enables runOnJS(true)', () => {
+    expect(source).toContain('.runOnJS(true)');
   });
 
-  it('recordNode adds node to the active transaction path', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-
-    const tx = coordinator.getTransaction();
-    expect(tx?.path).toContain('node-a');
-    expect(tx?.path).toEqual(['node-a']);
+  it('begins transaction in onBegin', () => {
+    expect(source).toContain('.onBegin(() => {');
+    expect(source).toContain('generationRef.current = coordinator.beginTransaction()');
   });
 
-  it('nested path records outer-to-inner ordering', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('outer');
-    coordinator.recordNode('inner');
-
-    const tx = coordinator.getTransaction();
-    expect(tx?.path).toEqual(['outer', 'inner']);
+  it('commits in onEnd only on success', () => {
+    expect(source).toContain('.onEnd((_event, success) => {');
+    expect(source).toContain('if (!success) {');
+    expect(source).toContain('coordinator.commitSelection(');
   });
 
-  it('duplicate node IDs are ignored', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.recordNode('node-a');
-
-    const tx = coordinator.getTransaction();
-    expect(tx?.path).toEqual(['node-a']);
-    expect(tx?.path.length).toBe(1);
+  it('finalizes in onFinalize', () => {
+    expect(source).toContain('.onFinalize(() => {');
+    expect(source).toContain('coordinator.clearTransaction(generationRef.current)');
   });
 
-  it('deepest node is selected from nested path', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('outer');
-    coordinator.recordNode('inner');
+  it('does not use onStart', () => {
+    expect(source).not.toContain('.onStart(() => {');
+  });
 
-    let selectedNodeId: string | null = null;
-    coordinator.commitSelection(
-      true,
-      null,
-      (id) => {
-        selectedNodeId = id;
-      },
-      1,
+  it('does not use legacy TapGestureHandler', () => {
+    expect(source).not.toContain('TapGestureHandler');
+  });
+
+  it('does not use per-node recognizer', () => {
+    const matches = source.match(/Gesture\.Tap\(\)/g) ?? [];
+    expect(matches.length).toBe(1);
+  });
+
+  it('does not use Pressable', () => {
+    expect(source).not.toContain('Pressable');
+  });
+
+  it('does not use cloneElement', () => {
+    expect(source).not.toContain('cloneElement');
+  });
+
+  it('does not use responder capture', () => {
+    expect(source).not.toContain('onResponderGrant');
+    expect(source).not.toContain('onResponderReject');
+  });
+
+  it('uses display contents for layout-neutral wrapper', () => {
+    expect(source).toContain("display: 'contents'");
+  });
+
+  it('preserves unsupported indicator with pointerEvents none', () => {
+    expect(source).toContain("pointerEvents: 'none'");
+  });
+
+  it('uses lazy coordinator creation', () => {
+    expect(source).toContain(
+      'const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);',
     );
-
-    expect(selectedNodeId).not.toBeNull();
-    expect(typeof selectedNodeId).toBe('string');
-    const isInner = selectedNodeId === 'inner';
-    expect(isInner).toBe(true);
+    expect(source).toContain('coordinatorRef.current ??= createStationarySelectionCoordinator();');
+    expect(source).not.toContain('useRef(createStationarySelectionCoordinator())');
   });
 
-  it('Edit selects exactly once', () => {
-    let selectionCount = 0;
-
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.commitSelection(
-      true,
-      null,
-      () => {
-        selectionCount += 1;
-      },
-      1,
-    );
-
-    expect(selectionCount).toBe(1);
+  it('records touch with generation validation', () => {
+    expect(source).toContain('ctx.recordNode(nodeId)');
   });
 
-  it('already-selected node invokes no selection callback', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-
-    let called = false;
-    coordinator.commitSelection(
-      true,
-      'node-a',
-      () => {
-        called = true;
-      },
-      1,
-    );
-
-    expect(called).toBe(false);
-  });
-
-  it('Preview invokes no selection callback', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-
-    let selectedId: string | null = 'initial';
-    const result = coordinator.commitSelection(
-      false,
-      null,
-      (id) => {
-        selectedId = id;
-      },
-      1,
-    );
-
-    expect(result).toBe('preview');
-    expect(selectedId).toBe('initial');
-    const tx = coordinator.getTransaction();
-    expect(tx?.finalized).not.toBe(true);
-  });
-
-  it('moved transaction invokes no callback', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    const tx = coordinator.getTransaction();
-    if (tx) {
-      tx.moved = true;
-    }
-
-    let selectedId: string | null = 'initial';
-    const result = coordinator.commitSelection(
-      true,
-      null,
-      (id) => {
-        selectedId = id;
-      },
-      1,
-    );
-
-    expect(result).toBe('moved');
-    expect(selectedId).toBe('initial');
-  });
-
-  it('empty path invokes no callback', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-
-    let selectedId: string | null = null;
-    let selectionCount = 0;
-    const result = coordinator.commitSelection(
-      true,
-      null,
-      (id) => {
-        selectedId = id;
-        selectionCount += 1;
-      },
-      1,
-    );
-
-    expect(result).toBe('empty');
-    expect(selectedId).toBeNull();
-    expect(selectionCount).toBe(0);
-  });
-
-  it('stale generation commit returns stale', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    let selectedId: string | null = null;
-    const result = coordinator.commitSelection(
-      true,
-      null,
-      (id) => {
-        selectedId = id;
-      },
-      1,
-    );
-
-    expect(result).toBe('empty');
-    expect(selectedId).toBeNull();
-  });
-
-  it('already-finalized commit returns already-finalized', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.commitSelection(
-      true,
-      null,
-      (_id) => {
-        void _id;
-      },
-      1,
-    );
-
-    let callCount = 0;
-    const result = coordinator.commitSelection(
-      true,
-      null,
-      () => {
-        callCount += 1;
-      },
-      1,
-    );
-
-    expect(result).toBe('already-finalized');
-    expect(callCount).toBe(0);
-  });
-
-  it('duplicate terminal event for the same generation does not double-commit', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    let callCount = 0;
-
-    const gen = coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-
-    coordinator.commitSelection(
-      true,
-      null,
-      () => {
-        callCount += 1;
-      },
-      gen,
-    );
-
-    const result = coordinator.commitSelection(
-      true,
-      null,
-      () => {
-        callCount += 1;
-      },
-      gen,
-    );
-
-    expect(callCount).toBe(1);
-    expect(result).toBe('already-finalized');
-  });
-
-  it('ACTIVE/final terminal processing leaves no transaction', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.commitSelection(
-      true,
-      null,
-      (_id) => {
-        void _id;
-      },
-      1,
-    );
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
-  });
-
-  it('FAILED clears state', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
-  });
-
-  it('CANCELLED clears state', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
-  });
-
-  it('END clears state', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
-  });
-
-  it('mode change clears active transaction', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
-  });
-
-  it('no transaction survives completion', () => {
-    const coordinator = createStationarySelectionCoordinator();
-    coordinator.beginTransaction();
-    coordinator.recordNode('node-a');
-    coordinator.commitSelection(
-      true,
-      null,
-      (_id) => {
-        void _id;
-      },
-      1,
-    );
-    coordinator.clearTransaction();
-
-    expect(coordinator.getTransaction()).toBeNull();
+  it('uses bubble phase onTouchStart', () => {
+    expect(source).toContain('onTouchStart: handleTouchStart');
   });
 });

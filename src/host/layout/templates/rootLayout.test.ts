@@ -227,7 +227,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
   expect(studioShellSource).toContain('disableActions: !previewMode');
-    expect(studioShellSource).toContain('wrapNode: studioWrapNode');
+  expect(studioShellSource).toContain('wrapNode: studioWrapNode');
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );

@@ -3,154 +3,50 @@ import React from 'react';
 import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
-export type CommitSelectionResult =
-  'committed' | 'already-selected' | 'preview' | 'moved' | 'empty' | 'stale' | 'already-finalized';
+import type { StationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
+import { createStationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
 
-export interface TransactionState {
-  readonly transactionId: number;
-  readonly path: string[];
-  moved: boolean;
-  finalized: boolean;
+export type {
+  CommitSelectionResult,
+  StationarySelectionCoordinator,
+  TransactionState,
+} from './stationarySelectionCoordinator.js';
+
+interface TrackerContextValue {
+  readonly recordNode: (nodeId: string) => void;
 }
 
-export interface StationarySelectionCoordinator {
-  readonly trackerRef: React.MutableRefObject<TransactionState | null>;
-  beginTransaction(): number;
-  recordNode(nodeId: string): void;
-  commitSelection(
-    isEditMode: boolean,
-    selectedNodeId: string | null,
-    selectNode: (id: string | null) => void,
-    generation: number,
-  ): CommitSelectionResult;
-  clearTransaction(): void;
-  getTransaction(): TransactionState | null;
-}
-
-const TrackerContext = React.createContext<React.MutableRefObject<TransactionState | null> | null>(
-  null,
-);
-
-let nextTransactionId = 1;
-
-export function createStationarySelectionCoordinator(): StationarySelectionCoordinator {
-  const trackerRef = { current: null as TransactionState | null };
-
-  function beginTransaction(): number {
-    const tx = {
-      transactionId: nextTransactionId++,
-      path: [],
-      moved: false,
-      finalized: false,
-    };
-    trackerRef.current = tx;
-    return tx.transactionId;
-  }
-
-  function recordNode(nodeId: string): void {
-    const tx = trackerRef.current;
-
-    if (!tx || tx.finalized) {
-      return;
-    }
-
-    if (!tx.path.includes(nodeId)) {
-      tx.path.push(nodeId);
-    }
-  }
-
-  function commitSelection(
-    isEditMode: boolean,
-    selectedNodeId: string | null,
-    selectNode: (id: string | null) => void,
-    generation: number,
-  ): CommitSelectionResult {
-    if (!isEditMode) {
-      return 'preview';
-    }
-
-    const tx = trackerRef.current;
-
-    if (!tx) {
-      return 'empty';
-    }
-
-    if (tx.transactionId !== generation) {
-      return 'stale';
-    }
-
-    if (tx.finalized) {
-      return 'already-finalized';
-    }
-
-    if (tx.moved) {
-      return 'moved';
-    }
-
-    if (tx.path.length === 0) {
-      return 'empty';
-    }
-
-    const [deepestNodeId] = tx.path;
-
-    if (deepestNodeId != null && deepestNodeId === selectedNodeId) {
-      return 'already-selected';
-    }
-
-    if (deepestNodeId != null && deepestNodeId !== selectedNodeId) {
-      selectNode(deepestNodeId);
-    }
-
-    tx.finalized = true;
-
-    return 'committed';
-  }
-
-  function clearTransaction(): void {
-    trackerRef.current = null;
-  }
-
-  function getTransaction(): TransactionState | null {
-    return trackerRef.current;
-  }
-
-  return {
-    trackerRef,
-    beginTransaction,
-    recordNode,
-    commitSelection,
-    clearTransaction,
-    getTransaction,
-  };
-}
+const TrackerContext = React.createContext<TrackerContextValue | null>(null);
 
 function StudioNodeTouchRecorder(props: {
   readonly nodeId: string | undefined;
   readonly showUnsupportedIndicator: boolean;
   readonly children: React.ReactNode;
 }): React.JSX.Element {
-  const tracker = React.useContext(TrackerContext);
+  const ctx = React.useContext(TrackerContext);
   const nodeIdRef = React.useRef(props.nodeId);
 
   nodeIdRef.current = props.nodeId;
 
-  function handleTouchStartCapture(): void {
-    const tx = tracker?.current;
-
-    if (!tx || tx.finalized || !nodeIdRef.current) {
+  function handleTouchStart(): void {
+    if (!ctx) {
       return;
     }
 
-    if (!tx.path.includes(nodeIdRef.current)) {
-      tx.path.push(nodeIdRef.current);
+    const nodeId = nodeIdRef.current;
+
+    if (!nodeId) {
+      return;
     }
+
+    ctx.recordNode(nodeId);
   }
 
   return React.createElement(
     View,
     {
-      style: { position: 'relative' },
-      onTouchStart: handleTouchStartCapture,
+      style: { display: 'contents' },
+      onTouchStart: handleTouchStart,
     },
     props.showUnsupportedIndicator
       ? React.createElement(View, {
@@ -211,38 +107,51 @@ function StationaryTapSelector(props: {
   readonly selectNode: (id: string | null) => void;
   readonly children: React.ReactNode;
 }): React.JSX.Element {
-  const coordinatorRef = React.useRef(createStationarySelectionCoordinator());
+  const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);
+
+  coordinatorRef.current ??= createStationarySelectionCoordinator();
+
   const coordinator = coordinatorRef.current;
 
   const isEditModeRef = React.useRef(props.isEditMode);
   const selectedNodeIdRef = React.useRef(props.selectedNodeId);
   const selectNodeRef = React.useRef(props.selectNode);
+  const generationRef = React.useRef(0);
 
   isEditModeRef.current = props.isEditMode;
   selectedNodeIdRef.current = props.selectedNodeId;
   selectNodeRef.current = props.selectNode;
 
-  const generationRef = React.useRef(0);
+  const contextValue = React.useMemo(
+    () => ({
+      recordNode: (nodeId: string) => coordinator.recordNode(nodeId, generationRef.current),
+    }),
+    [coordinator],
+  );
 
   const tapGesture = React.useMemo(() => {
     return Gesture.Tap()
       .maxDeltaX(5)
       .maxDeltaY(5)
       .maxDuration(500)
-      .onStart(() => {
+      .runOnJS(true)
+      .onBegin(() => {
         generationRef.current = coordinator.beginTransaction();
       })
       .onEnd((_event, success) => {
-        if (success) {
-          coordinator.commitSelection(
-            isEditModeRef.current,
-            selectedNodeIdRef.current,
-            selectNodeRef.current,
-            generationRef.current,
-          );
+        if (!success) {
+          return;
         }
 
-        coordinator.clearTransaction();
+        coordinator.commitSelection(
+          isEditModeRef.current,
+          selectedNodeIdRef.current,
+          selectNodeRef.current,
+          generationRef.current,
+        );
+      })
+      .onFinalize(() => {
+        coordinator.clearTransaction(generationRef.current);
       });
   }, [coordinator]);
 
@@ -252,7 +161,7 @@ function StationaryTapSelector(props: {
 
   return React.createElement(
     TrackerContext.Provider,
-    { value: coordinator.trackerRef },
+    { value: contextValue },
     React.createElement(
       GestureDetector,
       { gesture: tapGesture },
