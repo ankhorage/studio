@@ -182,8 +182,6 @@ describe('GeneratedAppFileGenerator', () => {
 
     expect(reactImports).toHaveLength(1);
     expect(reactImports[0]).toContain('useState');
-    expect(reactImports[0]).toContain('cloneElement');
-    expect(reactImports[0]).toContain('isValidElement');
     expect(reactImports[0]).toContain('type ReactNode');
     expect(reactImports[0]?.match(/\buseState\b/gu)?.length).toBe(1);
   });

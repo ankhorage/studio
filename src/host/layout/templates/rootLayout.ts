@@ -39,7 +39,7 @@ export function getRootLayoutImportRequirements(
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
         ...(includeStudio
-          ? [{ imported: 'cloneElement' }, { imported: 'isValidElement' }, { imported: 'useState' }]
+          ? [{ imported: 'useState' }]
           : []),
       ],
     },
@@ -47,9 +47,23 @@ export function getRootLayoutImportRequirements(
       ? [
           {
             source: 'react-native',
+            namedImports: [],
+          },
+        ]
+      : []),
+    ...(includeStudio
+      ? [
+          {
+            source: '@ankhorage/studio/runtime',
             namedImports: [
-              { imported: 'Pressable' },
-              { imported: 'GestureResponderEvent', typeOnly: true },
+              { imported: 'createStudioInteractionPolicyResolver' },
+            ],
+          },
+          {
+            source: '@ankhorage/studio/runtime/stationarySelection',
+            namedImports: [
+              { imported: 'createStudioStationarySelectionWrapNode' },
+              { imported: 'StationaryTapSelector' },
             ],
           },
         ]
@@ -483,78 +497,6 @@ const shouldMountAppHeader =
   const indentedStudioShellBlock =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
   const indentedInnerNavigationJsx = indentGeneratedBlock(innerNavigation.jsx, '    ');
-  const studioSelectionRuntimeHelpers = includeStudio
-    ? `const studioSelectionInteractionStyle = { display: 'contents' as const };
-
-function wrapStudioRuntimeNode(args: {
-  readonly node: { readonly id?: string };
-  readonly rendered: ReactNode;
-  readonly isRoot: boolean;
-}): ReactNode {
-  return (
-    <StudioRuntimeNodeWrapper
-      nodeId={args.node.id}
-      rendered={args.rendered}
-    />
-  );
-}
-
-function StudioRuntimeNodeWrapper(props: {
-  readonly nodeId?: string;
-  readonly rendered: ReactNode;
-}): ReactNode {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const { previewMode, selectedNodeId, selectNode } = useStudio();
-  const { theme } = useZoraTheme();
-
-  if (previewMode || !props.nodeId) {
-    return props.rendered;
-  }
-
-  const selected = selectedNodeId === props.nodeId;
-  const selectionStyle = selected
-    ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
-    : isFocused
-      ? { boxShadow: \`0 0 0 2px \${theme.colors.primary}\` }
-      : isHovered
-        ? { boxShadow: \`0 0 0 1px \${theme.colors.primary}\` }
-        : undefined;
-
-  const renderedNode = isValidElement<{ readonly style?: unknown; readonly onPress?: unknown }>(
-    props.rendered,
-  )
-    ? cloneElement(props.rendered, {
-        style: [props.rendered.props.style, selectionStyle],
-        onPress: (event: GestureResponderEvent) => {
-          event.stopPropagation();
-          selectNode(props.nodeId ?? null);
-        },
-      })
-    : props.rendered;
-
-  return (
-    <Pressable
-      accessibilityLabel={\`Select \${props.nodeId}\`}
-      accessibilityState={{ selected }}
-      onHoverIn={() => setIsHovered(true)}
-      onHoverOut={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onPress={(event: GestureResponderEvent) => {
-        event.stopPropagation();
-        selectNode(props.nodeId ?? null);
-      }}
-      style={studioSelectionInteractionStyle}
-    >
-      {renderedNode}
-    </Pressable>
-  );
-}
-
-`
-    : '';
-
   return `
 ${allImports}
 
@@ -566,7 +508,7 @@ const runtimeComponentRegistry = createComponentRegistry(
   APP_EXTENSION_COMPONENT_REGISTRY,
 );
 
-${studioSelectionRuntimeHelpers}function resolveZoraProviderTheme(
+function resolveZoraProviderTheme(
   theme: AppManifest['themes'][number],
   mode: NonNullable<AppManifest['activeThemeMode']>,
 ) {
@@ -668,6 +610,8 @@ function StudioShell({
     activeScreenId,
     manifest: studioManifest,
     previewMode,
+    selectedNodeId,
+    selectNode,
     setLastNonAdminLocation,
   } = useStudio();
   useEffect(() => {
@@ -677,6 +621,16 @@ function StudioShell({
     });
     if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
   }, [appLocation, appPathname, setLastNonAdminLocation]);
+
+  const studioThirdPartySupport = {} as const;
+  const studioWrapNode = createStudioStationarySelectionWrapNode({
+    previewMode,
+    thirdPartySupport: studioThirdPartySupport,
+  });
+  const studioResolveNodeProps = createStudioInteractionPolicyResolver({
+    previewMode,
+    thirdPartySupport: studioThirdPartySupport,
+  });
   const appHeaderTitle = resolveStudioAppHeaderTitle({
     runtimeManifest,
     studioManifest,
@@ -699,14 +653,21 @@ function StudioShell({
   const studioRuntimeConfig = useMemo(
     () => ({
       disableActions: !previewMode,
-      wrapNode: wrapStudioRuntimeNode,
+      wrapNode: studioWrapNode,
+      resolveNodeProps: studioResolveNodeProps,
     }),
     [previewMode],
   );
   const studioOutput = (
-    <RuntimeRendererConfigProvider value={studioRuntimeConfig}>
-      {output}
-    </RuntimeRendererConfigProvider>
+    <StationaryTapSelector
+      isEditMode={!previewMode}
+      selectedNodeId={selectedNodeId}
+      selectNode={selectNode}
+    >
+      <RuntimeRendererConfigProvider value={studioRuntimeConfig}>
+        {output}
+      </RuntimeRendererConfigProvider>
+    </StationaryTapSelector>
   );
 
   return (
