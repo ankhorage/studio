@@ -53,16 +53,24 @@ function getPackageOwnedRuntimeImports(): string {
 } from '@ankhorage/runtime';
 import {
   STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
+  STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
   useRuntimeAction,
 } from '@ankhorage/studio/runtime';
-import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';`;
+import {
+  APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
+  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} from '@/generated/appExtensionRegistry';`;
 }
 
 function getGeneratedRuntimeRegistryDeclarations(): string {
   return `const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
   STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-);`;
+);
+const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
+  ...STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} as const;`;
 }
 
 function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): string {

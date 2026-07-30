@@ -6,13 +6,15 @@ import {
   resolveExpoRuntimeNativeOutput,
 } from '@ankhorage/expo-runtime/planning';
 
+import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility.js';
+
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
 const CONTRACTS_VERSION = '^4.0.0';
 const RUNTIME_VERSION = '^0.3.0';
 const SUPABASE_AUTH_VERSION = '^1.0.0';
-const ZORA_VERSION = '^2.8.7';
+const ZORA_VERSION = '^2.9.0';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 
@@ -282,7 +284,7 @@ export function getBabelConfigJs() {
           },
         },
       ],
-      'react-native-reanimated/plugin',
+      '${EXPO_SDK_54_ANIMATION_COMPATIBILITY.babelPlugin}',
     ],
   };
 };
@@ -357,12 +359,12 @@ export function getPackageJson(args: {
       'react-dom': '19.1.0',
       'react-native': '0.81.5',
       'react-native-gesture-handler': '~2.28.0',
-      'react-native-reanimated': '~4.1.1',
+      'react-native-reanimated': EXPO_SDK_54_ANIMATION_COMPATIBILITY.reanimated,
       'react-native-safe-area-context': '~5.6.0',
       'react-native-screens': '~4.16.0',
       'react-native-svg': '~15.12.1',
       'react-native-web': '^0.21.2',
-      'react-native-worklets': '0.5.1',
+      'react-native-worklets': EXPO_SDK_54_ANIMATION_COMPATIBILITY.worklets,
       'reanimated-color-picker': '^4.2.0',
     },
     devDependencies: {

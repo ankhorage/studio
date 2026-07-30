@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.10.5",
+      "value": "v0.10.9",
       "color": "cb3837"
     },
     {
@@ -596,8 +596,10 @@
       "path": "src/host/generatedAdminExpoWeb.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/installedPackageProvenance.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/semverRange.ts",
         "src/host/templateRegistry/index.ts"
       ],
       "exports": []
@@ -737,6 +739,23 @@
       ]
     },
     {
+      "path": "src/host/installedPackageProvenance.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/installedPackageProvenance.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/installedPackageProvenance.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "bunLockfileReferencesPackageVersion",
+        "InstalledPackageProvenance",
+        "isPathInsideResolved",
+        "resolveInstalledPackageProvenance"
+      ]
+    },
+    {
       "path": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/auth/resolveAuthLayoutPlan.ts"],
@@ -793,6 +812,12 @@
         "src/studioAdminRouteModel.ts"
       ],
       "exports": ["GeneratedAppFileGenerationOptions", "GeneratedAppFileGenerator", "GeneratedFile"]
+    },
+    {
+      "path": "src/host/layout/templates/auth/adapter.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/templates/auth/adapter.ts"],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/auth/adapter.ts",
@@ -890,12 +915,6 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/utils/escapeStringLiteral.ts"],
       "exports": ["getIndexRedirectRouteTsx"]
-    },
-    {
-      "path": "src/host/layout/templates/rootLayout.selectionDom.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/layout/templates/rootLayout.ts"],
-      "exports": []
     },
     {
       "path": "src/host/layout/templates/rootLayout.test.ts",
@@ -1012,10 +1031,35 @@
       "exports": []
     },
     {
+      "path": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+        "src/host/orchestrator/templates.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["EXPO_SDK_54_ANIMATION_COMPATIBILITY"]
+    },
+    {
+      "path": "src/host/orchestrator/generatedAppFiles.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/generatedAppFiles.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/generatedAppFiles.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/zoraExtensions/index.ts"],
-      "exports": ["GeneratedAppFilesOptions", "syncGeneratedAppFiles"]
+      "exports": [
+        "createGeneratedAppExtensionRegistrySource",
+        "GeneratedAppFilesOptions",
+        "syncGeneratedAppFiles"
+      ]
     },
     {
       "path": "src/host/orchestrator/generatedRouteCleanup.ts",
@@ -1168,6 +1212,18 @@
       "exports": ["ProjectScaffolder"]
     },
     {
+      "path": "src/host/orchestrator/semverRange.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/semverRange.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/semverRange.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["satisfiesCaretSemverRange"]
+    },
+    {
       "path": "src/host/orchestrator/studioInfraUp.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1180,13 +1236,16 @@
     {
       "path": "src/host/orchestrator/templates.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/templates.ts"],
+      "dependencies": [
+        "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+        "src/host/orchestrator/templates.ts"
+      ],
       "exports": []
     },
     {
       "path": "src/host/orchestrator/templates.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/host/orchestrator/expoSdk54AnimationCompatibility.ts"],
       "exports": [
         "GeneratedAuthProvider",
         "GeneratedStorageProvider",
@@ -1905,28 +1964,113 @@
       "path": "src/runtime/appExtensionRegistry.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"]
+      "exports": [
+        "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY",
+        "STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT"
+      ]
     },
     {
       "path": "src/runtime/index.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
+        "CommitSelectionResult",
         "ComponentRegistry",
+        "composeInteractionPolicyResolver",
+        "createInteractionPolicyResolver",
+        "createStationarySelectionCoordinator",
         "createStudioActionSuppressionConfig",
+        "createStudioInteractionPolicyResolver",
         "createStudioPreviewComponentRegistry",
         "createStudioPreviewRuntimeConfig",
+        "createStudioStationarySelectionWrapNode",
         "executeRuntimeAction",
+        "InteractionPolicy",
+        "InteractionPolicyNodePropsResolver",
+        "InteractionPolicyResolveArgs",
+        "InteractionPolicyResolverArgs",
+        "isComponentSupported",
         "resolveStudioLocalizationPreview",
         "shouldSuppressStudioRuntimeActions",
+        "StationarySelectionCoordinator",
+        "StationaryTapSelector",
         "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY",
+        "STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT",
         "STUDIO_PREVIEW_COMPONENT_REGISTRY",
+        "StudioInteractionPolicyResolverArgs",
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput",
         "StudioPreviewRegistryOptions",
         "StudioPreviewRuntimeConfigOptions",
+        "ThirdPartyComponentSupport",
+        "TransactionState",
         "useRuntimeAction",
-        "UseRuntimeActionOptions"
+        "UseRuntimeActionOptions",
+        "useStudioUnsupportedNodeMeasurement"
+      ]
+    },
+    {
+      "path": "src/runtime/indicatorRefreshCoordinator.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/indicatorRefreshCoordinator.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/indicatorRefreshCoordinator.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AnimationFrameScheduler",
+        "createIndicatorRefreshCoordinator",
+        "IndicatorRefreshCoordinator"
+      ]
+    },
+    {
+      "path": "src/runtime/indicatorSettleCoordinator.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/indicatorSettleCoordinator.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/indicatorSettleCoordinator.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createIndicatorSettleCoordinator",
+        "IndicatorSettleCoordinator",
+        "IndicatorSettleCoordinatorOptions"
+      ]
+    },
+    {
+      "path": "src/runtime/interactionPolicy.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/interactionPolicyCore.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/interactionPolicy.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/interactionPolicyCore.ts"],
+      "exports": [
+        "createStudioInteractionPolicyResolver",
+        "InteractionPolicy",
+        "StudioInteractionPolicyResolverArgs",
+        "ThirdPartyComponentSupport"
+      ]
+    },
+    {
+      "path": "src/runtime/interactionPolicyCore.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "composeInteractionPolicyResolver",
+        "createInteractionPolicyResolver",
+        "InteractionPolicy",
+        "InteractionPolicyNodePropsResolver",
+        "InteractionPolicyResolveArgs",
+        "InteractionPolicyResolverArgs",
+        "isComponentSupported",
+        "ThirdPartyComponentSupport"
       ]
     },
     {
@@ -1952,7 +2096,12 @@
     {
       "path": "src/runtime/previewRuntimeConfig.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/runtime/actionSuppression.ts", "src/runtime/previewRegistry.ts"],
+      "dependencies": [
+        "src/runtime/actionSuppression.ts",
+        "src/runtime/interactionPolicy.ts",
+        "src/runtime/interactionPolicyCore.ts",
+        "src/runtime/previewRegistry.ts"
+      ],
       "exports": ["createStudioPreviewRuntimeConfig", "StudioPreviewRuntimeConfigOptions"]
     },
     {
@@ -1972,6 +2121,65 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelection.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelection.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/runtime/indicatorRefreshCoordinator.ts",
+        "src/runtime/indicatorSettleCoordinator.ts",
+        "src/runtime/stationarySelectionCoordinator.ts",
+        "src/runtime/stationarySelectionInputState.ts"
+      ],
+      "exports": [
+        "CommitSelectionResult",
+        "createStudioStationarySelectionWrapNode",
+        "StationarySelectionCoordinator",
+        "StationaryTapSelector",
+        "TransactionState",
+        "useStudioUnsupportedNodeMeasurement"
+      ]
+    },
+    {
+      "path": "src/runtime/stationarySelectionCoordinator.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/stationarySelectionCoordinator.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelectionCoordinator.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "CommitSelectionResult",
+        "createStationarySelectionCoordinator",
+        "StationarySelectionCoordinator",
+        "TransactionState"
+      ]
+    },
+    {
+      "path": "src/runtime/stationarySelectionInputState.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/stationarySelectionInputState.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelectionInputState.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStationarySelectionInputState",
+        "StationaryPointerInput",
+        "StationarySelectionInput",
+        "StationarySelectionInputState",
+        "StationaryTouchInput"
+      ]
     },
     {
       "path": "src/runtime/useRuntimeAction.ts",
@@ -6383,7 +6591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/authFlowContract.test.ts",
-        "line": 6,
+        "line": 8,
         "column": 1
       }
     },
@@ -7841,7 +8049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 41,
+        "line": 43,
         "column": 1
       }
     },
@@ -7850,7 +8058,70 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 97,
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
+      "name": "visit",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 343,
+        "column": 9
+      }
+    },
+    {
+      "name": "verifyDesktopSelectionAndUnsupportedGeometry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 503,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectCapturedLayoutsToMatch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 708,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForUnsupportedGeometry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 735,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForStudioSmokeState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 754,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectRectToMatch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 773,
+        "column": 1
+      }
+    },
+    {
+      "name": "rectsOverlap",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 780,
         "column": 1
       }
     },
@@ -7859,16 +8130,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 183,
+        "line": 787,
         "column": 1
       }
     },
     {
-      "name": "copyGeneratedDirectDependencies",
+      "name": "installGeneratedProjectDependencies",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 222,
+        "line": 825,
+        "column": 1
+      }
+    },
+    {
+      "name": "stageLocalStudioPackage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 859,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeSmokeRuntimeExtensions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 888,
         "column": 1
       }
     },
@@ -7877,7 +8166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 251,
+        "line": 1159,
         "column": 1
       }
     },
@@ -7886,7 +8175,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 269,
+        "line": 1182,
         "column": 1
       }
     },
@@ -7895,7 +8184,70 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 285,
+        "line": 1198,
+        "column": 1
+      }
+    },
+    {
+      "name": "startSmokeStudioApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1220,
+        "column": 1
+      }
+    },
+    {
+      "name": "handleSmokeStudioApiRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1245,
+        "column": 1
+      }
+    },
+    {
+      "name": "listenOnLocalhost",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1285,
+        "column": 1
+      }
+    },
+    {
+      "name": "closeHttpServer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1299,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJsonRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1308,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeJsonResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1324,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeCorsHeaders",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1331,
         "column": 1
       }
     },
@@ -7904,88 +8256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 301,
-        "column": 1
-      }
-    },
-    {
-      "name": "linkSmokeNodeModules",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 314,
-        "column": 1
-      }
-    },
-    {
-      "name": "linkNodeModuleEntries",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 332,
-        "column": 1
-      }
-    },
-    {
-      "name": "linkScopedNodeModuleEntries",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 369,
-        "column": 1
-      }
-    },
-    {
-      "name": "symlinkIfMissing",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 384,
-        "column": 1
-      }
-    },
-    {
-      "name": "copyNodeModuleEntry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 393,
-        "column": 1
-      }
-    },
-    {
-      "name": "copyNodeModulePackage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 404,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveSmokeNodeModuleSource",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 412,
-        "column": 1
-      }
-    },
-    {
-      "name": "getNodeModuleTargetPath",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 429,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNodeErrorWithCode",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 441,
+        "line": 1337,
         "column": 1
       }
     },
@@ -7994,7 +8265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 445,
+        "line": 1350,
         "column": 1
       }
     },
@@ -8003,7 +8274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 462,
+        "line": 1367,
         "column": 1
       }
     },
@@ -8012,7 +8283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 479,
+        "line": 1384,
         "column": 1
       }
     },
@@ -8021,7 +8292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 485,
+        "line": 1390,
         "column": 1
       }
     },
@@ -8030,7 +8301,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 491,
+        "line": 1396,
         "column": 1
       }
     },
@@ -8039,7 +8310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 507,
+        "line": 1412,
         "column": 1
       }
     },
@@ -8048,7 +8319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 612,
+        "line": 1732,
         "column": 1
       }
     },
@@ -8057,7 +8328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 627,
+        "line": 1747,
         "column": 1
       }
     },
@@ -8066,7 +8337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 631,
+        "line": 1751,
         "column": 1
       }
     },
@@ -8075,7 +8346,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 640,
+        "line": 1760,
         "column": 1
       }
     },
@@ -8084,7 +8355,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 651,
+        "line": 1771,
         "column": 1
       }
     },
@@ -8346,6 +8617,42 @@
       "sourceLocation": {
         "filePath": "src/host/http/serverWithSecrets.ts",
         "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTemporaryRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/installedPackageProvenance.test.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPathInsideResolved",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/installedPackageProvenance.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveInstalledPackageProvenance",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/installedPackageProvenance.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "bunLockfileReferencesPackageVersion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/installedPackageProvenance.ts",
+        "line": 37,
         "column": 1
       }
     },
@@ -8750,7 +9057,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 61,
+        "line": 65,
         "column": 1
       }
     },
@@ -8759,7 +9066,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 68,
+        "line": 76,
         "column": 1
       }
     },
@@ -8768,7 +9075,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 91,
+        "line": 99,
         "column": 11
       }
     },
@@ -8777,7 +9084,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 103,
+        "line": 111,
         "column": 11
       }
     },
@@ -8786,7 +9093,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 428,
+        "line": 436,
         "column": 1
       }
     },
@@ -8795,7 +9102,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 442,
+        "line": 450,
         "column": 1
       }
     },
@@ -8804,7 +9111,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 449,
+        "line": 457,
         "column": 1
       }
     },
@@ -8813,7 +9120,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 472,
+        "line": 480,
         "column": 1
       }
     },
@@ -8822,7 +9129,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 486,
+        "line": 494,
         "column": 1
       }
     },
@@ -8831,7 +9138,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 490,
+        "line": 498,
         "column": 1
       }
     },
@@ -8840,7 +9147,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 534,
+        "line": 542,
         "column": 1
       }
     },
@@ -8849,7 +9156,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 542,
+        "line": 550,
         "column": 1
       }
     },
@@ -8858,7 +9165,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 547,
+        "line": 555,
         "column": 1
       }
     },
@@ -9137,7 +9444,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 60,
+        "line": 67,
         "column": 1
       }
     },
@@ -9146,7 +9453,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 64,
+        "line": 71,
         "column": 1
       }
     },
@@ -9155,7 +9462,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 71,
+        "line": 78,
         "column": 1
       }
     },
@@ -9326,7 +9633,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 102,
+        "line": 120,
         "column": 1
       }
     },
@@ -9335,7 +9642,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 110,
+        "line": 128,
         "column": 1
       }
     },
@@ -9344,7 +9651,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 114,
+        "line": 132,
         "column": 1
       }
     },
@@ -9353,7 +9660,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 133,
+        "line": 151,
         "column": 1
       }
     },
@@ -9362,7 +9669,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 156,
+        "line": 174,
         "column": 1
       }
     },
@@ -10033,6 +10340,33 @@
       }
     },
     {
+      "name": "parseSemanticVersion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "compareSemanticVersions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "satisfiesCaretSemverRange",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
       "name": "upProjectInfrastructure",
       "description": null,
       "sourceLocation": {
@@ -10046,7 +10380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 92,
+        "line": 94,
         "column": 1
       }
     },
@@ -10055,7 +10389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 100,
+        "line": 102,
         "column": 1
       }
     },
@@ -10064,7 +10398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 142,
+        "line": 144,
         "column": 1
       }
     },
@@ -10073,7 +10407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 156,
+        "line": 158,
         "column": 1
       }
     },
@@ -10082,7 +10416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 169,
+        "line": 171,
         "column": 1
       }
     },
@@ -10091,7 +10425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 191,
+        "line": 193,
         "column": 1
       }
     },
@@ -10100,7 +10434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 201,
+        "line": 203,
         "column": 1
       }
     },
@@ -10109,7 +10443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 205,
+        "line": 207,
         "column": 1
       }
     },
@@ -10118,7 +10452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 210,
+        "line": 212,
         "column": 1
       }
     },
@@ -10127,7 +10461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 224,
+        "line": 226,
         "column": 1
       }
     },
@@ -10136,7 +10470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 260,
+        "line": 262,
         "column": 1
       }
     },
@@ -10145,7 +10479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 268,
+        "line": 270,
         "column": 1
       }
     },
@@ -10154,7 +10488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 292,
+        "line": 294,
         "column": 1
       }
     },
@@ -10163,7 +10497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 381,
+        "line": 383,
         "column": 1
       }
     },
@@ -10172,7 +10506,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 405,
+        "line": 407,
         "column": 1
       }
     },
@@ -10181,7 +10515,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 410,
+        "line": 412,
         "column": 1
       }
     },
@@ -10190,7 +10524,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 425,
+        "line": 427,
         "column": 1
       }
     },
@@ -10910,7 +11244,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 36,
+        "line": 37,
         "column": 1
       }
     },
@@ -10919,7 +11253,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 50,
+        "line": 51,
         "column": 1
       }
     },
@@ -10928,7 +11262,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 56,
+        "line": 57,
         "column": 1
       }
     },
@@ -10937,7 +11271,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/zoraExtensions/index.ts",
-        "line": 70,
+        "line": 71,
         "column": 1
       }
     },
@@ -12706,6 +13040,168 @@
       }
     },
     {
+      "name": "createFakeFrameScheduler",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "createIndicatorRefreshCoordinator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestRefresh",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 18,
+        "column": 3
+      }
+    },
+    {
+      "name": "cancelPendingRefresh",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 30,
+        "column": 3
+      }
+    },
+    {
+      "name": "createFakeScheduler",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "createIndicatorSettleCoordinator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "clearPending",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.ts",
+        "line": 32,
+        "column": 3
+      }
+    },
+    {
+      "name": "cancel",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.ts",
+        "line": 40,
+        "column": 3
+      }
+    },
+    {
+      "name": "scheduleNext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.ts",
+        "line": 49,
+        "column": 3
+      }
+    },
+    {
+      "name": "sampleNext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorSettleCoordinator.ts",
+        "line": 59,
+        "column": 3
+      }
+    },
+    {
+      "name": "createStudioInteractionPolicyResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicy.ts",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "classifyComponent",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "isComponentSupported",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveInteractionPolicy",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInteractionPolicyResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "composeInteractionPolicyResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "composeInteractionPolicyResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "composeInteractionPolicyResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/interactionPolicyCore.ts",
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveStudioLocalizationPreview",
       "description": null,
       "sourceLocation": {
@@ -12728,7 +13224,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/previewRuntimeConfig.ts",
-        "line": 11,
+        "line": 15,
         "column": 14
       }
     },
@@ -12739,6 +13235,366 @@
         "filePath": "src/runtime/runtimeActions.ts",
         "line": 8,
         "column": 1
+      }
+    },
+    {
+      "name": "isWebElementLike",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "getWebResizeTarget",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
+      "name": "getWebDescendantResizeTargets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMeasuredRect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "unionRects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureRenderedBoxes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureNativeView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureRootView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureUnsupportedWebView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "areIndicatorRectsEqual",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 184,
+        "column": 1
+      }
+    },
+    {
+      "name": "useStudioUnsupportedNodeMeasurement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 207,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioNodeTouchRecorder",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 240,
+        "column": 1
+      }
+    },
+    {
+      "name": "recordInteraction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 251,
+        "column": 3
+      }
+    },
+    {
+      "name": "handlePointerDown",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 265,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleTouchStart",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 276,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleInteractionCompletion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 285,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleLayout",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 289,
+        "column": 3
+      }
+    },
+    {
+      "name": "createStudioStationarySelectionWrapNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 353,
+        "column": 1
+      }
+    },
+    {
+      "name": "StationaryTapSelector",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 387,
+        "column": 1
+      }
+    },
+    {
+      "name": "handleScroll",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 603,
+        "column": 11
+      }
+    },
+    {
+      "name": "handleResize",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 604,
+        "column": 11
+      }
+    },
+    {
+      "name": "createStationarySelectionCoordinator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "beginTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 31,
+        "column": 3
+      }
+    },
+    {
+      "name": "recordNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 42,
+        "column": 3
+      }
+    },
+    {
+      "name": "commitSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 54,
+        "column": 3
+      }
+    },
+    {
+      "name": "clearTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 101,
+        "column": 3
+      }
+    },
+    {
+      "name": "clearTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 102,
+        "column": 3
+      }
+    },
+    {
+      "name": "clearTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 103,
+        "column": 3
+      }
+    },
+    {
+      "name": "markMoved",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 118,
+        "column": 3
+      }
+    },
+    {
+      "name": "getTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionCoordinator.ts",
+        "line": 128,
+        "column": 3
+      }
+    },
+    {
+      "name": "pointer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "touch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "createHarness",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSupportedPointerInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "getInteractionKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStationarySelectionInputState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "clear",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 47,
+        "column": 3
+      }
+    },
+    {
+      "name": "recordNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 52,
+        "column": 3
+      }
+    },
+    {
+      "name": "beginTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 74,
+        "column": 3
+      }
+    },
+    {
+      "name": "completePendingInteraction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 81,
+        "column": 3
       }
     },
     {
@@ -15012,12 +15868,22 @@
       },
       {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/installedPackageProvenance.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/orchestrator/semverRange.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -15151,6 +16017,11 @@
         "sourcePath": "src/host/index.ts"
       },
       {
+        "fromPath": "src/host/installedPackageProvenance.test.ts",
+        "toPath": "src/host/installedPackageProvenance.ts",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
         "fromPath": "src/host/oauthFixtureConsumer.smoke.test.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
@@ -15207,6 +16078,16 @@
       },
       {
         "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/interactionPolicy.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/interactionPolicyCore.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/localizationPreview.ts",
         "sourcePath": "src/runtime/index.ts"
       },
@@ -15232,8 +16113,38 @@
       },
       {
         "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/stationarySelection.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
+        "toPath": "src/runtime/stationarySelectionCoordinator.ts",
+        "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/useRuntimeAction.ts",
         "sourcePath": "src/runtime/index.ts"
+      },
+      {
+        "fromPath": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toPath": "src/runtime/indicatorSettleCoordinator.ts",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/interactionPolicy.test.ts",
+        "toPath": "src/runtime/interactionPolicyCore.ts",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/interactionPolicy.ts",
+        "toPath": "src/runtime/interactionPolicyCore.ts",
+        "sourcePath": "src/runtime/interactionPolicy.ts"
       },
       {
         "fromPath": "src/runtime/previewRegistry.ts",
@@ -15247,6 +16158,16 @@
       },
       {
         "fromPath": "src/runtime/previewRuntimeConfig.ts",
+        "toPath": "src/runtime/interactionPolicy.ts",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromPath": "src/runtime/previewRuntimeConfig.ts",
+        "toPath": "src/runtime/interactionPolicyCore.ts",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromPath": "src/runtime/previewRuntimeConfig.ts",
         "toPath": "src/runtime/previewRegistry.ts",
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
@@ -15254,6 +16175,36 @@
         "fromPath": "src/runtime/registry.tsx",
         "toPath": "src/runtime/appExtensionRegistry.ts",
         "sourcePath": "src/runtime/registry.tsx"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/indicatorSettleCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/stationarySelectionCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/stationarySelectionInputState.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toPath": "src/runtime/stationarySelectionCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelectionInputState.test.ts",
+        "toPath": "src/runtime/stationarySelectionInputState.ts",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
       },
       {
         "fromPath": "src/runtime/useRuntimeAction.ts",
@@ -15551,6 +16502,21 @@
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toPath": "src/host/orchestrator/templates.ts",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/generatedAppFiles.test.ts",
+        "toPath": "src/host/orchestrator/generatedAppFiles.ts",
+        "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/generatedAppFiles.ts",
         "toPath": "src/host/zoraExtensions/index.ts",
         "sourcePath": "src/host/orchestrator/generatedAppFiles.ts"
@@ -15751,6 +16717,11 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/semverRange.test.ts",
+        "toPath": "src/host/orchestrator/semverRange.ts",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/studioInfraUp.ts",
         "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
         "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
@@ -15767,8 +16738,18 @@
       },
       {
         "fromPath": "src/host/orchestrator/templates.test.ts",
+        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/templates.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/templates.ts",
+        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
+        "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
@@ -15999,11 +16980,6 @@
         "fromPath": "src/host/layout/templates/redirect.ts",
         "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
         "sourcePath": "src/host/layout/templates/redirect.ts"
-      },
-      {
-        "fromPath": "src/host/layout/templates/rootLayout.selectionDom.test.ts",
-        "toPath": "src/host/layout/templates/rootLayout.ts",
-        "sourcePath": "src/host/layout/templates/rootLayout.selectionDom.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/rootLayout.test.ts",
@@ -16279,6 +17255,11 @@
         "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
         "toPath": "src/ui/admin/pages/adminThemeModel.ts",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/adapter.test.ts",
+        "toPath": "src/host/layout/templates/auth/adapter.ts",
+        "sourcePath": "src/host/layout/templates/auth/adapter.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/callback.ts",
@@ -22514,6 +23495,30 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "createScrollableRuntimeScreenRoot",
+        "callExpression": "createScrollableRuntimeScreenRoot",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "visit",
+        "callExpression": "visit",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "adminWebSmokeTest",
         "callExpression": "adminWebSmokeTest",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -22538,8 +23543,20 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "createAdminSmokeManifest",
+        "callExpression": "createAdminSmokeManifest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "createGeneratedAdminProject",
         "callExpression": "createGeneratedAdminProject",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "startSmokeStudioApi",
+        "callExpression": "startSmokeStudioApi",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22550,8 +23567,32 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
+        "toSymbol": "resolveInstalledPackageProvenance",
+        "callExpression": "resolveInstalledPackageProvenance",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "satisfiesCaretSemverRange",
+        "callExpression": "satisfiesCaretSemverRange",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "isPathInsideResolved",
+        "callExpression": "isPathInsideResolved",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "bunLockfileReferencesPackageVersion",
+        "callExpression": "bunLockfileReferencesPackageVersion",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22592,6 +23633,12 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "blockHotReloadConnections",
+        "callExpression": "page.blockHotReloadConnections",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "navigate",
         "callExpression": "page.navigate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -22610,8 +23657,26 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "callExpression": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "close",
         "callExpression": "page.close",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "close",
+        "callExpression": "studioApi?.close",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22627,6 +23692,120 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "waitForUnsupportedGeometry",
+        "callExpression": "waitForUnsupportedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "expectRectToMatch",
+        "callExpression": "expectRectToMatch",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "rectsOverlap",
+        "callExpression": "rectsOverlap",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "readRuntimeNodeCenter",
+        "callExpression": "page.readRuntimeNodeCenter",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "mouseClick",
+        "callExpression": "page.mouseClick",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "waitForStudioSmokeState",
+        "callExpression": "waitForStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "readSelectionRootId",
+        "callExpression": "page.readSelectionRootId",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "touchTap",
+        "callExpression": "page.touchTap",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "mouseDrag",
+        "callExpression": "page.mouseDrag",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "captureSmokeLayout",
+        "callExpression": "page.captureSmokeLayout",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "expectCapturedLayoutsToMatch",
+        "callExpression": "expectCapturedLayoutsToMatch",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectCapturedLayoutsToMatch",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForUnsupportedGeometry",
+        "toSymbol": "readUnsupportedGeometry",
+        "callExpression": "page.readUnsupportedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForUnsupportedGeometry",
+        "toSymbol": "readUnsupportedGeometryDiagnostics",
+        "callExpression": "page.readUnsupportedGeometryDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioSmokeState",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectRectToMatch",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "createGeneratedAdminProject",
         "toSymbol": "mkdir",
         "callExpression": "mkdir",
@@ -22636,12 +23815,6 @@
         "fromSymbol": "createGeneratedAdminProject",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "createGeneratedAdminProject",
-        "toSymbol": "linkSmokeNodeModules",
-        "callExpression": "linkSmokeNodeModules",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22682,8 +23855,8 @@
       },
       {
         "fromSymbol": "createGeneratedAdminProject",
-        "toSymbol": "copyGeneratedDirectDependencies",
-        "callExpression": "copyGeneratedDirectDependencies",
+        "toSymbol": "writeSmokeRuntimeExtensions",
+        "callExpression": "writeSmokeRuntimeExtensions",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22693,15 +23866,57 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
-        "fromSymbol": "copyGeneratedDirectDependencies",
+        "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "installGeneratedProjectDependencies",
+        "callExpression": "installGeneratedProjectDependencies",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectDependencies",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
-        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "copyNodeModulePackage",
-        "callExpression": "copyNodeModulePackage",
+        "fromSymbol": "installGeneratedProjectDependencies",
+        "toSymbol": "stageLocalStudioPackage",
+        "callExpression": "stageLocalStudioPackage",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectDependencies",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "stageLocalStudioPackage",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "stageLocalStudioPackage",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "stageLocalStudioPackage",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "stageLocalStudioPackage",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeSmokeRuntimeExtensions",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22712,8 +23927,8 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "createServer",
-        "callExpression": "createServer",
+        "toSymbol": "createNetServer",
+        "callExpression": "createNetServer",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22735,153 +23950,69 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "startSmokeStudioApi",
+        "toSymbol": "createHttpServer",
+        "callExpression": "createHttpServer",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "handleSmokeStudioApiRequest",
+        "callExpression": "handleSmokeStudioApiRequest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "startSmokeStudioApi",
+        "toSymbol": "listenOnLocalhost",
+        "callExpression": "listenOnLocalhost",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "close",
+        "toSymbol": "closeHttpServer",
+        "callExpression": "closeHttpServer",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleSmokeStudioApiRequest",
+        "toSymbol": "writeCorsHeaders",
+        "callExpression": "writeCorsHeaders",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleSmokeStudioApiRequest",
+        "toSymbol": "writeJsonResponse",
+        "callExpression": "writeJsonResponse",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleSmokeStudioApiRequest",
+        "toSymbol": "readJsonRequest",
+        "callExpression": "readJsonRequest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleSmokeStudioApiRequest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "handleSmokeStudioApiRequest",
+        "toSymbol": "updateManifest",
+        "callExpression": "args.updateManifest",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "writeJsonResponse",
+        "toSymbol": "writeCorsHeaders",
+        "callExpression": "writeCorsHeaders",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "waitForExpoWebUrl",
         "toSymbol": "formatProcessOutput",
         "callExpression": "formatProcessOutput",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkSmokeNodeModules",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkSmokeNodeModules",
-        "toSymbol": "linkNodeModuleEntries",
-        "callExpression": "linkNodeModuleEntries",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkSmokeNodeModules",
-        "toSymbol": "copyNodeModuleEntry",
-        "callExpression": "copyNodeModuleEntry",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkNodeModuleEntries",
-        "toSymbol": "readdir",
-        "callExpression": "readdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkNodeModuleEntries",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkNodeModuleEntries",
-        "toSymbol": "symlinkIfMissing",
-        "callExpression": "symlinkIfMissing",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkNodeModuleEntries",
-        "toSymbol": "linkScopedNodeModuleEntries",
-        "callExpression": "linkScopedNodeModuleEntries",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkScopedNodeModuleEntries",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkScopedNodeModuleEntries",
-        "toSymbol": "readdir",
-        "callExpression": "readdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "linkScopedNodeModuleEntries",
-        "toSymbol": "symlinkIfMissing",
-        "callExpression": "symlinkIfMissing",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "symlinkIfMissing",
-        "toSymbol": "symlink",
-        "callExpression": "symlink",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "symlinkIfMissing",
-        "toSymbol": "realpath",
-        "callExpression": "realpath",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "symlinkIfMissing",
-        "toSymbol": "isNodeErrorWithCode",
-        "callExpression": "isNodeErrorWithCode",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModuleEntry",
-        "toSymbol": "realpath",
-        "callExpression": "realpath",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModuleEntry",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModuleEntry",
-        "toSymbol": "cp",
-        "callExpression": "cp",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModulePackage",
-        "toSymbol": "resolveSmokeNodeModuleSource",
-        "callExpression": "resolveSmokeNodeModuleSource",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModulePackage",
-        "toSymbol": "getNodeModuleTargetPath",
-        "callExpression": "getNodeModuleTargetPath",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModulePackage",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModulePackage",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "copyNodeModulePackage",
-        "toSymbol": "cp",
-        "callExpression": "cp",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "resolveSmokeNodeModuleSource",
-        "toSymbol": "getNodeModuleTargetPath",
-        "callExpression": "getNodeModuleTargetPath",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "resolveSmokeNodeModuleSource",
-        "toSymbol": "realpath",
-        "callExpression": "realpath",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "isNodeErrorWithCode",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -22960,6 +24091,78 @@
         "fromSymbol": "readBodyText",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "evaluate",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "evaluate",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "blockHotReloadConnections",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readStudioSmokeState",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readSelectionRootId",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "captureSmokeLayout",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readRuntimeNodeCenter",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readUnsupportedGeometry",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readUnsupportedGeometryDiagnostics",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "mouseClick",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "mouseDrag",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "touchTap",
+        "toSymbol": "send",
+        "callExpression": "this.send",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23381,6 +24584,102 @@
         "toSymbol": "resolveWorkspaceRoot",
         "callExpression": "resolveWorkspaceRoot",
         "sourcePath": "src/host/hostOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "createTemporaryRoot",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "createTemporaryRoot",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "createTemporaryRoot",
+        "callExpression": "createTemporaryRoot",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "resolveInstalledPackageProvenance",
+        "callExpression": "resolveInstalledPackageProvenance",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "isPathInsideResolved",
+        "callExpression": "isPathInsideResolved",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/installedPackageProvenance.test.ts",
+        "toSymbol": "bunLockfileReferencesPackageVersion",
+        "callExpression": "bunLockfileReferencesPackageVersion",
+        "sourcePath": "src/host/installedPackageProvenance.test.ts"
+      },
+      {
+        "fromSymbol": "resolveInstalledPackageProvenance",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/installedPackageProvenance.ts"
       },
       {
         "fromSymbol": "collectRelativeFiles",
@@ -24163,6 +25462,306 @@
         "sourcePath": "src/runtime/actionSuppression.ts"
       },
       {
+        "fromSymbol": "flush",
+        "toSymbol": "callback",
+        "callExpression": "callback",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "createFakeFrameScheduler",
+        "callExpression": "createFakeFrameScheduler",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "createIndicatorRefreshCoordinator",
+        "callExpression": "createIndicatorRefreshCoordinator",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "requestRefresh",
+        "callExpression": "coordinator.requestRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "flush",
+        "callExpression": "frames.flush",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "hasPendingRefresh",
+        "callExpression": "coordinator.hasPendingRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "cancelPendingRefresh",
+        "callExpression": "coordinator.cancelPendingRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "requestRefresh",
+        "toSymbol": "request",
+        "callExpression": "scheduler.request",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.ts",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
+        "fromSymbol": "cancelPendingRefresh",
+        "toSymbol": "cancel",
+        "callExpression": "scheduler.cancel",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
+        "fromSymbol": "flushNext",
+        "toSymbol": "__type",
+        "callExpression": "entry[1]",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "createFakeScheduler",
+        "callExpression": "createFakeScheduler",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "createIndicatorSettleCoordinator",
+        "callExpression": "createIndicatorSettleCoordinator",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "trigger",
+        "callExpression": "coordinator.trigger",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "isActive",
+        "callExpression": "coordinator.isActive",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "flushNext",
+        "callExpression": "scheduler.flushNext",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.test.ts",
+        "toSymbol": "cancel",
+        "callExpression": "coordinator.cancel",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "clearPending",
+        "toSymbol": "cancel",
+        "callExpression": "options.scheduler.cancel",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "cancel",
+        "toSymbol": "clearPending",
+        "callExpression": "clearPending",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "scheduleNext",
+        "toSymbol": "schedule",
+        "callExpression": "options.scheduler.schedule",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorSettleCoordinator.ts",
+        "toSymbol": "sampleNext",
+        "callExpression": "sampleNext",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "sampleNext",
+        "toSymbol": "sample",
+        "callExpression": "options.sample",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "sampleNext",
+        "toSymbol": "scheduleNext",
+        "callExpression": "scheduleNext",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "sampleNext",
+        "toSymbol": "cancel",
+        "callExpression": "cancel",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "sampleNext",
+        "toSymbol": "areEqual",
+        "callExpression": "options.areEqual",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "trigger",
+        "toSymbol": "scheduleNext",
+        "callExpression": "scheduleNext",
+        "sourcePath": "src/runtime/indicatorSettleCoordinator.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "createInteractionPolicyResolver",
+        "callExpression": "createInteractionPolicyResolver",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "resolver",
+        "callExpression": "resolver",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "resolverPreview",
+        "callExpression": "resolverPreview",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "isComponentSupported",
+        "callExpression": "isComponentSupported",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "composeInteractionPolicyResolver",
+        "callExpression": "composeInteractionPolicyResolver",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioInteractionPolicyResolver",
+        "toSymbol": "createInteractionPolicyResolver",
+        "callExpression": "createInteractionPolicyResolver",
+        "sourcePath": "src/runtime/interactionPolicy.ts"
+      },
+      {
+        "fromSymbol": "createStudioInteractionPolicyResolver",
+        "toSymbol": "composeInteractionPolicyResolver",
+        "callExpression": "composeInteractionPolicyResolver",
+        "sourcePath": "src/runtime/interactionPolicy.ts"
+      },
+      {
+        "fromSymbol": "classifyComponent",
+        "toSymbol": "isSupportedNodeType",
+        "callExpression": "isSupportedNodeType",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
+        "fromSymbol": "isComponentSupported",
+        "toSymbol": "classifyComponent",
+        "callExpression": "classifyComponent",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
+        "fromSymbol": "resolveInteractionPolicy",
+        "toSymbol": "classifyComponent",
+        "callExpression": "classifyComponent",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicyCore.ts",
+        "toSymbol": "resolveInteractionPolicy",
+        "callExpression": "resolveInteractionPolicy",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicyCore.ts",
+        "toSymbol": "interactionPolicyResolver",
+        "callExpression": "interactionPolicyResolver",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicyCore.ts",
+        "toSymbol": "existingResolver",
+        "callExpression": "existingResolver",
+        "sourcePath": "src/runtime/interactionPolicyCore.ts"
+      },
+      {
         "fromSymbol": "createStudioPreviewComponentRegistry",
         "toSymbol": "createComponentRegistry",
         "callExpression": "createComponentRegistry",
@@ -24184,6 +25783,12 @@
         "fromSymbol": "createStudioPreviewRuntimeConfig",
         "toSymbol": "createStudioPreviewComponentRegistry",
         "callExpression": "createStudioPreviewComponentRegistry",
+        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
+      },
+      {
+        "fromSymbol": "createStudioPreviewRuntimeConfig",
+        "toSymbol": "createStudioInteractionPolicyResolver",
+        "callExpression": "createStudioInteractionPolicyResolver",
         "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
@@ -24221,6 +25826,522 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/runtime/stationarySelection.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/runtime/stationarySelection.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/stationarySelection.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/stationarySelection.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/stationarySelection.test.ts"
+      },
+      {
+        "fromSymbol": "getWebResizeTarget",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "getWebDescendantResizeTargets",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getWebDescendantResizeTargets",
+        "callExpression": "getWebDescendantResizeTargets",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRenderedBoxes",
+        "toSymbol": "toMeasuredRect",
+        "callExpression": "toMeasuredRect",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRenderedBoxes",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "element.getBoundingClientRect",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "measureRenderedBoxes",
+        "callExpression": "measureRenderedBoxes",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRootView",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRootView",
+        "toSymbol": "toMeasuredRect",
+        "callExpression": "toMeasuredRect",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRootView",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "view.getBoundingClientRect",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureRootView",
+        "toSymbol": "measureNativeView",
+        "callExpression": "measureNativeView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureUnsupportedWebView",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureUnsupportedWebView",
+        "toSymbol": "unionRects",
+        "callExpression": "unionRects",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "registerView",
+        "callExpression": "context.registerView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "requestRefresh",
+        "callExpression": "context?.requestRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "recordInteraction",
+        "toSymbol": "recordNode",
+        "callExpression": "ctx.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handlePointerDown",
+        "toSymbol": "recordInteraction",
+        "callExpression": "recordInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleTouchStart",
+        "toSymbol": "recordInteraction",
+        "callExpression": "recordInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleInteractionCompletion",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "ctx?.completePendingInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleLayout",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "ctx?.requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "registerUnsupportedNode",
+        "callExpression": "ctx.registerUnsupportedNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measure",
+        "toSymbol": "measureUnsupportedWebView",
+        "callExpression": "measureUnsupportedWebView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "registerView",
+        "toSymbol": "registerUnsupportedNode",
+        "callExpression": "ctx.registerUnsupportedNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measure",
+        "toSymbol": "measureNativeView",
+        "callExpression": "measureNativeView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "createStationarySelectionCoordinator",
+        "callExpression": "createStationarySelectionCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "createStationarySelectionInputState",
+        "callExpression": "createStationarySelectionInputState",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "recordActiveNode",
+        "toSymbol": "recordNode",
+        "callExpression": "coordinator.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "createIndicatorRefreshCoordinator",
+        "callExpression": "createIndicatorRefreshCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "requestRefresh",
+        "callExpression": "refreshCoordinatorRef.current.requestRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "createIndicatorSettleCoordinator",
+        "callExpression": "createIndicatorSettleCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "trigger",
+        "callExpression": "settleCoordinatorRef.current.trigger",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "cancel",
+        "callExpression": "settleCoordinatorRef.current?.cancel",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "inputState.completePendingInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "recordNode",
+        "callExpression": "inputState.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "setIndicatorRects",
+        "callExpression": "setIndicatorRects",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "measureRootView",
+        "callExpression": "measureRootView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "measure",
+        "callExpression": "measurement.measure",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "unionRects",
+        "callExpression": "unionRects",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "areIndicatorRectsEqual",
+        "callExpression": "areIndicatorRectsEqual",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "cancelPendingRefresh",
+        "callExpression": "refreshCoordinatorRef.current?.cancelPendingRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getWebResizeTarget",
+        "callExpression": "getWebResizeTarget",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleScroll",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleResize",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "coordinator.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "inputState.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "recordNode",
+        "callExpression": "coordinator.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "commitSelection",
+        "callExpression": "coordinator.commitSelection",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "clearTransaction",
+        "callExpression": "coordinator.clearTransaction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "clear",
+        "callExpression": "inputState.clear",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "createStationarySelectionCoordinator",
+        "callExpression": "createStationarySelectionCoordinator",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "coordinator.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "getTransaction",
+        "callExpression": "coordinator.getTransaction",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "clearTransaction",
+        "callExpression": "coordinator.clearTransaction",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "recordNode",
+        "callExpression": "coordinator.recordNode",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "commitSelection",
+        "callExpression": "coordinator.commitSelection",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionCoordinator.test.ts",
+        "toSymbol": "markMoved",
+        "callExpression": "coordinator.markMoved",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "commitSelection",
+        "toSymbol": "selectNode",
+        "callExpression": "selectNode",
+        "sourcePath": "src/runtime/stationarySelectionCoordinator.ts"
+      },
+      {
+        "fromSymbol": "createHarness",
+        "toSymbol": "createStationarySelectionInputState",
+        "callExpression": "createStationarySelectionInputState",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "createHarness",
+        "callExpression": "createHarness",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "recordNode",
+        "callExpression": "harness.state.recordNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "pointer",
+        "callExpression": "pointer",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "harness.state.completePendingInteraction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "setActive",
+        "callExpression": "harness.setActive",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "harness.state.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "getPendingPath",
+        "callExpression": "harness.state.getPendingPath",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "touch",
+        "callExpression": "touch",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "isSupportedPointerInput",
+        "callExpression": "isSupportedPointerInput",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "hasActiveTransaction",
+        "callExpression": "args.hasActiveTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "recordActiveNode",
+        "callExpression": "args.recordActiveNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "getInteractionKey",
+        "callExpression": "getInteractionKey",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "beginTransaction",
+        "toSymbol": "recordNode",
+        "callExpression": "recordNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "beginTransaction",
+        "toSymbol": "clear",
+        "callExpression": "clear",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "hasActiveTransaction",
+        "callExpression": "args.hasActiveTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "clear",
+        "callExpression": "clear",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
       },
       {
         "fromSymbol": "useRuntimeAction",
@@ -25649,6 +27770,66 @@
         "toSymbol": "parseExpoGoogleFontsModuleConfig",
         "callExpression": "parseExpoGoogleFontsModuleConfig",
         "sourcePath": "src/host/modules/catalog.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
+        "toSymbol": "getBabelConfigJs",
+        "callExpression": "getBabelConfigJs",
+        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
+        "toSymbol": "createGeneratedAppExtensionRegistrySource",
+        "callExpression": "createGeneratedAppExtensionRegistrySource",
+        "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/generatedAppFiles.test.ts"
       },
       {
         "fromSymbol": "syncGeneratedAppFiles",
@@ -28045,6 +30226,36 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "satisfiesCaretSemverRange",
+        "callExpression": "satisfiesCaretSemverRange",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "satisfiesCaretSemverRange",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "src/host/orchestrator/semverRange.ts"
+      },
+      {
+        "fromSymbol": "satisfiesCaretSemverRange",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
+        "sourcePath": "src/host/orchestrator/semverRange.ts"
+      },
+      {
         "fromSymbol": "upProjectInfrastructure",
         "toSymbol": "regenerateInfrastructure",
         "callExpression": "args.projectManager.regenerateInfrastructure",
@@ -28096,6 +30307,12 @@
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getBabelConfigJs",
+        "callExpression": "getBabelConfigJs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
@@ -29561,24 +31778,6 @@
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
         "sourcePath": "src/host/layout/templates/redirect.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/templates/rootLayout.selectionDom.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/layout/templates/rootLayout.selectionDom.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/templates/rootLayout.selectionDom.test.ts",
-        "toSymbol": "getRootLayoutTsx",
-        "callExpression": "getRootLayoutTsx",
-        "sourcePath": "src/host/layout/templates/rootLayout.selectionDom.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/templates/rootLayout.selectionDom.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/layout/templates/rootLayout.selectionDom.test.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/rootLayout.test.ts",
@@ -31523,6 +33722,30 @@
         "toSymbol": "formatHarmonyLabel",
         "callExpression": "formatHarmonyLabel",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/layout/templates/auth/adapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/templates/auth/adapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
+        "toSymbol": "getAuthAdapterTs",
+        "callExpression": "getAuthAdapterTs",
+        "sourcePath": "src/host/layout/templates/auth/adapter.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/templates/auth/adapter.test.ts"
       },
       {
         "fromSymbol": "getAuthOAuthCallbackTsx",

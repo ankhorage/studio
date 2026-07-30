@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 
-import { getAppConfigTs, getPackageJson } from './templates';
+import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility';
+import { getAppConfigTs, getBabelConfigJs, getPackageJson } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
   it('pins the canonical runtime, ZORA, Supabase auth, and Expo persistence dependencies', () => {
@@ -12,10 +13,40 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^4.0.0');
     expect(dependencies['@ankhorage/runtime']).toBe('^0.3.0');
-    expect(dependencies['@ankhorage/zora']).toBe('^2.8.7');
+    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
     expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.0.0');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
+  });
+
+  it('requires the first ZORA release that enforces interactionPolicy', () => {
+    const pkg = getPackageJson({ name: 'studio-enabled-app', includeStudio: true });
+    const dependencies = pkg.dependencies as Record<string, string>;
+
+    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
+  });
+
+  it('pins the intentional Expo SDK 54 Reanimated and Worklets compatibility pair', () => {
+    const pkg = getPackageJson({ name: 'native-app', includeStudio: true });
+    const dependencies = pkg.dependencies as Record<string, string>;
+
+    expect(EXPO_SDK_54_ANIMATION_COMPATIBILITY).toEqual({
+      babelPlugin: 'react-native-worklets/plugin',
+      expoSdk: '54',
+      reanimated: '4.3.0',
+      worklets: '0.8.3',
+    });
+    expect(dependencies['react-native-reanimated']).toBe(
+      EXPO_SDK_54_ANIMATION_COMPATIBILITY.reanimated,
+    );
+    expect(dependencies['react-native-worklets']).toBe(
+      EXPO_SDK_54_ANIMATION_COMPATIBILITY.worklets,
+    );
+    expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
+      pkg.dependencies,
+    );
+    expect(getBabelConfigJs()).toContain(`'${EXPO_SDK_54_ANIMATION_COMPATIBILITY.babelPlugin}'`);
+    expect(getBabelConfigJs()).not.toContain("'react-native-reanimated/plugin'");
   });
 
   it('omits OAuth-specific packages when auth is not generated', () => {

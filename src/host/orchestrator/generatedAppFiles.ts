@@ -57,15 +57,25 @@ export async function syncGeneratedAppFiles(
   await assertNoForbiddenSpecifiers(targetProjectPath);
 }
 
-function createGeneratedAppExtensionRegistrySource(args: {
+export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
   zoraExtensions: readonly ZoraExtensionDefinition[];
 }): string {
   const importLines = new Set<string>();
+  const interactionPolicySupportedComponents = new Set<string>();
   const entries = args.zoraExtensions
     .flatMap((extension) => {
       const exportNames = Array.from(new Set(Object.values(extension.components))).sort();
       importLines.add(`import { ${exportNames.join(', ')} } from '${extension.packageName}';`);
+
+      for (const componentName of extension.interactionPolicySupportedComponents ?? []) {
+        if (!Object.prototype.hasOwnProperty.call(extension.components, componentName)) {
+          throw new Error(
+            `ZORA extension ${extension.packageName} declares interaction-policy support for unregistered component ${componentName}.`,
+          );
+        }
+        interactionPolicySupportedComponents.add(componentName);
+      }
 
       return Object.entries(extension.components).map(([componentName, exportName]) => ({
         componentName,
@@ -85,6 +95,10 @@ function createGeneratedAppExtensionRegistrySource(args: {
   const registryEntries = entries
     .map(({ componentName, exportName }) => `  ${formatRegistryKey(componentName)}: ${exportName},`)
     .join('\n');
+  const interactionPolicySupportEntries = [...interactionPolicySupportedComponents]
+    .sort()
+    .map((componentName) => `  ${formatRegistryKey(componentName)}: true,`)
+    .join('\n');
 
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
@@ -93,6 +107,10 @@ function createGeneratedAppExtensionRegistrySource(args: {
     'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {',
     registryEntries,
     '};',
+    '',
+    'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {',
+    interactionPolicySupportEntries,
+    '} as const;',
     '',
   ]
     .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)

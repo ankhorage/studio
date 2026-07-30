@@ -13,11 +13,12 @@ module.exports = function (api) {
             '@': './src',
             '@root': './',
             '@ankhorage/studio': '../../dist/root.js',
+            'expo-router': '../../node_modules/expo-router',
           },
         },
       ],
-      // Required for Reanimated. Must be the last plugin.
-      'react-native-reanimated/plugin',
+      // Required for Worklets/Reanimated. Must be the last plugin.
+      'react-native-worklets/plugin',
     ],
   };
 };

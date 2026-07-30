@@ -124,7 +124,7 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('true;');
 });
 
-test('uses layout-neutral selection instrumentation and disables runtime actions outside preview', () => {
+test('generates a root stationary tap selector for edit mode and excludes old Pressable selection code', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -146,21 +146,51 @@ test('uses layout-neutral selection instrumentation and disables runtime actions
     includeStudio: true,
   });
 
+  expect(generated).toContain('StationaryTapSelector');
+  expect(generated).toContain('createStudioStationarySelectionWrapNode');
+  expect(generated).toContain('createStudioInteractionPolicyResolver');
   expect(generated).toContain('disableActions: !previewMode');
-  expect(generated).toContain('wrapNode: wrapStudioRuntimeNode');
-  expect(generated).toContain('function wrapStudioRuntimeNode(args: {');
-  expect(generated).toContain('function StudioRuntimeNodeWrapper(props: {');
-  expect(generated).toContain(
-    "const studioSelectionInteractionStyle = { display: 'contents' as const };",
-  );
-  expect(generated).toContain('<Pressable');
-  expect(generated).toContain('style={studioSelectionInteractionStyle}');
-  expect(generated).toContain('boxShadow:');
-  expect(generated).toContain('style: [props.rendered.props.style, selectionStyle]');
-  expect(generated).toContain('onPress: (event: GestureResponderEvent) => {');
-  expect(generated).toContain('onPress={(event: GestureResponderEvent) => {');
-  expect(generated).not.toContain('borderWidth:');
-  expect(generated).not.toContain('(event: unknown)');
+  expect(generated).toContain('resolveNodeProps: studioResolveNodeProps');
+  expect(generated).toContain('wrapNode: studioWrapNode');
+  expect(generated).toContain('selectedNodeId');
+  expect(generated).toContain('selectNode');
+  expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
+  expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
+  expect(generated).not.toContain('<Pressable');
+  expect(generated).not.toContain('cloneElement');
+  expect(generated).not.toContain('GestureResponderEvent');
+  expect(generated).not.toContain('isValidElement');
+  expect(generated).not.toContain('wrapStudioRuntimeNode');
+});
+
+test('keeps non-Studio generated output unchanged', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: false,
+  });
+
+  expect(generated).toContain('const runtimeComponentRegistry = createComponentRegistry(');
+  expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
+  expect(generated).not.toContain('useStudio');
+  expect(generated).not.toContain('StationaryTapSelector');
+  expect(generated).not.toContain('disableActions');
+  expect(generated).not.toContain('wrapNode: studioWrapNode');
 });
 
 test('scopes Studio runtime selection config below StudioProvider', () => {
@@ -196,12 +226,18 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(rootLayoutSource).not.toContain('disableActions: !previewMode');
   expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
+  expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
+  expect(studioShellSource).toContain('createStudioStationarySelectionWrapNode');
+  expect(studioShellSource).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
+  expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
+  expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');
   expect(studioShellSource).toContain('disableActions: !previewMode');
-  expect(studioShellSource).toContain('wrapNode: wrapStudioRuntimeNode');
+  expect(studioShellSource).toContain('wrapNode: studioWrapNode');
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );
   expect(studioShellSource).toContain('const studioOutput = (');
+  expect(studioShellSource).toContain('[previewMode, studioWrapNode, studioResolveNodeProps]');
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {

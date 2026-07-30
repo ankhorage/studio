@@ -4,6 +4,7 @@ export interface ZoraExtensionDefinition {
   packageName: string;
   components: Record<string, string>;
   dependencies?: Record<string, string>;
+  interactionPolicySupportedComponents?: readonly string[];
 }
 
 const ZORA_CHESS_EXTENSION = {
