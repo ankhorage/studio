@@ -2,7 +2,10 @@ import { type RuntimeNodePropsResolver } from '@ankhorage/runtime';
 import { ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
 
 import type { ThirdPartyComponentSupport } from './interactionPolicyCore.js';
-import { createInteractionPolicyResolver } from './interactionPolicyCore.js';
+import {
+  composeInteractionPolicyResolver,
+  createInteractionPolicyResolver,
+} from './interactionPolicyCore.js';
 
 export type { InteractionPolicy, ThirdPartyComponentSupport } from './interactionPolicyCore.js';
 
@@ -24,22 +27,7 @@ export function createStudioInteractionPolicyResolver(
       Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, nodeType),
   });
 
-  if (!existingResolver) {
-    return (resolveArgs) => {
-      const result = resolver({
-        node: resolveArgs.node,
-        props: resolveArgs.props,
-      });
-      return result;
-    };
-  }
-
-  return (resolveArgs) => {
-    const baseProps = existingResolver(resolveArgs);
-    const result = resolver({
-      node: resolveArgs.node,
-      props: baseProps,
-    });
-    return result;
-  };
+  return existingResolver
+    ? composeInteractionPolicyResolver(resolver, existingResolver)
+    : composeInteractionPolicyResolver(resolver);
 }

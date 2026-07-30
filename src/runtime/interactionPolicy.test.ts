@@ -3,7 +3,11 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'bun:test';
 
-import { createInteractionPolicyResolver, isComponentSupported } from './interactionPolicyCore';
+import {
+  composeInteractionPolicyResolver,
+  createInteractionPolicyResolver,
+  isComponentSupported,
+} from './interactionPolicyCore';
 
 describe('interactionPolicyCore', () => {
   it('assigns passive policy to supported components in Edit mode', () => {
@@ -103,6 +107,21 @@ describe('interactionPolicyCore', () => {
     expect(result.interactionPolicy).toBeUndefined();
   });
 
+  it('does not infer support from third-party registry membership', () => {
+    const registeredThirdPartyTypes = new Set(['RegisteredOnlyComponent']);
+    const resolver = createInteractionPolicyResolver({
+      previewMode: false,
+      isSupportedNodeType: () => false,
+    });
+    const result = resolver({
+      node: { type: 'RegisteredOnlyComponent' },
+      props: { registered: registeredThirdPartyTypes.has('RegisteredOnlyComponent') },
+    });
+
+    expect(result.registered).toBe(true);
+    expect(result.interactionPolicy).toBeUndefined();
+  });
+
   it('assigns no policy to unknown types', () => {
     const resolver = createInteractionPolicyResolver({
       previewMode: false,
@@ -164,6 +183,29 @@ describe('interactionPolicyCore', () => {
   it('isComponentSupported returns false for unsupported', () => {
     expect(isComponentSupported('Unknown', {}, () => false)).toBe(false);
   });
+
+  it('preserves existing Runtime resolver output while adding policy', () => {
+    const policyResolver = createInteractionPolicyResolver({
+      previewMode: false,
+      thirdPartySupport: { CustomWidget: true },
+      isSupportedNodeType: () => false,
+    });
+    const resolver = composeInteractionPolicyResolver(policyResolver, ({ props }) => ({
+      ...props,
+      existingResolver: 'preserved',
+    }));
+
+    expect(
+      resolver({
+        node: { type: 'CustomWidget' },
+        props: { authored: 'preserved' },
+      }),
+    ).toEqual({
+      authored: 'preserved',
+      existingResolver: 'preserved',
+      interactionPolicy: 'passive',
+    });
+  });
 });
 
 describe('interactionPolicy production adapter', () => {
@@ -180,5 +222,21 @@ describe('interactionPolicy production adapter', () => {
 
   it('delegates classification to the pure core', () => {
     expect(source).toContain('createInteractionPolicyResolver');
+    expect(source).toContain('composeInteractionPolicyResolver');
+  });
+});
+
+describe('preview Runtime config production wiring', () => {
+  const sourcePath = join(import.meta.dir, 'previewRuntimeConfig.ts');
+  const source = readFileSync(sourcePath, 'utf8');
+
+  it('threads support and inherited resolver options independently from registry membership', () => {
+    expect(source).toContain('readonly components?: ComponentRegistry;');
+    expect(source).toContain('readonly interactionPolicySupport?: ThirdPartyComponentSupport;');
+    expect(source).toContain(
+      "readonly resolveNodeProps?: RuntimeRendererConfig['resolveNodeProps'];",
+    );
+    expect(source).toContain('thirdPartySupport: options.interactionPolicySupport');
+    expect(source).toContain('existingResolver: options.resolveNodeProps');
   });
 });

@@ -20,7 +20,10 @@ function classifyComponent(
     return 'zora-builtin';
   }
 
-  if (Object.prototype.hasOwnProperty.call(thirdPartySupport, nodeType)) {
+  if (
+    Object.prototype.hasOwnProperty.call(thirdPartySupport, nodeType) &&
+    thirdPartySupport[nodeType] === true
+  ) {
     return 'third-party-supported';
   }
 
@@ -52,12 +55,17 @@ function resolveInteractionPolicy(
 
 const POLICY_PROP = 'interactionPolicy';
 
+export interface InteractionPolicyResolveArgs<TNode extends { type: string } = { type: string }> {
+  readonly node: TNode;
+  readonly props: Record<string, unknown>;
+}
+
+export type InteractionPolicyNodePropsResolver<TNode extends { type: string } = { type: string }> =
+  (resolveArgs: InteractionPolicyResolveArgs<TNode>) => Record<string, unknown>;
+
 export function createInteractionPolicyResolver(
   args: InteractionPolicyResolverArgs,
-): (resolveArgs: {
-  node: { type: string };
-  props: Record<string, unknown>;
-}) => Record<string, unknown> {
+): InteractionPolicyNodePropsResolver {
   const { previewMode, thirdPartySupport = EMPTY_THIRD_PARTY, isSupportedNodeType } = args;
 
   return (resolveArgs) => {
@@ -79,4 +87,26 @@ export function createInteractionPolicyResolver(
       [POLICY_PROP]: policy,
     };
   };
+}
+
+export function composeInteractionPolicyResolver(
+  interactionPolicyResolver: InteractionPolicyNodePropsResolver,
+): InteractionPolicyNodePropsResolver;
+export function composeInteractionPolicyResolver<TNode extends { type: string }>(
+  interactionPolicyResolver: InteractionPolicyNodePropsResolver,
+  existingResolver: InteractionPolicyNodePropsResolver<TNode>,
+): InteractionPolicyNodePropsResolver<TNode>;
+export function composeInteractionPolicyResolver<TNode extends { type: string }>(
+  interactionPolicyResolver: InteractionPolicyNodePropsResolver,
+  existingResolver?: InteractionPolicyNodePropsResolver<TNode>,
+): InteractionPolicyNodePropsResolver<TNode> {
+  if (!existingResolver) {
+    return interactionPolicyResolver;
+  }
+
+  return (resolveArgs) =>
+    interactionPolicyResolver({
+      node: resolveArgs.node,
+      props: existingResolver(resolveArgs),
+    });
 }

@@ -91,6 +91,7 @@ graph LR
   module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
   module_src_host_oauthFixtureConsumer_smoke_test_ts["src/host/oauthFixtureConsumer.smoke.test.ts"]
+  module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
   module_src_host_orchestrator_infraGenerator_ts["src/host/orchestrator/infraGenerator.ts"]
@@ -387,6 +388,7 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_infraGenerator_ts --> module_src_host_orchestrator_infraValidation_ts
   module_src_host_orchestrator_infraRuntime_test_ts --> module_src_host_orchestrator_infraRuntime_ts
@@ -493,6 +495,7 @@ graph LR
   module_src_runtime_previewRegistry_ts --> module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
+  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts

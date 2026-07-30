@@ -205,13 +205,21 @@ describe('GeneratedAppFileGenerator', () => {
     );
     expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
+    expect(rootLayout).toContain('STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
     expect(rootLayout).toContain(
-      "import { APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY } from '@/generated/appExtensionRegistry';",
+      'APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY',
+    );
+    expect(rootLayout).toContain(
+      'APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT',
     );
     expect(rootLayout).toContain(`const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
   STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
 );`);
+    expect(rootLayout).toContain(`const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
+  ...STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  ...GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+} as const;`);
     expect(rootLayout).toContain(`const runtimeComponentRegistry = createComponentRegistry(
   ZORA_COMPONENT_REGISTRY,
   APP_EXTENSION_COMPONENT_REGISTRY,

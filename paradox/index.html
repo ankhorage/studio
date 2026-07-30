@@ -438,7 +438,7 @@
                 data-target="src/host/generatedAdminExpoWeb.smoke.test.ts"
               >
                 src/host/generatedAdminExpoWeb.smoke.test.ts
-                <small>30 functions</small>
+                <small>33 functions</small>
               </button>
             </li>
             <li>
@@ -1254,7 +1254,7 @@
                 data-target="src/runtime/interactionPolicyCore.ts"
               >
                 src/runtime/interactionPolicyCore.ts
-                <small>4 functions</small>
+                <small>7 functions</small>
               </button>
             </li>
             <li>
@@ -1296,7 +1296,7 @@
                 data-target="src/runtime/stationarySelection.ts"
               >
                 src/runtime/stationarySelection.ts
-                <small>4 functions</small>
+                <small>13 functions</small>
               </button>
             </li>
             <li>
@@ -1575,7 +1575,7 @@
             <div class="summary">
               <div><strong>96</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>229</strong><span class="muted">modules</span></div>
+              <div><strong>230</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2779,14 +2779,26 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/generatedAppFiles.ts src/host/zoraExtensions/index.ts GeneratedAppFilesOptions syncGeneratedAppFiles"
+              data-search="src/host/orchestrator/generatedAppFiles.test.ts src/host/orchestrator/generatedAppFiles.ts"
+            >
+              <h3>src/host/orchestrator/generatedAppFiles.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/host/orchestrator/generatedAppFiles.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/generatedAppFiles.ts src/host/zoraExtensions/index.ts createGeneratedAppExtensionRegistrySource GeneratedAppFilesOptions syncGeneratedAppFiles"
             >
               <h3>src/host/orchestrator/generatedAppFiles.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <code>src/host/zoraExtensions/index.ts</code></p>
               <p>
-                <strong>Exports:</strong> <code>GeneratedAppFilesOptions</code>,
-                <code>syncGeneratedAppFiles</code>
+                <strong>Exports:</strong> <code>createGeneratedAppExtensionRegistrySource</code>,
+                <code>GeneratedAppFilesOptions</code>, <code>syncGeneratedAppFiles</code>
               </p>
             </article>
             <article
@@ -3802,23 +3814,27 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/appExtensionRegistry.ts STUDIO_APP_EXTENSION_COMPONENT_REGISTRY"
+              data-search="src/runtime/appExtensionRegistry.ts STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT"
             >
               <h3>src/runtime/appExtensionRegistry.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-              <p><strong>Exports:</strong> <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code></p>
+              <p>
+                <strong>Exports:</strong> <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code>,
+                <code>STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT</code>
+              </p>
             </article>
             <article
               class="item"
-              data-search="src/runtime/index.ts CommitSelectionResult ComponentRegistry createInteractionPolicyResolver createStationarySelectionCoordinator createStudioActionSuppressionConfig createStudioInteractionPolicyResolver createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig createStudioStationarySelectionWrapNode executeRuntimeAction InteractionPolicy InteractionPolicyResolverArgs isComponentSupported resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions StationarySelectionCoordinator StationaryTapSelector STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_PREVIEW_COMPONENT_REGISTRY StudioInteractionPolicyResolverArgs StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions ThirdPartyComponentSupport TransactionState useRuntimeAction UseRuntimeActionOptions"
+              data-search="src/runtime/index.ts CommitSelectionResult ComponentRegistry composeInteractionPolicyResolver createInteractionPolicyResolver createStationarySelectionCoordinator createStudioActionSuppressionConfig createStudioInteractionPolicyResolver createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig createStudioStationarySelectionWrapNode executeRuntimeAction InteractionPolicy InteractionPolicyNodePropsResolver InteractionPolicyResolveArgs InteractionPolicyResolverArgs isComponentSupported resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions StationarySelectionCoordinator StationaryTapSelector STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT STUDIO_PREVIEW_COMPONENT_REGISTRY StudioInteractionPolicyResolverArgs StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions ThirdPartyComponentSupport TransactionState useRuntimeAction UseRuntimeActionOptions"
             >
               <h3>src/runtime/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
                 <strong>Exports:</strong> <code>CommitSelectionResult</code>,
-                <code>ComponentRegistry</code>, <code>createInteractionPolicyResolver</code>,
+                <code>ComponentRegistry</code>, <code>composeInteractionPolicyResolver</code>,
+                <code>createInteractionPolicyResolver</code>,
                 <code>createStationarySelectionCoordinator</code>,
                 <code>createStudioActionSuppressionConfig</code>,
                 <code>createStudioInteractionPolicyResolver</code>,
@@ -3826,11 +3842,14 @@
                 <code>createStudioPreviewRuntimeConfig</code>,
                 <code>createStudioStationarySelectionWrapNode</code>,
                 <code>executeRuntimeAction</code>, <code>InteractionPolicy</code>,
+                <code>InteractionPolicyNodePropsResolver</code>,
+                <code>InteractionPolicyResolveArgs</code>,
                 <code>InteractionPolicyResolverArgs</code>, <code>isComponentSupported</code>,
                 <code>resolveStudioLocalizationPreview</code>,
                 <code>shouldSuppressStudioRuntimeActions</code>,
                 <code>StationarySelectionCoordinator</code>, <code>StationaryTapSelector</code>,
                 <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code>,
+                <code>STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT</code>,
                 <code>STUDIO_PREVIEW_COMPONENT_REGISTRY</code>,
                 <code>StudioInteractionPolicyResolverArgs</code>,
                 <code>StudioLocalizationPreview</code>, <code>StudioLocalizationPreviewInput</code>,
@@ -3868,15 +3887,18 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/interactionPolicyCore.ts createInteractionPolicyResolver InteractionPolicy InteractionPolicyResolverArgs isComponentSupported ThirdPartyComponentSupport"
+              data-search="src/runtime/interactionPolicyCore.ts composeInteractionPolicyResolver createInteractionPolicyResolver InteractionPolicy InteractionPolicyNodePropsResolver InteractionPolicyResolveArgs InteractionPolicyResolverArgs isComponentSupported ThirdPartyComponentSupport"
             >
               <h3>src/runtime/interactionPolicyCore.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>createInteractionPolicyResolver</code>,
-                <code>InteractionPolicy</code>, <code>InteractionPolicyResolverArgs</code>,
-                <code>isComponentSupported</code>, <code>ThirdPartyComponentSupport</code>
+                <strong>Exports:</strong> <code>composeInteractionPolicyResolver</code>,
+                <code>createInteractionPolicyResolver</code>, <code>InteractionPolicy</code>,
+                <code>InteractionPolicyNodePropsResolver</code>,
+                <code>InteractionPolicyResolveArgs</code>,
+                <code>InteractionPolicyResolverArgs</code>, <code>isComponentSupported</code>,
+                <code>ThirdPartyComponentSupport</code>
               </p>
             </article>
             <article
@@ -3906,13 +3928,14 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/previewRuntimeConfig.ts src/runtime/actionSuppression.ts src/runtime/interactionPolicy.ts src/runtime/previewRegistry.ts createStudioPreviewRuntimeConfig StudioPreviewRuntimeConfigOptions"
+              data-search="src/runtime/previewRuntimeConfig.ts src/runtime/actionSuppression.ts src/runtime/interactionPolicy.ts src/runtime/interactionPolicyCore.ts src/runtime/previewRegistry.ts createStudioPreviewRuntimeConfig StudioPreviewRuntimeConfigOptions"
             >
               <h3>src/runtime/previewRuntimeConfig.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/runtime/actionSuppression.ts</code>,
                 <code>src/runtime/interactionPolicy.ts</code>,
+                <code>src/runtime/interactionPolicyCore.ts</code>,
                 <code>src/runtime/previewRegistry.ts</code>
               </p>
               <p>
@@ -8847,6 +8870,11 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_generatedAppFiles_test_ts
+                module_src_host_orchestrator_generatedAppFiles_test_ts --&gt;
+                module_src_host_orchestrator_generatedAppFiles_ts
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedAppFiles_ts
                 module_src_host_orchestrator_generatedAppFiles_ts --&gt;
@@ -9184,6 +9212,8 @@
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
                 --&gt; module_src_runtime_interactionPolicy_ts
+                module_src_runtime_previewRuntimeConfig_ts --&gt;
+                module_src_runtime_interactionPolicyCore_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_previewRegistry_ts
                 module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
@@ -9779,6 +9809,9 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedAppFiles_test_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_zoraExtensions_index_ts
@@ -10044,6 +10077,7 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicy_ts
+  module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
@@ -10342,6 +10376,7 @@ graph TD
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
                 module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
@@ -10709,6 +10744,8 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_generatedAppFiles_test_ts --&gt;
+                module_src_host_orchestrator_generatedAppFiles_ts
                 module_src_host_orchestrator_generatedAppFiles_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
                 module_src_host_orchestrator_infraGenerator_ts --&gt;
@@ -10873,6 +10910,8 @@ graph TD
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
                 --&gt; module_src_runtime_interactionPolicy_ts
+                module_src_runtime_previewRuntimeConfig_ts --&gt;
+                module_src_runtime_interactionPolicyCore_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_previewRegistry_ts module_src_runtime_stationarySelection_ts
                 --&gt; module_src_runtime_stationarySelectionCoordinator_ts
@@ -11086,6 +11125,7 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
   module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
@@ -11382,6 +11422,7 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_infraGenerator_ts --&gt; module_src_host_orchestrator_infraValidation_ts
   module_src_host_orchestrator_infraRuntime_test_ts --&gt; module_src_host_orchestrator_infraRuntime_ts
@@ -11488,6 +11529,7 @@ graph LR
   module_src_runtime_previewRegistry_ts --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicy_ts
+  module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
@@ -11669,6 +11711,7 @@ graph LR
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
                 module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
@@ -12151,6 +12194,7 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
   module_src_host_orchestrator_infraGenerator_ts[&quot;src/host/orchestrator/infraGenerator.ts&quot;]
@@ -14335,7 +14379,7 @@ sequenceDiagram
               data-search="createAdminSmokeManifest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createAdminSmokeManifest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:46:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:37:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14343,7 +14387,47 @@ sequenceDiagram
               data-search="createScrollableRuntimeScreenRoot src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createScrollableRuntimeScreenRoot</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:102:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:93:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="verifyDesktopSelectionAndUnsupportedGeometry src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>verifyDesktopSelectionAndUnsupportedGeometry</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:265:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="waitForUnsupportedGeometry src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>waitForUnsupportedGeometry</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:401:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="waitForStudioSmokeState src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>waitForStudioSmokeState</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:420:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRectToMatch src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>expectRectToMatch</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:439:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="rectsOverlap src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>rectsOverlap</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:446:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14351,7 +14435,31 @@ sequenceDiagram
               data-search="createGeneratedAdminProject src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createGeneratedAdminProject</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:195:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:453:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="installGeneratedProjectDependencies src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>installGeneratedProjectDependencies</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:491:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="stageLocalStudioPackage src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>stageLocalStudioPackage</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:525:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeSmokeRuntimeExtensions src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>writeSmokeRuntimeExtensions</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:554:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14359,7 +14467,7 @@ sequenceDiagram
               data-search="writeSmokeMetroConfig src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeMetroConfig</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:233:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:633:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14367,7 +14475,7 @@ sequenceDiagram
               data-search="reservePort src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:256:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:656:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14375,7 +14483,7 @@ sequenceDiagram
               data-search="spawnExpoWeb src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnExpoWeb</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:272:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:672:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14383,7 +14491,7 @@ sequenceDiagram
               data-search="startSmokeStudioApi src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>startSmokeStudioApi</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:294:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:694:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14391,7 +14499,7 @@ sequenceDiagram
               data-search="handleSmokeStudioApiRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>handleSmokeStudioApiRequest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:319:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:719:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14399,7 +14507,7 @@ sequenceDiagram
               data-search="listenOnLocalhost src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>listenOnLocalhost</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:359:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:759:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14407,7 +14515,7 @@ sequenceDiagram
               data-search="closeHttpServer src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>closeHttpServer</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:373:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:773:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14415,7 +14523,7 @@ sequenceDiagram
               data-search="readJsonRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readJsonRequest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:382:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:782:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14423,7 +14531,7 @@ sequenceDiagram
               data-search="writeJsonResponse src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeJsonResponse</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:398:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:798:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14431,7 +14539,7 @@ sequenceDiagram
               data-search="writeCorsHeaders src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeCorsHeaders</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:405:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:805:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14439,47 +14547,7 @@ sequenceDiagram
               data-search="waitForExpoWebUrl src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:411:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="linkSmokeNodeModules src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>linkSmokeNodeModules</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:424:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="linkNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>linkNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:437:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="linkScopedNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>linkScopedNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:474:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="symlinkIfMissing src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>symlinkIfMissing</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:489:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="isNodeErrorWithCode src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>isNodeErrorWithCode</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:498:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:811:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14487,7 +14555,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:502:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:824:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14495,7 +14563,7 @@ sequenceDiagram
               data-search="waitForBodyText src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForBodyText</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:519:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:841:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14503,7 +14571,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:536:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:858:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14511,7 +14579,7 @@ sequenceDiagram
               data-search="readEnvString src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:542:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:864:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14519,7 +14587,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:548:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:870:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14527,7 +14595,7 @@ sequenceDiagram
               data-search="openChromePage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:564:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:886:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14535,7 +14603,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:669:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1191:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14543,7 +14611,7 @@ sequenceDiagram
               data-search="isRecord src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:684:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1206:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14551,7 +14619,7 @@ sequenceDiagram
               data-search="stopProcess src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:688:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1210:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14559,7 +14627,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:697:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1219:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14567,7 +14635,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:708:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1230:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15280,7 +15348,7 @@ sequenceDiagram
               data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:61:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:65:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15288,7 +15356,7 @@ sequenceDiagram
               data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>mergeRuntimeModuleDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:68:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:76:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15296,12 +15364,12 @@ sequenceDiagram
               data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>addStudioAdminRouteFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:91:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:99:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
               <h3>walk</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:103:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:111:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15309,7 +15377,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:428:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:436:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15317,7 +15385,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:442:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:450:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15325,7 +15393,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:449:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:457:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15333,12 +15401,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:472:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:480:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:486:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:494:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15346,7 +15414,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:490:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:498:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15354,7 +15422,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:534:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:542:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15362,7 +15430,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:542:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:550:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15370,7 +15438,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:547:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:555:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15987,7 +16055,7 @@ sequenceDiagram
               data-search="formatRegistryKey src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>formatRegistryKey</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:102:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:120:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15995,7 +16063,7 @@ sequenceDiagram
               data-search="removePath src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>removePath</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:110:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:128:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16003,7 +16071,7 @@ sequenceDiagram
               data-search="assertNoForbiddenSpecifiers src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>assertNoForbiddenSpecifiers</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:114:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:132:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16011,7 +16079,7 @@ sequenceDiagram
               data-search="listSourceFiles src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>listSourceFiles</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:133:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:151:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -16019,7 +16087,7 @@ sequenceDiagram
               data-search="isMissingPathError src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>isMissingPathError</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:156:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:174:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -17672,7 +17740,7 @@ sequenceDiagram
               data-search="resolveZoraExtensionsForTemplateSelection src/host/zoraExtensions/index.ts "
             >
               <h3>resolveZoraExtensionsForTemplateSelection</h3>
-              <p class="muted"><code>src/host/zoraExtensions/index.ts:36:1</code></p>
+              <p class="muted"><code>src/host/zoraExtensions/index.ts:37:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17680,7 +17748,7 @@ sequenceDiagram
               data-search="resolveZoraExtensionsFromDependencies src/host/zoraExtensions/index.ts "
             >
               <h3>resolveZoraExtensionsFromDependencies</h3>
-              <p class="muted"><code>src/host/zoraExtensions/index.ts:50:1</code></p>
+              <p class="muted"><code>src/host/zoraExtensions/index.ts:51:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17688,7 +17756,7 @@ sequenceDiagram
               data-search="mergeZoraExtensions src/host/zoraExtensions/index.ts "
             >
               <h3>mergeZoraExtensions</h3>
-              <p class="muted"><code>src/host/zoraExtensions/index.ts:56:1</code></p>
+              <p class="muted"><code>src/host/zoraExtensions/index.ts:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -17696,7 +17764,7 @@ sequenceDiagram
               data-search="collectZoraExtensionDependencies src/host/zoraExtensions/index.ts "
             >
               <h3>collectZoraExtensionDependencies</h3>
-              <p class="muted"><code>src/host/zoraExtensions/index.ts:70:1</code></p>
+              <p class="muted"><code>src/host/zoraExtensions/index.ts:71:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -19061,7 +19129,7 @@ sequenceDiagram
               data-search="createStudioInteractionPolicyResolver src/runtime/interactionPolicy.ts "
             >
               <h3>createStudioInteractionPolicyResolver</h3>
-              <p class="muted"><code>src/runtime/interactionPolicy.ts:15:1</code></p>
+              <p class="muted"><code>src/runtime/interactionPolicy.ts:18:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -19087,7 +19155,7 @@ sequenceDiagram
               data-search="isComponentSupported src/runtime/interactionPolicyCore.ts "
             >
               <h3>isComponentSupported</h3>
-              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:30:1</code></p>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:33:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -19095,7 +19163,7 @@ sequenceDiagram
               data-search="resolveInteractionPolicy src/runtime/interactionPolicyCore.ts "
             >
               <h3>resolveInteractionPolicy</h3>
-              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:38:1</code></p>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:41:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -19103,7 +19171,31 @@ sequenceDiagram
               data-search="createInteractionPolicyResolver src/runtime/interactionPolicyCore.ts "
             >
               <h3>createInteractionPolicyResolver</h3>
-              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:55:1</code></p>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:66:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="composeInteractionPolicyResolver src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>composeInteractionPolicyResolver</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:92:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="composeInteractionPolicyResolver src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>composeInteractionPolicyResolver</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:95:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="composeInteractionPolicyResolver src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>composeInteractionPolicyResolver</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:99:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -19157,7 +19249,7 @@ sequenceDiagram
               data-search="createStudioPreviewRuntimeConfig src/runtime/previewRuntimeConfig.ts "
             >
               <h3>createStudioPreviewRuntimeConfig</h3>
-              <p class="muted"><code>src/runtime/previewRuntimeConfig.ts:12:14</code></p>
+              <p class="muted"><code>src/runtime/previewRuntimeConfig.ts:15:14</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -19187,18 +19279,73 @@ sequenceDiagram
             <h2>src/runtime/stationarySelection.ts</h2>
             <article
               class="item"
-              data-search="StudioNodeTouchRecorder src/runtime/stationarySelection.ts "
+              data-search="isWebElementLike src/runtime/stationarySelection.ts "
             >
-              <h3>StudioNodeTouchRecorder</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:21:1</code></p>
+              <h3>isWebElementLike</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:48:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="toMeasuredRect src/runtime/stationarySelection.ts ">
+              <h3>toMeasuredRect</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:58:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="unionRects src/runtime/stationarySelection.ts ">
+              <h3>unionRects</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:67:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
               class="item"
-              data-search="handleTouchStart src/runtime/stationarySelection.ts "
+              data-search="measureRenderedBoxes src/runtime/stationarySelection.ts "
             >
-              <h3>handleTouchStart</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:31:3</code></p>
+              <h3>measureRenderedBoxes</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:85:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="measureNativeView src/runtime/stationarySelection.ts "
+            >
+              <h3>measureNativeView</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:94:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="measureRootView src/runtime/stationarySelection.ts ">
+              <h3>measureRootView</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:102:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="measureUnsupportedView src/runtime/stationarySelection.ts "
+            >
+              <h3>measureUnsupportedView</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:114:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="areIndicatorRectsEqual src/runtime/stationarySelection.ts "
+            >
+              <h3>areIndicatorRectsEqual</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:128:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="StudioNodeTouchRecorder src/runtime/stationarySelection.ts "
+            >
+              <h3>StudioNodeTouchRecorder</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:151:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="handleInteractionStart src/runtime/stationarySelection.ts "
+            >
+              <h3>handleInteractionStart</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:162:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -19206,7 +19353,7 @@ sequenceDiagram
               data-search="createStudioStationarySelectionWrapNode src/runtime/stationarySelection.ts "
             >
               <h3>createStudioStationarySelectionWrapNode</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:70:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:208:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -19214,7 +19361,15 @@ sequenceDiagram
               data-search="StationaryTapSelector src/runtime/stationarySelection.ts "
             >
               <h3>StationaryTapSelector</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:105:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:242:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="measureNextFrame src/runtime/stationarySelection.ts "
+            >
+              <h3>measureNextFrame</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:353:11</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

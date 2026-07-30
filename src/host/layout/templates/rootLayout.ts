@@ -436,7 +436,6 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
-    includeStudio ? 'const STUDIO_EMPTY_THIRD_PARTY_SUPPORT = {} as const;' : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)
@@ -620,7 +619,7 @@ function StudioShell({
      () =>
        createStudioStationarySelectionWrapNode({
          previewMode,
-         thirdPartySupport: STUDIO_EMPTY_THIRD_PARTY_SUPPORT,
+         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
        }),
      [previewMode],
    );
@@ -628,7 +627,7 @@ function StudioShell({
      () =>
        createStudioInteractionPolicyResolver({
          previewMode,
-         thirdPartySupport: STUDIO_EMPTY_THIRD_PARTY_SUPPORT,
+         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
        }),
      [previewMode],
    );

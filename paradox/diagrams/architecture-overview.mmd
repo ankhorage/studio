@@ -345,6 +345,9 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_test_ts
+  module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
@@ -610,6 +613,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_previewRuntimeConfig_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
+  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   package__ankhorage_studio -.-> module_src_runtime_registry_tsx
