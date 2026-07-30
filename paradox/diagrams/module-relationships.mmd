@@ -64,6 +64,7 @@ graph LR
   module_src_host_layout_generatedImportComposer_ts["src/host/layout/generatedImportComposer.ts"]
   module_src_host_layout_layoutGenerator_test_ts["src/host/layout/layoutGenerator.test.ts"]
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
+  module_src_host_layout_templates_auth_adapter_test_ts["src/host/layout/templates/auth/adapter.test.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
   module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
@@ -75,7 +76,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts["src/host/layout/templates/nestedLayout.test.ts"]
   module_src_host_layout_templates_nestedLayout_ts["src/host/layout/templates/nestedLayout.ts"]
   module_src_host_layout_templates_redirect_ts["src/host/layout/templates/redirect.ts"]
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts["src/host/layout/templates/rootLayout.selectionDom.test.ts"]
   module_src_host_layout_templates_rootLayout_test_ts["src/host/layout/templates/rootLayout.test.ts"]
   module_src_host_layout_templates_rootLayout_ts["src/host/layout/templates/rootLayout.ts"]
   module_src_host_layout_templates_screen_ts["src/host/layout/templates/screen.ts"]
@@ -165,12 +165,19 @@ graph LR
   module_src_runtime_actionSuppression_ts["src/runtime/actionSuppression.ts"]
   module_src_runtime_appExtensionRegistry_ts["src/runtime/appExtensionRegistry.ts"]
   module_src_runtime_index_ts["src/runtime/index.ts"]
+  module_src_runtime_interactionPolicy_test_ts["src/runtime/interactionPolicy.test.ts"]
+  module_src_runtime_interactionPolicy_ts["src/runtime/interactionPolicy.ts"]
+  module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
   module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
   module_src_runtime_previewRegistry_ts["src/runtime/previewRegistry.ts"]
   module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
+  module_src_runtime_stationarySelection_test_ts["src/runtime/stationarySelection.test.ts"]
+  module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
+  module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
+  module_src_runtime_stationarySelectionCoordinator_ts["src/runtime/stationarySelectionCoordinator.ts"]
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
@@ -348,6 +355,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
+  module_src_host_layout_templates_auth_adapter_test_ts --> module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -362,7 +370,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --> module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_redirect_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts --> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_test_ts --> module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_navigation_ts
@@ -481,9 +488,14 @@ graph LR
   module_src_projectSecretUsage_test_ts --> module_src_projectSecretUsage_ts
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
+  module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
+  module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRegistry_ts --> module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
+  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts

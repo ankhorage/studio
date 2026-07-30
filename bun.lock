@@ -17,7 +17,7 @@
         "@ankhorage/supabase-auth": "^1.1.1",
         "@ankhorage/supabase-vault": "^0.2.0",
         "@ankhorage/templates": "^3.0.0",
-        "@ankhorage/zora": "^2.8.7",
+        "@ankhorage/zora": "^2.9.0",
         "@ankhorage/zora-chess": "^0.1.2",
         "@ankhorage/zora-tabletop": "^0.0.5",
         "@fastify/cors": "^11.2.0",
@@ -119,11 +119,11 @@
 
     "@ankhorage/supabase-vault": ["@ankhorage/supabase-vault@0.2.1", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" } }, "sha512-WkAsYQUtSnSTPx3hA93LowWs3mBjY7sbKTe8yEolKlzpUhr4Y5rhcUZvDhk30uBgqwfkRTCHxKNEDraomlkj0g=="],
 
-    "@ankhorage/surface": ["@ankhorage/surface@2.0.3", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "expo-font": "^55.0.6", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-safe-area-context": "^5.0.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-F5uG1Hun98N0c8fYgXAOlliUoIgX1LRm5B5IyiN0I2GEiyW12mC1UOu2MNn+9PAjZNdH1tsNbHHikw/OJhh5jA=="],
+    "@ankhorage/surface": ["@ankhorage/surface@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "expo-font": "^55.0.6", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-safe-area-context": "^5.0.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-6DB9lLQV+CfiA1uytI3juD1h06atJDAkpdGfCzQHK1QEnmPaLrS3nhC2/UidA1oRAx4BihFsTYp6yYY1Cprc1A=="],
 
     "@ankhorage/templates": ["@ankhorage/templates@3.0.0", "", { "dependencies": { "@ankhorage/contracts": "^4.0.0", "@ankhorage/zora": "^2.8.0" }, "bin": { "ankhorage-templates": "dist/cli/standalone.js" } }, "sha512-aflIReBWhuXpjLLToWHr13zDCuEOvjebfdeGBS5qYfbUg93gJV6xakDNN51tNgCAiroeG6jkytDqrqRPj3ZkJw=="],
 
-    "@ankhorage/zora": ["@ankhorage/zora@2.8.7", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0", "@ankhorage/surface": "^2.0.3" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "@react-native-picker/picker": ">=2.0.0", "expo-font": "^55.0.6", "expo-linear-gradient": ">=14.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-pWEpJyyhsNhoeY6NdVmuwhcaS+JbQ76b7HRqL8Dht0opGVFFHB/rxGaYIm+7iJpdVYPU/dtY+ASeljX1WM+sZw=="],
+    "@ankhorage/zora": ["@ankhorage/zora@2.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0", "@ankhorage/surface": "^2.1.0" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "@react-native-picker/picker": ">=2.0.0", "expo-font": "^55.0.6", "expo-linear-gradient": ">=14.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-iiRaxYAXzkVgfYSy/xwvJf9N0U5f6IP/KhjUN5U3Cc2VEd95/oXKKfEjksnz1WLD3AkecQCTNvqP2jC8S65pUA=="],
 
     "@ankhorage/zora-chess": ["@ankhorage/zora-chess@0.1.2", "", { "dependencies": { "chess.js": "^1.4.0" }, "peerDependencies": { "@ankhorage/zora": ">=0.1.0", "react": ">=18.2.0", "react-native": ">=0.72.0" } }, "sha512-uVZyqJzvnyAzCNrrys4UGR/ioVgYxgcKbY/5ET0d7tyOt5joaKqiQMNEbQL+5gby34mqhLjmBSS3xt8mxZgRQg=="],
 
@@ -2384,6 +2384,8 @@
     "xml2js/xmlbuilder": ["xmlbuilder@11.0.1", "", {}, "sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA=="],
 
     "@ankhorage/templates/@ankhorage/zora/@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
+
+    "@ankhorage/templates/@ankhorage/zora/@ankhorage/surface": ["@ankhorage/surface@2.0.3", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "expo-font": "^55.0.6", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-safe-area-context": "^5.0.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-F5uG1Hun98N0c8fYgXAOlliUoIgX1LRm5B5IyiN0I2GEiyW12mC1UOu2MNn+9PAjZNdH1tsNbHHikw/OJhh5jA=="],
 
     "@babel/helper-compilation-targets/lru-cache/yallist": ["yallist@3.1.1", "", {}, "sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g=="],
 

@@ -436,9 +436,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
-    includeStudio
-      ? 'const STUDIO_EMPTY_THIRD_PARTY_SUPPORT = {} as const;'
-      : '',
+    includeStudio ? 'const STUDIO_EMPTY_THIRD_PARTY_SUPPORT = {} as const;' : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)

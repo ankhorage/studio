@@ -237,9 +237,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );
   expect(studioShellSource).toContain('const studioOutput = (');
-  expect(studioShellSource).toContain(
-    '[previewMode, studioWrapNode, studioResolveNodeProps]',
-  );
+  expect(studioShellSource).toContain('[previewMode, studioWrapNode, studioResolveNodeProps]');
 });
 
 test('keeps generated apps Studio-independent when includeStudio is false', () => {

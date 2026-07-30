@@ -438,7 +438,7 @@
                 data-target="src/host/generatedAdminExpoWeb.smoke.test.ts"
               >
                 src/host/generatedAdminExpoWeb.smoke.test.ts
-                <small>28 functions</small>
+                <small>30 functions</small>
               </button>
             </li>
             <li>
@@ -1241,6 +1241,26 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/runtime/interactionPolicy.ts"
+              >
+                src/runtime/interactionPolicy.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/runtime/interactionPolicyCore.ts"
+              >
+                src/runtime/interactionPolicyCore.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/runtime/localizationPreview.ts"
               >
                 src/runtime/localizationPreview.ts
@@ -1267,6 +1287,26 @@
               <button class="nav-button" type="button" data-target="src/runtime/runtimeActions.ts">
                 src/runtime/runtimeActions.ts
                 <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/runtime/stationarySelection.ts"
+              >
+                src/runtime/stationarySelection.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/runtime/stationarySelectionCoordinator.ts"
+              >
+                src/runtime/stationarySelectionCoordinator.ts
+                <small>9 functions</small>
               </button>
             </li>
             <li>
@@ -1535,7 +1575,7 @@
             <div class="summary">
               <div><strong>96</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>222</strong><span class="muted">modules</span></div>
+              <div><strong>229</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -2414,6 +2454,18 @@
             </article>
             <article
               class="item"
+              data-search="src/host/layout/templates/auth/adapter.test.ts src/host/layout/templates/auth/adapter.ts"
+            >
+              <h3>src/host/layout/templates/auth/adapter.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/host/layout/templates/auth/adapter.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/layout/templates/auth/adapter.ts getAuthAdapterTs"
             >
               <h3>src/host/layout/templates/auth/adapter.ts</h3>
@@ -2547,17 +2599,6 @@
                 <code>src/host/layout/utils/escapeStringLiteral.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>getIndexRedirectRouteTsx</code></p>
-            </article>
-            <article
-              class="item"
-              data-search="src/host/layout/templates/rootLayout.selectionDom.test.ts src/host/layout/templates/rootLayout.ts"
-            >
-              <h3>src/host/layout/templates/rootLayout.selectionDom.test.ts</h3>
-              <p class="muted">Referenced module</p>
-              <p>
-                <strong>Dependencies:</strong> <code>src/host/layout/templates/rootLayout.ts</code>
-              </p>
-              <p><strong>Exports:</strong> <span class="empty">None</span></p>
             </article>
             <article
               class="item"
@@ -3770,24 +3811,72 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/index.ts ComponentRegistry createStudioActionSuppressionConfig createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig executeRuntimeAction resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_PREVIEW_COMPONENT_REGISTRY StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions useRuntimeAction UseRuntimeActionOptions"
+              data-search="src/runtime/index.ts CommitSelectionResult ComponentRegistry createInteractionPolicyResolver createStationarySelectionCoordinator createStudioActionSuppressionConfig createStudioInteractionPolicyResolver createStudioPreviewComponentRegistry createStudioPreviewRuntimeConfig createStudioStationarySelectionWrapNode executeRuntimeAction InteractionPolicy InteractionPolicyResolverArgs isComponentSupported resolveStudioLocalizationPreview shouldSuppressStudioRuntimeActions StationarySelectionCoordinator StationaryTapSelector STUDIO_APP_EXTENSION_COMPONENT_REGISTRY STUDIO_PREVIEW_COMPONENT_REGISTRY StudioInteractionPolicyResolverArgs StudioLocalizationPreview StudioLocalizationPreviewInput StudioPreviewRegistryOptions StudioPreviewRuntimeConfigOptions ThirdPartyComponentSupport TransactionState useRuntimeAction UseRuntimeActionOptions"
             >
               <h3>src/runtime/index.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>ComponentRegistry</code>,
+                <strong>Exports:</strong> <code>CommitSelectionResult</code>,
+                <code>ComponentRegistry</code>, <code>createInteractionPolicyResolver</code>,
+                <code>createStationarySelectionCoordinator</code>,
                 <code>createStudioActionSuppressionConfig</code>,
+                <code>createStudioInteractionPolicyResolver</code>,
                 <code>createStudioPreviewComponentRegistry</code>,
-                <code>createStudioPreviewRuntimeConfig</code>, <code>executeRuntimeAction</code>,
+                <code>createStudioPreviewRuntimeConfig</code>,
+                <code>createStudioStationarySelectionWrapNode</code>,
+                <code>executeRuntimeAction</code>, <code>InteractionPolicy</code>,
+                <code>InteractionPolicyResolverArgs</code>, <code>isComponentSupported</code>,
                 <code>resolveStudioLocalizationPreview</code>,
                 <code>shouldSuppressStudioRuntimeActions</code>,
+                <code>StationarySelectionCoordinator</code>, <code>StationaryTapSelector</code>,
                 <code>STUDIO_APP_EXTENSION_COMPONENT_REGISTRY</code>,
                 <code>STUDIO_PREVIEW_COMPONENT_REGISTRY</code>,
+                <code>StudioInteractionPolicyResolverArgs</code>,
                 <code>StudioLocalizationPreview</code>, <code>StudioLocalizationPreviewInput</code>,
                 <code>StudioPreviewRegistryOptions</code>,
-                <code>StudioPreviewRuntimeConfigOptions</code>, <code>useRuntimeAction</code>,
-                <code>UseRuntimeActionOptions</code>
+                <code>StudioPreviewRuntimeConfigOptions</code>,
+                <code>ThirdPartyComponentSupport</code>, <code>TransactionState</code>,
+                <code>useRuntimeAction</code>, <code>UseRuntimeActionOptions</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/interactionPolicy.test.ts src/runtime/interactionPolicyCore.ts"
+            >
+              <h3>src/runtime/interactionPolicy.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/runtime/interactionPolicyCore.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/interactionPolicy.ts src/runtime/interactionPolicyCore.ts createStudioInteractionPolicyResolver InteractionPolicy StudioInteractionPolicyResolverArgs ThirdPartyComponentSupport"
+            >
+              <h3>src/runtime/interactionPolicy.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/runtime/interactionPolicyCore.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>createStudioInteractionPolicyResolver</code>,
+                <code>InteractionPolicy</code>, <code>StudioInteractionPolicyResolverArgs</code>,
+                <code>ThirdPartyComponentSupport</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/interactionPolicyCore.ts createInteractionPolicyResolver InteractionPolicy InteractionPolicyResolverArgs isComponentSupported ThirdPartyComponentSupport"
+            >
+              <h3>src/runtime/interactionPolicyCore.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>createInteractionPolicyResolver</code>,
+                <code>InteractionPolicy</code>, <code>InteractionPolicyResolverArgs</code>,
+                <code>isComponentSupported</code>, <code>ThirdPartyComponentSupport</code>
               </p>
             </article>
             <article
@@ -3817,12 +3906,13 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/previewRuntimeConfig.ts src/runtime/actionSuppression.ts src/runtime/previewRegistry.ts createStudioPreviewRuntimeConfig StudioPreviewRuntimeConfigOptions"
+              data-search="src/runtime/previewRuntimeConfig.ts src/runtime/actionSuppression.ts src/runtime/interactionPolicy.ts src/runtime/previewRegistry.ts createStudioPreviewRuntimeConfig StudioPreviewRuntimeConfigOptions"
             >
               <h3>src/runtime/previewRuntimeConfig.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/runtime/actionSuppression.ts</code>,
+                <code>src/runtime/interactionPolicy.ts</code>,
                 <code>src/runtime/previewRegistry.ts</code>
               </p>
               <p>
@@ -3853,6 +3943,54 @@
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article class="item" data-search="src/runtime/stationarySelection.test.ts">
+              <h3>src/runtime/stationarySelection.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/stationarySelection.ts src/runtime/stationarySelectionCoordinator.ts CommitSelectionResult createStudioStationarySelectionWrapNode StationarySelectionCoordinator StationaryTapSelector TransactionState"
+            >
+              <h3>src/runtime/stationarySelection.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/runtime/stationarySelectionCoordinator.ts</code>
+              </p>
+              <p>
+                <strong>Exports:</strong> <code>CommitSelectionResult</code>,
+                <code>createStudioStationarySelectionWrapNode</code>,
+                <code>StationarySelectionCoordinator</code>, <code>StationaryTapSelector</code>,
+                <code>TransactionState</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/stationarySelectionCoordinator.test.ts src/runtime/stationarySelectionCoordinator.ts"
+            >
+              <h3>src/runtime/stationarySelectionCoordinator.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/runtime/stationarySelectionCoordinator.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/runtime/stationarySelectionCoordinator.ts CommitSelectionResult createStationarySelectionCoordinator StationarySelectionCoordinator TransactionState"
+            >
+              <h3>src/runtime/stationarySelectionCoordinator.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>CommitSelectionResult</code>,
+                <code>createStationarySelectionCoordinator</code>,
+                <code>StationarySelectionCoordinator</code>, <code>TransactionState</code>
+              </p>
             </article>
             <article
               class="item"
@@ -8586,6 +8724,11 @@
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+                module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_layout_templates_auth_adapter_test_ts
+                module_src_host_layout_templates_auth_adapter_test_ts --&gt;
+                module_src_host_layout_templates_auth_adapter_ts
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_ts
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
@@ -8637,11 +8780,6 @@
                 package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
                 module_src_host_layout_templates_redirect_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
-                package__ankhorage_studio -.-&gt;
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt;
-                module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_layout_templates_rootLayout_test_ts
@@ -9025,6 +9163,16 @@
                 package__ankhorage_studio -.-&gt; module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_index_ts
+                module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicy_test_ts
+                module_src_runtime_interactionPolicy_test_ts --&gt;
+                module_src_runtime_interactionPolicyCore_ts
+                module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicy_ts
+                module_src_runtime_interactionPolicy_ts --&gt;
+                module_src_runtime_interactionPolicyCore_ts
+                module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicyCore_ts
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
@@ -9035,13 +9183,29 @@
                 package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
-                --&gt; module_src_runtime_previewRegistry_ts
+                --&gt; module_src_runtime_interactionPolicy_ts
+                module_src_runtime_previewRuntimeConfig_ts --&gt;
+                module_src_runtime_previewRegistry_ts
                 module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
                 module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_runtimeSurface_test_ts
+                module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_test_ts
+                module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_ts
+                module_src_runtime_stationarySelection_ts --&gt;
+                module_src_runtime_stationarySelectionCoordinator_ts
+                module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_runtime_stationarySelectionCoordinator_test_ts
+                module_src_runtime_stationarySelectionCoordinator_test_ts --&gt;
+                module_src_runtime_stationarySelectionCoordinator_ts
+                module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_runtime_stationarySelectionCoordinator_ts
                 module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_useRuntimeAction_ts
                 module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
@@ -9529,6 +9693,9 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_test_ts
+  module_src_host_layout_templates_auth_adapter_test_ts --&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
@@ -9565,9 +9732,6 @@ graph TD
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_redirect_ts
   module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
-  package__ankhorage_studio -.-&gt; module_src_host_layout_templates_rootLayout_selectionDom_test_ts
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_layout_templates_rootLayout_test_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
@@ -9863,6 +10027,14 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_index_ts
+  module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicy_test_ts
+  module_src_runtime_interactionPolicy_test_ts --&gt; module_src_runtime_interactionPolicyCore_ts
+  module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicy_ts
+  module_src_runtime_interactionPolicy_ts --&gt; module_src_runtime_interactionPolicyCore_ts
+  module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_localizationPreview_ts
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
@@ -9871,6 +10043,7 @@ graph TD
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_previewRuntimeConfig_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
+  module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicy_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_registry_tsx
@@ -9878,6 +10051,16 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeActions_ts
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_runtimeSurface_test_ts
+  module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_test_ts
+  module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelectionCoordinator_test_ts
+  module_src_runtime_stationarySelectionCoordinator_test_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_useRuntimeAction_ts
   module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
@@ -10132,6 +10315,7 @@ graph TD
                 module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
                 module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
                 module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
+                module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
                 module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
@@ -10143,7 +10327,6 @@ graph TD
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -10233,12 +10416,19 @@ graph TD
                 module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
                 module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
+                module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+                module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+                module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
                 module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
                 module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
                 module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
+                module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+                module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+                module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+                module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
                 module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
                 module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
                 module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
@@ -10459,6 +10649,8 @@ graph TD
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
                 module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+                module_src_host_layout_templates_auth_adapter_test_ts --&gt;
+                module_src_host_layout_templates_auth_adapter_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
                 module_src_host_layout_templates_utils_routes_ts
                 module_src_host_layout_templates_auth_callback_ts --&gt;
@@ -10487,8 +10679,6 @@ graph TD
                 module_src_host_layout_templates_utils_strings_ts
                 module_src_host_layout_templates_redirect_ts --&gt;
                 module_src_host_layout_utils_escapeStringLiteral_ts
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt;
-                module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_test_ts --&gt;
                 module_src_host_layout_templates_rootLayout_ts
                 module_src_host_layout_templates_rootLayout_ts --&gt;
@@ -10675,12 +10865,20 @@ graph TD
                 module_src_projectSecretUsage_test_ts --&gt; module_src_projectSecretUsage_ts
                 module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
                 module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+                module_src_runtime_interactionPolicy_test_ts --&gt;
+                module_src_runtime_interactionPolicyCore_ts module_src_runtime_interactionPolicy_ts
+                --&gt; module_src_runtime_interactionPolicyCore_ts
                 module_src_runtime_previewRegistry_ts --&gt;
                 module_src_runtime_appExtensionRegistry_ts
                 module_src_runtime_previewRuntimeConfig_ts --&gt;
                 module_src_runtime_actionSuppression_ts module_src_runtime_previewRuntimeConfig_ts
-                --&gt; module_src_runtime_previewRegistry_ts module_src_runtime_useRuntimeAction_ts
-                --&gt; module_src_runtime_runtimeActions_ts
+                --&gt; module_src_runtime_interactionPolicy_ts
+                module_src_runtime_previewRuntimeConfig_ts --&gt;
+                module_src_runtime_previewRegistry_ts module_src_runtime_stationarySelection_ts
+                --&gt; module_src_runtime_stationarySelectionCoordinator_ts
+                module_src_runtime_stationarySelectionCoordinator_test_ts --&gt;
+                module_src_runtime_stationarySelectionCoordinator_ts
+                module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
                 module_src_runtimeDiagnosticsModel_test_ts --&gt;
                 module_src_runtimeDiagnosticsModel_ts module_src_runtimeLocalization_public_test_ts
                 --&gt; module_src_runtimeLocalization_ts module_src_runtimeLocalization_test_ts
@@ -10861,6 +11059,7 @@ graph LR
   module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
   module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
   module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
+  module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
   module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
@@ -10872,7 +11071,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -10962,12 +11160,19 @@ graph LR
   module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
   module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
+  module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+  module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+  module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
   module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
   module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
+  module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+  module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+  module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+  module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
   module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
   module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
   module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
@@ -11145,6 +11350,7 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --&gt; module_src_studioAdminRouteModel_ts
+  module_src_host_layout_templates_auth_adapter_test_ts --&gt; module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_auth_oauth_ts --&gt; module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -11159,7 +11365,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_nestedLayout_ts --&gt; module_src_host_layout_templates_utils_strings_ts
   module_src_host_layout_templates_redirect_ts --&gt; module_src_host_layout_utils_escapeStringLiteral_ts
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_test_ts --&gt; module_src_host_layout_templates_rootLayout_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_templates_rootLayout_ts --&gt; module_src_host_layout_templates_navigation_ts
@@ -11278,9 +11483,14 @@ graph LR
   module_src_projectSecretUsage_test_ts --&gt; module_src_projectSecretUsage_ts
   module_src_routeUtils_public_test_ts --&gt; module_src_routeUtils_ts
   module_src_routeUtils_test_ts --&gt; module_src_routeUtils_ts
+  module_src_runtime_interactionPolicy_test_ts --&gt; module_src_runtime_interactionPolicyCore_ts
+  module_src_runtime_interactionPolicy_ts --&gt; module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRegistry_ts --&gt; module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_actionSuppression_ts
+  module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_interactionPolicy_ts
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionCoordinator_test_ts --&gt; module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_useRuntimeAction_ts --&gt; module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --&gt; module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --&gt; module_src_runtimeLocalization_ts
@@ -11432,6 +11642,7 @@ graph LR
                 module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
                 module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
                 module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
+                module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
                 module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
                 module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
                 module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
@@ -11443,7 +11654,6 @@ graph LR
                 module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
                 module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
                 module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-                module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
                 module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
                 module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -11533,12 +11743,19 @@ graph LR
                 module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
                 module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
                 module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
+                module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+                module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+                module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
                 module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
                 module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
                 module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
                 module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
                 module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
                 module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
+                module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+                module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+                module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+                module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
                 module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
                 module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
                 module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
@@ -11907,6 +12124,7 @@ graph LR
   module_src_host_layout_generatedImportComposer_ts[&quot;src/host/layout/generatedImportComposer.ts&quot;]
   module_src_host_layout_layoutGenerator_test_ts[&quot;src/host/layout/layoutGenerator.test.ts&quot;]
   module_src_host_layout_layoutGenerator_ts[&quot;src/host/layout/layoutGenerator.ts&quot;]
+  module_src_host_layout_templates_auth_adapter_test_ts[&quot;src/host/layout/templates/auth/adapter.test.ts&quot;]
   module_src_host_layout_templates_auth_adapter_ts[&quot;src/host/layout/templates/auth/adapter.ts&quot;]
   module_src_host_layout_templates_auth_callback_ts[&quot;src/host/layout/templates/auth/callback.ts&quot;]
   module_src_host_layout_templates_auth_oauth_ts[&quot;src/host/layout/templates/auth/oauth.ts&quot;]
@@ -11918,7 +12136,6 @@ graph LR
   module_src_host_layout_templates_nestedLayout_test_ts[&quot;src/host/layout/templates/nestedLayout.test.ts&quot;]
   module_src_host_layout_templates_nestedLayout_ts[&quot;src/host/layout/templates/nestedLayout.ts&quot;]
   module_src_host_layout_templates_redirect_ts[&quot;src/host/layout/templates/redirect.ts&quot;]
-  module_src_host_layout_templates_rootLayout_selectionDom_test_ts[&quot;src/host/layout/templates/rootLayout.selectionDom.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_test_ts[&quot;src/host/layout/templates/rootLayout.test.ts&quot;]
   module_src_host_layout_templates_rootLayout_ts[&quot;src/host/layout/templates/rootLayout.ts&quot;]
   module_src_host_layout_templates_screen_ts[&quot;src/host/layout/templates/screen.ts&quot;]
@@ -12008,12 +12225,19 @@ graph LR
   module_src_runtime_actionSuppression_ts[&quot;src/runtime/actionSuppression.ts&quot;]
   module_src_runtime_appExtensionRegistry_ts[&quot;src/runtime/appExtensionRegistry.ts&quot;]
   module_src_runtime_index_ts[&quot;src/runtime/index.ts&quot;]
+  module_src_runtime_interactionPolicy_test_ts[&quot;src/runtime/interactionPolicy.test.ts&quot;]
+  module_src_runtime_interactionPolicy_ts[&quot;src/runtime/interactionPolicy.ts&quot;]
+  module_src_runtime_interactionPolicyCore_ts[&quot;src/runtime/interactionPolicyCore.ts&quot;]
   module_src_runtime_localizationPreview_ts[&quot;src/runtime/localizationPreview.ts&quot;]
   module_src_runtime_previewRegistry_ts[&quot;src/runtime/previewRegistry.ts&quot;]
   module_src_runtime_previewRuntimeConfig_ts[&quot;src/runtime/previewRuntimeConfig.ts&quot;]
   module_src_runtime_registry_tsx[&quot;src/runtime/registry.tsx&quot;]
   module_src_runtime_runtimeActions_ts[&quot;src/runtime/runtimeActions.ts&quot;]
   module_src_runtime_runtimeSurface_test_ts[&quot;src/runtime/runtimeSurface.test.ts&quot;]
+  module_src_runtime_stationarySelection_test_ts[&quot;src/runtime/stationarySelection.test.ts&quot;]
+  module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
+  module_src_runtime_stationarySelectionCoordinator_test_ts[&quot;src/runtime/stationarySelectionCoordinator.test.ts&quot;]
+  module_src_runtime_stationarySelectionCoordinator_ts[&quot;src/runtime/stationarySelectionCoordinator.ts&quot;]
   module_src_runtime_useRuntimeAction_ts[&quot;src/runtime/useRuntimeAction.ts&quot;]
   module_src_runtimeDiagnosticsModel_test_ts[&quot;src/runtimeDiagnosticsModel.test.ts&quot;]
   module_src_runtimeDiagnosticsModel_ts[&quot;src/runtimeDiagnosticsModel.ts&quot;]
@@ -14111,7 +14335,7 @@ sequenceDiagram
               data-search="createAdminSmokeManifest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createAdminSmokeManifest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:41:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:46:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14119,7 +14343,7 @@ sequenceDiagram
               data-search="createScrollableRuntimeScreenRoot src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createScrollableRuntimeScreenRoot</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:97:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:102:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14127,15 +14351,7 @@ sequenceDiagram
               data-search="createGeneratedAdminProject src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createGeneratedAdminProject</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:183:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="copyGeneratedDirectDependencies src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>copyGeneratedDirectDependencies</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:222:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:195:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14143,7 +14359,7 @@ sequenceDiagram
               data-search="writeSmokeMetroConfig src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeMetroConfig</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:251:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:233:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14151,7 +14367,7 @@ sequenceDiagram
               data-search="reservePort src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:269:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:256:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14159,7 +14375,63 @@ sequenceDiagram
               data-search="spawnExpoWeb src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnExpoWeb</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:285:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:272:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="startSmokeStudioApi src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>startSmokeStudioApi</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:294:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="handleSmokeStudioApiRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>handleSmokeStudioApiRequest</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:319:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="listenOnLocalhost src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>listenOnLocalhost</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:359:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="closeHttpServer src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>closeHttpServer</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:373:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readJsonRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>readJsonRequest</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:382:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeJsonResponse src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>writeJsonResponse</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:398:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeCorsHeaders src/host/generatedAdminExpoWeb.smoke.test.ts "
+            >
+              <h3>writeCorsHeaders</h3>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:405:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14167,7 +14439,7 @@ sequenceDiagram
               data-search="waitForExpoWebUrl src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:301:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:411:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14175,7 +14447,7 @@ sequenceDiagram
               data-search="linkSmokeNodeModules src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkSmokeNodeModules</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:314:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:424:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14183,7 +14455,7 @@ sequenceDiagram
               data-search="linkNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:332:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:437:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14191,7 +14463,7 @@ sequenceDiagram
               data-search="linkScopedNodeModuleEntries src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>linkScopedNodeModuleEntries</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:369:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:474:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14199,39 +14471,7 @@ sequenceDiagram
               data-search="symlinkIfMissing src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>symlinkIfMissing</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:384:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="copyNodeModuleEntry src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>copyNodeModuleEntry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:393:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="copyNodeModulePackage src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>copyNodeModulePackage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:404:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="resolveSmokeNodeModuleSource src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>resolveSmokeNodeModuleSource</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:412:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="getNodeModuleTargetPath src/host/generatedAdminExpoWeb.smoke.test.ts "
-            >
-              <h3>getNodeModuleTargetPath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:429:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:489:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14239,7 +14479,7 @@ sequenceDiagram
               data-search="isNodeErrorWithCode src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isNodeErrorWithCode</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:441:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:498:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14247,7 +14487,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:445:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:502:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14255,7 +14495,7 @@ sequenceDiagram
               data-search="waitForBodyText src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForBodyText</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:462:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:519:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14263,7 +14503,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:479:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:536:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14271,7 +14511,7 @@ sequenceDiagram
               data-search="readEnvString src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:485:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:542:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14279,7 +14519,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:491:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:548:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14287,7 +14527,7 @@ sequenceDiagram
               data-search="openChromePage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:507:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:564:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14295,7 +14535,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:612:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:669:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14303,7 +14543,7 @@ sequenceDiagram
               data-search="isRecord src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:627:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:684:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14311,7 +14551,7 @@ sequenceDiagram
               data-search="stopProcess src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:631:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:688:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14319,7 +14559,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:640:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:697:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -14327,7 +14567,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:651:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:708:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -15488,7 +15728,7 @@ sequenceDiagram
               data-search="serializeStringArrayLiteral src/host/layout/templates/rootLayout.ts "
             >
               <h3>serializeStringArrayLiteral</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:60:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:67:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15496,7 +15736,7 @@ sequenceDiagram
               data-search="indentGeneratedBlock src/host/layout/templates/rootLayout.ts "
             >
               <h3>indentGeneratedBlock</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:64:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:71:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -15504,7 +15744,7 @@ sequenceDiagram
               data-search="getRootLayoutTsx src/host/layout/templates/rootLayout.ts "
             >
               <h3>getRootLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:71:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:78:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -18809,6 +19049,66 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-runtime-interactionpolicy-ts"
+          class="view"
+          data-view="src/runtime/interactionPolicy.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/interactionPolicy.ts</h2>
+            <article
+              class="item"
+              data-search="createStudioInteractionPolicyResolver src/runtime/interactionPolicy.ts "
+            >
+              <h3>createStudioInteractionPolicyResolver</h3>
+              <p class="muted"><code>src/runtime/interactionPolicy.ts:15:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-runtime-interactionpolicycore-ts"
+          class="view"
+          data-view="src/runtime/interactionPolicyCore.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/interactionPolicyCore.ts</h2>
+            <article
+              class="item"
+              data-search="classifyComponent src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>classifyComponent</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:14:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isComponentSupported src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>isComponentSupported</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:30:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveInteractionPolicy src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>resolveInteractionPolicy</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:38:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createInteractionPolicyResolver src/runtime/interactionPolicyCore.ts "
+            >
+              <h3>createInteractionPolicyResolver</h3>
+              <p class="muted"><code>src/runtime/interactionPolicyCore.ts:55:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-runtime-localizationpreview-ts"
           class="view"
           data-view="src/runtime/localizationPreview.ts"
@@ -18857,7 +19157,7 @@ sequenceDiagram
               data-search="createStudioPreviewRuntimeConfig src/runtime/previewRuntimeConfig.ts "
             >
               <h3>createStudioPreviewRuntimeConfig</h3>
-              <p class="muted"><code>src/runtime/previewRuntimeConfig.ts:11:14</code></p>
+              <p class="muted"><code>src/runtime/previewRuntimeConfig.ts:12:14</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -18873,6 +19173,130 @@ sequenceDiagram
             <article class="item" data-search="executeRuntimeAction src/runtime/runtimeActions.ts ">
               <h3>executeRuntimeAction</h3>
               <p class="muted"><code>src/runtime/runtimeActions.ts:8:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-runtime-stationaryselection-ts"
+          class="view"
+          data-view="src/runtime/stationarySelection.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/stationarySelection.ts</h2>
+            <article
+              class="item"
+              data-search="StudioNodeTouchRecorder src/runtime/stationarySelection.ts "
+            >
+              <h3>StudioNodeTouchRecorder</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:21:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="handleTouchStart src/runtime/stationarySelection.ts "
+            >
+              <h3>handleTouchStart</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:31:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createStudioStationarySelectionWrapNode src/runtime/stationarySelection.ts "
+            >
+              <h3>createStudioStationarySelectionWrapNode</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:70:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="StationaryTapSelector src/runtime/stationarySelection.ts "
+            >
+              <h3>StationaryTapSelector</h3>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:105:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-runtime-stationaryselectioncoordinator-ts"
+          class="view"
+          data-view="src/runtime/stationarySelectionCoordinator.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/runtime/stationarySelectionCoordinator.ts</h2>
+            <article
+              class="item"
+              data-search="createStationarySelectionCoordinator src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>createStationarySelectionCoordinator</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:27:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="beginTransaction src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>beginTransaction</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:31:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="recordNode src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>recordNode</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:42:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="commitSelection src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>commitSelection</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:54:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="clearTransaction src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>clearTransaction</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:101:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="clearTransaction src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>clearTransaction</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:102:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="clearTransaction src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>clearTransaction</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:103:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="markMoved src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>markMoved</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:118:3</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="getTransaction src/runtime/stationarySelectionCoordinator.ts "
+            >
+              <h3>getTransaction</h3>
+              <p class="muted"><code>src/runtime/stationarySelectionCoordinator.ts:128:3</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
