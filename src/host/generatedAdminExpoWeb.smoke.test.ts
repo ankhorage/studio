@@ -13,6 +13,11 @@ import path from 'node:path';
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
+import {
+  bunLockfileReferencesPackageVersion,
+  isPathInsideResolved,
+  resolveInstalledPackageProvenance,
+} from './installedPackageProvenance';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
@@ -147,6 +152,177 @@ function createScrollableRuntimeScreenRoot(): UiNode {
             type: 'SmokeStudioProbe',
             props: {},
           },
+          {
+            id: 'native-layout-fixture',
+            type: 'Box',
+            props: {
+              testID: 'native-layout-fixture',
+              style: { gap: 12 },
+            },
+            children: [
+              {
+                id: 'native-row-parent',
+                type: 'SmokeLayoutBox',
+                props: {
+                  testID: 'native-row-parent',
+                  style: {
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    height: 72,
+                    width: 320,
+                  },
+                },
+                children: [
+                  {
+                    id: 'native-row-sibling-a',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Row A',
+                      testID: 'native-row-sibling-a',
+                      style: { height: 44, width: 70 },
+                    },
+                  },
+                  {
+                    id: 'native-row-target',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Row target',
+                      stateful: true,
+                      testID: 'native-row-target',
+                      style: { height: 52, width: 130 },
+                    },
+                  },
+                  {
+                    id: 'native-row-sibling-b',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Row B',
+                      testID: 'native-row-sibling-b',
+                      style: { height: 40, width: 80 },
+                    },
+                  },
+                ],
+              },
+              {
+                id: 'native-flex-parent',
+                type: 'SmokeLayoutBox',
+                props: {
+                  testID: 'native-flex-parent',
+                  style: { flexDirection: 'row', height: 64, width: 320 },
+                },
+                children: [
+                  {
+                    id: 'native-flex-target',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Flex grow',
+                      testID: 'native-flex-target',
+                      style: { flexGrow: 1, height: 52 },
+                    },
+                  },
+                  {
+                    id: 'native-flex-sibling',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Fixed',
+                      testID: 'native-flex-sibling',
+                      style: { height: 52, width: 88 },
+                    },
+                  },
+                ],
+              },
+              {
+                id: 'native-align-parent',
+                type: 'SmokeLayoutBox',
+                props: {
+                  testID: 'native-align-parent',
+                  style: { height: 90, width: 320 },
+                },
+                children: [
+                  {
+                    id: 'native-align-target',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Align self',
+                      testID: 'native-align-target',
+                      style: { alignSelf: 'flex-end', height: 42, width: 140 },
+                    },
+                  },
+                ],
+              },
+              {
+                id: 'native-percentage-parent',
+                type: 'SmokeLayoutBox',
+                props: {
+                  testID: 'native-percentage-parent',
+                  style: { height: 60, width: 300 },
+                },
+                children: [
+                  {
+                    id: 'native-percentage-target',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Fifty percent',
+                      testID: 'native-percentage-target',
+                      style: { height: 44, width: '50%' },
+                    },
+                  },
+                ],
+              },
+              {
+                id: 'native-absolute-parent',
+                type: 'SmokeLayoutBox',
+                props: {
+                  testID: 'native-absolute-parent',
+                  style: { height: 110, position: 'relative', width: 320 },
+                },
+                children: [
+                  {
+                    id: 'native-absolute-sibling',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Flow sibling',
+                      testID: 'native-absolute-sibling',
+                      style: { height: 40, width: 100 },
+                    },
+                  },
+                  {
+                    id: 'native-absolute-target',
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: 'Absolute',
+                      testID: 'native-absolute-target',
+                      style: {
+                        height: 52,
+                        left: 150,
+                        position: 'absolute',
+                        top: 24,
+                        width: 130,
+                      },
+                    },
+                  },
+                ],
+              },
+              {
+                id: 'native-nested-scroll',
+                type: 'SmokeNestedScroll',
+                props: {
+                  testID: 'native-nested-scroll',
+                },
+                children: [
+                  ...Array.from({ length: 12 }, (_, index) => ({
+                    id: `native-nested-scroll-row-${index}`,
+                    type: 'SmokeLayoutBox',
+                    props: {
+                      label: `Nested row ${index + 1}`,
+                      testID: `native-nested-scroll-row-${index}`,
+                      style: { height: 64, width: 260 },
+                    },
+                  })),
+                ],
+              },
+            ],
+          },
           ...Array.from({ length: 16 }, (_, index) => ({
             id: `dashboard-runtime-row-${index}`,
             type: 'Text',
@@ -161,10 +337,40 @@ function createScrollableRuntimeScreenRoot(): UiNode {
   };
 }
 
+test('native unsupported layout fixture covers layout-sensitive Runtime relationships', () => {
+  const root = createScrollableRuntimeScreenRoot();
+  const nodes = new Map<string, UiNode>();
+  const visit = (node: UiNode): void => {
+    nodes.set(node.id, node);
+    node.children?.forEach(visit);
+  };
+  visit(root);
+
+  expect(nodes.get('native-row-parent')?.children?.length).toBe(3);
+  expect(nodes.get('native-flex-target')?.props?.style).toMatchObject({ flexGrow: 1 });
+  expect(nodes.get('native-align-target')?.props?.style).toMatchObject({
+    alignSelf: 'flex-end',
+  });
+  expect(nodes.get('native-percentage-target')?.props?.style).toMatchObject({
+    width: '50%',
+  });
+  expect(nodes.get('native-absolute-target')?.props?.style).toMatchObject({
+    position: 'absolute',
+  });
+  expect(nodes.get('native-row-target')?.props?.stateful).toBe(true);
+  expect(nodes.get('native-nested-scroll')?.children?.length).toBe(12);
+});
+
 adminWebSmokeTest(
   'loads generated Studio admin routes through Expo web without a theme update loop',
   async () => {
-    const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-admin-web-smoke-'));
+    const rawPreservedWorkspaceRoot: unknown = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE_WORKSPACE;
+    const preservedWorkspaceRoot =
+      typeof rawPreservedWorkspaceRoot === 'string' && rawPreservedWorkspaceRoot.length > 0
+        ? rawPreservedWorkspaceRoot
+        : undefined;
+    const workspaceRoot =
+      preservedWorkspaceRoot ?? (await mkdtemp(path.join(tmpdir(), 'ankh-admin-web-smoke-')));
     const debugPort = await reservePort();
     let expoProcess: ChildProcessWithoutNullStreams | null = null;
     let chromeProcess: ChildProcessWithoutNullStreams | null = null;
@@ -187,7 +393,11 @@ adminWebSmokeTest(
       ) as { dependencies?: Record<string, string> };
       const generatedZoraRange = generatedPackage.dependencies?.['@ankhorage/zora'];
       const installedZoraRoot = path.join(projectRoot, 'node_modules', '@ankhorage', 'zora');
-      const resolvedZoraRoot = await realpath(installedZoraRoot);
+      const { resolvedCandidatePath: resolvedZoraRoot, resolvedWorkspacePath } =
+        await resolveInstalledPackageProvenance(workspaceRoot, installedZoraRoot);
+      const resolvedRepositoryZoraRoot = await realpath(
+        path.join(process.cwd(), 'node_modules', '@ankhorage', 'zora'),
+      );
       const resolvedZoraPackage = JSON.parse(
         await readFile(path.join(resolvedZoraRoot, 'package.json'), 'utf8'),
       ) as { version?: string };
@@ -198,11 +408,15 @@ adminWebSmokeTest(
       expect(
         satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
       ).toBe(true);
-      expect(isPathInside(workspaceRoot, installedZoraRoot)).toBe(true);
-      expect(isPathInside(process.cwd(), installedZoraRoot)).toBe(false);
-      expect(generatedLockfile).toContain(
-        `"@ankhorage/zora": ["@ankhorage/zora@${resolvedZoraPackage.version}"`,
-      );
+      expect(isPathInsideResolved(resolvedWorkspacePath, resolvedZoraRoot)).toBe(true);
+      expect(resolvedZoraRoot).not.toBe(resolvedRepositoryZoraRoot);
+      expect(
+        bunLockfileReferencesPackageVersion(
+          generatedLockfile,
+          '@ankhorage/zora',
+          resolvedZoraPackage.version ?? '',
+        ),
+      ).toBe(true);
       expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
@@ -247,7 +461,9 @@ adminWebSmokeTest(
       await studioApi?.close();
       stopProcess(chromeProcess);
       stopProcess(expoProcess);
-      await rm(workspaceRoot, { force: true, recursive: true });
+      if (!preservedWorkspaceRoot) {
+        await rm(workspaceRoot, { force: true, recursive: true });
+      }
     }
   },
   TEST_TIMEOUT_MS,
@@ -267,6 +483,21 @@ interface UnsupportedGeometrySnapshot {
   readonly target: BrowserRect;
   readonly neighbor: BrowserRect;
   readonly pointerEvents: string;
+}
+
+interface CapturedLayoutRect {
+  readonly height: number;
+  readonly width: number;
+  readonly x: number;
+  readonly y: number;
+}
+
+interface CapturedLayoutSnapshot {
+  readonly instances: Readonly<Record<string, number>>;
+  readonly rects: Readonly<Record<string, CapturedLayoutRect | null>>;
+  readonly scrollContentSizes: Readonly<
+    Record<string, { readonly height: number; readonly width: number }>
+  >;
 }
 
 async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): Promise<void> {
@@ -430,23 +661,75 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
   );
 
-  await page.evaluate(`globalThis.__studioSmokeTogglePreview?.()`);
-  await waitForStudioSmokeState(
-    page,
-    'mode=preview;selection=dashboard-runtime-row-1;changes=3',
-    15_000,
+  const privateStateBefore = await page.evaluate<string>(
+    `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
   );
+  const statefulTarget = await page.readRuntimeNodeCenter('native-row-target');
+  await page.touchTap(statefulTarget.x, statefulTarget.y);
+  await waitForStudioSmokeState(page, 'mode=edit;selection=native-row-target;changes=4', 15_000);
+  const privateStateAfterInteraction = await page.evaluate<string>(
+    `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
+  );
+  expect(privateStateAfterInteraction).not.toBe(privateStateBefore);
+
+  const editLayoutSnapshot = await page.captureSmokeLayout();
+  expect(editLayoutSnapshot.rects['native-row-parent']).not.toBeNull();
+  expect(editLayoutSnapshot.rects['native-flex-target']).not.toBeNull();
+  expect(editLayoutSnapshot.rects['native-align-target']).not.toBeNull();
+  expect(editLayoutSnapshot.rects['native-percentage-target']).not.toBeNull();
+  expect(editLayoutSnapshot.rects['native-absolute-target']).not.toBeNull();
+  expect(editLayoutSnapshot.scrollContentSizes['native-nested-scroll']?.height).toBeGreaterThan(
+    220,
+  );
+
+  await page.evaluate(`globalThis.__studioSmokeTogglePreview?.()`);
+  await waitForStudioSmokeState(page, 'mode=preview;selection=native-row-target;changes=4', 15_000);
   expect(
     await page.evaluate<boolean>(
       `document.getElementById('studio-unsupported-indicator-unsupported-runtime-target') === null`,
     ),
   ).toBe(true);
+  const previewLayoutSnapshot = await page.captureSmokeLayout();
+  expectCapturedLayoutsToMatch(previewLayoutSnapshot, editLayoutSnapshot);
+  expect(
+    await page.evaluate<string>(
+      `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
+    ),
+  ).toBe(privateStateAfterInteraction);
 
-  await page.mouseClick(desktopTarget.x, desktopTarget.y);
+  const previewDesktopTarget = await page.readRuntimeNodeCenter('desktop-pointer-target');
+  await page.mouseClick(previewDesktopTarget.x, previewDesktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=preview;selection=dashboard-runtime-row-1;changes=3',
+    'mode=preview;selection=native-row-target;changes=4',
   );
+}
+
+function expectCapturedLayoutsToMatch(
+  actual: CapturedLayoutSnapshot,
+  expected: CapturedLayoutSnapshot,
+): void {
+  const actualAnchor = actual.rects['native-row-parent'];
+  const expectedAnchor = expected.rects['native-row-parent'];
+  expect(actualAnchor).not.toBeNull();
+  expect(expectedAnchor).not.toBeNull();
+  const viewportOffsetX = actualAnchor && expectedAnchor ? actualAnchor.x - expectedAnchor.x : 0;
+  const viewportOffsetY = actualAnchor && expectedAnchor ? actualAnchor.y - expectedAnchor.y : 0;
+
+  expect(actual.instances).toEqual(expected.instances);
+  expect(actual.scrollContentSizes).toEqual(expected.scrollContentSizes);
+  expect(Object.keys(actual.rects).sort()).toEqual(Object.keys(expected.rects).sort());
+  for (const [testID, expectedRect] of Object.entries(expected.rects)) {
+    const actualRect = actual.rects[testID];
+    expect(actualRect == null).toBe(expectedRect == null);
+    if (!actualRect || !expectedRect) {
+      continue;
+    }
+    expect(Math.abs(actualRect.x - viewportOffsetX - expectedRect.x)).toBeLessThanOrEqual(2);
+    expect(Math.abs(actualRect.y - viewportOffsetY - expectedRect.y)).toBeLessThanOrEqual(2);
+    expect(Math.abs(actualRect.width - expectedRect.width)).toBeLessThanOrEqual(2);
+    expect(Math.abs(actualRect.height - expectedRect.height)).toBeLessThanOrEqual(2);
+  }
 }
 
 async function waitForUnsupportedGeometry(
@@ -499,11 +782,6 @@ function rectsOverlap(left: BrowserRect, right: BrowserRect): boolean {
     Math.min(left.right, right.right) > Math.max(left.left, right.left) &&
     Math.min(left.bottom, right.bottom) > Math.max(left.top, right.top)
   );
-}
-
-function isPathInside(parentPath: string, candidatePath: string): boolean {
-  const relativePath = path.relative(parentPath, candidatePath);
-  return relativePath !== '' && !relativePath.startsWith(`..${path.sep}`) && relativePath !== '..';
 }
 
 async function createGeneratedAdminProject(workspaceRoot: string): Promise<string> {
@@ -612,9 +890,89 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
     `import { useStudio } from '@ankhorage/studio';
+import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
 import { Box, Text } from '@ankhorage/zora';
-import React, { useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  Text as NativeText,
+  View,
+  type ViewStyle,
+} from 'react-native';
+
+type ViewRef = React.ElementRef<typeof View>;
+
+interface SmokeRect {
+  readonly height: number;
+  readonly width: number;
+  readonly x: number;
+  readonly y: number;
+}
+
+const smokeMeasurements = new Map<string, () => Promise<SmokeRect | null>>();
+const smokeInstances = new Map<string, number>();
+const smokeScrollContentSizes = new Map<string, { width: number; height: number }>();
+let nextSmokeInstanceId = 1;
+
+function useSmokeViewRegistration(testID: string | undefined) {
+  const measurement = useStudioUnsupportedNodeMeasurement();
+  const viewRef = useRef<ViewRef | null>(null);
+  const instanceIdRef = useRef(nextSmokeInstanceId++);
+
+  const setViewRef = useCallback(
+    (view: ViewRef | null) => {
+      viewRef.current = view;
+      measurement.ref(view);
+    },
+    [measurement.ref],
+  );
+
+  useEffect(() => {
+    if (!testID) return;
+    const measure = () =>
+      new Promise<SmokeRect | null>((resolve) => {
+        const view = viewRef.current;
+        if (!view) {
+          resolve(null);
+          return;
+        }
+        view.measureInWindow((x, y, width, height) => {
+          resolve({ x, y, width, height });
+        });
+      });
+    smokeMeasurements.set(testID, measure);
+    smokeInstances.set(testID, instanceIdRef.current);
+    return () => {
+      if (smokeMeasurements.get(testID) === measure) {
+        smokeMeasurements.delete(testID);
+        smokeInstances.delete(testID);
+      }
+    };
+  }, [testID]);
+
+  return {
+    instanceId: instanceIdRef.current,
+    onLayout: measurement.onLayout,
+    ref: setViewRef,
+  };
+}
+
+async function captureSmokeLayout() {
+  const rects = Object.fromEntries(
+    await Promise.all(
+      [...smokeMeasurements.entries()].map(async ([testID, measure]) => [
+        testID,
+        await measure(),
+      ]),
+    ),
+  );
+  return {
+    instances: Object.fromEntries(smokeInstances),
+    rects,
+    scrollContentSizes: Object.fromEntries(smokeScrollContentSizes),
+  };
+}
 
 export function SmokeUnsupported({
   label,
@@ -623,8 +981,11 @@ export function SmokeUnsupported({
   label?: string;
   testID?: string;
 }) {
+  const registration = useSmokeViewRegistration(testID);
   return (
     <View
+      ref={registration.ref}
+      onLayout={registration.onLayout}
       testID={testID}
       style={{
         width: 220,
@@ -638,17 +999,94 @@ export function SmokeUnsupported({
   );
 }
 
+export function SmokeLayoutBox({
+  children,
+  label,
+  stateful = false,
+  style,
+  testID,
+}: {
+  children?: React.ReactNode;
+  label?: string;
+  stateful?: boolean;
+  style?: ViewStyle;
+  testID?: string;
+}) {
+  const registration = useSmokeViewRegistration(testID);
+  const [privateCount, setPrivateCount] = useState(0);
+
+  return (
+    <View
+      ref={registration.ref}
+      onLayout={registration.onLayout}
+      onTouchEnd={stateful ? () => setPrivateCount((count) => count + 1) : undefined}
+      testID={testID}
+      style={[
+        {
+          backgroundColor: '#e2e8f0',
+          borderColor: '#64748b',
+          borderWidth: 1,
+          padding: 6,
+        },
+        style,
+      ]}
+    >
+      {label ? <Text>{label}</Text> : null}
+      {stateful ? (
+        <Text testID={testID ? \`\${testID}-private-state\` : undefined}>
+          {\`instance=\${registration.instanceId};private=\${privateCount}\`}
+        </Text>
+      ) : null}
+      {children}
+    </View>
+  );
+}
+
+export function SmokeNestedScroll({
+  children,
+  testID,
+}: {
+  children?: React.ReactNode;
+  testID?: string;
+}) {
+  const registration = useSmokeViewRegistration(testID);
+  return (
+    <View
+      ref={registration.ref}
+      onLayout={registration.onLayout}
+      testID={testID}
+      style={{ height: 220, width: 320 }}
+    >
+      <ScrollView
+        nestedScrollEnabled
+        onContentSizeChange={(width, height) => {
+          if (testID) smokeScrollContentSizes.set(testID, { width, height });
+        }}
+        testID={testID ? \`\${testID}-scroll-view\` : undefined}
+        contentContainerStyle={{ gap: 8, padding: 8 }}
+        style={{ borderColor: '#94a3b8', borderWidth: 1 }}
+      >
+        {children}
+      </ScrollView>
+    </View>
+  );
+}
+
 export function SmokeStudioProbe() {
   const studio = useStudio();
   const previousSelectedNodeIdRef = useRef(studio.selectedNodeId);
   const [selectionChangeCount, setSelectionChangeCount] = useState(0);
+  const [layoutSnapshot, setLayoutSnapshot] = useState('not-captured');
 
   useEffect(() => {
     const smokeGlobal = globalThis as typeof globalThis & {
+      __studioSmokeCaptureLayout?: typeof captureSmokeLayout;
       __studioSmokeTogglePreview?: () => void;
     };
+    smokeGlobal.__studioSmokeCaptureLayout = captureSmokeLayout;
     smokeGlobal.__studioSmokeTogglePreview = studio.togglePreviewMode;
     return () => {
+      delete smokeGlobal.__studioSmokeCaptureLayout;
       delete smokeGlobal.__studioSmokeTogglePreview;
     };
   }, [studio.togglePreviewMode]);
@@ -664,6 +1102,31 @@ export function SmokeStudioProbe() {
       <Text testID="studio-smoke-state">
         {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
       </Text>
+      <Pressable
+        onPress={studio.togglePreviewMode}
+        testID="studio-smoke-toggle-preview"
+      >
+        <Text>Toggle Edit Preview</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          void captureSmokeLayout().then((snapshot) => {
+            setLayoutSnapshot(JSON.stringify(snapshot));
+          });
+        }}
+        testID="studio-smoke-capture-layout"
+      >
+        <Text>Capture native layout</Text>
+      </Pressable>
+      <View
+        accessible
+        accessibilityLabel={layoutSnapshot}
+        testID="studio-smoke-layout-snapshot"
+      >
+        <NativeText numberOfLines={1}>
+          {layoutSnapshot === 'not-captured' ? layoutSnapshot : 'captured'}
+        </NativeText>
+      </View>
     </Box>
   );
 }
@@ -673,9 +1136,16 @@ export function SmokeStudioProbe() {
   await writeFile(
     path.join(generatedRoot, 'appExtensionRegistry.ts'),
     `import type { ComponentRegistry } from '@ankhorage/runtime';
-import { SmokeStudioProbe, SmokeUnsupported } from './SmokeStudioComponents';
+import {
+  SmokeLayoutBox,
+  SmokeNestedScroll,
+  SmokeStudioProbe,
+  SmokeUnsupported,
+} from './SmokeStudioComponents';
 
 export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {
+  SmokeLayoutBox,
+  SmokeNestedScroll,
   SmokeStudioProbe,
   SmokeUnsupported,
 };
@@ -1032,6 +1502,12 @@ class ChromePage {
     );
   }
 
+  async captureSmokeLayout(): Promise<CapturedLayoutSnapshot> {
+    return this.evaluate<CapturedLayoutSnapshot>(
+      `globalThis.__studioSmokeCaptureLayout?.() ?? Promise.reject(new Error('Smoke layout capture unavailable'))`,
+    );
+  }
+
   async readRuntimeNodeCenter(nodeId: string): Promise<{ readonly x: number; readonly y: number }> {
     const encodedNodeId = encodeURIComponent(nodeId);
     const center = await this.evaluate<{ readonly x: number; readonly y: number } | null>(`(() => {
@@ -1051,7 +1527,11 @@ class ChromePage {
       };
       const target = findRenderedElement(wrapper);
       if (!(target instanceof HTMLElement)) return null;
-      const rect = target.getBoundingClientRect();
+      let rect = target.getBoundingClientRect();
+      if (rect.top < 0 || rect.bottom > window.innerHeight) {
+        target.scrollIntoView({ block: 'center' });
+        rect = target.getBoundingClientRect();
+      }
       return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
     })()`);
     if (!center) {

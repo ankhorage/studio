@@ -65,14 +65,25 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('onResponderReject');
   });
 
-  it('uses display contents on web and a retained unstyled native measurement view', () => {
-    expect(source).toContain("Platform.OS === 'web' || !props.showUnsupportedIndicator");
-    expect(source).toContain('collapsable: false');
+  it('keeps the per-node recorder layout-neutral on every platform', () => {
+    expect(source).toContain("style: { display: 'contents' }");
+    expect(source).not.toContain('collapsable: false');
+  });
+
+  it('measures unsupported native content through its existing public View ref', () => {
+    expect(source).toContain('export function useStudioUnsupportedNodeMeasurement()');
+    expect(source).toContain('measure: () => measureNativeView(view)');
+    expect(source).toContain('UnsupportedNodeMeasurementContext.Provider');
+    expect(source).not.toContain('measureUnsupportedView');
   });
 
   it('renders root-owned unsupported indicators with pointerEvents none', () => {
-    expect(source).toContain('...indicatorRects.map((rect) =>');
+    expect(source).toContain('...(props.isEditMode ? indicatorRects : []).map((rect) =>');
     expect(source).toContain("pointerEvents: 'none'");
+  });
+
+  it('hides unsupported indicators synchronously in Preview', () => {
+    expect(source).toContain('...(props.isEditMode ? indicatorRects : []).map((rect) =>');
   });
 
   it('retains duplicate live wrapper measurements for the same Runtime node', () => {
@@ -82,7 +93,9 @@ describe('stationarySelection RN integration', () => {
   });
 
   it('places pointerEvents as a View prop, not inside style', () => {
-    const indicatorStart = source.indexOf('...indicatorRects.map((rect) =>');
+    const indicatorStart = source.indexOf(
+      '...(props.isEditMode ? indicatorRects : []).map((rect) =>',
+    );
     const indicatorBlock = source.slice(indicatorStart);
     expect(indicatorBlock).toContain("pointerEvents: 'none'");
     const styleBlock = /style:\s*\{([\s\S]*?)\n\s*\},/.exec(indicatorBlock);
@@ -133,7 +146,7 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('new ResizeObserver(() => requestIndicatorRefresh())');
     expect(source).toContain('onLayout: requestIndicatorRefresh');
     expect(source).toContain('onTouchMove: requestScrollIndicatorRefresh');
-    expect(source).toContain('}, NATIVE_SCROLL_SETTLE_MS)');
+    expect(source).toContain('createIndicatorSettleCoordinator');
     expect(source).not.toContain('measureNextFrame');
   });
 
