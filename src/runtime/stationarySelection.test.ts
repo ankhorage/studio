@@ -65,8 +65,9 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('onResponderReject');
   });
 
-  it('uses display contents for layout-neutral wrapper', () => {
-    expect(source).toContain("display: 'contents'");
+  it('uses display contents on web and a retained unstyled native measurement view', () => {
+    expect(source).toContain("Platform.OS === 'web' || !props.showUnsupportedIndicator");
+    expect(source).toContain('collapsable: false');
   });
 
   it('renders root-owned unsupported indicators with pointerEvents none', () => {
@@ -75,8 +76,8 @@ describe('stationarySelection RN integration', () => {
   });
 
   it('retains duplicate live wrapper measurements for the same Runtime node', () => {
-    expect(source).toContain('new Map<string, Set<MeasureUnsupportedNode>>()');
-    expect(source).toContain('measurements.add(measure)');
+    expect(source).toContain('new Map<string, Set<UnsupportedNodeMeasurement>>()');
+    expect(source).toContain('measurements.add(measurement)');
     expect(source).toContain('ref: setViewRef');
   });
 
@@ -109,11 +110,12 @@ describe('stationarySelection RN integration', () => {
   });
 
   it('records pointer and touch input with generation validation', () => {
-    expect(source).toContain('ctx.recordNode(nodeId)');
-    expect(source).toContain('onPointerDown: handleInteractionStart');
-    expect(source).toContain('onTouchStart: handleInteractionStart');
-    expect(source).toContain('pendingNodeIdsRef.current.push(nodeId)');
-    expect(source).toContain('for (const nodeId of pendingNodeIdsRef.current)');
+    expect(source).toContain('ctx.recordNode(nodeId, input)');
+    expect(source).toContain('onPointerDown: handlePointerDown');
+    expect(source).toContain('onTouchStart: handleTouchStart');
+    expect(source).toContain('inputState.beginTransaction((nodeId) =>');
+    expect(source).toContain('onPointerCancel: handleInteractionCompletion');
+    expect(source).toContain('onTouchCancel: handleInteractionCompletion');
   });
 
   it('uses public element geometry only for web indication measurement', () => {
@@ -124,8 +126,21 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('ReactNativePrivateInterface');
   });
 
-  it('continuously refreshes indication geometry across scroll and layout changes', () => {
-    expect(source).toContain('requestAnimationFrame(measureNextFrame)');
-    expect(source).toContain('cancelAnimationFrame(frameId)');
+  it('refreshes indication geometry from coalesced public layout events', () => {
+    expect(source).toContain('createIndicatorRefreshCoordinator');
+    expect(source).toContain("window.addEventListener('scroll', handleScroll, true)");
+    expect(source).toContain("window.addEventListener('resize', handleResize)");
+    expect(source).toContain('new ResizeObserver(() => requestIndicatorRefresh())');
+    expect(source).toContain('onLayout: requestIndicatorRefresh');
+    expect(source).toContain('onTouchMove: requestScrollIndicatorRefresh');
+    expect(source).toContain('}, NATIVE_SCROLL_SETTLE_MS)');
+    expect(source).not.toContain('measureNextFrame');
+  });
+
+  it('unregisters observers and removes web geometry listeners', () => {
+    expect(source).toContain('resizeObserverRef.current?.unobserve(resizeTarget)');
+    expect(source).toContain("window.removeEventListener('scroll', handleScroll, true)");
+    expect(source).toContain("window.removeEventListener('resize', handleResize)");
+    expect(source).toContain('observer?.disconnect()');
   });
 });

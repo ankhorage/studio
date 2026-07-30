@@ -598,6 +598,7 @@
       "dependencies": [
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/semverRange.ts",
         "src/host/templateRegistry/index.ts"
       ],
       "exports": []
@@ -1178,6 +1179,18 @@
       "exports": ["ProjectScaffolder"]
     },
     {
+      "path": "src/host/orchestrator/semverRange.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/semverRange.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/semverRange.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["satisfiesCaretSemverRange"]
+    },
+    {
       "path": "src/host/orchestrator/studioInfraUp.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1198,6 +1211,7 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
+        "GENERATED_ANIMATION_DEPENDENCY_PAIR",
         "GeneratedAuthProvider",
         "GeneratedStorageProvider",
         "getAppConfigTs",
@@ -1960,6 +1974,22 @@
       ]
     },
     {
+      "path": "src/runtime/indicatorRefreshCoordinator.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/indicatorRefreshCoordinator.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/indicatorRefreshCoordinator.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "AnimationFrameScheduler",
+        "createIndicatorRefreshCoordinator",
+        "IndicatorRefreshCoordinator"
+      ]
+    },
+    {
       "path": "src/runtime/interactionPolicy.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/runtime/interactionPolicyCore.ts"],
@@ -2049,7 +2079,11 @@
     {
       "path": "src/runtime/stationarySelection.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/runtime/stationarySelectionCoordinator.ts"],
+      "dependencies": [
+        "src/runtime/indicatorRefreshCoordinator.ts",
+        "src/runtime/stationarySelectionCoordinator.ts",
+        "src/runtime/stationarySelectionInputState.ts"
+      ],
       "exports": [
         "CommitSelectionResult",
         "createStudioStationarySelectionWrapNode",
@@ -2073,6 +2107,24 @@
         "createStationarySelectionCoordinator",
         "StationarySelectionCoordinator",
         "TransactionState"
+      ]
+    },
+    {
+      "path": "src/runtime/stationarySelectionInputState.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/stationarySelectionInputState.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelectionInputState.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createStationarySelectionInputState",
+        "StationaryPointerInput",
+        "StationarySelectionInput",
+        "StationarySelectionInputState",
+        "StationaryTouchInput"
       ]
     },
     {
@@ -6485,7 +6537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/authFlowContract.test.ts",
-        "line": 6,
+        "line": 8,
         "column": 1
       }
     },
@@ -7943,7 +7995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 37,
+        "line": 38,
         "column": 1
       }
     },
@@ -7952,7 +8004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 93,
+        "line": 94,
         "column": 1
       }
     },
@@ -7961,7 +8013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 265,
+        "line": 272,
         "column": 1
       }
     },
@@ -7970,7 +8022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 401,
+        "line": 452,
         "column": 1
       }
     },
@@ -7979,7 +8031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 420,
+        "line": 471,
         "column": 1
       }
     },
@@ -7988,7 +8040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 439,
+        "line": 490,
         "column": 1
       }
     },
@@ -7997,7 +8049,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 446,
+        "line": 497,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPathInside",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 504,
         "column": 1
       }
     },
@@ -8006,7 +8067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 453,
+        "line": 509,
         "column": 1
       }
     },
@@ -8015,7 +8076,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 491,
+        "line": 547,
         "column": 1
       }
     },
@@ -8024,7 +8085,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 525,
+        "line": 581,
         "column": 1
       }
     },
@@ -8033,7 +8094,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 554,
+        "line": 610,
         "column": 1
       }
     },
@@ -8042,7 +8103,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 633,
+        "line": 689,
         "column": 1
       }
     },
@@ -8051,7 +8112,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 656,
+        "line": 712,
         "column": 1
       }
     },
@@ -8060,7 +8121,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 672,
+        "line": 728,
         "column": 1
       }
     },
@@ -8069,7 +8130,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 694,
+        "line": 750,
         "column": 1
       }
     },
@@ -8078,7 +8139,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 719,
+        "line": 775,
         "column": 1
       }
     },
@@ -8087,7 +8148,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 759,
+        "line": 815,
         "column": 1
       }
     },
@@ -8096,7 +8157,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 773,
+        "line": 829,
         "column": 1
       }
     },
@@ -8105,7 +8166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 782,
+        "line": 838,
         "column": 1
       }
     },
@@ -8114,7 +8175,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 798,
+        "line": 854,
         "column": 1
       }
     },
@@ -8123,7 +8184,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 805,
+        "line": 861,
         "column": 1
       }
     },
@@ -8132,7 +8193,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 811,
+        "line": 867,
         "column": 1
       }
     },
@@ -8141,7 +8202,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 824,
+        "line": 880,
         "column": 1
       }
     },
@@ -8150,7 +8211,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 841,
+        "line": 897,
         "column": 1
       }
     },
@@ -8159,7 +8220,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 858,
+        "line": 914,
         "column": 1
       }
     },
@@ -8168,7 +8229,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 864,
+        "line": 920,
         "column": 1
       }
     },
@@ -8177,7 +8238,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 870,
+        "line": 926,
         "column": 1
       }
     },
@@ -8186,7 +8247,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 886,
+        "line": 942,
         "column": 1
       }
     },
@@ -8195,7 +8256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1191,
+        "line": 1252,
         "column": 1
       }
     },
@@ -8204,7 +8265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1206,
+        "line": 1267,
         "column": 1
       }
     },
@@ -8213,7 +8274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1210,
+        "line": 1271,
         "column": 1
       }
     },
@@ -8222,7 +8283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1219,
+        "line": 1280,
         "column": 1
       }
     },
@@ -8231,7 +8292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1230,
+        "line": 1291,
         "column": 1
       }
     },
@@ -10180,6 +10241,33 @@
       }
     },
     {
+      "name": "parseSemanticVersion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "compareSemanticVersions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "satisfiesCaretSemverRange",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/semverRange.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
       "name": "upProjectInfrastructure",
       "description": null,
       "sourceLocation": {
@@ -10193,7 +10281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 92,
+        "line": 97,
         "column": 1
       }
     },
@@ -10202,7 +10290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 100,
+        "line": 105,
         "column": 1
       }
     },
@@ -10211,7 +10299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 142,
+        "line": 147,
         "column": 1
       }
     },
@@ -10220,7 +10308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 156,
+        "line": 161,
         "column": 1
       }
     },
@@ -10229,7 +10317,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 169,
+        "line": 174,
         "column": 1
       }
     },
@@ -10238,7 +10326,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 191,
+        "line": 196,
         "column": 1
       }
     },
@@ -10247,7 +10335,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 201,
+        "line": 206,
         "column": 1
       }
     },
@@ -10256,7 +10344,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 205,
+        "line": 210,
         "column": 1
       }
     },
@@ -10265,7 +10353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 210,
+        "line": 215,
         "column": 1
       }
     },
@@ -10274,7 +10362,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 224,
+        "line": 229,
         "column": 1
       }
     },
@@ -10283,7 +10371,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 260,
+        "line": 265,
         "column": 1
       }
     },
@@ -10292,7 +10380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 268,
+        "line": 273,
         "column": 1
       }
     },
@@ -10301,7 +10389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 292,
+        "line": 297,
         "column": 1
       }
     },
@@ -10310,7 +10398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 381,
+        "line": 386,
         "column": 1
       }
     },
@@ -10319,7 +10407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 405,
+        "line": 410,
         "column": 1
       }
     },
@@ -10328,7 +10416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 410,
+        "line": 415,
         "column": 1
       }
     },
@@ -10337,7 +10425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 425,
+        "line": 430,
         "column": 1
       }
     },
@@ -12853,6 +12941,42 @@
       }
     },
     {
+      "name": "createFakeFrameScheduler",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "createIndicatorRefreshCoordinator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestRefresh",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 18,
+        "column": 3
+      }
+    },
+    {
+      "name": "cancelPendingRefresh",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "line": 30,
+        "column": 3
+      }
+    },
+    {
       "name": "createStudioInteractionPolicyResolver",
       "description": null,
       "sourceLocation": {
@@ -12965,30 +13089,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 48,
+        "line": 75,
         "column": 1
       }
     },
     {
-      "name": "toMeasuredRect",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/stationarySelection.ts",
-        "line": 58,
-        "column": 1
-      }
-    },
-    {
-      "name": "unionRects",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/stationarySelection.ts",
-        "line": 67,
-        "column": 1
-      }
-    },
-    {
-      "name": "measureRenderedBoxes",
+      "name": "getWebResizeTarget",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
@@ -12997,11 +13103,47 @@
       }
     },
     {
+      "name": "getWebDescendantResizeTargets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMeasuredRect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "unionRects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureRenderedBoxes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
       "name": "measureNativeView",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 94,
+        "line": 136,
         "column": 1
       }
     },
@@ -13010,7 +13152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 102,
+        "line": 144,
         "column": 1
       }
     },
@@ -13019,7 +13161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 114,
+        "line": 156,
         "column": 1
       }
     },
@@ -13028,7 +13170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 128,
+        "line": 170,
         "column": 1
       }
     },
@@ -13037,16 +13179,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 151,
+        "line": 193,
         "column": 1
       }
     },
     {
-      "name": "handleInteractionStart",
+      "name": "recordInteraction",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 162,
+        "line": 204,
+        "column": 3
+      }
+    },
+    {
+      "name": "handlePointerDown",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 218,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleTouchStart",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 229,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleInteractionCompletion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 238,
+        "column": 3
+      }
+    },
+    {
+      "name": "handleLayout",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 242,
         "column": 3
       }
     },
@@ -13055,7 +13233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 208,
+        "line": 288,
         "column": 1
       }
     },
@@ -13064,16 +13242,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 242,
+        "line": 322,
         "column": 1
       }
     },
     {
-      "name": "measureNextFrame",
+      "name": "handleScroll",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 353,
+        "line": 517,
+        "column": 11
+      }
+    },
+    {
+      "name": "handleResize",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 518,
         "column": 11
       }
     },
@@ -13155,6 +13342,96 @@
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelectionCoordinator.ts",
         "line": 128,
+        "column": 3
+      }
+    },
+    {
+      "name": "pointer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "touch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "createHarness",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.test.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSupportedPointerInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "getInteractionKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStationarySelectionInputState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "clear",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 47,
+        "column": 3
+      }
+    },
+    {
+      "name": "recordNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 52,
+        "column": 3
+      }
+    },
+    {
+      "name": "beginTransaction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 74,
+        "column": 3
+      }
+    },
+    {
+      "name": "completePendingInteraction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelectionInputState.ts",
+        "line": 81,
         "column": 3
       }
     },
@@ -15439,6 +15716,11 @@
       },
       {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/host/orchestrator/semverRange.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/host/templateRegistry/index.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
@@ -15673,6 +15955,11 @@
         "sourcePath": "src/runtime/index.ts"
       },
       {
+        "fromPath": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
         "fromPath": "src/runtime/interactionPolicy.test.ts",
         "toPath": "src/runtime/interactionPolicyCore.ts",
         "sourcePath": "src/runtime/interactionPolicy.test.ts"
@@ -15714,13 +16001,28 @@
       },
       {
         "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/runtime/stationarySelectionCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/stationarySelectionInputState.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromPath": "src/runtime/stationarySelectionCoordinator.test.ts",
         "toPath": "src/runtime/stationarySelectionCoordinator.ts",
         "sourcePath": "src/runtime/stationarySelectionCoordinator.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelectionInputState.test.ts",
+        "toPath": "src/runtime/stationarySelectionInputState.ts",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
       },
       {
         "fromPath": "src/runtime/useRuntimeAction.ts",
@@ -16221,6 +16523,11 @@
         "fromPath": "src/host/orchestrator/scaffolder.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/semverRange.test.ts",
+        "toPath": "src/host/orchestrator/semverRange.ts",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/studioInfraUp.ts",
@@ -23046,6 +23353,18 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "satisfiesCaretSemverRange",
+        "callExpression": "satisfiesCaretSemverRange",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "isPathInside",
+        "callExpression": "isPathInside",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "spawnExpoWeb",
         "callExpression": "spawnExpoWeb",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -23184,6 +23503,12 @@
       },
       {
         "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
         "toSymbol": "waitForStudioSmokeState",
         "callExpression": "waitForStudioSmokeState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -23192,12 +23517,6 @@
         "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
         "toSymbol": "readSelectionRootId",
         "callExpression": "page.readSelectionRootId",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
-        "toSymbol": "readStudioSmokeState",
-        "callExpression": "page.readStudioSmokeState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24791,6 +25110,84 @@
         "sourcePath": "src/runtime/actionSuppression.ts"
       },
       {
+        "fromSymbol": "flush",
+        "toSymbol": "callback",
+        "callExpression": "callback",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "createFakeFrameScheduler",
+        "callExpression": "createFakeFrameScheduler",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "createIndicatorRefreshCoordinator",
+        "callExpression": "createIndicatorRefreshCoordinator",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "requestRefresh",
+        "callExpression": "coordinator.requestRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "flush",
+        "callExpression": "frames.flush",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "hasPendingRefresh",
+        "callExpression": "coordinator.hasPendingRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.test.ts",
+        "toSymbol": "cancelPendingRefresh",
+        "callExpression": "coordinator.cancelPendingRefresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.test.ts"
+      },
+      {
+        "fromSymbol": "requestRefresh",
+        "toSymbol": "request",
+        "callExpression": "scheduler.request",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/indicatorRefreshCoordinator.ts",
+        "toSymbol": "refresh",
+        "callExpression": "refresh",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
+        "fromSymbol": "cancelPendingRefresh",
+        "toSymbol": "cancel",
+        "callExpression": "scheduler.cancel",
+        "sourcePath": "src/runtime/indicatorRefreshCoordinator.ts"
+      },
+      {
         "fromSymbol": "src/runtime/interactionPolicy.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -24995,6 +25392,24 @@
         "sourcePath": "src/runtime/stationarySelection.test.ts"
       },
       {
+        "fromSymbol": "getWebResizeTarget",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "getWebDescendantResizeTargets",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getWebDescendantResizeTargets",
+        "callExpression": "getWebDescendantResizeTargets",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
         "fromSymbol": "measureRenderedBoxes",
         "toSymbol": "toMeasuredRect",
         "callExpression": "toMeasuredRect",
@@ -25061,9 +25476,33 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "handleInteractionStart",
+        "fromSymbol": "recordInteraction",
         "toSymbol": "recordNode",
         "callExpression": "ctx.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handlePointerDown",
+        "toSymbol": "recordInteraction",
+        "callExpression": "recordInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleTouchStart",
+        "toSymbol": "recordInteraction",
+        "callExpression": "recordInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleInteractionCompletion",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "ctx?.completePendingInteraction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleLayout",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "ctx?.requestIndicatorRefresh",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -25073,7 +25512,7 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "fromSymbol": "measure",
         "toSymbol": "measureUnsupportedView",
         "callExpression": "measureUnsupportedView",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -25085,15 +25524,45 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "createStationarySelectionInputState",
+        "callExpression": "createStationarySelectionInputState",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "recordActiveNode",
+        "toSymbol": "recordNode",
+        "callExpression": "coordinator.recordNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "setUnsupportedNodeVersion",
-        "callExpression": "setUnsupportedNodeVersion",
+        "toSymbol": "createIndicatorRefreshCoordinator",
+        "callExpression": "createIndicatorRefreshCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "requestRefresh",
+        "callExpression": "refreshCoordinatorRef.current.requestRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "inputState.completePendingInteraction",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "recordNode",
         "toSymbol": "recordNode",
-        "callExpression": "coordinator.recordNode",
+        "callExpression": "inputState.recordNode",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -25111,7 +25580,7 @@
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "measure",
-        "callExpression": "measure",
+        "callExpression": "measurement.measure",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -25127,21 +25596,45 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "measureNextFrame",
+        "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "refreshIndicatorRects",
         "callExpression": "refreshIndicatorRects",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "measureNextFrame",
-        "callExpression": "measureNextFrame",
+        "toSymbol": "cancelPendingRefresh",
+        "callExpression": "refreshCoordinatorRef.current?.cancelPendingRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getWebResizeTarget",
+        "callExpression": "getWebResizeTarget",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleScroll",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "handleResize",
+        "toSymbol": "requestIndicatorRefresh",
+        "callExpression": "requestIndicatorRefresh",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "beginTransaction",
         "callExpression": "coordinator.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "inputState.beginTransaction",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -25160,6 +25653,12 @@
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "clearTransaction",
         "callExpression": "coordinator.clearTransaction",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "clear",
+        "callExpression": "inputState.clear",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -25227,6 +25726,126 @@
         "toSymbol": "selectNode",
         "callExpression": "selectNode",
         "sourcePath": "src/runtime/stationarySelectionCoordinator.ts"
+      },
+      {
+        "fromSymbol": "createHarness",
+        "toSymbol": "createStationarySelectionInputState",
+        "callExpression": "createStationarySelectionInputState",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "createHarness",
+        "callExpression": "createHarness",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "recordNode",
+        "callExpression": "harness.state.recordNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "pointer",
+        "callExpression": "pointer",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "completePendingInteraction",
+        "callExpression": "harness.state.completePendingInteraction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "setActive",
+        "callExpression": "harness.setActive",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "beginTransaction",
+        "callExpression": "harness.state.beginTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "getPendingPath",
+        "callExpression": "harness.state.getPendingPath",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelectionInputState.test.ts",
+        "toSymbol": "touch",
+        "callExpression": "touch",
+        "sourcePath": "src/runtime/stationarySelectionInputState.test.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "isSupportedPointerInput",
+        "callExpression": "isSupportedPointerInput",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "hasActiveTransaction",
+        "callExpression": "args.hasActiveTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "recordActiveNode",
+        "callExpression": "args.recordActiveNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "recordNode",
+        "toSymbol": "getInteractionKey",
+        "callExpression": "getInteractionKey",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "beginTransaction",
+        "toSymbol": "recordNode",
+        "callExpression": "recordNode",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "beginTransaction",
+        "toSymbol": "clear",
+        "callExpression": "clear",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "hasActiveTransaction",
+        "callExpression": "args.hasActiveTransaction",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
+      },
+      {
+        "fromSymbol": "completePendingInteraction",
+        "toSymbol": "clear",
+        "callExpression": "clear",
+        "sourcePath": "src/runtime/stationarySelectionInputState.ts"
       },
       {
         "fromSymbol": "useRuntimeAction",
@@ -29075,6 +29694,36 @@
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/semverRange.test.ts",
+        "toSymbol": "satisfiesCaretSemverRange",
+        "callExpression": "satisfiesCaretSemverRange",
+        "sourcePath": "src/host/orchestrator/semverRange.test.ts"
+      },
+      {
+        "fromSymbol": "satisfiesCaretSemverRange",
+        "toSymbol": "parseSemanticVersion",
+        "callExpression": "parseSemanticVersion",
+        "sourcePath": "src/host/orchestrator/semverRange.ts"
+      },
+      {
+        "fromSymbol": "satisfiesCaretSemverRange",
+        "toSymbol": "compareSemanticVersions",
+        "callExpression": "compareSemanticVersions",
+        "sourcePath": "src/host/orchestrator/semverRange.ts"
+      },
+      {
         "fromSymbol": "upProjectInfrastructure",
         "toSymbol": "regenerateInfrastructure",
         "callExpression": "args.projectManager.regenerateInfrastructure",
@@ -29126,6 +29775,12 @@
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getBabelConfigJs",
+        "callExpression": "getBabelConfigJs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {

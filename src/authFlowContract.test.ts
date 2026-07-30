@@ -3,6 +3,8 @@ import { basename, join } from 'node:path';
 
 import { describe, expect, it } from 'bun:test';
 
+const IGNORED_DIRECTORIES = new Set(['.expo', 'dist', 'node_modules']);
+
 async function collectFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const files: string[] = [];
@@ -10,6 +12,7 @@ async function collectFiles(directory: string): Promise<string[]> {
   for (const entry of entries) {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) {
+      if (IGNORED_DIRECTORIES.has(entry.name)) continue;
       files.push(...(await collectFiles(path)));
     } else if (entry.isFile()) {
       files.push(path);

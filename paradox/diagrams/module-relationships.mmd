@@ -109,6 +109,8 @@ graph LR
   module_src_host_orchestrator_projectStoreSummary_test_ts["src/host/orchestrator/projectStoreSummary.test.ts"]
   module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
   module_src_host_orchestrator_scaffolder_ts["src/host/orchestrator/scaffolder.ts"]
+  module_src_host_orchestrator_semverRange_test_ts["src/host/orchestrator/semverRange.test.ts"]
+  module_src_host_orchestrator_semverRange_ts["src/host/orchestrator/semverRange.ts"]
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
   module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
@@ -166,6 +168,8 @@ graph LR
   module_src_runtime_actionSuppression_ts["src/runtime/actionSuppression.ts"]
   module_src_runtime_appExtensionRegistry_ts["src/runtime/appExtensionRegistry.ts"]
   module_src_runtime_index_ts["src/runtime/index.ts"]
+  module_src_runtime_indicatorRefreshCoordinator_test_ts["src/runtime/indicatorRefreshCoordinator.test.ts"]
+  module_src_runtime_indicatorRefreshCoordinator_ts["src/runtime/indicatorRefreshCoordinator.ts"]
   module_src_runtime_interactionPolicy_test_ts["src/runtime/interactionPolicy.test.ts"]
   module_src_runtime_interactionPolicy_ts["src/runtime/interactionPolicy.ts"]
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
@@ -179,6 +183,8 @@ graph LR
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
   module_src_runtime_stationarySelectionCoordinator_ts["src/runtime/stationarySelectionCoordinator.ts"]
+  module_src_runtime_stationarySelectionInputState_test_ts["src/runtime/stationarySelectionInputState.test.ts"]
+  module_src_runtime_stationarySelectionInputState_ts["src/runtime/stationarySelectionInputState.ts"]
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
@@ -310,6 +316,7 @@ graph LR
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -429,6 +436,7 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_semverRange_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
@@ -490,6 +498,7 @@ graph LR
   module_src_projectSecretUsage_test_ts --> module_src_projectSecretUsage_ts
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
+  module_src_runtime_indicatorRefreshCoordinator_test_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRegistry_ts --> module_src_runtime_appExtensionRegistry_ts
@@ -497,8 +506,11 @@ graph LR
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionInputState_test_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts

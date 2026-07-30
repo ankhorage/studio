@@ -15,6 +15,11 @@ const SUPABASE_AUTH_VERSION = '^1.0.0';
 const ZORA_VERSION = '^2.9.0';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
+export const GENERATED_ANIMATION_DEPENDENCY_PAIR = {
+  expoSdk: '54',
+  reanimated: '4.3.0',
+  worklets: '0.8.3',
+} as const;
 
 const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
   [
@@ -282,7 +287,7 @@ export function getBabelConfigJs() {
           },
         },
       ],
-      'react-native-reanimated/plugin',
+      'react-native-worklets/plugin',
     ],
   };
 };
@@ -357,12 +362,12 @@ export function getPackageJson(args: {
       'react-dom': '19.1.0',
       'react-native': '0.81.5',
       'react-native-gesture-handler': '~2.28.0',
-      'react-native-reanimated': '~4.1.1',
+      'react-native-reanimated': GENERATED_ANIMATION_DEPENDENCY_PAIR.reanimated,
       'react-native-safe-area-context': '~5.6.0',
       'react-native-screens': '~4.16.0',
       'react-native-svg': '~15.12.1',
       'react-native-web': '^0.21.2',
-      'react-native-worklets': '0.5.1',
+      'react-native-worklets': GENERATED_ANIMATION_DEPENDENCY_PAIR.worklets,
       'reanimated-color-picker': '^4.2.0',
     },
     devDependencies: {

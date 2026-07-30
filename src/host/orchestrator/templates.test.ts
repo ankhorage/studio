@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'bun:test';
 
-import { getAppConfigTs, getPackageJson } from './templates';
+import {
+  GENERATED_ANIMATION_DEPENDENCY_PAIR,
+  getAppConfigTs,
+  getBabelConfigJs,
+  getPackageJson,
+} from './templates';
 
 describe('generated OAuth scaffold templates', () => {
   it('pins the canonical runtime, ZORA, Supabase auth, and Expo persistence dependencies', () => {
@@ -23,6 +28,28 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
+  });
+
+  it('pins the intentional Expo SDK 54 Reanimated and Worklets compatibility pair', () => {
+    const pkg = getPackageJson({ name: 'native-app', includeStudio: true });
+    const dependencies = pkg.dependencies as Record<string, string>;
+
+    expect(GENERATED_ANIMATION_DEPENDENCY_PAIR).toEqual({
+      expoSdk: '54',
+      reanimated: '4.3.0',
+      worklets: '0.8.3',
+    });
+    expect(dependencies['react-native-reanimated']).toBe(
+      GENERATED_ANIMATION_DEPENDENCY_PAIR.reanimated,
+    );
+    expect(dependencies['react-native-worklets']).toBe(
+      GENERATED_ANIMATION_DEPENDENCY_PAIR.worklets,
+    );
+    expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
+      pkg.dependencies,
+    );
+    expect(getBabelConfigJs()).toContain("'react-native-worklets/plugin'");
+    expect(getBabelConfigJs()).not.toContain("'react-native-reanimated/plugin'");
   });
 
   it('omits OAuth-specific packages when auth is not generated', () => {

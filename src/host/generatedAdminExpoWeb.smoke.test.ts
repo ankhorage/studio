@@ -15,6 +15,7 @@ import { expect, test } from 'bun:test';
 
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
+import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
 import { getTemplateCatalog } from './templateRegistry';
 
 const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
@@ -184,18 +185,24 @@ adminWebSmokeTest(
       const generatedPackage = JSON.parse(
         await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
       ) as { dependencies?: Record<string, string> };
+      const generatedZoraRange = generatedPackage.dependencies?.['@ankhorage/zora'];
+      const installedZoraRoot = path.join(projectRoot, 'node_modules', '@ankhorage', 'zora');
+      const resolvedZoraRoot = await realpath(installedZoraRoot);
       const resolvedZoraPackage = JSON.parse(
-        await readFile(
-          path.join(
-            await realpath(path.join(projectRoot, 'node_modules', '@ankhorage', 'zora')),
-            'package.json',
-          ),
-          'utf8',
-        ),
+        await readFile(path.join(resolvedZoraRoot, 'package.json'), 'utf8'),
       ) as { version?: string };
+      const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
 
-      expect(generatedPackage.dependencies?.['@ankhorage/zora']).toBe('^2.9.0');
-      expect(resolvedZoraPackage.version).toBe('2.9.0');
+      expect(generatedZoraRange).toBe('^2.9.0');
+      expect(typeof resolvedZoraPackage.version).toBe('string');
+      expect(
+        satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
+      ).toBe(true);
+      expect(isPathInside(workspaceRoot, installedZoraRoot)).toBe(true);
+      expect(isPathInside(process.cwd(), installedZoraRoot)).toBe(false);
+      expect(generatedLockfile).toContain(
+        `"@ankhorage/zora": ["@ankhorage/zora@${resolvedZoraPackage.version}"`,
+      );
       expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
@@ -274,6 +281,30 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     ),
   ).toBe(false);
 
+  const resized = await page.evaluate<boolean>(`(() => {
+    const wrapper = document.getElementById('studio-runtime-node-unsupported-runtime-target');
+    const findRenderedElement = (element) => {
+      const queue = element ? [...element.children] : [];
+      while (queue.length > 0) {
+        const candidate = queue.shift();
+        if (!(candidate instanceof HTMLElement)) continue;
+        const rect = candidate.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) return candidate;
+        queue.unshift(...candidate.children);
+      }
+      return null;
+    };
+    const target = findRenderedElement(wrapper);
+    if (!(target instanceof HTMLElement)) return false;
+    target.style.width = \`\${target.getBoundingClientRect().width + 40}px\`;
+    return true;
+  })()`);
+  expect(resized).toBe(true);
+  await Bun.sleep(250);
+  const resizedGeometry = await waitForUnsupportedGeometry(page, 15_000);
+  expectRectToMatch(resizedGeometry.indicator, resizedGeometry.target);
+  expect(resizedGeometry.target.width - initialGeometry.target.width).toBeGreaterThan(30);
+
   const scrolled = await page.evaluate<boolean>(`(() => {
     const wrapper = document.getElementById('studio-runtime-node-unsupported-runtime-target');
     const target = wrapper?.firstElementChild;
@@ -321,7 +352,12 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   })()`);
   await Bun.sleep(250);
 
+  const rejectedTarget = await page.readRuntimeNodeCenter('unsupported-runtime-target');
   const desktopTarget = await page.readRuntimeNodeCenter('desktop-pointer-target');
+  await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'right');
+  await Bun.sleep(250);
+  expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=0');
+
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await waitForStudioSmokeState(
     page,
@@ -341,7 +377,21 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     'studio-stationary-selection-root:edit:desktop-pointer-target:1',
   );
 
-  const movedTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-0');
+  await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'middle');
+  await Bun.sleep(250);
+  expect(await page.readStudioSmokeState()).toBe(
+    'mode=edit;selection=desktop-pointer-target;changes=1',
+  );
+
+  const secondMouseTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-0');
+  await page.mouseClick(secondMouseTarget.x, secondMouseTarget.y);
+  await waitForStudioSmokeState(
+    page,
+    'mode=edit;selection=dashboard-runtime-row-0;changes=2',
+    15_000,
+  );
+
+  const touchTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-1');
   await page.evaluate(`(() => {
     globalThis.__studioSmokeInputTrace = [];
     for (const type of ['touchstart', 'touchend', 'pointerdown', 'pointerup', 'click']) {
@@ -356,10 +406,10 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     }
     return true;
   })()`);
-  await page.touchTap(movedTarget.x, movedTarget.y);
+  await page.touchTap(touchTarget.x, touchTarget.y);
   await Bun.sleep(500);
   const touchState = await page.readStudioSmokeState();
-  if (touchState !== 'mode=edit;selection=dashboard-runtime-row-0;changes=2') {
+  if (touchState !== 'mode=edit;selection=dashboard-runtime-row-1;changes=3') {
     throw new Error(
       `Touch selection did not commit; state=${touchState}; trace=${await page.evaluate<string>(
         `JSON.stringify(globalThis.__studioSmokeInputTrace ?? [])`,
@@ -367,22 +417,23 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     );
   }
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-0:2',
+    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
   );
 
+  const movedTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-2');
   await page.mouseDrag(movedTarget.x, movedTarget.y, movedTarget.x + 24, movedTarget.y + 24);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=dashboard-runtime-row-0;changes=2',
+    'mode=edit;selection=dashboard-runtime-row-1;changes=3',
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-0:2',
+    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
   );
 
   await page.evaluate(`globalThis.__studioSmokeTogglePreview?.()`);
   await waitForStudioSmokeState(
     page,
-    'mode=preview;selection=dashboard-runtime-row-0;changes=2',
+    'mode=preview;selection=dashboard-runtime-row-1;changes=3',
     15_000,
   );
   expect(
@@ -394,7 +445,7 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=preview;selection=dashboard-runtime-row-0;changes=2',
+    'mode=preview;selection=dashboard-runtime-row-1;changes=3',
   );
 }
 
@@ -448,6 +499,11 @@ function rectsOverlap(left: BrowserRect, right: BrowserRect): boolean {
     Math.min(left.right, right.right) > Math.max(left.left, right.left) &&
     Math.min(left.bottom, right.bottom) > Math.max(left.top, right.top)
   );
+}
+
+function isPathInside(parentPath: string, candidatePath: string): boolean {
+  const relativePath = path.relative(parentPath, candidatePath);
+  return relativePath !== '' && !relativePath.startsWith(`..${path.sep}`) && relativePath !== '..';
 }
 
 async function createGeneratedAdminProject(workspaceRoot: string): Promise<string> {
@@ -1068,7 +1124,12 @@ class ChromePage {
     })`);
   }
 
-  async mouseClick(x: number, y: number): Promise<void> {
+  async mouseClick(
+    x: number,
+    y: number,
+    button: 'left' | 'middle' | 'right' = 'left',
+  ): Promise<void> {
+    const buttons = button === 'left' ? 1 : button === 'right' ? 2 : 4;
     await this.send('Input.dispatchMouseEvent', {
       type: 'mouseMoved',
       x,
@@ -1078,15 +1139,15 @@ class ChromePage {
       type: 'mousePressed',
       x,
       y,
-      button: 'left',
-      buttons: 1,
+      button,
+      buttons,
       clickCount: 1,
     });
     await this.send('Input.dispatchMouseEvent', {
       type: 'mouseReleased',
       x,
       y,
-      button: 'left',
+      button,
       buttons: 0,
       clickCount: 1,
     });

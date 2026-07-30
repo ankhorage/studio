@@ -177,6 +177,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_generatedAdminExpoWeb_smoke_test_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
@@ -422,6 +423,11 @@ graph TD
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_semverRange_test_ts["src/host/orchestrator/semverRange.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_semverRange_test_ts
+  module_src_host_orchestrator_semverRange_test_ts --> module_src_host_orchestrator_semverRange_ts
+  module_src_host_orchestrator_semverRange_ts["src/host/orchestrator/semverRange.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_semverRange_ts
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_infraRuntime_ts
@@ -596,6 +602,11 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_appExtensionRegistry_ts
   module_src_runtime_index_ts["src/runtime/index.ts"]
   package__ankhorage_studio -.-> module_src_runtime_index_ts
+  module_src_runtime_indicatorRefreshCoordinator_test_ts["src/runtime/indicatorRefreshCoordinator.test.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_indicatorRefreshCoordinator_test_ts
+  module_src_runtime_indicatorRefreshCoordinator_test_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
+  module_src_runtime_indicatorRefreshCoordinator_ts["src/runtime/indicatorRefreshCoordinator.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_interactionPolicy_test_ts["src/runtime/interactionPolicy.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_interactionPolicy_test_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
@@ -625,12 +636,19 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_test_ts
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelectionCoordinator_test_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionCoordinator_ts["src/runtime/stationarySelectionCoordinator.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelectionCoordinator_ts
+  module_src_runtime_stationarySelectionInputState_test_ts["src/runtime/stationarySelectionInputState.test.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_stationarySelectionInputState_test_ts
+  module_src_runtime_stationarySelectionInputState_test_ts --> module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelectionInputState_ts["src/runtime/stationarySelectionInputState.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   package__ankhorage_studio -.-> module_src_runtime_useRuntimeAction_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
