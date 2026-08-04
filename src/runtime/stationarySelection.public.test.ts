@@ -1,11 +1,12 @@
 import { expect, test } from 'bun:test';
 
-import type { useStudioRuntimeNodeMeasurement, useStudioUnsupportedNodeMeasurement } from './index';
+import type { useStudioUnsupportedNodeMeasurement } from './index';
 
-test('exports the canonical Runtime measurement hook and compatibility alias', () => {
-  type RuntimeHook = typeof useStudioRuntimeNodeMeasurement;
-  type CompatibilityHook = typeof useStudioUnsupportedNodeMeasurement;
-  const publicContractIsCompatible: RuntimeHook extends CompatibilityHook ? true : false = true;
+test('exports the established unsupported-node measurement hook', () => {
+  type UnsupportedMeasurementHook = typeof useStudioUnsupportedNodeMeasurement;
+  const publicContractExists: UnsupportedMeasurementHook extends (...args: never[]) => unknown
+    ? true
+    : false = true;
 
-  expect(publicContractIsCompatible).toBe(true);
+  expect(publicContractExists).toBe(true);
 });

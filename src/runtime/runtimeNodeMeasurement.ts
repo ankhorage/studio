@@ -47,6 +47,27 @@ export interface RuntimeNodeMeasurementRegistry<TResizeTarget = Element> {
   ) => () => void;
 }
 
+export function runtimeNodeMeasurementChangeAffectsActiveIndicators<TResizeTarget>(options: {
+  readonly isEditMode: boolean;
+  readonly measurements: ReadonlySet<RuntimeNodeMeasurement<TResizeTarget>>;
+  readonly nodeId: string;
+  readonly selectedNodeId: string | null;
+}): boolean {
+  return (
+    options.isEditMode &&
+    (options.nodeId === options.selectedNodeId ||
+      [...options.measurements].some((measurement) => measurement.showUnsupportedIndicator))
+  );
+}
+
+export function shouldRenderSelectedNodeChrome(
+  platform: string,
+  isEditMode: boolean,
+  selectedNodeId: string | null,
+): boolean {
+  return platform === 'web' && isEditMode && selectedNodeId !== null;
+}
+
 export interface NativeMeasurableView {
   readonly measureInWindow: (
     callback: (x: number, y: number, width: number, height: number) => void,

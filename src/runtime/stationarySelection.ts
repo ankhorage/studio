@@ -29,6 +29,8 @@ import {
   measureRuntimeNodeIndicators,
   type RuntimeNodeIndicatorRect,
   type RuntimeNodeMeasurement,
+  runtimeNodeMeasurementChangeAffectsActiveIndicators,
+  shouldRenderSelectedNodeChrome,
   unionMeasuredRects,
 } from './runtimeNodeMeasurement.js';
 import type { StationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
@@ -182,7 +184,7 @@ function areIndicatorRectsEqual(
   });
 }
 
-export function useStudioRuntimeNodeMeasurement(): {
+export function useStudioUnsupportedNodeMeasurement(): {
   readonly onLayout: (_event: LayoutChangeEvent) => void;
   readonly ref: (view: ViewRef | null) => void;
 } {
@@ -213,13 +215,6 @@ export function useStudioRuntimeNodeMeasurement(): {
   );
 
   return React.useMemo(() => ({ onLayout, ref: setViewRef }), [onLayout, setViewRef]);
-}
-
-/** @deprecated Use useStudioRuntimeNodeMeasurement for supported and unsupported Runtime roots. */
-export function useStudioUnsupportedNodeMeasurement(): ReturnType<
-  typeof useStudioRuntimeNodeMeasurement
-> {
-  return useStudioRuntimeNodeMeasurement();
 }
 
 function StudioNodeTouchRecorder(props: {
@@ -372,6 +367,10 @@ export function createStudioStationarySelectionWrapNode(options?: {
       return args.rendered;
     }
 
+    if (args.isRoot && Platform.OS !== 'web') {
+      return args.rendered;
+    }
+
     const isSupported =
       Object.prototype.hasOwnProperty.call(ZORA_COMPONENT_REGISTRY, args.node.type) ||
       (thirdPartySupport != null &&
@@ -411,6 +410,7 @@ function StationaryTapSelector(props: {
 
   const isEditModeRef = React.useRef(props.isEditMode);
   const selectedNodeIdRef = React.useRef(props.selectedNodeId);
+  const selectedIndicatorNodeIdRef = React.useRef<string | null>(null);
   const selectNodeRef = React.useRef(props.selectNode);
   const selectionCommitCountRef = React.useRef(0);
   const generationRef = React.useRef(0);
@@ -425,6 +425,13 @@ function StationaryTapSelector(props: {
 
   isEditModeRef.current = props.isEditMode;
   selectedNodeIdRef.current = props.selectedNodeId;
+  const shouldRenderSelectedChrome = shouldRenderSelectedNodeChrome(
+    Platform.OS,
+    props.isEditMode,
+    props.selectedNodeId,
+  );
+  const selectedIndicatorNodeId = shouldRenderSelectedChrome ? props.selectedNodeId : null;
+  selectedIndicatorNodeIdRef.current = selectedIndicatorNodeId;
   selectNodeRef.current = props.selectNode;
 
   inputStateRef.current ??= createStationarySelectionInputState({
@@ -455,7 +462,7 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         isEditModeRef.current,
-        selectedNodeIdRef.current,
+        selectedIndicatorNodeIdRef.current,
       )
     ) {
       return;
@@ -485,7 +492,7 @@ function StationaryTapSelector(props: {
     const activeMeasurements = getActiveRuntimeNodeMeasurements(
       runtimeNodesRef.current,
       isEditModeRef.current,
-      selectedNodeIdRef.current,
+      selectedIndicatorNodeIdRef.current,
     );
     const rootTarget = getWebResizeTarget(rootViewRef.current);
     resizeTargetCoordinatorRef.current?.sync(
@@ -499,28 +506,47 @@ function StationaryTapSelector(props: {
       const measurements = runtimeNodesRef.current.get(nodeId) ?? new Set();
       measurements.add(measurement);
       runtimeNodesRef.current.set(nodeId, measurements);
-      syncActiveResizeTargets();
-      requestIndicatorRefresh();
+      const nodeIsActive = runtimeNodeMeasurementChangeAffectsActiveIndicators({
+        isEditMode: isEditModeRef.current,
+        measurements,
+        nodeId,
+        selectedNodeId: selectedIndicatorNodeIdRef.current,
+      });
+      if (nodeIsActive) {
+        syncActiveResizeTargets();
+        requestIndicatorRefresh();
+      }
 
       return () => {
         const registeredMeasurements = runtimeNodesRef.current.get(nodeId);
-        if (!registeredMeasurements?.delete(measurement)) {
+        if (!registeredMeasurements) {
+          return;
+        }
+        const nodeWasActive = runtimeNodeMeasurementChangeAffectsActiveIndicators({
+          isEditMode: isEditModeRef.current,
+          measurements: registeredMeasurements,
+          nodeId,
+          selectedNodeId: selectedIndicatorNodeIdRef.current,
+        });
+        if (!registeredMeasurements.delete(measurement)) {
           return;
         }
         if (registeredMeasurements.size === 0) {
           runtimeNodesRef.current.delete(nodeId);
         }
-        syncActiveResizeTargets();
-        if (
-          !hasActiveRuntimeNodeMeasurements(
-            runtimeNodesRef.current,
-            isEditModeRef.current,
-            selectedNodeIdRef.current,
-          )
-        ) {
-          settleCoordinatorRef.current?.cancel();
+        if (nodeWasActive) {
+          syncActiveResizeTargets();
+          if (
+            !hasActiveRuntimeNodeMeasurements(
+              runtimeNodesRef.current,
+              isEditModeRef.current,
+              selectedIndicatorNodeIdRef.current,
+            )
+          ) {
+            settleCoordinatorRef.current?.cancel();
+          }
+          requestIndicatorRefresh();
         }
-        requestIndicatorRefresh();
       };
     },
     [requestIndicatorRefresh, syncActiveResizeTargets],
@@ -547,7 +573,7 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         isEditModeRef.current,
-        selectedNodeIdRef.current,
+        selectedIndicatorNodeIdRef.current,
       )
     ) {
       latestIndicatorRectsRef.current = [];
@@ -564,7 +590,7 @@ function StationaryTapSelector(props: {
       isEditMode: isEditModeRef.current,
       rootRect,
       runtimeNodes: runtimeNodesRef.current,
-      selectedNodeId: selectedNodeIdRef.current,
+      selectedNodeId: selectedIndicatorNodeIdRef.current,
     });
 
     if (!mountedRef.current || geometryRevision !== geometryRevisionRef.current) {
@@ -584,14 +610,14 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         props.isEditMode,
-        props.selectedNodeId,
+        selectedIndicatorNodeId,
       )
     ) {
       settleCoordinatorRef.current?.cancel();
     }
     syncActiveResizeTargets();
     requestIndicatorRefresh();
-  }, [props.isEditMode, props.selectedNodeId, requestIndicatorRefresh, syncActiveResizeTargets]);
+  }, [props.isEditMode, selectedIndicatorNodeId, requestIndicatorRefresh, syncActiveResizeTargets]);
 
   React.useEffect(() => {
     mountedRef.current = true;
@@ -724,8 +750,8 @@ function StationaryTapSelector(props: {
             },
           }),
         ),
-        ...(props.isEditMode && props.selectedNodeId
-          ? indicatorRects.filter((rect) => rect.nodeId === props.selectedNodeId)
+        ...(shouldRenderSelectedChrome
+          ? indicatorRects.filter((rect) => rect.nodeId === selectedIndicatorNodeId)
           : []
         ).map((rect) =>
           React.createElement(View, {

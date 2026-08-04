@@ -70,9 +70,9 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('collapsable: false');
   });
 
-  it('measures supported and unsupported native content through an authored-root provider', () => {
-    expect(source).toContain('export function useStudioRuntimeNodeMeasurement()');
-    expect(source).toContain('export function useStudioUnsupportedNodeMeasurement(): ReturnType<');
+  it('keeps the authored-root provider scoped to native unsupported extensions', () => {
+    expect(source).toContain('export function useStudioUnsupportedNodeMeasurement(): {');
+    expect(source).not.toContain('useStudioRuntimeNodeMeasurement');
     expect(source).toContain('createNativeRuntimeNodeMeasurement(view');
     expect(source).toContain('RuntimeNodeMeasurementContext.Provider');
     expect(source).not.toContain("Platform.OS === 'web' ? measureRuntimeNodeWebView(view)");
@@ -115,17 +115,18 @@ describe('stationarySelection RN integration', () => {
     expect(recorderSource).not.toContain('borderColor');
   });
 
-  it('measures supported Runtime nodes for selected-state chrome', () => {
+  it('measures supported Runtime nodes for web selected-state chrome', () => {
     expect(source).toContain('ctx.registerRuntimeNode(props.nodeId');
+    expect(source).toContain("if (Platform.OS === 'web' && view && ctx && props.nodeId)");
     expect(source).toContain('measureRuntimeNodeWebView(view)');
     expect(source).toContain('measureRuntimeNodeIndicators({');
-    expect(source).toContain('props.selectedNodeId, requestIndicatorRefresh');
+    expect(source).toContain('selectedIndicatorNodeIdRef.current');
   });
 
-  it('measures root nodes without adding them to the stationary interaction path', () => {
+  it('measures roots only on web without adding them to the stationary interaction path', () => {
     expect(source).toContain('recordSelection: !args.isRoot');
     expect(source).toContain('if (!ctx || !props.recordSelection)');
-    expect(source).not.toContain('if (args.isRoot || !args.node.id)');
+    expect(source).toContain("if (args.isRoot && Platform.OS !== 'web')");
   });
 
   it('renders theme-semantic selected chrome without intercepting input', () => {
@@ -136,11 +137,25 @@ describe('stationarySelection RN integration', () => {
     expect(selectedIndicatorBlock).toContain(
       '...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base)',
     );
+    expect(source).toContain(
+      'shouldRenderSelectedNodeChrome(\n    Platform.OS,\n    props.isEditMode,\n    props.selectedNodeId,\n  )',
+    );
   });
 
-  it('suppresses selected chrome synchronously outside Edit mode or without selection', () => {
-    expect(source).toContain('...(props.isEditMode && props.selectedNodeId');
-    expect(source).toContain('rect.nodeId === props.selectedNodeId');
+  it('suppresses selected chrome synchronously on native, in Preview, or without selection', () => {
+    expect(source).toContain('...(shouldRenderSelectedChrome');
+    expect(source).toContain('rect.nodeId === selectedIndicatorNodeId');
+  });
+
+  it('synchronizes resize targets only for active registration changes', () => {
+    expect(source).toContain(
+      'const nodeIsActive = runtimeNodeMeasurementChangeAffectsActiveIndicators',
+    );
+    expect(source).toContain(
+      'const nodeWasActive = runtimeNodeMeasurementChangeAffectsActiveIndicators',
+    );
+    expect(source).toContain('if (nodeIsActive) {');
+    expect(source).toContain('if (nodeWasActive) {');
   });
 
   it('uses lazy coordinator creation', () => {
