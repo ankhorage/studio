@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.3
+
+### Patch Changes
+
+- a3cbebe: Preserve Studio Runtime selection on nested navigator screens by resolving active pathnames and initial-route chains recursively through the canonical manifest navigation tree.
+
 ## 0.11.2
 
 ### Patch Changes
