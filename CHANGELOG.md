@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.4
+
+### Patch Changes
+
+- 96bf304: Keep Studio AppBar actions horizontal and render theme-aware selected Runtime node chrome on React Native Web with lazy active-node resize observation.
+
 ## 0.11.3
 
 ### Patch Changes
