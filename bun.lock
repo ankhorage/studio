@@ -2661,8 +2661,6 @@
 
     "nutri/@ankhorage/studio/@ankhorage/color-theory": ["@ankhorage/color-theory@0.0.7", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-fcdJZMmhfbvc9Yhz5vjTolmWYAaCsUaUOq4/P6YDZLHhXer8Mv8y0LaOhWgaXcwq48nrxILGUMOxOl48tRhTmA=="],
 
-    "nutri/@ankhorage/studio/@ankhorage/contracts": ["@ankhorage/contracts@4.0.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-MMUburmyTwaMSpTRKMhigitxb5KgL9/t1boKRc3ZJJI7F8sLaOb1qSuAjOCqu+WyMAXtyk7MPWyDgvrZtJPSWg=="],
-
     "nutri/@ankhorage/studio/@ankhorage/zora": ["@ankhorage/zora@2.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7", "@ankhorage/contracts": "^2.1.0", "@ankhorage/surface": "^2.1.0" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "@react-native-picker/picker": ">=2.0.0", "expo-font": "^55.0.6", "expo-linear-gradient": ">=14.0.0", "react": ">=18.2.0", "react-native": ">=0.72.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-iiRaxYAXzkVgfYSy/xwvJf9N0U5f6IP/KhjUN5U3Cc2VEd95/oXKKfEjksnz1WLD3AkecQCTNvqP2jC8S65pUA=="],
 
     "ora/chalk/ansi-styles": ["ansi-styles@3.2.1", "", { "dependencies": { "color-convert": "^1.9.0" } }, "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA=="],
