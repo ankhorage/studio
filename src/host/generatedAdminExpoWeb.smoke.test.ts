@@ -21,7 +21,7 @@ import {
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
-import { getTemplateCatalog } from './templateRegistry';
+import { getProjectTemplate, getTemplateCatalog } from './templateRegistry';
 
 const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
 const TEST_TIMEOUT_MS = 240_000;
@@ -41,17 +41,23 @@ interface ChromeProtocolMessage {
 }
 
 function createAdminSmokeManifest(): AppManifest {
+  const nutritionManifest = getProjectTemplate({
+    category: 'food_drink',
+    templateId: 'nutrition-catalog-scan',
+  });
+  const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
+  const catalogScreen = nutritionManifest.screens[catalogScreenId];
+  if (!catalogScreen) throw new Error('Nutrition template is missing its catalog screen.');
+
   return {
+    ...nutritionManifest,
     metadata: {
+      ...nutritionManifest.metadata,
       name: 'Generated Admin Web Smoke',
       slug: 'generated-admin-web-smoke',
-      version: '1.0.0',
-      category: 'developer_tools',
-      themeId: 'theme-1',
     },
-    settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
-      plugins: [],
+      ...nutritionManifest.infra,
       auth: {
         scope: 'global',
         provider: 'supabase',
@@ -60,7 +66,7 @@ function createAdminSmokeManifest(): AppManifest {
           signUpRoute: 'sign-up',
           signOutRoute: 'sign-out',
           forgotPasswordRoute: 'forgot-password',
-          postSignInRoute: 'dashboard',
+          postSignInRoute: 'products',
           unauthorizedRoute: 'sign-in',
         },
         signIn: { identifiers: ['email'] },
@@ -72,27 +78,35 @@ function createAdminSmokeManifest(): AppManifest {
       },
     },
     navigator: {
-      type: 'stack',
-      initialRouteName: 'dashboard',
-      routes: [{ name: 'dashboard', label: 'Dashboard', screenId: 'dashboard' }],
+      ...nutritionManifest.navigator,
+      routes: [
+        ...nutritionManifest.navigator.routes,
+        {
+          name: 'dashboard',
+          label: 'Dashboard',
+          screenId: 'dashboard',
+          hideInTabBar: true,
+        },
+      ],
     },
     screens: {
+      ...nutritionManifest.screens,
+      [catalogScreenId]: {
+        ...catalogScreen,
+        root: {
+          ...catalogScreen.root,
+          children: [
+            ...(catalogScreen.root.children ?? []),
+            { id: 'nutrition-studio-smoke-probe', type: 'SmokeStudioProbe', props: {} },
+          ],
+        },
+      },
       dashboard: {
         id: 'dashboard',
         name: 'Dashboard',
         root: createScrollableRuntimeScreenRoot(),
       },
     },
-    themes: [
-      {
-        id: 'theme-1',
-        name: 'Smoke Theme',
-        light: { primaryColor: '#2463eb', harmony: 'analogous' },
-        dark: { primaryColor: '#f59e0b', harmony: 'triadic' },
-      },
-    ],
-    activeThemeId: 'theme-1',
-    activeThemeMode: 'light',
   };
 }
 
@@ -430,8 +444,9 @@ adminWebSmokeTest(
       const page = await openChromePage(debugPort);
       try {
         await page.blockHotReloadConnections();
+        await verifyNestedNutritionSelection(page, appUrl);
         for (const route of ['/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
-          await page.navigate(`${appUrl}${route}`);
+          await page.navigateStudio(route);
           await Bun.sleep(ROUTE_SETTLE_MS);
           const bodyText =
             route === '/dashboard'
@@ -449,7 +464,8 @@ adminWebSmokeTest(
               );
             }
             expect(bodyText).toContain('Generated runtime row 16');
-            await verifyDesktopSelectionAndUnsupportedGeometry(page);
+            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=2');
+            await verifyDesktopSelectionAndUnsupportedGeometry(page, 1, 2);
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
@@ -468,6 +484,34 @@ adminWebSmokeTest(
   },
   TEST_TIMEOUT_MS,
 );
+
+async function verifyNestedNutritionSelection(page: ChromePage, appUrl: string): Promise<void> {
+  const searchInputNodeId = 'food_drink-nutrition-catalog-scan-products-search-input';
+  await page.navigate(`${appUrl}/products`);
+  await waitForBodyText(page, (text) => text.includes('Catalog products'), HTTP_TIMEOUT_MS);
+  expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
+
+  const searchTarget = await page.readRuntimeNodeCenter(searchInputNodeId);
+  await page.mouseClick(searchTarget.x, searchTarget.y);
+  const selectedRootId = `studio-stationary-selection-root:edit:${searchInputNodeId}:1`;
+  await waitForSelectionRootId(page, selectedRootId, 15_000);
+  await Bun.sleep(500);
+  const settledRootId = await page.readSelectionRootId();
+  if (settledRootId !== selectedRootId) {
+    throw new Error(
+      `Nested selection did not remain settled; received ${settledRootId}; ` +
+        `screen state: ${await page.readStudioScreenState()}.`,
+    );
+  }
+
+  for (const label of ['Properties', 'Select parent', 'Clear selection']) {
+    expect(
+      await page.evaluate<boolean>(
+        `document.querySelector('[aria-label=${JSON.stringify(label)}]') !== null`,
+      ),
+    ).toBe(true);
+  }
+}
 
 interface BrowserRect {
   readonly left: number;
@@ -500,7 +544,11 @@ interface CapturedLayoutSnapshot {
   >;
 }
 
-async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): Promise<void> {
+async function verifyDesktopSelectionAndUnsupportedGeometry(
+  page: ChromePage,
+  selectionCommitOffset = 0,
+  selectionChangeOffset = 0,
+): Promise<void> {
   const initialGeometry = await waitForUnsupportedGeometry(page, 15_000);
 
   expectRectToMatch(initialGeometry.indicator, initialGeometry.target);
@@ -587,38 +635,40 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   const desktopTarget = await page.readRuntimeNodeCenter('desktop-pointer-target');
   await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'right');
   await Bun.sleep(250);
-  expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=0');
+  expect(await page.readStudioSmokeState()).toBe(
+    `mode=edit;selection=none;changes=${selectionChangeOffset}`,
+  );
 
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await waitForStudioSmokeState(
     page,
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
     15_000,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:desktop-pointer-target:1',
+    `studio-stationary-selection-root:edit:desktop-pointer-target:${selectionCommitOffset + 1}`,
   );
 
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:desktop-pointer-target:1',
+    `studio-stationary-selection-root:edit:desktop-pointer-target:${selectionCommitOffset + 1}`,
   );
 
   await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'middle');
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
   );
 
   const secondMouseTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-0');
   await page.mouseClick(secondMouseTarget.x, secondMouseTarget.y);
   await waitForStudioSmokeState(
     page,
-    'mode=edit;selection=dashboard-runtime-row-0;changes=2',
+    `mode=edit;selection=dashboard-runtime-row-0;changes=${selectionChangeOffset + 2}`,
     15_000,
   );
 
@@ -640,7 +690,10 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   await page.touchTap(touchTarget.x, touchTarget.y);
   await Bun.sleep(500);
   const touchState = await page.readStudioSmokeState();
-  if (touchState !== 'mode=edit;selection=dashboard-runtime-row-1;changes=3') {
+  if (
+    touchState !==
+    `mode=edit;selection=dashboard-runtime-row-1;changes=${selectionChangeOffset + 3}`
+  ) {
     throw new Error(
       `Touch selection did not commit; state=${touchState}; trace=${await page.evaluate<string>(
         `JSON.stringify(globalThis.__studioSmokeInputTrace ?? [])`,
@@ -648,17 +701,17 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     );
   }
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
+    `studio-stationary-selection-root:edit:dashboard-runtime-row-1:${selectionCommitOffset + 3}`,
   );
 
   const movedTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-2');
   await page.mouseDrag(movedTarget.x, movedTarget.y, movedTarget.x + 24, movedTarget.y + 24);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=dashboard-runtime-row-1;changes=3',
+    `mode=edit;selection=dashboard-runtime-row-1;changes=${selectionChangeOffset + 3}`,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
+    `studio-stationary-selection-root:edit:dashboard-runtime-row-1:${selectionCommitOffset + 3}`,
   );
 
   const privateStateBefore = await page.evaluate<string>(
@@ -666,7 +719,11 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   );
   const statefulTarget = await page.readRuntimeNodeCenter('native-row-target');
   await page.touchTap(statefulTarget.x, statefulTarget.y);
-  await waitForStudioSmokeState(page, 'mode=edit;selection=native-row-target;changes=4', 15_000);
+  await waitForStudioSmokeState(
+    page,
+    `mode=edit;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
+    15_000,
+  );
   const privateStateAfterInteraction = await page.evaluate<string>(
     `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
   );
@@ -683,7 +740,11 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   );
 
   await page.evaluate(`globalThis.__studioSmokeTogglePreview?.()`);
-  await waitForStudioSmokeState(page, 'mode=preview;selection=native-row-target;changes=4', 15_000);
+  await waitForStudioSmokeState(
+    page,
+    `mode=preview;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
+    15_000,
+  );
   expect(
     await page.evaluate<boolean>(
       `document.getElementById('studio-unsupported-indicator-unsupported-runtime-target') === null`,
@@ -701,7 +762,7 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   await page.mouseClick(previewDesktopTarget.x, previewDesktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=preview;selection=native-row-target;changes=4',
+    `mode=preview;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
   );
 }
 
@@ -767,6 +828,24 @@ async function waitForStudioSmokeState(
 
   throw new Error(
     `Timed out waiting for Studio smoke state ${expected}; received ${await page.readStudioSmokeState()}.`,
+  );
+}
+
+async function waitForSelectionRootId(
+  page: ChromePage,
+  expected: string,
+  timeoutMs: number,
+): Promise<void> {
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    if ((await page.readSelectionRootId()) === expected) return;
+    await Bun.sleep(100);
+  }
+
+  throw new Error(
+    `Timed out waiting for Studio selection root ${expected}; received ${await page.readSelectionRootId()}; ` +
+      `screen state: ${await page.readStudioScreenState()}.`,
   );
 }
 
@@ -892,6 +971,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
     `import { useStudio } from '@ankhorage/studio';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
 import { Box, Text } from '@ankhorage/zora';
+import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Pressable,
@@ -1074,6 +1154,8 @@ export function SmokeNestedScroll({
 
 export function SmokeStudioProbe() {
   const studio = useStudio();
+  const pathname = usePathname();
+  const router = useRouter();
   const previousSelectedNodeIdRef = useRef(studio.selectedNodeId);
   const [selectionChangeCount, setSelectionChangeCount] = useState(0);
   const [layoutSnapshot, setLayoutSnapshot] = useState('not-captured');
@@ -1081,15 +1163,17 @@ export function SmokeStudioProbe() {
   useEffect(() => {
     const smokeGlobal = globalThis as typeof globalThis & {
       __studioSmokeCaptureLayout?: typeof captureSmokeLayout;
+      __studioSmokeNavigate?: (href: string) => void;
       __studioSmokeTogglePreview?: () => void;
     };
     smokeGlobal.__studioSmokeCaptureLayout = captureSmokeLayout;
+    smokeGlobal.__studioSmokeNavigate = (href) => router.push(href as never);
     smokeGlobal.__studioSmokeTogglePreview = studio.togglePreviewMode;
     return () => {
       delete smokeGlobal.__studioSmokeCaptureLayout;
       delete smokeGlobal.__studioSmokeTogglePreview;
     };
-  }, [studio.togglePreviewMode]);
+  }, [router, studio.togglePreviewMode]);
 
   useEffect(() => {
     if (previousSelectedNodeIdRef.current === studio.selectedNodeId) return;
@@ -1101,6 +1185,9 @@ export function SmokeStudioProbe() {
     <Box gap="s" testID="studio-smoke-probe">
       <Text testID="studio-smoke-state">
         {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
+      </Text>
+      <Text testID="studio-smoke-screen-state">
+        {\`pathname=\${pathname};activeScreen=\${studio.activeScreenId ?? 'none'};root=\${studio.rootNode?.id ?? 'none'}\`}
       </Text>
       <Pressable
         onPress={studio.togglePreviewMode}
@@ -1449,6 +1536,18 @@ class ChromePage {
     await this.waitForLoad();
   }
 
+  async navigateStudio(pathname: string): Promise<void> {
+    const didNavigate = await this.evaluate<boolean>(`(() => {
+      const navigate = globalThis.__studioSmokeNavigate;
+      if (typeof navigate !== 'function') return false;
+      navigate(${JSON.stringify(pathname)});
+      return true;
+    })()`);
+    if (!didNavigate) {
+      throw new Error(`Studio smoke navigation is unavailable for ${pathname}.`);
+    }
+  }
+
   async readBodyText(): Promise<string> {
     const result = await this.send('Runtime.evaluate', {
       expression: 'document.body?.innerText ?? ""',
@@ -1493,6 +1592,12 @@ class ChromePage {
   async readStudioSmokeState(): Promise<string> {
     return this.evaluate<string>(
       `document.querySelector('[data-testid="studio-smoke-state"]')?.textContent ?? ''`,
+    );
+  }
+
+  async readStudioScreenState(): Promise<string> {
+    return this.evaluate<string>(
+      `document.querySelector('[data-testid="studio-smoke-screen-state"]')?.textContent ?? ''`,
     );
   }
 

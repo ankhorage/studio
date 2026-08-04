@@ -28,3 +28,9 @@ The visual indicator is rendered by the root selection surface with `pointerEven
 Native scroll input starts a bounded settle sequence that stops after stable measurements or a
 strict sample limit; Preview, unmount, navigation, and removal of the last unsupported measurement
 cancel pending work.
+
+The generated Studio shell synchronizes the current app pathname into `StudioProvider`. Studio
+resolves the owning screen recursively from the manifest navigator, so selections on nested Stack,
+Tabs, and Drawer screens remain valid while their node exists. Moving to a different screen or
+deleting the selected node clears stale selection; opening an admin route retains the last valid app
+screen context without creating a second navigation model.

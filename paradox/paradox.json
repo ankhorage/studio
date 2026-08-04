@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.11.1",
+      "value": "v0.11.2",
       "color": "cb3837"
     },
     {
@@ -404,7 +404,9 @@
         "src/core/studioManifestDraftModel.ts",
         "src/core/studioManifestPersistenceModel.ts",
         "src/index.ts",
+        "src/manifestState.ts",
         "src/manifestSync.ts",
+        "src/routeUtils.ts",
         "src/studioSelectionModel.ts",
         "src/ui/admin/AuthAdminSession.tsx"
       ],
@@ -1932,7 +1934,7 @@
     {
       "path": "src/routeUtils.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/manifestState.ts"],
       "exports": [
         "collectScreenRouteEntries",
         "findNavigatorAtPath",
@@ -1948,6 +1950,7 @@
         "pathToKey",
         "removeScreenIdFromRoutes",
         "reorderLeafRoutesWithinParent",
+        "resolveScreenIdForPathname",
         "ScreenRouteEntry",
         "ScreenRouteGroup",
         "toCanonicalRoutePattern",
@@ -7698,21 +7701,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 55,
+        "line": 58,
         "column": 7
       }
     },
     {
       "name": "noopAsync",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/core/StudioProvider.ts",
-        "line": 56,
-        "column": 7
-      }
-    },
-    {
-      "name": "resolveActiveRootNode",
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
@@ -7725,7 +7719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 82,
+        "line": 62,
         "column": 14
       }
     },
@@ -8058,7 +8052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 99,
+        "line": 113,
         "column": 1
       }
     },
@@ -8067,8 +8061,17 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 343,
+        "line": 357,
         "column": 9
+      }
+    },
+    {
+      "name": "verifyNestedNutritionSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 488,
+        "column": 1
       }
     },
     {
@@ -8076,7 +8079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 503,
+        "line": 547,
         "column": 1
       }
     },
@@ -8085,7 +8088,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 708,
+        "line": 769,
         "column": 1
       }
     },
@@ -8094,7 +8097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 735,
+        "line": 796,
         "column": 1
       }
     },
@@ -8103,7 +8106,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 754,
+        "line": 815,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForSelectionRootId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 834,
         "column": 1
       }
     },
@@ -8112,7 +8124,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 773,
+        "line": 852,
         "column": 1
       }
     },
@@ -8121,7 +8133,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 780,
+        "line": 859,
         "column": 1
       }
     },
@@ -8130,7 +8142,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 787,
+        "line": 866,
         "column": 1
       }
     },
@@ -8139,7 +8151,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 825,
+        "line": 904,
         "column": 1
       }
     },
@@ -8148,7 +8160,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 859,
+        "line": 938,
         "column": 1
       }
     },
@@ -8157,7 +8169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 888,
+        "line": 967,
         "column": 1
       }
     },
@@ -8166,7 +8178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1159,
+        "line": 1246,
         "column": 1
       }
     },
@@ -8175,7 +8187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1182,
+        "line": 1269,
         "column": 1
       }
     },
@@ -8184,7 +8196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1198,
+        "line": 1285,
         "column": 1
       }
     },
@@ -8193,7 +8205,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1220,
+        "line": 1307,
         "column": 1
       }
     },
@@ -8202,7 +8214,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1245,
+        "line": 1332,
         "column": 1
       }
     },
@@ -8211,7 +8223,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1285,
+        "line": 1372,
         "column": 1
       }
     },
@@ -8220,7 +8232,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1299,
+        "line": 1386,
         "column": 1
       }
     },
@@ -8229,7 +8241,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1308,
+        "line": 1395,
         "column": 1
       }
     },
@@ -8238,7 +8250,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1324,
+        "line": 1411,
         "column": 1
       }
     },
@@ -8247,7 +8259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1331,
+        "line": 1418,
         "column": 1
       }
     },
@@ -8256,7 +8268,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1337,
+        "line": 1424,
         "column": 1
       }
     },
@@ -8265,7 +8277,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1350,
+        "line": 1437,
         "column": 1
       }
     },
@@ -8274,7 +8286,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1367,
+        "line": 1454,
         "column": 1
       }
     },
@@ -8283,7 +8295,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1384,
+        "line": 1471,
         "column": 1
       }
     },
@@ -8292,7 +8304,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1390,
+        "line": 1477,
         "column": 1
       }
     },
@@ -8301,7 +8313,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1396,
+        "line": 1483,
         "column": 1
       }
     },
@@ -8310,7 +8322,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1412,
+        "line": 1499,
         "column": 1
       }
     },
@@ -8319,7 +8331,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1732,
+        "line": 1837,
         "column": 1
       }
     },
@@ -8328,7 +8340,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1747,
+        "line": 1852,
         "column": 1
       }
     },
@@ -8337,7 +8349,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1751,
+        "line": 1856,
         "column": 1
       }
     },
@@ -8346,7 +8358,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1760,
+        "line": 1865,
         "column": 1
       }
     },
@@ -8355,7 +8367,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1771,
+        "line": 1876,
         "column": 1
       }
     },
@@ -9093,7 +9105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 436,
+        "line": 442,
         "column": 1
       }
     },
@@ -9102,7 +9114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 450,
+        "line": 456,
         "column": 1
       }
     },
@@ -9111,7 +9123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 457,
+        "line": 463,
         "column": 1
       }
     },
@@ -9120,7 +9132,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 480,
+        "line": 486,
         "column": 1
       }
     },
@@ -9129,7 +9141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 494,
+        "line": 500,
         "column": 1
       }
     },
@@ -9138,7 +9150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 498,
+        "line": 504,
         "column": 1
       }
     },
@@ -9147,7 +9159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 542,
+        "line": 548,
         "column": 1
       }
     },
@@ -9156,7 +9168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 550,
+        "line": 556,
         "column": 1
       }
     },
@@ -9165,7 +9177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 555,
+        "line": 561,
         "column": 1
       }
     },
@@ -12981,7 +12993,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.public.test.ts",
-        "line": 23,
+        "line": 24,
         "column": 1
       }
     },
@@ -12990,7 +13002,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.test.ts",
-        "line": 11,
+        "line": 12,
         "column": 1
       }
     },
@@ -12999,7 +13011,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.test.ts",
-        "line": 64,
+        "line": 139,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveScreenIdForPathname",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveInitialLeafScreenId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizePathnameSegments",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeRoutePatternSegments",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "scoreRoutePatternMatch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/routeUtils.ts",
+        "line": 82,
         "column": 1
       }
     },
@@ -13008,7 +13065,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 22,
+        "line": 126,
         "column": 1
       }
     },
@@ -13017,7 +13074,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 48,
+        "line": 152,
         "column": 1
       }
     },
@@ -15773,7 +15830,17 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/manifestSync.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/routeUtils.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -21287,6 +21354,12 @@
       },
       {
         "fromSymbol": "src/routeUtils.public.test.ts",
+        "toSymbol": "resolveScreenIdForPathname",
+        "callExpression": "resolveScreenIdForPathname",
+        "sourcePath": "src/routeUtils.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.public.test.ts",
         "toSymbol": "makeUniqueRouteNameForParent",
         "callExpression": "makeUniqueRouteNameForParent",
         "sourcePath": "src/routeUtils.public.test.ts"
@@ -21344,6 +21417,54 @@
         "toSymbol": "rootRouteNames",
         "callExpression": "rootRouteNames",
         "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.test.ts",
+        "toSymbol": "resolveScreenIdForPathname",
+        "callExpression": "resolveScreenIdForPathname",
+        "sourcePath": "src/routeUtils.test.ts"
+      },
+      {
+        "fromSymbol": "resolveScreenIdForPathname",
+        "toSymbol": "normalizePathnameSegments",
+        "callExpression": "normalizePathnameSegments",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "resolveScreenIdForPathname",
+        "toSymbol": "collectScreenRouteEntries",
+        "callExpression": "collectScreenRouteEntries",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "resolveScreenIdForPathname",
+        "toSymbol": "normalizeRoutePatternSegments",
+        "callExpression": "normalizeRoutePatternSegments",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "resolveScreenIdForPathname",
+        "toSymbol": "scoreRoutePatternMatch",
+        "callExpression": "scoreRoutePatternMatch",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "resolveScreenIdForPathname",
+        "toSymbol": "resolveInitialLeafScreenId",
+        "callExpression": "resolveInitialLeafScreenId",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "resolveInitialLeafScreenId",
+        "toSymbol": "resolveInitialLeafScreenId",
+        "callExpression": "resolveInitialLeafScreenId",
+        "sourcePath": "src/routeUtils.ts"
+      },
+      {
+        "fromSymbol": "src/routeUtils.ts",
+        "toSymbol": "isRouteGroupSegment",
+        "callExpression": "isRouteGroupSegment",
+        "sourcePath": "src/routeUtils.ts"
       },
       {
         "fromSymbol": "reorderLeafRoutesWithinParent",
@@ -22955,14 +23076,32 @@
       },
       {
         "fromSymbol": "src/core/StudioProvider.ts",
-        "toSymbol": "resolveActiveRootNode",
-        "callExpression": "resolveActiveRootNode",
+        "toSymbol": "resolveScreenIdForPathname",
+        "callExpression": "resolveScreenIdForPathname",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "StudioProvider",
+        "toSymbol": "resolveInitialActiveScreenId",
+        "callExpression": "resolveInitialActiveScreenId",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
         "fromSymbol": "StudioProvider",
         "toSymbol": "useEffect",
         "callExpression": "useEffect",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setRequestedActiveScreenId",
+        "callExpression": "setRequestedActiveScreenId",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "resolveActiveRootNode",
+        "callExpression": "resolveActiveRootNode",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -23489,6 +23628,12 @@
       },
       {
         "fromSymbol": "createAdminSmokeManifest",
+        "toSymbol": "getProjectTemplate",
+        "callExpression": "getProjectTemplate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createAdminSmokeManifest",
         "toSymbol": "createScrollableRuntimeScreenRoot",
         "callExpression": "createScrollableRuntimeScreenRoot",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -23639,8 +23784,14 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "toSymbol": "navigate",
-        "callExpression": "page.navigate",
+        "toSymbol": "verifyNestedNutritionSelection",
+        "callExpression": "verifyNestedNutritionSelection",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "navigateStudio",
+        "callExpression": "page.navigateStudio",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23659,6 +23810,12 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "formatProcessOutput",
         "callExpression": "formatProcessOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23689,6 +23846,60 @@
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "rm",
         "callExpression": "rm",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "navigate",
+        "callExpression": "page.navigate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "waitForBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readSelectionRootId",
+        "callExpression": "page.readSelectionRootId",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readRuntimeNodeCenter",
+        "callExpression": "page.readRuntimeNodeCenter",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "mouseClick",
+        "callExpression": "page.mouseClick",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForSelectionRootId",
+        "callExpression": "waitForSelectionRootId",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readStudioScreenState",
+        "callExpression": "page.readStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23797,6 +24008,18 @@
         "fromSymbol": "waitForStudioSmokeState",
         "toSymbol": "readStudioSmokeState",
         "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectionRootId",
+        "toSymbol": "readSelectionRootId",
+        "callExpression": "page.readSelectionRootId",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectionRootId",
+        "toSymbol": "readStudioScreenState",
+        "callExpression": "page.readStudioScreenState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24082,6 +24305,12 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "navigateStudio",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "readBodyText",
         "toSymbol": "send",
         "callExpression": "this.send",
@@ -24113,6 +24342,12 @@
       },
       {
         "fromSymbol": "readStudioSmokeState",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readStudioScreenState",
         "toSymbol": "evaluate",
         "callExpression": "this.evaluate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"

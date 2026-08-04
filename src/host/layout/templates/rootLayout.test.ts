@@ -72,6 +72,10 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain(
+    'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
+  );
+  expect(generated).toContain('resolveScreenIdForPathname(manifest.navigator, pathname)');
   expect(generated).toContain('const appRouteSearchParams = useGlobalSearchParams();');
   expect(generated).toContain('const appLocation = useMemo(');
   expect(generated).toContain('resolveStudioLastNonAdminLocation({');
