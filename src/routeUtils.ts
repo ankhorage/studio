@@ -1,6 +1,10 @@
-import type { NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
 
-import { collectScreenRouteEntries, isRouteGroupSegment } from './manifestState';
+import {
+  collectScreenRouteEntries,
+  isRouteGroupSegment,
+  resolveInitialScreenId,
+} from './manifestState';
 
 export type { ScreenRouteEntry, ScreenRouteGroup } from './manifestState';
 export {
@@ -38,11 +42,13 @@ const OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN = /^\[\[\.\.\.[^\]]+\]\]$/u;
 export function resolveScreenIdForPathname(
   navigator: NavigatorSpec,
   pathname: string,
+  screens?: AppManifest['screens'],
 ): string | null {
   const pathnameSegments = normalizePathnameSegments(pathname);
   let bestMatch: ScreenRouteMatch | null = null;
 
   for (const entry of collectScreenRouteEntries(navigator.routes)) {
+    if (screens && !screens[entry.screenId]) continue;
     const patternSegments = normalizeRoutePatternSegments(entry.routePath);
     const score = scoreRoutePatternMatch(patternSegments, pathnameSegments);
     if (score === null || (bestMatch && score <= bestMatch.score)) continue;
@@ -50,17 +56,7 @@ export function resolveScreenIdForPathname(
   }
 
   if (bestMatch) return bestMatch.screenId;
-  return pathnameSegments.length === 0 ? resolveInitialLeafScreenId(navigator) : null;
-}
-
-function resolveInitialLeafScreenId(navigator: NavigatorSpec): string | null {
-  const route =
-    (navigator.initialRouteName
-      ? navigator.routes.find((candidate) => candidate.name === navigator.initialRouteName)
-      : undefined) ?? navigator.routes[0];
-  if (!route) return null;
-  if (route.screenId) return route.screenId;
-  return route.navigator ? resolveInitialLeafScreenId(route.navigator) : null;
+  return pathnameSegments.length === 0 ? resolveInitialScreenId(navigator, screens) : null;
 }
 
 function normalizePathnameSegments(pathname: string): string[] {
@@ -86,12 +82,15 @@ function scoreRoutePatternMatch(
   let patternIndex = 0;
   let pathnameIndex = 0;
   let score = 0;
+  let exactMatch = true;
 
   while (patternIndex < pattern.length) {
     const routeSegment = pattern[patternIndex];
     if (!routeSegment) return null;
 
     if (OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
+      exactMatch = false;
+      if (pathnameIndex < pathname.length) score += 1;
       pathnameIndex = pathname.length;
       patternIndex += 1;
       continue;
@@ -99,6 +98,7 @@ function scoreRoutePatternMatch(
 
     if (CATCH_ALL_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
       if (pathnameIndex >= pathname.length) return null;
+      exactMatch = false;
       pathnameIndex = pathname.length;
       patternIndex += 1;
       score += 1;
@@ -120,7 +120,7 @@ function scoreRoutePatternMatch(
     pathnameIndex += 1;
   }
 
-  return pathnameIndex === pathname.length ? score + pattern.length : null;
+  return pathnameIndex === pathname.length ? score + (exactMatch ? 5 : 0) : null;
 }
 
 export function reorderLeafRoutesWithinParent(

@@ -108,7 +108,7 @@ export const StudioProvider = ({
   const locationActiveScreenId = useMemo<StudioScreenId | null | undefined>(() => {
     if (activePathname === undefined) return undefined;
     if (!manifest) return null;
-    return resolveScreenIdForPathname(manifest.navigator, activePathname);
+    return resolveScreenIdForPathname(manifest.navigator, activePathname, manifest.screens);
   }, [activePathname, manifest]);
   const activeScreenId =
     locationActiveScreenId !== undefined

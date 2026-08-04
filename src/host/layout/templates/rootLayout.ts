@@ -175,7 +175,7 @@ function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteD
 }
 
 function resolveAppHeaderTitle(manifest: AppManifest, pathname: string): string {
-  const screenId = resolveScreenIdForPathname(manifest.navigator, pathname);
+  const screenId = resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens);
   const route = screenId ? findRouteByScreenId(manifest.navigator, screenId) : null;
   const screen = screenId ? manifest.screens[screenId] : undefined;
   return route?.label ?? screen?.title ?? screen?.name ?? route?.name ?? 'App';

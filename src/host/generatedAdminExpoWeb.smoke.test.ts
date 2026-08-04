@@ -434,6 +434,7 @@ adminWebSmokeTest(
       expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
+      expect(rootLayout).toContain('<SmokeNavigationProbe />');
 
       expoProcess = spawnExpoWeb(projectRoot, studioApi.apiBase);
       collectProcessOutput(expoProcess, expoOutput);
@@ -470,6 +471,7 @@ adminWebSmokeTest(
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
         }
+        expect(page.errors).toEqual([]);
       } finally {
         page.close();
       }
@@ -895,6 +897,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   });
   await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
   await writeSmokeRuntimeExtensions(created.path);
+  await installSmokeNavigationProbe(created.path);
   await writeSmokeMetroConfig(created.path);
   await installGeneratedProjectDependencies(workspaceRoot, created.path);
 
@@ -1152,10 +1155,28 @@ export function SmokeNestedScroll({
   );
 }
 
+export function SmokeNavigationProbe() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const smokeGlobal = globalThis as typeof globalThis & {
+      __studioSmokeNavigate?: (href: string) => void;
+    };
+    const navigate = (href: string) => router.push(href as never);
+    smokeGlobal.__studioSmokeNavigate = navigate;
+    return () => {
+      if (smokeGlobal.__studioSmokeNavigate === navigate) {
+        delete smokeGlobal.__studioSmokeNavigate;
+      }
+    };
+  }, [router]);
+
+  return null;
+}
+
 export function SmokeStudioProbe() {
   const studio = useStudio();
   const pathname = usePathname();
-  const router = useRouter();
   const previousSelectedNodeIdRef = useRef(studio.selectedNodeId);
   const [selectionChangeCount, setSelectionChangeCount] = useState(0);
   const [layoutSnapshot, setLayoutSnapshot] = useState('not-captured');
@@ -1163,17 +1184,15 @@ export function SmokeStudioProbe() {
   useEffect(() => {
     const smokeGlobal = globalThis as typeof globalThis & {
       __studioSmokeCaptureLayout?: typeof captureSmokeLayout;
-      __studioSmokeNavigate?: (href: string) => void;
       __studioSmokeTogglePreview?: () => void;
     };
     smokeGlobal.__studioSmokeCaptureLayout = captureSmokeLayout;
-    smokeGlobal.__studioSmokeNavigate = (href) => router.push(href as never);
     smokeGlobal.__studioSmokeTogglePreview = studio.togglePreviewMode;
     return () => {
       delete smokeGlobal.__studioSmokeCaptureLayout;
       delete smokeGlobal.__studioSmokeTogglePreview;
     };
-  }, [router, studio.togglePreviewMode]);
+  }, [studio.togglePreviewMode]);
 
   useEffect(() => {
     if (previousSelectedNodeIdRef.current === studio.selectedNodeId) return;
@@ -1264,6 +1283,23 @@ config.watchFolders = [
 module.exports = config;
 `,
   );
+}
+
+async function installSmokeNavigationProbe(projectRoot: string): Promise<void> {
+  const rootLayoutPath = path.join(projectRoot, 'src', 'app', '_layout.tsx');
+  const rootLayout = await readFile(rootLayoutPath, 'utf8');
+  const studioShellMarker = '        <StudioShell\n';
+  if (!rootLayout.includes(studioShellMarker)) {
+    throw new Error('Generated root layout is missing its Studio shell mount.');
+  }
+
+  const withProbeImport =
+    `import { SmokeNavigationProbe } from '../generated/SmokeStudioComponents';\n` + rootLayout;
+  const withProbeMount = withProbeImport.replace(
+    studioShellMarker,
+    `        <SmokeNavigationProbe />\n${studioShellMarker}`,
+  );
+  await writeFile(rootLayoutPath, withProbeMount, 'utf8');
 }
 
 async function reservePort(): Promise<number> {

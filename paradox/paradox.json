@@ -1647,6 +1647,7 @@
         "reorderStudioManifestScreens",
         "resolveActiveRootNode",
         "resolveInitialActiveScreenId",
+        "resolveInitialScreenId",
         "resolveSafeSelectedNodeId",
         "ScreenRouteEntry",
         "ScreenRouteGroup",
@@ -8070,7 +8071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 488,
+        "line": 490,
         "column": 1
       }
     },
@@ -8079,7 +8080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 547,
+        "line": 549,
         "column": 1
       }
     },
@@ -8088,7 +8089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 769,
+        "line": 771,
         "column": 1
       }
     },
@@ -8097,7 +8098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 796,
+        "line": 798,
         "column": 1
       }
     },
@@ -8106,7 +8107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 815,
+        "line": 817,
         "column": 1
       }
     },
@@ -8115,7 +8116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 834,
+        "line": 836,
         "column": 1
       }
     },
@@ -8124,7 +8125,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 852,
+        "line": 854,
         "column": 1
       }
     },
@@ -8133,7 +8134,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 859,
+        "line": 861,
         "column": 1
       }
     },
@@ -8142,7 +8143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 866,
+        "line": 868,
         "column": 1
       }
     },
@@ -8151,7 +8152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 904,
+        "line": 907,
         "column": 1
       }
     },
@@ -8160,7 +8161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 938,
+        "line": 941,
         "column": 1
       }
     },
@@ -8169,7 +8170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 967,
+        "line": 970,
         "column": 1
       }
     },
@@ -8178,7 +8179,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1246,
+        "line": 1265,
+        "column": 1
+      }
+    },
+    {
+      "name": "installSmokeNavigationProbe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1288,
         "column": 1
       }
     },
@@ -8187,7 +8197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1269,
+        "line": 1305,
         "column": 1
       }
     },
@@ -8196,7 +8206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1285,
+        "line": 1321,
         "column": 1
       }
     },
@@ -8205,7 +8215,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1307,
+        "line": 1343,
         "column": 1
       }
     },
@@ -8214,7 +8224,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1332,
+        "line": 1368,
         "column": 1
       }
     },
@@ -8223,7 +8233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1372,
+        "line": 1408,
         "column": 1
       }
     },
@@ -8232,7 +8242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1386,
+        "line": 1422,
         "column": 1
       }
     },
@@ -8241,7 +8251,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1395,
+        "line": 1431,
         "column": 1
       }
     },
@@ -8250,7 +8260,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1411,
+        "line": 1447,
         "column": 1
       }
     },
@@ -8259,7 +8269,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1418,
+        "line": 1454,
         "column": 1
       }
     },
@@ -8268,7 +8278,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1424,
+        "line": 1460,
         "column": 1
       }
     },
@@ -8277,7 +8287,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1437,
+        "line": 1473,
         "column": 1
       }
     },
@@ -8286,7 +8296,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1454,
+        "line": 1490,
         "column": 1
       }
     },
@@ -8295,7 +8305,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1471,
+        "line": 1507,
         "column": 1
       }
     },
@@ -8304,7 +8314,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1477,
+        "line": 1513,
         "column": 1
       }
     },
@@ -8313,7 +8323,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1483,
+        "line": 1519,
         "column": 1
       }
     },
@@ -8322,7 +8332,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1499,
+        "line": 1535,
         "column": 1
       }
     },
@@ -8331,7 +8341,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1837,
+        "line": 1873,
         "column": 1
       }
     },
@@ -8340,7 +8350,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1852,
+        "line": 1888,
         "column": 1
       }
     },
@@ -8349,7 +8359,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1856,
+        "line": 1892,
         "column": 1
       }
     },
@@ -8358,7 +8368,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1865,
+        "line": 1901,
         "column": 1
       }
     },
@@ -8367,7 +8377,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1876,
+        "line": 1912,
         "column": 1
       }
     },
@@ -11868,7 +11878,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.public.test.ts",
-        "line": 51,
+        "line": 52,
         "column": 1
       }
     },
@@ -11877,7 +11887,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 36,
+        "line": 37,
+        "column": 1
+      }
+    },
+    {
+      "name": "createScreens",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestState.test.ts",
+        "line": 92,
         "column": 1
       }
     },
@@ -11886,7 +11905,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 154,
+        "line": 300,
         "column": 11
       }
     },
@@ -11895,7 +11914,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 95,
+        "line": 96,
         "column": 14
       }
     },
@@ -11904,7 +11923,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 102,
+        "line": 103,
         "column": 1
       }
     },
@@ -11913,7 +11932,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 119,
+        "line": 120,
         "column": 1
       }
     },
@@ -11922,7 +11941,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 123,
+        "line": 124,
         "column": 1
       }
     },
@@ -11931,7 +11950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 127,
+        "line": 128,
         "column": 1
       }
     },
@@ -11940,7 +11959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 153,
+        "line": 154,
         "column": 1
       }
     },
@@ -11949,7 +11968,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 172,
+        "line": 173,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveInitialScreenId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/manifestState.ts",
+        "line": 182,
         "column": 1
       }
     },
@@ -11958,7 +11986,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 176,
+        "line": 207,
         "column": 1
       }
     },
@@ -11967,7 +11995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 186,
+        "line": 215,
         "column": 1
       }
     },
@@ -11976,7 +12004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 194,
+        "line": 223,
         "column": 1
       }
     },
@@ -11985,7 +12013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 205,
+        "line": 234,
         "column": 1
       }
     },
@@ -11994,7 +12022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 213,
+        "line": 242,
         "column": 1
       }
     },
@@ -12003,7 +12031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 223,
+        "line": 252,
         "column": 1
       }
     },
@@ -12012,7 +12040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 248,
+        "line": 277,
         "column": 1
       }
     },
@@ -12021,7 +12049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 277,
+        "line": 306,
         "column": 1
       }
     },
@@ -12030,7 +12058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 302,
+        "line": 331,
         "column": 1
       }
     },
@@ -12039,7 +12067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 339,
+        "line": 368,
         "column": 1
       }
     },
@@ -12048,7 +12076,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 395,
+        "line": 424,
         "column": 1
       }
     },
@@ -12057,7 +12085,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 402,
+        "line": 431,
         "column": 1
       }
     },
@@ -12066,7 +12094,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 409,
+        "line": 438,
         "column": 1
       }
     },
@@ -12075,7 +12103,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 416,
+        "line": 445,
         "column": 1
       }
     },
@@ -12084,7 +12112,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 434,
+        "line": 463,
         "column": 1
       }
     },
@@ -12093,7 +12121,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 441,
+        "line": 470,
         "column": 1
       }
     },
@@ -12102,7 +12130,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 461,
+        "line": 490,
         "column": 1
       }
     },
@@ -12111,7 +12139,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 476,
+        "line": 505,
         "column": 1
       }
     },
@@ -12120,7 +12148,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 483,
+        "line": 512,
         "column": 1
       }
     },
@@ -12129,7 +12157,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 490,
+        "line": 519,
         "column": 1
       }
     },
@@ -12138,7 +12166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 546,
+        "line": 575,
         "column": 1
       }
     },
@@ -12147,7 +12175,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 577,
+        "line": 606,
         "column": 1
       }
     },
@@ -12156,7 +12184,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 587,
+        "line": 616,
         "column": 1
       }
     },
@@ -12165,7 +12193,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 610,
+        "line": 639,
         "column": 1
       }
     },
@@ -12174,7 +12202,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 624,
+        "line": 653,
         "column": 1
       }
     },
@@ -12183,7 +12211,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 645,
+        "line": 674,
         "column": 1
       }
     },
@@ -12192,7 +12220,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 659,
+        "line": 688,
         "column": 1
       }
     },
@@ -12201,7 +12229,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 680,
+        "line": 709,
         "column": 1
       }
     },
@@ -12210,7 +12238,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 697,
+        "line": 726,
         "column": 1
       }
     },
@@ -12219,7 +12247,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 719,
+        "line": 748,
         "column": 1
       }
     },
@@ -12228,7 +12256,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 786,
+        "line": 815,
         "column": 1
       }
     },
@@ -12237,7 +12265,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 831,
+        "line": 860,
         "column": 1
       }
     },
@@ -12246,7 +12274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 844,
+        "line": 873,
         "column": 1
       }
     },
@@ -12255,7 +12283,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 876,
+        "line": 905,
         "column": 1
       }
     },
@@ -12264,7 +12292,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 889,
+        "line": 918,
         "column": 1
       }
     },
@@ -12273,7 +12301,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 896,
+        "line": 925,
         "column": 1
       }
     },
@@ -12282,7 +12310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 917,
+        "line": 946,
         "column": 1
       }
     },
@@ -12291,7 +12319,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 927,
+        "line": 956,
         "column": 1
       }
     },
@@ -12300,7 +12328,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 941,
+        "line": 970,
         "column": 1
       }
     },
@@ -12309,7 +12337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 966,
+        "line": 995,
         "column": 1
       }
     },
@@ -12318,7 +12346,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 982,
+        "line": 1011,
         "column": 1
       }
     },
@@ -12327,7 +12355,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1015,
+        "line": 1044,
         "column": 1
       }
     },
@@ -12336,7 +12364,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1018,
+        "line": 1047,
         "column": 9
       }
     },
@@ -12345,7 +12373,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1033,
+        "line": 1062,
         "column": 1
       }
     },
@@ -12354,7 +12382,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1053,
+        "line": 1082,
         "column": 1
       }
     },
@@ -12363,7 +12391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1084,
+        "line": 1113,
         "column": 1
       }
     },
@@ -12372,7 +12400,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1092,
+        "line": 1121,
         "column": 1
       }
     },
@@ -12381,7 +12409,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1134,
+        "line": 1163,
         "column": 1
       }
     },
@@ -12390,7 +12418,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1149,
+        "line": 1178,
         "column": 1
       }
     },
@@ -12399,7 +12427,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1170,
+        "line": 1199,
         "column": 1
       }
     },
@@ -13011,7 +13039,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.test.ts",
-        "line": 139,
+        "line": 220,
         "column": 1
       }
     },
@@ -13020,16 +13048,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 38,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveInitialLeafScreenId",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/routeUtils.ts",
-        "line": 56,
+        "line": 42,
         "column": 1
       }
     },
@@ -13038,7 +13057,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 66,
+        "line": 62,
         "column": 1
       }
     },
@@ -13047,7 +13066,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 71,
+        "line": 67,
         "column": 1
       }
     },
@@ -13056,7 +13075,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/routeUtils.ts",
-        "line": 82,
+        "line": 78,
         "column": 1
       }
     },
@@ -19860,6 +19879,18 @@
       },
       {
         "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "resolveInitialScreenId",
+        "callExpression": "resolveInitialScreenId",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/manifestState.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.public.test.ts",
         "toSymbol": "removeScreenIdFromRoutes",
         "callExpression": "removeScreenIdFromRoutes",
         "sourcePath": "src/manifestState.public.test.ts"
@@ -19880,12 +19911,6 @@
         "fromSymbol": "src/manifestState.public.test.ts",
         "toSymbol": "makeUniqueRouteNameForParent",
         "callExpression": "makeUniqueRouteNameForParent",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
         "sourcePath": "src/manifestState.public.test.ts"
       },
       {
@@ -20010,6 +20035,18 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
+        "toSymbol": "resolveInitialScreenId",
+        "callExpression": "resolveInitialScreenId",
+        "sourcePath": "src/manifestState.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.test.ts",
+        "toSymbol": "createScreens",
+        "callExpression": "createScreens",
+        "sourcePath": "src/manifestState.test.ts"
+      },
+      {
+        "fromSymbol": "src/manifestState.test.ts",
         "toSymbol": "createStudioManifestFingerprint",
         "callExpression": "createStudioManifestFingerprint",
         "sourcePath": "src/manifestState.test.ts"
@@ -20111,9 +20148,15 @@
         "sourcePath": "src/manifestState.ts"
       },
       {
+        "fromSymbol": "resolveInitialScreenId",
+        "toSymbol": "resolveInitialScreenId",
+        "callExpression": "resolveInitialScreenId",
+        "sourcePath": "src/manifestState.ts"
+      },
+      {
         "fromSymbol": "resolveInitialActiveScreenId",
-        "toSymbol": "listScreenIdsInRouteOrder",
-        "callExpression": "listScreenIdsInRouteOrder",
+        "toSymbol": "resolveInitialScreenId",
+        "callExpression": "resolveInitialScreenId",
         "sourcePath": "src/manifestState.ts"
       },
       {
@@ -21450,14 +21493,8 @@
       },
       {
         "fromSymbol": "resolveScreenIdForPathname",
-        "toSymbol": "resolveInitialLeafScreenId",
-        "callExpression": "resolveInitialLeafScreenId",
-        "sourcePath": "src/routeUtils.ts"
-      },
-      {
-        "fromSymbol": "resolveInitialLeafScreenId",
-        "toSymbol": "resolveInitialLeafScreenId",
-        "callExpression": "resolveInitialLeafScreenId",
+        "toSymbol": "resolveInitialScreenId",
+        "callExpression": "resolveInitialScreenId",
         "sourcePath": "src/routeUtils.ts"
       },
       {
@@ -24084,6 +24121,12 @@
       },
       {
         "fromSymbol": "createGeneratedAdminProject",
+        "toSymbol": "installSmokeNavigationProbe",
+        "callExpression": "installSmokeNavigationProbe",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedAdminProject",
         "toSymbol": "writeSmokeMetroConfig",
         "callExpression": "writeSmokeMetroConfig",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24144,6 +24187,18 @@
       },
       {
         "fromSymbol": "writeSmokeMetroConfig",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installSmokeNavigationProbe",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "installSmokeNavigationProbe",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"

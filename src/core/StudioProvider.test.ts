@@ -27,7 +27,9 @@ test('owns Studio draft hydration and autosave through the host manifest boundar
 });
 
 test('reconciles stale selected node ids against the canonical active root', () => {
-  expect(source).toContain('resolveScreenIdForPathname(manifest.navigator, activePathname)');
+  expect(source).toContain(
+    'resolveScreenIdForPathname(manifest.navigator, activePathname, manifest.screens)',
+  );
   expect(source).toContain('resolveActiveRootNode(manifest, activeScreenId)');
   expect(source).toContain('setRequestedActiveScreenId');
   expect(source).toContain('resolveStudioSelectedNodeId(rootNode, selectedNodeId)');

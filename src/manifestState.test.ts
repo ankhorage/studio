@@ -13,6 +13,7 @@ import {
   moveStudioManifestNodeToPlacement,
   resolveActiveRootNode,
   resolveInitialActiveScreenId,
+  resolveInitialScreenId,
   resolveSafeSelectedNodeId,
   setStudioManifestNavigatorInitialRoute,
   setStudioManifestNavigatorType,
@@ -88,6 +89,19 @@ function createManifest(): StudioManifest {
   } as unknown as StudioManifest;
 }
 
+function createScreens(...screenIds: string[]): StudioManifest['screens'] {
+  return Object.fromEntries(
+    screenIds.map((screenId) => [
+      screenId,
+      {
+        id: screenId,
+        name: screenId,
+        root: { id: `${screenId}-root`, type: 'Screen', children: [] },
+      },
+    ]),
+  );
+}
+
 describe('manifestState', () => {
   test('resolves root and selected node state', () => {
     const manifest = createManifest();
@@ -97,6 +111,138 @@ describe('manifestState', () => {
     expect(root?.id).toBe('root-home');
     expect(resolveSafeSelectedNodeId(root, 'text-1')).toBe('text-1');
     expect(resolveSafeSelectedNodeId(root, 'missing')).toBe(null);
+  });
+
+  test('respects a flat navigator initial route that is not first', () => {
+    const manifest = createManifest();
+    manifest.navigator.initialRouteName = 'about';
+
+    expect(resolveInitialScreenId(manifest.navigator, manifest.screens)).toBe('screen-about');
+    expect(resolveInitialActiveScreenId(manifest)).toBe('screen-about');
+  });
+
+  test('follows a nested Tabs to Stack initial-route chain', () => {
+    const navigator: StudioManifest['navigator'] = {
+      type: 'tabs',
+      initialRouteName: 'products',
+      routes: [
+        { name: 'home', screenId: 'screen-home' },
+        {
+          name: 'products',
+          navigator: {
+            type: 'stack',
+            initialRouteName: 'index',
+            routes: [
+              { name: 'create', screenId: 'screen-create' },
+              { name: 'index', screenId: 'screen-catalog' },
+            ],
+          },
+        },
+      ],
+    };
+
+    expect(
+      resolveInitialScreenId(
+        navigator,
+        createScreens('screen-home', 'screen-create', 'screen-catalog'),
+      ),
+    ).toBe('screen-catalog');
+  });
+
+  test('follows route-group, Drawer, and Stack initial routes recursively', () => {
+    const navigator: StudioManifest['navigator'] = {
+      type: 'stack',
+      initialRouteName: '(app)',
+      routes: [
+        { name: 'landing', screenId: 'screen-landing' },
+        {
+          name: '(app)',
+          navigator: {
+            type: 'drawer',
+            initialRouteName: 'account',
+            routes: [
+              { name: 'dashboard', screenId: 'screen-dashboard' },
+              {
+                name: 'account',
+                navigator: {
+                  type: 'stack',
+                  initialRouteName: 'settings',
+                  routes: [
+                    { name: 'index', screenId: 'screen-account' },
+                    { name: 'settings', screenId: 'screen-account-settings' },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    expect(
+      resolveInitialScreenId(
+        navigator,
+        createScreens(
+          'screen-landing',
+          'screen-dashboard',
+          'screen-account',
+          'screen-account-settings',
+        ),
+      ),
+    ).toBe('screen-account-settings');
+  });
+
+  test('falls back to the first valid route when the initial route is absent or invalid', () => {
+    const screens = createScreens('screen-home', 'screen-profile');
+    const routes: StudioManifest['navigator']['routes'] = [
+      { name: 'home', screenId: 'screen-home' },
+      { name: 'profile', screenId: 'screen-profile' },
+    ];
+
+    expect(resolveInitialScreenId({ type: 'stack', routes }, screens)).toBe('screen-home');
+    expect(
+      resolveInitialScreenId({ type: 'drawer', initialRouteName: 'missing', routes }, screens),
+    ).toBe('screen-home');
+  });
+
+  test('skips unusable initial routes and falls back to the first valid routed screen', () => {
+    const navigator: StudioManifest['navigator'] = {
+      type: 'tabs',
+      initialRouteName: 'broken',
+      routes: [
+        {
+          name: 'broken',
+          screenId: 'screen-missing',
+          navigator: { type: 'stack', routes: [] },
+        },
+        {
+          name: 'account',
+          navigator: {
+            type: 'stack',
+            routes: [
+              { name: 'missing', screenId: 'screen-also-missing' },
+              { name: 'settings', screenId: 'screen-settings' },
+            ],
+          },
+        },
+      ],
+    };
+
+    expect(resolveInitialScreenId(navigator, createScreens('screen-settings'))).toBe(
+      'screen-settings',
+    );
+  });
+
+  test('returns null for an empty navigator', () => {
+    expect(resolveInitialScreenId({ type: 'stack', routes: [] }, createScreens())).toBeNull();
+  });
+
+  test('retains the canonical initial app screen for direct Studio admin entry', () => {
+    const manifest = createManifest();
+    manifest.navigator.initialRouteName = 'about';
+
+    // StudioProvider uses this pure fallback when activePathname is undefined on /ankh routes.
+    expect(resolveInitialActiveScreenId(manifest)).toBe('screen-about');
   });
 
   test('creates fingerprints from tracked manifest fields', () => {

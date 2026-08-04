@@ -10,6 +10,8 @@ import {
   reorderLeafRoutesWithinParent,
   resolveScreenIdForPathname,
 } from '@ankhorage/studio/routeUtils';
+
+import { resolveInitialScreenId } from '@ankhorage/studio/manifestState';
 ```
 
 ## Owned here
@@ -24,15 +26,22 @@ import {
 
 ## Active screen resolution
 
-`resolveScreenIdForPathname(navigator, pathname)` resolves the leaf screen from the canonical
-manifest route tree. It supports nested index routes, explicit child routes, Expo-style dynamic
-segments such as `[id]`, route groups, static-route precedence over dynamic siblings, and recursive
-initial-route fallback for the root pathname.
+`resolveScreenIdForPathname(navigator, pathname, screens?)` resolves the leaf screen from the
+canonical manifest route tree. It supports nested index routes, explicit child routes, Expo-style
+dynamic and catch-all segments, route groups, static-route precedence over dynamic siblings, query
+strings, hashes, and trailing slashes. When a screen registry is supplied, routes whose screen ID is
+absent are ignored.
 
-Generated Studio shells pass the current non-admin app pathname to `StudioProvider`. The provider
-derives `activeScreenId` from this shared model, retains the last valid app screen while an admin
-route is open, and reconciles selection against the newly active screen root when app navigation
-changes.
+The root pathname fallback uses `resolveInitialScreenId(navigator, screens?)`, the same pure helper
+used by Studio's initial active-screen resolution. It respects `initialRouteName` at every Stack,
+Tabs, or Drawer level, follows route-group and nested-navigator wrappers to a leaf, and falls back to
+the first route that reaches an available screen when an initial route is absent or unusable.
+
+Generated Studio shells pass the current non-admin app pathname to `StudioProvider`. While a path is
+present, path-derived screen context takes precedence over an explicitly requested screen. When an
+admin route is open, the path input is omitted and the provider preserves the last requested valid
+app screen; direct admin entry falls back to the canonical recursive initial leaf. Every active-root
+change reconciles selection, so node IDs that do not belong to the new root are cleared.
 
 ## Host-owned concerns
 
