@@ -17,6 +17,20 @@ import {
   createIndicatorSettleCoordinator,
   type IndicatorSettleCoordinator,
 } from './indicatorSettleCoordinator.js';
+import {
+  type ActiveResizeTargetCoordinator,
+  createActiveResizeTargetCoordinator,
+  createNativeRuntimeNodeMeasurement,
+  createSelectedIndicatorViewProps,
+  getActiveRuntimeNodeMeasurements,
+  hasActiveRuntimeNodeMeasurements,
+  type MeasuredRect,
+  measureNativeRuntimeNodeView,
+  measureRuntimeNodeIndicators,
+  type RuntimeNodeIndicatorRect,
+  type RuntimeNodeMeasurement,
+  unionMeasuredRects,
+} from './runtimeNodeMeasurement.js';
 import type { StationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
 import { createStationarySelectionCoordinator } from './stationarySelectionCoordinator.js';
 import {
@@ -31,26 +45,7 @@ export type {
   TransactionState,
 } from './stationarySelectionCoordinator.js';
 
-interface MeasuredRect {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-}
-
-interface RuntimeNodeIndicatorRect extends MeasuredRect {
-  readonly nodeId: string;
-  readonly showUnsupportedIndicator: boolean;
-}
-
 type ViewRef = React.ElementRef<typeof View>;
-type MeasureRuntimeNode = () => Promise<MeasuredRect | null>;
-
-interface RuntimeNodeMeasurement {
-  readonly measure: MeasureRuntimeNode;
-  readonly resizeTargets: readonly Element[];
-  readonly showUnsupportedIndicator: boolean;
-}
 
 interface TrackerContextValue {
   readonly completePendingInteraction: () => void;
@@ -65,13 +60,13 @@ const NATIVE_SETTLE_INTERVAL_MS = 60;
 const NATIVE_SETTLE_MAX_SAMPLES = 80;
 const NATIVE_SETTLE_STABLE_SAMPLE_COUNT = 3;
 
-interface UnsupportedNodeMeasurementContextValue {
+interface RuntimeNodeMeasurementContextValue {
   readonly registerView: (view: ViewRef) => () => void;
   readonly requestRefresh: () => void;
 }
 
-const UnsupportedNodeMeasurementContext =
-  React.createContext<UnsupportedNodeMeasurementContextValue | null>(null);
+const RuntimeNodeMeasurementContext =
+  React.createContext<RuntimeNodeMeasurementContextValue | null>(null);
 
 interface WebRectLike {
   readonly left: number;
@@ -119,24 +114,6 @@ function toMeasuredRect(rect: WebRectLike): MeasuredRect {
   };
 }
 
-function unionRects(rects: readonly MeasuredRect[]): MeasuredRect | null {
-  if (rects.length === 0) {
-    return null;
-  }
-
-  const left = Math.min(...rects.map((rect) => rect.x));
-  const top = Math.min(...rects.map((rect) => rect.y));
-  const right = Math.max(...rects.map((rect) => rect.x + rect.width));
-  const bottom = Math.max(...rects.map((rect) => rect.y + rect.height));
-
-  return {
-    x: left,
-    y: top,
-    width: right - left,
-    height: bottom - top,
-  };
-}
-
 function measureRenderedBoxes(element: WebElementLike): readonly MeasuredRect[] {
   const rect = toMeasuredRect(element.getBoundingClientRect());
   if (rect.width > 0 && rect.height > 0) {
@@ -144,14 +121,6 @@ function measureRenderedBoxes(element: WebElementLike): readonly MeasuredRect[] 
   }
 
   return Array.from(element.children).flatMap((child) => measureRenderedBoxes(child));
-}
-
-function measureNativeView(view: ViewRef): Promise<MeasuredRect | null> {
-  return new Promise((resolve) => {
-    view.measureInWindow((x, y, width, height) => {
-      resolve(width > 0 && height > 0 ? { x, y, width, height } : null);
-    });
-  });
 }
 
 function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
@@ -163,7 +132,7 @@ function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
     return Promise.resolve(toMeasuredRect(view.getBoundingClientRect()));
   }
 
-  return measureNativeView(view);
+  return measureNativeRuntimeNodeView(view);
 }
 
 function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect | null> {
@@ -173,11 +142,20 @@ function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect |
 
   if (isWebElementLike(view)) {
     return Promise.resolve(
-      unionRects(Array.from(view.children).flatMap((child) => measureRenderedBoxes(child))),
+      unionMeasuredRects(Array.from(view.children).flatMap((child) => measureRenderedBoxes(child))),
     );
   }
 
   return Promise.resolve(null);
+}
+
+function measureAuthoredWebView(view: ViewRef): Promise<MeasuredRect | null> {
+  if (!isWebElementLike(view)) {
+    return Promise.resolve(null);
+  }
+
+  const rect = toMeasuredRect(view.getBoundingClientRect());
+  return Promise.resolve(rect.width > 0 && rect.height > 0 ? rect : null);
 }
 
 function areIndicatorRectsEqual(
@@ -204,22 +182,11 @@ function areIndicatorRectsEqual(
   });
 }
 
-function hasIndicatorMeasurements(
-  runtimeNodes: ReadonlyMap<string, ReadonlySet<RuntimeNodeMeasurement>>,
-  selectedNodeId: string | null,
-): boolean {
-  return [...runtimeNodes.entries()].some(
-    ([nodeId, measurements]) =>
-      nodeId === selectedNodeId ||
-      [...measurements].some((measurement) => measurement.showUnsupportedIndicator),
-  );
-}
-
-export function useStudioUnsupportedNodeMeasurement(): {
+export function useStudioRuntimeNodeMeasurement(): {
   readonly onLayout: (_event: LayoutChangeEvent) => void;
   readonly ref: (view: ViewRef | null) => void;
 } {
-  const context = React.useContext(UnsupportedNodeMeasurementContext);
+  const context = React.useContext(RuntimeNodeMeasurementContext);
   const unregisterRef = React.useRef<(() => void) | null>(null);
 
   const setViewRef = React.useCallback(
@@ -246,6 +213,13 @@ export function useStudioUnsupportedNodeMeasurement(): {
   );
 
   return React.useMemo(() => ({ onLayout, ref: setViewRef }), [onLayout, setViewRef]);
+}
+
+/** @deprecated Use useStudioRuntimeNodeMeasurement for supported and unsupported Runtime roots. */
+export function useStudioUnsupportedNodeMeasurement(): ReturnType<
+  typeof useStudioRuntimeNodeMeasurement
+> {
+  return useStudioRuntimeNodeMeasurement();
 }
 
 function StudioNodeTouchRecorder(props: {
@@ -306,39 +280,52 @@ function StudioNodeTouchRecorder(props: {
     (view: ViewRef | null) => {
       unregisterMeasurementRef.current?.();
       unregisterMeasurementRef.current = null;
-      if (view && ctx && props.nodeId) {
+      if (Platform.OS === 'web' && view && ctx && props.nodeId) {
         unregisterMeasurementRef.current = ctx.registerRuntimeNode(props.nodeId, {
-          measure: () =>
-            Platform.OS === 'web' ? measureRuntimeNodeWebView(view) : measureNativeView(view),
-          resizeTargets: getWebDescendantResizeTargets(view),
+          getResizeTargets: () => getWebDescendantResizeTargets(view),
+          measure: () => measureRuntimeNodeWebView(view),
           showUnsupportedIndicator: props.showUnsupportedIndicator,
+          source: 'web-recorder',
         });
       }
     },
     [ctx, props.nodeId, props.showUnsupportedIndicator],
   );
 
-  const nativeMeasurementContext =
-    React.useMemo<UnsupportedNodeMeasurementContextValue | null>(() => {
-      const { nodeId } = props;
-      if (Platform.OS === 'web' || !ctx || !nodeId || !props.showUnsupportedIndicator) {
-        return null;
-      }
+  const measurementContext = React.useMemo<RuntimeNodeMeasurementContextValue | null>(() => {
+    const { nodeId } = props;
+    if (!ctx || !nodeId) {
+      return null;
+    }
 
-      return {
-        registerView: (view) =>
-          ctx.registerRuntimeNode(nodeId, {
-            measure: () => measureNativeView(view),
-            resizeTargets: [],
-            showUnsupportedIndicator: true,
-          }),
-        requestRefresh: ctx.requestIndicatorRefresh,
-      };
-    }, [ctx, props.nodeId, props.showUnsupportedIndicator]);
+    return {
+      registerView: (view) => {
+        if (Platform.OS !== 'web') {
+          return ctx.registerRuntimeNode(
+            nodeId,
+            createNativeRuntimeNodeMeasurement(view, props.showUnsupportedIndicator),
+          );
+        }
+
+        return ctx.registerRuntimeNode(nodeId, {
+          getResizeTargets: () => {
+            const rootTarget = getWebResizeTarget(view);
+            return rootTarget
+              ? [rootTarget, ...getWebDescendantResizeTargets(view)]
+              : getWebDescendantResizeTargets(view);
+          },
+          measure: () => measureAuthoredWebView(view),
+          showUnsupportedIndicator: props.showUnsupportedIndicator,
+          source: 'authored-root',
+        });
+      },
+      requestRefresh: ctx.requestIndicatorRefresh,
+    };
+  }, [ctx, props.nodeId, props.showUnsupportedIndicator]);
 
   return React.createElement(
-    UnsupportedNodeMeasurementContext.Provider,
-    { value: nativeMeasurementContext },
+    RuntimeNodeMeasurementContext.Provider,
+    { value: measurementContext },
     React.createElement(
       View,
       {
@@ -410,7 +397,9 @@ function StationaryTapSelector(props: {
   const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);
   const rootViewRef = React.useRef<ViewRef | null>(null);
   const runtimeNodesRef = React.useRef(new Map<string, Set<RuntimeNodeMeasurement>>());
-  const resizeObserverRef = React.useRef<ResizeObserver | null>(null);
+  const resizeTargetCoordinatorRef = React.useRef<ActiveResizeTargetCoordinator<Element> | null>(
+    null,
+  );
   const [indicatorRects, setIndicatorRects] = React.useState<readonly RuntimeNodeIndicatorRect[]>(
     [],
   );
@@ -463,8 +452,11 @@ function StationaryTapSelector(props: {
     requestIndicatorRefresh();
     if (
       Platform.OS === 'web' ||
-      !isEditModeRef.current ||
-      !hasIndicatorMeasurements(runtimeNodesRef.current, selectedNodeIdRef.current)
+      !hasActiveRuntimeNodeMeasurements(
+        runtimeNodesRef.current,
+        isEditModeRef.current,
+        selectedNodeIdRef.current,
+      )
     ) {
       return;
     }
@@ -485,14 +477,29 @@ function StationaryTapSelector(props: {
     settleCoordinatorRef.current.trigger();
   }, [requestIndicatorRefresh]);
 
+  const syncActiveResizeTargets = React.useCallback(() => {
+    if (Platform.OS !== 'web') {
+      return;
+    }
+
+    const activeMeasurements = getActiveRuntimeNodeMeasurements(
+      runtimeNodesRef.current,
+      isEditModeRef.current,
+      selectedNodeIdRef.current,
+    );
+    const rootTarget = getWebResizeTarget(rootViewRef.current);
+    resizeTargetCoordinatorRef.current?.sync(
+      activeMeasurements,
+      activeMeasurements.length > 0 && rootTarget ? [rootTarget] : [],
+    );
+  }, []);
+
   const registerRuntimeNode = React.useCallback(
     (nodeId: string, measurement: RuntimeNodeMeasurement) => {
       const measurements = runtimeNodesRef.current.get(nodeId) ?? new Set();
       measurements.add(measurement);
       runtimeNodesRef.current.set(nodeId, measurements);
-      for (const resizeTarget of measurement.resizeTargets) {
-        resizeObserverRef.current?.observe(resizeTarget);
-      }
+      syncActiveResizeTargets();
       requestIndicatorRefresh();
 
       return () => {
@@ -500,19 +507,23 @@ function StationaryTapSelector(props: {
         if (!registeredMeasurements?.delete(measurement)) {
           return;
         }
-        for (const resizeTarget of measurement.resizeTargets) {
-          resizeObserverRef.current?.unobserve(resizeTarget);
-        }
         if (registeredMeasurements.size === 0) {
           runtimeNodesRef.current.delete(nodeId);
         }
-        if (!hasIndicatorMeasurements(runtimeNodesRef.current, selectedNodeIdRef.current)) {
+        syncActiveResizeTargets();
+        if (
+          !hasActiveRuntimeNodeMeasurements(
+            runtimeNodesRef.current,
+            isEditModeRef.current,
+            selectedNodeIdRef.current,
+          )
+        ) {
           settleCoordinatorRef.current?.cancel();
         }
         requestIndicatorRefresh();
       };
     },
-    [requestIndicatorRefresh],
+    [requestIndicatorRefresh, syncActiveResizeTargets],
   );
 
   const contextValue = React.useMemo(
@@ -533,8 +544,11 @@ function StationaryTapSelector(props: {
   > => {
     const geometryRevision = ++geometryRevisionRef.current;
     if (
-      !isEditModeRef.current ||
-      !hasIndicatorMeasurements(runtimeNodesRef.current, selectedNodeIdRef.current)
+      !hasActiveRuntimeNodeMeasurements(
+        runtimeNodesRef.current,
+        isEditModeRef.current,
+        selectedNodeIdRef.current,
+      )
     ) {
       latestIndicatorRectsRef.current = [];
       setIndicatorRects((current) => (current.length === 0 ? current : []));
@@ -546,42 +560,12 @@ function StationaryTapSelector(props: {
       return latestIndicatorRectsRef.current;
     }
 
-    const measurements = await Promise.all(
-      [...runtimeNodesRef.current.entries()]
-        .filter(
-          ([nodeId, nodeMeasurements]) =>
-            nodeId === selectedNodeIdRef.current ||
-            [...nodeMeasurements].some((measurement) => measurement.showUnsupportedIndicator),
-        )
-        .map(async ([nodeId, nodeMeasurements]) => {
-          const rects = await Promise.all(
-            [...nodeMeasurements].map((measurement) => measurement.measure()),
-          );
-          return {
-            nodeId,
-            showUnsupportedIndicator: [...nodeMeasurements].some(
-              (measurement) => measurement.showUnsupportedIndicator,
-            ),
-            rect: unionRects(rects.filter((rect): rect is MeasuredRect => rect !== null)),
-          };
-        }),
-    );
-    const nextRects = measurements
-      .flatMap(({ nodeId, rect, showUnsupportedIndicator }) =>
-        rect
-          ? [
-              {
-                nodeId,
-                showUnsupportedIndicator,
-                x: rect.x - rootRect.x,
-                y: rect.y - rootRect.y,
-                width: rect.width,
-                height: rect.height,
-              },
-            ]
-          : [],
-      )
-      .sort((left, right) => left.nodeId.localeCompare(right.nodeId));
+    const nextRects = await measureRuntimeNodeIndicators({
+      isEditMode: isEditModeRef.current,
+      rootRect,
+      runtimeNodes: runtimeNodesRef.current,
+      selectedNodeId: selectedNodeIdRef.current,
+    });
 
     if (!mountedRef.current || geometryRevision !== geometryRevisionRef.current) {
       return mountedRef.current ? latestIndicatorRectsRef.current : null;
@@ -597,13 +581,17 @@ function StationaryTapSelector(props: {
 
   React.useEffect(() => {
     if (
-      !props.isEditMode ||
-      !hasIndicatorMeasurements(runtimeNodesRef.current, props.selectedNodeId)
+      !hasActiveRuntimeNodeMeasurements(
+        runtimeNodesRef.current,
+        props.isEditMode,
+        props.selectedNodeId,
+      )
     ) {
       settleCoordinatorRef.current?.cancel();
     }
+    syncActiveResizeTargets();
     requestIndicatorRefresh();
-  }, [props.isEditMode, props.selectedNodeId, requestIndicatorRefresh]);
+  }, [props.isEditMode, props.selectedNodeId, requestIndicatorRefresh, syncActiveResizeTargets]);
 
   React.useEffect(() => {
     mountedRef.current = true;
@@ -624,18 +612,10 @@ function StationaryTapSelector(props: {
       typeof ResizeObserver === 'function'
         ? new ResizeObserver(() => requestIndicatorRefresh())
         : null;
-    resizeObserverRef.current = observer;
-    const rootResizeTarget = getWebResizeTarget(rootViewRef.current);
-    if (rootResizeTarget) {
-      observer?.observe(rootResizeTarget);
-    }
-    for (const measurements of runtimeNodesRef.current.values()) {
-      for (const measurement of measurements) {
-        for (const resizeTarget of measurement.resizeTargets) {
-          observer?.observe(resizeTarget);
-        }
-      }
-    }
+    resizeTargetCoordinatorRef.current = observer
+      ? createActiveResizeTargetCoordinator(observer)
+      : null;
+    syncActiveResizeTargets();
 
     const handleScroll = () => requestIndicatorRefresh();
     const handleResize = () => requestIndicatorRefresh();
@@ -645,27 +625,18 @@ function StationaryTapSelector(props: {
     return () => {
       window.removeEventListener('scroll', handleScroll, true);
       window.removeEventListener('resize', handleResize);
-      observer?.disconnect();
-      if (resizeObserverRef.current === observer) {
-        resizeObserverRef.current = null;
-      }
+      resizeTargetCoordinatorRef.current?.disconnect();
+      resizeTargetCoordinatorRef.current = null;
     };
-  }, [requestIndicatorRefresh]);
+  }, [requestIndicatorRefresh, syncActiveResizeTargets]);
 
   const setRootViewRef = React.useCallback(
     (view: ViewRef | null) => {
-      const previousResizeTarget = getWebResizeTarget(rootViewRef.current);
-      if (previousResizeTarget) {
-        resizeObserverRef.current?.unobserve(previousResizeTarget);
-      }
       rootViewRef.current = view;
-      const nextResizeTarget = getWebResizeTarget(view);
-      if (nextResizeTarget) {
-        resizeObserverRef.current?.observe(nextResizeTarget);
-      }
+      syncActiveResizeTargets();
       requestIndicatorRefresh();
     },
-    [requestIndicatorRefresh],
+    [requestIndicatorRefresh, syncActiveResizeTargets],
   );
 
   const tapGesture = React.useMemo(() => {
@@ -761,17 +732,7 @@ function StationaryTapSelector(props: {
             key: `selected:${rect.nodeId}`,
             nativeID: `studio-selected-indicator-${encodeURIComponent(rect.nodeId)}`,
             testID: `studio-selected-indicator-${rect.nodeId}`,
-            pointerEvents: 'none',
-            style: {
-              position: 'absolute',
-              left: rect.x - 2,
-              top: rect.y - 2,
-              width: rect.width + 4,
-              height: rect.height + 4,
-              borderWidth: 2,
-              borderColor: theme.semantics.action.primary.base,
-              borderRadius: 4,
-            },
+            ...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base),
           }),
         ),
       ),

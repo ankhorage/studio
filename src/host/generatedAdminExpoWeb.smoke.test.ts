@@ -1486,7 +1486,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
     `import { useStudio } from '@ankhorage/studio';
-import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
+import { useStudioRuntimeNodeMeasurement } from '@ankhorage/studio/runtime';
 import { Box, Text } from '@ankhorage/zora';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -1513,7 +1513,7 @@ const smokeScrollContentSizes = new Map<string, { width: number; height: number 
 let nextSmokeInstanceId = 1;
 
 function useSmokeViewRegistration(testID: string | undefined) {
-  const measurement = useStudioUnsupportedNodeMeasurement();
+  const measurement = useStudioRuntimeNodeMeasurement();
   const viewRef = useRef<ViewRef | null>(null);
   const instanceIdRef = useRef(nextSmokeInstanceId++);
 

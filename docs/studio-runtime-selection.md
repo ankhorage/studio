@@ -6,18 +6,17 @@ selection. Edit mode supplies `interactionPolicy="passive"` only to components t
 support the canonical policy; Preview restores `enabled`.
 
 The same root selection surface measures the active Runtime node and renders its selected-state
-outline with the current ZORA primary action semantic. The overlay is layout-neutral and uses
-`pointerEvents="none"`; scroll, resize, responsive layout, and native settle refresh its geometry.
-Changing or clearing selection immediately removes the previous outline, and Preview renders no
-selection chrome. This authoring state is never written into manifest node props or implemented by
-individual ZORA components.
+outline with the current ZORA primary action semantic. Geometry ownership is separate from the
+layout-neutral interaction recorder: the recorder only contributes the bubbling node path, while a
+Runtime node's authored measurable root contributes its actual geometry. This keeps selection state
+out of manifests and prevents Studio wrappers from becoming layout boxes.
 
-Unsupported extension components can expose indicator geometry on native by attaching
-`useStudioUnsupportedNodeMeasurement()` from `@ankhorage/studio/runtime` to their existing native
-root view:
+Supported and unsupported Runtime components expose native geometry through the same canonical
+provider contract. Attach `useStudioRuntimeNodeMeasurement()` from `@ankhorage/studio/runtime` to
+the component's existing authored native root:
 
 ```tsx
-const measurement = useStudioUnsupportedNodeMeasurement();
+const measurement = useStudioRuntimeNodeMeasurement();
 
 return (
   <View ref={measurement.ref} onLayout={measurement.onLayout}>
@@ -26,16 +25,28 @@ return (
 );
 ```
 
-The Studio recorder remains `display: "contents"` and therefore does not add a Yoga layout box.
-The hook measures the component's authored root through React Native's public ref API. It does not
-opt the component into interaction-policy support, clone the rendered element, or alter the
-component's props or identity.
+The hook registers that root through React Native's public `measureInWindow` API. Non-zero geometry
+is translated into coordinates owned by the root selection surface. The same contract covers
+leaves, containers, screen roots, scroll movement, and responsive layout changes. The former
+`useStudioUnsupportedNodeMeasurement()` name remains as a compatibility alias; it uses the same
+provider and does not create a separate unsupported-component measurement path. An authored root
+is preferred whenever both authored and recorder measurements exist.
+
+On web, Runtime-node registration stores a lazy `getResizeTargets()` callback. Descendants are not
+traversed and are not observed merely because a node rendered. Only the selected node and visible
+unsupported nodes activate resize targets. Selection changes compute the complete desired target
+set, observe newly required elements, and unobserve elements no longer required. Because the set is
+deduplicated before diffing, a shared descendant is observed once and remains observed while any
+active measurement still requires it.
 
 The unsupported-node visual indicator remains a distinct dashed layer rendered by the root
-selection surface with `pointerEvents="none"`.
+selection surface. Selected and unsupported overlays both use `pointerEvents="none"`; scroll,
+viewport resize, responsive layout, authored-root `onLayout`, and native settle refresh their
+geometry. Changing or clearing selection immediately removes the previous selected outline.
 Native scroll input starts a bounded settle sequence that stops after stable measurements or a
-strict sample limit. Preview, unmount, navigation, and measurement removal cancel pending work once
-no selected or unsupported indicator remains.
+strict sample limit. Preview releases authoring ResizeObserver targets and renders neither selected
+nor unsupported chrome. Unmount disconnects the observer and clears desired-target ownership;
+navigation and measurement removal cancel pending work once no active indicator remains.
 
 The generated Studio shell synchronizes the current app pathname into `StudioProvider`. Studio
 resolves the owning screen recursively from the manifest navigator, so selections on nested Stack,

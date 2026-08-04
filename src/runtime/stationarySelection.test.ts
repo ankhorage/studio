@@ -70,11 +70,12 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('collapsable: false');
   });
 
-  it('measures unsupported native content through its existing public View ref', () => {
-    expect(source).toContain('export function useStudioUnsupportedNodeMeasurement()');
-    expect(source).toContain('measure: () => measureNativeView(view)');
-    expect(source).toContain('UnsupportedNodeMeasurementContext.Provider');
-    expect(source).not.toContain('measureUnsupportedView');
+  it('measures supported and unsupported native content through an authored-root provider', () => {
+    expect(source).toContain('export function useStudioRuntimeNodeMeasurement()');
+    expect(source).toContain('export function useStudioUnsupportedNodeMeasurement(): ReturnType<');
+    expect(source).toContain('createNativeRuntimeNodeMeasurement(view');
+    expect(source).toContain('RuntimeNodeMeasurementContext.Provider');
+    expect(source).not.toContain("Platform.OS === 'web' ? measureRuntimeNodeWebView(view)");
   });
 
   it('renders root-owned unsupported indicators with pointerEvents none', () => {
@@ -117,7 +118,7 @@ describe('stationarySelection RN integration', () => {
   it('measures supported Runtime nodes for selected-state chrome', () => {
     expect(source).toContain('ctx.registerRuntimeNode(props.nodeId');
     expect(source).toContain('measureRuntimeNodeWebView(view)');
-    expect(source).toContain('nodeId === selectedNodeIdRef.current');
+    expect(source).toContain('measureRuntimeNodeIndicators({');
     expect(source).toContain('props.selectedNodeId, requestIndicatorRefresh');
   });
 
@@ -132,11 +133,9 @@ describe('stationarySelection RN integration', () => {
     const selectedIndicatorBlock = source.slice(selectedIndicatorStart);
 
     expect(selectedIndicatorStart).toBeGreaterThan(-1);
-    expect(selectedIndicatorBlock).toContain("pointerEvents: 'none'");
-    expect(selectedIndicatorBlock).toContain('borderColor: theme.semantics.action.primary.base');
-    expect(selectedIndicatorBlock).toContain('borderWidth: 2');
-    expect(selectedIndicatorBlock).toContain('left: rect.x - 2');
-    expect(selectedIndicatorBlock).toContain('width: rect.width + 4');
+    expect(selectedIndicatorBlock).toContain(
+      '...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base)',
+    );
   });
 
   it('suppresses selected chrome synchronously outside Edit mode or without selection', () => {
@@ -174,6 +173,7 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain("window.addEventListener('scroll', handleScroll, true)");
     expect(source).toContain("window.addEventListener('resize', handleResize)");
     expect(source).toContain('new ResizeObserver(() => requestIndicatorRefresh())');
+    expect(source).toContain('createActiveResizeTargetCoordinator(observer)');
     expect(source).toContain('onLayout: requestIndicatorRefresh');
     expect(source).toContain('onTouchMove: requestScrollIndicatorRefresh');
     expect(source).toContain('createIndicatorSettleCoordinator');
@@ -181,9 +181,8 @@ describe('stationarySelection RN integration', () => {
   });
 
   it('unregisters observers and removes web geometry listeners', () => {
-    expect(source).toContain('resizeObserverRef.current?.unobserve(resizeTarget)');
     expect(source).toContain("window.removeEventListener('scroll', handleScroll, true)");
     expect(source).toContain("window.removeEventListener('resize', handleResize)");
-    expect(source).toContain('observer?.disconnect()');
+    expect(source).toContain('resizeTargetCoordinatorRef.current?.disconnect()');
   });
 });
