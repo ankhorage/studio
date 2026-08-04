@@ -2121,9 +2121,47 @@
       "exports": ["executeRuntimeAction"]
     },
     {
+      "path": "src/runtime/runtimeNodeMeasurement.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/runtimeNodeMeasurement.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/runtimeNodeMeasurement.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ActiveResizeTargetCoordinator",
+        "createActiveResizeTargetCoordinator",
+        "createNativeRuntimeNodeMeasurement",
+        "createRuntimeNodeMeasurementRegistry",
+        "createSelectedIndicatorViewProps",
+        "getActiveRuntimeNodeMeasurements",
+        "hasActiveRuntimeNodeMeasurements",
+        "MeasuredRect",
+        "measureNativeRuntimeNodeView",
+        "measureRuntimeNodeIndicators",
+        "NativeMeasurableView",
+        "ResizeTargetObserver",
+        "RuntimeNodeIndicatorRect",
+        "RuntimeNodeMeasurement",
+        "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+        "RuntimeNodeMeasurementRegistry",
+        "RuntimeNodeMeasurements",
+        "shouldRenderSelectedNodeChrome",
+        "unionMeasuredRects"
+      ]
+    },
+    {
       "path": "src/runtime/runtimeSurface.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/runtime/stationarySelection.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/runtime/index.ts"],
       "exports": []
     },
     {
@@ -2138,6 +2176,7 @@
       "dependencies": [
         "src/runtime/indicatorRefreshCoordinator.ts",
         "src/runtime/indicatorSettleCoordinator.ts",
+        "src/runtime/runtimeNodeMeasurement.ts",
         "src/runtime/stationarySelectionCoordinator.ts",
         "src/runtime/stationarySelectionInputState.ts"
       ],
@@ -8080,7 +8119,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 791,
+        "line": 844,
         "column": 1
       }
     },
@@ -8089,7 +8128,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1013,
+        "line": 1072,
         "column": 1
       }
     },
@@ -8098,7 +8137,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1040,
+        "line": 1099,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForSelectedGeometry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1118,
         "column": 1
       }
     },
@@ -8107,7 +8155,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1059,
+        "line": 1138,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForSelectedNodeAtChangeCount",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1157,
         "column": 1
       }
     },
@@ -8116,7 +8173,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1078,
+        "line": 1178,
         "column": 1
       }
     },
@@ -8125,7 +8182,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1082,
+        "line": 1182,
         "column": 1
       }
     },
@@ -8134,7 +8191,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1102,
+        "line": 1202,
         "column": 1
       }
     },
@@ -8143,7 +8200,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1123,
+        "line": 1223,
         "column": 1
       }
     },
@@ -8152,7 +8209,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1145,
+        "line": 1245,
         "column": 1
       }
     },
@@ -8161,7 +8218,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1184,
+        "line": 1284,
         "column": 1
       }
     },
@@ -8170,7 +8227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1198,
+        "line": 1298,
         "column": 1
       }
     },
@@ -8179,7 +8236,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1227,
+        "line": 1327,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectSelectedRectToMatch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1334,
+        "column": 1
+      }
+    },
+    {
+      "name": "selectedRectMatches",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1341,
+        "column": 1
+      }
+    },
+    {
+      "name": "expectAppBarActionsHorizontal",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1350,
         "column": 1
       }
     },
@@ -8188,7 +8272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1234,
+        "line": 1375,
         "column": 1
       }
     },
@@ -8197,7 +8281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1241,
+        "line": 1382,
         "column": 1
       }
     },
@@ -8206,7 +8290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1280,
+        "line": 1421,
         "column": 1
       }
     },
@@ -8215,7 +8299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1314,
+        "line": 1455,
         "column": 1
       }
     },
@@ -8224,7 +8308,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1343,
+        "line": 1484,
         "column": 1
       }
     },
@@ -8233,7 +8317,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1621,
+        "line": 1762,
         "column": 1
       }
     },
@@ -8242,7 +8326,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1644,
+        "line": 1785,
         "column": 1
       }
     },
@@ -8251,7 +8335,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1661,
+        "line": 1802,
         "column": 1
       }
     },
@@ -8260,7 +8344,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1677,
+        "line": 1818,
         "column": 1
       }
     },
@@ -8269,7 +8353,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1699,
+        "line": 1840,
         "column": 1
       }
     },
@@ -8278,7 +8362,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1724,
+        "line": 1865,
         "column": 1
       }
     },
@@ -8287,7 +8371,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1764,
+        "line": 1905,
         "column": 1
       }
     },
@@ -8296,7 +8380,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1778,
+        "line": 1919,
         "column": 1
       }
     },
@@ -8305,7 +8389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1787,
+        "line": 1928,
         "column": 1
       }
     },
@@ -8314,7 +8398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1803,
+        "line": 1944,
         "column": 1
       }
     },
@@ -8323,7 +8407,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1810,
+        "line": 1951,
         "column": 1
       }
     },
@@ -8332,7 +8416,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1816,
+        "line": 1957,
         "column": 1
       }
     },
@@ -8341,7 +8425,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1829,
+        "line": 1970,
         "column": 1
       }
     },
@@ -8350,7 +8434,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1846,
+        "line": 1987,
         "column": 1
       }
     },
@@ -8359,7 +8443,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1863,
+        "line": 2004,
         "column": 1
       }
     },
@@ -8368,7 +8452,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1869,
+        "line": 2010,
         "column": 1
       }
     },
@@ -8377,7 +8461,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1875,
+        "line": 2016,
         "column": 1
       }
     },
@@ -8386,7 +8470,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1891,
+        "line": 2032,
         "column": 1
       }
     },
@@ -8395,7 +8479,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2339,
+        "line": 2581,
         "column": 1
       }
     },
@@ -8404,7 +8488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2354,
+        "line": 2596,
         "column": 1
       }
     },
@@ -8413,7 +8497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2358,
+        "line": 2600,
         "column": 1
       }
     },
@@ -8422,7 +8506,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2367,
+        "line": 2609,
         "column": 1
       }
     },
@@ -8431,7 +8515,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2378,
+        "line": 2620,
         "column": 1
       }
     },
@@ -13368,11 +13452,137 @@
       }
     },
     {
+      "name": "createObserverProbe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTargetMeasurement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "shouldRenderSelectedNodeChrome",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "unionMeasuredRects",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureNativeRuntimeNodeView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "createNativeRuntimeNodeMeasurement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRuntimeNodeMeasurementRegistry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "selectPreferredRuntimeNodeMeasurements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 149,
+        "column": 1
+      }
+    },
+    {
+      "name": "getActiveRuntimeNodeMeasurements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasActiveRuntimeNodeMeasurements",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureRuntimeNodeIndicators",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 183,
+        "column": 1
+      }
+    },
+    {
+      "name": "createActiveResizeTargetCoordinator",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "createSelectedIndicatorViewProps",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/runtimeNodeMeasurement.ts",
+        "line": 276,
+        "column": 1
+      }
+    },
+    {
       "name": "isWebElementLike",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 89,
+        "line": 85,
         "column": 1
       }
     },
@@ -13381,7 +13591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 99,
+        "line": 95,
         "column": 1
       }
     },
@@ -13390,7 +13600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 103,
+        "line": 99,
         "column": 1
       }
     },
@@ -13399,16 +13609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 114,
-        "column": 1
-      }
-    },
-    {
-      "name": "unionRects",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/stationarySelection.ts",
-        "line": 123,
+        "line": 110,
         "column": 1
       }
     },
@@ -13417,16 +13618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 141,
-        "column": 1
-      }
-    },
-    {
-      "name": "measureNativeView",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/stationarySelection.ts",
-        "line": 150,
+        "line": 119,
         "column": 1
       }
     },
@@ -13435,16 +13627,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 158,
+        "line": 128,
         "column": 1
       }
     },
     {
-      "name": "measureUnsupportedWebView",
+      "name": "measureRuntimeNodeWebView",
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 170,
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "measureAuthoredWebView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/stationarySelection.ts",
+        "line": 154,
         "column": 1
       }
     },
@@ -13453,7 +13654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 184,
+        "line": 163,
         "column": 1
       }
     },
@@ -13462,7 +13663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 207,
+        "line": 187,
         "column": 1
       }
     },
@@ -13471,7 +13672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 240,
+        "line": 220,
         "column": 1
       }
     },
@@ -13480,7 +13681,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 251,
+        "line": 232,
         "column": 3
       }
     },
@@ -13489,7 +13690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 265,
+        "line": 246,
         "column": 3
       }
     },
@@ -13498,7 +13699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 276,
+        "line": 257,
         "column": 3
       }
     },
@@ -13507,7 +13708,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 285,
+        "line": 266,
         "column": 3
       }
     },
@@ -13516,7 +13717,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 289,
+        "line": 270,
         "column": 3
       }
     },
@@ -13525,7 +13726,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 353,
+        "line": 350,
         "column": 1
       }
     },
@@ -13534,7 +13735,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 387,
+        "line": 389,
         "column": 1
       }
     },
@@ -13543,7 +13744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 603,
+        "line": 646,
         "column": 11
       }
     },
@@ -13552,7 +13753,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 604,
+        "line": 647,
         "column": 11
       }
     },
@@ -16317,6 +16518,16 @@
         "sourcePath": "src/runtime/registry.tsx"
       },
       {
+        "fromPath": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toPath": "src/runtime/runtimeNodeMeasurement.ts",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.public.test.ts",
+        "toPath": "src/runtime/index.ts",
+        "sourcePath": "src/runtime/stationarySelection.public.test.ts"
+      },
+      {
         "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -16324,6 +16535,11 @@
       {
         "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/runtime/indicatorSettleCoordinator.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/runtime/runtimeNodeMeasurement.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -24019,6 +24235,12 @@
       },
       {
         "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readAppBarActionGeometry",
+        "callExpression": "page.readAppBarActionGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "waitForRuntimeNodeInteractionReady",
         "callExpression": "waitForRuntimeNodeInteractionReady",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24061,6 +24283,30 @@
       },
       {
         "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "expectAppBarActionsHorizontal",
+        "callExpression": "expectAppBarActionsHorizontal",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForSelectedGeometry",
+        "callExpression": "waitForSelectedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "expectSelectedRectToMatch",
+        "callExpression": "expectSelectedRectToMatch",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "setViewportSize",
+        "callExpression": "page.setViewportSize",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "insertText",
         "callExpression": "page.insertText",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24075,6 +24321,24 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "evaluate",
         "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "clickAppBarAction",
+        "callExpression": "page.clickAppBarAction",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForSelectedNodeAtChangeCount",
+        "callExpression": "waitForSelectedNodeAtChangeCount",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForStudioSmokeState",
+        "callExpression": "waitForStudioSmokeState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24151,6 +24415,18 @@
       },
       {
         "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "expectSelectedRectToMatch",
+        "callExpression": "expectSelectedRectToMatch",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
+        "toSymbol": "waitForSelectedGeometry",
+        "callExpression": "waitForSelectedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyDesktopSelectionAndUnsupportedGeometry",
         "toSymbol": "captureSmokeLayout",
         "callExpression": "page.captureSmokeLayout",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24180,7 +24456,31 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "waitForSelectedGeometry",
+        "toSymbol": "readSelectedGeometry",
+        "callExpression": "page.readSelectedGeometry",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectedGeometry",
+        "toSymbol": "selectedRectMatches",
+        "callExpression": "selectedRectMatches",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectedGeometry",
+        "toSymbol": "readSelectedGeometryDiagnostics",
+        "callExpression": "page.readSelectedGeometryDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "waitForStudioSmokeState",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectedNodeAtChangeCount",
         "toSymbol": "readStudioSmokeState",
         "callExpression": "page.readStudioSmokeState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24289,6 +24589,18 @@
       },
       {
         "fromSymbol": "expectRectToMatch",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectSelectedRectToMatch",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "expectAppBarActionsHorizontal",
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -24672,6 +24984,24 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "readAppBarActionGeometry",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "clickAppBarAction",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "setViewportSize",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "captureSmokeLayout",
         "toSymbol": "evaluate",
         "callExpression": "this.evaluate",
@@ -24691,6 +25021,18 @@
       },
       {
         "fromSymbol": "readUnsupportedGeometry",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readSelectedGeometry",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readSelectedGeometryDiagnostics",
         "toSymbol": "evaluate",
         "callExpression": "this.evaluate",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -26358,6 +26700,240 @@
         "sourcePath": "src/runtime/runtimeActions.ts"
       },
       {
+        "fromSymbol": "getResizeTargets",
+        "toSymbol": "onResolveTargets",
+        "callExpression": "options.onResolveTargets",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createRuntimeNodeMeasurementRegistry",
+        "callExpression": "createRuntimeNodeMeasurementRegistry",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "measureInWindow",
+        "toSymbol": "callback",
+        "callExpression": "callback",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "register",
+        "callExpression": "registry.register",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createNativeRuntimeNodeMeasurement",
+        "callExpression": "createNativeRuntimeNodeMeasurement",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "measureRuntimeNodeIndicators",
+        "callExpression": "measureRuntimeNodeIndicators",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "getMeasurements",
+        "callExpression": "registry.getMeasurements",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "unregister",
+        "callExpression": "unregister",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "measureNativeRuntimeNodeView",
+        "callExpression": "measureNativeRuntimeNodeView",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "shouldRenderSelectedNodeChrome",
+        "callExpression": "shouldRenderSelectedNodeChrome",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createSelectedIndicatorViewProps",
+        "callExpression": "createSelectedIndicatorViewProps",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createTargetMeasurement",
+        "callExpression": "createTargetMeasurement",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+        "callExpression": "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createObserverProbe",
+        "callExpression": "createObserverProbe",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "createActiveResizeTargetCoordinator",
+        "callExpression": "createActiveResizeTargetCoordinator",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "sync",
+        "callExpression": "coordinator.sync",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "getActiveRuntimeNodeMeasurements",
+        "callExpression": "getActiveRuntimeNodeMeasurements",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "observeCalls",
+        "callExpression": "observer.observeCalls",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "unobserveCalls",
+        "callExpression": "observer.unobserveCalls",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "observed",
+        "callExpression": "observer.observed",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "getObservedTargets",
+        "callExpression": "coordinator.getObservedTargets",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "disconnect",
+        "callExpression": "coordinator.disconnect",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.test.ts",
+        "toSymbol": "disconnected",
+        "callExpression": "observer.disconnected",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "measureInWindow",
+        "callExpression": "view.measureInWindow",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "measure",
+        "toSymbol": "measureNativeRuntimeNodeView",
+        "callExpression": "measureNativeRuntimeNodeView",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "register",
+        "toSymbol": "onChange",
+        "callExpression": "options?.onChange",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "onChange",
+        "callExpression": "options?.onChange",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "selectPreferredRuntimeNodeMeasurements",
+        "callExpression": "selectPreferredRuntimeNodeMeasurements",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "hasActiveRuntimeNodeMeasurements",
+        "toSymbol": "getActiveRuntimeNodeMeasurements",
+        "callExpression": "getActiveRuntimeNodeMeasurements",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "measure",
+        "callExpression": "measurement.measure",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/runtimeNodeMeasurement.ts",
+        "toSymbol": "unionMeasuredRects",
+        "callExpression": "unionMeasuredRects",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "disconnect",
+        "toSymbol": "disconnect",
+        "callExpression": "observer.disconnect",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "sync",
+        "toSymbol": "getResizeTargets",
+        "callExpression": "measurement.getResizeTargets",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "sync",
+        "toSymbol": "unobserve",
+        "callExpression": "observer.unobserve",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
+        "fromSymbol": "sync",
+        "toSymbol": "observe",
+        "callExpression": "observer.observe",
+        "sourcePath": "src/runtime/runtimeNodeMeasurement.ts"
+      },
+      {
         "fromSymbol": "src/runtime/runtimeSurface.test.ts",
         "toSymbol": "readFileSync",
         "callExpression": "readFileSync",
@@ -26386,6 +26962,18 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/runtime/runtimeSurface.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/runtime/stationarySelection.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/runtime/stationarySelection.public.test.ts"
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.test.ts",
@@ -26454,12 +27042,6 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/runtime/stationarySelection.ts"
-      },
-      {
         "fromSymbol": "measureRootView",
         "toSymbol": "isWebElementLike",
         "callExpression": "isWebElementLike",
@@ -26479,20 +27061,38 @@
       },
       {
         "fromSymbol": "measureRootView",
-        "toSymbol": "measureNativeView",
-        "callExpression": "measureNativeView",
+        "toSymbol": "measureNativeRuntimeNodeView",
+        "callExpression": "measureNativeRuntimeNodeView",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "measureUnsupportedWebView",
+        "fromSymbol": "measureRuntimeNodeWebView",
         "toSymbol": "isWebElementLike",
         "callExpression": "isWebElementLike",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
-        "fromSymbol": "measureUnsupportedWebView",
-        "toSymbol": "unionRects",
-        "callExpression": "unionRects",
+        "fromSymbol": "measureRuntimeNodeWebView",
+        "toSymbol": "unionMeasuredRects",
+        "callExpression": "unionMeasuredRects",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureAuthoredWebView",
+        "toSymbol": "isWebElementLike",
+        "callExpression": "isWebElementLike",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureAuthoredWebView",
+        "toSymbol": "toMeasuredRect",
+        "callExpression": "toMeasuredRect",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "measureAuthoredWebView",
+        "toSymbol": "getBoundingClientRect",
+        "callExpression": "view.getBoundingClientRect",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26539,32 +27139,62 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "registerUnsupportedNode",
-        "callExpression": "ctx.registerUnsupportedNode",
+        "toSymbol": "registerRuntimeNode",
+        "callExpression": "ctx.registerRuntimeNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "getResizeTargets",
+        "toSymbol": "getWebDescendantResizeTargets",
+        "callExpression": "getWebDescendantResizeTargets",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "measure",
-        "toSymbol": "measureUnsupportedWebView",
-        "callExpression": "measureUnsupportedWebView",
+        "toSymbol": "measureRuntimeNodeWebView",
+        "callExpression": "measureRuntimeNodeWebView",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "registerView",
-        "toSymbol": "registerUnsupportedNode",
-        "callExpression": "ctx.registerUnsupportedNode",
+        "toSymbol": "registerRuntimeNode",
+        "callExpression": "ctx.registerRuntimeNode",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "registerView",
+        "toSymbol": "createNativeRuntimeNodeMeasurement",
+        "callExpression": "createNativeRuntimeNodeMeasurement",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "getResizeTargets",
+        "toSymbol": "getWebResizeTarget",
+        "callExpression": "getWebResizeTarget",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "measure",
-        "toSymbol": "measureNativeView",
-        "callExpression": "measureNativeView",
+        "toSymbol": "measureAuthoredWebView",
+        "callExpression": "measureAuthoredWebView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromSymbol": "StationaryTapSelector",
         "toSymbol": "createStationarySelectionCoordinator",
         "callExpression": "createStationarySelectionCoordinator",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "shouldRenderSelectedNodeChrome",
+        "callExpression": "shouldRenderSelectedNodeChrome",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26599,6 +27229,12 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "hasActiveRuntimeNodeMeasurements",
+        "callExpression": "hasActiveRuntimeNodeMeasurements",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "createIndicatorSettleCoordinator",
         "callExpression": "createIndicatorSettleCoordinator",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -26607,6 +27243,36 @@
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "trigger",
         "callExpression": "settleCoordinatorRef.current.trigger",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getActiveRuntimeNodeMeasurements",
+        "callExpression": "getActiveRuntimeNodeMeasurements",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "getWebResizeTarget",
+        "callExpression": "getWebResizeTarget",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "sync",
+        "callExpression": "resizeTargetCoordinatorRef.current?.sync",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+        "callExpression": "runtimeNodeMeasurementChangeAffectsActiveIndicators",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "syncActiveResizeTargets",
+        "callExpression": "syncActiveResizeTargets",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26641,14 +27307,8 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "measure",
-        "callExpression": "measurement.measure",
-        "sourcePath": "src/runtime/stationarySelection.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "unionRects",
-        "callExpression": "unionRects",
+        "toSymbol": "measureRuntimeNodeIndicators",
+        "callExpression": "measureRuntimeNodeIndicators",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26665,8 +27325,8 @@
       },
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
-        "toSymbol": "getWebResizeTarget",
-        "callExpression": "getWebResizeTarget",
+        "toSymbol": "createActiveResizeTargetCoordinator",
+        "callExpression": "createActiveResizeTargetCoordinator",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26679,6 +27339,12 @@
         "fromSymbol": "handleResize",
         "toSymbol": "requestIndicatorRefresh",
         "callExpression": "requestIndicatorRefresh",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "disconnect",
+        "callExpression": "resizeTargetCoordinatorRef.current?.disconnect",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -26715,6 +27381,12 @@
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "clear",
         "callExpression": "inputState.clear",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "createSelectedIndicatorViewProps",
+        "callExpression": "createSelectedIndicatorViewProps",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
