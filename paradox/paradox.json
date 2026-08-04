@@ -8044,7 +8044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 43,
+        "line": 101,
         "column": 1
       }
     },
@@ -8053,7 +8053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 113,
+        "line": 171,
         "column": 1
       }
     },
@@ -8062,7 +8062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 357,
+        "line": 415,
         "column": 9
       }
     },
@@ -8071,7 +8071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 490,
+        "line": 673,
         "column": 1
       }
     },
@@ -8080,7 +8080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 549,
+        "line": 791,
         "column": 1
       }
     },
@@ -8089,7 +8089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 771,
+        "line": 1013,
         "column": 1
       }
     },
@@ -8098,7 +8098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 798,
+        "line": 1040,
         "column": 1
       }
     },
@@ -8107,7 +8107,61 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 817,
+        "line": 1059,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatStudioScreenState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1078,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForStudioNavigationReady",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1082,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForStudioScreenState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1102,
+        "column": 1
+      }
+    },
+    {
+      "name": "invokeStudioNavigation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1123,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForRuntimeNodeInteractionReady",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1145,
+        "column": 1
+      }
+    },
+    {
+      "name": "snapshotsHaveMatchingTarget",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "line": 1184,
         "column": 1
       }
     },
@@ -8116,7 +8170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 836,
+        "line": 1198,
         "column": 1
       }
     },
@@ -8125,7 +8179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 854,
+        "line": 1227,
         "column": 1
       }
     },
@@ -8134,7 +8188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 861,
+        "line": 1234,
         "column": 1
       }
     },
@@ -8143,7 +8197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 868,
+        "line": 1241,
         "column": 1
       }
     },
@@ -8152,7 +8206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 907,
+        "line": 1280,
         "column": 1
       }
     },
@@ -8161,7 +8215,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 941,
+        "line": 1314,
         "column": 1
       }
     },
@@ -8170,7 +8224,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 970,
+        "line": 1343,
         "column": 1
       }
     },
@@ -8179,7 +8233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1265,
+        "line": 1621,
         "column": 1
       }
     },
@@ -8188,7 +8242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1288,
+        "line": 1644,
         "column": 1
       }
     },
@@ -8197,7 +8251,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1305,
+        "line": 1661,
         "column": 1
       }
     },
@@ -8206,7 +8260,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1321,
+        "line": 1677,
         "column": 1
       }
     },
@@ -8215,7 +8269,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1343,
+        "line": 1699,
         "column": 1
       }
     },
@@ -8224,7 +8278,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1368,
+        "line": 1724,
         "column": 1
       }
     },
@@ -8233,7 +8287,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1408,
+        "line": 1764,
         "column": 1
       }
     },
@@ -8242,7 +8296,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1422,
+        "line": 1778,
         "column": 1
       }
     },
@@ -8251,7 +8305,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1431,
+        "line": 1787,
         "column": 1
       }
     },
@@ -8260,7 +8314,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1447,
+        "line": 1803,
         "column": 1
       }
     },
@@ -8269,7 +8323,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1454,
+        "line": 1810,
         "column": 1
       }
     },
@@ -8278,7 +8332,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1460,
+        "line": 1816,
         "column": 1
       }
     },
@@ -8287,7 +8341,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1473,
+        "line": 1829,
         "column": 1
       }
     },
@@ -8296,7 +8350,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1490,
+        "line": 1846,
         "column": 1
       }
     },
@@ -8305,7 +8359,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1507,
+        "line": 1863,
         "column": 1
       }
     },
@@ -8314,7 +8368,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1513,
+        "line": 1869,
         "column": 1
       }
     },
@@ -8323,7 +8377,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1519,
+        "line": 1875,
         "column": 1
       }
     },
@@ -8332,7 +8386,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1535,
+        "line": 1891,
         "column": 1
       }
     },
@@ -8341,7 +8395,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1873,
+        "line": 2339,
         "column": 1
       }
     },
@@ -8350,7 +8404,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1888,
+        "line": 2354,
         "column": 1
       }
     },
@@ -8359,7 +8413,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1892,
+        "line": 2358,
         "column": 1
       }
     },
@@ -8368,7 +8422,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1901,
+        "line": 2367,
         "column": 1
       }
     },
@@ -8377,7 +8431,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1912,
+        "line": 2378,
         "column": 1
       }
     },
@@ -23701,6 +23755,42 @@
       },
       {
         "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForStudioNavigationReady",
+        "callExpression": "waitForStudioNavigationReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "invokeStudioNavigation",
+        "callExpression": "invokeStudioNavigation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "formatStudioScreenState",
+        "callExpression": "formatStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readStudioScreenState",
+        "toSymbol": "formatStudioScreenState",
+        "callExpression": "formatStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForStudioScreenState",
+        "callExpression": "waitForStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toSymbol": "waitForRuntimeNodeInteractionReady",
+        "callExpression": "waitForRuntimeNodeInteractionReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toSymbol": "adminWebSmokeTest",
         "callExpression": "adminWebSmokeTest",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -23893,8 +23983,14 @@
       },
       {
         "fromSymbol": "verifyNestedNutritionSelection",
-        "toSymbol": "waitForBodyText",
-        "callExpression": "waitForBodyText",
+        "toSymbol": "waitForStudioNavigationReady",
+        "callExpression": "page.waitForStudioNavigationReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForStudioScreenState",
+        "callExpression": "page.waitForStudioScreenState",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23911,8 +24007,20 @@
       },
       {
         "fromSymbol": "verifyNestedNutritionSelection",
-        "toSymbol": "readRuntimeNodeCenter",
-        "callExpression": "page.readRuntimeNodeCenter",
+        "toSymbol": "navigateStudio",
+        "callExpression": "page.navigateStudio",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForBodyText",
+        "callExpression": "waitForBodyText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "waitForRuntimeNodeInteractionReady",
+        "callExpression": "waitForRuntimeNodeInteractionReady",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -23931,6 +24039,36 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "readStudioScreenState",
         "callExpression": "page.readStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readStudioSmokeState",
+        "callExpression": "page.readStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "formatStudioScreenState",
+        "callExpression": "formatStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "insertText",
+        "callExpression": "page.insertText",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readRuntimeNodeInteractionSnapshot",
+        "callExpression": "page.readRuntimeNodeInteractionSnapshot",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24048,6 +24186,84 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "waitForStudioNavigationReady",
+        "toSymbol": "isStudioNavigationReady",
+        "callExpression": "page.isStudioNavigationReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioNavigationReady",
+        "toSymbol": "sleep",
+        "callExpression": "sleep",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioNavigationReady",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioScreenState",
+        "toSymbol": "formatStudioScreenState",
+        "callExpression": "formatStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioScreenState",
+        "toSymbol": "readStudioScreenState",
+        "callExpression": "page.readStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioScreenState",
+        "toSymbol": "sleep",
+        "callExpression": "sleep",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioScreenState",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "invokeStudioNavigation",
+        "toSymbol": "evaluate",
+        "callExpression": "page.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "invokeStudioNavigation",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForRuntimeNodeInteractionReady",
+        "toSymbol": "readRuntimeNodeInteractionSnapshot",
+        "callExpression": "page.readRuntimeNodeInteractionSnapshot",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForRuntimeNodeInteractionReady",
+        "toSymbol": "snapshotsHaveMatchingTarget",
+        "callExpression": "snapshotsHaveMatchingTarget",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForRuntimeNodeInteractionReady",
+        "toSymbol": "sleep",
+        "callExpression": "sleep",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForRuntimeNodeInteractionReady",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "waitForSelectionRootId",
         "toSymbol": "readSelectionRootId",
         "callExpression": "page.readSelectionRootId",
@@ -24055,8 +24271,20 @@
       },
       {
         "fromSymbol": "waitForSelectionRootId",
+        "toSymbol": "readRuntimeNodeInteractionSnapshot",
+        "callExpression": "page.readRuntimeNodeInteractionSnapshot",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectionRootId",
         "toSymbol": "readStudioScreenState",
         "callExpression": "page.readStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForSelectionRootId",
+        "toSymbol": "readStudioNavigationDiagnostics",
+        "callExpression": "page.readStudioNavigationDiagnostics",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24360,9 +24588,39 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "waitForStudioNavigationReady",
+        "toSymbol": "waitForStudioNavigationReady",
+        "callExpression": "waitForStudioNavigationReady",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "waitForStudioScreenState",
+        "toSymbol": "waitForStudioScreenState",
+        "callExpression": "waitForStudioScreenState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "navigateStudio",
+        "toSymbol": "invokeStudioNavigation",
+        "callExpression": "invokeStudioNavigation",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "isStudioNavigationReady",
         "toSymbol": "evaluate",
         "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readStudioNavigationDiagnostics",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "readStudioNavigationDiagnostics",
+        "toSymbol": "formatProcessOutput",
+        "callExpression": "formatProcessOutput",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -24426,6 +24684,12 @@
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
+        "fromSymbol": "readRuntimeNodeInteractionSnapshot",
+        "toSymbol": "evaluate",
+        "callExpression": "this.evaluate",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
         "fromSymbol": "readUnsupportedGeometry",
         "toSymbol": "evaluate",
         "callExpression": "this.evaluate",
@@ -24439,6 +24703,12 @@
       },
       {
         "fromSymbol": "mouseClick",
+        "toSymbol": "send",
+        "callExpression": "this.send",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "insertText",
         "toSymbol": "send",
         "callExpression": "this.send",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
