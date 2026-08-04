@@ -61,44 +61,37 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
 
   const actions = isStudioAdminPath(pathname)
     ? null
-    : React.createElement(
-        React.Fragment,
-        null,
+    : [
         React.createElement(IconButton, {
+          key: 'administration',
           icon: { name: 'settings-outline' },
           label: 'Administration',
           variant: 'ghost',
           color: 'neutral',
           onPress: openAdministration,
         }),
-        selection.selectedNodeId
-          ? React.createElement(
-              React.Fragment,
-              null,
-              ...contextActions.map((action) => {
-                const handler =
-                  action.id === 'properties'
-                    ? openProperties
-                    : action.id === 'selectParent'
-                      ? selectParent
-                      : clearSelection;
-                return React.createElement(IconButton, {
-                  key: action.id,
-                  icon:
-                    action.id === 'properties'
-                      ? { name: 'options-outline' }
-                      : action.id === 'selectParent'
-                        ? { name: 'arrow-up-outline' }
-                        : { name: 'close-outline' },
-                  label: action.label,
-                  variant: 'ghost',
-                  color: 'neutral',
-                  onPress: handler,
-                });
-              }),
-            )
-          : null,
-      );
+        ...contextActions.map((action) => {
+          const handler =
+            action.id === 'properties'
+              ? openProperties
+              : action.id === 'selectParent'
+                ? selectParent
+                : clearSelection;
+          return React.createElement(IconButton, {
+            key: action.id,
+            icon:
+              action.id === 'properties'
+                ? { name: 'options-outline' }
+                : action.id === 'selectParent'
+                  ? { name: 'arrow-up-outline' }
+                  : { name: 'close-outline' },
+            label: action.label,
+            variant: 'ghost',
+            color: 'neutral',
+            onPress: handler,
+          });
+        }),
+      ];
 
   return {
     actions,

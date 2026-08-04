@@ -184,7 +184,10 @@ graph LR
   module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
+  module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
+  module_src_runtime_runtimeNodeMeasurement_ts["src/runtime/runtimeNodeMeasurement.ts"]
   module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
+  module_src_runtime_stationarySelection_public_test_ts["src/runtime/stationarySelection.public.test.ts"]
   module_src_runtime_stationarySelection_test_ts["src/runtime/stationarySelection.test.ts"]
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
@@ -522,8 +525,11 @@ graph LR
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
+  module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts

@@ -652,14 +652,23 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_registry_tsx
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeActions_ts
+  module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_runtimeNodeMeasurement_test_ts
+  module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_runtime_runtimeNodeMeasurement_ts["src/runtime/runtimeNodeMeasurement.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_runtimeSurface_test_ts["src/runtime/runtimeSurface.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_runtimeSurface_test_ts
+  module_src_runtime_stationarySelection_public_test_ts["src/runtime/stationarySelection.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_stationarySelection_public_test_ts
+  module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
   module_src_runtime_stationarySelection_test_ts["src/runtime/stationarySelection.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_test_ts
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts
+  module_src_runtime_stationarySelection_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
