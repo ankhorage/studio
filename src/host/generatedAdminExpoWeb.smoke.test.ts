@@ -21,7 +21,7 @@ import {
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 import { satisfiesCaretSemverRange } from './orchestrator/semverRange';
-import { getTemplateCatalog } from './templateRegistry';
+import { getProjectTemplate, getTemplateCatalog } from './templateRegistry';
 
 const adminWebSmokeTest = process.env.ANKH_STUDIO_ADMIN_WEB_SMOKE === '1' ? test : test.skip;
 const TEST_TIMEOUT_MS = 240_000;
@@ -40,18 +40,82 @@ interface ChromeProtocolMessage {
   readonly error?: unknown;
 }
 
+interface StudioScreenStateExpectation {
+  readonly pathname: string;
+  readonly activeScreenId: string;
+  readonly rootNodeId: string;
+}
+
+interface StudioNavigationReadinessPage {
+  readonly errors: readonly string[];
+  isStudioNavigationReady(): Promise<boolean>;
+  readStudioNavigationDiagnostics(expoOutput: readonly string[]): Promise<string>;
+}
+
+interface StudioScreenStatePage {
+  readStudioScreenState(): Promise<string>;
+  readStudioNavigationDiagnostics(expoOutput: readonly string[]): Promise<string>;
+}
+
+interface StudioNavigationInvocationPage {
+  evaluate<T>(expression: string): Promise<T>;
+  readStudioNavigationDiagnostics(expoOutput: readonly string[]): Promise<string>;
+}
+
+interface RuntimeNodeInteractionPage {
+  readRuntimeNodeInteractionSnapshot(nodeId: string): Promise<RuntimeNodeInteractionSnapshot>;
+  readStudioNavigationDiagnostics(expoOutput: readonly string[]): Promise<string>;
+}
+
+const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
+  const router = useRouter();
+
+  useEffect(() => {
+    type SmokeNavigate = (href: string, options?: { replace?: boolean }) => void;
+    const smokeGlobal = globalThis as typeof globalThis & {
+      __studioSmokeNavigate?: SmokeNavigate;
+      __studioSmokeNavigationReady?: SmokeNavigate;
+    };
+    const navigate: SmokeNavigate = (href, options) => {
+      if (options?.replace) {
+        router.replace(href as never);
+        return;
+      }
+      router.push(href as never);
+    };
+    smokeGlobal.__studioSmokeNavigate = navigate;
+    smokeGlobal.__studioSmokeNavigationReady = navigate;
+    return () => {
+      if (smokeGlobal.__studioSmokeNavigate === navigate) {
+        delete smokeGlobal.__studioSmokeNavigate;
+      }
+      if (smokeGlobal.__studioSmokeNavigationReady === navigate) {
+        delete smokeGlobal.__studioSmokeNavigationReady;
+      }
+    };
+  }, [router]);
+
+  return null;
+}`;
+
 function createAdminSmokeManifest(): AppManifest {
+  const nutritionManifest = getProjectTemplate({
+    category: 'food_drink',
+    templateId: 'nutrition-catalog-scan',
+  });
+  const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
+  const catalogScreen = nutritionManifest.screens[catalogScreenId];
+  if (!catalogScreen) throw new Error('Nutrition template is missing its catalog screen.');
+
   return {
+    ...nutritionManifest,
     metadata: {
+      ...nutritionManifest.metadata,
       name: 'Generated Admin Web Smoke',
       slug: 'generated-admin-web-smoke',
-      version: '1.0.0',
-      category: 'developer_tools',
-      themeId: 'theme-1',
     },
-    settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
-      plugins: [],
+      ...nutritionManifest.infra,
       auth: {
         scope: 'global',
         provider: 'supabase',
@@ -60,7 +124,7 @@ function createAdminSmokeManifest(): AppManifest {
           signUpRoute: 'sign-up',
           signOutRoute: 'sign-out',
           forgotPasswordRoute: 'forgot-password',
-          postSignInRoute: 'dashboard',
+          postSignInRoute: 'products',
           unauthorizedRoute: 'sign-in',
         },
         signIn: { identifiers: ['email'] },
@@ -72,27 +136,35 @@ function createAdminSmokeManifest(): AppManifest {
       },
     },
     navigator: {
-      type: 'stack',
-      initialRouteName: 'dashboard',
-      routes: [{ name: 'dashboard', label: 'Dashboard', screenId: 'dashboard' }],
+      ...nutritionManifest.navigator,
+      routes: [
+        ...nutritionManifest.navigator.routes,
+        {
+          name: 'dashboard',
+          label: 'Dashboard',
+          screenId: 'dashboard',
+          hideInTabBar: true,
+        },
+      ],
     },
     screens: {
+      ...nutritionManifest.screens,
+      [catalogScreenId]: {
+        ...catalogScreen,
+        root: {
+          ...catalogScreen.root,
+          children: [
+            ...(catalogScreen.root.children ?? []),
+            { id: 'nutrition-studio-smoke-probe', type: 'SmokeStudioProbe', props: {} },
+          ],
+        },
+      },
       dashboard: {
         id: 'dashboard',
         name: 'Dashboard',
         root: createScrollableRuntimeScreenRoot(),
       },
     },
-    themes: [
-      {
-        id: 'theme-1',
-        name: 'Smoke Theme',
-        light: { primaryColor: '#2463eb', harmony: 'analogous' },
-        dark: { primaryColor: '#f59e0b', harmony: 'triadic' },
-      },
-    ],
-    activeThemeId: 'theme-1',
-    activeThemeMode: 'light',
   };
 }
 
@@ -361,6 +433,131 @@ test('native unsupported layout fixture covers layout-sensitive Runtime relation
   expect(nodes.get('native-nested-scroll')?.children?.length).toBe(12);
 });
 
+test('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
+    'smokeGlobal.__studioSmokeNavigationReady = navigate;',
+  );
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
+    'if (smokeGlobal.__studioSmokeNavigate === navigate)',
+  );
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
+    'if (smokeGlobal.__studioSmokeNavigationReady === navigate)',
+  );
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain('delete smokeGlobal.__studioSmokeNavigate;');
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
+    'delete smokeGlobal.__studioSmokeNavigationReady;',
+  );
+});
+
+test('navigation readiness timeout reports browser and process diagnostics', async () => {
+  const page: StudioNavigationReadinessPage = {
+    errors: ['browser exploded'],
+    isStudioNavigationReady() {
+      return Promise.resolve(false);
+    },
+    readStudioNavigationDiagnostics(expoOutput) {
+      return Promise.resolve(`url=http://127.0.0.1/;pathname=/;expo=${expoOutput.join('')}`);
+    },
+  };
+
+  try {
+    await waitForStudioNavigationReady(page, 0, ['expo booting']);
+    throw new Error('Expected navigation readiness to time out.');
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toContain('Timed out waiting for Studio navigation readiness');
+    expect((error as Error).message).toContain('pathname=/');
+    expect((error as Error).message).toContain('browser exploded');
+    expect((error as Error).message).toContain('expo booting');
+  }
+});
+
+test('navigation refuses unavailable callbacks instead of falling back to browser navigation', async () => {
+  const page: StudioNavigationInvocationPage = {
+    evaluate() {
+      return Promise.resolve(false as never);
+    },
+    readStudioNavigationDiagnostics() {
+      return Promise.resolve('url=http://127.0.0.1/;pathname=/;globals=[]');
+    },
+  };
+
+  try {
+    await invokeStudioNavigation(page, '/products', []);
+    throw new Error('Expected unavailable Studio navigation to fail.');
+  } catch (error) {
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toContain(
+      'Studio smoke navigation is unavailable for /products',
+    );
+    expect((error as Error).message).toContain('pathname=/');
+  }
+});
+
+test('screen-state readiness distinguishes root fallback from /products pathname matching', async () => {
+  const rootState = {
+    pathname: '/',
+    activeScreenId: 'catalog',
+    rootNodeId: 'products-root',
+  } satisfies StudioScreenStateExpectation;
+  const productsState = {
+    ...rootState,
+    pathname: '/products',
+  } satisfies StudioScreenStateExpectation;
+  const states = [formatStudioScreenState(rootState), formatStudioScreenState(productsState)];
+  const page: StudioScreenStatePage = {
+    readStudioScreenState() {
+      return Promise.resolve(states.shift() ?? formatStudioScreenState(productsState));
+    },
+    readStudioNavigationDiagnostics() {
+      return Promise.resolve('ready');
+    },
+  };
+
+  await waitForStudioScreenState(page, rootState, 0, []);
+  await waitForStudioScreenState(page, productsState, 100, [], () => Promise.resolve());
+});
+
+test('Runtime node readiness survives a hydration remount before returning stable geometry', async () => {
+  const target = { left: 10, top: 20, right: 110, bottom: 60, width: 100, height: 40 };
+  const missing: RuntimeNodeInteractionSnapshot = {
+    activeElement: null,
+    hitElement: null,
+    inputDisabled: false,
+    inputExists: false,
+    inputFocused: false,
+    inputReadOnly: false,
+    inputValue: null,
+    target: null,
+    wrapper: null,
+    wrapperCount: 0,
+  };
+  const ready: RuntimeNodeInteractionSnapshot = {
+    ...missing,
+    hitElement: '<input>',
+    inputExists: true,
+    inputReadOnly: true,
+    inputValue: '',
+    target,
+    wrapperCount: 1,
+  };
+  const snapshots = [ready, missing, ready, ready];
+  const page: RuntimeNodeInteractionPage = {
+    readRuntimeNodeInteractionSnapshot() {
+      return Promise.resolve(snapshots.shift() ?? ready);
+    },
+    readStudioNavigationDiagnostics() {
+      return Promise.resolve('ready');
+    },
+  };
+
+  expect(
+    await waitForRuntimeNodeInteractionReady(page, 'search-input', 400, [], () =>
+      Promise.resolve(),
+    ),
+  ).toEqual(ready);
+});
+
 adminWebSmokeTest(
   'loads generated Studio admin routes through Expo web without a theme update loop',
   async () => {
@@ -420,6 +617,7 @@ adminWebSmokeTest(
       expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
       expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
       expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
+      expect(rootLayout).toContain('<SmokeNavigationProbe />');
 
       expoProcess = spawnExpoWeb(projectRoot, studioApi.apiBase);
       collectProcessOutput(expoProcess, expoOutput);
@@ -430,8 +628,9 @@ adminWebSmokeTest(
       const page = await openChromePage(debugPort);
       try {
         await page.blockHotReloadConnections();
+        await verifyNestedNutritionSelection(page, appUrl, expoOutput);
         for (const route of ['/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
-          await page.navigate(`${appUrl}${route}`);
+          await page.navigateStudio(route);
           await Bun.sleep(ROUTE_SETTLE_MS);
           const bodyText =
             route === '/dashboard'
@@ -449,11 +648,13 @@ adminWebSmokeTest(
               );
             }
             expect(bodyText).toContain('Generated runtime row 16');
-            await verifyDesktopSelectionAndUnsupportedGeometry(page);
+            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=2');
+            await verifyDesktopSelectionAndUnsupportedGeometry(page, 1, 2);
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
         }
+        expect(page.errors).toEqual([]);
       } finally {
         page.close();
       }
@@ -469,6 +670,80 @@ adminWebSmokeTest(
   TEST_TIMEOUT_MS,
 );
 
+async function verifyNestedNutritionSelection(
+  page: ChromePage,
+  appUrl: string,
+  expoOutput: readonly string[],
+): Promise<void> {
+  const searchInputNodeId = 'food_drink-nutrition-catalog-scan-products-search-input';
+  const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
+  const productsScreenRootId = 'food_drink-nutrition-catalog-scan-products-screen';
+  const rootScreenState = {
+    pathname: '/',
+    activeScreenId: catalogScreenId,
+    rootNodeId: productsScreenRootId,
+  } satisfies StudioScreenStateExpectation;
+  const productsScreenState = {
+    ...rootScreenState,
+    pathname: '/products',
+  } satisfies StudioScreenStateExpectation;
+
+  await page.navigate(appUrl);
+  await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+  await page.waitForStudioScreenState(rootScreenState, HTTP_TIMEOUT_MS, expoOutput);
+  expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
+
+  await page.navigateStudio('/products', expoOutput, 'replace');
+  await page.waitForStudioScreenState(productsScreenState, HTTP_TIMEOUT_MS, expoOutput);
+  await waitForBodyText(page, (text) => text.includes('Catalog products'), HTTP_TIMEOUT_MS);
+  expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
+
+  const interactionBeforeClick = await waitForRuntimeNodeInteractionReady(
+    page,
+    searchInputNodeId,
+    15_000,
+    expoOutput,
+  );
+  expect(interactionBeforeClick.inputExists).toBe(true);
+  expect(interactionBeforeClick.inputFocused).toBe(false);
+  const searchTarget = interactionBeforeClick.target;
+  if (!searchTarget) {
+    throw new Error(`Stable Runtime node ${searchInputNodeId} had no target geometry.`);
+  }
+  await page.mouseClick(
+    searchTarget.left + searchTarget.width / 2,
+    searchTarget.top + searchTarget.height / 2,
+  );
+  const selectedRootId = `studio-stationary-selection-root:edit:${searchInputNodeId}:1`;
+  await waitForSelectionRootId(page, selectedRootId, 15_000, expoOutput, searchInputNodeId);
+  await Bun.sleep(500);
+  const settledRootId = await page.readSelectionRootId();
+  if (settledRootId !== selectedRootId) {
+    throw new Error(
+      `Nested selection did not remain settled; received ${settledRootId}; ` +
+        `screen state: ${await page.readStudioScreenState()}.` +
+        formatProcessOutput(expoOutput),
+    );
+  }
+  expect(await page.readStudioSmokeState()).toBe(
+    `mode=edit;selection=${searchInputNodeId};changes=1`,
+  );
+  expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(productsScreenState));
+  await page.insertText('edit-mode-must-remain-passive');
+  const interactionAfterClick = await page.readRuntimeNodeInteractionSnapshot(searchInputNodeId);
+  expect(interactionAfterClick.inputExists).toBe(true);
+  expect(interactionAfterClick.inputReadOnly || interactionAfterClick.inputDisabled).toBe(true);
+  expect(interactionAfterClick.inputValue).toBe(interactionBeforeClick.inputValue);
+
+  for (const label of ['Properties', 'Select parent', 'Clear selection']) {
+    expect(
+      await page.evaluate<boolean>(
+        `document.querySelector('[aria-label=${JSON.stringify(label)}]') !== null`,
+      ),
+    ).toBe(true);
+  }
+}
+
 interface BrowserRect {
   readonly left: number;
   readonly top: number;
@@ -476,6 +751,19 @@ interface BrowserRect {
   readonly bottom: number;
   readonly width: number;
   readonly height: number;
+}
+
+interface RuntimeNodeInteractionSnapshot {
+  readonly activeElement: string | null;
+  readonly hitElement: string | null;
+  readonly inputDisabled: boolean;
+  readonly inputExists: boolean;
+  readonly inputFocused: boolean;
+  readonly inputReadOnly: boolean;
+  readonly inputValue: string | null;
+  readonly target: BrowserRect | null;
+  readonly wrapper: BrowserRect | null;
+  readonly wrapperCount: number;
 }
 
 interface UnsupportedGeometrySnapshot {
@@ -500,7 +788,11 @@ interface CapturedLayoutSnapshot {
   >;
 }
 
-async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): Promise<void> {
+async function verifyDesktopSelectionAndUnsupportedGeometry(
+  page: ChromePage,
+  selectionCommitOffset = 0,
+  selectionChangeOffset = 0,
+): Promise<void> {
   const initialGeometry = await waitForUnsupportedGeometry(page, 15_000);
 
   expectRectToMatch(initialGeometry.indicator, initialGeometry.target);
@@ -587,38 +879,40 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   const desktopTarget = await page.readRuntimeNodeCenter('desktop-pointer-target');
   await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'right');
   await Bun.sleep(250);
-  expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=0');
+  expect(await page.readStudioSmokeState()).toBe(
+    `mode=edit;selection=none;changes=${selectionChangeOffset}`,
+  );
 
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await waitForStudioSmokeState(
     page,
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
     15_000,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:desktop-pointer-target:1',
+    `studio-stationary-selection-root:edit:desktop-pointer-target:${selectionCommitOffset + 1}`,
   );
 
   await page.mouseClick(desktopTarget.x, desktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:desktop-pointer-target:1',
+    `studio-stationary-selection-root:edit:desktop-pointer-target:${selectionCommitOffset + 1}`,
   );
 
   await page.mouseClick(rejectedTarget.x, rejectedTarget.y, 'middle');
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=desktop-pointer-target;changes=1',
+    `mode=edit;selection=desktop-pointer-target;changes=${selectionChangeOffset + 1}`,
   );
 
   const secondMouseTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-0');
   await page.mouseClick(secondMouseTarget.x, secondMouseTarget.y);
   await waitForStudioSmokeState(
     page,
-    'mode=edit;selection=dashboard-runtime-row-0;changes=2',
+    `mode=edit;selection=dashboard-runtime-row-0;changes=${selectionChangeOffset + 2}`,
     15_000,
   );
 
@@ -640,7 +934,10 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   await page.touchTap(touchTarget.x, touchTarget.y);
   await Bun.sleep(500);
   const touchState = await page.readStudioSmokeState();
-  if (touchState !== 'mode=edit;selection=dashboard-runtime-row-1;changes=3') {
+  if (
+    touchState !==
+    `mode=edit;selection=dashboard-runtime-row-1;changes=${selectionChangeOffset + 3}`
+  ) {
     throw new Error(
       `Touch selection did not commit; state=${touchState}; trace=${await page.evaluate<string>(
         `JSON.stringify(globalThis.__studioSmokeInputTrace ?? [])`,
@@ -648,17 +945,17 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
     );
   }
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
+    `studio-stationary-selection-root:edit:dashboard-runtime-row-1:${selectionCommitOffset + 3}`,
   );
 
   const movedTarget = await page.readRuntimeNodeCenter('dashboard-runtime-row-2');
   await page.mouseDrag(movedTarget.x, movedTarget.y, movedTarget.x + 24, movedTarget.y + 24);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=edit;selection=dashboard-runtime-row-1;changes=3',
+    `mode=edit;selection=dashboard-runtime-row-1;changes=${selectionChangeOffset + 3}`,
   );
   expect(await page.readSelectionRootId()).toBe(
-    'studio-stationary-selection-root:edit:dashboard-runtime-row-1:3',
+    `studio-stationary-selection-root:edit:dashboard-runtime-row-1:${selectionCommitOffset + 3}`,
   );
 
   const privateStateBefore = await page.evaluate<string>(
@@ -666,7 +963,11 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   );
   const statefulTarget = await page.readRuntimeNodeCenter('native-row-target');
   await page.touchTap(statefulTarget.x, statefulTarget.y);
-  await waitForStudioSmokeState(page, 'mode=edit;selection=native-row-target;changes=4', 15_000);
+  await waitForStudioSmokeState(
+    page,
+    `mode=edit;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
+    15_000,
+  );
   const privateStateAfterInteraction = await page.evaluate<string>(
     `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
   );
@@ -683,7 +984,11 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   );
 
   await page.evaluate(`globalThis.__studioSmokeTogglePreview?.()`);
-  await waitForStudioSmokeState(page, 'mode=preview;selection=native-row-target;changes=4', 15_000);
+  await waitForStudioSmokeState(
+    page,
+    `mode=preview;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
+    15_000,
+  );
   expect(
     await page.evaluate<boolean>(
       `document.getElementById('studio-unsupported-indicator-unsupported-runtime-target') === null`,
@@ -701,7 +1006,7 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(page: ChromePage): P
   await page.mouseClick(previewDesktopTarget.x, previewDesktopTarget.y);
   await Bun.sleep(250);
   expect(await page.readStudioSmokeState()).toBe(
-    'mode=preview;selection=native-row-target;changes=4',
+    `mode=preview;selection=native-row-target;changes=${selectionChangeOffset + 4}`,
   );
 }
 
@@ -770,6 +1075,155 @@ async function waitForStudioSmokeState(
   );
 }
 
+function formatStudioScreenState(expected: StudioScreenStateExpectation): string {
+  return `pathname=${expected.pathname};activeScreen=${expected.activeScreenId};root=${expected.rootNodeId}`;
+}
+
+async function waitForStudioNavigationReady(
+  page: StudioNavigationReadinessPage,
+  timeoutMs: number,
+  expoOutput: readonly string[],
+  sleep: (durationMs: number) => Promise<void> = Bun.sleep,
+): Promise<void> {
+  const maximumAttempts = Math.max(1, Math.ceil(timeoutMs / 100) + 1);
+
+  for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {
+    if (await page.isStudioNavigationReady()) return;
+    if (attempt + 1 < maximumAttempts) await sleep(Math.min(100, timeoutMs));
+  }
+
+  throw new Error(
+    `Timed out waiting for Studio navigation readiness.\n${await page.readStudioNavigationDiagnostics(
+      expoOutput,
+    )}\nChrome errors:\n${page.errors.join('\n')}`,
+  );
+}
+
+async function waitForStudioScreenState(
+  page: StudioScreenStatePage,
+  expected: StudioScreenStateExpectation,
+  timeoutMs: number,
+  expoOutput: readonly string[],
+  sleep: (durationMs: number) => Promise<void> = Bun.sleep,
+): Promise<void> {
+  const expectedState = formatStudioScreenState(expected);
+  const maximumAttempts = Math.max(1, Math.ceil(timeoutMs / 100) + 1);
+
+  for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {
+    if ((await page.readStudioScreenState()) === expectedState) return;
+    if (attempt + 1 < maximumAttempts) await sleep(Math.min(100, timeoutMs));
+  }
+
+  throw new Error(
+    `Timed out waiting for Studio screen state ${expectedState}; received ${await page.readStudioScreenState()}.\n` +
+      (await page.readStudioNavigationDiagnostics(expoOutput)),
+  );
+}
+
+async function invokeStudioNavigation(
+  page: StudioNavigationInvocationPage,
+  pathname: string,
+  expoOutput: readonly string[],
+  strategy: 'push' | 'replace' = 'push',
+): Promise<void> {
+  const didNavigate = await page.evaluate<boolean>(`(() => {
+    const navigate = globalThis.__studioSmokeNavigate;
+    const ready = globalThis.__studioSmokeNavigationReady;
+    if (typeof navigate !== 'function' || ready !== navigate) return false;
+    navigate(${JSON.stringify(pathname)}, { replace: ${strategy === 'replace'} });
+    return true;
+  })()`);
+  if (!didNavigate) {
+    throw new Error(
+      `Studio smoke navigation is unavailable for ${pathname}.\n${await page.readStudioNavigationDiagnostics(
+        expoOutput,
+      )}`,
+    );
+  }
+}
+
+async function waitForRuntimeNodeInteractionReady(
+  page: RuntimeNodeInteractionPage,
+  nodeId: string,
+  timeoutMs: number,
+  expoOutput: readonly string[],
+  sleep: (durationMs: number) => Promise<void> = Bun.sleep,
+): Promise<RuntimeNodeInteractionSnapshot> {
+  const maximumAttempts = Math.max(1, Math.ceil(timeoutMs / 100) + 1);
+  let previousSnapshot: RuntimeNodeInteractionSnapshot | null = null;
+  let stableSampleCount = 0;
+  let latestSnapshot = await page.readRuntimeNodeInteractionSnapshot(nodeId);
+
+  for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {
+    if (attempt > 0) latestSnapshot = await page.readRuntimeNodeInteractionSnapshot(nodeId);
+    const isReady =
+      latestSnapshot.inputExists &&
+      latestSnapshot.target !== null &&
+      latestSnapshot.target.width > 0 &&
+      latestSnapshot.target.height > 0 &&
+      latestSnapshot.hitElement !== null;
+    if (isReady && snapshotsHaveMatchingTarget(previousSnapshot, latestSnapshot)) {
+      stableSampleCount += 1;
+      if (stableSampleCount >= 2) return latestSnapshot;
+    } else {
+      stableSampleCount = isReady ? 1 : 0;
+    }
+    previousSnapshot = latestSnapshot;
+    if (attempt + 1 < maximumAttempts) await sleep(Math.min(100, timeoutMs));
+  }
+
+  throw new Error(
+    `Timed out waiting for stable Runtime node ${nodeId}.\nLatest snapshot:\n${JSON.stringify(
+      latestSnapshot,
+      null,
+      2,
+    )}\n${await page.readStudioNavigationDiagnostics(expoOutput)}`,
+  );
+}
+
+function snapshotsHaveMatchingTarget(
+  previous: RuntimeNodeInteractionSnapshot | null,
+  current: RuntimeNodeInteractionSnapshot,
+): boolean {
+  if (!previous?.target || !current.target) return false;
+  return (
+    Math.abs(previous.target.left - current.target.left) <= 0.5 &&
+    Math.abs(previous.target.top - current.target.top) <= 0.5 &&
+    Math.abs(previous.target.width - current.target.width) <= 0.5 &&
+    Math.abs(previous.target.height - current.target.height) <= 0.5 &&
+    previous.hitElement === current.hitElement
+  );
+}
+
+async function waitForSelectionRootId(
+  page: ChromePage,
+  expected: string,
+  timeoutMs: number,
+  expoOutput: readonly string[] = [],
+  runtimeNodeId?: string,
+): Promise<void> {
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    if ((await page.readSelectionRootId()) === expected) return;
+    await Bun.sleep(100);
+  }
+
+  const runtimeDiagnostics = runtimeNodeId
+    ? `\nRuntime node diagnostics:\n${JSON.stringify(
+        await page.readRuntimeNodeInteractionSnapshot(runtimeNodeId),
+        null,
+        2,
+      )}`
+    : '';
+  throw new Error(
+    `Timed out waiting for Studio selection root ${expected}; received ${await page.readSelectionRootId()}; ` +
+      `screen state: ${await page.readStudioScreenState()}.` +
+      runtimeDiagnostics +
+      `\n${await page.readStudioNavigationDiagnostics(expoOutput)}`,
+  );
+}
+
 function expectRectToMatch(actual: BrowserRect, expected: BrowserRect): void {
   expect(Math.abs(actual.left - expected.left)).toBeLessThanOrEqual(2);
   expect(Math.abs(actual.top - expected.top)).toBeLessThanOrEqual(2);
@@ -816,6 +1270,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   });
   await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
   await writeSmokeRuntimeExtensions(created.path);
+  await installSmokeNavigationProbe(created.path);
   await writeSmokeMetroConfig(created.path);
   await installGeneratedProjectDependencies(workspaceRoot, created.path);
 
@@ -892,6 +1347,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
     `import { useStudio } from '@ankhorage/studio';
 import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
 import { Box, Text } from '@ankhorage/zora';
+import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Pressable,
@@ -1072,8 +1528,11 @@ export function SmokeNestedScroll({
   );
 }
 
+${SMOKE_NAVIGATION_PROBE_SOURCE}
+
 export function SmokeStudioProbe() {
   const studio = useStudio();
+  const pathname = usePathname();
   const previousSelectedNodeIdRef = useRef(studio.selectedNodeId);
   const [selectionChangeCount, setSelectionChangeCount] = useState(0);
   const [layoutSnapshot, setLayoutSnapshot] = useState('not-captured');
@@ -1101,6 +1560,9 @@ export function SmokeStudioProbe() {
     <Box gap="s" testID="studio-smoke-probe">
       <Text testID="studio-smoke-state">
         {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
+      </Text>
+      <Text testID="studio-smoke-screen-state">
+        {\`pathname=\${pathname};activeScreen=\${studio.activeScreenId ?? 'none'};root=\${studio.rootNode?.id ?? 'none'}\`}
       </Text>
       <Pressable
         onPress={studio.togglePreviewMode}
@@ -1177,6 +1639,23 @@ config.watchFolders = [
 module.exports = config;
 `,
   );
+}
+
+async function installSmokeNavigationProbe(projectRoot: string): Promise<void> {
+  const rootLayoutPath = path.join(projectRoot, 'src', 'app', '_layout.tsx');
+  const rootLayout = await readFile(rootLayoutPath, 'utf8');
+  const studioShellMarker = '        <StudioShell\n';
+  if (!rootLayout.includes(studioShellMarker)) {
+    throw new Error('Generated root layout is missing its Studio shell mount.');
+  }
+
+  const withProbeImport =
+    `import { SmokeNavigationProbe } from '../generated/SmokeStudioComponents';\n` + rootLayout;
+  const withProbeMount = withProbeImport.replace(
+    studioShellMarker,
+    `        <SmokeNavigationProbe />\n${studioShellMarker}`,
+  );
+  await writeFile(rootLayoutPath, withProbeMount, 'utf8');
 }
 
 async function reservePort(): Promise<number> {
@@ -1449,6 +1928,53 @@ class ChromePage {
     await this.waitForLoad();
   }
 
+  async waitForStudioNavigationReady(
+    timeoutMs: number,
+    expoOutput: readonly string[],
+  ): Promise<void> {
+    await waitForStudioNavigationReady(this, timeoutMs, expoOutput);
+  }
+
+  async waitForStudioScreenState(
+    expected: StudioScreenStateExpectation,
+    timeoutMs: number,
+    expoOutput: readonly string[],
+  ): Promise<void> {
+    await waitForStudioScreenState(this, expected, timeoutMs, expoOutput);
+  }
+
+  async navigateStudio(
+    pathname: string,
+    expoOutput: readonly string[] = [],
+    strategy: 'push' | 'replace' = 'push',
+  ): Promise<void> {
+    await invokeStudioNavigation(this, pathname, expoOutput, strategy);
+  }
+
+  async isStudioNavigationReady(): Promise<boolean> {
+    return this.evaluate<boolean>(`(() => {
+      const navigate = globalThis.__studioSmokeNavigate;
+      return typeof navigate === 'function' && globalThis.__studioSmokeNavigationReady === navigate;
+    })()`);
+  }
+
+  async readStudioNavigationDiagnostics(expoOutput: readonly string[]): Promise<string> {
+    const diagnostics = await this.evaluate<string>(`JSON.stringify({
+      url: globalThis.location?.href ?? null,
+      pathname: globalThis.location?.pathname ?? null,
+      documentReadyState: document.readyState,
+      bodyText: (document.body?.innerText ?? '').slice(0, 1_000),
+      smokeGlobals: Object.keys(globalThis).filter((key) => key.startsWith('__studioSmoke')).sort(),
+      navigationCallbackType: typeof globalThis.__studioSmokeNavigate,
+      navigationReady:
+        typeof globalThis.__studioSmokeNavigate === 'function' &&
+        globalThis.__studioSmokeNavigationReady === globalThis.__studioSmokeNavigate,
+      screenState: document.querySelector('[data-testid="studio-smoke-screen-state"]')?.textContent ?? null,
+      selectionRoot: document.querySelector('[data-testid="studio-stationary-selection-root"]')?.id ?? null,
+    }, null, 2)`);
+    return `${diagnostics}\nChrome errors:\n${this.errors.join('\n')}${formatProcessOutput(expoOutput)}`;
+  }
+
   async readBodyText(): Promise<string> {
     const result = await this.send('Runtime.evaluate', {
       expression: 'document.body?.innerText ?? ""',
@@ -1496,6 +2022,12 @@ class ChromePage {
     );
   }
 
+  async readStudioScreenState(): Promise<string> {
+    return this.evaluate<string>(
+      `document.querySelector('[data-testid="studio-smoke-screen-state"]')?.textContent ?? ''`,
+    );
+  }
+
   async readSelectionRootId(): Promise<string> {
     return this.evaluate<string>(
       `document.querySelector('[data-testid="studio-stationary-selection-root"]')?.id ?? ''`,
@@ -1511,9 +2043,10 @@ class ChromePage {
   async readRuntimeNodeCenter(nodeId: string): Promise<{ readonly x: number; readonly y: number }> {
     const encodedNodeId = encodeURIComponent(nodeId);
     const center = await this.evaluate<{ readonly x: number; readonly y: number } | null>(`(() => {
-      const wrapper = document.getElementById(${JSON.stringify(
-        `studio-runtime-node-${encodedNodeId}`,
-      )});
+      const wrapperId = ${JSON.stringify(`studio-runtime-node-${encodedNodeId}`)};
+      const wrappers = [...document.querySelectorAll('[id]')].filter(
+        (element) => element.id === wrapperId,
+      );
       const findRenderedElement = (element) => {
         const queue = element ? [...element.children] : [];
         while (queue.length > 0) {
@@ -1525,7 +2058,7 @@ class ChromePage {
         }
         return null;
       };
-      const target = findRenderedElement(wrapper);
+      const target = wrappers.map(findRenderedElement).find(Boolean) ?? null;
       if (!(target instanceof HTMLElement)) return null;
       let rect = target.getBoundingClientRect();
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
@@ -1538,6 +2071,76 @@ class ChromePage {
       throw new Error(`Could not resolve browser center for Runtime node ${nodeId}.`);
     }
     return center;
+  }
+
+  async readRuntimeNodeInteractionSnapshot(
+    nodeId: string,
+  ): Promise<RuntimeNodeInteractionSnapshot> {
+    const encodedNodeId = encodeURIComponent(nodeId);
+    return this.evaluate<RuntimeNodeInteractionSnapshot>(`(() => {
+      const wrapperId = ${JSON.stringify(`studio-runtime-node-${encodedNodeId}`)};
+      const wrappers = [...document.querySelectorAll('[id]')].filter(
+        (element) => element.id === wrapperId,
+      );
+      const findRenderedElement = (element) => {
+        const queue = element ? [...element.children] : [];
+        while (queue.length > 0) {
+          const candidate = queue.shift();
+          if (!(candidate instanceof HTMLElement)) continue;
+          const rect = candidate.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) return candidate;
+          queue.unshift(...candidate.children);
+        }
+        return null;
+      };
+      const rendered = wrappers
+        .map((wrapper) => ({ wrapper, target: findRenderedElement(wrapper) }))
+        .find(({ target }) => target instanceof HTMLElement);
+      const wrapper = rendered?.wrapper ?? null;
+      const target = rendered?.target ?? null;
+      const input = wrapper?.querySelector('input') ?? null;
+      const toRect = (element) => {
+        if (!(element instanceof HTMLElement)) return null;
+        const rect = element.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height,
+        };
+      };
+      let targetRect = toRect(target);
+      if (
+        target instanceof HTMLElement &&
+        targetRect &&
+        (targetRect.top < 0 || targetRect.bottom > window.innerHeight)
+      ) {
+        target.scrollIntoView({ block: 'center' });
+        targetRect = toRect(target);
+      }
+      const hit = targetRect
+        ? document.elementFromPoint(
+            targetRect.left + targetRect.width / 2,
+            targetRect.top + targetRect.height / 2,
+          )
+        : null;
+      return {
+        activeElement: document.activeElement instanceof HTMLElement
+          ? document.activeElement.outerHTML.slice(0, 300)
+          : null,
+        hitElement: hit instanceof HTMLElement ? hit.outerHTML.slice(0, 300) : null,
+        inputDisabled: input instanceof HTMLInputElement && input.disabled,
+        inputExists: input instanceof HTMLInputElement,
+        inputFocused: input instanceof HTMLInputElement && document.activeElement === input,
+        inputReadOnly: input instanceof HTMLInputElement && input.readOnly,
+        inputValue: input instanceof HTMLInputElement ? input.value : null,
+        target: targetRect,
+        wrapper: toRect(wrapper),
+        wrapperCount: wrappers.length,
+      };
+    })()`);
   }
 
   async readUnsupportedGeometry(): Promise<UnsupportedGeometrySnapshot | null> {
@@ -1631,6 +2234,10 @@ class ChromePage {
       buttons: 0,
       clickCount: 1,
     });
+  }
+
+  async insertText(text: string): Promise<void> {
+    await this.send('Input.insertText', { text });
   }
 
   async mouseDrag(startX: number, startY: number, endX: number, endY: number): Promise<void> {

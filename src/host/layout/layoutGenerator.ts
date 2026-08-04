@@ -289,6 +289,9 @@ export class GeneratedAppFileGenerator {
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
         : '',
+      includeStudio
+        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`
+        : '',
       ...pluginImports,
     ]);
 
@@ -366,6 +369,9 @@ export class GeneratedAppFileGenerator {
         : '',
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
+        : '',
+      includeStudio
+        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`
         : '',
     ];
 

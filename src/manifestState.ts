@@ -1,5 +1,6 @@
 import type {
   AppDataManifest,
+  AppManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
   DataSourceRegistry,
@@ -173,12 +174,40 @@ export function listScreenIdsInRouteOrder(routes: RouteDefinition[]): string[] {
   return collectScreenRouteEntries(routes).map((entry) => entry.screenId);
 }
 
+/**
+ * Resolves the initial leaf screen selected by a nested navigator tree.
+ * Each navigator's initial route is preferred, with unusable routes falling
+ * back to the first route that reaches an available screen.
+ */
+export function resolveInitialScreenId(
+  navigator: NavigatorSpec,
+  screens?: AppManifest['screens'],
+): string | null {
+  const initialRoute = navigator.initialRouteName
+    ? navigator.routes.find((route) => route.name === navigator.initialRouteName)
+    : undefined;
+  const candidateRoutes = initialRoute
+    ? [initialRoute, ...navigator.routes.filter((route) => route !== initialRoute)]
+    : navigator.routes;
+
+  for (const route of candidateRoutes) {
+    if (route.navigator) {
+      const nestedScreenId = resolveInitialScreenId(route.navigator, screens);
+      if (nestedScreenId) return nestedScreenId;
+    }
+
+    if (route.screenId && (!screens || screens[route.screenId])) {
+      return route.screenId;
+    }
+  }
+
+  return null;
+}
+
 export function resolveInitialActiveScreenId(manifest: StudioManifest | null): string | null {
   if (!manifest) return null;
 
-  const firstRoutedScreenId = listScreenIdsInRouteOrder(manifest.navigator.routes).find(
-    (screenId) => !!manifest.screens[screenId],
-  );
+  const firstRoutedScreenId = resolveInitialScreenId(manifest.navigator, manifest.screens);
   const [firstScreenId] = Object.keys(manifest.screens);
   return firstRoutedScreenId ?? firstScreenId ?? null;
 }

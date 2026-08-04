@@ -118,4 +118,26 @@ describe('studioSelectionModel', () => {
     expect(resolveStudioSelectedNodeId(root, 'missing')).toBeNull();
     expect(resolveStudioSelectedNodeId(root, 'child')).toBe('child');
   });
+
+  test('retains selection only while the selected node belongs to the active screen root', () => {
+    const catalogRoot = {
+      id: 'catalog-root',
+      type: 'Screen',
+      children: [{ id: 'search-input', type: 'Input' }],
+    };
+    const detailRoot = {
+      id: 'detail-root',
+      type: 'Screen',
+      children: [{ id: 'product-title', type: 'Text' }],
+    };
+    const catalogAfterDeletion = {
+      ...catalogRoot,
+      children: [],
+    };
+
+    expect(resolveStudioSelectedNodeId(catalogRoot, 'search-input')).toBe('search-input');
+    expect(resolveStudioSelectedNodeId(detailRoot, 'search-input')).toBeNull();
+    expect(resolveStudioSelectedNodeId(detailRoot, 'product-title')).toBe('product-title');
+    expect(resolveStudioSelectedNodeId(catalogAfterDeletion, 'search-input')).toBeNull();
+  });
 });

@@ -157,31 +157,6 @@ function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady:
     : '';
 
   const appHeaderHelpers = `
-function normalizeAppHeaderPath(pathname: string): string {
-  const normalized = pathname.replace(/\\\/+$/, '');
-  return normalized === '' ? '/' : normalized;
-}
-
-function getAppHeaderSegments(pathname: string): string[] {
-  const normalized = normalizeAppHeaderPath(pathname);
-  if (normalized === '/') return ['index'];
-  return normalized.replace(/^\\\/+/, '').split('/').filter(Boolean);
-}
-
-function findRouteBySegments(navigator: NavigatorSpec, segments: string[]): RouteDefinition | null {
-  let current: NavigatorSpec | undefined = navigator;
-  let match: RouteDefinition | undefined;
-
-  for (const segment of segments) {
-    if (!current) break;
-    match = current.routes.find((route) => route.name === segment);
-    if (!match) break;
-    current = match.navigator ?? undefined;
-  }
-
-  return match ?? null;
-}
-
 function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteDefinition | null {
   for (const route of navigator.routes) {
     if (route.screenId === screenId) {
@@ -200,9 +175,9 @@ function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteD
 }
 
 function resolveAppHeaderTitle(manifest: AppManifest, pathname: string): string {
-  const segments = getAppHeaderSegments(pathname);
-  const route = findRouteBySegments(manifest.navigator, segments);
-  const screen = route?.screenId ? manifest.screens[route.screenId] : undefined;
+  const screenId = resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens);
+  const route = screenId ? findRouteByScreenId(manifest.navigator, screenId) : null;
+  const screen = screenId ? manifest.screens[screenId] : undefined;
   return route?.label ?? screen?.title ?? screen?.name ?? route?.name ?? 'App';
 }
 
@@ -472,6 +447,7 @@ const shouldMountAppHeader =
       <StudioProvider
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
+        activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
       >
         <StudioShell
           output={output}

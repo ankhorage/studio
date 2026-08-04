@@ -78,6 +78,9 @@ jobs:
             echo "No test:smoke:studio-web script found; skipping."
           fi
 
+      - name: Run generated app web E2E
+        run: bun run test:e2e:generated-app-web
+
       - name: Run typecheck
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.typecheck ? 0 : 1)"; then

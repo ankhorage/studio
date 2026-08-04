@@ -16,6 +16,7 @@ import {
   makeUniqueSiblingRouteName,
   pathToKey,
   removeScreenIdFromRoutes,
+  resolveScreenIdForPathname,
   toCanonicalRoutePattern,
   updateNavigatorAtPath,
 } from './routeUtils';
@@ -102,6 +103,9 @@ describe('routeUtils public exports', () => {
       'screen-3',
     );
     expect(toCanonicalRoutePattern(['(app)', 'shop', 'index'])).toBe('/shop');
+    expect(resolveScreenIdForPathname({ type: 'stack', routes }, '/details')).toBe(
+      'screen-details',
+    );
     expect(
       makeUniqueRouteNameForParent('shop', [{ name: 'shop' }], ['(app)'], new Set(['/shop'])),
     ).toBe('shop-2');

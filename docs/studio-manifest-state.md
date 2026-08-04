@@ -7,7 +7,7 @@ This package now exposes a package-neutral manifest state model through `@ankhor
 The manifest state model owns reusable operations that edit or inspect Studio manifests without React, React Native, Expo Router, DnD, Supabase, storage, or concrete Zora implementation modules:
 
 - manifest fingerprinting for host sync checks
-- active screen and root node resolution
+- recursive initial-screen, active-screen, and root-node resolution
 - safe selected-node resolution
 - screen route tree helpers
 - node update, delete, insert, move, and reorder mutations
@@ -33,7 +33,13 @@ Where a mutation needs component placement rules, callers pass `StudioComponentM
 Use the manifest-state subpath when consuming these helpers:
 
 ```ts
-import { updateStudioManifestNode, addStudioManifestScreen } from '@ankhorage/studio/manifestState';
+import {
+  addStudioManifestScreen,
+  resolveInitialScreenId,
+  updateStudioManifestNode,
+} from '@ankhorage/studio/manifestState';
 ```
 
-The root package remains the public contracts and authoring model entrypoint. The manifest-state subpath is intentionally separate so `ankhorage4` can migrate its React hook shell incrementally.
+The root package remains the public contracts and authoring model entrypoint. The manifest-state
+subpath keeps route and authoring decisions reusable by Studio and generated app hosts without
+coupling the model to a React lifecycle or platform router.

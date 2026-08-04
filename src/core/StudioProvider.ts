@@ -29,7 +29,9 @@ import {
   type StudioScreenId,
   type ThemeUpdates,
 } from '../index';
+import { resolveActiveRootNode, resolveInitialActiveScreenId } from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
+import { resolveScreenIdForPathname } from '../routeUtils';
 import { resolveStudioSelectedNodeId } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
@@ -50,45 +52,26 @@ export interface StudioProviderProps {
   children: ReactNode;
   projectId: string;
   initialManifest?: StudioManifest | null;
+  activePathname?: string;
 }
 
 const noop = () => undefined;
 const noopAsync = () => Promise.resolve();
 const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;
 
-const resolveActiveRootNode = (
-  manifest: StudioManifest | null,
-  activeScreenId: StudioScreenId | null,
-): UiNode | null => {
-  if (!manifest) {
-    return null;
-  }
-
-  const route =
-    manifest.navigator.routes.find((candidate) => candidate.screenId === activeScreenId) ??
-    manifest.navigator.routes.find(
-      (candidate) => candidate.name === manifest.navigator.initialRouteName,
-    ) ??
-    manifest.navigator.routes[0];
-
-  const screenId = activeScreenId ?? route?.screenId;
-  if (!screenId) {
-    return null;
-  }
-
-  return manifest.screens[screenId]?.root ?? null;
-};
-
 export const StudioProvider = ({
   children,
   projectId,
   initialManifest = null,
+  activePathname,
 }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
   const [activeAdminRouteId, setActiveAdminRouteId] = useState<StudioAdminRouteId>('overview');
   const [activeCanvasDragNodeId, setActiveCanvasDragNodeId] = useState<StudioNodeId | null>(null);
-  const [activeScreenId, setActiveScreenId] = useState<StudioScreenId | null>(null);
+  const [requestedActiveScreenId, setRequestedActiveScreenId] = useState<StudioScreenId | null>(
+    null,
+  );
   const [selectedNodeId, selectNode] = useState<StudioNodeId | null>(null);
   const [lastNonAdminLocation, setLastNonAdminLocation] = useState('/');
   const [saveStatus, setSaveStatus] = useState<StudioContextValue['saveStatus']>('idle');
@@ -121,6 +104,23 @@ export const StudioProvider = ({
     setIsLoading,
     setError,
   });
+
+  const locationActiveScreenId = useMemo<StudioScreenId | null | undefined>(() => {
+    if (activePathname === undefined) return undefined;
+    if (!manifest) return null;
+    return resolveScreenIdForPathname(manifest.navigator, activePathname, manifest.screens);
+  }, [activePathname, manifest]);
+  const activeScreenId =
+    locationActiveScreenId !== undefined
+      ? locationActiveScreenId
+      : (requestedActiveScreenId ?? resolveInitialActiveScreenId(manifest));
+
+  useEffect(() => {
+    if (!locationActiveScreenId) return;
+    setRequestedActiveScreenId((current) =>
+      current === locationActiveScreenId ? current : locationActiveScreenId,
+    );
+  }, [locationActiveScreenId]);
 
   const rootNode = useMemo<UiNode | null>(
     () => resolveActiveRootNode(manifest, activeScreenId),
@@ -238,7 +238,7 @@ export const StudioProvider = ({
       updateOAuthProviders,
       moveNode: noop,
       reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
-      setActiveScreenId,
+      setActiveScreenId: setRequestedActiveScreenId,
       findNode: findNodeById,
       setStudioMode,
       togglePreviewMode: () => setPreviewMode((current) => !current),

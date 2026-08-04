@@ -21,6 +21,7 @@ import {
   pathToKey,
   removeScreenIdFromRoutes,
   reorderStudioManifestScreens,
+  resolveInitialScreenId,
   type ScreenRouteEntry,
   type ScreenRouteGroup,
   setStudioManifestActiveThemeId,
@@ -117,6 +118,7 @@ describe('manifestState public surface', () => {
     ]);
     expect(findNavigatorAtPath(rootNavigator, ['(app)'])?.type).toBe('tabs');
     expect(findNavigatorAtPath(updatedNavigator, ['(app)'])?.initialRouteName).toBe('settings');
+    expect(resolveInitialScreenId(rootNavigator, createManifest().screens)).toBe('screen-home');
     expect(JSON.stringify(removeScreenIdFromRoutes(routes, 'screen-settings'))).not.toContain(
       'screen-settings',
     );
