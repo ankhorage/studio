@@ -238,7 +238,7 @@
     "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
     "@ankhorage/runtime": "^0.3.0",
     "@ankhorage/supabase-auth": "^1.1.1",
-    "@ankhorage/supabase-vault": "^0.2.0",
+    "@ankhorage/supabase-vault": "^0.2.3",
     "@ankhorage/templates": "^3.0.0",
     "@ankhorage/zora": "^2.9.1",
     "@ankhorage/zora-chess": "^0.1.2",

@@ -15,7 +15,7 @@
         "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
         "@ankhorage/runtime": "^0.3.0",
         "@ankhorage/supabase-auth": "^1.1.1",
-        "@ankhorage/supabase-vault": "^0.2.0",
+        "@ankhorage/supabase-vault": "^0.2.3",
         "@ankhorage/templates": "^3.0.0",
         "@ankhorage/zora": "^2.9.1",
         "@ankhorage/zora-chess": "^0.1.2",
@@ -117,7 +117,7 @@
 
     "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.1.1", "", { "dependencies": { "@ankhorage/contracts": "^3.0.0", "@supabase/supabase-js": "2.105.4" } }, "sha512-ksI5OFyaeznPIklR4VDvw80XdX02OmDc7gPn0an8D7B6tDW45Rqj09CyAeouU7Yt0tlSJyAOGHFDxu4EWS/k3g=="],
 
-    "@ankhorage/supabase-vault": ["@ankhorage/supabase-vault@0.2.1", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" } }, "sha512-WkAsYQUtSnSTPx3hA93LowWs3mBjY7sbKTe8yEolKlzpUhr4Y5rhcUZvDhk30uBgqwfkRTCHxKNEDraomlkj0g=="],
+    "@ankhorage/supabase-vault": ["@ankhorage/supabase-vault@0.2.3", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" } }, "sha512-IoCtg2NiMVlheX87hGWn/037AEkFRvhGUCiC3RE7UMVT5wgikj83hWdmgCSl/eNJjv1wxaAR7U51M0af/mMdFw=="],
 
     "@ankhorage/surface": ["@ankhorage/surface@2.1.1", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8", "@ankhorage/contracts": "^4.0.1" }, "peerDependencies": { "@expo/vector-icons": ">=14.0.0", "expo-font": "^55.0.6", "react": ">=18.2.0", "react-native": ">=0.72.0", "react-native-safe-area-context": "^5.0.0" }, "optionalPeers": ["@expo/vector-icons", "expo-font"] }, "sha512-zBd/0q4Fs6d2kq+cDXvN+61azZ7cTR0fiPflvAcQF8DA2wlaB/gBkfSkazkG6iR4UT3YNcdhzHou0eeI3y4nrg=="],
 
@@ -2064,6 +2064,8 @@
     "@ankhorage/expo-runtime/@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
 
     "@ankhorage/infra/@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
+
+    "@ankhorage/infra/@ankhorage/supabase-vault": ["@ankhorage/supabase-vault@0.2.1", "", { "dependencies": { "@ankhorage/contracts": "^2.1.0" } }, "sha512-WkAsYQUtSnSTPx3hA93LowWs3mBjY7sbKTe8yEolKlzpUhr4Y5rhcUZvDhk30uBgqwfkRTCHxKNEDraomlkj0g=="],
 
     "@ankhorage/runtime/@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
 
