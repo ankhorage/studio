@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.1
+
+### Patch Changes
+
+- cc24a58: update INFRA
+
 ## 0.11.0
 
 ### Minor Changes
