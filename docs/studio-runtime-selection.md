@@ -5,6 +5,13 @@ Generated apps compose Studio selection through the normal Runtime renderer conf
 selection. Edit mode supplies `interactionPolicy="passive"` only to components that explicitly
 support the canonical policy; Preview restores `enabled`.
 
+The same root selection surface measures the active Runtime node and renders its selected-state
+outline with the current ZORA primary action semantic. The overlay is layout-neutral and uses
+`pointerEvents="none"`; scroll, resize, responsive layout, and native settle refresh its geometry.
+Changing or clearing selection immediately removes the previous outline, and Preview renders no
+selection chrome. This authoring state is never written into manifest node props or implemented by
+individual ZORA components.
+
 Unsupported extension components can expose indicator geometry on native by attaching
 `useStudioUnsupportedNodeMeasurement()` from `@ankhorage/studio/runtime` to their existing native
 root view:
@@ -24,10 +31,11 @@ The hook measures the component's authored root through React Native's public re
 opt the component into interaction-policy support, clone the rendered element, or alter the
 component's props or identity.
 
-The visual indicator is rendered by the root selection surface with `pointerEvents="none"`.
+The unsupported-node visual indicator remains a distinct dashed layer rendered by the root
+selection surface with `pointerEvents="none"`.
 Native scroll input starts a bounded settle sequence that stops after stable measurements or a
-strict sample limit; Preview, unmount, navigation, and removal of the last unsupported measurement
-cancel pending work.
+strict sample limit. Preview, unmount, navigation, and measurement removal cancel pending work once
+no selected or unsupported indicator remains.
 
 The generated Studio shell synchronizes the current app pathname into `StudioProvider`. Studio
 resolves the owning screen recursively from the manifest navigator, so selections on nested Stack,

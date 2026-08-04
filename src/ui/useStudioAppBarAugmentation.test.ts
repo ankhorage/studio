@@ -22,6 +22,21 @@ test('uses the URL as the admin route source of truth', () => {
   expect(source).not.toContain('setActiveRoute');
 });
 
+test('returns keyed AppBar actions as flat direct children in intentional order', () => {
+  const source = readFileSync(
+    path.join(path.dirname(fileURLToPath(import.meta.url)), 'useStudioAppBarAugmentation.ts'),
+    'utf8',
+  );
+
+  expect(source).toContain("key: 'administration'");
+  expect(source).toContain('...contextActions.map((action) =>');
+  expect(source).toContain('key: action.id');
+  expect(source).not.toContain('React.Fragment');
+  expect(source.indexOf("key: 'administration'")).toBeLessThan(
+    source.indexOf('...contextActions.map((action) =>'),
+  );
+});
+
 test('resolves contextual app bar actions for selected nodes', () => {
   const actions = resolveStudioAppBarContextActions({
     selectedNodeId: 'child',

@@ -78,24 +78,24 @@ describe('stationarySelection RN integration', () => {
   });
 
   it('renders root-owned unsupported indicators with pointerEvents none', () => {
-    expect(source).toContain('...(props.isEditMode ? indicatorRects : []).map((rect) =>');
+    expect(source).toContain('rect.showUnsupportedIndicator');
+    expect(source).toContain('studio-unsupported-indicator-');
     expect(source).toContain("pointerEvents: 'none'");
   });
 
   it('hides unsupported indicators synchronously in Preview', () => {
-    expect(source).toContain('...(props.isEditMode ? indicatorRects : []).map((rect) =>');
+    expect(source).toContain('...(props.isEditMode');
+    expect(source).toContain('? indicatorRects.filter((rect) => rect.showUnsupportedIndicator)');
   });
 
   it('retains duplicate live wrapper measurements for the same Runtime node', () => {
-    expect(source).toContain('new Map<string, Set<UnsupportedNodeMeasurement>>()');
+    expect(source).toContain('new Map<string, Set<RuntimeNodeMeasurement>>()');
     expect(source).toContain('measurements.add(measurement)');
     expect(source).toContain('ref: setViewRef');
   });
 
   it('places pointerEvents as a View prop, not inside style', () => {
-    const indicatorStart = source.indexOf(
-      '...(props.isEditMode ? indicatorRects : []).map((rect) =>',
-    );
+    const indicatorStart = source.indexOf('studio-unsupported-indicator-');
     const indicatorBlock = source.slice(indicatorStart);
     expect(indicatorBlock).toContain("pointerEvents: 'none'");
     const styleBlock = /style:\s*\{([\s\S]*?)\n\s*\},/.exec(indicatorBlock);
@@ -112,6 +112,36 @@ describe('stationarySelection RN integration', () => {
 
     expect(recorderSource).not.toContain("position: 'absolute'");
     expect(recorderSource).not.toContain('borderColor');
+  });
+
+  it('measures supported Runtime nodes for selected-state chrome', () => {
+    expect(source).toContain('ctx.registerRuntimeNode(props.nodeId');
+    expect(source).toContain('measureRuntimeNodeWebView(view)');
+    expect(source).toContain('nodeId === selectedNodeIdRef.current');
+    expect(source).toContain('props.selectedNodeId, requestIndicatorRefresh');
+  });
+
+  it('measures root nodes without adding them to the stationary interaction path', () => {
+    expect(source).toContain('recordSelection: !args.isRoot');
+    expect(source).toContain('if (!ctx || !props.recordSelection)');
+    expect(source).not.toContain('if (args.isRoot || !args.node.id)');
+  });
+
+  it('renders theme-semantic selected chrome without intercepting input', () => {
+    const selectedIndicatorStart = source.indexOf('studio-selected-indicator-');
+    const selectedIndicatorBlock = source.slice(selectedIndicatorStart);
+
+    expect(selectedIndicatorStart).toBeGreaterThan(-1);
+    expect(selectedIndicatorBlock).toContain("pointerEvents: 'none'");
+    expect(selectedIndicatorBlock).toContain('borderColor: theme.semantics.action.primary.base');
+    expect(selectedIndicatorBlock).toContain('borderWidth: 2');
+    expect(selectedIndicatorBlock).toContain('left: rect.x - 2');
+    expect(selectedIndicatorBlock).toContain('width: rect.width + 4');
+  });
+
+  it('suppresses selected chrome synchronously outside Edit mode or without selection', () => {
+    expect(source).toContain('...(props.isEditMode && props.selectedNodeId');
+    expect(source).toContain('rect.nodeId === props.selectedNodeId');
   });
 
   it('uses lazy coordinator creation', () => {

@@ -648,8 +648,8 @@ adminWebSmokeTest(
               );
             }
             expect(bodyText).toContain('Generated runtime row 16');
-            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=2');
-            await verifyDesktopSelectionAndUnsupportedGeometry(page, 1, 2);
+            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=3');
+            await verifyDesktopSelectionAndUnsupportedGeometry(page, 1, 3);
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
@@ -697,6 +697,8 @@ async function verifyNestedNutritionSelection(
   await page.waitForStudioScreenState(productsScreenState, HTTP_TIMEOUT_MS, expoOutput);
   await waitForBodyText(page, (text) => text.includes('Catalog products'), HTTP_TIMEOUT_MS);
   expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
+  const initialAppBarGeometry = await page.readAppBarActionGeometry(['Administration']);
+  expect(initialAppBarGeometry.actions.length).toBe(1);
 
   const interactionBeforeClick = await waitForRuntimeNodeInteractionReady(
     page,
@@ -729,6 +731,28 @@ async function verifyNestedNutritionSelection(
     `mode=edit;selection=${searchInputNodeId};changes=1`,
   );
   expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(productsScreenState));
+  const appBarLabels = ['Administration', 'Properties', 'Select parent', 'Clear selection'];
+  const selectedAppBarGeometry = await page.readAppBarActionGeometry(appBarLabels);
+  expectAppBarActionsHorizontal(selectedAppBarGeometry, appBarLabels);
+  expect(
+    Math.abs(
+      (selectedAppBarGeometry.actions[0]?.rect.top ?? 0) -
+        (initialAppBarGeometry.actions[0]?.rect.top ?? 0),
+    ),
+  ).toBeLessThanOrEqual(2);
+
+  const selectedGeometry = await waitForSelectedGeometry(page, searchInputNodeId, 15_000);
+  expectSelectedRectToMatch(selectedGeometry);
+  expect(selectedGeometry.pointerEvents).toBe('none');
+  expect(selectedGeometry.borderColor).not.toBe('rgba(0, 0, 0, 0)');
+
+  await page.setViewportSize(820, 900);
+  const resizedSelectedGeometry = await waitForSelectedGeometry(page, searchInputNodeId, 15_000);
+  expectSelectedRectToMatch(resizedSelectedGeometry);
+  expectAppBarActionsHorizontal(await page.readAppBarActionGeometry(appBarLabels), appBarLabels);
+  await page.setViewportSize(1280, 900);
+  expectSelectedRectToMatch(await waitForSelectedGeometry(page, searchInputNodeId, 15_000));
+
   await page.insertText('edit-mode-must-remain-passive');
   const interactionAfterClick = await page.readRuntimeNodeInteractionSnapshot(searchInputNodeId);
   expect(interactionAfterClick.inputExists).toBe(true);
@@ -742,6 +766,20 @@ async function verifyNestedNutritionSelection(
       ),
     ).toBe(true);
   }
+
+  await page.clickAppBarAction('Select parent');
+  const parentNodeId = await waitForSelectedNodeAtChangeCount(page, 2, 15_000);
+  expect(parentNodeId).not.toBe(searchInputNodeId);
+  expect(parentNodeId).not.toBe('none');
+  expectSelectedRectToMatch(await waitForSelectedGeometry(page, parentNodeId, 15_000));
+
+  await page.clickAppBarAction('Clear selection');
+  await waitForStudioSmokeState(page, 'mode=edit;selection=none;changes=3', 15_000);
+  expect(
+    await page.evaluate<number>(
+      `document.querySelectorAll('[data-testid^="studio-selected-indicator-"]').length`,
+    ),
+  ).toBe(0);
 }
 
 interface BrowserRect {
@@ -771,6 +809,21 @@ interface UnsupportedGeometrySnapshot {
   readonly target: BrowserRect;
   readonly neighbor: BrowserRect;
   readonly pointerEvents: string;
+}
+
+interface SelectedGeometrySnapshot {
+  readonly borderColor: string;
+  readonly indicator: BrowserRect;
+  readonly pointerEvents: string;
+  readonly target: BrowserRect;
+}
+
+interface AppBarActionGeometrySnapshot {
+  readonly actions: readonly {
+    readonly label: string;
+    readonly rect: BrowserRect;
+  }[];
+  readonly clusterHeight: number;
 }
 
 interface CapturedLayoutRect {
@@ -972,6 +1025,7 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(
     `document.querySelector('[data-testid="native-row-target-private-state"]')?.textContent ?? ''`,
   );
   expect(privateStateAfterInteraction).not.toBe(privateStateBefore);
+  expectSelectedRectToMatch(await waitForSelectedGeometry(page, 'native-row-target', 15_000));
 
   const editLayoutSnapshot = await page.captureSmokeLayout();
   expect(editLayoutSnapshot.rects['native-row-parent']).not.toBeNull();
@@ -992,6 +1046,11 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(
   expect(
     await page.evaluate<boolean>(
       `document.getElementById('studio-unsupported-indicator-unsupported-runtime-target') === null`,
+    ),
+  ).toBe(true);
+  expect(
+    await page.evaluate<boolean>(
+      `document.getElementById('studio-selected-indicator-native-row-target') === null`,
     ),
   ).toBe(true);
   const previewLayoutSnapshot = await page.captureSmokeLayout();
@@ -1056,6 +1115,26 @@ async function waitForUnsupportedGeometry(
   );
 }
 
+async function waitForSelectedGeometry(
+  page: ChromePage,
+  nodeId: string,
+  timeoutMs: number,
+): Promise<SelectedGeometrySnapshot> {
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    const snapshot = await page.readSelectedGeometry(nodeId);
+    if (snapshot && selectedRectMatches(snapshot)) {
+      return snapshot;
+    }
+    await Bun.sleep(100);
+  }
+
+  throw new Error(
+    `Timed out waiting for selected Runtime node geometry for ${nodeId}.\n${await page.readSelectedGeometryDiagnostics(nodeId)}\nChrome errors:\n${page.errors.join('\n')}`,
+  );
+}
+
 async function waitForStudioSmokeState(
   page: ChromePage,
   expected: string,
@@ -1072,6 +1151,27 @@ async function waitForStudioSmokeState(
 
   throw new Error(
     `Timed out waiting for Studio smoke state ${expected}; received ${await page.readStudioSmokeState()}.`,
+  );
+}
+
+async function waitForSelectedNodeAtChangeCount(
+  page: ChromePage,
+  changeCount: number,
+  timeoutMs: number,
+): Promise<string> {
+  const start = Date.now();
+
+  while (Date.now() - start < timeoutMs) {
+    const state = await page.readStudioSmokeState();
+    const match = /^mode=edit;selection=(.+);changes=(\d+)$/.exec(state);
+    if (match?.[1] && Number(match[2]) === changeCount) {
+      return match[1];
+    }
+    await Bun.sleep(100);
+  }
+
+  throw new Error(
+    `Timed out waiting for Studio selection change ${changeCount}; received ${await page.readStudioSmokeState()}.`,
   );
 }
 
@@ -1229,6 +1329,47 @@ function expectRectToMatch(actual: BrowserRect, expected: BrowserRect): void {
   expect(Math.abs(actual.top - expected.top)).toBeLessThanOrEqual(2);
   expect(Math.abs(actual.width - expected.width)).toBeLessThanOrEqual(2);
   expect(Math.abs(actual.height - expected.height)).toBeLessThanOrEqual(2);
+}
+
+function expectSelectedRectToMatch(snapshot: SelectedGeometrySnapshot): void {
+  expect(Math.abs(snapshot.indicator.left - (snapshot.target.left - 2))).toBeLessThanOrEqual(2);
+  expect(Math.abs(snapshot.indicator.top - (snapshot.target.top - 2))).toBeLessThanOrEqual(2);
+  expect(Math.abs(snapshot.indicator.width - (snapshot.target.width + 4))).toBeLessThanOrEqual(2);
+  expect(Math.abs(snapshot.indicator.height - (snapshot.target.height + 4))).toBeLessThanOrEqual(2);
+}
+
+function selectedRectMatches(snapshot: SelectedGeometrySnapshot): boolean {
+  return (
+    Math.abs(snapshot.indicator.left - (snapshot.target.left - 2)) <= 2 &&
+    Math.abs(snapshot.indicator.top - (snapshot.target.top - 2)) <= 2 &&
+    Math.abs(snapshot.indicator.width - (snapshot.target.width + 4)) <= 2 &&
+    Math.abs(snapshot.indicator.height - (snapshot.target.height + 4)) <= 2
+  );
+}
+
+function expectAppBarActionsHorizontal(
+  snapshot: AppBarActionGeometrySnapshot,
+  labels: readonly string[],
+): void {
+  expect(snapshot.actions.map((action) => action.label)).toEqual([...labels]);
+  const actionHeights = snapshot.actions.map((action) => action.rect.height);
+  expect(snapshot.clusterHeight).toBeLessThanOrEqual(Math.max(...actionHeights) + 4);
+  for (let index = 1; index < snapshot.actions.length; index += 1) {
+    const previous = snapshot.actions[index - 1];
+    const current = snapshot.actions[index];
+    expect(previous).toBeDefined();
+    expect(current).toBeDefined();
+    if (previous && current) {
+      expect(current.rect.left).toBeGreaterThan(previous.rect.left);
+      expect(
+        Math.abs(
+          current.rect.top +
+            current.rect.height / 2 -
+            (previous.rect.top + previous.rect.height / 2),
+        ),
+      ).toBeLessThanOrEqual(2);
+    }
+  }
 }
 
 function rectsOverlap(left: BrowserRect, right: BrowserRect): boolean {
@@ -2034,6 +2175,58 @@ class ChromePage {
     );
   }
 
+  async readAppBarActionGeometry(labels: readonly string[]): Promise<AppBarActionGeometrySnapshot> {
+    return this.evaluate<AppBarActionGeometrySnapshot>(`(() => {
+      const labels = ${JSON.stringify(labels)};
+      const toRect = (element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height,
+        };
+      };
+      const actions = [...document.querySelectorAll('[aria-label]')]
+        .filter((element) => labels.includes(element.getAttribute('aria-label')))
+        .map((element) => ({
+          label: element.getAttribute('aria-label'),
+          rect: toRect(element),
+        }));
+      const tops = actions.map((action) => action.rect.top);
+      const bottoms = actions.map((action) => action.rect.bottom);
+      return {
+        actions,
+        clusterHeight: actions.length > 0 ? Math.max(...bottoms) - Math.min(...tops) : 0,
+      };
+    })()`);
+  }
+
+  async clickAppBarAction(label: string): Promise<void> {
+    const clicked = await this.evaluate<boolean>(`(() => {
+      const action = [...document.querySelectorAll('[aria-label]')].find(
+        (element) => element.getAttribute('aria-label') === ${JSON.stringify(label)},
+      );
+      if (!(action instanceof HTMLElement)) return false;
+      action.click();
+      return true;
+    })()`);
+    if (!clicked) {
+      throw new Error(`Could not find Studio AppBar action ${label}.`);
+    }
+  }
+
+  async setViewportSize(width: number, height: number): Promise<void> {
+    await this.send('Emulation.setDeviceMetricsOverride', {
+      width,
+      height,
+      deviceScaleFactor: 1,
+      mobile: true,
+    });
+  }
+
   async captureSmokeLayout(): Promise<CapturedLayoutSnapshot> {
     return this.evaluate<CapturedLayoutSnapshot>(
       `globalThis.__studioSmokeCaptureLayout?.() ?? Promise.reject(new Error('Smoke layout capture unavailable'))`,
@@ -2192,6 +2385,55 @@ class ChromePage {
         pointerEvents: getComputedStyle(indicator).pointerEvents,
       };
     })()`);
+  }
+
+  async readSelectedGeometry(nodeId: string): Promise<SelectedGeometrySnapshot | null> {
+    const encodedNodeId = encodeURIComponent(nodeId);
+    return this.evaluate<SelectedGeometrySnapshot | null>(`(() => {
+      const wrapper = document.getElementById(${JSON.stringify(`studio-runtime-node-${encodedNodeId}`)});
+      const indicator = document.getElementById(${JSON.stringify(`studio-selected-indicator-${encodedNodeId}`)});
+      const findRenderedElement = (element) => {
+        const queue = element ? [...element.children] : [];
+        while (queue.length > 0) {
+          const candidate = queue.shift();
+          if (!(candidate instanceof HTMLElement)) continue;
+          const rect = candidate.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) return candidate;
+          queue.unshift(...candidate.children);
+        }
+        return null;
+      };
+      const target = findRenderedElement(wrapper);
+      if (!(target instanceof HTMLElement) || !(indicator instanceof HTMLElement)) return null;
+      const toRect = (element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+          width: rect.width,
+          height: rect.height,
+        };
+      };
+      const style = getComputedStyle(indicator);
+      return {
+        borderColor: style.borderColor,
+        indicator: toRect(indicator),
+        pointerEvents: style.pointerEvents,
+        target: toRect(target),
+      };
+    })()`);
+  }
+
+  async readSelectedGeometryDiagnostics(nodeId: string): Promise<string> {
+    const encodedNodeId = encodeURIComponent(nodeId);
+    return this.evaluate<string>(`JSON.stringify({
+      state: document.querySelector('[data-testid="studio-smoke-state"]')?.textContent ?? null,
+      root: document.querySelector('[data-testid="studio-stationary-selection-root"]')?.id ?? null,
+      wrapper: document.getElementById(${JSON.stringify(`studio-runtime-node-${encodedNodeId}`)})?.outerHTML.slice(0, 500) ?? null,
+      indicator: document.getElementById(${JSON.stringify(`studio-selected-indicator-${encodedNodeId}`)})?.outerHTML ?? null,
+    }, null, 2)`);
   }
 
   async readUnsupportedGeometryDiagnostics(): Promise<string> {
