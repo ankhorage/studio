@@ -240,7 +240,7 @@ function splitCommaSeparated(value: string | undefined): readonly string[] {
 }
 
 function readSafeStatusValue(stdout: string, pattern: RegExp): string | undefined {
-  const value = stdout.match(pattern)?.[1]?.trim();
+  const value = pattern.exec(stdout)?.[1]?.trim();
   if (!value || value.length > 2048 || /\s/u.test(value)) return undefined;
   return value;
 }
