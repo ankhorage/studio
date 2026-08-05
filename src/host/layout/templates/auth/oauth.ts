@@ -235,7 +235,7 @@ function resolveOAuthRedirectUri(): string {
     const location = getBrowserLocation();
     const origin = location ? Reflect.get(location, 'origin') : undefined;
     if (typeof origin === 'string' && origin.length > 0) {
-      return new URL(`/${callbackPath}`, origin).toString();
+      return new URL(\`/\${callbackPath}\`, origin).toString();
     }
     throw new Error('Web OAuth requires a canonical browser origin.');
   }
