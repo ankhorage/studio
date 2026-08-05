@@ -1,15 +1,16 @@
-import type { AuthRedirectEnvironment } from '@ankhorage/infra';
-import { resolveAuthRedirectConfiguration } from '@ankhorage/infra';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+
+import type { AuthRedirectEnvironment } from '@ankhorage/infra';
+import { resolveAuthRedirectConfiguration } from '@ankhorage/infra';
 
 import type { ProjectAuthDiagnostic } from '../../projectAuthHealth';
 import type {
   ProjectAuthRuntimeDiagnostics,
   ProjectAuthRuntimeRolloutStatus,
 } from '../../projectAuthRuntimeDiagnostics';
-import { getProjectPath } from '../orchestrator/projectPaths';
 import { runProjectInfraScriptCapture } from '../orchestrator/infraRuntime';
+import { getProjectPath } from '../orchestrator/projectPaths';
 
 const SAFE_INFRA_ENV_KEYS = new Set([
   'API_EXTERNAL_URL',
@@ -171,12 +172,11 @@ export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuth
     stdout,
     /provider\s+supabase-auth\/app-callback:\s*([^\r\n]+)/iu,
   );
-  const readiness = stdout.match(
-    /provider\s+supabase-auth\/GoTrue:\s*(not ready|ready)\b/iu,
-  )?.[1];
+  const readiness = /provider\s+supabase-auth\/GoTrue:\s*(not ready|ready)\b/iu.exec(stdout)?.[1];
 
   return {
-    rolloutStatus: readiness === 'ready' ? 'ready' : readiness === 'not ready' ? 'not-ready' : 'unavailable',
+    rolloutStatus:
+      readiness === 'ready' ? 'ready' : readiness === 'not ready' ? 'not-ready' : 'unavailable',
     ...(providerRedirectUrl ? { providerRedirectUrl } : {}),
     ...(appCallbackUrl ? { appCallbackUrl } : {}),
   };

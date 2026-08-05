@@ -31,15 +31,11 @@ describe('applyProjectAuthRuntimeDiagnostics', () => {
     });
 
     expect(health.status).toBe('healthy');
-    expect(health.callbackUrls.providerRedirectUrl).toBe(
-      'http://127.0.0.1:54321/auth/v1/callback',
-    );
-    expect(health.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
-      'auth_runtime_ready',
-    );
-    expect(health.diagnostics.filter((diagnostic) => diagnostic.code === 'app_callback_target')).toHaveLength(
-      3,
-    );
+    expect(health.callbackUrls.providerRedirectUrl).toBe('http://127.0.0.1:54321/auth/v1/callback');
+    expect(health.diagnostics.map((diagnostic) => diagnostic.code)).toContain('auth_runtime_ready');
+    expect(
+      health.diagnostics.filter((diagnostic) => diagnostic.code === 'app_callback_target'),
+    ).toHaveLength(3);
   });
 
   test('makes a not-ready runtime an error even when desired state is healthy', () => {

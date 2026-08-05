@@ -17,18 +17,10 @@ describe('resolveProjectAuthRedirectRuntime', () => {
       },
     });
 
-    expect(runtime.providerRedirectUrl).toBe(
-      'http://127.0.0.1:54321/auth/v1/callback',
-    );
-    expect(runtime.appCallbackTargets).toContain(
-      'http://127.0.0.1:19006/auth/callback',
-    );
-    expect(runtime.appCallbackTargets).toContain(
-      'http://localhost:*/auth/callback',
-    );
-    expect(runtime.appCallbackTargets).toContain(
-      'http://127.0.0.1:*/auth/callback',
-    );
+    expect(runtime.providerRedirectUrl).toBe('http://127.0.0.1:54321/auth/v1/callback');
+    expect(runtime.appCallbackTargets).toContain('http://127.0.0.1:19006/auth/callback');
+    expect(runtime.appCallbackTargets).toContain('http://localhost:*/auth/callback');
+    expect(runtime.appCallbackTargets).toContain('http://127.0.0.1:*/auth/callback');
     expect(runtime.appCallbackTargets).toContain('ankh-example://auth/callback');
   });
 
@@ -64,12 +56,8 @@ describe('resolveProjectAuthRedirectRuntime', () => {
       },
     });
 
-    expect(runtime.providerRedirectUrl).toBe(
-      'https://api.example.com/auth/v1/callback',
-    );
-    expect(runtime.appCallbackTargets).toEqual([
-      'https://example.com/auth/callback',
-    ]);
+    expect(runtime.providerRedirectUrl).toBe('https://api.example.com/auth/v1/callback');
+    expect(runtime.appCallbackTargets).toEqual(['https://example.com/auth/callback']);
     expect(runtime.redirectAllowList.some((target) => target.includes('*'))).toBeFalse();
     expect(runtime.redirectAllowList.some((target) => target.includes('localhost'))).toBeFalse();
   });
@@ -89,16 +77,15 @@ describe('resolveProjectAuthRedirectRuntime', () => {
       infraEnvironment: {
         APP_PORT_FORWARD_LOCAL_PORT: '19006',
         SUPABASE_GATEWAY_FORWARD_LOCAL_PORT: '54321',
-        OAUTH_NATIVE_REDIRECT_URLS:
-          'ankh-example://auth/callback,ankh-example-dev://auth/callback',
+        OAUTH_NATIVE_REDIRECT_URLS: 'ankh-example://auth/callback,ankh-example-dev://auth/callback',
       },
     });
 
-    expect(withoutNative.appCallbackTargets.some((target) => target.startsWith('ankh-'))).toBeFalse();
+    expect(
+      withoutNative.appCallbackTargets.some((target) => target.startsWith('ankh-')),
+    ).toBeFalse();
     expect(withNative.appCallbackTargets).toContain('ankh-example://auth/callback');
-    expect(withNative.appCallbackTargets).toContain(
-      'ankh-example-dev://auth/callback',
-    );
+    expect(withNative.appCallbackTargets).toContain('ankh-example-dev://auth/callback');
   });
 });
 
@@ -120,14 +107,14 @@ GOTRUE_EXTERNAL_GOOGLE_SECRET=must-not-be-returned
   });
 
   test('reports an explicit failed readiness check', () => {
-    expect(
-      parseProjectAuthRuntimeStatus('provider supabase-auth/GoTrue: not ready'),
-    ).toEqual({ rolloutStatus: 'not-ready' });
+    expect(parseProjectAuthRuntimeStatus('provider supabase-auth/GoTrue: not ready')).toEqual({
+      rolloutStatus: 'not-ready',
+    });
   });
 
   test('does not treat arbitrary script output as runtime diagnostics', () => {
-    expect(
-      parseProjectAuthRuntimeStatus('clientSecret=hidden\naccess_token=hidden'),
-    ).toEqual({ rolloutStatus: 'unavailable' });
+    expect(parseProjectAuthRuntimeStatus('clientSecret=hidden\naccess_token=hidden')).toEqual({
+      rolloutStatus: 'unavailable',
+    });
   });
 });

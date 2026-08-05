@@ -6,10 +6,7 @@ import type {
 } from './projectAuthHealth';
 
 export type ProjectAuthRuntimeRolloutStatus =
-  | 'ready'
-  | 'not-ready'
-  | 'unavailable'
-  | 'not-generated';
+  'ready' | 'not-ready' | 'unavailable' | 'not-generated';
 
 export interface ProjectAuthRuntimeDiagnostics {
   readonly providerRedirectUrl?: string;
@@ -48,16 +45,12 @@ export function applyProjectAuthRuntimeDiagnostics(
     diagnostics: sortedDiagnostics,
     callbackUrls: {
       ...health.callbackUrls,
-      ...(runtime.providerRedirectUrl
-        ? { providerRedirectUrl: runtime.providerRedirectUrl }
-        : {}),
+      ...(runtime.providerRedirectUrl ? { providerRedirectUrl: runtime.providerRedirectUrl } : {}),
     },
   };
 }
 
-function resolveRolloutDiagnostic(
-  status: ProjectAuthRuntimeRolloutStatus,
-): ProjectAuthDiagnostic {
+function resolveRolloutDiagnostic(status: ProjectAuthRuntimeRolloutStatus): ProjectAuthDiagnostic {
   switch (status) {
     case 'ready':
       return {
