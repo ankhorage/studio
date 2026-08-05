@@ -12,7 +12,8 @@ const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
 const LEGACY_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
 const CALLBACK_URL = 'https://app.example/auth/callback';
 const temporaryRoots = new Set<string>();
-const originalLocation = Reflect.get(globalThis, 'location');
+const hadOriginalLocation = Reflect.has(globalThis, 'location');
+const originalLocation: unknown = Reflect.get(globalThis, 'location');
 
 interface GeneratedOAuthRuntime {
   startOAuthAuthorization(providerId: string): Promise<GeneratedOAuthOutcome>;
@@ -42,7 +43,7 @@ afterEach(async () => {
       temporaryRoots.delete(root);
     }),
   );
-  if (originalLocation === undefined) {
+  if (!hadOriginalLocation) {
     Reflect.deleteProperty(globalThis, 'location');
   } else {
     Reflect.set(globalThis, 'location', originalLocation);
@@ -58,10 +59,8 @@ describe('generated OAuth lifecycle across full-page navigation', () => {
     await waitFor(() => harness.state.assignedUrls.length === 1);
 
     const markerBeforeCallback = readTransportMarker(harness.state.values);
-    expect(markerBeforeCallback).toEqual({
-      version: 1,
-      attemptId: expect.any(String),
-    });
+    expect(markerBeforeCallback.version).toBe(1);
+    expect(markerBeforeCallback.attemptId.length).toBeGreaterThan(0);
     expect(JSON.stringify(markerBeforeCallback)).not.toContain('provider');
     expect(JSON.stringify(markerBeforeCallback)).not.toContain('redirectUri');
     expect(hasPkceVerifier(harness.state.values)).toBe(true);
