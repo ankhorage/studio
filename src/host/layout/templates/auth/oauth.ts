@@ -174,7 +174,10 @@ export async function completeOAuthCallback(
 }
 
 function resolveOAuthRedirectUri(): string {
-  const callbackPath = OAUTH_CALLBACK_ROUTE.replace(/^\/+/, '');
+  let callbackPath = OAUTH_CALLBACK_ROUTE;
+  while (callbackPath.startsWith('/')) {
+    callbackPath = callbackPath.slice(1);
+  }
   if (Platform.OS === 'web') {
     const location = Reflect.get(globalThis, 'location');
     if (
