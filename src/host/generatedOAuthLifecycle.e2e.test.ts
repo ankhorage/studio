@@ -1,7 +1,7 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { afterEach, describe, expect, it } from 'bun:test';
 
@@ -11,9 +11,12 @@ const SESSION_STORAGE_KEY = 'generated.oauth.session';
 const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
 const LEGACY_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
 const CALLBACK_URL = 'https://app.example/auth/callback';
+const SCENARIO_ENV = 'ANKH_GENERATED_OAUTH_SCENARIO';
 const temporaryRoots = new Set<string>();
 const hadOriginalLocation = Reflect.has(globalThis, 'location');
 const originalLocation: unknown = Reflect.get(globalThis, 'location');
+
+type IsolatedScenario = 'denial' | 'success';
 
 interface GeneratedOAuthRuntime {
   startOAuthAuthorization(providerId: string): Promise<GeneratedOAuthOutcome>;
@@ -50,79 +53,121 @@ afterEach(async () => {
   }
 });
 
-describe('generated OAuth lifecycle across full-page navigation', () => {
-  it('preserves PKCE state, exchanges once, persists one session, and tolerates callback reload', async () => {
-    const harness = await createHarness();
-    const startDocument = await harness.importDocument('start');
-
-    void startDocument.startOAuthAuthorization('google');
-    await waitFor(() => harness.state.assignedUrls.length === 1);
-
-    const markerBeforeCallback = readTransportMarker(harness.state.values);
-    expect(markerBeforeCallback.version).toBe(1);
-    expect(markerBeforeCallback.attemptId.length).toBeGreaterThan(0);
-    expect(JSON.stringify(markerBeforeCallback)).not.toContain('provider');
-    expect(JSON.stringify(markerBeforeCallback)).not.toContain('redirectUri');
-    expect(hasPkceVerifier(harness.state.values)).toBe(true);
-
-    const callbackDocument = await harness.importDocument('callback');
-    const completed = await callbackDocument.completeOAuthCallback(
-      `${CALLBACK_URL}?code=opaque-code`,
-    );
-
-    expect(completed).toEqual({ status: 'authenticated' });
-    expect(harness.state.fetchCalls).toHaveLength(1);
-    expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
-    expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
-    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
-    expect(harness.state.values.has(LEGACY_TRANSPORT_ATTEMPT_KEY)).toBe(false);
-    expect(hasPkceVerifier(harness.state.values)).toBe(false);
-    expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
-
-    const reloadedCallbackDocument = await harness.importDocument('callback-reload');
-    const replay = await reloadedCallbackDocument.completeOAuthCallback(
-      `${CALLBACK_URL}?code=opaque-code`,
-    );
-
-    expect(replay).toEqual({ status: 'authenticated' });
-    expect(harness.state.fetchCalls).toHaveLength(1);
-  });
-
-  it('cleans provider denial across navigation and permits an immediate new attempt', async () => {
-    const harness = await createHarness();
-    const startDocument = await harness.importDocument('denial-start');
-
-    void startDocument.startOAuthAuthorization('google');
-    await waitFor(() => harness.state.assignedUrls.length === 1);
-    const firstAttemptId = readTransportMarker(harness.state.values).attemptId;
-    expect(hasPkceVerifier(harness.state.values)).toBe(true);
-
-    const callbackDocument = await harness.importDocument('denial-callback');
-    const denied = await callbackDocument.completeOAuthCallback(
-      `${CALLBACK_URL}?error=access_denied`,
-    );
-
-    expect(denied).toEqual({
-      status: 'cancelled',
-      message: 'Authorization was declined by the provider.',
+const isolatedScenario = process.env[SCENARIO_ENV];
+if (isolatedScenario === 'success' || isolatedScenario === 'denial') {
+  describe('isolated generated OAuth lifecycle scenario', () => {
+    it(isolatedScenario, async () => {
+      if (isolatedScenario === 'success') {
+        await runSuccessfulCallbackScenario();
+      } else {
+        await runProviderDenialScenario();
+      }
     });
-    expect(harness.state.fetchCalls).toHaveLength(0);
-    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
-    expect(hasPkceVerifier(harness.state.values)).toBe(false);
-
-    const restartDocument = await harness.importDocument('denial-restart');
-    void restartDocument.startOAuthAuthorization('google');
-    await waitFor(() => harness.state.assignedUrls.length === 2);
-
-    const restartedAttemptId = readTransportMarker(harness.state.values).attemptId;
-    expect(restartedAttemptId).not.toBe(firstAttemptId);
-    expect(hasPkceVerifier(harness.state.values)).toBe(true);
   });
-});
+} else {
+  describe('generated OAuth lifecycle across full-page navigation', () => {
+    it('preserves PKCE state, exchanges once, persists one session, and tolerates callback reload', async () => {
+      await runIsolatedScenario('success');
+    });
+
+    it('cleans provider denial across navigation and permits an immediate new attempt', async () => {
+      await runIsolatedScenario('denial');
+    });
+  });
+}
+
+async function runIsolatedScenario(scenario: IsolatedScenario): Promise<void> {
+  const child = Bun.spawn({
+    cmd: [process.execPath, 'test', fileURLToPath(import.meta.url)],
+    cwd: process.cwd(),
+    env: { ...process.env, [SCENARIO_ENV]: scenario },
+    stderr: 'pipe',
+    stdout: 'pipe',
+  });
+  const [exitCode, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text(),
+  ]);
+  if (exitCode !== 0) {
+    throw new Error(
+      `Generated OAuth ${scenario} scenario failed with exit code ${exitCode}.\n${stdout}\n${stderr}`,
+    );
+  }
+}
+
+async function runSuccessfulCallbackScenario(): Promise<void> {
+  const harness = await createHarness();
+  const startDocument = await harness.importDocument('start');
+
+  void startDocument.startOAuthAuthorization('google');
+  await waitFor(() => harness.state.assignedUrls.length === 1);
+
+  const markerBeforeCallback = readTransportMarker(harness.state.values);
+  expect(markerBeforeCallback.version).toBe(1);
+  expect(markerBeforeCallback.attemptId.length).toBeGreaterThan(0);
+  expect(JSON.stringify(markerBeforeCallback)).not.toContain('provider');
+  expect(JSON.stringify(markerBeforeCallback)).not.toContain('redirectUri');
+  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+
+  const callbackDocument = await harness.importDocument('callback');
+  const completed = await callbackDocument.completeOAuthCallback(
+    `${CALLBACK_URL}?code=opaque-code`,
+  );
+
+  expect(completed).toEqual({ status: 'authenticated' });
+  expect(harness.state.fetchCalls).toHaveLength(1);
+  expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
+  expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
+  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+  expect(harness.state.values.has(LEGACY_TRANSPORT_ATTEMPT_KEY)).toBe(false);
+  expect(hasPkceVerifier(harness.state.values)).toBe(false);
+  expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
+
+  const reloadedCallbackDocument = await harness.importDocument('callback-reload');
+  const replay = await reloadedCallbackDocument.completeOAuthCallback(
+    `${CALLBACK_URL}?code=opaque-code`,
+  );
+
+  expect(replay).toEqual({ status: 'authenticated' });
+  expect(harness.state.fetchCalls).toHaveLength(1);
+}
+
+async function runProviderDenialScenario(): Promise<void> {
+  const harness = await createHarness();
+  const startDocument = await harness.importDocument('denial-start');
+
+  void startDocument.startOAuthAuthorization('google');
+  await waitFor(() => harness.state.assignedUrls.length === 1);
+  const firstAttemptId = readTransportMarker(harness.state.values).attemptId;
+  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+
+  const callbackDocument = await harness.importDocument('denial-callback');
+  const denied = await callbackDocument.completeOAuthCallback(
+    `${CALLBACK_URL}?error=access_denied`,
+  );
+
+  expect(denied).toEqual({
+    status: 'cancelled',
+    message: 'Authorization was declined by the provider.',
+  });
+  expect(harness.state.fetchCalls).toHaveLength(0);
+  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+  expect(hasPkceVerifier(harness.state.values)).toBe(false);
+
+  const restartDocument = await harness.importDocument('denial-restart');
+  void restartDocument.startOAuthAuthorization('google');
+  await waitFor(() => harness.state.assignedUrls.length === 2);
+
+  const restartedAttemptId = readTransportMarker(harness.state.values).attemptId;
+  expect(restartedAttemptId).not.toBe(firstAttemptId);
+  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+}
 
 async function createHarness(): Promise<GeneratedOAuthHarness> {
   const root = await mkdtemp(path.join(tmpdir(), 'ankh-generated-oauth-lifecycle-'));
   temporaryRoots.add(root);
+  await symlink(path.join(process.cwd(), 'node_modules'), path.join(root, 'node_modules'), 'dir');
 
   await writeFile(
     path.join(root, 'state.ts'),
