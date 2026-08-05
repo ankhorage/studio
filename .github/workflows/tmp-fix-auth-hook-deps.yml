@@ -1,0 +1,54 @@
+name: Finalize auth save callback dependencies
+
+on:
+  push:
+    branches:
+      - fix/issue-182-auth-save-runtime-sync
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/issue-182-auth-save-runtime-sync
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Patch callback dependency
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('src/ui/admin/pages/AuthAdminPage.tsx')
+          source = path.read_text()
+          old = '    [flushManifest, refreshHealth, updateAuthSettings],\n'
+          new = '    [flushManifest, projectId, refreshHealth, updateAuthSettings],\n'
+          if source.count(old) != 1:
+              raise RuntimeError(f'expected one auth save dependency list, found {source.count(old)}')
+          path.write_text(source.replace(old, new, 1))
+          Path('.github/workflows/tmp-fix-auth-hook-deps.yml').unlink()
+          PY
+
+      - name: Validate
+        run: |
+          bun install --frozen-lockfile
+          bunx prettier --write src/ui/admin/pages/AuthAdminPage.tsx
+          bun test src/ui/admin/pages/AuthAdminPage.test.ts src/studioRuntimeApi.test.ts
+          bun run typecheck
+          bun run lint
+          git diff --exit-code -- bun.lock
+
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'fix: include project in auth runtime sync callback'
+          git push origin HEAD:fix/issue-182-auth-save-runtime-sync
