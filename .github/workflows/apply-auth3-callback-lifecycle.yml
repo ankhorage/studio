@@ -28,7 +28,7 @@ jobs:
       - name: Apply callback lifecycle changes
         run: |
           python scripts/apply-auth3-callback-lifecycle.py
-          python scripts/fix-auth3-e2e-module-resolution.py
+          python scripts/fix-auth3-stale-expectations.py
 
       - name: Install released dependencies
         run: bun install
@@ -57,6 +57,7 @@ jobs:
           git rm .github/workflows/apply-auth3-callback-lifecycle.yml
           git rm scripts/apply-auth3-callback-lifecycle.py
           git rm scripts/fix-auth3-e2e-module-resolution.py
+          git rm scripts/fix-auth3-stale-expectations.py
           git add -A
           git commit -m "Complete generated OAuth callback lifecycle"
           git push
