@@ -47,9 +47,7 @@ test('syncStudioRuntime surfaces host runtime errors', async () => {
     );
   }) as unknown as typeof fetch;
 
-  const error = await captureError(() =>
-    syncStudioRuntime('scanner', 'http://studio.test/api'),
-  );
+  const error = await captureError(() => syncStudioRuntime('scanner', 'http://studio.test/api'));
   expect(error.message).toBe('OAuth is enabled but no provider is enabled.');
 });
 
