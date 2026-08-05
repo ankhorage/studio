@@ -7,38 +7,57 @@ export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInR
 
   return `import * as Linking from 'expo-linking';
 import { Stack, useRouter } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text, useZoraTheme } from '@ankhorage/zora';
 
 import { completeOAuthCallback } from '@/auth/oauth';
 
 const SIGN_IN_ROUTE = '${signInTarget}';
 const POST_SIGN_IN_ROUTE = '${postSignInTarget}';
-const webBrowserCompletion =
-  Platform.OS === 'web' ? WebBrowser.maybeCompleteAuthSession() : null;
 const callbackScreenOptions = { title: 'Completing sign in' };
+
+interface ActiveCallbackCompletion {
+  callbackUrl: string;
+  promise: ReturnType<typeof completeOAuthCallback>;
+}
+
+let activeCallbackCompletion: ActiveCallbackCompletion | null = null;
+
+function completeOAuthCallbackOnce(callbackUrl: string) {
+  if (!activeCallbackCompletion || activeCallbackCompletion.callbackUrl !== callbackUrl) {
+    activeCallbackCompletion = {
+      callbackUrl,
+      promise: completeOAuthCallback(callbackUrl),
+    };
+  }
+  return activeCallbackCompletion.promise;
+}
 
 export default function OAuthCallbackScreen() {
   const router = useRouter();
   const callbackUrl = Linking.useURL();
   const { theme } = useZoraTheme();
-  const handledRef = useRef(false);
+  const handledOutcomeRef = useRef(false);
   const [message, setMessage] = useState('Completing secure sign in…');
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (webBrowserCompletion?.type === 'success' || handledRef.current) return;
-
     let active = true;
     void (async () => {
       const deliveredUrl = callbackUrl ?? (await Linking.getInitialURL());
-      if (!deliveredUrl || handledRef.current) return;
-      handledRef.current = true;
+      if (!deliveredUrl) {
+        if (active && !handledOutcomeRef.current) {
+          handledOutcomeRef.current = true;
+          setFailed(true);
+          setMessage('The OAuth callback URL is unavailable.');
+        }
+        return;
+      }
 
-      const outcome = await completeOAuthCallback(deliveredUrl);
-      if (!active) return;
+      const outcome = await completeOAuthCallbackOnce(deliveredUrl);
+      if (!active || handledOutcomeRef.current) return;
+      handledOutcomeRef.current = true;
 
       if (outcome.status === 'authenticated') {
         router.replace(POST_SIGN_IN_ROUTE);
