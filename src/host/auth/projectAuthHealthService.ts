@@ -1,20 +1,30 @@
+import type { AuthRedirectEnvironment } from '@ankhorage/infra';
+
 import type { ProjectAuthHealth } from '../../projectAuthHealth';
 import { analyzeProjectAuthHealth } from '../../projectAuthHealth';
+import { applyProjectAuthRuntimeDiagnostics } from '../../projectAuthRuntimeDiagnostics';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import type { ProjectSecretService } from '../secrets/projectSecretService';
+import { observeProjectAuthRuntimeDiagnostics } from './projectAuthRuntimeDiagnostics';
 
-type ProjectAuthHealthManager = Pick<ProjectManager, 'getProjectManifest' | 'getStudioManifest'>;
+type ProjectAuthHealthManager = Pick<
+  ProjectManager,
+  'getInfrastructureStatus' | 'getProjectManifest' | 'getStudioManifest'
+>;
 
 export class ProjectAuthHealthService {
   private readonly projectManager: ProjectAuthHealthManager;
   private readonly secretService: Pick<ProjectSecretService, 'list'>;
+  private readonly workspaceRoot: string;
 
   constructor(options: {
     readonly projectManager: ProjectAuthHealthManager;
     readonly secretService: Pick<ProjectSecretService, 'list'>;
+    readonly workspaceRoot: string;
   }) {
     this.projectManager = options.projectManager;
     this.secretService = options.secretService;
+    this.workspaceRoot = options.workspaceRoot;
   }
 
   async get(input: {
@@ -38,16 +48,48 @@ export class ProjectAuthHealthService {
       projectId: input.projectId,
       environment: input.environment,
     });
+    const desiredHealth = analyzeProjectAuthHealth({
+      manifest,
+      secretMetadata: secretResult.ok ? secretResult.data : [],
+      secretStoreAvailable: secretResult.ok,
+    });
+    const oauth = manifest.infra.auth?.oauth;
 
-    return {
-      ok: true,
-      state: 'loaded',
-      data: analyzeProjectAuthHealth({
-        manifest,
-        secretMetadata: secretResult.ok ? secretResult.data : [],
-        secretStoreAvailable: secretResult.ok,
-      }),
-    };
+    if (!oauth?.enabled || !oauth.providers.some((provider) => provider.enabled === true)) {
+      return {
+        ok: true,
+        state: 'loaded',
+        data: desiredHealth,
+      };
+    }
+
+    try {
+      const infraStatus = await this.projectManager.getInfrastructureStatus(input.projectId);
+      const runtimeDiagnostics = await observeProjectAuthRuntimeDiagnostics({
+        rootPath: this.workspaceRoot,
+        projectId: input.projectId,
+        target: infraStatus.target,
+        generated: infraStatus.hasLedger,
+        environment: resolveAuthRedirectEnvironment(input.environment),
+        callbackRoute: oauth.callbackRoute,
+      });
+
+      return {
+        ok: true,
+        state: 'loaded',
+        data: applyProjectAuthRuntimeDiagnostics(desiredHealth, runtimeDiagnostics),
+      };
+    } catch {
+      return {
+        ok: true,
+        state: 'loaded',
+        data: applyProjectAuthRuntimeDiagnostics(desiredHealth, {
+          appCallbackTargets: [],
+          redirectAllowList: [],
+          rolloutStatus: 'unavailable',
+        }),
+      };
+    }
   }
 
   private async readEditableManifest(projectId: string) {
@@ -57,6 +99,11 @@ export class ProjectAuthHealthService {
       return this.projectManager.getProjectManifest(projectId);
     }
   }
+}
+
+function resolveAuthRedirectEnvironment(environment: string | undefined): AuthRedirectEnvironment {
+  if (environment === 'preview' || environment === 'production') return environment;
+  return 'local';
 }
 
 export type ProjectAuthHealthResult =
