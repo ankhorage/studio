@@ -144,7 +144,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       setMessage(nextMessage);
       await refreshHealth();
     },
-    [flushManifest, refreshHealth, updateAuthSettings],
+    [flushManifest, projectId, refreshHealth, updateAuthSettings],
   );
 
   const persistCredentialLink = useCallback(
