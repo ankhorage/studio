@@ -1,5 +1,3 @@
-import type { AppManifest } from '@ankhorage/contracts';
-
 export async function syncStudioRuntime(projectId: string, apiBase?: string): Promise<void> {
   const resolvedApiBase = apiBase ?? (await import('./core/constants')).API_BASE;
   const encodedProjectId = encodeURIComponent(projectId);
@@ -16,7 +14,7 @@ export async function syncStudioRuntime(projectId: string, apiBase?: string): Pr
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(manifest as AppManifest),
+      body: JSON.stringify(manifest),
     },
   );
   const runtimeResult = await readJson(runtimeResponse, 'Studio runtime sync');
@@ -35,9 +33,9 @@ async function readJson(response: Response, label: string): Promise<unknown> {
 
 function readErrorMessage(value: unknown, fallback: string): string {
   if (typeof value !== 'object' || value === null) return fallback;
-  const error = (value as Record<string, unknown>).error;
+  const { error } = value as Record<string, unknown>;
   if (typeof error === 'string' && error.trim().length > 0) return error;
   if (typeof error !== 'object' || error === null) return fallback;
-  const message = (error as Record<string, unknown>).message;
+  const { message } = error as Record<string, unknown>;
   return typeof message === 'string' && message.trim().length > 0 ? message : fallback;
 }
