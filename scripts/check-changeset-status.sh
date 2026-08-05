@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Release validation retrigger.
 BASE_SHA="${CHANGESET_BASE_SHA:-origin/${GITHUB_BASE_REF:-main}}"
 HEAD_SHA="${CHANGESET_HEAD_SHA:-HEAD}"
 
