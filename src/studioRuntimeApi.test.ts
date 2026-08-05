@@ -47,13 +47,24 @@ test('syncStudioRuntime surfaces host runtime errors', async () => {
     );
   }) as unknown as typeof fetch;
 
-  await expect(syncStudioRuntime('scanner', 'http://studio.test/api')).rejects.toThrow(
-    'OAuth is enabled but no provider is enabled.',
+  const error = await captureError(() =>
+    syncStudioRuntime('scanner', 'http://studio.test/api'),
   );
+  expect(error.message).toBe('OAuth is enabled but no provider is enabled.');
 });
 
 function requestUrl(input: string | URL | Request): string {
   if (typeof input === 'string') return input;
   if (input instanceof URL) return input.toString();
   return input.url;
+}
+
+async function captureError(action: () => Promise<void>): Promise<Error> {
+  try {
+    await action();
+  } catch (error) {
+    if (error instanceof Error) return error;
+    throw error;
+  }
+  throw new Error('Expected action to reject.');
 }
