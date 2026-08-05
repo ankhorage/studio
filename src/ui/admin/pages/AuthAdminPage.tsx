@@ -28,6 +28,7 @@ import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
+import { syncStudioRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
 import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import {
@@ -139,6 +140,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       });
       updateAuthSettings(rebasedDraft);
       await flushManifest();
+      await syncStudioRuntime(projectId);
       setMessage(nextMessage);
       await refreshHealth();
     },
@@ -196,7 +198,10 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     setMessage(null);
     try {
       const result = await authAdminSession.runFullAuthSave(() =>
-        persistAuthDraft(draft, 'Authentication configuration saved to the Studio manifest.'),
+        persistAuthDraft(
+          draft,
+          'Authentication configuration saved and applied to the generated app.',
+        ),
       );
       if (!result.ok) setMessage(formatAuthAdminWriteBusyReason(result.reason));
     } catch (error) {
