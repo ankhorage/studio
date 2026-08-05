@@ -16,6 +16,7 @@ export function registerProjectAuthRoutes(
       ? null
       : new ProjectAuthHealthService({
           projectManager: options.projectManager,
+          workspaceRoot: options.workspaceRoot,
           secretService: new ProjectSecretService({
             projectManager: options.projectManager,
             workspaceRoot: options.workspaceRoot,
