@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.8
+
+### Patch Changes
+
+- 657738e: Generate OAuth callback-path normalization without a nested escaped regular expression so generated apps remain valid TypeScript.
+
 ## 0.11.7
 
 ### Patch Changes
