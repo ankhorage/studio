@@ -43,14 +43,11 @@ test('syncStudioRuntime surfaces host runtime errors', async () => {
       );
     }
     return Promise.resolve(
-      Response.json(
-        { error: 'OAuth is enabled but no provider is enabled.' },
-        { status: 500 },
-      ),
+      Response.json({ error: 'OAuth is enabled but no provider is enabled.' }, { status: 500 }),
     );
   }) as unknown as typeof fetch;
 
-  expect(syncStudioRuntime('scanner', 'http://studio.test/api')).rejects.toThrow(
+  await expect(syncStudioRuntime('scanner', 'http://studio.test/api')).rejects.toThrow(
     'OAuth is enabled but no provider is enabled.',
   );
 });
