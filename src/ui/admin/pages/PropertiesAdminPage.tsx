@@ -40,7 +40,7 @@ export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null
 
 function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
-  const componentMeta = new Map(Object.entries(ZORA_COMPONENT_META).get(node.type);
+  const componentMeta = new Map(Object.entries(ZORA_COMPONENT_META)).get(node.type);
   const groups = resolveStudioInstancePropertyGroups(node, ZORA_COMPONENT_META);
   const updateProperty = (
     propertyName: string,
@@ -56,7 +56,7 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
         <KeyValue label="Type" value={node.type} />
         {node.alias ? <KeyValue label="Alias" value={node.alias} /> : null}
       </Card>
-       {groups.map((group) => (
+      {groups.map((group) => (
         <Card key={group.category} title={group.category}>
           <View style={styles.fieldStack}>
             {group.fields.map((field) => (
@@ -112,7 +112,7 @@ function NumberPropertyInput(props: {
   readonly onChange: (value: number | undefined) => void;
 }) {
   const { field, onChange } = props;
-  const [draft, setDraft] = React.useState(toInputText(field.value);
+  const [draft, setDraft] = React.useState(toInputText(field.value));
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
