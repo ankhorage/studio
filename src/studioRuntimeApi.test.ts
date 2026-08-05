@@ -9,19 +9,19 @@ afterEach(() => {
 });
 
 test('syncStudioRuntime loads the persisted draft and applies it to the generated runtime', async () => {
-  const requests: Array<{ url: string; init?: RequestInit }> = [];
+  const requests: { url: string; init?: RequestInit }[] = [];
   const manifest = { metadata: { name: 'Scanner' }, infra: {}, navigator: {}, screens: {} };
 
-  globalThis.fetch = mock(async (input: string | URL | Request, init?: RequestInit) => {
-    const url = String(input);
+  globalThis.fetch = mock((input: string | URL | Request, init?: RequestInit) => {
+    const url = requestUrl(input);
     requests.push({ url, init });
     if (url.endsWith('/projects/scanner/studio/manifest')) {
-      return Response.json(manifest);
+      return Promise.resolve(Response.json(manifest));
     }
     if (url.endsWith('/projects/scanner/studio/runtime')) {
-      return Response.json({ success: true });
+      return Promise.resolve(Response.json({ success: true }));
     }
-    return Response.json({ error: 'Unexpected request' }, { status: 404 });
+    return Promise.resolve(Response.json({ error: 'Unexpected request' }, { status: 404 }));
   }) as unknown as typeof fetch;
 
   await syncStudioRuntime('scanner', 'http://studio.test/api');
@@ -35,14 +35,18 @@ test('syncStudioRuntime loads the persisted draft and applies it to the generate
 });
 
 test('syncStudioRuntime surfaces host runtime errors', async () => {
-  globalThis.fetch = mock(async (input: string | URL | Request) => {
-    const url = String(input);
+  globalThis.fetch = mock((input: string | URL | Request) => {
+    const url = requestUrl(input);
     if (url.endsWith('/studio/manifest')) {
-      return Response.json({ metadata: {}, infra: {}, navigator: {}, screens: {} });
+      return Promise.resolve(
+        Response.json({ metadata: {}, infra: {}, navigator: {}, screens: {} }),
+      );
     }
-    return Response.json(
-      { error: 'OAuth is enabled but no provider is enabled.' },
-      { status: 500 },
+    return Promise.resolve(
+      Response.json(
+        { error: 'OAuth is enabled but no provider is enabled.' },
+        { status: 500 },
+      ),
     );
   }) as unknown as typeof fetch;
 
@@ -50,3 +54,9 @@ test('syncStudioRuntime surfaces host runtime errors', async () => {
     'OAuth is enabled but no provider is enabled.',
   );
 });
+
+function requestUrl(input: string | URL | Request): string {
+  if (typeof input === 'string') return input;
+  if (input instanceof URL) return input.toString();
+  return input.url;
+}
