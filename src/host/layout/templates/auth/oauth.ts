@@ -182,7 +182,9 @@ async function redirectWebAuthorization(args: {
 }
 
 function waitForFullPageNavigation(): Promise<never> {
-  return new Promise<never>(() => undefined);
+  return new Promise<never>(() => {
+    // Full-page navigation replaces this document before the promise settles.
+  });
 }
 
 export async function completeOAuthCallback(
