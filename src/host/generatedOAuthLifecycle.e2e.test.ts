@@ -53,8 +53,12 @@ afterEach(async () => {
   }
 });
 
-const isolatedScenario = process.env[SCENARIO_ENV];
-if (isolatedScenario === 'success' || isolatedScenario === 'denial') {
+const isolatedScenarioValue: unknown = Reflect.get(process.env, SCENARIO_ENV);
+const isolatedScenario =
+  isolatedScenarioValue === 'success' || isolatedScenarioValue === 'denial'
+    ? isolatedScenarioValue
+    : undefined;
+if (isolatedScenario !== undefined) {
   describe('isolated generated OAuth lifecycle scenario', () => {
     it(isolatedScenario, async () => {
       if (isolatedScenario === 'success') {
