@@ -1,0 +1,73 @@
+name: Finalize auth runtime sync lint
+
+on:
+  push:
+    branches:
+      - fix/issue-182-auth-save-runtime-sync
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/issue-182-auth-save-runtime-sync
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Write lint-clean implementation
+        run: |
+          python3 <<'PY'
+          import base64
+          from pathlib import Path
+
+          Path('src/studioRuntimeApi.ts').write_bytes(base64.b64decode('ZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN5bmNTdWRpb1J1bnRpbWUocHJvamVjdElkOiBzdHJpbmcsIGFwaUJhc2U/OiBzdHJpbmcpOiBQcm9taXNlPHZvaWQ+IHsKICBjb25zdCByZXNvbHZlZEFwaUJhc2UgPSBhcGlCYXNlID8/IChhd2FpdCBpbXBvcnQoJy4vY29yZS9jb25zdGFudHMnKSkuQVBJX0JBU0U7CiAgY29uc3QgZW5jb2RlZFByb2plY3RJZCA9IGVuY29kZVVSSUNvbXBvbmVudChwcm9qZWN0SWQpOwogIGNvbnN0IG1hbmlmZXN0UmVzcG9uc2UgPSBhd2FpdCBmZXRjaCgKICAgIGAke3Jlc29sdmVkQXBpQmFzZX0vcHJvamVjdHMvJHtlbmNvZGVkUHJvamVjdElkfS9zdHVkaW8vbWFuaWZlc3RgLAogICk7CiAgY29uc3QgbWFuaWZlc3QgPSBhd2FpdCByZWFkSnNvbiggbWFuaWZlc3RSZXNwb25zZSwgJ1N0dWRpbyBtYW5pZmVzdCcpOwogIGlmICghbWFuaWZlc3RSZXNwb25zZS5vaykgewogICAgdGhyb3cgbmV3IEVycm9yKHJlYWRFcnJvck1lc3NhZ2UobWFuaWZlc3QsICdVbmFibGUgdG8gbG9hZCB0aGUgU3R1ZGlvIG1hbmlmZXN0LicpKTsKICB9CgogIGNvbnN0IHJ1bnRpbWVSZXNwb25zZSA9IGF3YWl0IGZldGNoKAogICAgYCR7cmVzb2x2ZWRBcGlCYXNlfS9wcm9qZWN0cy8ke2VuY29kZWRQcm9qZWN0SWR9L3N0dWRpby9ydW50aW1lYCwKICAgIHsKICAgICAgbWV0aG9kOiAnUFVUJywKICAgICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sCiAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KG1hbmlmZXN0KSwKICAgIH0sCiAgKTsKICBjb25zdCBydW50aW1lUmVzdWx0ID0gYXdhaXQgcmVhZEpzb24ocnVudGltZVJlc3BvbnNlLCAnU3R1ZGlvIHJ1bnRpbWUgc3luYycpOwogIGlmICghcnVudGltZVJlc3BvbnNlLm9rKSB7CiAgICB0aHJvdyBuZXcgRXJyb3IocmVhZEVycm9yTWVzc2FnZShydW50aW1lUmVzdWx0LCAnVW5hYmxlIHRvIGFwcGx5IHRoZSBTdHVkaW8gcnVudGltZS4nKSk7CiAgfQp9Cgphc3luYyBmdW5jdGlvbiByZWFkSnNvbihyZXNwb25zZTogUmVzcG9uc2UsIGxhYmVsOiBzdHJpbmcpOiBQcm9taXNlPHVua25vd24+IHsKICB0cnkgewogICAgcmV0dXJuIGF3YWl0IHJlc3BvbnNlLmpzb24oKTsKICB9IGNhdGNoIHsKICAgIHRocm93IG5ldyBFcnJvcihgJHtsYWJlbH0gcmV0dXJuZWQgbm9uLUpTT04gc3RhdHVzICR7cmVzcG9uc2Uuc3RhdHVzfS5gKTsKICB9Cn0KCmZ1bmN0aW9uIHJlYWRFcnJvck1lc3NhZ2UodmFsdWU6IHVua25vd24sIGZhbGxiYWNrOiBzdHJpbmcpOiBzdHJpbmcgewogIGlmICh0eXBlb2YgdmFsdWUgIT09ICdvYmplY3QnIHx8IHZhbHVlID09PSBudWxsKSByZXR1cm4gZmFsbGJhY2s7CiAgY29uc3QgeyBlcnJvciB9ID0gdmFsdWUgYXMgUmVjb3JkPHN0cmluZywgdW5rbm93bj47CiAgaWYgKHR5cGVvZiBlcnJvciA9PT0gJ3N0cmluZycgJiYgZXJyb3IudHJpbSgpLmxlbmd0aCA+IDApIHJldHVybiBlcnJvcjsKICBpZiAodHlwZW9mIGVycm9yICE9PSAnb2JqZWN0JyB8fCBlcnJvciA9PT0gbnVsbCkgcmV0dXJuIGZhbGxiYWNrOwogIGNvbnN0IHsgbWVzc2FnZSB9ID0gZXJyb3IgYXMgUmVjb3JkPHN0cmluZywgdW5rbm93bj47CiAgcmV0dXJuIHR5cGVvZiBtZXNzYWdlID09PSAnc3RyaW5nJyAmJiBtZXNzYWdlLnRyaW0oKS5sZW5ndGggPiAwID8gbWVzc2FnZSA6IGZhbGxiYWNrOwp9Cg=='))
+          Path('src/studioRuntimeApi.test.ts').write_bytes(base64.b64decode('aW1wb3J0IHsgYWZ0ZXJFYWNoLCBleHBlY3QsIG1vY2ssIHRlc3QgfSBmcm9tICdidW46dGVzdCc7CgppbXBvcnQgeyBzeW5jU3R1ZGlvUnVudGltZSB9IGZyb20gJy4vc3R1ZGlvUnVudGltZUFwaSc7Cgpjb25zdCBvcmlnaW5hbEZldGNoID0gZ2xvYmFsVGhpcy5mZXRjaDsKCmFmdGVyRWFjaCgoKSA9PiB7CiAgZ2xvYmFsVGhpcy5mZXRjaCA9IG9yaWdpbmFsRmV0Y2g7Cn0pOwoKdGVzdCgnc3luY1N0dWRpb1J1bnRpbWUgbG9hZHMgdGhlIHBlcnNpc3RlZCBkcmFmdCBhbmQgYXBwbGllcyBpdCB0byB0aGUgZ2VuZXJhdGVkIHJ1bnRpbWUnLCBhc3luYyAoKSA9PiB7CiAgY29uc3QgcmVxdWVzdHM6IHsgdXJsOiBzdHJpbmc7IGluaXQ/OiBSZXF1ZXN0SW5pdCB9W10gPSBbXTsKICBjb25zdCBtYW5pZmVzdCA9IHsgbWV0YWRhdGE6IHsgbmFtZTogJ1NjYW5uZXInIH0sIGluZnJhOiB7fSwgbmF2aWdhdG9yOiB7fSwgc2NyZWVuczoge30gfTsKCiAgZ2xvYmFsVGhpcy5mZXRjaCA9IG1vY2soKGlucHV0OiBzdHJpbmcgfCBVUkwgfCBSZXF1ZXN0LCBpbml0PzogUmVxdWVzdEluaXQpID0+IHsKICAgIGNvbnN0IHVybCA9IHJlcXVlc3RVcmwoaW5wdXQpOwogICAgcmVxdWVzdHMucHVzaCh7IHVybCwgaW5pdCB9KTsKICAgIGlmICh1cmwuZW5kc1dpdGgoJy9wcm9qZWN0cy9zY2FubmVyL3N0dWRpby9tYW5pZmVzdCcpKSB7CiAgICAgIHJldHVybiBQcm9taXNlLnJlc29sdmUoUmVzcG9uc2UuanNvbihtYW5pZmVzdCkpOwogICAgfQogICAgaWYgKHVybC5lbmRzV2l0aCgnL3Byb2plY3RzL3NjYW5uZXIvc3R1ZGlvL3J1bnRpbWUnKSkgewogICAgICByZXR1cm4gUHJvbWlzZS5yZXNvbHZlKFJlc3BvbnNlLmpzb24oeyBzdWNjZXNzOiB0cnVlIH0pKTsKICAgIH0KICAgIHJldHVybiBQcm9taXNlLnJlc29sdmUoUmVzcG9uc2UuanNvbih7IGVycm9yOiAnVW5leHBlY3RlZCByZXF1ZXN0JyB9LCB7IHN0YXR1czogNDA0IH0pKTsKICB9KSBhcyB1bmtub3duIGFzIHR5cGVvZiBmZXRjaDsKCiAgYXdhaXQgc3luY1N0dWRpb1J1bnRpbWUoJ3NjYW5uZXInLCAnaHR0cDovL3N0dWRpby50ZXN0L2FwaScpOwoKICBleHBlY3QocmVxdWVzdHMpLnRvSGF2ZUxlbmd0aCgyKTsKICBleHBlY3QocmVxdWVzdHNbMF0/LnVybCkudG9FbmRXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vbWFuaWZlc3QnKTsKICBleHBlY3QocmVxdWVzdHNbMV0/LnVybCkudG9FbmRXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vcnVudGltZScpOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8uaW5pdD8ubWV0aG9kKS50b0JlKCdQVVQnKTsKICBleHBlY3QocmVxdWVzdHNbMV0/LmluaXQ/LmhlYWRlcnMpLnRvRXF1YWwoeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0pOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8uaW5pdD8uYm9keSkudG9CZShKU09OLnN0cmluZ2lmeShtYW5pZmVzdCkpOwp9KTsKCnRlc3QoJ3N5bmNTdWRpb1J1bnRpbWUgc3VyZmFjZXMgaG9zdCBydW50aW1lIGVycm9ycycsIGFzeW5jICgpID0+IHsKICBnbG9iYWxUaGlzLmZldGNoID0gbW9jaygoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QpID0+IHsKICAgIGNvbnN0IHVybCA9IHJlcXVlc3RVcmwoaW5wdXQpOwogICAgaWYgKHVybC5lbmRzV2l0aCgnL3N0dWRpby9tYW5pZmVzdCcpKSB7CiAgICAgIHJldHVybiBQcm9taXNlLnJlc29sdmUoCiAgICAgICAgUmVzcG9uc2UuanNvbiggeyBtZXRhZGF0YToge30sIGluZnJhOiB7fSwgbmF2aWdhdG9yOiB7fSwgc2NyZWVuczoge30gfSksCiAgICAgICk7CiAgICB9CiAgICByZXR1cm4gUHJvbWlzZS5yZXNvbHZlKAogICAgICBSZXNwb25zZS5qc29uKAogICAgICAgIHsgZXJyb3I6ICdPQXV0aCBpcyBlbmFibGVkIGJ1dCBubyBwcm92aWRlciBpcyBlbmFibGVkLicgfSwKICAgICAgICB7IHN0YXR1czogNTAwIH0sCiAgICAgICksCiAgICApOwogIH0pIGFzIHVua25vd24gYXMgdHlwZW9mIGZldGNoOwoKICBleHBlY3Qoc3luY1N0dWRpb1J1bnRpbWUoJ3NjYW5uZXInLCAnaHR0cDovL3N0dWRpby50ZXN0L2FwaScpKS5yZWplY3RzLnRvVGhyb3coCiAgICAnT0F1dGggaXMgZW5hYmxlZCBidXQgbm8gcHJvdmlkZXIgaXMgZW5hYmxlZC4nLAogICApOwp9KTsKCmZ1bmN0aW9uIHJlcXVlc3RVcmwoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QpOiBzdHJpbmcgewogIGlmICh0eXBlb2YgaW5wdXQgPT09ICdzdHJpbmcnKSByZXR1cm4gaW5wdXQ7CiAgaWYgKGlucHV0IGluc3RhbmNlb2YgVVJMKSB return input.toString();
+  return input.url;
+}
+'))
+          PY
+
+      - name: Restore complete test helper tail
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          path = Path('src/studioRuntimeApi.test.ts')
+          source = path.read_text()
+          marker = "function requestUrl(input: string | URL | Request): string {"
+          prefix = source.split(marker)[0]
+          path.write_text(prefix + """function requestUrl(input: string | URL | Request): string {
+            if (typeof input === 'string') return input;
+            if (input instanceof URL) return input.toString();
+            return input.url;
+          }
+          """)
+          for workflow in (
+              '.github/workflows/tmp-fix-auth-hook-deps.yml',
+              '.github/workflows/tmp-finalize-auth-runtime-lint.yml',
+          ):
+              Path(workflow).unlink(missing_ok=True)
+          PY
+
+      - name: Validate
+        run: |
+          bun install --frozen-lockfile
+          bunx prettier --write src/studioRuntimeApi.ts src/studioRuntimeApi.test.ts
+          bun test src/ui/admin/pages/AuthAdminPage.test.ts src/studioRuntimeApi.test.ts
+          bun run typecheck
+          bun run lint
+          git diff --exit-code -- bun.lock
+
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'fix: satisfy auth runtime sync lint rules'
+          git push origin HEAD:fix/issue-182-auth-save-runtime-sync
