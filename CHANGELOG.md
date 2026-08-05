@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.10
+
+### Patch Changes
+
+- 9175162: Consume the released Infra Auth redirect and rollout contracts, then surface exact OAuth callback targets and safe Auth readiness diagnostics through the existing project Auth health capability.
+
 ## 0.11.9
 
 ### Patch Changes
