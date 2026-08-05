@@ -1,19 +1,14 @@
 import type { UiNode } from '@ankhorage/contracts';
 
-export type StudioAuthoringAuthority =
-  | { readonly authority: 'instance' }
-  | {
-      readonly authority: 'theme';
-      readonly scope: 'global' | 'component' | 'pattern';
-    };
-
 export interface StudioAuthoringPropSchema {
   readonly type: string;
   readonly category: string;
   readonly label?: string;
   readonly enum?: readonly (string | number)[];
   readonly default?: unknown;
-  readonly authoring?: StudioAuthoringAuthority;
+  readonly authoring?: {
+    readonly authority: string;
+  };
 }
 
 export interface StudioAuthoringComponentMeta {
@@ -26,7 +21,11 @@ export type StudioAuthoringMetaRegistry = Readonly<
 >;
 
 export type StudioInstancePropertyEditorKind =
-  'text' | 'number' | 'boolean' | 'choice' | 'unsupported';
+  | 'text'
+  | 'number'
+  | 'boolean'
+  | 'choice'
+  | 'unsupported';
 
 export interface StudioInstancePropertyField {
   readonly name: string;
@@ -104,7 +103,9 @@ export function createStudioInstancePropertyPatch(
   return { props: Object.fromEntries(entries) };
 }
 
-function resolveEditorKind(schema: StudioAuthoringPropSchema): StudioInstancePropertyEditorKind {
+function resolveEditorKind(
+  schema: StudioAuthoringPropSchema,
+): StudioInstancePropertyEditorKind {
   if (schema.type === 'string') return 'text';
   if (schema.type === 'number') return 'number';
   if (schema.type === 'boolean') return 'boolean';
