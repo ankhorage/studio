@@ -11,7 +11,9 @@ test('generates a popup-free OAuth callback that completes once across effect re
   expect(callback).not.toContain("from 'expo-web-browser'");
   expect(callback).not.toContain('maybeCompleteAuthSession');
   expect(callback).not.toContain('window.closed');
-  expect(callback).toContain('let activeCallbackCompletion: ActiveCallbackCompletion | null = null;');
+  expect(callback).toContain(
+    'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
+  );
   expect(callback).toContain('function completeOAuthCallbackOnce(callbackUrl: string)');
   expect(callback).toContain('promise: completeOAuthCallback(callbackUrl)');
   expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(deliveredUrl);');
