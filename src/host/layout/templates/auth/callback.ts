@@ -26,10 +26,20 @@ let activeCallbackCompletion: ActiveCallbackCompletion | null = null;
 
 function completeOAuthCallbackOnce(callbackUrl: string) {
   if (!activeCallbackCompletion || activeCallbackCompletion.callbackUrl !== callbackUrl) {
-    activeCallbackCompletion = {
+    const completion: ActiveCallbackCompletion = {
       callbackUrl,
       promise: completeOAuthCallback(callbackUrl),
     };
+    activeCallbackCompletion = completion;
+    void completion.promise
+      .finally(() => {
+        if (activeCallbackCompletion === completion) {
+          activeCallbackCompletion = null;
+        }
+      })
+      .catch(() => {
+        // The original promise remains the callback screen's error boundary.
+      });
   }
   return activeCallbackCompletion.promise;
 }

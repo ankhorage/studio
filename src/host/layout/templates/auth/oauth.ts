@@ -7,7 +7,6 @@ export function getAuthOAuthRuntimeTs(args: AuthOAuthLayoutPlan) {
 
   return `import type {
   AuthOAuthCompletionResult,
-  AuthOAuthProviderId,
   AuthOAuthTransportCancellationReason,
 } from '@ankhorage/contracts/auth';
 import * as Linking from 'expo-linking';
@@ -21,7 +20,8 @@ import {
 } from './session';
 
 const OAUTH_CALLBACK_ROUTE = '${callbackRoute}';
-const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
+const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
+const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
 const GENERATED_OAUTH_PROVIDERS = ${providers} as const;
 
 export const generatedOAuthProviderItems = GENERATED_OAUTH_PROVIDERS.map((provider) => ({
@@ -36,9 +36,8 @@ export type GeneratedOAuthTransportOutcome =
   | { status: 'error'; message: string; recoverable: boolean };
 
 interface StoredTransportAttempt {
+  version: 1;
   attemptId: string;
-  provider: AuthOAuthProviderId;
-  redirectUri: string;
 }
 
 let activeAuthorization: Promise<GeneratedOAuthTransportOutcome> | null = null;
@@ -100,9 +99,8 @@ async function runOAuthAuthorization(
 
   try {
     await writeTransportAttempt({
+      version: 1,
       attemptId: started.data.attemptId,
-      provider: started.data.provider,
-      redirectUri: started.data.redirectUri,
     });
   } catch {
     await cancelOAuthAttempt(started.data.attemptId, 'user_cancelled');
@@ -201,6 +199,9 @@ export async function completeOAuthCallback(
 
   const attempt = await readTransportAttempt();
   if (!attempt) {
+    if (getStoredAuthSession() && isCanonicalOAuthCallback(callbackUrl)) {
+      return { status: 'authenticated' };
+    }
     return {
       status: 'error',
       message: 'The OAuth authorization attempt was not found or has expired.',
@@ -208,10 +209,20 @@ export async function completeOAuthCallback(
     };
   }
 
-  const completed = await oauth.completeAuthorization({
-    attemptId: attempt.attemptId,
-    response: { type: 'callback', url: callbackUrl },
-  });
+  let completed: AuthOAuthCompletionResult;
+  try {
+    completed = await oauth.completeAuthorization({
+      attemptId: attempt.attemptId,
+      response: { type: 'callback', url: callbackUrl },
+    });
+  } catch {
+    await clearTransportAttempt();
+    return {
+      status: 'error',
+      message: 'The OAuth callback could not be completed.',
+      recoverable: true,
+    };
+  }
   await clearTransportAttempt();
 
   if (
@@ -241,6 +252,23 @@ function resolveOAuthRedirectUri(): string {
   }
 
   return Linking.createURL(callbackPath);
+}
+
+function isCanonicalOAuthCallback(callbackUrl: string): boolean {
+  try {
+    const delivered = new URL(callbackUrl);
+    const expected = new URL(resolveOAuthRedirectUri());
+    return (
+      delivered.protocol === expected.protocol &&
+      delivered.username === expected.username &&
+      delivered.password === expected.password &&
+      delivered.host === expected.host &&
+      delivered.pathname === expected.pathname &&
+      delivered.hash.length === 0
+    );
+  } catch {
+    return false;
+  }
 }
 
 function getBrowserLocation(): object | null {
@@ -287,35 +315,46 @@ async function cancelOAuthAttempt(
 }
 
 async function writeTransportAttempt(attempt: StoredTransportAttempt): Promise<void> {
+  await clearLegacyTransportAttempt();
   await authSessionStorage.setItem(OAUTH_TRANSPORT_ATTEMPT_KEY, JSON.stringify(attempt));
 }
 
 async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
   const raw = await authSessionStorage.getItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
-  if (!raw) return null;
-  try {
-    const value: unknown = JSON.parse(raw);
-    if (!isRecord(value)) return null;
-    const attemptId = Reflect.get(value, 'attemptId');
-    const provider = Reflect.get(value, 'provider');
-    const redirectUri = Reflect.get(value, 'redirectUri');
-    const configuredProvider =
-      typeof provider === 'string'
-        ? GENERATED_OAUTH_PROVIDERS.find((entry) => entry.id === provider)
-        : undefined;
-    return typeof attemptId === 'string' &&
-      configuredProvider !== undefined &&
-      typeof redirectUri === 'string'
-      ? { attemptId, provider: configuredProvider.id, redirectUri }
-      : null;
-  } catch {
+  if (!raw) {
+    await clearLegacyTransportAttempt();
     return null;
   }
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (isRecord(value)) {
+      const version = Reflect.get(value, 'version');
+      const attemptId = Reflect.get(value, 'attemptId');
+      if (version === 1 && typeof attemptId === 'string' && attemptId.trim().length > 0) {
+        return { version, attemptId };
+      }
+    }
+  } catch {
+    // Invalid transport state is cleaned below without exposing its contents.
+  }
+  await clearTransportAttempt();
+  return null;
 }
 
 async function clearTransportAttempt(): Promise<void> {
+  await Promise.all([
+    safeRemoveTransportItem(OAUTH_TRANSPORT_ATTEMPT_KEY),
+    safeRemoveTransportItem(LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY),
+  ]);
+}
+
+async function clearLegacyTransportAttempt(): Promise<void> {
+  await safeRemoveTransportItem(LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY);
+}
+
+async function safeRemoveTransportItem(key: string): Promise<void> {
   try {
-    await authSessionStorage.removeItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
+    await authSessionStorage.removeItem(key);
   } catch {
     // Cleanup failures are intentionally not surfaced with persisted state.
   }

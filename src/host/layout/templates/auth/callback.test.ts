@@ -16,6 +16,8 @@ test('generates a popup-free OAuth callback that completes once across effect re
   );
   expect(callback).toContain('function completeOAuthCallbackOnce(callbackUrl: string)');
   expect(callback).toContain('promise: completeOAuthCallback(callbackUrl)');
+  expect(callback).toContain('if (activeCallbackCompletion === completion) {');
+  expect(callback).toContain('activeCallbackCompletion = null;');
   expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(deliveredUrl);');
   expect(callback).toContain('const handledOutcomeRef = useRef(false);');
   expect(callback).toContain('if (!active || handledOutcomeRef.current) return;');

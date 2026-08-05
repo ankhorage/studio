@@ -193,7 +193,9 @@ async function createHarness(): Promise<GeneratedOAuthHarness> {
     async importDocument(label: string) {
       const documentRoot = path.join(root, label);
       await writeDocument(documentRoot);
-      return (await import(moduleUrl(path.join(documentRoot, 'oauth.ts'), label))) as GeneratedOAuthRuntime;
+      return (await import(
+        moduleUrl(path.join(documentRoot, 'oauth.ts'), label)
+      )) as GeneratedOAuthRuntime;
     },
   };
 }

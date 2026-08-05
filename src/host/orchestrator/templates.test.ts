@@ -14,7 +14,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/contracts']).toBe('^4.0.0');
     expect(dependencies['@ankhorage/runtime']).toBe('^0.3.0');
     expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
-    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.0.0');
+    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.1.2');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
   });
