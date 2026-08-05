@@ -24,131 +24,49 @@ jobs:
       - name: Patch auth save runtime synchronization
         run: |
           python3 <<'PY'
+          import base64
           from pathlib import Path
+
+          def replace_once(source: str, old: str, new: str, label: str) -> str:
+              if source.count(old) != 1:
+                  raise RuntimeError(f'{label}: expected one match, found {source.count(old)}')
+              return source.replace(old, new, 1)
 
           auth_page = Path('src/ui/admin/pages/AuthAdminPage.tsx')
           source = auth_page.read_text()
-          source = source.replace(
+          source = replace_once(
+              source,
               "import { configureProjectOAuthProvider } from '../../../projectSecretApi';\n",
               "import { configureProjectOAuthProvider } from '../../../projectSecretApi';\nimport { syncStudioRuntime } from '../../../studioRuntimeApi';\n",
+              'runtime import',
           )
-          source = source.replace(
+          source = replace_once(
+              source,
               "      await flushManifest();\n      setMessage(nextMessage);\n      await refreshHealth();",
               "      await flushManifest();\n      await syncStudioRuntime(projectId);\n      setMessage(nextMessage);\n      await refreshHealth();",
+              'auth save sequence',
           )
-          source = source.replace(
+          source = replace_once(
+              source,
               "persistAuthDraft(draft, 'Authentication configuration saved to the Studio manifest.'),",
               "persistAuthDraft(draft, 'Authentication configuration saved and applied to the generated app.'),",
+              'success message',
           )
           auth_page.write_text(source)
 
           auth_test = Path('src/ui/admin/pages/AuthAdminPage.test.ts')
           source = auth_test.read_text()
-          source = source.replace(
+          source = replace_once(
+              source,
               "  expect(source).toContain('await flushManifest()');\n",
               "  expect(source).toContain('await flushManifest()');\n  expect(source).toContain('await syncStudioRuntime(projectId)');\n",
+              'auth page assertion',
           )
           auth_test.write_text(source)
 
-          Path('src/studioRuntimeApi.ts').write_text("""import type { AppManifest } from '@ankhorage/contracts';
-
-import { API_BASE } from './core/constants';
-
-export async function syncStudioRuntime(projectId: string): Promise<void> {
-  const encodedProjectId = encodeURIComponent(projectId);
-  const manifestResponse = await fetch(`${API_BASE}/projects/${encodedProjectId}/studio/manifest`);
-  const manifest = await readJson(manifestResponse, 'Studio manifest');
-  if (!manifestResponse.ok) {
-    throw new Error(readErrorMessage(manifest, 'Unable to load the Studio manifest.'));
-  }
-
-  const runtimeResponse = await fetch(`${API_BASE}/projects/${encodedProjectId}/studio/runtime`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(manifest as AppManifest),
-  });
-  const runtimeResult = await readJson(runtimeResponse, 'Studio runtime sync');
-  if (!runtimeResponse.ok) {
-    throw new Error(readErrorMessage(runtimeResult, 'Unable to apply the Studio runtime.'));
-  }
-}
-
-async function readJson(response: Response, label: string): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    throw new Error(`${label} returned non-JSON status ${response.status}.`);
-  }
-}
-
-function readErrorMessage(value: unknown, fallback: string): string {
-  if (typeof value !== 'object' || value === null) return fallback;
-  const error = (value as Record<string, unknown>).error;
-  if (typeof error === 'string' && error.trim().length > 0) return error;
-  if (typeof error !== 'object' || error === null) return fallback;
-  const message = (error as Record<string, unknown>).message;
-  return typeof message === 'string' && message.trim().length > 0 ? message : fallback;
-}
-""")
-
-          Path('src/studioRuntimeApi.test.ts').write_text("""import { afterEach, expect, mock, test } from 'bun:test';
-
-import { syncStudioRuntime } from './studioRuntimeApi';
-
-const originalFetch = globalThis.fetch;
-
-afterEach(() => {
-  globalThis.fetch = originalFetch;
-});
-
-test('syncStudioRuntime loads the persisted draft and applies it to the generated runtime', async () => {
-  const requests: Array<{ url: string; init?: RequestInit }> = [];
-  const manifest = { metadata: { name: 'Scanner' }, infra: {}, navigator: {}, screens: {} };
-
-  globalThis.fetch = mock(async (input: string | URL | Request, init?: RequestInit) => {
-    const url = String(input);
-    requests.push({ url, init });
-    if (url.endsWith('/projects/scanner/studio/manifest')) {
-      return Response.json(manifest);
-    }
-    if (url.endsWith('/projects/scanner/studio/runtime')) {
-      return Response.json({ success: true });
-    }
-    return Response.json({ error: 'Unexpected request' }, { status: 404 });
-  }) as typeof fetch;
-
-  await syncStudioRuntime('scanner');
-
-  expect(requests).toHaveLength(2);
-  expect(requests[0]?.url).toEndWith('/projects/scanner/studio/manifest');
-  expect(requests[1]?.url).toEndWith('/projects/scanner/studio/runtime');
-  expect(requests[1]?.init?.method).toBe('PUT');
-  expect(requests[1]?.init?.headers).toEqual({ 'Content-Type': 'application/json' });
-  expect(requests[1]?.init?.body).toBe(JSON.stringify(manifest));
-});
-
-test('syncStudioRuntime surfaces host runtime errors', async () => {
-  globalThis.fetch = mock(async (input: string | URL | Request) => {
-    const url = String(input);
-    if (url.endsWith('/studio/manifest')) {
-      return Response.json({ metadata: {}, infra: {}, navigator: {}, screens: {} });
-    }
-    return Response.json({ error: 'OAuth is enabled but no provider is enabled.' }, { status: 500 });
-  }) as typeof fetch;
-
-  expect(syncStudioRuntime('scanner')).rejects.toThrow(
-    'OAuth is enabled but no provider is enabled.',
-  );
-});
-""")
-
-          Path('.changeset/auth-save-runtime-sync.md').write_text("""---
-'@ankhorage/studio': patch
----
-
-Apply saved authentication settings to the generated Studio runtime so newly enabled OAuth providers appear on the sign-in screen immediately.
-""")
-
+          Path('src/studioRuntimeApi.ts').write_bytes(base64.b64decode('aW1wb3J0IHR5cGUgeyBBcHBNYW5pZmVzdCB9IGZyb20gJ0Bhbmtob3JhZ2UvY29udHJhY3RzJzsKCmltcG9ydCB7IEFQSV9CQVNFIH0gZnJvbSAnLi9jb3JlL2NvbnN0YW50cyc7CgpleHBvcnQgYXN5bmMgZnVuY3Rpb24gc3luY1N0dWRpb1J1bnRpbWUocHJvamVjdElkOiBzdHJpbmcpOiBQcm9taXNlPHZvaWQ+IHsKICBjb25zdCBlbmNvZGVkUHJvamVjdElkID0gZW5jb2RlVVJJQ29tcG9uZW50KHByb2plY3RJZCk7CiAgY29uc3QgbWFuaWZlc3RSZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0FQSV9CQVNFfS9wcm9qZWN0cy8ke2VuY29kZWRQcm9qZWN0SWR9L3N0dWRpby9tYW5pZmVzdGApOwogIGNvbnN0IG1hbmlmZXN0ID0gYXdhaXQgcmVhZEpzb24obWFuaWZlc3RSZXNwb25zZSwgJ1N0dWRpbyBtYW5pZmVzdCcpOwogIGlmICghbWFuaWZlc3RSZXNwb25zZS5vaykgewogICAgdGhyb3cgbmV3IEVycm9yKHJlYWRFcnJvck1lc3NhZ2UobWFuaWZlc3QsICdVbmFibGUgdG8gbG9hZCB0aGUgU3R1ZGlvIG1hbmlmZXN0LicpKTsKICB9CgogIGNvbnN0IHJ1bnRpbWVSZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0FQSV9CQVNFfS9wcm9qZWN0cy8ke2VuY29kZWRQcm9qZWN0SWR9L3N0dWRpby9ydW50aW1lYCwgewogICAgbWV0aG9kOiAnUFVUJywKICAgIGhlYWRlcnM6IHsgJ0NvbnRlbnQtVHlwZSc6ICdhcHBsaWNhdGlvbi9qc29uJyB9LAogICAgYm9keTogSlNPTi5zdHJpbmdpZnkobWFuaWZlc3QgYXMgQXBwTWFuaWZlc3QpLAogIH0pOwogIGNvbnN0IHJ1bnRpbWVSZXN1bHQgPSBhd2FpdCByZWFkSnNvbihydW50aW1lUmVzcG9uc2UsICdTdHVkaW8gcnVudGltZSBzeW5jJyk7CiAgaWYgKCFydW50aW1lUmVzcG9uc2Uub2spIHsKICAgIHRocm93IG5ldyBFcnJvcihyZWFkRXJyb3JNZXNzYWdlKHJ1bnRpbWVSZXN1bHQsICdVbmFibGUgdG8gYXBwbHkgdGhlIFN0dWRpbyBydW50aW1lLicpKTsKICB9Cn0KCmFzeW5jIGZ1bmN0aW9uIHJlYWRKc29uKHJlc3BvbnNlOiBSZXNwb25zZSwgbGFiZWw6IHN0cmluZyk6IFByb21pc2U8dW5rbm93bj4gewogIHRyeSB7CiAgICByZXR1cm4gYXdhaXQgcmVzcG9uc2UuanNvbigpOwogIH0gY2F0Y2ggewogICAgdGhyb3cgbmV3IEVycm9yKGAke2xhYmVsfSByZXR1cm5lZCBub24tSlNPTiBzdGF0dXMgJHtyZXNwb25zZS5zdGF0dXN9LmApOwogIH0KfQoKZnVuY3Rpb24gcmVhZEVycm9yTWVzc2FnZSh2YWx1ZTogdW5rbm93biwgZmFsbGJhY2s6IHN0cmluZyk6IHN0cmluZyB7CiAgaWYgKHR5cGVvZiB2YWx1ZSAhPT0gJ29iamVjdCcgfHwgdmFsdWUgPT09IG51bGwpIHJldHVybiBmYWxsYmFjazsKICBjb25zdCBlcnJvciA9ICh2YWx1ZSBhcyBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPikuZXJyb3I7CiAgaWYgKHR5cGVvZiBlcnJvciA9PT0gJ3N0cmluZycgJiYgZXJyb3IudHJpbSgpLmxlbmd0aCA+IDApIHJldHVybiBlcnJvcjsKICBpZiAodHlwZW9mIGVycm9yICE9PSAnb2JqZWN0JyB8fCBlcnJvciA9PT0gbnVsbCkgcmV0dXJuIGZhbGxiYWNrOwogIGNvbnN0IG1lc3NhZ2UgPSAoZXJyb3IgYXMgUmVjb3JkPHN0cmluZywgdW5rbm93bj4pLm1lc3NhZ2U7CiAgcmV0dXJuIHR5cGVvZiBtZXNzYWdlID09PSAnc3RyaW5nJyAmJiBtZXNzYWdlLnRyaW0oKS5sZW5ndGggPiAwID8gbWVzc2FnZSA6IGZhbGxiYWNrOwp9Cg=='))
+          Path('src/studioRuntimeApi.test.ts').write_bytes(base64.b64decode('aW1wb3J0IHsgYWZ0ZXJFYWNoLCBleHBlY3QsIG1vY2ssIHRlc3QgfSBmcm9tICdidW46dGVzdCc7CgppbXBvcnQgeyBzeW5jU3R1ZGlvUnVudGltZSB9IGZyb20gJy4vc3R1ZGlvUnVudGltZUFwaSc7Cgpjb25zdCBvcmlnaW5hbEZldGNoID0gZ2xvYmFsVGhpcy5mZXRjaDsKCmFmdGVyRWFjaCgoKSA9PiB7CiAgZ2xvYmFsVGhpcy5mZXRjaCA9IG9yaWdpbmFsRmV0Y2g7Cn0pOwoKdGVzdCgnc3luY1N0dWRpb1J1bnRpbWUgbG9hZHMgdGhlIHBlcnNpc3RlZCBkcmFmdCBhbmQgYXBwbGllcyBpdCB0byB0aGUgZ2VuZXJhdGVkIHJ1bnRpbWUnLCBhc3luYyAoKSA9PiB7CiAgY29uc3QgcmVxdWVzdHM6IEFycmF5PHsgdXJsOiBzdHJpbmc7IGluaXQ/OiBSZXF1ZXN0SW5pdCB9PiA9IFtdOwogIGNvbnN0IG1hbmlmZXN0ID0geyBtZXRhZGF0YTogeyBuYW1lOiAnU2Nhbm5lcicgfSwgaW5mcmE6IHt9LCBuYXZpZ2F0b3I6IHt9LCBzY3JlZW5zOiB7fSB9OwoKICBnbG9iYWxUaGlzLmZldGNoID0gbW9jayhhc3luYyAoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QsIGluaXQ/OiBSZXF1ZXN0SW5pdCkgPT4gewogICAgY29uc3QgdXJsID0gU3RyaW5nKGlucHV0KTsKICAgIHJlcXVlc3RzLnB1c2goeyB1cmwsIGluaXQgfSk7CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vbWFuaWZlc3QnKSkgewogICAgICByZXR1cm4gUmVzcG9uc2UuanNvbihtYW5pZmVzdCk7CiAgICB9CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vcnVudGltZScpKSB7CiAgICAgIHJldHVybiBSZXNwb25zZS5qc29uKHsgc3VjY2VzczogdHJ1ZSB9KTsKICAgIH0KICAgIHJldHVybiBSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdVbmV4cGVjdGVkIHJlcXVlc3QnIH0sIHsgc3RhdHVzOiA0MDQgfSk7CiAgfSkgYXMgdHlwZW9mIGZldGNoOwoKICBhd2FpdCBzeW5jU3R1ZGlvUnVudGltZSgnc2Nhbm5lcicpOwoKICBleHBlY3QocmVxdWVzdHMpLnRvSGF2ZUxlbmd0aCgyKTsKICBleHBlY3QocmVxdWVzdHNbMF0/LnVybCkudG9FbmRXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vbWFuaWZlc3QnKTsKICBleHBlY3QocmVxdWVzdHNbMV0/LnVybCkudG9FbmRXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vcnVudGltZScpOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8uaW5pdD8ubWV0aG9kKS50b0JlKCdQVVQnKTsKICBleHBlY3QocmVxdWVzdHNbMV0/LmluaXQ/LmhlYWRlcnMpLnRvRXF1YWwoeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0pOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8uaW5pdD8uYm9keSkudG9CZShKU09OLnN0cmluZ2lmeShtYW5pZmVzdCkpOwp9KTsKCnRlc3QoJ3N5bmNTdWRpb1J1bnRpbWUgc3VyZmFjZXMgaG9zdCBydW50aW1lIGVycm9ycycsIGFzeW5jICgpID0+IHsKICBnbG9iYWxUaGlzLmZldGNoID0gbW9jayhhc3luYyAoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QpID0+IHsKICAgIGNvbnN0IHVybCA9IFN0cmluZyhpbnB1dCk7CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvc3R1ZGlvL21hbmlmZXN0JykpIHsKICAgICAgcmV0dXJuIFJlc3BvbnNlLmpzb24oeyBtZXRhZGF0YToge30sIGluZnJhOiB7fSwgbmF2aWdhdG9yOiB7fSwgc2NyZWVuczoge30gfSk7CiAgICB9CiAgICByZXR1cm4gUmVzcG9uc2UuanNvbih7IGVycm9yOiAnT0F1dGggaXMgZW5hYmxlZCBidXQgbm8gcHJvdmlkZXIgaXMgZW5hYmxlZC4nIH0sIHsgc3RhdHVzOiA1MDAgfSk7CiAgfSkgYXMgdHlwZW9mIGZldGNoOwoKICBleHBlY3Qoc3luY1N0dWRpb1J1bnRpbWUoJ3NjYW5uZXInKSkucmVqZWN0cy50b1Rocm93KAogICAgJ09BdXRoIGlzIGVuYWJsZWQgYnV0IG5vIHByb3ZpZGVyIGlzIGVuYWJsZWQuJywKICApOwp9KTsK'))
+          Path('.changeset/auth-save-runtime-sync.md').write_bytes(base64.b64decode('LS0tCidAYW5raG9yYWdlL3N0dWRpbyc6IHBhdGNoCi0tLQoKQXBwbHkgc2F2ZWQgYXV0aGVudGljYXRpb24gc2V0dGluZ3MgdG8gdGhlIGdlbmVyYXRlZCBTdHVkaW8gcnVudGltZSBzbyBuZXdseSBlbmFibGVkIE9BdXRoIHByb3ZpZGVycyBhcHBlYXIgb24gdGhlIHNpZ24taW4gc2NyZWVuIGltbWVkaWF0ZWx5Lgo='))
           Path('.github/workflows/tmp-fix-auth-runtime-sync.yml').unlink()
           PY
 
