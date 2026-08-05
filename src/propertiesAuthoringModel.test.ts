@@ -94,7 +94,7 @@ describe('instance Properties authoring model', () => {
     expect(resolveStudioInstancePropertyGroups(node, registry)).toEqual([
       {
         category: 'Content',
-        fields: [expect.objectContaining(a: name: 'text', editor: 'text' })],
+        fields: [expect.objectContaining({ name: 'text', editor: 'text' })],
       },
       {
         category: 'Layout',
