@@ -104,7 +104,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       dependencies?: Record<string, string>;
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^4.0.0');
-    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.0.0');
+    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.1.2');
     expect(packageJson.dependencies?.['expo-secure-store']).toBe('~15.0.8');
     expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');
 
@@ -130,8 +130,15 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
     expect(oauthRuntime).not.toContain('window.closed');
     expect(oauthRuntime).toContain(
-      "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
+      "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';",
     );
+    expect(oauthRuntime).toContain(
+      "const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
+    );
+    expect(oauthRuntime).toContain(
+      'interface StoredTransportAttempt {\n  version: 1;\n  attemptId: string;\n}',
+    );
+    expect(oauthRuntime).not.toContain('provider: AuthOAuthProviderId;');
 
     const callback = await readProjectFile(created.path, callbackPath);
     expect(callback).not.toContain("from 'expo-web-browser'");

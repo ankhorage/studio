@@ -280,7 +280,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(oauth).toContain('Linking.createURL');
     expect(oauth).toContain('callback_already_completed');
     expect(oauth).toContain('cancelOAuthAttempt');
-    expect(oauth).toContain('configuredProvider');
+    expect(oauth).toContain('version === 1');
+    expect(oauth).toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreens).toContain('OAuthProviderList');
     expect(authScreens).toContain('startOAuthAuthorization');

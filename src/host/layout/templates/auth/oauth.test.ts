@@ -60,3 +60,19 @@ test('derives the Web callback from the current browser origin', () => {
   expect(runtime).not.toMatch(/localhost:\d+/u);
   expect(runtime).not.toContain('window.closed');
 });
+
+test('generates adapter-owned OAuth lifecycle coordination with a correlation-only marker', () => {
+  const runtime = createOAuthRuntime();
+
+  expect(runtime).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';");
+  expect(runtime).toContain(
+    "const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
+  );
+  expect(runtime).toContain(
+    'interface StoredTransportAttempt {\n  version: 1;\n  attemptId: string;\n}',
+  );
+  expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
+  expect(runtime).toContain('getStoredAuthSession() && isCanonicalOAuthCallback(callbackUrl)');
+  expect(runtime).toContain('await clearLegacyTransportAttempt();');
+  expect(runtime).toContain('await clearTransportAttempt();');
+});
