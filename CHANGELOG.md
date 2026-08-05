@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.6
+
+### Patch Changes
+
+- 0213548: Update Infra and Supabase Vault to include the Bun PostgreSQL configured-fields fix with a clean Studio-only root lockfile.
+
 ## 0.11.5
 
 ### Patch Changes
