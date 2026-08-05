@@ -53,7 +53,9 @@ test('generates full-page Web OAuth and preserves the native system browser', ()
 test('derives the Web callback from the current browser origin', () => {
   const runtime = createOAuthRuntime();
 
-  expect(runtime).toContain("const origin = location ? Reflect.get(location, 'origin') : undefined;");
+  expect(runtime).toContain(
+    "const origin = location ? Reflect.get(location, 'origin') : undefined;",
+  );
   expect(runtime).toContain('return new URL(`/${callbackPath}`, origin).toString();');
   expect(runtime).not.toMatch(/localhost:\d+/u);
   expect(runtime).not.toContain('window.closed');
