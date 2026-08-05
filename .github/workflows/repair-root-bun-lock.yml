@@ -1,0 +1,48 @@
+name: Repair Studio root bun.lock
+
+on:
+  push:
+    branches:
+      - chore/repair-root-bun-lock
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Regenerate root lockfile
+        run: bun install --lockfile-only
+
+      - name: Validate generated-app state is absent
+        run: |
+          if grep -q '"apps/nutri"' bun.lock; then
+            echo 'apps/nutri is still present in the root lockfile.' >&2
+            exit 1
+          fi
+
+      - name: Commit repaired lockfile to main
+        run: |
+          if git diff --quiet -- bun.lock; then
+            echo 'Root lockfile is already clean.'
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bun.lock
+          git commit -m 'chore: repair Studio root bun.lock'
+          git push origin HEAD:main
