@@ -125,17 +125,25 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(oauthRuntime).toContain("Platform.OS === 'web'");
     expect(oauthRuntime).toContain('new URL(`/${callbackPath}`');
     expect(oauthRuntime).toContain('Linking.createURL(callbackPath)');
+    expect(oauthRuntime).toContain("Reflect.get(location, 'assign')");
+    expect(oauthRuntime).toContain('Reflect.apply(assign, location, [args.authorizationUrl]);');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
+    expect(oauthRuntime).not.toContain('window.closed');
     expect(oauthRuntime).toContain(
       "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
     );
 
     const callback = await readProjectFile(created.path, callbackPath);
-    expect(callback).toContain('WebBrowser.maybeCompleteAuthSession()');
+    expect(callback).not.toContain("from 'expo-web-browser'");
+    expect(callback).not.toContain('WebBrowser.maybeCompleteAuthSession()');
+    expect(callback).not.toContain('window.closed');
     expect(callback).toContain('const callbackUrl = Linking.useURL();');
     expect(callback).toContain('callbackUrl ?? (await Linking.getInitialURL())');
-    expect(callback).toContain('const handledRef = useRef(false);');
-    expect(callback).toContain('const outcome = await completeOAuthCallback(deliveredUrl);');
+    expect(callback).toContain(
+      'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
+    );
+    expect(callback).toContain('const handledOutcomeRef = useRef(false);');
+    expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(deliveredUrl);');
     expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
