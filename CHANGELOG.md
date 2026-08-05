@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.7
+
+### Patch Changes
+
+- ce03925: Apply saved authentication settings to the generated Studio runtime so newly enabled OAuth providers appear on the sign-in screen immediately.
+
 ## 0.11.6
 
 ### Patch Changes
