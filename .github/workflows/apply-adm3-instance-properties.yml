@@ -87,10 +87,23 @@ jobs:
         run: bun install
 
       - name: Fix lint and format
+        shell: bash
         run: |
-          bun run lint:fix
+          set -o pipefail
+          bun run lint:fix 2>&1 | tee /tmp/adm3-lint-fix.log
           bun run format
           bun run docs
+
+      - name: Capture validation failure
+        if: failure()
+        shell: bash
+        run: |
+          cp /tmp/adm3-lint-fix.log adm3-lint-fix.log || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: capture adm 3 validation failure"
+          git push origin HEAD:agent/adm-3-instance-properties
 
       - name: Build
         run: bun run build
