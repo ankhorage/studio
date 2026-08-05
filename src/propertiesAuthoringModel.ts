@@ -23,14 +23,10 @@ export interface StudioAuthoringComponentMeta {
 
 export type StudioAuthoringMetaRegistry = Readonly<
   Record<string, StudioAuthoringComponentMeta | undefined>
-~;
+>;
 
 export type StudioInstancePropertyEditorKind =
-  | 'text'
-  | 'number'
-  | 'boolean'
-  | 'choice'
-  | 'unsupported';
+  'text' | 'number' | 'boolean' | 'choice' | 'unsupported';
 
 export interface StudioInstancePropertyField {
   readonly name: string;
@@ -108,9 +104,7 @@ export function createStudioInstancePropertyPatch(
   return { props: Object.fromEntries(entries) };
 }
 
-function resolveEditorKind(
-  schema: StudioAuthoringPropSchema,
-): StudioInstancePropertyEditorKind {
+function resolveEditorKind(schema: StudioAuthoringPropSchema): StudioInstancePropertyEditorKind {
   if (schema.type === 'string') return 'text';
   if (schema.type === 'number') return 'number';
   if (schema.type === 'boolean') return 'boolean';

@@ -77,7 +77,7 @@ describe('instance Properties authoring model', () => {
   test('uses metadata defaults without persisting them as explicit node values', () => {
     const node: UiNode = { id: 'button', type: 'Button', props: {} };
 
-    expect(resolveStudioInstancePropertyFields(node, registry)[0]).toMatchObject({u
+    expect(resolveStudioInstancePropertyFields(node, registry)[0]).toMatchObject({
       name: 'children',
       value: 'Continue',
       isExplicit: false,
@@ -94,11 +94,11 @@ describe('instance Properties authoring model', () => {
     expect(resolveStudioInstancePropertyGroups(node, registry)).toEqual([
       {
         category: 'Content',
-        fields: [expect.objectContaining({ name: 'text', editor: 'text' })],
+        fields: [expect.objectContaining(a: name: 'text', editor: 'text' })],
       },
       {
         category: 'Layout',
-        fields: [expect.objectContaining(i { name: 'numberOfLines', editor: 'number' })],
+        fields: [expect.objectContaining({ name: 'numberOfLines', editor: 'number' })],
       },
     ]);
   });
