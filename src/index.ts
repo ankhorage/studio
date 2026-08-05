@@ -39,6 +39,7 @@ export type {
   ProjectSortKey,
   StudioProjectSummary,
 } from './projectWorkspaceContracts';
+export * from './propertiesAuthoringModel';
 export type {
   TemplateCatalog,
   TemplateCatalogCategory,
@@ -92,6 +93,9 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioCommand',
   'StudioEvent',
   'StudioComponentMetaRegistry',
+  'StudioInstancePropertyField',
+  'resolveStudioInstancePropertyGroups',
+  'createStudioInstancePropertyPatch',
   'ProjectAuthHealth',
   'ProjectSecretUsageSummary',
   'StudioAdminRouteId',
