@@ -71,7 +71,7 @@ export class ProjectAuthHealthService {
         target: infraStatus.target,
         generated: infraStatus.hasLedger,
         environment: resolveAuthRedirectEnvironment(input.environment),
-        callbackRoute: oauth.callbackRoute,
+        callbackRoute: oauth.callbackRoute ?? '/auth/callback',
       });
 
       return {
