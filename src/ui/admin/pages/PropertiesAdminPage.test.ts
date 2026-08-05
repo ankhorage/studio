@@ -19,7 +19,11 @@ test('consumes canonical ZORA metadata instead of dumping arbitrary node props',
   expect(source).toContain('resolveStudioInstancePropertyGroups');
   expect(source).toContain('createStudioInstancePropertyPatch');
   expect(source).not.toContain('Object.entries(node.props');
-  expect(source).not.toContain('label="Alias"');
+});
+
+test('keeps node alias as read-only identity instead of an authorable property', () => {
+  expect(source).toContain('<KeyValue label="Alias"');
+  expect(source).not.toContain('<Field label="Alias"');
 });
 
 test('keeps theme-owned presentation out of instance controls', () => {
