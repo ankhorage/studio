@@ -73,7 +73,17 @@ async function runOAuthAuthorization(
     };
   }
 
-  const redirectUri = resolveOAuthRedirectUri();
+  let redirectUri: string;
+  try {
+    redirectUri = resolveOAuthRedirectUri();
+  } catch {
+    return {
+      status: 'error',
+      message: 'The OAuth redirect URI could not be resolved in this environment.',
+      recoverable: true,
+    };
+  }
+
   const started = await oauth.startAuthorization({
     provider: provider.id,
     redirectUri,
@@ -104,6 +114,13 @@ async function runOAuthAuthorization(
     };
   }
 
+  if (Platform.OS === 'web') {
+    return redirectWebAuthorization({
+      attemptId: started.data.attemptId,
+      authorizationUrl: started.data.authorizationUrl,
+    });
+  }
+
   let browserResult: WebBrowser.WebBrowserAuthSessionResult;
   try {
     browserResult = await WebBrowser.openAuthSessionAsync(
@@ -132,6 +149,40 @@ async function runOAuthAuthorization(
   });
   await clearTransportAttempt();
   return toTransportOutcome(completed);
+}
+
+async function redirectWebAuthorization(args: {
+  attemptId: string;
+  authorizationUrl: string;
+}): Promise<GeneratedOAuthTransportOutcome> {
+  const location = getBrowserLocation();
+  const assign = location ? Reflect.get(location, 'assign') : undefined;
+  if (typeof assign !== 'function') {
+    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
+    await clearTransportAttempt();
+    return {
+      status: 'error',
+      message: 'Web OAuth requires full-page browser navigation.',
+      recoverable: true,
+    };
+  }
+
+  try {
+    Reflect.apply(assign, location, [args.authorizationUrl]);
+    return waitForFullPageNavigation();
+  } catch {
+    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
+    await clearTransportAttempt();
+    return {
+      status: 'error',
+      message: 'The browser could not navigate to the OAuth provider.',
+      recoverable: true,
+    };
+  }
+}
+
+function waitForFullPageNavigation(): Promise<never> {
+  return new Promise<never>(() => undefined);
 }
 
 export async function completeOAuthCallback(
@@ -179,18 +230,20 @@ function resolveOAuthRedirectUri(): string {
     callbackPath = callbackPath.slice(1);
   }
   if (Platform.OS === 'web') {
-    const location = Reflect.get(globalThis, 'location');
-    if (
-      typeof location === 'object' &&
-      location !== null &&
-      typeof Reflect.get(location, 'origin') === 'string'
-    ) {
-      return new URL(\`/\${callbackPath}\`, Reflect.get(location, 'origin')).toString();
+    const location = getBrowserLocation();
+    const origin = location ? Reflect.get(location, 'origin') : undefined;
+    if (typeof origin === 'string' && origin.length > 0) {
+      return new URL(`/${callbackPath}`, origin).toString();
     }
     throw new Error('Web OAuth requires a canonical browser origin.');
   }
 
   return Linking.createURL(callbackPath);
+}
+
+function getBrowserLocation(): object | null {
+  const location = Reflect.get(globalThis, 'location');
+  return typeof location === 'object' && location !== null ? location : null;
 }
 
 function toTransportOutcome(
