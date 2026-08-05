@@ -1,0 +1,94 @@
+name: Finalize auth runtime sync fix
+
+on:
+  push:
+    branches:
+      - fix/issue-182-auth-save-runtime-sync
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/issue-182-auth-save-runtime-sync
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Build final patch
+        run: |
+          python3 <<'PY'
+          import base64
+          from pathlib import Path
+
+          def replace_once(source: str, old: str, new: str, label: str) -> str:
+              count = source.count(old)
+              if count != 1:
+                  raise RuntimeError(f'{label}: expected one match, found {count}')
+              return source.replace(old, new, 1)
+
+          auth_page = Path('src/ui/admin/pages/AuthAdminPage.tsx')
+          source = auth_page.read_text()
+          source = replace_once(
+              source,
+              "import { configureProjectOAuthProvider } from '../../../projectSecretApi';\n",
+              "import { configureProjectOAuthProvider } from '../../../projectSecretApi';\nimport { syncStudioRuntime } from '../../../studioRuntimeApi';\n",
+              'runtime import',
+          )
+          source = replace_once(
+              source,
+              "      await flushManifest();\n      setMessage(nextMessage);\n      await refreshHealth();",
+              "      await flushManifest();\n      await syncStudioRuntime(projectId);\n      setMessage(nextMessage);\n      await refreshHealth();",
+              'auth save sequence',
+          )
+          source = replace_once(
+              source,
+              "persistAuthDraft(draft, 'Authentication configuration saved to the Studio manifest.'),",
+              "persistAuthDraft(draft, 'Authentication configuration saved and applied to the generated app.'),",
+              'success message',
+          )
+          auth_page.write_text(source)
+
+          auth_test = Path('src/ui/admin/pages/AuthAdminPage.test.ts')
+          source = auth_test.read_text()
+          source = replace_once(
+              source,
+              "  expect(source).toContain('await flushManifest()');\n",
+              "  expect(source).toContain('await flushManifest()');\n  expect(source).toContain('await syncStudioRuntime(projectId)');\n",
+              'auth page assertion',
+          )
+          auth_test.write_text(source)
+
+          Path('src/studioRuntimeApi.ts').write_bytes(base64.b64decode('aW1wb3J0IHR5cGUgeyBBcHBNYW5pZmVzdCB9IGZyb20gJ0Bhbmtob3JhZ2UvY29udHJhY3RzJzsKCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzeW5jU3R1ZGlvUnVudGltZShwcm9qZWN0SWQ6IHN0cmluZywgYXBpQmFzZT86IHN0cmluZyk6IFByb21pc2U8dm9pZD4gewogIGNvbnN0IHJlc29sdmVkQXBpQmFzZSA9IGFwaUJhc2UgPz8gKGF3YWl0IGltcG9ydCgnLi9jb3JlL2NvbnN0YW50cycpKS5BUElfQkFTRTsKICBjb25zdCBlbmNvZGVkUHJvamVjdElkID0gZW5jb2RlVVJJQ29tcG9uZW50KHByb2plY3RJZCk7CiAgY29uc3QgbWFuaWZlc3RSZXNwb25zZSA9IGF3YWl0IGZldGNoKAogICAgYCR7cmVzb2x2ZWRBcGlCYXNlfS9wcm9qZWN0cy8ke2VuY29kZWRQcm9qZWN0SWR9L3N0dWRpby9tYW5pZmVzdGAsCiAgKTsKICBjb25zdCBtYW5pZmVzdCA9IGF3YWl0IHJlYWRKc29uKG1hbmlmZXN0UmVzcG9uc2UsICdTdHVkaW8gbWFuaWZlc3QnKTsKICBpZiAoIW1hbmlmZXN0UmVzcG9uc2Uub2spIHsKICAgIHRocm93IG5ldyBFcnJvcihyZWFkRXJyb3JNZXNzYWdlKG1hbmlmZXN0LCAnVW5hYmxlIHRvIGxvYWQgdGhlIFN0dWRpbyBtYW5pZmVzdC4nKSk7CiAgfQoKICBjb25zdCBydW50aW1lUmVzcG9uc2UgPSBhd2FpdCBmZXRjaCgKICAgIGAke3Jlc29sdmVkQXBpQmFzZX0vcHJvamVjdHMvJHtlbmNvZGVkUHJvamVjdElkfS9zdHVkaW8vcnVudGltZWAsCiAgICB7CiAgICAgIG1ldGhvZDogJ1BVVCcsCiAgICAgIGhlYWRlcnM6IHsgJ0NvbnRlbnQtVHlwZSc6ICdhcHBsaWNhdGlvbi9qc29uJyB9LAogICAgICBib2R5OiBKU09OLnN0cmluZ2lmeShtYW5pZmVzdCBhcyBBcHBNYW5pZmVzdCksCiAgICB9LAogICk7CiAgY29uc3QgcnVudGltZVJlc3VsdCA9IGF3YWl0IHJlYWRKc29uKHJ1bnRpbWVSZXNwb25zZSwgJ1N0dWRpbyBydW50aW1lIHN5bmMnKTsKICBpZiAoIXJ1bnRpbWVSZXNwb25zZS5vaykgewogICAgdGhyb3cgbmV3IEVycm9yKHJlYWRFcnJvck1lc3NhZ2UocnVudGltZVJlc3VsdCwgJ1VuYWJsZSB0byBhcHBseSB0aGUgU3R1ZGlvIHJ1bnRpbWUuJykpOwogIH0KfQoKYXN5bmMgZnVuY3Rpb24gcmVhZEpzb24ocmVzcG9uc2U6IFJlc3BvbnNlLCBsYWJlbDogc3RyaW5nKTogUHJvbWlzZTx1bmtub3duPiB7CiAgdHJ5IHsKICAgIHJldHVybiBhd2FpdCByZXNwb25zZS5qc29uKCk7CiAgfSBjYXRjaCB7CiAgICB0aHJvdyBuZXcgRXJyb3IoYCR7bGFiZWx9IHJldHVybmVkIG5vbi1KU09OIHN0YXR1cyAke3Jlc3BvbnNlLnN0YXR1c30uYCk7CiAgfQp9CgpmdW5jdGlvbiByZWFkRXJyb3JNZXNzYWdlKHZhbHVlOiB1bmtub3duLCBmYWxsYmFjazogc3RyaW5nKTogc3RyaW5nIHsKICBpZiAodHlwZW9mIHZhbHVlICE9PSAnb2JqZWN0JyB8fCB2YWx1ZSA9PT0gbnVsbCkgcmV0dXJuIGZhbGxiYWNrOwogIGNvbnN0IGVycm9yID0gKHZhbHVlIGFzIFJlY29yZDxzdHJpbmcsIHVua25vd24+KS5lcnJvcjsKICBpZiAodHlwZW9mIGVycm9yID09PSAnc3RyaW5nJyAmJiBlcnJvci50cmltKCkubGVuZ3RoID4gMCkgcmV0dXJuIGVycm9yOwogIGlmICh0eXBlb2YgZXJyb3IgIT09ICdvYmplY3QnIHx8IGVycm9yID09PSBudWxsKSByZXR1cm4gZmFsbGJhY2s7CiAgY29uc3QgbWVzc2FnZSA9IChlcnJvciBhcyBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPikubWVzc2FnZTsKICByZXR1cm4gdHlwZW9mIG1lc3NhZ2UgPT09ICdzdHJpbmcnICYmIG1lc3NhZ2UudHJpbSgpLmxlbmd0aCA+IDAgPyBtZXNzYWdlIDogZmFsbGJhY2s7Cn0K'))
+
+          test_content = base64.b64decode('aW1wb3J0IHsgYWZ0ZXJFYWNoLCBleHBlY3QsIG1vY2ssIHRlc3QgfSBmcm9tICdidW46dGVzdCc7CgppbXBvcnQgeyBzeW5jU3R1ZGlvUnVudGltZSB9IGZyb20gJy4vc3R1ZGlvUnVudGltZUFwaSc7Cgpjb25zdCBvcmlnaW5hbEZldGNoID0gZ2xvYmFsVGhpcy5mZXRjaDsKCmFmdGVyRWFjaCgoKSA9PiB7CiAgZ2xvYmFsVGhpcy5mZXRjaCA9IG9yaWdpbmFsRmV0Y2g7Cn0pOwoKdGVzdCgnc3luY1N0dWRpb1J1bnRpbWUgbG9hZHMgdGhlIHBlcnNpc3RlZCBkcmFmdCBhbmQgYXBwbGllcyBpdCB0byB0aGUgZ2VuZXJhdGVkIHJ1bnRpbWUnLCBhc3luYyAoKSA9PiB7CiAgY29uc3QgcmVxdWVzdHM6IEFycmF5PHsgdXJsOiBzdHJpbmc7IGluaXQ/OiBSZXF1ZXN0SW5pdCB9PiA9IFtdOwogIGNvbnN0IG1hbmlmZXN0ID0geyBtZXRhZGF0YTogeyBuYW1lOiAnU2Nhbm5lcicgfSwgaW5mcmE6IHt9LCBuYXZpZ2F0b3I6IHt9LCBzY3JlZW5zOiB7fSB9OwoKICBnbG9iYWxUaGlzLmZldGNoID0gbW9jayhhc3luYyAoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QsIGluaXQ/OiBSZXF1ZXN0SW5pdCkgPT4gewogICAgY29uc3QgdXJsID0gU3RyaW5nKGlucHV0KTsKICAgIHJlcXVlc3RzLnB1c2goeyB1cmwsIGluaXQgfSk7CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vbWFuaWZlc3QnKSkgewogICAgICByZXR1cm4gUmVzcG9uc2UuanNvbihtYW5pZmVzdCk7CiAgICB9CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvcHJvamVjdHMvc2Nhbm5lci9zdHVkaW8vcnVudGltZScpKSB7CiAgICAgIHJldHVybiBSZXNwb25zZS5qc29uKHsgc3VjY2VzczogdHJ1ZSB9KTsKICAgIH0KICAgIHJldHVybiBSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdVbmV4cGVjdGVkIHJlcXVlc3QnIH0sIHsgc3RhdHVzOiA0MDQgfSk7CiAgfSkgYXMgdHlwZW9mIGZldGNoOwoKICBhd2FpdCBzeW5jU3R1ZGlvUnVudGltZSgnc2Nhbm5lcicsICdodHRwOi8vc3R1ZGlvLnRlc3QvYXBpJyk7CgogIGV4cGVjdChyZXF1ZXN0cykudG9IYXZlTGVuZ3RoKDIpOwogIGV4cGVjdChyZXF1ZXN0c1swXT8udXJsKS50b0VuZFdpdGgoJy9wcm9qZWN0cy9zY2FubmVyL3N0dWRpby9tYW5pZmVzdCcpOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8udXJsKS50b0VuZFdpdGgoJy9wcm9qZWN0cy9zY2FubmVyL3N0dWRpby9ydW50aW1lJyk7CiAgZXhwZWN0KHJlcXVlc3RzWzFdPy5pbml0Py5tZXRob2QpLnRvQmUoJ1BVVCcpOwogIGV4cGVjdChyZXF1ZXN0c1sxXT8uaW5pdD8uaGVhZGVycykudG9FcXVhbCh7ICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicgfSk7CiAgZXhwZWN0KHJlcXVlc3RzWzFdPy5pbml0Py5ib2R5KS50b0JlKEpTT04uc3RyaW5naWZ5KG1hbmlmZXN0KSk7Cn0pOwoKdGVzdCgnc3luY1N0dWRpb1J1bnRpbWUgc3VyZmFjZXMgaG9zdCBydW50aW1lIGVycm9ycycsIGFzeW5jICgpID0+IHsKICBnbG9iYWxUaGlzLmZldGNoID0gbW9jayhhc3luYyAoaW5wdXQ6IHN0cmluZyB8IFVSTCB8IFJlcXVlc3QpID0+IHsKICAgIGNvbnN0IHVybCA9IFN0cmluZyhpbnB1dCk7CiAgICBpZiAodXJsLmVuZHNXaXRoKCcvc3R1ZGlvL21hbmlmZXN0JykpIHsKICAgICAgcmV0dXJuIFJlc3BvbnNlLmpzb24oeyBtZXRhZGF0YToge30sIGluZnJhOiB7fSwgbmF2aWdhdG9yOiB7fSwgc2NyZWVuczoge30gfSk7CiAgICB9CiAgICByZXR1cm4gUmVzcG9uc2UuanNvbih7IGVycm9yOiAnT0F1dGggaXMgZW5hYmxlZCBidXQgbm8gcHJvdmlkZXIgaXMgZW5hYmxlZC4nIH0sIHsgc3RhdHVzOiA1MDAgfSk7CiAgfSkgYXMgdHlwZW9mIGZldGNoOwoKICBleHBlY3Qoc3luY1N0dWRpb1J1bnRpbWUoJ3NjYW5uZXInLCAnaHR0cDovL3N0dWRpby50ZXN0L2FwaScpKS5yZWplY3RzLnRvVGhyb3coCiAgICAnT0F1dGggaXMgZW5hYmxlZCBidXQgbm8gcHJvdmlkZXIgaXMgZW5hYmxlZC4nLAogICApOwp9KTsK').decode()
+          Path('src/studioRuntimeApi.test.ts').write_text(
+              test_content.replace(') as typeof fetch;', ') as unknown as typeof fetch;')
+          )
+          Path('.changeset/auth-save-runtime-sync.md').write_bytes(base64.b64decode('LS0tCidAYW5raG9yYWdlL3N0dWRpbyc6IHBhdGNoCi0tLQoKQXBwbHkgc2F2ZWQgYXV0aGVudGljYXRpb24gc2V0dGluZ3MgdG8gdGhlIGdlbmVyYXRlZCBTdHVkaW8gcnVudGltZSBzbyBuZXdseSBlbmFibGVkIE9BdXRoIHByb3ZpZGVycyBhcHBlYXIgb24gdGhlIHNpZ24taW4gc2NyZWVuIGltbWVkaWF0ZWx5Lgo='))
+
+          Path('.github/workflows/tmp-fix-auth-runtime-sync.yml').unlink(missing_ok=True)
+          Path('.github/workflows/tmp-fix-auth-runtime-sync-v2.yml').unlink(missing_ok=True)
+          PY
+
+      - name: Validate
+        run: |
+          bun install --frozen-lockfile
+          bunx prettier --write src/ui/admin/pages/AuthAdminPage.tsx src/ui/admin/pages/AuthAdminPage.test.ts src/studioRuntimeApi.ts src/studioRuntimeApi.test.ts .changeset/auth-save-runtime-sync.md
+          bun test src/ui/admin/pages/AuthAdminPage.test.ts src/studioRuntimeApi.test.ts
+          bun run typecheck
+          git diff --exit-code -- bun.lock
+
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'fix: apply auth saves to generated runtime'
+          git push origin HEAD:fix/issue-182-auth-save-runtime-sync
