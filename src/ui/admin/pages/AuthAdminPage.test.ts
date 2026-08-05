@@ -28,6 +28,7 @@ test('credential writes do not submit unsaved global auth or OAuth state', () =>
 test('auth saves go through StudioProvider manifest state', () => {
   expect(source).toContain('updateAuthSettings(rebasedDraft)');
   expect(source).toContain('await flushManifest()');
+  expect(source).toContain('await syncStudioRuntime(projectId)');
   expect(source).toContain('readStudioAuthSettings(canonicalManifestRef.current)');
   expect(source).toContain('rebaseAuthDraftOntoCanonicalCredentialRefs');
   expect(source).toContain('mutateAuthSettings');
