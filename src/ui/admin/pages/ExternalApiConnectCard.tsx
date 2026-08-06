@@ -98,11 +98,7 @@ export function ExternalApiConnectCard() {
             />
           </ExternalApiField>
           <ExternalApiField label="Credential kind">
-            <Input
-              value={credentialKind}
-              autoCapitalize="none"
-              onChangeText={setCredentialKind}
-            />
+            <Input value={credentialKind} autoCapitalize="none" onChangeText={setCredentialKind} />
           </ExternalApiField>
           <ExternalApiField label="Credential scope (optional)">
             <Input
@@ -124,10 +120,7 @@ export function ExternalApiConnectCard() {
         </View>
         {message ? <Text variant="bodySmall">{message}</Text> : null}
         {result ? (
-          <ExternalApiDiagnosticList
-            diagnostics={result.diagnostics}
-            attempts={result.attempts}
-          />
+          <ExternalApiDiagnosticList diagnostics={result.diagnostics} attempts={result.attempts} />
         ) : null}
       </View>
     </Card>

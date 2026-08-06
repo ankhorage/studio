@@ -33,7 +33,11 @@ function mapCredential(
   if (credential.kind === 'basic') {
     const { username, password } = payload;
     return username && password
-      ? { headers: { authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}` } }
+      ? {
+          headers: {
+            authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+          },
+        }
       : undefined;
   }
   return mapScopedValueCredential(credential, payload);

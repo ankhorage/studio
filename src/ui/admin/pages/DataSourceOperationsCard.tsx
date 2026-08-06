@@ -6,11 +6,11 @@ import { View } from 'react-native';
 import { testExternalApiOperation } from '../../../externalApiApi';
 import type { ExternalApiOperationTestResult } from '../../../externalApiAuthoringContracts';
 import { useStudio } from '../../../core/StudioContext';
-import { collectDataSourceOperationRows, type DataSourceOperationRow } from './adminDataSourceOperations';
 import {
-  ExternalApiDiagnosticList,
-  externalApiAdminStyles,
-} from './ExternalApiAdminPrimitives';
+  collectDataSourceOperationRows,
+  type DataSourceOperationRow,
+} from './adminDataSourceOperations';
+import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
 export function DataSourceOperationsCard({
   dataSources,
@@ -86,8 +86,7 @@ function OperationResult({ result }: { readonly result: ExternalApiOperationTest
     <View style={externalApiAdminStyles.feedback}>
       {result.request ? (
         <Text variant="caption">
-          {result.request.dryRun ? 'Prepared' : 'Sent'} {result.request.method}{' '}
-          {result.request.url}
+          {result.request.dryRun ? 'Prepared' : 'Sent'} {result.request.method} {result.request.url}
         </Text>
       ) : null}
       {result.response ? (

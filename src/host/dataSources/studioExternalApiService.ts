@@ -3,10 +3,10 @@ import type { DataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contract
 import {
   createManualRestDataSource,
   discoverOpenApiDataSource,
-  introspectGraphQlDataSource,
-  testEndpoint,
   type EndpointTestFetch,
   type ExternalApiFetch,
+  introspectGraphQlDataSource,
+  testEndpoint,
 } from '@ankhorage/data-sources';
 
 import type {

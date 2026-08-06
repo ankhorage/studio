@@ -8,8 +8,8 @@ export type {
   ManualRestSourceRequest,
 } from './externalApiAuthoringContracts';
 export {
-  normalizeExternalApiSourceId,
   type ExternalApiSourceIdResult,
+  normalizeExternalApiSourceId,
 } from './normalizeExternalApiSourceId';
 export {
   type ExternalApiDataSourceUpsertResult,

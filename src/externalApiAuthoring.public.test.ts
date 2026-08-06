@@ -1,8 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
-  normalizeExternalApiSourceId,
-  upsertExternalApiDataSource,
   type ExternalApiConnectRequest,
   type ExternalApiConnectResult,
   type ExternalApiDataSourceUpsertResult,
@@ -12,6 +10,8 @@ import {
   type ExternalApiProtocol,
   type ExternalApiSourceIdResult,
   type ManualRestSourceRequest,
+  normalizeExternalApiSourceId,
+  upsertExternalApiDataSource,
 } from './externalApiAuthoring';
 
 describe('external API authoring public model', () => {
@@ -56,9 +56,8 @@ describe('external API authoring public model', () => {
   });
 
   test('normalizes stable source IDs', () => {
-    const result: ExternalApiSourceIdResult = normalizeExternalApiSourceId(
-      '  Inventory API / V1  ',
-    );
+    const result: ExternalApiSourceIdResult =
+      normalizeExternalApiSourceId('  Inventory API / V1  ');
     expect(result).toEqual({
       ok: true,
       sourceId: 'inventory-api-v1',

@@ -143,9 +143,7 @@ function readCredential(value: unknown) {
   };
 }
 
-function readDataValues(
-  value: unknown,
-): Readonly<Record<string, DataContractValue>> | undefined {
+function readDataValues(value: unknown): Readonly<Record<string, DataContractValue>> | undefined {
   if (value === undefined) return undefined;
   const record = readRecord(value);
   if (!record || !Object.values(record).every(isDataContractValue)) return undefined;

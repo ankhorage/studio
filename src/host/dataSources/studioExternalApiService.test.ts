@@ -1,10 +1,9 @@
-import { describe, expect, test } from 'bun:test';
-
 import type {
   EndpointTestFetch,
   ExternalApiFetch,
   ExternalApiFetchResponse,
 } from '@ankhorage/data-sources';
+import { describe, expect, test } from 'bun:test';
 
 import type { StudioManifest } from '../../index';
 import { StudioExternalApiService } from './studioExternalApiService';

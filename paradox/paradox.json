@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.11.11",
+      "value": "v0.11.12",
       "color": "cb3837"
     },
     {
@@ -541,6 +541,50 @@
       "exports": ["createIdleStudioDragState", "StudioDragState"]
     },
     {
+      "path": "src/externalApiApi.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/constants.ts", "src/externalApiAuthoringContracts.ts"],
+      "exports": ["connectExternalApi", "createManualRestSource", "testExternalApiOperation"]
+    },
+    {
+      "path": "src/externalApiAuthoring.public.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/externalApiAuthoring.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/externalApiAuthoring.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ExternalApiConnectRequest",
+        "ExternalApiConnectResult",
+        "ExternalApiDataSourceUpsertResult",
+        "ExternalApiDiscoveryAttempt",
+        "ExternalApiOperationTestRequest",
+        "ExternalApiOperationTestResult",
+        "ExternalApiProtocol",
+        "ExternalApiSourceIdResult",
+        "ManualRestSourceRequest",
+        "normalizeExternalApiSourceId",
+        "upsertExternalApiDataSource"
+      ]
+    },
+    {
+      "path": "src/externalApiAuthoringContracts.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ExternalApiConnectRequest",
+        "ExternalApiConnectResult",
+        "ExternalApiDiscoveryAttempt",
+        "ExternalApiOperationTestRequest",
+        "ExternalApiOperationTestResult",
+        "ExternalApiProtocol",
+        "ManualRestSourceRequest"
+      ]
+    },
+    {
       "path": "src/hooks/useProjects.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -620,6 +664,64 @@
       "exports": ["createStudioHost", "CreateStudioHostOptions", "StudioHost"]
     },
     {
+      "path": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/secrets/projectSecretService.ts"],
+      "exports": ["createProjectEndpointCredentialResolver"]
+    },
+    {
+      "path": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/dataSources/requestTrustedExternalApi.ts"],
+      "exports": ["createTrustedEndpointTestFetch"]
+    },
+    {
+      "path": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/dataSources/requestTrustedExternalApi.ts"],
+      "exports": ["createTrustedExternalApiFetch"]
+    },
+    {
+      "path": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/dataSources/requestTrustedExternalApi.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/dataSources/requestTrustedExternalApi.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["requestTrustedExternalApi"]
+    },
+    {
+      "path": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/externalApiAuthoringContracts.ts"],
+      "exports": ["sanitizeExternalApiOperationTestResult"]
+    },
+    {
+      "path": "src/host/dataSources/studioExternalApiService.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/dataSources/studioExternalApiService.ts", "src/index.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/dataSources/studioExternalApiService.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/externalApiAuthoringContracts.ts",
+        "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/projectSecretService.ts",
+        "src/normalizeExternalApiSourceId.ts",
+        "src/upsertExternalApiDataSource.ts"
+      ],
+      "exports": ["StudioExternalApiService"]
+    },
+    {
       "path": "src/host/generatedAdminExpoWeb.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -684,6 +786,17 @@
       "exports": ["registerProjectAuthRoutes"]
     },
     {
+      "path": "src/host/http/dataSourceRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/externalApiAuthoringContracts.ts",
+        "src/host/dataSources/studioExternalApiService.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/secrets/projectSecretService.ts"
+      ],
+      "exports": ["registerProjectDataSourceRoutes"]
+    },
+    {
       "path": "src/host/http/secretRoutes.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -721,6 +834,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/host/http/authRoutes.ts",
+        "src/host/http/dataSourceRoutes.ts",
         "src/host/http/secretRoutes.ts",
         "src/host/http/server.ts",
         "src/host/orchestrator/moduleManager.ts",
@@ -748,6 +862,8 @@
         "createStudioHost",
         "CreateStudioHostOptions",
         "createStudioHostServer",
+        "createTrustedEndpointTestFetch",
+        "createTrustedExternalApiFetch",
         "getAppsRoot",
         "getProjectPath",
         "getProjectTemplate",
@@ -762,12 +878,14 @@
         "ProjectStore",
         "ProjectSummary",
         "registerProjectAuthRoutes",
+        "registerProjectDataSourceRoutes",
         "registerProjectSecretRoutes",
         "resolveProjectSecretDatabaseUrl",
         "resolveWorkspaceRoot",
         "startStudioHostServer",
         "StartStudioHostServerOptions",
         "startStudioHostServerWithSecrets",
+        "StudioExternalApiService",
         "StudioHost"
       ]
     },
@@ -1735,6 +1853,12 @@
       "exports": ["createStudioManifestSignature", "createStudioRuntimeSyncSignature"]
     },
     {
+      "path": "src/normalizeExternalApiSourceId.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ExternalApiSourceIdResult", "normalizeExternalApiSourceId"]
+    },
+    {
       "path": "src/projectAuthApi.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/projectAuthApi.ts"],
@@ -2491,12 +2615,6 @@
       ]
     },
     {
-      "path": "src/ui/admin/adminPageUtils.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": ["readRecord", "readString"]
-    },
-    {
       "path": "src/ui/admin/AnkhAdminPage.test.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -2595,9 +2713,15 @@
       ]
     },
     {
+      "path": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/adminDataSourceOperations.ts"],
+      "exports": []
+    },
+    {
       "path": "src/ui/admin/pages/adminDataSourceOperations.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/ui/admin/adminPageUtils.ts"],
+      "dependencies": [],
       "exports": ["collectDataSourceOperationRows", "DataSourceOperationRow"]
     },
     {
@@ -2637,8 +2761,10 @@
         "src/core/StudioContext.ts",
         "src/index.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/adminPageUtils.ts",
-        "src/ui/admin/pages/adminDataSourceOperations.ts"
+        "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "src/ui/admin/pages/ManualRestSourceCard.tsx"
       ],
       "exports": ["ApisAdminPage", "ApisAdminRouteId"]
     },
@@ -2665,6 +2791,52 @@
         "src/ui/admin/pages/adminAuthSessionModel.ts"
       ],
       "exports": ["AuthAdminPage", "AuthAdminPageProps"]
+    },
+    {
+      "path": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"],
+      "exports": ["DataSourceCatalogCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/externalApiApi.ts",
+        "src/externalApiAuthoringContracts.ts",
+        "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
+      ],
+      "exports": ["DataSourceOperationsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/externalApiAuthoringContracts.ts"],
+      "exports": ["externalApiAdminStyles", "ExternalApiDiagnosticList", "ExternalApiField"]
+    },
+    {
+      "path": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/externalApiApi.ts",
+        "src/externalApiAuthoringContracts.ts",
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
+      ],
+      "exports": ["ExternalApiConnectCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/externalApiApi.ts",
+        "src/externalApiAuthoringContracts.ts",
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
+      ],
+      "exports": ["ManualRestSourceCard"]
     },
     {
       "path": "src/ui/admin/pages/OverviewAdminPage.tsx",
@@ -2756,6 +2928,12 @@
         "src/ui/studioAppBarModel.ts"
       ],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
+    },
+    {
+      "path": "src/upsertExternalApiDataSource.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ExternalApiDataSourceUpsertResult", "upsertExternalApiDataSource"]
     },
     {
       "path": "src/utils/treeUtils.ts",
@@ -8325,6 +8503,186 @@
       }
     },
     {
+      "name": "connectExternalApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManualRestSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "testExternalApiOperation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseConnectResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseTestResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 101,
+        "column": 1
+      }
+    },
+    {
+      "name": "requireResultRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseDiagnostics",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseAttempts",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 143,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRequestSummary",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseResponseSummary",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "isStructuredFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 181,
+        "column": 1
+      }
+    },
+    {
+      "name": "isConnectedProtocol",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataSourceKind",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 189,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSeverity",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 199,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataContractValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 203,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 210,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 216,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/externalApiApi.ts",
+        "line": 220,
+        "column": 1
+      }
+    },
+    {
       "name": "isRecord",
       "description": null,
       "sourceLocation": {
@@ -8672,6 +9030,204 @@
       "sourceLocation": {
         "filePath": "src/host/createStudioHost.ts",
         "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectEndpointCredentialResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "mapCredential",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "mapScopedValueCredential",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTrustedEndpointTestFetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTrustedExternalApiFetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "readBlockedMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "requestTrustedExternalApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseTrustedUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "readLimitedResponseText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "sanitizeExternalApiOperationTestResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "redactQueryValues",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectStore",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "jsonResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "openApiDocument",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "graphQlPayload",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "fetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 98,
+        "column": 11
+      }
+    },
+    {
+      "name": "fetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 124,
+        "column": 11
+      }
+    },
+    {
+      "name": "endpointFetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "line": 198,
+        "column": 11
+      }
+    },
+    {
+      "name": "invalidResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.ts",
+        "line": 194,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingSourceResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.ts",
+        "line": 202,
+        "column": 1
+      }
+    },
+    {
+      "name": "clean",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.ts",
+        "line": 216,
         "column": 1
       }
     },
@@ -9333,6 +9889,123 @@
       }
     },
     {
+      "name": "registerProjectDataSourceRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "sendResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalidPayload",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "readConnectRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "readManualRestRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 86,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOperationTestRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCredential",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 135,
+        "column": 1
+      }
+    },
+    {
+      "name": "readDataValues",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataContractValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 153,
+        "column": 1
+      }
+    },
+    {
+      "name": "isIntent",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/dataSourceRoutes.ts",
+        "line": 176,
+        "column": 1
+      }
+    },
+    {
       "name": "registerProjectSecretRoutes",
       "description": null,
       "sourceLocation": {
@@ -9472,7 +10145,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/serverWithSecrets.ts",
-        "line": 11,
+        "line": 12,
         "column": 1
       }
     },
@@ -13329,6 +14002,15 @@
       }
     },
     {
+      "name": "normalizeExternalApiSourceId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/normalizeExternalApiSourceId.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
       "name": "getProjectAuthHealth",
       "description": null,
       "sourceLocation": {
@@ -15129,24 +15811,6 @@
       }
     },
     {
-      "name": "readRecord",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/adminPageUtils.ts",
-        "line": 1,
-        "column": 1
-      }
-    },
-    {
-      "name": "readString",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/adminPageUtils.ts",
-        "line": 5,
-        "column": 1
-      }
-    },
-    {
       "name": "AnkhAdminPage",
       "description": null,
       "sourceLocation": {
@@ -15502,7 +16166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminDataSourceOperations.ts",
-        "line": 13,
+        "line": 14,
         "column": 1
       }
     },
@@ -15831,6 +16495,105 @@
       }
     },
     {
+      "name": "DataSourceCatalogCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "countOperations",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "describeLocation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "DataSourceOperationsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "OperationResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "operationKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatData",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "ExternalApiField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "ExternalApiDiagnosticList",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "ExternalApiConnectCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "ManualRestSourceCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
       "name": "OverviewAdminPage",
       "description": null,
       "sourceLocation": {
@@ -16142,6 +16905,15 @@
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
         "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "upsertExternalApiDataSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/upsertExternalApiDataSource.ts",
+        "line": 8,
         "column": 1
       }
     },
@@ -16483,6 +17255,36 @@
         "fromPath": "src/contractGuards.test.ts",
         "toPath": "src/contractGuards.ts",
         "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromPath": "src/externalApiApi.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromPath": "src/externalApiApi.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromPath": "src/externalApiAuthoring.public.test.ts",
+        "toPath": "src/externalApiAuthoring.ts",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromPath": "src/externalApiAuthoring.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/externalApiAuthoring.ts"
+      },
+      {
+        "fromPath": "src/externalApiAuthoring.ts",
+        "toPath": "src/normalizeExternalApiSourceId.ts",
+        "sourcePath": "src/externalApiAuthoring.ts"
+      },
+      {
+        "fromPath": "src/externalApiAuthoring.ts",
+        "toPath": "src/upsertExternalApiDataSource.ts",
+        "sourcePath": "src/externalApiAuthoring.ts"
       },
       {
         "fromPath": "src/index.test.ts",
@@ -17251,7 +18053,27 @@
       },
       {
         "fromPath": "src/host/index.ts",
+        "toPath": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/dataSources/studioExternalApiService.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
         "toPath": "src/host/http/authRoutes.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/http/dataSourceRoutes.ts",
         "sourcePath": "src/host/index.ts"
       },
       {
@@ -17660,6 +18482,86 @@
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
       {
+        "fromPath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "toPath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "sourcePath": "src/host/dataSources/createTrustedEndpointTestFetch.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "toPath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "sourcePath": "src/host/dataSources/createTrustedExternalApiFetch.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "toPath": "src/host/dataSources/requestTrustedExternalApi.ts",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toPath": "src/host/dataSources/studioExternalApiService.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/normalizeExternalApiSourceId.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/upsertExternalApiDataSource.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromPath": "src/host/dataSources/studioExternalApiService.ts",
+        "toPath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
         "fromPath": "src/host/http/authRoutes.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/http/authRoutes.test.ts"
@@ -17683,6 +18585,26 @@
         "fromPath": "src/host/http/authRoutes.ts",
         "toPath": "src/host/secrets/projectSecretService.ts",
         "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/dataSourceRoutes.ts",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/dataSourceRoutes.ts",
+        "toPath": "src/host/dataSources/studioExternalApiService.ts",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/dataSourceRoutes.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/dataSourceRoutes.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
       },
       {
         "fromPath": "src/host/http/secretRoutes.ts",
@@ -17767,6 +18689,11 @@
       {
         "fromPath": "src/host/http/serverWithSecrets.ts",
         "toPath": "src/host/http/authRoutes.ts",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromPath": "src/host/http/serverWithSecrets.ts",
+        "toPath": "src/host/http/dataSourceRoutes.ts",
         "sourcePath": "src/host/http/serverWithSecrets.ts"
       },
       {
@@ -18435,9 +19362,9 @@
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
       },
       {
-        "fromPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
-        "toPath": "src/ui/admin/adminPageUtils.ts",
-        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.ts"
+        "fromPath": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+        "toPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.test.ts"
       },
       {
         "fromPath": "src/ui/admin/pages/adminThemeModel.test.ts",
@@ -18471,12 +19398,22 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
-        "toPath": "src/ui/admin/adminPageUtils.ts",
+        "toPath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "toPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
         "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
       },
       {
@@ -18533,6 +19470,81 @@
         "fromPath": "src/ui/admin/pages/AuthAdminPage.tsx",
         "toPath": "src/ui/admin/pages/adminAuthSessionModel.ts",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toPath": "src/externalApiApi.ts",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toPath": "src/externalApiApi.ts",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toPath": "src/externalApiApi.ts",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toPath": "src/externalApiAuthoringContracts.ts",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/OverviewAdminPage.tsx",
@@ -20306,6 +21318,228 @@
         "toSymbol": "isAppSettings",
         "callExpression": "isAppSettings",
         "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "connectExternalApi",
+        "toSymbol": "requestResult",
+        "callExpression": "requestResult",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "createManualRestSource",
+        "toSymbol": "requestResult",
+        "callExpression": "requestResult",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "testExternalApiOperation",
+        "toSymbol": "requestResult",
+        "callExpression": "requestResult",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "requestResult",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "requestResult",
+        "toSymbol": "isStructuredFailure",
+        "callExpression": "isStructuredFailure",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "requestResult",
+        "toSymbol": "parse",
+        "callExpression": "parse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "requireResultRecord",
+        "callExpression": "requireResultRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "parseDiagnostics",
+        "callExpression": "parseDiagnostics",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "parseAttempts",
+        "callExpression": "parseAttempts",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "isDataSourceKind",
+        "callExpression": "isDataSourceKind",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "isConnectedProtocol",
+        "callExpression": "isConnectedProtocol",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseConnectResult",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "requireResultRecord",
+        "callExpression": "requireResultRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "parseDiagnostics",
+        "callExpression": "parseDiagnostics",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "parseRequestSummary",
+        "callExpression": "parseRequestSummary",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "parseResponseSummary",
+        "callExpression": "parseResponseSummary",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseTestResult",
+        "toSymbol": "isDataContractValue",
+        "callExpression": "isDataContractValue",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "requireResultRecord",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "requireResultRecord",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseDiagnostics",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiApi.ts",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiApi.ts",
+        "toSymbol": "isSeverity",
+        "callExpression": "isSeverity",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiApi.ts",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiApi.ts",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseAttempts",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseRequestSummary",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseRequestSummary",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseResponseSummary",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "parseResponseSummary",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "isStructuredFailure",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "isDataContractValue",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/externalApiApi.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiAuthoring.public.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiAuthoring.public.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiAuthoring.public.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiAuthoring.public.test.ts",
+        "toSymbol": "normalizeExternalApiSourceId",
+        "callExpression": "normalizeExternalApiSourceId",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/externalApiAuthoring.public.test.ts",
+        "toSymbol": "upsertExternalApiDataSource",
+        "callExpression": "upsertExternalApiDataSource",
+        "sourcePath": "src/externalApiAuthoring.public.test.ts"
       },
       {
         "fromSymbol": "src/index.test.ts",
@@ -29530,6 +30764,330 @@
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
       {
+        "fromSymbol": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "toSymbol": "resolve",
+        "callExpression": "args.service.resolve",
+        "sourcePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/createProjectEndpointCredentialResolver.ts",
+        "toSymbol": "mapCredential",
+        "callExpression": "mapCredential",
+        "sourcePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts"
+      },
+      {
+        "fromSymbol": "mapCredential",
+        "toSymbol": "mapScopedValueCredential",
+        "callExpression": "mapScopedValueCredential",
+        "sourcePath": "src/host/dataSources/createProjectEndpointCredentialResolver.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/createTrustedEndpointTestFetch.ts",
+        "toSymbol": "requestTrustedExternalApi",
+        "callExpression": "requestTrustedExternalApi",
+        "sourcePath": "src/host/dataSources/createTrustedEndpointTestFetch.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/createTrustedExternalApiFetch.ts",
+        "toSymbol": "requestTrustedExternalApi",
+        "callExpression": "requestTrustedExternalApi",
+        "sourcePath": "src/host/dataSources/createTrustedExternalApiFetch.ts"
+      },
+      {
+        "fromSymbol": "readBlockedMessage",
+        "toSymbol": "requestTrustedExternalApi",
+        "callExpression": "requestTrustedExternalApi",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/requestTrustedExternalApi.test.ts",
+        "toSymbol": "readBlockedMessage",
+        "callExpression": "readBlockedMessage",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.test.ts"
+      },
+      {
+        "fromSymbol": "requestTrustedExternalApi",
+        "toSymbol": "parseTrustedUrl",
+        "callExpression": "parseTrustedUrl",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.ts"
+      },
+      {
+        "fromSymbol": "requestTrustedExternalApi",
+        "toSymbol": "readLimitedResponseText",
+        "callExpression": "readLimitedResponseText",
+        "sourcePath": "src/host/dataSources/requestTrustedExternalApi.ts"
+      },
+      {
+        "fromSymbol": "sanitizeExternalApiOperationTestResult",
+        "toSymbol": "redactQueryValues",
+        "callExpression": "redactQueryValues",
+        "sourcePath": "src/host/dataSources/sanitizeExternalApiOperationTestResult.ts"
+      },
+      {
+        "fromSymbol": "createProjectStore",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "createProjectStore",
+        "callExpression": "createProjectStore",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "fetch",
+        "toSymbol": "jsonResponse",
+        "callExpression": "jsonResponse",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "fetch",
+        "toSymbol": "openApiDocument",
+        "callExpression": "openApiDocument",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "connect",
+        "callExpression": "service.connect",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "read",
+        "callExpression": "store.read",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "fetch",
+        "toSymbol": "graphQlPayload",
+        "callExpression": "graphQlPayload",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "createManualRest",
+        "callExpression": "service.createManualRest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "endpointFetch",
+        "toSymbol": "jsonResponse",
+        "callExpression": "jsonResponse",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/dataSources/studioExternalApiService.test.ts",
+        "toSymbol": "testOperation",
+        "callExpression": "service.testOperation",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.test.ts"
+      },
+      {
+        "fromSymbol": "StudioExternalApiService",
+        "toSymbol": "createTrustedExternalApiFetch",
+        "callExpression": "createTrustedExternalApiFetch",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "StudioExternalApiService",
+        "toSymbol": "createTrustedEndpointTestFetch",
+        "callExpression": "createTrustedEndpointTestFetch",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connect",
+        "toSymbol": "normalizeExternalApiSourceId",
+        "callExpression": "normalizeExternalApiSourceId",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connect",
+        "toSymbol": "invalidResult",
+        "callExpression": "invalidResult",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connect",
+        "toSymbol": "connectGraphQl",
+        "callExpression": "this.connectGraphQl",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connect",
+        "toSymbol": "discoverOpenApi",
+        "callExpression": "this.discoverOpenApi",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connect",
+        "toSymbol": "persist",
+        "callExpression": "this.persist",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "createManualRest",
+        "toSymbol": "normalizeExternalApiSourceId",
+        "callExpression": "normalizeExternalApiSourceId",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "createManualRest",
+        "toSymbol": "invalidResult",
+        "callExpression": "invalidResult",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "createManualRest",
+        "toSymbol": "createManualRestDataSource",
+        "callExpression": "createManualRestDataSource",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "createManualRest",
+        "toSymbol": "clean",
+        "callExpression": "clean",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "createManualRest",
+        "toSymbol": "persist",
+        "callExpression": "this.persist",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "missingSourceResult",
+        "callExpression": "missingSourceResult",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "createProjectEndpointCredentialResolver",
+        "callExpression": "createProjectEndpointCredentialResolver",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "testEndpoint",
+        "callExpression": "testEndpoint",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "sanitizeExternalApiOperationTestResult",
+        "callExpression": "sanitizeExternalApiOperationTestResult",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "discoverOpenApi",
+        "toSymbol": "discoverOpenApiDataSource",
+        "callExpression": "discoverOpenApiDataSource",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "discoverOpenApi",
+        "toSymbol": "clean",
+        "callExpression": "clean",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connectGraphQl",
+        "toSymbol": "introspectGraphQlDataSource",
+        "callExpression": "introspectGraphQlDataSource",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connectGraphQl",
+        "toSymbol": "clean",
+        "callExpression": "clean",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "connectGraphQl",
+        "toSymbol": "persist",
+        "callExpression": "this.persist",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "persist",
+        "toSymbol": "readEditableManifest",
+        "callExpression": "this.readEditableManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "persist",
+        "toSymbol": "upsertExternalApiDataSource",
+        "callExpression": "upsertExternalApiDataSource",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "persist",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "this.projectManager.saveStudioManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "this.projectManager.getStudioManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
         "fromSymbol": "src/host/http/authRoutes.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -29570,6 +31128,138 @@
         "toSymbol": "get",
         "callExpression": "healthService.get",
         "sourcePath": "src/host/http/authRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "readConnectRequest",
+        "callExpression": "readConnectRequest",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "invalidPayload",
+        "callExpression": "invalidPayload",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "sendResult",
+        "callExpression": "sendResult",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "connect",
+        "callExpression": "service.connect",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "readProjectId",
+        "callExpression": "readProjectId",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "readManualRestRequest",
+        "callExpression": "readManualRestRequest",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "createManualRest",
+        "callExpression": "service.createManualRest",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "readOperationTestRequest",
+        "callExpression": "readOperationTestRequest",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/dataSourceRoutes.ts",
+        "toSymbol": "testOperation",
+        "callExpression": "service.testOperation",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readConnectRequest",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readConnectRequest",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readConnectRequest",
+        "toSymbol": "readCredential",
+        "callExpression": "readCredential",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readManualRestRequest",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readManualRestRequest",
+        "toSymbol": "isIntent",
+        "callExpression": "isIntent",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readManualRestRequest",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readManualRestRequest",
+        "toSymbol": "readCredential",
+        "callExpression": "readCredential",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readOperationTestRequest",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readOperationTestRequest",
+        "toSymbol": "readDataValues",
+        "callExpression": "readDataValues",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readCredential",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readCredential",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "readDataValues",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
+      },
+      {
+        "fromSymbol": "isDataContractValue",
+        "toSymbol": "readRecord",
+        "callExpression": "readRecord",
+        "sourcePath": "src/host/http/dataSourceRoutes.ts"
       },
       {
         "fromSymbol": "src/host/http/secretRoutes.ts",
@@ -29941,6 +31631,12 @@
         "fromSymbol": "startStudioHostServerWithSecrets",
         "toSymbol": "registerProjectSecretRoutes",
         "callExpression": "registerProjectSecretRoutes",
+        "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromSymbol": "startStudioHostServerWithSecrets",
+        "toSymbol": "registerProjectDataSourceRoutes",
+        "callExpression": "registerProjectDataSourceRoutes",
         "sourcePath": "src/host/http/serverWithSecrets.ts"
       },
       {
@@ -35392,16 +37088,28 @@
         "sourcePath": "src/ui/admin/pages/adminAuthSessionModel.ts"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.ts",
-        "toSymbol": "readRecord",
-        "callExpression": "readRecord",
-        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.ts"
+        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.test.ts"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.ts",
-        "toSymbol": "readString",
-        "callExpression": "readString",
-        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.ts"
+        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+        "toSymbol": "collectDataSourceOperationRows",
+        "callExpression": "collectDataSourceOperationRows",
+        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/adminDataSourceOperations.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/adminDataSourceOperations.test.ts"
       },
       {
         "fromSymbol": "src/ui/admin/pages/adminThemeModel.test.ts",
@@ -35467,24 +37175,6 @@
         "fromSymbol": "ApisAdminPage",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
-        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "ApisAdminPage",
-        "toSymbol": "collectDataSourceOperationRows",
-        "callExpression": "collectDataSourceOperationRows",
-        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ApisAdminPage.tsx",
-        "toSymbol": "readString",
-        "callExpression": "readString",
-        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ApisAdminPage.tsx",
-        "toSymbol": "readRecord",
-        "callExpression": "readRecord",
         "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
       },
       {
@@ -35960,6 +37650,192 @@
         "toSymbol": "useZoraTheme",
         "callExpression": "useZoraTheme",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "toSymbol": "countOperations",
+        "callExpression": "countOperations",
+        "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "toSymbol": "describeLocation",
+        "callExpression": "describeLocation",
+        "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
+      },
+      {
+        "fromSymbol": "DataSourceOperationsCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "DataSourceOperationsCard",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "collectDataSourceOperationRows",
+        "callExpression": "collectDataSourceOperationRows",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "DataSourceOperationsCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "DataSourceOperationsCard",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "operationKey",
+        "callExpression": "operationKey",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "setBusyKey",
+        "callExpression": "setBusyKey",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "testExternalApiOperation",
+        "callExpression": "testExternalApiOperation",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "setResults",
+        "callExpression": "setResults",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
+        "toSymbol": "run",
+        "callExpression": "run",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "OperationResult",
+        "toSymbol": "formatData",
+        "callExpression": "formatData",
+        "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "ExternalApiConnectCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "ExternalApiConnectCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "ExternalApiConnectCard",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "connectExternalApi",
+        "callExpression": "connectExternalApi",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "refetchManifest",
+        "callExpression": "studio.refetchManifest",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "toSymbol": "connect",
+        "callExpression": "connect",
+        "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "ManualRestSourceCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "ManualRestSourceCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "ManualRestSourceCard",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "createManualRestSource",
+        "callExpression": "createManualRestSource",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "refetchManifest",
+        "callExpression": "studio.refetchManifest",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ManualRestSourceCard.tsx",
+        "toSymbol": "save",
+        "callExpression": "save",
+        "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
       },
       {
         "fromSymbol": "OverviewAdminPage",
