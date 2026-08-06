@@ -44,9 +44,12 @@ graph LR
   module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
   module_src_hooks_useWorkspaceActions_ts["src/hooks/useWorkspaceActions.ts"]
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
+  module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts["src/host/auth/projectAuthRuntimeDiagnostics.test.ts"]
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts["src/host/auth/projectAuthRuntimeDiagnostics.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
+  module_src_host_generatedOAuthLifecycle_e2e_test_ts["src/host/generatedOAuthLifecycle.e2e.test.ts"]
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
   module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
@@ -68,7 +71,9 @@ graph LR
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
   module_src_host_layout_templates_auth_adapter_test_ts["src/host/layout/templates/auth/adapter.test.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
+  module_src_host_layout_templates_auth_callback_test_ts["src/host/layout/templates/auth/callback.test.ts"]
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
+  module_src_host_layout_templates_auth_oauth_test_ts["src/host/layout/templates/auth/oauth.test.ts"]
   module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
   module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
   module_src_host_layout_templates_auth_session_ts["src/host/layout/templates/auth/session.ts"]
@@ -157,6 +162,8 @@ graph LR
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
   module_src_projectAuthHealth_test_ts["src/projectAuthHealth.test.ts"]
   module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
+  module_src_projectAuthRuntimeDiagnostics_test_ts["src/projectAuthRuntimeDiagnostics.test.ts"]
+  module_src_projectAuthRuntimeDiagnostics_ts["src/projectAuthRuntimeDiagnostics.ts"]
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   module_src_projectIdentity_ts["src/projectIdentity.ts"]
   module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
@@ -164,6 +171,8 @@ graph LR
   module_src_projectSecretUsage_test_ts["src/projectSecretUsage.test.ts"]
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
+  module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
+  module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
   module_src_root_test_ts["src/root.test.ts"]
   module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
@@ -204,6 +213,8 @@ graph LR
   module_src_secretResponseGuard_ts["src/secretResponseGuard.ts"]
   module_src_studioAdminRouteModel_test_ts["src/studioAdminRouteModel.test.ts"]
   module_src_studioAdminRouteModel_ts["src/studioAdminRouteModel.ts"]
+  module_src_studioRuntimeApi_test_ts["src/studioRuntimeApi.test.ts"]
+  module_src_studioRuntimeApi_ts["src/studioRuntimeApi.ts"]
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
@@ -268,6 +279,9 @@ graph LR
   export_createNodeFromCatalogEntry -.-> export_InsertCatalogEntry
   export_createNodeFromCatalogEntry -.-> export_StudioComponentMetaRegistry
   export_createNodeFromCatalogEntry -.-> export_StudioIdGenerator
+  export_createStudioInstancePropertyPatch["createStudioInstancePropertyPatch"]
+  module_src_propertiesAuthoringModel_ts --> export_createStudioInstancePropertyPatch
+  export_createStudioInstancePropertyPatch -.-> export_StudioInstancePropertyValue
   export_deriveProjectId["deriveProjectId"]
   module_src_projectIdentity_ts --> export_deriveProjectId
   export_findNodeById["findNodeById"]
@@ -401,6 +415,14 @@ graph LR
   export_resolveInsertPlacement -.-> export_PlacementKind
   export_resolveInsertPlacement -.-> export_PlacementResolutionResult
   export_resolveInsertPlacement -.-> export_StudioComponentMetaRegistry
+  export_resolveStudioInstancePropertyFields["resolveStudioInstancePropertyFields"]
+  module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyFields
+  export_resolveStudioInstancePropertyFields -.-> export_StudioAuthoringComponentMeta
+  export_resolveStudioInstancePropertyFields -.-> export_StudioInstancePropertyField
+  export_resolveStudioInstancePropertyGroups["resolveStudioInstancePropertyGroups"]
+  module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyGroups
+  export_resolveStudioInstancePropertyGroups -.-> export_StudioAuthoringComponentMeta
+  export_resolveStudioInstancePropertyGroups -.-> export_StudioInstancePropertyGroup
   export_STUDIO_INSERT_RECIPES["STUDIO_INSERT_RECIPES"]
   module_src_index_ts --> export_STUDIO_INSERT_RECIPES
   export_STUDIO_PACKAGE_BOUNDARY["STUDIO_PACKAGE_BOUNDARY"]
@@ -422,6 +444,13 @@ graph LR
   module_src_index_ts --> export_StudioAdminRoutePath
   export_StudioAdminStaticRoutePath["StudioAdminStaticRoutePath"]
   module_src_index_ts --> export_StudioAdminStaticRoutePath
+  export_StudioAuthoringComponentMeta["StudioAuthoringComponentMeta"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioAuthoringComponentMeta
+  export_StudioAuthoringComponentMeta -.-> export_StudioAuthoringPropSchema
+  export_StudioAuthoringMetaRegistry["StudioAuthoringMetaRegistry"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioAuthoringMetaRegistry
+  export_StudioAuthoringPropSchema["StudioAuthoringPropSchema"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioAuthoringPropSchema
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
   export_StudioComponentBlueprint["StudioComponentBlueprint"]
@@ -449,6 +478,16 @@ graph LR
   module_src_index_ts --> export_StudioEvent
   export_StudioIdGenerator["StudioIdGenerator"]
   module_src_index_ts --> export_StudioIdGenerator
+  export_StudioInstancePropertyEditorKind["StudioInstancePropertyEditorKind"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyEditorKind
+  export_StudioInstancePropertyField["StudioInstancePropertyField"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyField
+  export_StudioInstancePropertyField -.-> export_StudioInstancePropertyEditorKind
+  export_StudioInstancePropertyGroup["StudioInstancePropertyGroup"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyGroup
+  export_StudioInstancePropertyGroup -.-> export_StudioInstancePropertyField
+  export_StudioInstancePropertyValue["StudioInstancePropertyValue"]
+  module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
   export_StudioLocale["StudioLocale"]
   module_src_index_ts --> export_StudioLocale
   export_StudioManifest["StudioManifest"]

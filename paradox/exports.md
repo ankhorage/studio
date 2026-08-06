@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:369:14`
+Source: `src/index.ts:373:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:279:1`
+Source: `src/index.ts:283:1`
 
 ### Members
 
@@ -26,7 +26,7 @@ Source: `src/index.ts:279:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:591:14`
+Source: `src/index.ts:595:14`
 
 ### Signatures
 
@@ -38,7 +38,7 @@ Source: `src/index.ts:591:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1303:1`
+Source: `src/index.ts:1307:1`
 
 ### Signatures
 
@@ -50,7 +50,7 @@ Source: `src/index.ts:1303:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:750:1`
+Source: `src/index.ts:754:1`
 
 ### Signatures
 
@@ -62,7 +62,7 @@ Source: `src/index.ts:750:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:516:14`
+Source: `src/index.ts:520:14`
 
 ### Signatures
 
@@ -75,7 +75,7 @@ Source: `src/index.ts:516:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1222:1`
+Source: `src/index.ts:1226:1`
 
 ### Signatures
 
@@ -84,6 +84,20 @@ Source: `src/index.ts:1222:1`
   - createId: `StudioIdGenerator` (optional)
   - entry: `InsertCatalogEntry`
   - returns: `UiNode`
+
+## createStudioInstancePropertyPatch
+
+Kind: `function`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:89:1`
+
+### Signatures
+
+- `(node: UiNode, propertyName: string, value: StudioInstancePropertyValue | undefined) => Readonly<Record<string, unknown>>`
+  - node: `UiNode`
+  - propertyName: `string`
+  - value: `StudioInstancePropertyValue | undefined`
+  - returns: `Readonly<Record<string, unknown>>`
 
 ## deriveProjectId
 
@@ -101,7 +115,7 @@ Source: `src/projectIdentity.ts:11:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:533:14`
+Source: `src/index.ts:537:14`
 
 ### Signatures
 
@@ -114,7 +128,7 @@ Source: `src/index.ts:533:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:509:14`
+Source: `src/index.ts:513:14`
 
 ### Signatures
 
@@ -126,7 +140,7 @@ Source: `src/index.ts:509:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1148:1`
+Source: `src/index.ts:1152:1`
 
 ### Signatures
 
@@ -138,7 +152,7 @@ Source: `src/index.ts:1148:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:257:1`
+Source: `src/index.ts:261:1`
 
 ### Members
 
@@ -159,7 +173,7 @@ Source: `src/index.ts:257:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:239:1`
+Source: `src/index.ts:243:1`
 
 ### Members
 
@@ -173,19 +187,19 @@ Source: `src/index.ts:239:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:216:1`
+Source: `src/index.ts:220:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:267:1`
+Source: `src/index.ts:271:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:245:1`
+Source: `src/index.ts:249:1`
 
 ### Members
 
@@ -205,19 +219,19 @@ Source: `src/index.ts:245:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:213:1`
+Source: `src/index.ts:217:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:214:1`
+Source: `src/index.ts:218:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:262:1`
+Source: `src/index.ts:266:1`
 
 ### Members
 
@@ -238,7 +252,7 @@ Source: `src/index.ts:262:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:980:1`
+Source: `src/index.ts:984:1`
 
 ### Signatures
 
@@ -250,7 +264,7 @@ Source: `src/index.ts:980:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:923:1`
+Source: `src/index.ts:927:1`
 
 ### Members
 
@@ -265,7 +279,7 @@ Source: `src/index.ts:923:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:930:1`
+Source: `src/index.ts:934:1`
 
 ### Members
 
@@ -278,7 +292,7 @@ Source: `src/index.ts:930:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:224:1`
+Source: `src/index.ts:228:1`
 
 ### Members
 
@@ -294,7 +308,7 @@ Source: `src/index.ts:224:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:232:1`
+Source: `src/index.ts:236:1`
 
 ### Members
 
@@ -309,7 +323,7 @@ Source: `src/index.ts:232:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:219:1`
+Source: `src/index.ts:223:1`
 
 ### Members
 
@@ -322,7 +336,7 @@ Source: `src/index.ts:219:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:287:1`
+Source: `src/index.ts:291:1`
 
 ### Members
 
@@ -337,7 +351,7 @@ Source: `src/index.ts:287:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:624:14`
+Source: `src/index.ts:628:14`
 
 ### Signatures
 
@@ -351,7 +365,7 @@ Source: `src/index.ts:624:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1048:1`
+Source: `src/index.ts:1052:1`
 
 ### Signatures
 
@@ -363,7 +377,7 @@ Source: `src/index.ts:1048:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1007:1`
+Source: `src/index.ts:1011:1`
 
 ### Members
 
@@ -378,7 +392,7 @@ Source: `src/index.ts:1007:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1014:1`
+Source: `src/index.ts:1018:1`
 
 ### Members
 
@@ -391,7 +405,7 @@ Source: `src/index.ts:1014:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:175:1`
+Source: `src/index.ts:179:1`
 
 ### Members
 
@@ -406,13 +420,13 @@ Source: `src/index.ts:175:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:182:1`
+Source: `src/index.ts:186:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:194:1`
+Source: `src/index.ts:198:1`
 
 ### Members
 
@@ -425,19 +439,19 @@ Source: `src/index.ts:194:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:173:1`
+Source: `src/index.ts:177:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:206:1`
+Source: `src/index.ts:210:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:199:1`
+Source: `src/index.ts:203:1`
 
 ## ProjectAuthDiagnostic
 
@@ -585,7 +599,7 @@ Source: `src/projectWorkspaceContracts.ts:16:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:573:14`
+Source: `src/index.ts:577:14`
 
 ### Signatures
 
@@ -598,7 +612,7 @@ Source: `src/index.ts:573:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:878:1`
+Source: `src/index.ts:882:1`
 
 ### Signatures
 
@@ -610,7 +624,7 @@ Source: `src/index.ts:878:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1345:1`
+Source: `src/index.ts:1349:1`
 
 ### Signatures
 
@@ -622,7 +636,7 @@ Source: `src/index.ts:1345:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:817:1`
+Source: `src/index.ts:821:1`
 
 ### Signatures
 
@@ -630,11 +644,37 @@ Source: `src/index.ts:817:1`
   - args: `{ root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }`
   - returns: `PlacementResolutionResult`
 
+## resolveStudioInstancePropertyFields
+
+Kind: `function`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:45:1`
+
+### Signatures
+
+- `(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyField[]`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>`
+  - returns: `readonly StudioInstancePropertyField[]`
+
+## resolveStudioInstancePropertyGroups
+
+Kind: `function`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:74:1`
+
+### Signatures
+
+- `(node: UiNode, registry: Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>) => readonly StudioInstancePropertyGroup[]`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>`
+  - returns: `readonly StudioInstancePropertyGroup[]`
+
 ## STUDIO_INSERT_RECIPES
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1115:14`
+Source: `src/index.ts:1119:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -646,25 +686,25 @@ Source: `src/index.ts:1115:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:57:14`
+Source: `src/index.ts:58:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:49:14`
+Source: `src/index.ts:50:14`
 
 ## STUDIO_PUBLIC_CONTRACTS
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:85:14`
+Source: `src/index.ts:86:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:271:1`
+Source: `src/index.ts:275:1`
 
 ### Members
 
@@ -678,43 +718,79 @@ Source: `src/index.ts:271:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:269:1`
+Source: `src/index.ts:273:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:277:1`
+Source: `src/index.ts:281:1`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:117:1`
+Source: `src/index.ts:121:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:140:1`
+Source: `src/index.ts:144:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:129:1`
+Source: `src/index.ts:133:1`
+
+## StudioAuthoringComponentMeta
+
+Kind: `type`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:14:1`
+
+### Members
+
+| Name  | Kind     | Type                                                  | Required | Description |
+| ----- | -------- | ----------------------------------------------------- | -------- | ----------- |
+| name  | property | `string`                                              | yes      |             |
+| props | property | `Readonly<Record<string, StudioAuthoringPropSchema>>` | yes      |             |
+
+## StudioAuthoringMetaRegistry
+
+Kind: `unknown`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:19:1`
+
+## StudioAuthoringPropSchema
+
+Kind: `type`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:3:1`
+
+### Members
+
+| Name      | Kind     | Type                                           | Required | Description |
+| --------- | -------- | ---------------------------------------------- | -------- | ----------- |
+| authoring | property | `{ readonly authority: string; } \| undefined` | no       |             |
+| category  | property | `string`                                       | yes      |             |
+| default   | property | `unknown`                                      | no       |             |
+| enum      | property | `readonly (string \| number)[] \| undefined`   | no       |             |
+| label     | property | `string \| undefined`                          | no       |             |
+| type      | property | `string`                                       | yes      |             |
 
 ## StudioCommand
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:312:1`
+Source: `src/index.ts:316:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:296:1`
+Source: `src/index.ts:300:1`
 
 ### Members
 
@@ -727,7 +803,7 @@ Source: `src/index.ts:296:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:301:1`
+Source: `src/index.ts:305:1`
 
 ### Members
 
@@ -742,13 +818,13 @@ Source: `src/index.ts:301:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:308:1`
+Source: `src/index.ts:312:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:328:1`
+Source: `src/index.ts:332:1`
 
 ### Members
 
@@ -811,49 +887,94 @@ Source: `src/index.ts:328:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:321:1`
+Source: `src/index.ts:325:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:310:1`
+Source: `src/index.ts:314:1`
+
+## StudioInstancePropertyEditorKind
+
+Kind: `unknown`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:23:1`
+
+## StudioInstancePropertyField
+
+Kind: `type`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:26:1`
+
+### Members
+
+| Name         | Kind     | Type                               | Required | Description |
+| ------------ | -------- | ---------------------------------- | -------- | ----------- |
+| category     | property | `string`                           | yes      |             |
+| defaultValue | property | `unknown`                          | yes      |             |
+| editor       | property | `StudioInstancePropertyEditorKind` | yes      |             |
+| isExplicit   | property | `boolean`                          | yes      |             |
+| label        | property | `string`                           | yes      |             |
+| name         | property | `string`                           | yes      |             |
+| options      | property | `readonly (string \| number)[]`    | yes      |             |
+| schemaType   | property | `string`                           | yes      |             |
+| value        | property | `unknown`                          | yes      |             |
+
+## StudioInstancePropertyGroup
+
+Kind: `type`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:38:1`
+
+### Members
+
+| Name     | Kind     | Type                                     | Required | Description |
+| -------- | -------- | ---------------------------------------- | -------- | ----------- |
+| category | property | `string`                                 | yes      |             |
+| fields   | property | `readonly StudioInstancePropertyField[]` | yes      |             |
+
+## StudioInstancePropertyValue
+
+Kind: `unknown`
+Module: `src/propertiesAuthoringModel.ts`
+Source: `src/propertiesAuthoringModel.ts:43:1`
 
 ## StudioLocale
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:112:1`
+Source: `src/index.ts:116:1`
 
 ## StudioManifest
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:142:1`
+Source: `src/index.ts:146:1`
 
 ## StudioMode
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:114:1`
+Source: `src/index.ts:118:1`
 
 ## StudioModuleId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:111:1`
+Source: `src/index.ts:115:1`
 
 ## StudioNodeId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:109:1`
+Source: `src/index.ts:113:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:51:1`
+Source: `src/index.ts:52:1`
 
 ### Members
 
@@ -867,13 +988,13 @@ Source: `src/index.ts:51:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:116:1`
+Source: `src/index.ts:120:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:107:1`
+Source: `src/index.ts:111:1`
 
 ## StudioProjectSummary
 
@@ -900,25 +1021,25 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:105:1`
+Source: `src/index.ts:109:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:115:1`
+Source: `src/index.ts:119:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:110:1`
+Source: `src/index.ts:114:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:153:1`
+Source: `src/index.ts:157:1`
 
 ### Members
 
@@ -934,13 +1055,13 @@ Source: `src/index.ts:153:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:108:1`
+Source: `src/index.ts:112:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:161:1`
+Source: `src/index.ts:165:1`
 
 ### Members
 
@@ -1012,19 +1133,19 @@ Source: `src/templateCatalogContracts.ts:25:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:148:1`
+Source: `src/index.ts:152:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:461:14`
+Source: `src/index.ts:465:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:545:14`
+Source: `src/index.ts:549:14`
 
 ### Signatures
 
@@ -1038,7 +1159,7 @@ Source: `src/index.ts:545:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1165:1`
+Source: `src/index.ts:1169:1`
 
 ### Signatures
 
@@ -1051,7 +1172,7 @@ Source: `src/index.ts:1165:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:762:1`
+Source: `src/index.ts:766:1`
 
 ### Signatures
 
