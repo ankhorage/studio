@@ -47,20 +47,9 @@ async function readLimitedResponseText(response: Response, maxBytes: number): Pr
     throw new Error('External API response exceeds the configured size limit.');
   }
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
-  const parts: string[] = [];
-  let bytes = 0;
-  while (true) {
-    const chunk = await reader.read();
-    if (chunk.done) break;
-    bytes += chunk.value.byteLength;
-    if (bytes > maxBytes) {
-      await reader.cancel();
-      throw new Error('External API response exceeds the configured size limit.');
-    }
-    parts.push(decoder.decode(chunk.value, { stream: true }));
+  const bytes = await response.arrayBuffer();
+  if (bytes.byteLength > maxBytes) {
+    throw new Error('External API response exceeds the configured size limit.');
   }
-  parts.push(decoder.decode());
-  return parts.join('');
+  return new TextDecoder().decode(bytes);
 }
