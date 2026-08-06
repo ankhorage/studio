@@ -38,15 +38,21 @@ test('collects operations through data sources, endpoints, and operations', () =
       sourceId: 'crm',
       endpointId: 'contacts',
       operationId: 'contacts.list',
+      name: undefined,
       kind: 'read',
       protocol: 'http',
+      method: 'GET',
+      path: '/contacts',
     },
     {
       sourceId: 'crm',
       endpointId: 'contacts',
       operationId: 'contacts.create',
+      name: undefined,
       kind: 'create',
       protocol: 'http',
+      method: 'POST',
+      path: '/contacts',
     },
   ]);
 });

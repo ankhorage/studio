@@ -179,6 +179,10 @@
     "./host": {
       "types": "./dist/host/index.d.ts",
       "import": "./dist/host/index.js"
+    },
+    "./externalApiAuthoring": {
+      "types": "./dist/externalApiAuthoring.d.ts",
+      "import": "./dist/externalApiAuthoring.js"
     }
   },
   "ankh": {
@@ -194,7 +198,9 @@
       "studio.secrets.list",
       "studio.secrets.create",
       "studio.secrets.replace",
-      "studio.secrets.remove"
+      "studio.secrets.remove",
+      "studio.data-sources.connect",
+      "studio.data-sources.test"
     ]
   },
   "scripts": {
@@ -234,6 +240,7 @@
   "dependencies": {
     "@ankhorage/color-theory": "^0.0.8",
     "@ankhorage/contracts": "^4.0.1",
+    "@ankhorage/data-sources": "^0.6.0",
     "@ankhorage/expo-runtime": "^0.0.11",
     "@ankhorage/infra": "^1.1.0",
     "@ankhorage/orchestrator": "^0.2.4",

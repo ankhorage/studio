@@ -7,7 +7,11 @@ export {
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
+export { createTrustedEndpointTestFetch } from './dataSources/createTrustedEndpointTestFetch';
+export { createTrustedExternalApiFetch } from './dataSources/createTrustedExternalApiFetch';
+export { StudioExternalApiService } from './dataSources/studioExternalApiService';
 export { registerProjectAuthRoutes } from './http/authRoutes';
+export { registerProjectDataSourceRoutes } from './http/dataSourceRoutes';
 export { registerProjectSecretRoutes } from './http/secretRoutes';
 export { isOriginAllowed } from './http/security';
 export {
