@@ -62,17 +62,17 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Format and regenerate docs
+      - name: Regenerate and format
         shell: bash
         run: |
           set -o pipefail
           {
             bun run lint:fix
-            bun run format
             bun run docs
+            bun run format
           } 2>&1 | tee /tmp/adm3-validation.log
 
-      - name: Capture validation failure
+      - name: Capture preparation failure
         if: failure()
         shell: bash
         run: |
