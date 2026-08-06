@@ -1,0 +1,148 @@
+name: Finalize ADM 3 with ZORA 2.9.3
+
+on:
+  push:
+    branches:
+      - agent/adm-3-instance-properties
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/adm-3-instance-properties
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Consume released ZORA metadata
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          package_path = Path('package.json')
+          package_text = package_path.read_text()
+          old_dependency = '"@ankhorage/zora": "^2.9.2"'
+          new_dependency = '"@ankhorage/zora": "^2.9.3"'
+          if old_dependency in package_text:
+              package_text = package_text.replace(old_dependency, new_dependency, 1)
+          elif new_dependency not in package_text:
+              raise SystemExit('Expected ZORA dependency was not found')
+          package_path.write_text(package_text)
+
+          test_path = Path('src/propertiesAuthoringModel.test.ts')
+          test_text = test_path.read_text()
+          zora_import = "import { ZORA_COMPONENT_META } from '@ankhorage/zora';\n"
+          if zora_import not in test_text:
+              contract_import = "import type { UiNode } from '@ankhorage/contracts';\n"
+              test_text = test_text.replace(contract_import, contract_import + zora_import, 1)
+
+          marker = "  test('consumes released ZORA Heading metadata without exposing theme presentation', () => {"
+          if marker not in test_text:
+              addition = r'''
+
+  test('consumes released ZORA Heading metadata without exposing theme presentation', () => {
+    const node: UiNode = {
+      id: 'heading',
+      type: 'Heading',
+      props: {
+        text: 'Overview',
+        level: 3,
+        size: 'h1',
+        color: 'accent',
+        numberOfLines: 2,
+      },
+    };
+
+    const fields = resolveStudioInstancePropertyFields(node, ZORA_COMPONENT_META);
+
+    expect(fields.map((field) => field.name)).toEqual([
+      'text',
+      'i18nKey',
+      'level',
+      'numberOfLines',
+    ]);
+    expect(fields.find((field) => field.name === 'level')).toMatchObject({
+      editor: 'choice',
+      options: [1, 2, 3, 4, 5, 6],
+      value: 3,
+      defaultValue: 2,
+      isExplicit: true,
+    });
+    expect(fields.some((field) => field.name === 'size')).toBe(false);
+    expect(fields.some((field) => field.name === 'color')).toBe(false);
+  });
+'''
+              closing = '\n});\n'
+              if closing not in test_text:
+                  raise SystemExit('Could not find test suite closing marker')
+              test_text = test_text.rsplit(closing, 1)[0] + addition + closing
+          test_path.write_text(test_text)
+          PY
+
+      - name: Update dependency lock
+        run: bun install
+
+      - name: Regenerate and format
+        run: |
+          bun run lint:fix
+          bun run docs
+          bun run format
+
+      - name: Build
+        run: bun run build
+
+      - name: Validate repository
+        run: bunx @ankhorage/ankh doctor validate .
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Format check
+        run: bun run format:check
+
+      - name: Knip
+        run: bun run knip
+
+      - name: Tests
+        run: bun run test
+
+      - name: Studio web smoke
+        run: bun run test:smoke:studio-web
+
+      - name: Generated app web E2E
+        run: bun run test:e2e:generated-app-web
+
+      - name: Package typecheck
+        run: bun run typecheck
+
+      - name: Studio app typecheck
+        run: bun run type-check:studio
+
+      - name: Changeset status
+        run: bun run changeset:status
+
+      - name: Package smoke
+        run: npm pack --dry-run
+
+      - name: Commit finalized ADM 3 branch
+        run: |
+          rm .github/workflows/finalize-adm3-zora-293.yml
+          git config user.name 'Fabio Gartenmann'
+          git config user.email '137318798+artiphishle@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+          else
+            git commit -m 'chore: consume ZORA 2.9.3 for ADM 3'
+            git push origin HEAD:agent/adm-3-instance-properties
+          fi
