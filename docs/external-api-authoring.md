@@ -19,3 +19,7 @@ Successful OpenAPI discovery, GraphQL introspection, and manual REST creation up
 - **Operation testing** uses the canonical data-source test runner. Browser responses omit request headers and bodies and redact query values.
 
 Package-neutral source-ID normalization and registry upsert helpers are exported through `@ankhorage/studio/externalApiAuthoring`.
+
+## Validation boundary
+
+Changes to this flow must validate the package model and trusted host behavior, the Studio web workspace, the generated app web administration surface, and the published package contents. External provider availability is injected or mocked in deterministic tests; real credentials never belong in repository or browser test fixtures.
