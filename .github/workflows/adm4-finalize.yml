@@ -1,0 +1,71 @@
+name: ADM4 Finalize
+
+on:
+  push:
+    branches:
+      - agent/adm-4-external-api-authoring
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/adm-4-external-api-authoring
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Align package metadata
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+          pkg.exports['./externalApiAuthoring'] = {
+            types: './dist/externalApiAuthoring.d.ts',
+            import: './dist/externalApiAuthoring.js',
+          };
+          pkg.dependencies['@ankhorage/data-sources'] = '^0.6.0';
+          pkg.dependencies = Object.fromEntries(
+            Object.entries(pkg.dependencies).sort(([left], [right]) => left.localeCompare(right)),
+          );
+          for (const capability of ['studio.data-sources.connect', 'studio.data-sources.test']) {
+            if (!pkg.ankh.capabilities.includes(capability)) pkg.ankh.capabilities.push(capability);
+          }
+          fs.writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
+
+      - name: Install and generate
+        run: |
+          bun install
+          bun run lint:fix
+          bun run format
+          bun run docs
+
+      - name: Validate
+        run: |
+          bun run build
+          bun run lint
+          bun run format:check
+          bun run knip
+          bun run test
+          bun run typecheck
+          bun run type-check:studio
+          bun run changeset:status
+
+      - name: Commit generated changes and remove helper
+        run: |
+          rm .github/workflows/adm4-finalize.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: finalize external API authoring"
+          git push origin HEAD:agent/adm-4-external-api-authoring
