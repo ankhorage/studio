@@ -1,8 +1,0 @@
-$ ankhorage-eslint . --fix --max-warnings=0
-
-/home/runner/work/studio/studio/src/propertiesAuthoringModel.test.ts
-  97:42  error  Parsing error: ',' expected
-
-✖ 1 problem (1 error, 0 warnings)
-
-error: script "lint:fix" exited with code 1

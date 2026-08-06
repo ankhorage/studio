@@ -7,7 +7,6 @@ import type {
   DataSourceRegistry,
   NavigatorType,
   RouteDefinition,
-  ThemeConfig,
   ThemeModeConfig,
   UiNode,
 } from '@ankhorage/contracts';
@@ -143,9 +142,7 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/auth/profile'
   | '/ankh/secrets'
   | '/ankh/theme';
-export type StudioAdminRoutePath =
-  | StudioAdminStaticRoutePath
-  | `/ankh/properties/${string}`;
+export type StudioAdminRoutePath = StudioAdminStaticRoutePath | `/ankh/properties/${string}`;
 
 export interface StudioSelectionState {
   readonly selectedNodeId: StudioNodeId | null;
@@ -225,9 +222,7 @@ export interface StudioContextValue {
   readonly setActiveThemeId: (id: string) => void;
   readonly setActiveThemeMode: (mode: StudioMode) => void;
   readonly updateAuthSettings: (settings: StudioAuthSettings) => void;
-  readonly mutateAuthSettings: (
-    mutation: StudioAuthSettingsMutation,
-  ) => StudioAuthSettings | null;
+  readonly mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   readonly updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   readonly updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
   readonly moveNode: (nodeId: StudioNodeId, direction: 'up' | 'down') => void;
