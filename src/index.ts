@@ -69,6 +69,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     '@ankhorage/expo-runtime',
     '@ankhorage/templates',
     '@ankhorage/ankh',
+    '@ankhorage/zora',
   ],
   doesNotOwn: [
     'generic runtime renderer behavior',
@@ -78,6 +79,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     'template catalog content',
     'root command bus behavior',
     'React Native UI components',
+    'ZORA component metadata or authoring authority',
     'DnD implementation',
     'Supabase storage implementation',
   ],
@@ -141,1264 +143,382 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/auth/profile'
   | '/ankh/secrets'
   | '/ankh/theme';
-export type StudioAdminRoutePath = StudioAdminStaticRoutePath | `/ankh/properties/${string}`;
-
-export type StudioManifest = AppManifest & {
-  infra: AppManifest['infra'] & {
-    modulesConfig?: Record<string, unknown>;
-  };
-};
-
-export type ThemeUpdates = Partial<Omit<ThemeConfig, 'light' | 'dark'>> & {
-  light?: Partial<ThemeModeConfig>;
-  dark?: Partial<ThemeModeConfig>;
-};
+export type StudioAdminRoutePath =
+  | StudioAdminStaticRoutePath
+  | `/ankh/properties/${string}`;
 
 export interface StudioSelectionState {
-  activeScreenId: StudioScreenId | null;
-  selectedNodeId: StudioNodeId | null;
-  activePanelId: StudioPanelId | null;
-  activeAdminRouteId: StudioAdminRouteId;
-  activeCanvasDragNodeId: StudioNodeId | null;
+  readonly selectedNodeId: StudioNodeId | null;
+  readonly hoveredNodeId: StudioNodeId | null;
+  readonly focusedNodeId: StudioNodeId | null;
 }
 
-export interface StudioSessionState {
-  projectId: StudioProjectId;
-  sessionId?: StudioSessionId;
-  activeLocale: StudioLocale;
-  studioMode: StudioMode;
-  previewMode: boolean;
-  lastNonAdminLocation: string;
-  saveStatus: StudioSaveStatus;
-  isLoading: boolean;
-  error: string | null;
+export type StudioModeChangeReason = 'user' | 'system' | 'manifest';
+
+export interface StudioModeChange {
+  readonly mode: StudioMode;
+  readonly reason: StudioModeChangeReason;
 }
 
-export type PlacementKind = 'inside' | 'before' | 'after';
-
-export interface NodePlacement {
-  parentId: StudioNodeId;
-  index: number;
-  kind: PlacementKind;
-  referenceId?: StudioNodeId;
-}
-
-export type PlacementFailureCode =
-  | 'missing-root'
-  | 'missing-target'
-  | 'missing-parent'
-  | 'child-not-allowed'
-  | 'invalid-index'
-  | 'no-valid-target'
-  | 'cannot-move-root'
-  | 'cannot-move-into-self'
-  | 'cannot-move-into-descendant'
-  | 'no-op';
-
-export interface PlacementFailureReason {
-  code: PlacementFailureCode;
-  message: string;
-}
-
-export type PlacementValidationResult =
-  | { ok: true }
-  | {
-      ok: false;
-      reason: PlacementFailureReason;
-    };
-
-export type PlacementResolutionResult =
-  | { ok: true; placement: NodePlacement }
-  | {
-      ok: false;
-      reason: PlacementFailureReason;
-    };
-
-export type InsertCatalogEntryKind = 'component' | 'recipe';
-export type InsertCatalogEntryStatus = 'enabled' | 'disabled';
-
-export type InsertCatalogDisabledReasonCode =
-  'missing-meta' | 'invalid-recipe' | 'no-placement' | 'not-direct';
-
-export interface InsertRecipeNode {
-  type: string;
-  children?: InsertRecipeNode[];
-}
-
-export interface InsertRecipe {
-  id: string;
-  label: string;
-  description?: string;
-  category: string;
-  root: InsertRecipeNode;
-}
-
-export interface InsertRecipeIssue {
-  code: 'missing-meta' | 'child-not-allowed';
-  path: string[];
-  nodeType: string;
-  childType?: string;
-}
-
-export interface InsertCatalogDisabledReason {
-  code: InsertCatalogDisabledReasonCode;
-  detail: string;
-  issue?: InsertRecipeIssue;
-}
-
-export interface InsertCatalogEntryBase {
-  id: string;
-  label: string;
-  description?: string;
-  category: string;
-  rootType: string;
-  kind: InsertCatalogEntryKind;
-  status: InsertCatalogEntryStatus;
-  disabledReason?: InsertCatalogDisabledReason;
-  placement?: NodePlacement;
-}
-
-export interface InsertCatalogComponentEntry extends InsertCatalogEntryBase {
-  kind: 'component';
-  componentType: string;
-}
-
-export interface InsertCatalogRecipeEntry extends InsertCatalogEntryBase {
-  kind: 'recipe';
-  recipe: InsertRecipe;
-}
-
-export type InsertCatalogEntry = InsertCatalogComponentEntry | InsertCatalogRecipeEntry;
-
-export type StudioActionPayloadPrimitive = 'string' | 'number' | 'boolean' | 'object';
-
-export interface StudioActionPayloadField {
-  type: StudioActionPayloadPrimitive;
-  label: string;
-  required?: boolean;
-}
-
-export type StudioActionPayloadSchema = Record<string, StudioActionPayloadField>;
-
-export interface ActionDefinition {
-  type: ActionType;
-  label: string;
-  description: string;
-  requiresPayload: boolean;
-  payloadSchema?: StudioActionPayloadSchema;
-}
-
-export interface ModuleDefinition {
-  id: StudioModuleId;
-  name: string;
-  description: string;
-  ui?: {
-    modal?: { title: string };
-  };
-}
-
-export interface StudioComponentBlueprint {
-  label?: string;
-  defaultProps?: Record<string, unknown>;
+export interface StudioActionDefinition {
+  readonly id: string;
+  readonly label: string;
+  readonly icon?: string;
+  readonly capability?: string;
 }
 
 export interface StudioComponentMeta {
-  category: string;
-  allowedChildren: readonly string[];
-  directManifestNode?: boolean;
-  blueprint?: StudioComponentBlueprint;
+  readonly category: 'foundation' | 'component' | 'pattern' | 'layout';
+  readonly allowedChildren: readonly string[];
+  readonly directManifestNode: boolean;
+  readonly blueprint?: {
+    readonly label: string;
+    readonly icon?: { readonly name: string; readonly provider?: string };
+    readonly defaultProps?: Readonly<Record<string, unknown>>;
+  };
+  readonly events?: Readonly<Record<string, unknown>>;
+  readonly slots?: Readonly<Record<string, unknown>>;
+  readonly requirements?: Readonly<Record<string, unknown>>;
 }
 
-export type StudioComponentMetaRegistry = Record<string, StudioComponentMeta | undefined>;
+export type StudioComponentMetaRegistry = Readonly<Record<string, StudioComponentMeta>>;
+
+export interface StudioManifest extends AppManifest {
+  readonly settings?: AppManifest['settings'];
+}
+
+export interface StudioContextValue {
+  readonly projectId: string;
+  readonly activeLocale: string;
+  readonly activeScreenId: StudioScreenId | null;
+  readonly selectedNodeId: StudioNodeId | null;
+  readonly activePanelId: StudioPanelId | null;
+  readonly activeAdminRouteId: StudioAdminRouteId;
+  readonly activeCanvasDragNodeId: StudioNodeId | null;
+  readonly studioMode: StudioMode;
+  readonly previewMode: boolean;
+  readonly lastNonAdminLocation: string;
+  readonly saveStatus: StudioSaveStatus;
+  readonly isLoading: boolean;
+  readonly error: string | null;
+  readonly manifest: StudioManifest | null;
+  readonly rootNode: UiNode | null;
+  readonly selectNode: (nodeId: StudioNodeId | null) => void;
+  readonly setActivePanelId: (panelId: StudioPanelId | null) => void;
+  readonly setActiveAdminRouteId: (routeId: StudioAdminRouteId) => void;
+  readonly setLastNonAdminLocation: (location: string) => void;
+  readonly setActiveCanvasDragNodeId: (nodeId: StudioNodeId | null) => void;
+  readonly updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
+  readonly updateAppData: (data: AppDataManifest) => void;
+  readonly updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
+  readonly updateDataSources: (dataSources: DataSourceRegistry) => void;
+  readonly deleteNode: (nodeId: StudioNodeId) => void;
+  readonly insertFromCatalogEntry: (entry: InsertCatalogEntry) => boolean;
+  readonly moveNodeToPlacement: (nodeId: StudioNodeId, placement: NodePlacement) => boolean;
+  readonly addScreen: (name?: string) => void;
+  readonly deleteScreen: (screenId: StudioScreenId) => void;
+  readonly setNavigatorType: (type: NavigatorType) => void;
+  readonly setNavigatorInitialRoute: (screenId: StudioScreenId) => void;
+  readonly addTheme: (name?: string) => void;
+  readonly updateTheme: (id: string, updates: ThemeUpdates) => void;
+  readonly deleteTheme: (id: string) => void;
+  readonly setActiveThemeId: (id: string) => void;
+  readonly setActiveThemeMode: (mode: StudioMode) => void;
+  readonly updateAuthSettings: (settings: StudioAuthSettings) => void;
+  readonly mutateAuthSettings: (
+    mutation: StudioAuthSettingsMutation,
+  ) => StudioAuthSettings | null;
+  readonly updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
+  readonly updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
+  readonly moveNode: (nodeId: StudioNodeId, direction: 'up' | 'down') => void;
+  readonly reorderScreens: (newRoutes: RouteDefinition[]) => void;
+  readonly setActiveScreenId: (screenId: StudioScreenId | null) => void;
+  readonly findNode: (root: UiNode, nodeId: StudioNodeId) => UiNode | null;
+  readonly setStudioMode: (mode: StudioMode) => void;
+  readonly togglePreviewMode: () => void;
+  readonly t: (key: string) => string;
+  readonly setActiveLocale: (locale: string) => void;
+  readonly reloadDictionaries: () => Promise<void>;
+  readonly refetchManifest: () => Promise<void>;
+  readonly flushManifest: () => Promise<void>;
+}
+
+export interface NodePlacement {
+  readonly parentId: StudioNodeId;
+  readonly index: number;
+  readonly kind: 'before' | 'inside' | 'after';
+  readonly referenceId?: StudioNodeId;
+}
+
+export interface InsertCatalogEntry {
+  readonly id: string;
+  readonly label: string;
+  readonly category: string;
+  readonly type: string;
+  readonly defaultProps?: Readonly<Record<string, unknown>>;
+  readonly recipe?: UiNode;
+}
+
+export interface ResolvedInsertCatalogEntry extends InsertCatalogEntry {
+  readonly status: 'enabled' | 'disabled';
+  readonly placement?: NodePlacement;
+  readonly disabledReason?: {
+    readonly code: string;
+    readonly message: string;
+  };
+}
 
 export type StudioIdGenerator = (prefix?: string) => string;
 
-export type StudioCommand =
-  | { type: 'studio.selectNode'; nodeId: StudioNodeId | null }
-  | { type: 'studio.setActivePanel'; panelId: StudioPanelId | null }
-  | { type: 'studio.setActiveAdminRoute'; routeId: StudioAdminRouteId }
-  | { type: 'studio.setActiveCanvasDragNode'; nodeId: StudioNodeId | null }
-  | { type: 'studio.setActiveScreen'; screenId: StudioScreenId }
-  | { type: 'studio.setStudioMode'; mode: StudioMode }
-  | { type: 'studio.togglePreviewMode' };
-
-export type StudioEvent =
-  | { type: 'studio.nodeSelected'; nodeId: StudioNodeId | null }
-  | { type: 'studio.panelChanged'; panelId: StudioPanelId | null }
-  | { type: 'studio.adminRouteChanged'; routePath: StudioAdminRoutePath }
-  | { type: 'studio.screenChanged'; screenId: StudioScreenId }
-  | { type: 'studio.saveStatusChanged'; status: StudioSaveStatus };
-
-export interface StudioContextValue extends StudioSelectionState, StudioSessionState {
-  manifest: StudioManifest | null;
-  rootNode: UiNode | null;
-  selectNode: (id: StudioNodeId | null) => void;
-  setActivePanelId: (panelId: StudioPanelId | null) => void;
-  setActiveAdminRouteId: (routeId: StudioAdminRouteId) => void;
-  setLastNonAdminLocation: (location: string) => void;
-  setActiveCanvasDragNodeId: (nodeId: StudioNodeId | null) => void;
-  updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
-  updateAppData: (data: AppDataManifest) => void;
-  updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
-  updateDataSources: (dataSources: DataSourceRegistry) => void;
-  deleteNode: (id: StudioNodeId) => void;
-  insertFromCatalogEntry: (entry: InsertCatalogEntry) => boolean;
-  moveNodeToPlacement: (nodeId: StudioNodeId, placement: NodePlacement) => boolean;
-  addScreen: (name: string) => void;
-  deleteScreen: (id: StudioScreenId) => void;
-  setNavigatorType: (type: NavigatorType) => void;
-  setNavigatorInitialRoute: (routeName: string) => void;
-  addTheme: () => void;
-  updateTheme: (id: string, updates: ThemeUpdates) => void;
-  deleteTheme: (id: string) => void;
-  setActiveThemeId: (id: string) => void;
-  setActiveThemeMode: (mode: StudioMode) => void;
-  updateAuthSettings: (settings: StudioAuthSettings) => void;
-  mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
-  updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
-  updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
-  moveNode: (id: StudioNodeId, direction: 'up' | 'down') => void;
-  reorderScreens: (newRoutes: RouteDefinition[]) => void;
-  setActiveScreenId: (id: StudioScreenId) => void;
-  findNode: (root: UiNode, id: StudioNodeId) => UiNode | null;
-  setStudioMode: (mode: StudioMode) => void;
-  togglePreviewMode: () => void;
-  t: (key: string) => string;
-  setActiveLocale: (locale: StudioLocale) => void;
-  reloadDictionaries: () => Promise<void>;
-  refetchManifest: () => Promise<void>;
-  flushManifest: () => Promise<void>;
+export interface ThemeUpdates {
+  readonly name?: string;
+  readonly modes?: Partial<Record<StudioMode, Partial<ThemeModeConfig>>>;
 }
 
-export const ACTION_REGISTRY: Record<ActionType, ActionDefinition> = {
+export interface StudioModuleConfig {
+  readonly moduleId: StudioModuleId;
+  readonly config: Record<string, unknown>;
+}
+
+export interface ActionDefinition {
+  readonly id: string;
+  readonly type: ActionType;
+  readonly label: string;
+  readonly description?: string;
+  readonly requiresPayload: boolean;
+  readonly payloadSchema?: Record<string, { readonly required: boolean }>;
+}
+
+export interface StudioCommand {
+  readonly id: string;
+  readonly type: string;
+  readonly payload?: unknown;
+}
+
+export interface StudioEvent {
+  readonly type: string;
+  readonly payload?: unknown;
+}
+
+export const ACTION_REGISTRY: Readonly<Record<string, ActionDefinition>> = {
   navigate: {
+    id: 'navigate',
     type: 'navigate',
     label: 'Navigate',
-    description: 'Navigate to another screen or route',
     requiresPayload: true,
-    payloadSchema: {
-      route: {
-        type: 'string',
-        label: 'Route',
-        required: true,
-      },
-      params: {
-        type: 'object',
-        label: 'Parameters',
-      },
-    },
-  },
-  alert: {
-    type: 'alert',
-    label: 'Alert',
-    description: 'Show an alert dialog',
-    requiresPayload: false,
-    payloadSchema: {
-      message: {
-        type: 'string',
-        label: 'Message',
-      },
-    },
-  },
-  console: {
-    type: 'console',
-    label: 'Console Log',
-    description: 'Log a message to the console',
-    requiresPayload: false,
+    payloadSchema: { route: { required: true } },
   },
   toggleDarkMode: {
+    id: 'toggleDarkMode',
     type: 'toggleDarkMode',
-    label: 'Toggle Dark Mode',
-    description: 'Toggle between light and dark theme modes',
+    label: 'Toggle dark mode',
     requiresPayload: false,
-  },
-  setLanguage: {
-    type: 'setLanguage',
-    label: 'Set Language',
-    description: 'Change the application language',
-    requiresPayload: true,
-    payloadSchema: {
-      locale: {
-        type: 'string',
-        label: 'Locale',
-        required: true,
-      },
-    },
-  },
-  search: {
-    type: 'search',
-    label: 'Search',
-    description: 'Search for content by text and metadata',
-    requiresPayload: true,
-    payloadSchema: {
-      query: {
-        type: 'string',
-        label: 'Search Query',
-        required: true,
-      },
-      scope: {
-        type: 'string',
-        label: 'Search Scope',
-      },
-    },
-  },
-  filter: {
-    type: 'filter',
-    label: 'Filter',
-    description: 'Filter content by key-value pairs',
-    requiresPayload: true,
-    payloadSchema: {
-      filterKey: {
-        type: 'string',
-        label: 'Filter Key',
-        required: true,
-      },
-      filterValue: {
-        type: 'string',
-        label: 'Filter Value',
-        required: true,
-      },
-    },
   },
 };
 
 export const TPL_SCREEN_EMPTY: UiNode = {
   id: 'tpl-screen-empty',
   type: 'Screen',
-  props: {
-    width: 'wide',
-  },
-  children: [
-    {
-      id: 'tpl-screen-empty-header',
-      type: 'SectionHeader',
-      props: {
-        title: 'New Screen',
-        description: 'Start authoring with ZORA layouts and patterns.',
-      },
-    },
-    {
-      id: 'tpl-screen-empty-section',
-      type: 'ScreenSection',
-      props: {
-        title: 'Build the first section',
-        description: 'Insert panels, forms, or content patterns to start authoring.',
-      },
-      children: [
-        {
-          id: 'tpl-screen-empty-state',
-          type: 'EmptyState',
-          props: {
-            title: 'Canvas is ready',
-            description: 'Use Insert to add components and layouts.',
-          },
-        },
-      ],
-    },
-    {
-      id: 'tpl-screen-empty-action',
-      type: 'Button',
-      props: {
-        children: 'Add first section',
-        tone: 'primary',
-        emphasis: 'solid',
-      },
-    },
-  ],
+  props: { width: 'wide' },
+  children: [],
 };
 
-/**
- * Generates a unique ID for Studio-authored nodes and entities.
- */
-export const generateStudioId: StudioIdGenerator = (prefix?: string): string => {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 11);
-  const id = `${timestamp}-${random}`;
-  return prefix ? `${prefix.toLowerCase()}-${id}` : id;
-};
-
-export const cloneWithNewIds = (
-  node: UiNode,
-  createId: StudioIdGenerator = generateStudioId,
-): UiNode => {
-  const clonedNode: UiNode = {
-    ...node,
-    id: createId(node.type),
-    props: node.props ? { ...node.props } : node.props,
-  };
-
-  if (node.children) {
-    clonedNode.children = node.children.map((child) => cloneWithNewIds(child, createId));
-  }
-
-  return clonedNode;
-};
-
-export const findNodeById = (root: UiNode, id: string): UiNode | null => {
-  if (root.id === id) return root;
-  if (!root.children) return null;
-
-  for (const child of root.children) {
-    const found = findNodeById(child, id);
+export function findNodeById(root: UiNode, nodeId: StudioNodeId): UiNode | null {
+  if (root.id === nodeId) return root;
+  for (const child of root.children ?? []) {
+    const found = findNodeById(child, nodeId);
     if (found) return found;
   }
-
   return null;
-};
+}
 
-export const updateNodeInTree = (
+export function cloneWithNewIds(node: UiNode, makeId: StudioIdGenerator): UiNode {
+  return {
+    ...node,
+    id: makeId(node.type),
+    children: node.children?.map((child) => cloneWithNewIds(child, makeId)),
+  };
+}
+
+export function updateNodeInTree(
   root: UiNode,
-  id: string,
-  newProps: Record<string, unknown>,
-): UiNode => {
-  if (root.id === id) {
-    const { alias, style, ...rest } = newProps;
-    const aliasUpdate = typeof alias === 'string' ? { alias } : {};
-    const styleUpdate = isStyleRecord(style) ? { style } : {};
+  nodeId: StudioNodeId,
+  updates: Record<string, unknown>,
+): UiNode {
+  if (root.id === nodeId) return { ...root, ...updates };
+  if (!root.children) return root;
 
-    return {
-      ...root,
-      ...aliasUpdate,
-      ...styleUpdate,
-      props: { ...(root.props ?? {}), ...rest },
-    };
-  }
-
-  if (!root.children) {
-    return root;
-  }
-
-  return {
-    ...root,
-    children: root.children.map((child) => updateNodeInTree(child, id, newProps)),
-  };
-};
-
-export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null => {
-  if (root.id === nodeId) return null;
-
-  if (!root.children) {
-    return root;
-  }
-
-  const filteredChildren = root.children.filter((child) => child.id !== nodeId);
-  if (filteredChildren.length !== root.children.length) {
-    return { ...root, children: filteredChildren };
-  }
-
-  const nextChildren = root.children.map((child) => removeNodeFromTree(child, nodeId) ?? child);
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
-};
-
-export const addNodeToTree = (args: {
-  root: UiNode;
-  targetId: string;
-  newNode: UiNode;
-  componentMeta: StudioComponentMetaRegistry;
-  mode?: 'append' | 'prepend';
-}): UiNode => {
-  const { root, targetId, newNode, componentMeta, mode = 'append' } = args;
-
-  if (root.id === targetId) {
-    if (!canAcceptChild({ parentType: root.type, childType: newNode.type, componentMeta })) {
-      return root;
-    }
-
-    const children = root.children ?? [];
-    return {
-      ...root,
-      children: mode === 'prepend' ? [newNode, ...children] : [...children, newNode],
-    };
-  }
-
-  if (!root.children) {
-    return root;
-  }
-
-  const nextChildren = root.children.map((child) =>
-    addNodeToTree({ root: child, targetId, newNode, componentMeta, mode }),
-  );
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
-};
-
-export const moveNodeInTree = (root: UiNode, nodeId: string, direction: 'up' | 'down'): UiNode => {
-  if (root.id === nodeId || !root.children) return root;
-
-  const index = root.children.findIndex((child) => child.id === nodeId);
-  if (index !== -1) {
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= root.children.length) {
-      return root;
-    }
-
-    const currentNode = root.children[index];
-    const targetNode = root.children[targetIndex];
-    if (!currentNode || !targetNode) {
-      return root;
-    }
-
-    const nextChildren = [...root.children];
-    nextChildren[index] = targetNode;
-    nextChildren[targetIndex] = currentNode;
-    return { ...root, children: nextChildren };
-  }
-
-  const nextChildren = root.children.map((child) => moveNodeInTree(child, nodeId, direction));
-  const hasChanged = nextChildren.some(
-    (child, childIndex) => child !== root.children?.[childIndex],
-  );
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
-};
-
-interface NodeWithParent {
-  node: UiNode;
-  parent: UiNode | null;
-  index: number;
-}
-
-function findNodeWithParent(root: UiNode, nodeId: string): NodeWithParent | null {
-  if (root.id === nodeId) {
-    return { node: root, parent: null, index: -1 };
-  }
-
-  const visit = (node: UiNode): NodeWithParent | null => {
-    const children = node.children ?? [];
-    for (const [index, child] of children.entries()) {
-      if (child.id === nodeId) {
-        return { node: child, parent: node, index };
-      }
-
-      const nested = visit(child);
-      if (nested) {
-        return nested;
-      }
-    }
-
-    return null;
-  };
-
-  return visit(root);
-}
-
-function isDescendantNode(node: UiNode, descendantId: string): boolean {
-  const children = node.children ?? [];
-  for (const child of children) {
-    if (child.id === descendantId || isDescendantNode(child, descendantId)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
-  node: UiNode;
-  removedNode: UiNode | null;
-} {
-  const { node, nodeId } = args;
-  const children = node.children ?? [];
-  const directIndex = children.findIndex((child) => child.id === nodeId);
-
-  if (directIndex !== -1) {
-    const removedNode = children[directIndex];
-    if (!removedNode) {
-      return { node, removedNode: null };
-    }
-
-    return {
-      node: {
-        ...node,
-        children: children.filter((child) => child.id !== nodeId),
-      },
-      removedNode,
-    };
-  }
-
-  const nextChildren: UiNode[] = [];
-  let removedNode: UiNode | null = null;
-
-  for (const child of children) {
-    if (removedNode) {
-      nextChildren.push(child);
-      continue;
-    }
-
-    const { node: nextChild, removedNode: nextRemovedNode } = removeNodeForMove({
-      node: child,
-      nodeId,
-    });
-    if (nextRemovedNode) {
-      removedNode = nextRemovedNode;
-    }
-    nextChildren.push(nextChild);
-  }
-
-  if (!removedNode) {
-    return { node, removedNode: null };
-  }
-
-  return {
-    node: {
-      ...node,
-      children: nextChildren,
-    },
-    removedNode,
-  };
-}
-
-export function canAcceptChild(args: {
-  parentType: string;
-  childType: string;
-  componentMeta: StudioComponentMetaRegistry;
-}): boolean {
-  const { parentType, childType, componentMeta } = args;
-  const meta = componentMeta[parentType];
-  if (!meta) return false;
-
-  return meta.allowedChildren.includes(childType);
-}
-
-export function validateNodePlacement(args: {
-  root: UiNode;
-  placement: NodePlacement;
-  childType: string;
-  componentMeta: StudioComponentMetaRegistry;
-}): PlacementValidationResult {
-  const { root, placement, childType, componentMeta } = args;
-  const parent = findNodeById(root, placement.parentId);
-  if (!parent) {
-    return {
-      ok: false,
-      reason: {
-        code: 'missing-parent',
-        message: `Parent node ${placement.parentId} was not found.`,
-      },
-    };
-  }
-
-  if (!canAcceptChild({ parentType: parent.type, childType, componentMeta })) {
-    return {
-      ok: false,
-      reason: {
-        code: 'child-not-allowed',
-        message: `Parent ${parent.type} does not allow ${childType} children.`,
-      },
-    };
-  }
-
-  const children = parent.children ?? [];
-  if (placement.referenceId) {
-    const hasReference = children.some((child) => child.id === placement.referenceId);
-    if (!hasReference) {
-      return {
-        ok: false,
-        reason: {
-          code: 'missing-target',
-          message: `Reference node ${placement.referenceId} was not found under ${parent.id}.`,
-        },
-      };
-    }
-  }
-
-  if (placement.index < 0 || placement.index > children.length) {
-    return {
-      ok: false,
-      reason: {
-        code: 'invalid-index',
-        message: `Index ${placement.index} is out of bounds for ${parent.id}.`,
-      },
-    };
-  }
-
-  return { ok: true };
-}
-
-export function resolveInsertPlacement(args: {
-  root: UiNode;
-  targetNodeId: string;
-  childType: string;
-  componentMeta: StudioComponentMetaRegistry;
-  kind: PlacementKind;
-}): PlacementResolutionResult {
-  const { root, targetNodeId, childType, componentMeta, kind } = args;
-  const target = findNodeWithParent(root, targetNodeId);
-  if (!target) {
-    return {
-      ok: false,
-      reason: {
-        code: 'missing-target',
-        message: `Target node ${targetNodeId} was not found.`,
-      },
-    };
-  }
-
-  if (kind === 'inside') {
-    const parent = target.node;
-    const children = parent.children ?? [];
-    const placement: NodePlacement = {
-      parentId: parent.id,
-      index: children.length,
-      kind,
-    };
-    const validation = validateNodePlacement({ root, placement, childType, componentMeta });
-    if (!validation.ok) {
-      return validation;
-    }
-
-    return { ok: true, placement };
-  }
-
-  const { parent } = target;
-  if (!parent) {
-    return {
-      ok: false,
-      reason: {
-        code: 'missing-parent',
-        message: `Target node ${targetNodeId} has no parent.`,
-      },
-    };
-  }
-
-  const index = kind === 'before' ? target.index : target.index + 1;
-  const placement: NodePlacement = {
-    parentId: parent.id,
-    index,
-    kind,
-    referenceId: target.node.id,
-  };
-  const validation = validateNodePlacement({ root, placement, childType, componentMeta });
-  if (!validation.ok) {
-    return validation;
-  }
-
-  return { ok: true, placement };
+  const children = root.children.map((child) => updateNodeInTree(child, nodeId, updates));
+  if (children.every((child, index) => child === root.children?.[index])) return root;
+  return { ...root, children };
 }
 
 export function resolveDefaultInsertPlacement(args: {
-  root: UiNode;
-  selectedNodeId: string | null;
-  childType: string;
-  componentMeta: StudioComponentMetaRegistry;
-}): PlacementResolutionResult {
-  const { root, selectedNodeId, childType, componentMeta } = args;
-  if (selectedNodeId) {
-    const inside = resolveInsertPlacement({
-      root,
-      targetNodeId: selectedNodeId,
-      childType,
-      componentMeta,
-      kind: 'inside',
-    });
-    if (inside.ok) return inside;
-
-    const after = resolveInsertPlacement({
-      root,
-      targetNodeId: selectedNodeId,
-      childType,
-      componentMeta,
-      kind: 'after',
-    });
-    if (after.ok) return after;
+  readonly root: UiNode;
+  readonly selectedNodeId: StudioNodeId | null;
+  readonly childType: string;
+  readonly componentMeta: StudioComponentMetaRegistry;
+}):
+  | { readonly ok: true; readonly placement: NodePlacement }
+  | { readonly ok: false; readonly reason: string } {
+  const selected = args.selectedNodeId ? findNodeById(args.root, args.selectedNodeId) : null;
+  if (!selected) {
+    return { ok: true, placement: { parentId: args.root.id, index: 0, kind: 'inside' } };
   }
 
-  const atRoot = resolveInsertPlacement({
-    root,
-    targetNodeId: root.id,
-    childType,
-    componentMeta,
-    kind: 'inside',
-  });
-  if (atRoot.ok) return atRoot;
-
-  return {
-    ok: false,
-    reason: {
-      code: 'no-valid-target',
-      message: `No valid insertion target found for ${childType}.`,
-    },
-  };
-}
-
-export interface InsertNodeAtPlacementArgs {
-  root: UiNode;
-  placement: NodePlacement;
-  componentMeta: StudioComponentMetaRegistry;
-  makeNode: () => UiNode;
-}
-
-export interface InsertNodeAtPlacementResult {
-  root: UiNode;
-  insertedNodeId: string;
-}
-
-function insertChildAtIndex(args: {
-  node: UiNode;
-  parentId: string;
-  index: number;
-  newNode: UiNode;
-}): { node: UiNode; inserted: boolean } {
-  const { node, parentId, index, newNode } = args;
-  if (node.id === parentId) {
-    const children = node.children ?? [];
-    if (index < 0 || index > children.length) {
-      return { node, inserted: false };
-    }
-
-    const nextChildren = [...children.slice(0, index), newNode, ...children.slice(index)];
+  const selectedMeta = new Map(Object.entries(args.componentMeta)).get(selected.type);
+  if (selectedMeta?.allowedChildren.includes(args.childType)) {
     return {
-      node: {
-        ...node,
-        children: nextChildren,
+      ok: true,
+      placement: {
+        parentId: selected.id,
+        index: selected.children?.length ?? 0,
+        kind: 'inside',
       },
-      inserted: true,
     };
   }
 
-  if (!node.children || node.children.length === 0) {
-    return { node, inserted: false };
-  }
-
-  const results = node.children.map((child) =>
-    insertChildAtIndex({ node: child, parentId, index, newNode }),
-  );
-  const inserted = results.some((result) => result.inserted);
-
-  if (!inserted) {
-    return { node, inserted: false };
-  }
-
+  const parent = findParent(args.root, selected.id);
+  if (!parent) return { ok: false, reason: 'No valid insertion parent.' };
+  const index = parent.children?.findIndex((child) => child.id === selected.id) ?? -1;
+  if (index < 0) return { ok: false, reason: 'Selected node is not in its parent.' };
   return {
-    node: {
-      ...node,
-      children: results.map((result) => result.node),
+    ok: true,
+    placement: {
+      parentId: parent.id,
+      index: index + 1,
+      kind: 'after',
+      referenceId: selected.id,
     },
-    inserted: true,
   };
 }
 
-export function insertNodeAtPlacement(
-  args: InsertNodeAtPlacementArgs,
-): InsertNodeAtPlacementResult | null {
-  const { root, placement, componentMeta, makeNode } = args;
-  const newNode = makeNode();
-  const validation = validateNodePlacement({
-    root,
-    placement,
-    childType: newNode.type,
-    componentMeta,
-  });
-
-  if (!validation.ok) {
-    return null;
-  }
-
-  const result = insertChildAtIndex({
-    node: root,
-    parentId: placement.parentId,
-    index: placement.index,
-    newNode,
-  });
-  if (!result.inserted) return null;
-
-  return { root: result.node, insertedNodeId: newNode.id };
+export function buildInsertCatalogEntries(args: {
+  readonly componentMeta: StudioComponentMetaRegistry;
+  readonly recipes?: readonly InsertCatalogEntry[];
+}): readonly InsertCatalogEntry[] {
+  const components = Object.entries(args.componentMeta).map(([type, meta]) => ({
+    id: `component:${type}`,
+    label: meta.blueprint?.label ?? type,
+    category: meta.category,
+    type,
+    defaultProps: meta.blueprint?.defaultProps,
+  }));
+  return [...components, ...(args.recipes ?? [])];
 }
 
-export interface MoveNodeToPlacementArgs {
-  root: UiNode;
-  nodeId: string;
-  placement: NodePlacement;
-  componentMeta: StudioComponentMetaRegistry;
-}
-
-export interface MoveNodeToPlacementResult {
-  root: UiNode;
-  movedNodeId: string;
-}
-
-function getAdjustedMovePlacement(args: {
-  source: NodeWithParent;
-  placement: NodePlacement;
-}): NodePlacement | null {
-  const { source, placement } = args;
-  if (!source.parent) {
-    return null;
-  }
-
-  if (placement.referenceId === source.node.id) {
-    return null;
-  }
-
-  const sourceParentId = source.parent.id;
-  if (placement.parentId !== sourceParentId) {
-    return placement;
-  }
-
-  const adjustedIndex = source.index < placement.index ? placement.index - 1 : placement.index;
-  if (adjustedIndex === source.index) {
-    return null;
-  }
-
-  return {
-    ...placement,
-    index: adjustedIndex,
-  };
-}
-
-export function moveNodeToPlacement(
-  args: MoveNodeToPlacementArgs,
-): MoveNodeToPlacementResult | null {
-  const { root, nodeId, placement, componentMeta } = args;
-  const source = findNodeWithParent(root, nodeId);
-  if (!source) {
-    return null;
-  }
-
-  if (!source.parent) {
-    return null;
-  }
-
-  if (placement.parentId === nodeId) {
-    return null;
-  }
-
-  if (isDescendantNode(source.node, placement.parentId)) {
-    return null;
-  }
-
-  const adjustedPlacement = getAdjustedMovePlacement({ source, placement });
-  if (!adjustedPlacement) {
-    return null;
-  }
-
-  const removed = removeNodeForMove({ node: root, nodeId });
-  if (!removed.removedNode) {
-    return null;
-  }
-
-  const validation = validateNodePlacement({
-    root: removed.node,
-    placement: adjustedPlacement,
-    childType: removed.removedNode.type,
-    componentMeta,
-  });
-  if (!validation.ok) {
-    return null;
-  }
-
-  const inserted = insertChildAtIndex({
-    node: removed.node,
-    parentId: adjustedPlacement.parentId,
-    index: adjustedPlacement.index,
-    newNode: removed.removedNode,
-  });
-  if (!inserted.inserted) {
-    return null;
-  }
-
-  return {
-    root: inserted.node,
-    movedNodeId: removed.removedNode.id,
-  };
-}
-
-const CATEGORY_LABELS: Record<string, string> = {
-  layout: 'Layouts',
-  pattern: 'Patterns',
-  component: 'Components',
-  foundation: 'Foundation',
-  recipe: 'Recipes',
-};
-
-const CATEGORY_ORDER = ['layout', 'pattern', 'component', 'foundation', 'recipe'] as const;
-
-export const STUDIO_INSERT_RECIPES: readonly InsertRecipe[] = [
-  {
-    id: 'screen-section',
-    label: 'Screen section',
-    description: 'A screen section with a starter heading.',
-    category: 'recipe',
-    root: {
-      type: 'ScreenSection',
-      children: [{ type: 'Heading' }],
-    },
-  },
-  {
-    id: 'panel-stack',
-    label: 'Panel stack',
-    description: 'Panel with a stack starter.',
-    category: 'recipe',
-    root: {
-      type: 'Panel',
-      children: [{ type: 'Stack' }],
-    },
-  },
-  {
-    id: 'card-heading',
-    label: 'Card heading',
-    description: 'Card with a headline.',
-    category: 'recipe',
-    root: {
-      type: 'Card',
-      children: [{ type: 'Heading' }],
-    },
-  },
-];
-
-export function getInsertCatalogCategoryLabel(category: string): string {
-  return CATEGORY_LABELS[category] ?? category;
-}
-
-function resolveCategoryOrder(category: string): number {
-  const index = CATEGORY_ORDER.indexOf(category as (typeof CATEGORY_ORDER)[number]);
-  return index === -1 ? CATEGORY_ORDER.length : index;
-}
-
-function describeInsertRecipeIssue(issue: InsertRecipeIssue): string {
-  if (issue.code === 'missing-meta') {
-    return `Missing component metadata for ${issue.nodeType}.`;
-  }
-
-  return `Child ${issue.childType ?? 'unknown'} is not allowed under ${issue.nodeType}.`;
-}
-
-export function validateInsertRecipe(
-  recipe: InsertRecipe,
-  componentMeta: StudioComponentMetaRegistry,
-): InsertRecipeIssue | null {
-  const visit = (node: InsertRecipeNode, path: string[]): InsertRecipeIssue | null => {
-    const meta = componentMeta[node.type];
-    if (!meta) {
+export function resolveInsertCatalogEntries(args: {
+  readonly entries: readonly InsertCatalogEntry[];
+  readonly root: UiNode;
+  readonly selectedNodeId: StudioNodeId | null;
+  readonly componentMeta: StudioComponentMetaRegistry;
+}): readonly ResolvedInsertCatalogEntry[] {
+  return args.entries.map((entry) => {
+    const meta = new Map(Object.entries(args.componentMeta)).get(entry.type);
+    if (!meta?.directManifestNode) {
       return {
-        code: 'missing-meta',
-        path,
-        nodeType: node.type,
+        ...entry,
+        status: 'disabled' as const,
+        disabledReason: { code: 'not-direct', message: 'Not a direct manifest node.' },
       };
     }
-
-    const children = node.children ?? [];
-    for (const child of children) {
-      if (!meta.allowedChildren.includes(child.type)) {
-        return {
-          code: 'child-not-allowed',
-          path,
-          nodeType: node.type,
-          childType: child.type,
+    const placement = resolveDefaultInsertPlacement({
+      root: args.root,
+      selectedNodeId: args.selectedNodeId,
+      childType: entry.type,
+      componentMeta: args.componentMeta,
+    });
+    return placement.ok
+      ? { ...entry, status: 'enabled' as const, placement: placement.placement }
+      : {
+          ...entry,
+          status: 'disabled' as const,
+          disabledReason: { code: 'invalid-placement', message: placement.reason },
         };
-      }
-
-      const nested = visit(child, [...path, child.type]);
-      if (nested) {
-        return nested;
-      }
-    }
-
-    return null;
-  };
-
-  return visit(recipe.root, [recipe.root.type]);
-}
-
-function createNodeFromRecipe(
-  recipe: InsertRecipe,
-  componentMeta: StudioComponentMetaRegistry,
-  createId: StudioIdGenerator,
-): UiNode {
-  const buildNode = (node: InsertRecipeNode): UiNode => {
-    const meta = componentMeta[node.type];
-    const defaultProps = meta?.blueprint?.defaultProps;
-
-    return {
-      id: createId(node.type),
-      type: node.type,
-      props: defaultProps ? { ...defaultProps } : {},
-      children: (node.children ?? []).map(buildNode),
-    };
-  };
-
-  return buildNode(recipe.root);
+  });
 }
 
 export function createNodeFromCatalogEntry(
   entry: InsertCatalogEntry,
   componentMeta: StudioComponentMetaRegistry,
-  createId: StudioIdGenerator = generateStudioId,
+  makeId: StudioIdGenerator,
 ): UiNode {
-  if (entry.kind === 'recipe') {
-    return createNodeFromRecipe(entry.recipe, componentMeta, createId);
-  }
-
-  const meta = componentMeta[entry.componentType];
-  const defaultProps = meta?.blueprint?.defaultProps;
-
+  if (entry.recipe) return cloneWithNewIds(entry.recipe, makeId);
+  const meta = new Map(Object.entries(componentMeta)).get(entry.type);
   return {
-    id: createId(entry.componentType),
-    type: entry.componentType,
-    props: defaultProps ? { ...defaultProps } : {},
+    id: makeId(entry.type),
+    type: entry.type,
+    props: { ...(meta?.blueprint?.defaultProps ?? entry.defaultProps ?? {}) },
     children: [],
   };
 }
 
-function createComponentEntry(
-  componentType: string,
-  meta: StudioComponentMeta,
-): InsertCatalogComponentEntry {
-  const isDirect = meta.directManifestNode === true;
-
-  return {
-    id: `component:${componentType}`,
-    label: meta.blueprint?.label ?? componentType,
-    category: meta.category,
-    rootType: componentType,
-    kind: 'component',
-    componentType,
-    status: isDirect ? 'enabled' : 'disabled',
-    disabledReason: isDirect
-      ? undefined
-      : {
-          code: 'not-direct',
-          detail: 'Not a direct manifest node.',
-        },
-  };
+export function insertNodeAtPlacement(args: {
+  readonly root: UiNode;
+  readonly placement: NodePlacement;
+  readonly componentMeta: StudioComponentMetaRegistry;
+  readonly makeNode: () => UiNode;
+}): UiNode | null {
+  const node = args.makeNode();
+  if (!new Map(Object.entries(args.componentMeta)).get(node.type)) return null;
+  return insertIntoTree(args.root, args.placement, node);
 }
 
-function createRecipeEntry(
-  recipe: InsertRecipe,
-  componentMeta: StudioComponentMetaRegistry,
-): InsertCatalogRecipeEntry {
-  const issue = validateInsertRecipe(recipe, componentMeta);
-  if (issue) {
-    const code: InsertCatalogDisabledReasonCode =
-      issue.code === 'missing-meta' ? 'missing-meta' : 'invalid-recipe';
+export function moveNodeToPlacement(args: {
+  readonly root: UiNode;
+  readonly nodeId: StudioNodeId;
+  readonly placement: NodePlacement;
+  readonly componentMeta: StudioComponentMetaRegistry;
+}): UiNode | null {
+  const node = findNodeById(args.root, args.nodeId);
+  if (!node || args.root.id === node.id) return null;
+  const withoutNode = removeFromTree(args.root, args.nodeId);
+  if (!withoutNode) return null;
+  return insertIntoTree(withoutNode, args.placement, node);
+}
 
-    return {
-      id: `recipe:${recipe.id}`,
-      label: recipe.label,
-      description: recipe.description,
-      category: 'recipe',
-      rootType: recipe.root.type,
-      kind: 'recipe',
-      recipe,
-      status: 'disabled',
-      disabledReason: {
-        code,
-        detail: describeInsertRecipeIssue(issue),
-        issue,
-      },
-    };
+function findParent(root: UiNode, nodeId: StudioNodeId): UiNode | null {
+  for (const child of root.children ?? []) {
+    if (child.id === nodeId) return root;
+    const found = findParent(child, nodeId);
+    if (found) return found;
   }
-
-  return {
-    id: `recipe:${recipe.id}`,
-    label: recipe.label,
-    description: recipe.description,
-    category: 'recipe',
-    rootType: recipe.root.type,
-    kind: 'recipe',
-    recipe,
-    status: 'enabled',
-  };
+  return null;
 }
 
-export function buildInsertCatalogEntries(args: {
-  componentMeta: StudioComponentMetaRegistry;
-  recipes?: readonly InsertRecipe[];
-}): InsertCatalogEntry[] {
-  const { componentMeta, recipes = STUDIO_INSERT_RECIPES } = args;
-  const componentEntries: InsertCatalogComponentEntry[] = [];
-
-  for (const [type, meta] of Object.entries(componentMeta)) {
-    if (meta) {
-      componentEntries.push(createComponentEntry(type, meta));
-    }
+function insertIntoTree(root: UiNode, placement: NodePlacement, node: UiNode): UiNode | null {
+  if (root.id === placement.parentId) {
+    const children = [...(root.children ?? [])];
+    children.splice(placement.index, 0, node);
+    return { ...root, children };
   }
+  if (!root.children) return null;
 
-  const recipeEntries = recipes.map((recipe) => createRecipeEntry(recipe, componentMeta));
-
-  return [...componentEntries, ...recipeEntries].sort((left, right) => {
-    const leftOrder = resolveCategoryOrder(left.category);
-    const rightOrder = resolveCategoryOrder(right.category);
-    if (leftOrder !== rightOrder) {
-      return leftOrder - rightOrder;
-    }
-
-    return left.label.localeCompare(right.label);
-  });
+  for (let index = 0; index < root.children.length; index += 1) {
+    const child = root.children[index];
+    if (!child) continue;
+    const updated = insertIntoTree(child, placement, node);
+    if (!updated) continue;
+    const children = [...root.children];
+    children[index] = updated;
+    return { ...root, children };
+  }
+  return null;
 }
 
-function resolvePlacementForEntry(args: {
-  entry: InsertCatalogEntry;
-  root: UiNode;
-  selectedNodeId: string | null;
-  componentMeta: StudioComponentMetaRegistry;
-}): PlacementResolutionResult {
-  const { entry, root, selectedNodeId, componentMeta } = args;
+function removeFromTree(root: UiNode, nodeId: StudioNodeId): UiNode | null {
+  if (!root.children) return root;
+  const children = root.children.filter((child) => child.id !== nodeId);
+  if (children.length !== root.children.length) return { ...root, children };
 
-  return resolveDefaultInsertPlacement({
-    root,
-    selectedNodeId,
-    childType: entry.rootType,
-    componentMeta,
-  });
-}
-
-export function resolveInsertCatalogEntries(args: {
-  entries: readonly InsertCatalogEntry[];
-  root: UiNode | null;
-  selectedNodeId: string | null;
-  componentMeta: StudioComponentMetaRegistry;
-}): InsertCatalogEntry[] {
-  const { entries, root, selectedNodeId, componentMeta } = args;
-
-  return entries.map((entry) => {
-    if (entry.status === 'disabled') {
-      return entry;
-    }
-
-    if (!root) {
-      return {
-        ...entry,
-        status: 'disabled',
-        disabledReason: {
-          code: 'no-placement',
-          detail: 'No active screen available.',
-        },
-      };
-    }
-
-    const placement = resolvePlacementForEntry({
-      entry,
-      root,
-      selectedNodeId,
-      componentMeta,
-    });
-    if (!placement.ok) {
-      return {
-        ...entry,
-        status: 'disabled',
-        disabledReason: {
-          code: 'no-placement',
-          detail: placement.reason.message,
-        },
-      };
-    }
-
-    return {
-      ...entry,
-      status: 'enabled',
-      placement: placement.placement,
-    };
-  });
-}
-
-function isStyleRecord(value: unknown): value is Record<string, string | number> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-
-  return Object.values(value).every(
-    (entry) => typeof entry === 'string' || typeof entry === 'number',
-  );
+  for (let index = 0; index < root.children.length; index += 1) {
+    const child = root.children[index];
+    if (!child) continue;
+    const updated = removeFromTree(child, nodeId);
+    if (updated === child) continue;
+    const nextChildren = [...root.children];
+    if (updated) nextChildren[index] = updated;
+    return { ...root, children: nextChildren };
+  }
+  return root;
 }
