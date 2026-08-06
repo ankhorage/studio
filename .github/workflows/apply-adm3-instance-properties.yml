@@ -24,6 +24,33 @@ jobs:
           fetch-depth: 0
           ref: agent/adm-3-instance-properties
 
+      - name: Restore minimal public API patch
+        shell: bash
+        run: |
+          git checkout origin/main -- src/index.ts
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('src/index.ts')
+          source = path.read_text()
+          export_marker = "export type {\n  TemplateCatalog,"
+          source = source.replace(
+              export_marker,
+              "export * from './propertiesAuthoringModel';\n" + export_marker,
+              1,
+          )
+          contracts_marker = "  'StudioComponentMetaRegistry',\n"
+          source = source.replace(
+              contracts_marker,
+              contracts_marker
+              + "  'StudioInstancePropertyField',\n"
+              + "  'resolveStudioInstancePropertyGroups',\n"
+              + "  'createStudioInstancePropertyPatch',\n",
+              1,
+          )
+          path.write_text(source)
+          PY
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
