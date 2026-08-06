@@ -6,8 +6,8 @@ import type {
   ExternalApiOperationTestRequest,
   ManualRestSourceRequest,
 } from '../../externalApiAuthoringContracts';
-import type { ProjectManager } from '../orchestrator/projectManager';
 import { StudioExternalApiService } from '../dataSources/studioExternalApiService';
+import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
 export function registerProjectDataSourceRoutes(
@@ -85,7 +85,18 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
 
 function readManualRestRequest(value: unknown): ManualRestSourceRequest | null {
   const record = readRecord(value);
-  if (!record || !hasManualRestStrings(record) || !isIntent(record.intent)) return null;
+  if (
+    !record ||
+    typeof record.sourceId !== 'string' ||
+    typeof record.baseUrl !== 'string' ||
+    typeof record.endpointId !== 'string' ||
+    typeof record.path !== 'string' ||
+    typeof record.operationId !== 'string' ||
+    typeof record.method !== 'string' ||
+    !isIntent(record.intent)
+  ) {
+    return null;
+  }
   return {
     sourceId: record.sourceId,
     baseUrl: record.baseUrl,
@@ -98,14 +109,6 @@ function readManualRestRequest(value: unknown): ManualRestSourceRequest | null {
     description: readString(record.description),
     credential: readCredential(record.credential),
   };
-}
-
-function hasManualRestStrings(record: Record<string, unknown>): record is Record<string, string> & {
-  readonly intent: unknown;
-} {
-  return ['sourceId', 'baseUrl', 'endpointId', 'path', 'operationId', 'method'].every(
-    (key) => typeof record[key] === 'string',
-  );
 }
 
 function readOperationTestRequest(value: unknown): ExternalApiOperationTestRequest | null {
@@ -157,7 +160,13 @@ function isDataContractValue(value: unknown): value is DataContractValue {
 }
 
 function isIntent(value: unknown): value is DataOperationIntent {
-  return value === 'action' || value === 'create' || value === 'delete' || value === 'read' || value === 'update';
+  return (
+    value === 'action' ||
+    value === 'create' ||
+    value === 'delete' ||
+    value === 'read' ||
+    value === 'update'
+  );
 }
 
 function readRecord(value: unknown): Record<string, unknown> | null {
