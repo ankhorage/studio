@@ -2494,7 +2494,7 @@
       "path": "src/ui/admin/adminPageUtils.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["formatPrimitive", "readRecord", "readString"]
+      "exports": ["readRecord", "readString"]
     },
     {
       "path": "src/ui/admin/AnkhAdminPage.test.ts",
@@ -15147,15 +15147,6 @@
       }
     },
     {
-      "name": "formatPrimitive",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/adminPageUtils.ts",
-        "line": 9,
-        "column": 1
-      }
-    },
-    {
       "name": "AnkhAdminPage",
       "description": null,
       "sourceLocation": {
@@ -15880,7 +15871,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 81,
+        "line": 78,
         "column": 1
       }
     },
@@ -15889,7 +15880,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 110,
+        "line": 103,
         "column": 1
       }
     },
@@ -15898,7 +15889,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 123,
+        "line": 116,
         "column": 9
       }
     },
@@ -15907,7 +15898,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 159,
+        "line": 152,
         "column": 1
       }
     },
@@ -15916,7 +15907,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 178,
+        "line": 171,
         "column": 1
       }
     },
@@ -15925,7 +15916,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 204,
+        "line": 197,
         "column": 1
       }
     },
@@ -15934,7 +15925,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 214,
+        "line": 207,
         "column": 1
       }
     },
@@ -15943,7 +15934,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 224,
+        "line": 217,
         "column": 1
       }
     },
