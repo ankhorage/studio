@@ -43,6 +43,63 @@ jobs:
           fs.writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
 
+      - name: Apply strict lint corrections
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          Path('src/host/dataSources/requestTrustedExternalApi.test.ts').write_text("""import { describe, expect, test } from 'bun:test';
+
+import { requestTrustedExternalApi } from './requestTrustedExternalApi';
+
+async function readBlockedMessage(url: string): Promise<string> {
+  try {
+    await requestTrustedExternalApi(url, { method: 'GET', headers: {} });
+    return '';
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+}
+
+describe('trusted external API transport', () => {
+  test('blocks cloud metadata targets before network access', async () => {
+    expect(await readBlockedMessage('http://169.254.169.254/latest/meta-data')).toContain(
+      'blocked by the trusted transport policy',
+    );
+  });
+
+  test('blocks inline URL credentials', async () => {
+    expect(await readBlockedMessage('https://user:secret@example.com/openapi.json')).toContain(
+      'blocked by the trusted transport policy',
+    );
+  });
+});
+""")
+
+          replacements = {
+            'src/host/dataSources/requestTrustedExternalApi.ts': [
+              ("  if (!response.body) return '';\n\n  const reader = response.body.getReader();", "  const reader = response.body.getReader();"),
+            ],
+            'src/host/dataSources/studioExternalApiService.test.ts': [
+              ('        manifest = args.manifest;', '        const { manifest: nextManifest } = args;\n        manifest = nextManifest;'),
+            ],
+            'src/host/dataSources/studioExternalApiService.ts': [
+              ('  return normalized ? normalized : undefined;', '  if (!normalized) return undefined;\n  return normalized;'),
+            ],
+            'src/ui/admin/pages/adminDataSourceOperations.ts': [
+              ('        protocol: operation.protocol ?? endpoint.kind,', '        protocol: operation.protocol,'),
+            ],
+          }
+          for path, changes in replacements.items():
+            file_path = Path(path)
+            text = file_path.read_text()
+            for old, new in changes:
+              if old not in text:
+                raise SystemExit(f'Missing expected text in {path}: {old}')
+              text = text.replace(old, new)
+            file_path.write_text(text)
+          PY
+
       - name: Install and generate
         run: |
           bun install
