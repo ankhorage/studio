@@ -1,4 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
+import { ZORA_COMPONENT_META } from '@ankhorage/zora';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -132,5 +133,37 @@ describe('instance Properties authoring model', () => {
     expect(createStudioInstancePropertyPatch(node, 'numberOfLines', undefined)).toEqual({
       props: { text: 'Hello' },
     });
+  });
+
+  test('consumes released ZORA Heading metadata without exposing theme presentation', () => {
+    const node: UiNode = {
+      id: 'heading',
+      type: 'Heading',
+      props: {
+        text: 'Overview',
+        level: 3,
+        size: 'h1',
+        color: 'accent',
+        numberOfLines: 2,
+      },
+    };
+
+    const fields = resolveStudioInstancePropertyFields(node, ZORA_COMPONENT_META);
+
+    expect(fields.map((field) => field.name)).toEqual([
+      'text',
+      'i18nKey',
+      'level',
+      'numberOfLines',
+    ]);
+    expect(fields.find((field) => field.name === 'level')).toMatchObject({
+      editor: 'choice',
+      options: [1, 2, 3, 4, 5, 6],
+      value: 3,
+      defaultValue: 2,
+      isExplicit: true,
+    });
+    expect(fields.some((field) => field.name === 'size')).toBe(false);
+    expect(fields.some((field) => field.name === 'color')).toBe(false);
   });
 });
