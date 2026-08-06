@@ -23,7 +23,7 @@ const registry: StudioAuthoringMetaRegistry = {
         type: 'enum',
         category: 'Style',
         enum: ['solid', 'outline'],
-        authoring: { authority: 'theme', scope: 'component' },
+        authoring: { authority: 'theme' },
       },
       internalState: {
         type: 'string',
