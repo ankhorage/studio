@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.11.12
+
+### Patch Changes
+
+- 32277c1: Replace the raw Properties prop dump with a metadata-driven instance authoring model backed by the released ZORA authoring authority registry.
+
 ## 0.11.11
 
 ### Patch Changes
