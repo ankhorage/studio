@@ -47,8 +47,8 @@ jobs:
         run: |
           bun install
           bun run lint:fix
-          bun run format
           bun run docs
+          bun run format
 
       - name: Validate
         run: |
