@@ -1,5 +1,5 @@
 import type { UiNode } from '@ankhorage/contracts';
-import { ZORA_COMPONENT_META } from '@ankhorage/zora';
+import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
