@@ -60,13 +60,13 @@ export interface ExternalApiOperationTestRequest {
   readonly dryRun?: boolean;
 }
 
-export interface ExternalApiSafeRequestSummary {
+interface ExternalApiSafeRequestSummary {
   readonly method: string;
   readonly url: string;
   readonly dryRun: boolean;
 }
 
-export interface ExternalApiSafeResponseSummary {
+interface ExternalApiSafeResponseSummary {
   readonly status: number;
   readonly ok: boolean;
 }

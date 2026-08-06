@@ -1,4 +1,8 @@
-import type { DataContractValue, DataSourceDiagnostic, DataSourceKind } from '@ankhorage/contracts/data';
+import type {
+  DataContractValue,
+  DataSourceDiagnostic,
+  DataSourceKind,
+} from '@ankhorage/contracts/data';
 
 import { API_BASE } from './core/constants';
 import type {
@@ -10,7 +14,7 @@ import type {
   ManualRestSourceRequest,
 } from './externalApiAuthoringContracts';
 
-export class ExternalApiApiError extends Error {
+class ExternalApiApiError extends Error {
   readonly status: number;
 
   constructor(message: string, status: number) {
@@ -115,7 +119,12 @@ function parseDiagnostics(value: unknown): readonly DataSourceDiagnostic[] {
   if (!Array.isArray(value)) throw invalidResponse();
   return value.map((entry) => {
     const record = readRecord(entry);
-    if (!record || typeof record.code !== 'string' || typeof record.message !== 'string' || !isSeverity(record.severity)) {
+    if (
+      !record ||
+      typeof record.code !== 'string' ||
+      typeof record.message !== 'string' ||
+      !isSeverity(record.severity)
+    ) {
       throw invalidResponse();
     }
     return {
@@ -149,7 +158,12 @@ function parseAttempts(value: unknown): readonly ExternalApiDiscoveryAttempt[] {
 function parseRequestSummary(value: unknown) {
   if (value === undefined) return undefined;
   const record = readRecord(value);
-  if (!record || typeof record.method !== 'string' || typeof record.url !== 'string' || typeof record.dryRun !== 'boolean') {
+  if (
+    !record ||
+    typeof record.method !== 'string' ||
+    typeof record.url !== 'string' ||
+    typeof record.dryRun !== 'boolean'
+  ) {
     throw invalidResponse();
   }
   return { method: record.method, url: record.url, dryRun: record.dryRun };
@@ -173,7 +187,13 @@ function isConnectedProtocol(value: unknown): value is 'graphql' | 'openapi' | '
 }
 
 function isDataSourceKind(value: unknown): value is DataSourceKind {
-  return value === 'database' || value === 'graphql' || value === 'managed-api' || value === 'openapi' || value === 'rest';
+  return (
+    value === 'database' ||
+    value === 'graphql' ||
+    value === 'managed-api' ||
+    value === 'openapi' ||
+    value === 'rest'
+  );
 }
 
 function isSeverity(value: unknown): value is DataSourceDiagnostic['severity'] {
