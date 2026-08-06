@@ -42,10 +42,7 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
   const componentMeta = new Map(Object.entries(ZORA_COMPONENT_META)).get(node.type);
   const groups = resolveStudioInstancePropertyGroups(node, ZORA_COMPONENT_META);
-  const updateProperty = (
-    propertyName: string,
-    value: StudioInstancePropertyValue | undefined,
-  ) => {
+  const updateProperty = (propertyName: string, value: StudioInstancePropertyValue | undefined) => {
     studio.updateNode(node.id, createStudioInstancePropertyPatch(node, propertyName, value));
   };
 
@@ -89,15 +86,11 @@ function InstancePropertyEditor(props: {
       {field.editor === 'text' ? (
         <Input value={toInputText(field.value)} onChangeText={onChange} />
       ) : null}
-      {field.editor === 'number' ? (
-        <NumberPropertyInput field={field} onChange={onChange} />
-      ) : null}
+      {field.editor === 'number' ? <NumberPropertyInput field={field} onChange={onChange} /> : null}
       {field.editor === 'boolean' ? (
         <BooleanPropertyInput field={field} onChange={onChange} />
       ) : null}
-      {field.editor === 'choice' ? (
-        <ChoicePropertyInput field={field} onChange={onChange} />
-      ) : null}
+      {field.editor === 'choice' ? <ChoicePropertyInput field={field} onChange={onChange} /> : null}
       {field.editor === 'unsupported' ? (
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           This instance property requires a dedicated editor that is not available yet.

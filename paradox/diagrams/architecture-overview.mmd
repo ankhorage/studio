@@ -167,9 +167,20 @@ graph TD
   module_src_hooks_useWorkspaceActions_ts --> module_src_core_constants_ts
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
   package__ankhorage_studio -.-> module_src_host_auth_projectAuthHealthService_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_host_auth_projectAuthRuntimeDiagnostics_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthHealth_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthRuntimeDiagnostics_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts["src/host/auth/projectAuthRuntimeDiagnostics.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts --> module_src_host_auth_projectAuthRuntimeDiagnostics_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts["src/host/auth/projectAuthRuntimeDiagnostics.ts"]
+  package__ankhorage_studio -.-> module_src_host_auth_projectAuthRuntimeDiagnostics_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthHealth_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthRuntimeDiagnostics_ts
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
   package__ankhorage_studio -.-> module_src_host_createStudioHost_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
@@ -187,6 +198,9 @@ graph TD
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedOAuthLifecycle_e2e_test_ts["src/host/generatedOAuthLifecycle.e2e.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_generatedOAuthLifecycle_e2e_test_ts
+  module_src_host_generatedOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_hostLifecycle_smoke_test_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
@@ -273,10 +287,16 @@ graph TD
   module_src_host_layout_templates_auth_adapter_test_ts --> module_src_host_layout_templates_auth_adapter_ts
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_adapter_ts
+  module_src_host_layout_templates_auth_callback_test_ts["src/host/layout/templates/auth/callback.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_callback_test_ts
+  module_src_host_layout_templates_auth_callback_test_ts --> module_src_host_layout_templates_auth_callback_ts
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_callback_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_auth_oauth_test_ts["src/host/layout/templates/auth/oauth.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_auth_oauth_test_ts
+  module_src_host_layout_templates_auth_oauth_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -579,6 +599,13 @@ graph TD
   module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
   package__ankhorage_studio -.-> module_src_projectAuthHealth_ts
   module_src_projectAuthHealth_ts --> module_src_authSettings_ts
+  module_src_projectAuthRuntimeDiagnostics_test_ts["src/projectAuthRuntimeDiagnostics.test.ts"]
+  package__ankhorage_studio -.-> module_src_projectAuthRuntimeDiagnostics_test_ts
+  module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthHealth_ts
+  module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthRuntimeDiagnostics_ts
+  module_src_projectAuthRuntimeDiagnostics_ts["src/projectAuthRuntimeDiagnostics.ts"]
+  package__ankhorage_studio -.-> module_src_projectAuthRuntimeDiagnostics_ts
+  module_src_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthHealth_ts
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   package__ankhorage_studio -.-> module_src_projectIdentity_test_ts
   module_src_projectIdentity_test_ts --> module_src_projectIdentity_ts
@@ -600,6 +627,11 @@ graph TD
   package__ankhorage_studio -.-> module_src_projectSecretUsage_ts
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
   package__ankhorage_studio -.-> module_src_projectWorkspaceContracts_ts
+  module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_propertiesAuthoringModel_test_ts
+  module_src_propertiesAuthoringModel_test_ts --> module_src_index_ts
+  module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
+  package__ankhorage_studio -.-> module_src_propertiesAuthoringModel_ts
   module_src_root_test_ts["src/root.test.ts"]
   package__ankhorage_studio -.-> module_src_root_test_ts
   module_src_root_ts["src/root.ts"]
@@ -708,6 +740,11 @@ graph TD
   module_src_studioAdminRouteModel_ts["src/studioAdminRouteModel.ts"]
   package__ankhorage_studio -.-> module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --> module_src_index_ts
+  module_src_studioRuntimeApi_test_ts["src/studioRuntimeApi.test.ts"]
+  package__ankhorage_studio -.-> module_src_studioRuntimeApi_test_ts
+  module_src_studioRuntimeApi_test_ts --> module_src_studioRuntimeApi_ts
+  module_src_studioRuntimeApi_ts["src/studioRuntimeApi.ts"]
+  package__ankhorage_studio -.-> module_src_studioRuntimeApi_ts
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   package__ankhorage_studio -.-> module_src_studioSelectionModel_knip_test_ts
   module_src_studioSelectionModel_knip_test_ts --> module_src_studioSelectionModel_ts
@@ -800,6 +837,7 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_studioRuntimeApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
@@ -814,8 +852,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_pages_PropertiesAdminPage_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_manifestState_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_propertiesAuthoringModel_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
-  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPageUtils_ts
   module_src_ui_admin_pages_SecretsAdminPage_test_ts["src/ui/admin/pages/SecretsAdminPage.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_SecretsAdminPage_test_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx["src/ui/admin/pages/SecretsAdminPage.tsx"]

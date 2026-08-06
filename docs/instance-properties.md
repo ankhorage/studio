@@ -9,7 +9,11 @@ and never import or recreate concrete ZORA metadata.
 Only props classified with:
 
 ```ts
-{ authoring: { authority: 'instance' } }
+{
+  authoring: {
+    authority: 'instance';
+  }
+}
 ```
 
 become fields. Theme-owned props and props without authoring metadata are intentionally absent.

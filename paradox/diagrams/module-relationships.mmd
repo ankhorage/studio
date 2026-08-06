@@ -44,9 +44,12 @@ graph LR
   module_src_hooks_useTemplateCatalog_ts["src/hooks/useTemplateCatalog.ts"]
   module_src_hooks_useWorkspaceActions_ts["src/hooks/useWorkspaceActions.ts"]
   module_src_host_auth_projectAuthHealthService_ts["src/host/auth/projectAuthHealthService.ts"]
+  module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts["src/host/auth/projectAuthRuntimeDiagnostics.test.ts"]
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts["src/host/auth/projectAuthRuntimeDiagnostics.ts"]
   module_src_host_createStudioHost_ts["src/host/createStudioHost.ts"]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
+  module_src_host_generatedOAuthLifecycle_e2e_test_ts["src/host/generatedOAuthLifecycle.e2e.test.ts"]
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
   module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
@@ -68,7 +71,9 @@ graph LR
   module_src_host_layout_layoutGenerator_ts["src/host/layout/layoutGenerator.ts"]
   module_src_host_layout_templates_auth_adapter_test_ts["src/host/layout/templates/auth/adapter.test.ts"]
   module_src_host_layout_templates_auth_adapter_ts["src/host/layout/templates/auth/adapter.ts"]
+  module_src_host_layout_templates_auth_callback_test_ts["src/host/layout/templates/auth/callback.test.ts"]
   module_src_host_layout_templates_auth_callback_ts["src/host/layout/templates/auth/callback.ts"]
+  module_src_host_layout_templates_auth_oauth_test_ts["src/host/layout/templates/auth/oauth.test.ts"]
   module_src_host_layout_templates_auth_oauth_ts["src/host/layout/templates/auth/oauth.ts"]
   module_src_host_layout_templates_auth_screen_ts["src/host/layout/templates/auth/screen.ts"]
   module_src_host_layout_templates_auth_session_ts["src/host/layout/templates/auth/session.ts"]
@@ -157,6 +162,8 @@ graph LR
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
   module_src_projectAuthHealth_test_ts["src/projectAuthHealth.test.ts"]
   module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
+  module_src_projectAuthRuntimeDiagnostics_test_ts["src/projectAuthRuntimeDiagnostics.test.ts"]
+  module_src_projectAuthRuntimeDiagnostics_ts["src/projectAuthRuntimeDiagnostics.ts"]
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   module_src_projectIdentity_ts["src/projectIdentity.ts"]
   module_src_projectSecretApi_test_ts["src/projectSecretApi.test.ts"]
@@ -164,6 +171,8 @@ graph LR
   module_src_projectSecretUsage_test_ts["src/projectSecretUsage.test.ts"]
   module_src_projectSecretUsage_ts["src/projectSecretUsage.ts"]
   module_src_projectWorkspaceContracts_ts["src/projectWorkspaceContracts.ts"]
+  module_src_propertiesAuthoringModel_test_ts["src/propertiesAuthoringModel.test.ts"]
+  module_src_propertiesAuthoringModel_ts["src/propertiesAuthoringModel.ts"]
   module_src_root_test_ts["src/root.test.ts"]
   module_src_root_ts["src/root.ts"]
   module_src_routeUtils_public_test_ts["src/routeUtils.public.test.ts"]
@@ -204,6 +213,8 @@ graph LR
   module_src_secretResponseGuard_ts["src/secretResponseGuard.ts"]
   module_src_studioAdminRouteModel_test_ts["src/studioAdminRouteModel.test.ts"]
   module_src_studioAdminRouteModel_ts["src/studioAdminRouteModel.ts"]
+  module_src_studioRuntimeApi_test_ts["src/studioRuntimeApi.test.ts"]
+  module_src_studioRuntimeApi_ts["src/studioRuntimeApi.ts"]
   module_src_studioSelectionModel_knip_test_ts["src/studioSelectionModel.knip.test.ts"]
   module_src_studioSelectionModel_test_ts["src/studioSelectionModel.test.ts"]
   module_src_studioSelectionModel_ts["src/studioSelectionModel.ts"]
@@ -319,9 +330,16 @@ graph LR
   module_src_hooks_useTemplateCatalog_ts --> module_src_core_constants_ts
   module_src_hooks_useTemplateCatalog_ts --> module_src_templateCatalogContracts_ts
   module_src_hooks_useWorkspaceActions_ts --> module_src_core_constants_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_host_auth_projectAuthRuntimeDiagnostics_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthHealth_ts
+  module_src_host_auth_projectAuthHealthService_ts --> module_src_projectAuthRuntimeDiagnostics_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_test_ts --> module_src_host_auth_projectAuthRuntimeDiagnostics_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_host_orchestrator_infraRuntime_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthHealth_ts
+  module_src_host_auth_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthRuntimeDiagnostics_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_createStudioHost_ts --> module_src_host_orchestrator_projectManager_ts
@@ -333,6 +351,7 @@ graph LR
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_templateRegistry_index_ts
@@ -377,8 +396,10 @@ graph LR
   module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
   module_src_host_layout_templates_auth_adapter_test_ts --> module_src_host_layout_templates_auth_adapter_ts
+  module_src_host_layout_templates_auth_callback_test_ts --> module_src_host_layout_templates_auth_callback_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_auth_callback_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
+  module_src_host_layout_templates_auth_oauth_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_templates_auth_oauth_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_auth_screen_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
@@ -506,6 +527,9 @@ graph LR
   module_src_projectAuthApi_ts --> module_src_secretResponseGuard_ts
   module_src_projectAuthHealth_test_ts --> module_src_projectAuthHealth_ts
   module_src_projectAuthHealth_ts --> module_src_authSettings_ts
+  module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthHealth_ts
+  module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthRuntimeDiagnostics_ts
+  module_src_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthHealth_ts
   module_src_projectIdentity_test_ts --> module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts --> module_src_projectWorkspaceContracts_ts
@@ -513,6 +537,7 @@ graph LR
   module_src_projectSecretApi_ts --> module_src_projectSecretUsage_ts
   module_src_projectSecretApi_ts --> module_src_secretResponseGuard_ts
   module_src_projectSecretUsage_test_ts --> module_src_projectSecretUsage_ts
+  module_src_propertiesAuthoringModel_test_ts --> module_src_index_ts
   module_src_routeUtils_public_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_test_ts --> module_src_routeUtils_ts
   module_src_routeUtils_ts --> module_src_manifestState_ts
@@ -541,6 +566,7 @@ graph LR
   module_src_secretResponseGuard_test_ts --> module_src_secretResponseGuard_ts
   module_src_studioAdminRouteModel_test_ts --> module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --> module_src_index_ts
+  module_src_studioRuntimeApi_test_ts --> module_src_studioRuntimeApi_ts
   module_src_studioSelectionModel_knip_test_ts --> module_src_studioSelectionModel_ts
   module_src_studioSelectionModel_test_ts --> module_src_studioSelectionModel_ts
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_core_StudioContext_ts
@@ -583,6 +609,7 @@ graph LR
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectAuthHealth_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_projectSecretApi_ts
+  module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_studioRuntimeApi_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
@@ -591,8 +618,8 @@ graph LR
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_manifestState_ts
+  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_propertiesAuthoringModel_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
-  module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPageUtils_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretApi_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_projectSecretUsage_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx --> module_src_ui_admin_AuthAdminSession_tsx
