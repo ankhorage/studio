@@ -167,32 +167,34 @@ describe('StudioExternalApiService', () => {
   });
 
   test('executes credential-backed operations without returning trusted values', async () => {
-    const store = createProjectStore({
-      dataSources: {
-        catalog: {
-          id: 'catalog',
-          kind: 'rest',
-          baseUrl: 'https://api.example.com',
-          credential: { id: 'services/catalog', kind: 'bearer' },
-          endpoints: {
-            items: {
-              id: 'items',
-              kind: 'http',
-              path: '/items',
-              operations: {
-                list: {
-                  id: 'list',
-                  protocol: 'http',
-                  intent: 'read',
-                  method: 'GET',
-                  path: '/items',
+    const store = createProjectStore(
+      createManifest({
+        dataSources: {
+          catalog: {
+            id: 'catalog',
+            kind: 'rest',
+            baseUrl: 'https://api.example.com',
+            credential: { id: 'services/catalog', kind: 'bearer' },
+            endpoints: {
+              items: {
+                id: 'items',
+                kind: 'http',
+                path: '/items',
+                operations: {
+                  list: {
+                    id: 'list',
+                    protocol: 'http',
+                    intent: 'read',
+                    method: 'GET',
+                    path: '/items',
+                  },
                 },
               },
             },
           },
         },
-      },
-    });
+      }),
+    );
     let authorization = '';
     const endpointFetch: EndpointTestFetch = (_url, init) => {
       authorization = init.headers.authorization ?? '';
