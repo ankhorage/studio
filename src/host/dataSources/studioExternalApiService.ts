@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { CredentialRef, DataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contracts/data';
+import type { DataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 import {
   createManualRestDataSource,
   discoverOpenApiDataSource,
@@ -215,5 +215,6 @@ function missingSourceResult(sourceId: string): ExternalApiOperationTestResult {
 
 function clean(value: string | undefined): string | undefined {
   const normalized = value?.trim();
-  return normalized ? normalized : undefined;
+  if (!normalized) return undefined;
+  return normalized;
 }

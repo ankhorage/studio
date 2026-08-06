@@ -22,7 +22,7 @@ export function collectDataSourceOperationRows(
         operationId,
         name: operation.name,
         kind: operation.intent,
-        protocol: operation.protocol ?? endpoint.kind,
+        protocol: operation.protocol,
         method: operation.method ?? null,
         path: operation.path ?? endpoint.path ?? null,
       })),

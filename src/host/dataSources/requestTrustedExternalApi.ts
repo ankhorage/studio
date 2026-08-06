@@ -46,7 +46,6 @@ async function readLimitedResponseText(response: Response, maxBytes: number): Pr
   if (Number.isFinite(contentLength) && contentLength > maxBytes) {
     throw new Error('External API response exceeds the configured size limit.');
   }
-  if (!response.body) return '';
 
   const reader = response.body.getReader();
   const decoder = new TextDecoder();

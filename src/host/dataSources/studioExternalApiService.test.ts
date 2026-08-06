@@ -39,7 +39,8 @@ function createProjectStore(initial = createManifest()) {
       getProjectManifest: () => Promise.resolve(manifest),
       getStudioManifest: () => Promise.resolve(manifest),
       saveStudioManifest: (args: { readonly manifest: StudioManifest }) => {
-        manifest = args.manifest;
+        const { manifest: nextManifest } = args;
+        manifest = nextManifest;
         return Promise.resolve({ success: true });
       },
     },
@@ -96,7 +97,10 @@ describe('StudioExternalApiService', () => {
   test('discovers and persists OpenAPI sources canonically', async () => {
     const store = createProjectStore();
     const fetch: ExternalApiFetch = () => Promise.resolve(jsonResponse(openApiDocument()));
-    const service = new StudioExternalApiService({ projectManager: store.manager, discoveryFetch: fetch });
+    const service = new StudioExternalApiService({
+      projectManager: store.manager,
+      discoveryFetch: fetch,
+    });
 
     const first = await service.connect('demo', {
       sourceId: 'Inventory API',
@@ -122,7 +126,10 @@ describe('StudioExternalApiService', () => {
       Promise.resolve(
         init.method === 'POST' ? jsonResponse(graphQlPayload()) : jsonResponse({}, 404),
       );
-    const service = new StudioExternalApiService({ projectManager: store.manager, discoveryFetch: fetch });
+    const service = new StudioExternalApiService({
+      projectManager: store.manager,
+      discoveryFetch: fetch,
+    });
 
     const result = await service.connect('demo', {
       sourceId: 'catalog',
@@ -131,7 +138,9 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, protocol: 'graphql' });
-    expect(store.read().dataSources?.catalog?.endpoints.graphql?.operations['query.items']).toBeDefined();
+    expect(
+      store.read().dataSources?.catalog?.endpoints.graphql?.operations['query.items'],
+    ).toBeDefined();
   });
 
   test('creates manual REST sources through the canonical owner helper', async () => {
@@ -149,7 +158,9 @@ describe('StudioExternalApiService', () => {
     });
 
     expect(result).toMatchObject({ ok: true, protocol: 'rest' });
-    expect(store.read().dataSources?.legacy?.endpoints.items?.operations['list-items']).toMatchObject({
+    expect(
+      store.read().dataSources?.legacy?.endpoints.items?.operations['list-items'],
+    ).toMatchObject({
       method: 'GET',
       path: '/items',
     });
