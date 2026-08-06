@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.12.0
+
+### Minor Changes
+
+- 7468819: Rebuild external API authoring with trusted OpenAPI discovery, GraphQL introspection, manual REST fallback, canonical manifest persistence, operation visibility, and credential-safe endpoint testing.
+
 ## 0.11.12
 
 ### Patch Changes
