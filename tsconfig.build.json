@@ -13,6 +13,7 @@
   "include": [
     "src/root.ts",
     "src/index.ts",
+    "src/externalApiAuthoring.ts",
     "src/app/index.ts",
     "src/app/StudioApp.tsx",
     "src/app/ProjectsOverviewScreen.tsx",
