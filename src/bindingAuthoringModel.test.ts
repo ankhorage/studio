@@ -2,9 +2,9 @@ import type {
   ComponentDataBindingRegistry,
   DataSourceRegistry,
   PropBinding,
+  UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -20,6 +20,40 @@ import {
 } from './bindingAuthoringModel';
 
 const button: UiNode = { id: 'button-1', type: 'Button', props: { children: 'Save' } };
+const componentMeta: UiComponentMetaRegistry = {
+  Button: {
+    name: 'Button',
+    category: 'component',
+    directManifestNode: true,
+    allowedChildren: [],
+    bindings: {
+      props: {
+        children: {
+          label: 'Label',
+          value: { type: 'string' },
+          acceptsFallback: true,
+          acceptsTransforms: true,
+        },
+        disabled: {
+          label: 'Disabled',
+          value: { type: 'boolean' },
+          acceptsFallback: true,
+          acceptsTransforms: true,
+        },
+      },
+      events: {
+        press: {
+          label: 'Press',
+          payload: { eventType: 'button.press', fields: [] },
+        },
+      },
+    },
+    props: {
+      children: { type: 'string', category: 'Content' },
+      disabled: { type: 'boolean', category: 'State' },
+    },
+  },
+};
 
 const dataSources: DataSourceRegistry = {
   external: {
@@ -85,13 +119,14 @@ const dataSources: DataSourceRegistry = {
 };
 
 describe('binding authoring metadata', () => {
-  test('derives only explicitly bindable props and events from ZORA metadata', () => {
-    expect(
-      resolveStudioBindableProps(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name),
-    ).toEqual(['children', 'disabled']);
-    expect(
-      resolveStudioBindableEvents(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name),
-    ).toEqual(['press']);
+  test('derives only explicitly bindable props and events from component metadata', () => {
+    expect(resolveStudioBindableProps(button, componentMeta).map((entry) => entry.name)).toEqual([
+      'children',
+      'disabled',
+    ]);
+    expect(resolveStudioBindableEvents(button, componentMeta).map((entry) => entry.name)).toEqual([
+      'press',
+    ]);
   });
 });
 
@@ -169,7 +204,7 @@ describe('binding diagnostics', () => {
       diagnoseStudioComponentBindings({
         node: button,
         registry: missingRegistry,
-        componentMeta: ZORA_BINDABLE_COMPONENT_META,
+        componentMeta,
         dataSources,
         operations,
         actionTypes: ['navigate'],
@@ -179,7 +214,7 @@ describe('binding diagnostics', () => {
       diagnoseStudioComponentBindings({
         node: button,
         registry: incompatibleRegistry,
-        componentMeta: ZORA_BINDABLE_COMPONENT_META,
+        componentMeta,
         dataSources,
         operations,
         actionTypes: ['navigate'],
