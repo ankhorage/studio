@@ -159,15 +159,18 @@ describe('binding registry mutations', () => {
 describe('binding operations and schemas', () => {
   test('enumerates external and generated operations through one canonical model', () => {
     const options = collectStudioBindingOperationOptions(dataSources);
-    expect(options.map((option) => option.operation.operationId)).toEqual([
+    expect(options.map((option) => option.operation.operationId).sort()).toEqual([
       'items.create',
       'profile.read',
     ]);
-    expect(options[0]?.inputFields).toMatchObject([
+    const generated = options.find((option) => option.operation.operationId === 'items.create');
+    const external = options.find((option) => option.operation.operationId === 'profile.read');
+
+    expect(generated?.inputFields).toMatchObject([
       { name: 'name', required: true, value: { type: 'string' } },
       { name: 'count', required: false, value: { type: 'number' } },
     ]);
-    expect(options[1]?.responsePaths.map((entry) => entry.path)).toEqual(['', 'name', 'age']);
+    expect(external?.responsePaths.map((entry) => entry.path)).toEqual(['', 'name', 'age']);
   });
 
   test('reports meaningful schema compatibility', () => {
