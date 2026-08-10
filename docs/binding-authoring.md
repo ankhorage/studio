@@ -22,6 +22,6 @@ Known event payload fields are surfaced from ZORA. Action payload fields come fr
 
 ## Diagnostics
 
-Studio reuses Runtime operation-reference validation for missing data sources, endpoints, and operations. Studio adds authoring diagnostics for missing response paths, incompatible response values, missing required operation inputs, unknown bindable props/events, and unavailable actions.
+Studio resolves operation references against the same normalized operation catalog used by the authoring selectors. Missing operation references, response paths, required operation inputs, incompatible response/input values, unknown bindable props/events, and unavailable actions are surfaced as authoring diagnostics.
 
-Diagnostics never execute operations. Runtime remains the only execution owner.
+Diagnostics never execute operations and do not reproduce Runtime execution logic. Runtime remains the only execution owner.
