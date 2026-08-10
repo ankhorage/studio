@@ -1,0 +1,21 @@
+name: Verify ADM 6 Targeted
+
+on:
+  push:
+    branches:
+      - agent/adm-6-binding-authoring
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+      - run: bun install --frozen-lockfile
+      - run: bun test src/bindingAuthoringModel.test.ts src/bindingMutationAcceptance.test.ts src/bindingManifestPersistence.test.ts src/studioAdminRouteModel.test.ts src/ui/useStudioAppBarAugmentation.test.ts src/ui/admin/AnkhAdminPage.test.ts
+      - run: bun run typecheck
