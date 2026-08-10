@@ -1,15 +1,29 @@
 import type { GeneratedApiDefinition } from '@ankhorage/contracts';
 import { createGeneratedApiDataSource } from '@ankhorage/data-sources';
-import { createRuntimeDataSourceOperationExecutor } from '@ankhorage/runtime';
 import { createSupabaseDbAdapter } from '@ankhorage/supabase-db';
-import { expect, test } from 'bun:test';
+import { afterAll, expect, mock, test } from 'bun:test';
 
 import {
   type GeneratedDatabaseRuntimeManifest,
   resolveGeneratedDatabaseRuntime,
 } from './generatedDatabaseRuntime';
 
+mock.module('react-native', () => ({
+  StyleSheet: {
+    create<TStyles extends Record<string, unknown>>(styles: TStyles): TStyles {
+      return styles;
+    },
+  },
+  Text: () => null,
+  View: () => null,
+}));
+
+afterAll(() => {
+  mock.restore();
+});
+
 test('executes canonical generated create through the released Supabase DB adapter', async () => {
+  const { createRuntimeDataSourceOperationExecutor } = await import('@ankhorage/runtime');
   const definition: GeneratedApiDefinition = {
     id: 'items-api',
     protocol: 'rest',
