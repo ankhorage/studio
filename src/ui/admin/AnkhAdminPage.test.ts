@@ -14,8 +14,11 @@ test('uses a declarative UI page registry for every admin route id', () => {
   expect(source).not.toContain("if (routeId === '");
 });
 
-test('uses canonical properties decoding in the public page boundary', () => {
+test('uses canonical contextual node decoding in the public page boundary', () => {
+  expect(source).toContain('resolveStudioBindingsNodeId');
   expect(source).toContain('resolveStudioPropertiesNodeId');
+  expect(source).not.toContain("'/ankh/bindings/' +");
+  expect(source).not.toContain('`/ankh/bindings/${');
   expect(source).not.toContain("'/ankh/properties/' +");
   expect(source).not.toContain('`/ankh/properties/${');
 });
