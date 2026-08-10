@@ -43,9 +43,12 @@ export interface StudioBindingOperationOption {
 
 export interface StudioBindingDiagnostic {
   readonly code:
+    | 'incompatible-input'
     | 'incompatible-response'
     | 'missing-action'
     | 'missing-binding-meta'
+    | 'missing-input'
+    | 'missing-operation'
     | 'missing-response-path'
     | 'unknown-event'
     | 'unknown-prop';
