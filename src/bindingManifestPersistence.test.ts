@@ -7,6 +7,13 @@ import { createStudioManifestSignature } from './manifestSync';
 
 function createManifest(): StudioManifest {
   return {
+    metadata: {
+      name: 'Binding persistence test',
+      slug: 'binding-persistence-test',
+      version: '1.0.0',
+      category: 'developer_tools',
+      themeId: 'default',
+    },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     dataSources: {},
@@ -14,7 +21,7 @@ function createManifest(): StudioManifest {
     activeThemeId: 'default',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: { plugins: [] },
-  } as unknown as StudioManifest;
+  };
 }
 
 describe('binding manifest persistence', () => {
