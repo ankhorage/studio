@@ -60,7 +60,7 @@ jobs:
           pkg.dependencies['@ankhorage/expo-runtime'] = '^1.0.0';
           pkg.dependencies['@ankhorage/infra'] = '^2.0.0';
           pkg.dependencies['@ankhorage/runtime'] = '^1.0.0';
-          pkg.dependencies['@ankhorage/templates'] = '^3.0.1';
+          pkg.dependencies['@ankhorage/templates'] = '^4.0.0';
           fs.writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
 
