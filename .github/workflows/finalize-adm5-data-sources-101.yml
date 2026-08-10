@@ -127,6 +127,12 @@ jobs:
       - name: Run generated app web E2E
         run: bun run test:e2e:generated-app-web
 
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v2
+        with:
+          version: latest
+          github-token: ${{ github.token }}
+
       - name: Run infra E2E
         run: bun run test:e2e:infra
 
