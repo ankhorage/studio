@@ -52,7 +52,7 @@ export function EventBindingComposer(props: {
         : (selectedOperation?.inputFields ?? []),
     [actionType, selectedOperation?.inputFields, targetKind],
   );
-  const eventFields = eventMeta.payload?.fields ?? [];
+  const eventFields = useMemo(() => eventMeta.payload?.fields ?? [], [eventMeta.payload?.fields]);
   const [drafts, setDrafts] = useState<Readonly<Record<string, StudioEventInputDraft>>>({});
 
   useEffect(() => {
@@ -148,28 +148,23 @@ function EventInputDrafts(props: {
             </View>
             <View style={bindingAdminStyles.grow}>
               <Field label={draft.kind === 'event' ? 'Payload path' : 'Literal value'}>
-                {draft.kind === 'event' && props.eventFields.length > 0 ? (
-                  <Select
-                    value={draft.value}
-                    options={props.eventFields.map((path) => ({ value: path, label: path }))}
-                    onValueChange={(value: string) =>
-                      props.onChange({ ...props.drafts, [field.name]: { ...draft, value } })
-                    }
-                  />
-                ) : (
-                  <Input
-                    value={draft.value}
-                    placeholder={draft.kind === 'event' ? 'values.name' : undefined}
-                    onChangeText={(value) =>
-                      props.onChange({ ...props.drafts, [field.name]: { ...draft, value } })
-                    }
-                  />
-                )}
+                <Input
+                  value={draft.value}
+                  placeholder={draft.kind === 'event' ? 'values.name' : undefined}
+                  onChangeText={(value) =>
+                    props.onChange({ ...props.drafts, [field.name]: { ...draft, value } })
+                  }
+                />
               </Field>
             </View>
           </View>
         );
       })}
+      {props.eventFields.length > 0 ? (
+        <Text color="neutral" emphasis="muted" variant="bodySmall">
+          Known payload paths: {props.eventFields.join(', ')}. Nested paths may be entered manually.
+        </Text>
+      ) : null}
     </View>
   );
 }
