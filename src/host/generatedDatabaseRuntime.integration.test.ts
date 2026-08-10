@@ -8,7 +8,7 @@ import {
   resolveGeneratedDatabaseRuntime,
 } from './generatedDatabaseRuntime';
 
-mock.module('react-native', () => ({
+await mock.module('react-native', () => ({
   StyleSheet: {
     create<TStyles extends Record<string, unknown>>(styles: TStyles): TStyles {
       return styles;
