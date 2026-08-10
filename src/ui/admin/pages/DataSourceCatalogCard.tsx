@@ -22,7 +22,7 @@ export function DataSourceCatalogCard({
             <View key={id} style={externalApiAdminStyles.row}>
               <Text weight="semiBold">{source.name ?? id}</Text>
               <Text color="neutral" emphasis="muted" variant="bodySmall">
-                {id} · {source.kind} · {countOperations(source)} operations
+                {describeSourceKind(source)} · {countOperations(source)} operations
               </Text>
               {describeLocation(source) ? (
                 <Text color="neutral" variant="caption">
@@ -44,8 +44,16 @@ function countOperations(source: DataSourceConfig): number {
   );
 }
 
+function describeSourceKind(source: DataSourceConfig): string {
+  if (source.kind === 'database') return `${source.id} · database`;
+  return `${source.id} · api · ${source.origin} · ${source.protocol}`;
+}
+
 function describeLocation(source: DataSourceConfig): string | undefined {
-  if (source.kind === 'graphql') return source.endpointUrl;
-  if (source.kind === 'openapi' || source.kind === 'rest') return source.baseUrl;
-  return undefined;
+  if (source.kind === 'database') return `adapter: ${source.adapter.id}`;
+  if (source.origin === 'generated') {
+    return `generated: ${source.generatedApiId} · adapter: ${source.adapter.id}`;
+  }
+  if (source.protocol === 'graphql') return source.endpointUrl;
+  return source.openApi ? `${source.baseUrl} · OpenAPI import` : source.baseUrl;
 }

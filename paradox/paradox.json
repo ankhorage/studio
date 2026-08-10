@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.11.12",
+      "value": "v0.12.0",
       "color": "cb3837"
     },
     {
@@ -355,7 +355,6 @@
         "applyStudioManifestDraftMutation",
         "replaceStudioManifestDraftAuthSettings",
         "StudioManifestDraftMutation",
-        "updateStudioManifestDraftAppData",
         "updateStudioManifestDraftAuthSettings",
         "updateStudioManifestDraftDataBindings",
         "updateStudioManifestDraftDataSources",
@@ -403,6 +402,7 @@
         "src/core/StudioContext.ts",
         "src/core/studioManifestDraftModel.ts",
         "src/core/studioManifestPersistenceModel.ts",
+        "src/generatedApiAuthoring.ts",
         "src/index.ts",
         "src/manifestState.ts",
         "src/manifestSync.ts",
@@ -582,6 +582,22 @@
         "ExternalApiOperationTestResult",
         "ExternalApiProtocol",
         "ManualRestSourceRequest"
+      ]
+    },
+    {
+      "path": "src/generatedApiAuthoring.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/generatedApiAuthoring.ts", "src/index.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/generatedApiAuthoring.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts"],
+      "exports": [
+        "deleteStudioGeneratedApi",
+        "StudioGeneratedApiMutationResult",
+        "upsertStudioGeneratedApi"
       ]
     },
     {
@@ -1831,7 +1847,6 @@
         "StudioManifestScreenMutationResult",
         "toCanonicalRoutePattern",
         "updateNavigatorAtPath",
-        "updateStudioManifestAppData",
         "updateStudioManifestDataBindings",
         "updateStudioManifestDataSources",
         "updateStudioManifestModuleConfig",
@@ -2764,6 +2779,7 @@
         "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "src/ui/admin/pages/DataSourceOperationsCard.tsx",
         "src/ui/admin/pages/ExternalApiConnectCard.tsx",
+        "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
         "src/ui/admin/pages/ManualRestSourceCard.tsx"
       ],
       "exports": ["ApisAdminPage", "ApisAdminRouteId"]
@@ -2826,6 +2842,95 @@
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
       "exports": ["ExternalApiConnectCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "src/ui/admin/pages/generatedApiEditorStyles.ts"
+      ],
+      "exports": ["GeneratedApiAuthoringCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+        "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      ],
+      "exports": ["GeneratedApiEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/generatedApiEditorModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/generatedApiEditorModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "createGeneratedApiEditorDraft",
+        "createGeneratedApiFieldDraft",
+        "createGeneratedApiResourceDraft",
+        "GeneratedApiEditorDraft",
+        "GeneratedApiEditorResolution",
+        "GeneratedApiFieldDraft",
+        "GeneratedApiResourceDraft",
+        "resolveGeneratedApiEditorDraft"
+      ]
+    },
+    {
+      "path": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["generatedApiEditorStyles"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "src/ui/admin/pages/GeneratedApiToggle.tsx"
+      ],
+      "exports": ["GeneratedApiFieldEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "src/ui/admin/pages/generatedApiEditorStyles.ts"
+      ],
+      "exports": ["GeneratedApiNormalizedOperations"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "src/ui/admin/pages/GeneratedApiToggle.tsx"
+      ],
+      "exports": ["GeneratedApiResourceEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/GeneratedApiToggle.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/generatedApiEditorStyles.ts"],
+      "exports": ["GeneratedApiToggle"]
     },
     {
       "path": "src/ui/admin/pages/ManualRestSourceCard.tsx",
@@ -2984,7 +3089,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 373,
+        "line": 378,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3002,7 +3107,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 283,
+        "line": 284,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3056,7 +3161,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 595,
+        "line": 600,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3088,7 +3193,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1307,
+        "line": 1312,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3120,7 +3225,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 754,
+        "line": 759,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3152,7 +3257,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 520,
+        "line": 525,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3190,7 +3295,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1226,
+        "line": 1231,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3310,7 +3415,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 537,
+        "line": 542,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3348,7 +3453,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 513,
+        "line": 518,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3380,7 +3485,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1152,
+        "line": 1157,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3412,7 +3517,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 261,
+        "line": 262,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3505,7 +3610,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 243,
+        "line": 244,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3545,7 +3650,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 220,
+        "line": 221,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3563,7 +3668,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 271,
+        "line": 272,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3581,7 +3686,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 249,
+        "line": 250,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3668,7 +3773,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 217,
+        "line": 218,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3686,7 +3791,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 218,
+        "line": 219,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3704,7 +3809,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 266,
+        "line": 267,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3798,7 +3903,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 984,
+        "line": 989,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3830,7 +3935,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 927,
+        "line": 932,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3877,7 +3982,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 934,
+        "line": 939,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3910,7 +4015,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 228,
+        "line": 229,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3964,7 +4069,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 236,
+        "line": 237,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4011,7 +4116,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 223,
+        "line": 224,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4044,7 +4149,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 291,
+        "line": 292,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4091,7 +4196,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 628,
+        "line": 633,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4135,7 +4240,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1052,
+        "line": 1057,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4167,7 +4272,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1011,
+        "line": 1016,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4214,7 +4319,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1018,
+        "line": 1023,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4247,7 +4352,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 179,
+        "line": 180,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4294,7 +4399,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 186,
+        "line": 187,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4312,7 +4417,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 198,
+        "line": 199,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4345,7 +4450,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 177,
+        "line": 178,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4363,7 +4468,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 210,
+        "line": 211,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4381,7 +4486,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 203,
+        "line": 204,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4857,7 +4962,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 577,
+        "line": 582,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4895,7 +5000,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 882,
+        "line": 887,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4927,7 +5032,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1349,
+        "line": 1354,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4959,7 +5064,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 821,
+        "line": 826,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5071,7 +5176,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1119,
+        "line": 1124,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5114,7 +5219,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 58,
+        "line": 59,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5132,7 +5237,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 50,
+        "line": 51,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5150,7 +5255,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 86,
+        "line": 87,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5168,7 +5273,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 275,
+        "line": 276,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5208,7 +5313,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 273,
+        "line": 274,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5226,7 +5331,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 281,
+        "line": 282,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5244,7 +5349,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 121,
+        "line": 122,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5262,7 +5367,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 144,
+        "line": 145,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5280,7 +5385,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 133,
+        "line": 134,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5410,7 +5515,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 316,
+        "line": 317,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5428,7 +5533,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 300,
+        "line": 301,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5461,7 +5566,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 305,
+        "line": 306,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5508,7 +5613,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 312,
+        "line": 313,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5526,7 +5631,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 332,
+        "line": 333,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5592,6 +5697,13 @@
           "name": "addTheme",
           "kind": "property",
           "type": "() => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "deleteGeneratedApi",
+          "kind": "property",
+          "type": "(id: string) => void",
           "required": true,
           "description": null
         },
@@ -5855,13 +5967,6 @@
           "description": null
         },
         {
-          "name": "updateAppData",
-          "kind": "property",
-          "type": "(data: AppDataManifest) => void",
-          "required": true,
-          "description": null
-        },
-        {
           "name": "updateAuthSettings",
           "kind": "property",
           "type": "(settings: StudioAuthSettings) => void",
@@ -5909,6 +6014,13 @@
           "type": "(id: string, updates: ThemeUpdates) => void",
           "required": true,
           "description": null
+        },
+        {
+          "name": "upsertGeneratedApi",
+          "kind": "property",
+          "type": "(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]",
+          "required": true,
+          "description": null
         }
       ],
       "structuredRows": []
@@ -5922,7 +6034,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 325,
+        "line": 326,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5940,7 +6052,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 314,
+        "line": 315,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6109,7 +6221,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 116,
+        "line": 117,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6127,7 +6239,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 146,
+        "line": 147,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6145,7 +6257,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 118,
+        "line": 119,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6163,7 +6275,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 115,
+        "line": 116,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6181,7 +6293,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 113,
+        "line": 114,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6199,7 +6311,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 52,
+        "line": 53,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6239,7 +6351,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 120,
+        "line": 121,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6257,7 +6369,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 111,
+        "line": 112,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6364,7 +6476,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 109,
+        "line": 110,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6382,7 +6494,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 119,
+        "line": 120,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6400,7 +6512,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 114,
+        "line": 115,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6418,7 +6530,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 157,
+        "line": 158,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6472,7 +6584,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 112,
+        "line": 113,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6490,7 +6602,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 165,
+        "line": 166,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6738,7 +6850,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 152,
+        "line": 153,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6756,7 +6868,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 465,
+        "line": 470,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6774,7 +6886,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 549,
+        "line": 554,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6818,7 +6930,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1169,
+        "line": 1174,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6856,7 +6968,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 766,
+        "line": 771,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7697,7 +7809,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.test.ts",
-        "line": 103,
+        "line": 116,
         "column": 1
       }
     },
@@ -7706,7 +7818,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.test.ts",
-        "line": 142,
+        "line": 155,
         "column": 1
       }
     },
@@ -7715,7 +7827,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 65,
+        "line": 57,
         "column": 1
       }
     },
@@ -7724,7 +7836,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 69,
+        "line": 61,
         "column": 1
       }
     },
@@ -7733,7 +7845,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 73,
+        "line": 65,
         "column": 1
       }
     },
@@ -7742,7 +7854,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 77,
+        "line": 69,
         "column": 1
       }
     },
@@ -7751,7 +7863,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 81,
+        "line": 73,
         "column": 1
       }
     },
@@ -7760,7 +7872,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 85,
+        "line": 77,
         "column": 1
       }
     },
@@ -7769,7 +7881,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 89,
+        "line": 81,
         "column": 1
       }
     },
@@ -7778,7 +7890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 93,
+        "line": 85,
         "column": 1
       }
     },
@@ -7787,7 +7899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 110,
+        "line": 102,
         "column": 1
       }
     },
@@ -7796,7 +7908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 114,
+        "line": 106,
         "column": 1
       }
     },
@@ -7805,7 +7917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 118,
+        "line": 110,
         "column": 1
       }
     },
@@ -7814,7 +7926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 128,
+        "line": 120,
         "column": 1
       }
     },
@@ -7823,7 +7935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 148,
+        "line": 140,
         "column": 1
       }
     },
@@ -7832,7 +7944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 163,
+        "line": 155,
         "column": 1
       }
     },
@@ -7841,7 +7953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 178,
+        "line": 170,
         "column": 1
       }
     },
@@ -7850,7 +7962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 189,
+        "line": 181,
         "column": 1
       }
     },
@@ -7859,7 +7971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 201,
+        "line": 193,
         "column": 1
       }
     },
@@ -7868,7 +7980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 209,
+        "line": 201,
         "column": 1
       }
     },
@@ -7877,7 +7989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 215,
+        "line": 207,
         "column": 1
       }
     },
@@ -7886,7 +7998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 224,
+        "line": 216,
         "column": 1
       }
     },
@@ -7895,7 +8007,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 233,
+        "line": 225,
         "column": 1
       }
     },
@@ -7904,7 +8016,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 242,
+        "line": 234,
         "column": 1
       }
     },
@@ -7913,7 +8025,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 246,
+        "line": 238,
         "column": 1
       }
     },
@@ -7922,7 +8034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 278,
+        "line": 270,
         "column": 1
       }
     },
@@ -7931,7 +8043,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 291,
+        "line": 283,
         "column": 1
       }
     },
@@ -7940,7 +8052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 314,
+        "line": 306,
         "column": 1
       }
     },
@@ -7949,7 +8061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 331,
+        "line": 323,
         "column": 1
       }
     },
@@ -7958,7 +8070,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 346,
+        "line": 338,
         "column": 1
       }
     },
@@ -7967,7 +8079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 357,
+        "line": 349,
         "column": 1
       }
     },
@@ -7976,7 +8088,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 361,
+        "line": 353,
         "column": 1
       }
     },
@@ -7985,7 +8097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 373,
+        "line": 365,
         "column": 1
       }
     },
@@ -7994,7 +8106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 377,
+        "line": 369,
         "column": 1
       }
     },
@@ -8003,7 +8115,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 387,
+        "line": 379,
         "column": 1
       }
     },
@@ -8012,52 +8124,61 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 398,
+        "line": 390,
         "column": 1
       }
     },
     {
-      "name": "isAppDataManifest",
+      "name": "isGeneratedApiRegistry",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 414,
+        "line": 406,
         "column": 1
       }
     },
     {
-      "name": "isAppApiDefinition",
+      "name": "isGeneratedApiDefinition",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 422,
+        "line": 410,
         "column": 1
       }
     },
     {
-      "name": "isAppApiEndpointDefinition",
+      "name": "isGeneratedApiAuthRequirement",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 444,
+        "line": 428,
         "column": 1
       }
     },
     {
-      "name": "isAppApiAuthRequirement",
+      "name": "isGeneratedApiResourceDefinition",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 462,
+        "line": 439,
         "column": 1
       }
     },
     {
-      "name": "isAppApiResourceDefinition",
+      "name": "isGeneratedApiCrudOperation",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 473,
+        "line": 460,
+        "column": 1
+      }
+    },
+    {
+      "name": "isGeneratedApiPolicyRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 464,
         "column": 1
       }
     },
@@ -8066,7 +8187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 487,
+        "line": 472,
         "column": 1
       }
     },
@@ -8075,7 +8196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 507,
+        "line": 494,
         "column": 1
       }
     },
@@ -8084,12 +8205,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 511,
+        "line": 498,
         "column": 1
       }
     },
     {
-      "name": "isManagedApiResourceConfig",
+      "name": "isOpenApiDocumentRef",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
@@ -8098,11 +8219,20 @@
       }
     },
     {
+      "name": "isGraphQlIntrospection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/contractGuards.ts",
+        "line": 554,
+        "column": 1
+      }
+    },
+    {
       "name": "isDataEndpointRegistry",
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 559,
+        "line": 560,
         "column": 1
       }
     },
@@ -8111,7 +8241,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 563,
+        "line": 564,
         "column": 1
       }
     },
@@ -8120,7 +8250,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 579,
+        "line": 580,
         "column": 1
       }
     },
@@ -8129,7 +8259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 599,
+        "line": 600,
         "column": 1
       }
     },
@@ -8138,7 +8268,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 608,
+        "line": 609,
         "column": 1
       }
     },
@@ -8147,7 +8277,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 621,
+        "line": 622,
         "column": 1
       }
     },
@@ -8156,7 +8286,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 633,
+        "line": 634,
         "column": 1
       }
     },
@@ -8165,7 +8295,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 637,
+        "line": 638,
         "column": 1
       }
     },
@@ -8174,7 +8304,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 641,
+        "line": 642,
         "column": 1
       }
     },
@@ -8183,7 +8313,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 656,
+        "line": 657,
         "column": 1
       }
     },
@@ -8192,7 +8322,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 668,
+        "line": 669,
         "column": 1
       }
     },
@@ -8201,7 +8331,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 686,
+        "line": 687,
         "column": 1
       }
     },
@@ -8210,7 +8340,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 699,
+        "line": 700,
         "column": 1
       }
     },
@@ -8219,7 +8349,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 708,
+        "line": 709,
         "column": 1
       }
     },
@@ -8228,7 +8358,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 716,
+        "line": 717,
         "column": 1
       }
     },
@@ -8237,7 +8367,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 726,
+        "line": 727,
         "column": 1
       }
     },
@@ -8246,7 +8376,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 734,
+        "line": 735,
         "column": 1
       }
     },
@@ -8255,7 +8385,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 750,
+        "line": 745,
         "column": 1
       }
     },
@@ -8264,7 +8394,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 754,
+        "line": 749,
         "column": 1
       }
     },
@@ -8273,7 +8403,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 769,
+        "line": 764,
         "column": 1
       }
     },
@@ -8327,7 +8457,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 20,
+        "line": 15,
         "column": 1
       }
     },
@@ -8336,7 +8466,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 27,
+        "line": 22,
         "column": 1
       }
     },
@@ -8345,7 +8475,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 37,
+        "line": 32,
         "column": 1
       }
     },
@@ -8354,7 +8484,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 45,
+        "line": 40,
         "column": 1
       }
     },
@@ -8363,16 +8493,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 52,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateStudioManifestDraftAppData",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 64,
+        "line": 47,
         "column": 1
       }
     },
@@ -8381,7 +8502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 71,
+        "line": 59,
         "column": 1
       }
     },
@@ -8390,7 +8511,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/studioManifestDraftModel.ts",
-        "line": 78,
+        "line": 66,
         "column": 1
       }
     },
@@ -8417,7 +8538,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 58,
+        "line": 59,
         "column": 7
       }
     },
@@ -8426,7 +8547,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 59,
+        "line": 60,
         "column": 7
       }
     },
@@ -8435,7 +8556,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 62,
+        "line": 63,
         "column": 14
       }
     },
@@ -8444,7 +8565,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 285,
+        "line": 308,
         "column": 1
       }
     },
@@ -8453,7 +8574,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 386,
+        "line": 409,
         "column": 1
       }
     },
@@ -8462,7 +8583,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 395,
+        "line": 418,
         "column": 1
       }
     },
@@ -8471,7 +8592,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 408,
+        "line": 431,
         "column": 1
       }
     },
@@ -8480,7 +8601,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 416,
+        "line": 439,
         "column": 1
       }
     },
@@ -8489,7 +8610,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 423,
+        "line": 446,
         "column": 1
       }
     },
@@ -8507,7 +8628,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 27,
+        "line": 23,
         "column": 1
       }
     },
@@ -8516,7 +8637,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 34,
+        "line": 30,
         "column": 1
       }
     },
@@ -8525,7 +8646,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 41,
+        "line": 37,
         "column": 1
       }
     },
@@ -8534,7 +8655,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 48,
+        "line": 44,
         "column": 1
       }
     },
@@ -8543,7 +8664,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 69,
+        "line": 65,
         "column": 1
       }
     },
@@ -8552,7 +8673,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 77,
+        "line": 73,
         "column": 1
       }
     },
@@ -8561,7 +8682,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 101,
+        "line": 97,
         "column": 1
       }
     },
@@ -8570,7 +8691,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 112,
+        "line": 108,
         "column": 1
       }
     },
@@ -8579,7 +8700,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 118,
+        "line": 114,
         "column": 1
       }
     },
@@ -8588,7 +8709,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 143,
+        "line": 139,
         "column": 1
       }
     },
@@ -8597,7 +8718,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 158,
+        "line": 154,
         "column": 1
       }
     },
@@ -8606,7 +8727,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 172,
+        "line": 168,
         "column": 1
       }
     },
@@ -8615,7 +8736,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 181,
+        "line": 177,
         "column": 1
       }
     },
@@ -8624,16 +8745,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 185,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataSourceKind",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/externalApiApi.ts",
-        "line": 189,
+        "line": 181,
         "column": 1
       }
     },
@@ -8642,7 +8754,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 199,
+        "line": 185,
         "column": 1
       }
     },
@@ -8651,7 +8763,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 203,
+        "line": 189,
         "column": 1
       }
     },
@@ -8660,7 +8772,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 210,
+        "line": 196,
         "column": 1
       }
     },
@@ -8669,7 +8781,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 216,
+        "line": 202,
         "column": 1
       }
     },
@@ -8678,7 +8790,61 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/externalApiApi.ts",
-        "line": 220,
+        "line": 206,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.test.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "upsertStudioGeneratedApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.ts",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "deleteStudioGeneratedApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "findGeneratedApiCollision",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "collisionDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.ts",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeOwnedProjection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/generatedApiAuthoring.ts",
+        "line": 95,
         "column": 1
       }
     },
@@ -9146,7 +9312,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 34,
+        "line": 33,
         "column": 1
       }
     },
@@ -9155,7 +9321,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 50,
+        "line": 49,
         "column": 1
       }
     },
@@ -9164,7 +9330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 54,
+        "line": 53,
         "column": 1
       }
     },
@@ -9173,7 +9339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 70,
+        "line": 69,
         "column": 1
       }
     },
@@ -9182,7 +9348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 98,
+        "line": 97,
         "column": 11
       }
     },
@@ -9191,7 +9357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 124,
+        "line": 127,
         "column": 11
       }
     },
@@ -9200,7 +9366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 198,
+        "line": 203,
         "column": 11
       }
     },
@@ -9209,7 +9375,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 194,
+        "line": 196,
+        "column": 1
+      }
+    },
+    {
+      "name": "unsupportedTestSourceResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/dataSources/studioExternalApiService.ts",
+        "line": 204,
         "column": 1
       }
     },
@@ -9218,7 +9393,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 202,
+        "line": 218,
         "column": 1
       }
     },
@@ -9227,7 +9402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 216,
+        "line": 232,
         "column": 1
       }
     },
@@ -12827,7 +13002,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 513,
+        "line": 518,
         "column": 14
       }
     },
@@ -12836,7 +13011,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 520,
+        "line": 525,
         "column": 14
       }
     },
@@ -12845,7 +13020,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 537,
+        "line": 542,
         "column": 14
       }
     },
@@ -12854,7 +13029,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 549,
+        "line": 554,
         "column": 14
       }
     },
@@ -12863,7 +13038,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 577,
+        "line": 582,
         "column": 14
       }
     },
@@ -12872,7 +13047,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 595,
+        "line": 600,
         "column": 14
       }
     },
@@ -12881,7 +13056,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 628,
+        "line": 633,
         "column": 14
       }
     },
@@ -12890,7 +13065,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 664,
+        "line": 669,
         "column": 1
       }
     },
@@ -12899,7 +13074,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 669,
+        "line": 674,
         "column": 9
       }
     },
@@ -12908,7 +13083,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 688,
+        "line": 693,
         "column": 1
       }
     },
@@ -12917,7 +13092,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 699,
+        "line": 704,
         "column": 1
       }
     },
@@ -12926,7 +13101,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 754,
+        "line": 759,
         "column": 1
       }
     },
@@ -12935,7 +13110,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 766,
+        "line": 771,
         "column": 1
       }
     },
@@ -12944,7 +13119,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 821,
+        "line": 826,
         "column": 1
       }
     },
@@ -12953,7 +13128,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 882,
+        "line": 887,
         "column": 1
       }
     },
@@ -12962,7 +13137,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 939,
+        "line": 944,
         "column": 1
       }
     },
@@ -12971,7 +13146,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 984,
+        "line": 989,
         "column": 1
       }
     },
@@ -12980,7 +13155,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1023,
+        "line": 1028,
         "column": 1
       }
     },
@@ -12989,7 +13164,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1052,
+        "line": 1057,
         "column": 1
       }
     },
@@ -12998,7 +13173,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1152,
+        "line": 1157,
         "column": 1
       }
     },
@@ -13007,7 +13182,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1156,
+        "line": 1161,
         "column": 1
       }
     },
@@ -13016,7 +13191,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1161,
+        "line": 1166,
         "column": 1
       }
     },
@@ -13025,7 +13200,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1169,
+        "line": 1174,
         "column": 1
       }
     },
@@ -13034,7 +13209,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1173,
+        "line": 1178,
         "column": 9
       }
     },
@@ -13043,7 +13218,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1206,
+        "line": 1211,
         "column": 1
       }
     },
@@ -13052,7 +13227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1211,
+        "line": 1216,
         "column": 9
       }
     },
@@ -13061,7 +13236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1226,
+        "line": 1231,
         "column": 1
       }
     },
@@ -13070,7 +13245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1246,
+        "line": 1251,
         "column": 1
       }
     },
@@ -13079,7 +13254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1269,
+        "line": 1274,
         "column": 1
       }
     },
@@ -13088,7 +13263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1307,
+        "line": 1312,
         "column": 1
       }
     },
@@ -13097,7 +13272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1333,
+        "line": 1338,
         "column": 1
       }
     },
@@ -13106,7 +13281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1349,
+        "line": 1354,
         "column": 1
       }
     },
@@ -13115,7 +13290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1398,
+        "line": 1403,
         "column": 1
       }
     },
@@ -13394,7 +13569,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.public.test.ts",
-        "line": 52,
+        "line": 51,
         "column": 1
       }
     },
@@ -13412,7 +13587,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 92,
+        "line": 91,
         "column": 1
       }
     },
@@ -13421,7 +13596,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 300,
+        "line": 310,
         "column": 11
       }
     },
@@ -13430,7 +13605,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 96,
+        "line": 95,
         "column": 14
       }
     },
@@ -13439,7 +13614,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 103,
+        "line": 102,
         "column": 1
       }
     },
@@ -13448,7 +13623,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 120,
+        "line": 119,
         "column": 1
       }
     },
@@ -13457,7 +13632,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 124,
+        "line": 123,
         "column": 1
       }
     },
@@ -13466,7 +13641,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 128,
+        "line": 127,
         "column": 1
       }
     },
@@ -13475,7 +13650,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 154,
+        "line": 153,
         "column": 1
       }
     },
@@ -13484,7 +13659,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 173,
+        "line": 172,
         "column": 1
       }
     },
@@ -13493,7 +13668,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 182,
+        "line": 181,
         "column": 1
       }
     },
@@ -13502,7 +13677,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 207,
+        "line": 206,
         "column": 1
       }
     },
@@ -13511,7 +13686,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 215,
+        "line": 214,
         "column": 1
       }
     },
@@ -13520,7 +13695,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 223,
+        "line": 222,
         "column": 1
       }
     },
@@ -13529,7 +13704,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 234,
+        "line": 233,
         "column": 1
       }
     },
@@ -13538,7 +13713,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 242,
+        "line": 241,
         "column": 1
       }
     },
@@ -13547,7 +13722,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 252,
+        "line": 251,
         "column": 1
       }
     },
@@ -13556,7 +13731,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 277,
+        "line": 276,
         "column": 1
       }
     },
@@ -13565,7 +13740,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 306,
+        "line": 305,
         "column": 1
       }
     },
@@ -13574,7 +13749,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 331,
+        "line": 330,
         "column": 1
       }
     },
@@ -13583,16 +13758,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 368,
-        "column": 1
-      }
-    },
-    {
-      "name": "updateStudioManifestAppData",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 424,
+        "line": 367,
         "column": 1
       }
     },
@@ -13601,7 +13767,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 431,
+        "line": 423,
         "column": 1
       }
     },
@@ -13610,7 +13776,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 438,
+        "line": 430,
         "column": 1
       }
     },
@@ -13619,7 +13785,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 445,
+        "line": 437,
         "column": 1
       }
     },
@@ -13628,7 +13794,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 463,
+        "line": 455,
         "column": 1
       }
     },
@@ -13637,7 +13803,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 470,
+        "line": 462,
         "column": 1
       }
     },
@@ -13646,7 +13812,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 490,
+        "line": 482,
         "column": 1
       }
     },
@@ -13655,7 +13821,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 505,
+        "line": 497,
         "column": 1
       }
     },
@@ -13664,7 +13830,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 512,
+        "line": 504,
         "column": 1
       }
     },
@@ -13673,7 +13839,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 519,
+        "line": 511,
         "column": 1
       }
     },
@@ -13682,7 +13848,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 575,
+        "line": 567,
         "column": 1
       }
     },
@@ -13691,7 +13857,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 606,
+        "line": 598,
         "column": 1
       }
     },
@@ -13700,7 +13866,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 616,
+        "line": 608,
         "column": 1
       }
     },
@@ -13709,7 +13875,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 639,
+        "line": 631,
         "column": 1
       }
     },
@@ -13718,7 +13884,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 653,
+        "line": 645,
         "column": 1
       }
     },
@@ -13727,7 +13893,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 674,
+        "line": 666,
         "column": 1
       }
     },
@@ -13736,7 +13902,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 688,
+        "line": 680,
         "column": 1
       }
     },
@@ -13745,7 +13911,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 709,
+        "line": 701,
         "column": 1
       }
     },
@@ -13754,7 +13920,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 726,
+        "line": 718,
         "column": 1
       }
     },
@@ -13763,7 +13929,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 748,
+        "line": 740,
         "column": 1
       }
     },
@@ -13772,7 +13938,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 815,
+        "line": 807,
         "column": 1
       }
     },
@@ -13781,7 +13947,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 860,
+        "line": 852,
         "column": 1
       }
     },
@@ -13790,7 +13956,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 873,
+        "line": 865,
         "column": 1
       }
     },
@@ -13799,7 +13965,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 905,
+        "line": 897,
         "column": 1
       }
     },
@@ -13808,7 +13974,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 918,
+        "line": 910,
         "column": 1
       }
     },
@@ -13817,7 +13983,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 925,
+        "line": 917,
         "column": 1
       }
     },
@@ -13826,7 +13992,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 946,
+        "line": 938,
         "column": 1
       }
     },
@@ -13835,7 +14001,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 956,
+        "line": 948,
         "column": 1
       }
     },
@@ -13844,7 +14010,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 970,
+        "line": 962,
         "column": 1
       }
     },
@@ -13853,7 +14019,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 995,
+        "line": 987,
         "column": 1
       }
     },
@@ -13862,7 +14028,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1011,
+        "line": 1003,
         "column": 1
       }
     },
@@ -13871,7 +14037,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1044,
+        "line": 1036,
         "column": 1
       }
     },
@@ -13880,7 +14046,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1047,
+        "line": 1039,
         "column": 9
       }
     },
@@ -13889,7 +14055,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1062,
+        "line": 1054,
         "column": 1
       }
     },
@@ -13898,7 +14064,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1082,
+        "line": 1074,
         "column": 1
       }
     },
@@ -13907,7 +14073,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1113,
+        "line": 1105,
         "column": 1
       }
     },
@@ -13916,7 +14082,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1121,
+        "line": 1113,
         "column": 1
       }
     },
@@ -13925,7 +14091,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1163,
+        "line": 1155,
         "column": 1
       }
     },
@@ -13934,7 +14100,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1178,
+        "line": 1170,
         "column": 1
       }
     },
@@ -13943,7 +14109,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1199,
+        "line": 1191,
         "column": 1
       }
     },
@@ -13961,7 +14127,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestSync.test.ts",
-        "line": 41,
+        "line": 40,
         "column": 1
       }
     },
@@ -13970,7 +14136,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestSync.test.ts",
-        "line": 72,
+        "line": 71,
         "column": 11
       }
     },
@@ -16166,7 +16332,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/adminDataSourceOperations.ts",
-        "line": 14,
+        "line": 17,
         "column": 1
       }
     },
@@ -16220,7 +16386,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ApisAdminPage.tsx",
-        "line": 16,
+        "line": 17,
         "column": 1
       }
     },
@@ -16513,11 +16679,20 @@
       }
     },
     {
-      "name": "describeLocation",
+      "name": "describeSourceKind",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "describeLocation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "line": 52,
         "column": 1
       }
     },
@@ -16535,7 +16710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
-        "line": 84,
+        "line": 90,
         "column": 1
       }
     },
@@ -16544,7 +16719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
-        "line": 108,
+        "line": 113,
         "column": 1
       }
     },
@@ -16553,7 +16728,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
-        "line": 112,
+        "line": 117,
         "column": 1
       }
     },
@@ -16581,6 +16756,258 @@
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
         "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "GeneratedApiAuthoringCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "edit",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "line": 22,
+        "column": 9
+      }
+    },
+    {
+      "name": "save",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "line": 27,
+        "column": 9
+      }
+    },
+    {
+      "name": "GeneratedApiEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateResource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "line": 29,
+        "column": 9
+      }
+    },
+    {
+      "name": "createGeneratedApiEditorDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGeneratedApiResourceDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGeneratedApiFieldDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 101,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveGeneratedApiEditorDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 111,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveResourceDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveFieldDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateFieldNames",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 235,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseSeed",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 257,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSeedRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 288,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDataContractValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 292,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseDefaultValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 299,
+        "column": 1
+      }
+    },
+    {
+      "name": "toResourceDraft",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 331,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatDefaultValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 352,
+        "column": 1
+      }
+    },
+    {
+      "name": "clean",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 358,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 363,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "line": 373,
+        "column": 1
+      }
+    },
+    {
+      "name": "GeneratedApiFieldEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "GeneratedApiNormalizedOperations",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "GeneratedApiResourceEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "line": 28,
+        "column": 9
+      }
+    },
+    {
+      "name": "removeField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "line": 35,
+        "column": 9
+      }
+    },
+    {
+      "name": "toggleOperation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "line": 40,
+        "column": 9
+      }
+    },
+    {
+      "name": "GeneratedApiToggle",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/GeneratedApiToggle.tsx",
+        "line": 6,
         "column": 1
       }
     },
@@ -17287,6 +17714,21 @@
         "sourcePath": "src/externalApiAuthoring.ts"
       },
       {
+        "fromPath": "src/generatedApiAuthoring.test.ts",
+        "toPath": "src/generatedApiAuthoring.ts",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/generatedApiAuthoring.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromPath": "src/generatedApiAuthoring.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/generatedApiAuthoring.ts"
+      },
+      {
         "fromPath": "src/index.test.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/index.test.ts"
@@ -17854,6 +18296,11 @@
       {
         "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/authSettings.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/generatedApiAuthoring.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -19413,6 +19860,11 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ApisAdminPage.tsx",
         "toPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
         "sourcePath": "src/ui/admin/pages/ApisAdminPage.tsx"
       },
@@ -19525,6 +19977,121 @@
         "fromPath": "src/ui/admin/pages/ExternalApiConnectCard.tsx",
         "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toPath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiToggle.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+        "toPath": "src/ui/admin/pages/adminDataSourceOperations.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toPath": "src/ui/admin/pages/GeneratedApiToggle.tsx",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/GeneratedApiToggle.tsx",
+        "toPath": "src/ui/admin/pages/generatedApiEditorStyles.ts",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiToggle.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ManualRestSourceCard.tsx",
@@ -20720,123 +21287,105 @@
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppDataManifest",
+        "fromSymbol": "isGeneratedApiRegistry",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiDefinition",
+        "fromSymbol": "isGeneratedApiDefinition",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiDefinition",
+        "fromSymbol": "isGeneratedApiDefinition",
         "toSymbol": "isOptionalString",
         "callExpression": "isOptionalString",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiDefinition",
-        "toSymbol": "isAppApiAuthRequirement",
-        "callExpression": "isAppApiAuthRequirement",
+        "fromSymbol": "isGeneratedApiDefinition",
+        "toSymbol": "isAdapterRef",
+        "callExpression": "isAdapterRef",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiDefinition",
+        "fromSymbol": "isGeneratedApiDefinition",
+        "toSymbol": "isGeneratedApiAuthRequirement",
+        "callExpression": "isGeneratedApiAuthRequirement",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isGeneratedApiDefinition",
         "toSymbol": "isManifestValue",
         "callExpression": "isManifestValue",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiDefinition",
-        "toSymbol": "isAppApiResourceDefinition",
-        "callExpression": "isAppApiResourceDefinition",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiEndpointDefinition",
+        "fromSymbol": "isGeneratedApiAuthRequirement",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiEndpointDefinition",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiEndpointDefinition",
-        "toSymbol": "isDataOperationRequest",
-        "callExpression": "isDataOperationRequest",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiEndpointDefinition",
-        "toSymbol": "isDataOperationResponse",
-        "callExpression": "isDataOperationResponse",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiEndpointDefinition",
-        "toSymbol": "isAppApiAuthRequirement",
-        "callExpression": "isAppApiAuthRequirement",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiEndpointDefinition",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiAuthRequirement",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppApiAuthRequirement",
+        "fromSymbol": "isGeneratedApiAuthRequirement",
         "toSymbol": "isOptionalBoolean",
         "callExpression": "isOptionalBoolean",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiAuthRequirement",
+        "fromSymbol": "isGeneratedApiAuthRequirement",
         "toSymbol": "isStringArray",
         "callExpression": "isStringArray",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiAuthRequirement",
+        "fromSymbol": "isGeneratedApiAuthRequirement",
         "toSymbol": "isOptionalString",
         "callExpression": "isOptionalString",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiAuthRequirement",
+        "fromSymbol": "isGeneratedApiAuthRequirement",
         "toSymbol": "isManifestValue",
         "callExpression": "isManifestValue",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiResourceDefinition",
+        "fromSymbol": "isGeneratedApiResourceDefinition",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiResourceDefinition",
+        "fromSymbol": "isGeneratedApiResourceDefinition",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isGeneratedApiResourceDefinition",
         "toSymbol": "isDbCollectionDefinition",
         "callExpression": "isDbCollectionDefinition",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isAppApiResourceDefinition",
+        "fromSymbol": "isGeneratedApiResourceDefinition",
         "toSymbol": "isManifestValue",
         "callExpression": "isManifestValue",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isGeneratedApiPolicyRef",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isGeneratedApiPolicyRef",
+        "toSymbol": "isGeneratedApiCrudOperation",
+        "callExpression": "isGeneratedApiCrudOperation",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -20849,12 +21398,6 @@
         "fromSymbol": "isDbCollectionDefinition",
         "toSymbol": "isOptionalString",
         "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -20900,21 +21443,39 @@
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isManagedApiResourceConfig",
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isOpenApiDocumentRef",
+        "callExpression": "isOpenApiDocumentRef",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isDataSourceConfig",
+        "toSymbol": "isGraphQlIntrospection",
+        "callExpression": "isGraphQlIntrospection",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isOpenApiDocumentRef",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isManagedApiResourceConfig",
-        "toSymbol": "isDbCollectionDefinition",
-        "callExpression": "isDbCollectionDefinition",
+        "fromSymbol": "isOpenApiDocumentRef",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
         "sourcePath": "src/contractGuards.ts"
       },
       {
-        "fromSymbol": "isManagedApiResourceConfig",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
+        "fromSymbol": "isGraphQlIntrospection",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/contractGuards.ts"
+      },
+      {
+        "fromSymbol": "isGraphQlIntrospection",
+        "toSymbol": "isOptionalString",
+        "callExpression": "isOptionalString",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -21297,8 +21858,8 @@
       },
       {
         "fromSymbol": "isAppManifest",
-        "toSymbol": "isAppDataManifest",
-        "callExpression": "isAppDataManifest",
+        "toSymbol": "isGeneratedApiRegistry",
+        "callExpression": "isGeneratedApiRegistry",
         "sourcePath": "src/contractGuards.ts"
       },
       {
@@ -21371,12 +21932,6 @@
         "fromSymbol": "parseConnectResult",
         "toSymbol": "parseAttempts",
         "callExpression": "parseAttempts",
-        "sourcePath": "src/externalApiApi.ts"
-      },
-      {
-        "fromSymbol": "parseConnectResult",
-        "toSymbol": "isDataSourceKind",
-        "callExpression": "isDataSourceKind",
         "sourcePath": "src/externalApiApi.ts"
       },
       {
@@ -21540,6 +22095,72 @@
         "toSymbol": "upsertExternalApiDataSource",
         "callExpression": "upsertExternalApiDataSource",
         "sourcePath": "src/externalApiAuthoring.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "upsertStudioGeneratedApi",
+        "callExpression": "upsertStudioGeneratedApi",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "src/generatedApiAuthoring.test.ts",
+        "toSymbol": "deleteStudioGeneratedApi",
+        "callExpression": "deleteStudioGeneratedApi",
+        "sourcePath": "src/generatedApiAuthoring.test.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioGeneratedApi",
+        "toSymbol": "findGeneratedApiCollision",
+        "callExpression": "findGeneratedApiCollision",
+        "sourcePath": "src/generatedApiAuthoring.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioGeneratedApi",
+        "toSymbol": "createGeneratedApiDataSource",
+        "callExpression": "createGeneratedApiDataSource",
+        "sourcePath": "src/generatedApiAuthoring.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioGeneratedApi",
+        "toSymbol": "removeOwnedProjection",
+        "callExpression": "removeOwnedProjection",
+        "sourcePath": "src/generatedApiAuthoring.ts"
+      },
+      {
+        "fromSymbol": "deleteStudioGeneratedApi",
+        "toSymbol": "removeOwnedProjection",
+        "callExpression": "removeOwnedProjection",
+        "sourcePath": "src/generatedApiAuthoring.ts"
+      },
+      {
+        "fromSymbol": "findGeneratedApiCollision",
+        "toSymbol": "collisionDiagnostic",
+        "callExpression": "collisionDiagnostic",
+        "sourcePath": "src/generatedApiAuthoring.ts"
       },
       {
         "fromSymbol": "src/index.test.ts",
@@ -22433,12 +23054,6 @@
         "fromSymbol": "src/manifestState.public.test.ts",
         "toSymbol": "reorderStudioManifestScreens",
         "callExpression": "reorderStudioManifestScreens",
-        "sourcePath": "src/manifestState.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.public.test.ts",
-        "toSymbol": "updateStudioManifestAppData",
-        "callExpression": "updateStudioManifestAppData",
         "sourcePath": "src/manifestState.public.test.ts"
       },
       {
@@ -25562,12 +26177,6 @@
         "sourcePath": "src/core/studioManifestDraftModel.ts"
       },
       {
-        "fromSymbol": "updateStudioManifestDraftAppData",
-        "toSymbol": "updateStudioManifestAppData",
-        "callExpression": "updateStudioManifestAppData",
-        "sourcePath": "src/core/studioManifestDraftModel.ts"
-      },
-      {
         "fromSymbol": "updateStudioManifestDraftDataBindings",
         "toSymbol": "updateStudioManifestDataBindings",
         "callExpression": "updateStudioManifestDataBindings",
@@ -25868,15 +26477,15 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromSymbol": "updateAppData",
-        "toSymbol": "updateManifest",
-        "callExpression": "updateManifest",
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "upsertStudioGeneratedApi",
+        "callExpression": "upsertStudioGeneratedApi",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
         "fromSymbol": "src/core/StudioProvider.ts",
-        "toSymbol": "updateStudioManifestDraftAppData",
-        "callExpression": "updateStudioManifestDraftAppData",
+        "toSymbol": "deleteStudioGeneratedApi",
+        "callExpression": "deleteStudioGeneratedApi",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -31007,6 +31616,12 @@
         "fromSymbol": "testOperation",
         "toSymbol": "missingSourceResult",
         "callExpression": "missingSourceResult",
+        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
+      },
+      {
+        "fromSymbol": "testOperation",
+        "toSymbol": "unsupportedTestSourceResult",
+        "callExpression": "unsupportedTestSourceResult",
         "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
       },
       {
@@ -37653,6 +38268,12 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
+        "toSymbol": "describeSourceKind",
+        "callExpression": "describeSourceKind",
+        "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "toSymbol": "countOperations",
         "callExpression": "countOperations",
         "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
@@ -37782,6 +38403,324 @@
         "toSymbol": "connect",
         "callExpression": "connect",
         "sourcePath": "src/ui/admin/pages/ExternalApiConnectCard.tsx"
+      },
+      {
+        "fromSymbol": "GeneratedApiAuthoringCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "GeneratedApiAuthoringCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "edit",
+        "toSymbol": "setDiagnostics",
+        "callExpression": "setDiagnostics",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "edit",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "edit",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "edit",
+        "toSymbol": "createGeneratedApiEditorDraft",
+        "callExpression": "createGeneratedApiEditorDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "save",
+        "toSymbol": "upsertGeneratedApi",
+        "callExpression": "studio.upsertGeneratedApi",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "save",
+        "toSymbol": "setDiagnostics",
+        "callExpression": "setDiagnostics",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "save",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "save",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toSymbol": "edit",
+        "callExpression": "edit",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toSymbol": "deleteGeneratedApi",
+        "callExpression": "studio.deleteGeneratedApi",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toSymbol": "setMessage",
+        "callExpression": "setMessage",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx",
+        "toSymbol": "setDraft",
+        "callExpression": "setDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "GeneratedApiEditor",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toSymbol": "resolveGeneratedApiEditorDraft",
+        "callExpression": "resolveGeneratedApiEditorDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateResource",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toSymbol": "updateResource",
+        "callExpression": "updateResource",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toSymbol": "createGeneratedApiResourceDraft",
+        "callExpression": "createGeneratedApiResourceDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiEditor.tsx",
+        "toSymbol": "onSave",
+        "callExpression": "onSave",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toSymbol": "createGeneratedApiEditorDraft",
+        "callExpression": "createGeneratedApiEditorDraft",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toSymbol": "resolveGeneratedApiEditorDraft",
+        "callExpression": "resolveGeneratedApiEditorDraft",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.test.ts"
+      },
+      {
+        "fromSymbol": "createGeneratedApiEditorDraft",
+        "toSymbol": "createGeneratedApiResourceDraft",
+        "callExpression": "createGeneratedApiResourceDraft",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "toSymbol": "resolveResourceDraft",
+        "callExpression": "resolveResourceDraft",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedApiEditorDraft",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedApiEditorDraft",
+        "toSymbol": "clean",
+        "callExpression": "clean",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedApiEditorDraft",
+        "toSymbol": "createGeneratedApiDataSource",
+        "callExpression": "createGeneratedApiDataSource",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "toSymbol": "resolveFieldDraft",
+        "callExpression": "resolveFieldDraft",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveResourceDraft",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveResourceDraft",
+        "toSymbol": "validateFieldNames",
+        "callExpression": "validateFieldNames",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveResourceDraft",
+        "toSymbol": "parseSeed",
+        "callExpression": "parseSeed",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveResourceDraft",
+        "toSymbol": "clean",
+        "callExpression": "clean",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveFieldDraft",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveFieldDraft",
+        "toSymbol": "parseDefaultValue",
+        "callExpression": "parseDefaultValue",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "parseSeed",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "isSeedRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "isDataContractValue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "toSymbol": "formatDefaultValue",
+        "callExpression": "formatDefaultValue",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiFieldEditor.tsx"
+      },
+      {
+        "fromSymbol": "GeneratedApiNormalizedOperations",
+        "toSymbol": "collectDataSourceOperationRows",
+        "callExpression": "collectDataSourceOperationRows",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "removeField",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "toggleOperation",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toSymbol": "toggleOperation",
+        "callExpression": "toggleOperation",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toSymbol": "updateField",
+        "callExpression": "updateField",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toSymbol": "removeField",
+        "callExpression": "removeField",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx",
+        "toSymbol": "createGeneratedApiFieldDraft",
+        "callExpression": "createGeneratedApiFieldDraft",
+        "sourcePath": "src/ui/admin/pages/GeneratedApiResourceEditor.tsx"
       },
       {
         "fromSymbol": "ManualRestSourceCard",
@@ -38879,11 +39818,6 @@
       },
       {
         "fromSymbol": "StudioContextValue",
-        "toType": "AppDataManifest",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "StudioContextValue",
         "toType": "AuthOAuthProviderConfig",
         "sourcePath": "src/index.ts"
       },
@@ -38894,7 +39828,17 @@
       },
       {
         "fromSymbol": "StudioContextValue",
+        "toType": "DataSourceDiagnostic",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
         "toType": "DataSourceRegistry",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "GeneratedApiDefinition",
         "sourcePath": "src/index.ts"
       },
       {

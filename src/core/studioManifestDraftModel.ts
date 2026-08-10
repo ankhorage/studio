@@ -1,14 +1,9 @@
-import type {
-  AppDataManifest,
-  ComponentDataBindingRegistry,
-  DataSourceRegistry,
-} from '@ankhorage/contracts';
+import type { ComponentDataBindingRegistry, DataSourceRegistry } from '@ankhorage/contracts';
 
 import { applyStudioAuthSettings, type StudioAuthSettings } from '../authSettings';
 import type { StudioManifest, StudioNodeId, ThemeUpdates } from '../index';
 import {
   findScreenIdForNode,
-  updateStudioManifestAppData,
   updateStudioManifestDataBindings,
   updateStudioManifestDataSources,
   updateStudioManifestNode,
@@ -59,13 +54,6 @@ export function replaceStudioManifestDraftAuthSettings(
   }
 
   return applyStudioAuthSettings(manifest, settings);
-}
-
-export function updateStudioManifestDraftAppData(
-  manifest: StudioManifest,
-  data: AppDataManifest,
-): StudioManifest {
-  return updateStudioManifestAppData(manifest, data);
 }
 
 export function updateStudioManifestDraftDataBindings(

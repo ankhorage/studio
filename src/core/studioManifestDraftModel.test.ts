@@ -46,10 +46,16 @@ function createManifest(): StudioManifest {
         },
       },
     },
-    data: { apis: {} },
     dataBindings: { preserved: { componentId: 'details-title', props: {} } },
     dataSources: {
-      source: { id: 'source', kind: 'rest', baseUrl: 'https://api.example.test', endpoints: {} },
+      source: {
+        id: 'source',
+        kind: 'api',
+        origin: 'external',
+        protocol: 'rest',
+        baseUrl: 'https://api.example.test',
+        endpoints: {},
+      },
     },
     themes: [
       {
@@ -113,12 +119,18 @@ describe('studioManifestDraftModel', () => {
     expect(updated.screens['screen-details']?.root.children?.[0]?.props?.children).toBe(
       'Updated on owning screen',
     );
-    expect(updated.data).toEqual({ apis: {} });
     expect(updated.dataBindings).toEqual({
       preserved: { componentId: 'details-title', props: {} },
     });
     expect(updated.dataSources).toEqual({
-      source: { id: 'source', kind: 'rest', baseUrl: 'https://api.example.test', endpoints: {} },
+      source: {
+        id: 'source',
+        kind: 'api',
+        origin: 'external',
+        protocol: 'rest',
+        baseUrl: 'https://api.example.test',
+        endpoints: {},
+      },
     });
   });
 });

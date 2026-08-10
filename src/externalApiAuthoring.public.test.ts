@@ -71,7 +71,9 @@ describe('external API authoring public model', () => {
   test('upserts canonical data-source registries without parallel catalog state', () => {
     const source = {
       id: 'inventory',
-      kind: 'rest',
+      kind: 'api',
+      origin: 'external',
+      protocol: 'rest',
       baseUrl: 'https://api.example.com',
       endpoints: {},
     } as const;

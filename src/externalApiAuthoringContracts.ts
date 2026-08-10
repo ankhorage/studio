@@ -3,7 +3,6 @@ import type {
   DataContractValue,
   DataOperationIntent,
   DataSourceDiagnostic,
-  DataSourceKind,
 } from '@ankhorage/contracts/data';
 
 export type ExternalApiProtocol = 'auto' | 'graphql' | 'openapi';
@@ -40,8 +39,8 @@ export type ExternalApiConnectResult =
   | {
       readonly ok: true;
       readonly sourceId: string;
-      readonly kind: DataSourceKind;
-      readonly protocol: 'graphql' | 'openapi' | 'rest';
+      readonly kind: 'api';
+      readonly protocol: 'graphql' | 'rest';
       readonly created: boolean;
       readonly attempts: readonly ExternalApiDiscoveryAttempt[];
       readonly diagnostics: readonly DataSourceDiagnostic[];

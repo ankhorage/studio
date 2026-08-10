@@ -1,10 +1,11 @@
 import type {
   ActionType,
-  AppDataManifest,
   AppManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
+  DataSourceDiagnostic,
   DataSourceRegistry,
+  GeneratedApiDefinition,
   NavigatorType,
   RouteDefinition,
   ThemeConfig,
@@ -338,9 +339,13 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setLastNonAdminLocation: (location: string) => void;
   setActiveCanvasDragNodeId: (nodeId: StudioNodeId | null) => void;
   updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
-  updateAppData: (data: AppDataManifest) => void;
   updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
   updateDataSources: (dataSources: DataSourceRegistry) => void;
+  upsertGeneratedApi: (
+    definition: GeneratedApiDefinition,
+    previousId?: string,
+  ) => readonly DataSourceDiagnostic[];
+  deleteGeneratedApi: (id: string) => void;
   deleteNode: (id: StudioNodeId) => void;
   insertFromCatalogEntry: (entry: InsertCatalogEntry) => boolean;
   moveNodeToPlacement: (nodeId: StudioNodeId, placement: NodePlacement) => boolean;

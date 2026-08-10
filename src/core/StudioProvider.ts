@@ -1,8 +1,9 @@
 import type {
-  AppDataManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
+  DataSourceDiagnostic,
   DataSourceRegistry,
+  GeneratedApiDefinition,
   NavigatorType,
   RouteDefinition,
   UiNode,
@@ -15,6 +16,7 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
+import { deleteStudioGeneratedApi, upsertStudioGeneratedApi } from '../generatedApiAuthoring';
 import {
   findNodeById,
   type InsertCatalogEntry,
@@ -39,7 +41,6 @@ import { StudioContext } from './StudioContext';
 import {
   applyStudioManifestDraftMutation,
   replaceStudioManifestDraftAuthSettings,
-  updateStudioManifestDraftAppData,
   updateStudioManifestDraftAuthSettings,
   updateStudioManifestDraftDataBindings,
   updateStudioManifestDraftDataSources,
@@ -190,6 +191,26 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  const upsertGeneratedApi = useCallback(
+    (definition: GeneratedApiDefinition, previousId?: string): readonly DataSourceDiagnostic[] => {
+      let diagnostics: readonly DataSourceDiagnostic[] = [];
+      updateManifest((current) => {
+        const result = upsertStudioGeneratedApi(current, definition, previousId);
+        ({ diagnostics } = result);
+        return result.ok ? result.manifest : current;
+      });
+      return diagnostics;
+    },
+    [updateManifest],
+  );
+
+  const deleteGeneratedApi = useCallback(
+    (id: string) => {
+      updateManifest((current) => deleteStudioGeneratedApi(current, id));
+    },
+    [updateManifest],
+  );
+
   const value = useMemo<StudioContextValue>(
     () => ({
       projectId,
@@ -213,12 +234,12 @@ export const StudioProvider = ({
       setLastNonAdminLocation,
       setActiveCanvasDragNodeId,
       updateNode,
-      updateAppData: (data: AppDataManifest) =>
-        updateManifest((current) => updateStudioManifestDraftAppData(current, data)),
       updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataSources(current, dataSources)),
+      upsertGeneratedApi,
+      deleteGeneratedApi,
       deleteNode: noop,
       insertFromCatalogEntry: (_entry: InsertCatalogEntry) => false,
       moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
@@ -269,6 +290,8 @@ export const StudioProvider = ({
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,
+      upsertGeneratedApi,
+      deleteGeneratedApi,
       updateTheme,
       persistence.refetchManifest,
       persistence.flushManifest,

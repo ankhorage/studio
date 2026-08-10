@@ -9,6 +9,9 @@ export interface DataSourceOperationRow {
   readonly protocol: string | null;
   readonly method: string | null;
   readonly path: string | null;
+  readonly sourceOrigin: 'external' | 'generated' | null;
+  readonly sourceProtocol: 'graphql' | 'rest' | null;
+  readonly testable: boolean;
 }
 
 export function collectDataSourceOperationRows(
@@ -25,6 +28,12 @@ export function collectDataSourceOperationRows(
         protocol: operation.protocol,
         method: operation.method ?? null,
         path: operation.path ?? endpoint.path ?? null,
+        sourceOrigin: source.kind === 'api' ? source.origin : null,
+        sourceProtocol: source.kind === 'api' ? source.protocol : null,
+        testable:
+          source.kind === 'api' &&
+          source.origin === 'external' &&
+          operation.protocol !== 'database',
       })),
     ),
   );

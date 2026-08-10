@@ -19,7 +19,6 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
         root: { id: 'home-root', type: 'Screen', props: {} },
       },
     },
-    data: {},
     dataBindings: {},
     dataSources: {},
     themes: [],
@@ -115,7 +114,11 @@ describe('StudioExternalApiService', () => {
 
     expect(first).toMatchObject({ ok: true, sourceId: 'inventory-api', created: true });
     expect(second).toMatchObject({ ok: true, sourceId: 'inventory-api', created: false });
-    expect(store.read().dataSources?.['inventory-api']?.kind).toBe('openapi');
+    expect(store.read().dataSources?.['inventory-api']).toMatchObject({
+      kind: 'api',
+      origin: 'external',
+      protocol: 'rest',
+    });
     expect(store.read().dataSources?.['inventory-api']?.name).toBe('Updated Inventory');
   });
 
@@ -171,7 +174,9 @@ describe('StudioExternalApiService', () => {
         dataSources: {
           catalog: {
             id: 'catalog',
-            kind: 'rest',
+            kind: 'api',
+            origin: 'external',
+            protocol: 'rest',
             baseUrl: 'https://api.example.com',
             credential: { id: 'services/catalog', kind: 'bearer' },
             endpoints: {

@@ -140,6 +140,7 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestDraftModel_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
+  module_src_core_StudioProvider_ts --> module_src_generatedApiAuthoring_ts
   module_src_core_StudioProvider_ts --> module_src_index_ts
   module_src_core_StudioProvider_ts --> module_src_manifestState_ts
   module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
@@ -163,6 +164,13 @@ graph TD
   package__ankhorage_studio -.-> module_src_externalApiAuthoring_ts
   module_src_externalApiAuthoringContracts_ts["src/externalApiAuthoringContracts.ts"]
   package__ankhorage_studio -.-> module_src_externalApiAuthoringContracts_ts
+  module_src_generatedApiAuthoring_test_ts["src/generatedApiAuthoring.test.ts"]
+  package__ankhorage_studio -.-> module_src_generatedApiAuthoring_test_ts
+  module_src_generatedApiAuthoring_test_ts --> module_src_generatedApiAuthoring_ts
+  module_src_generatedApiAuthoring_test_ts --> module_src_index_ts
+  module_src_generatedApiAuthoring_ts["src/generatedApiAuthoring.ts"]
+  package__ankhorage_studio -.-> module_src_generatedApiAuthoring_ts
+  module_src_generatedApiAuthoring_ts --> module_src_index_ts
   module_src_hooks_useProjects_ts["src/hooks/useProjects.ts"]
   package__ankhorage_studio -.-> module_src_hooks_useProjects_ts
   module_src_hooks_useProjects_ts --> module_src_contractGuards_ts
@@ -880,6 +888,7 @@ graph TD
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_pages_DataSourceCatalogCard_tsx
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_pages_DataSourceOperationsCard_tsx
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_pages_ExternalApiConnectCard_tsx
+  module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx
   module_src_ui_admin_pages_ApisAdminPage_tsx --> module_src_ui_admin_pages_ManualRestSourceCard_tsx
   module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_AuthAdminPage_test_ts
@@ -915,6 +924,47 @@ graph TD
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx --> module_src_externalApiApi_ts
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx --> module_src_externalApiAuthoringContracts_ts
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx["src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx --> module_src_ui_admin_pages_GeneratedApiEditor_tsx
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx --> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx["src/ui/admin/pages/GeneratedApiEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiEditor_tsx
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx --> module_src_ui_admin_pages_GeneratedApiNormalizedOperations_tsx
+  module_src_ui_admin_pages_GeneratedApiEditor_tsx --> module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx
+  module_src_ui_admin_pages_generatedApiEditorModel_test_ts["src/ui/admin/pages/generatedApiEditorModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_generatedApiEditorModel_test_ts
+  module_src_ui_admin_pages_generatedApiEditorModel_test_ts --> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_generatedApiEditorModel_ts["src/ui/admin/pages/generatedApiEditorModel.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_generatedApiEditorStyles_ts["src/ui/admin/pages/generatedApiEditorStyles.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx["src/ui/admin/pages/GeneratedApiFieldEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx
+  module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx --> module_src_ui_admin_pages_GeneratedApiToggle_tsx
+  module_src_ui_admin_pages_GeneratedApiNormalizedOperations_tsx["src/ui/admin/pages/GeneratedApiNormalizedOperations.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiNormalizedOperations_tsx
+  module_src_ui_admin_pages_GeneratedApiNormalizedOperations_tsx --> module_src_ui_admin_pages_adminDataSourceOperations_ts
+  module_src_ui_admin_pages_GeneratedApiNormalizedOperations_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx["src/ui/admin/pages/GeneratedApiResourceEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorModel_ts
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx --> module_src_ui_admin_pages_GeneratedApiFieldEditor_tsx
+  module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx --> module_src_ui_admin_pages_GeneratedApiToggle_tsx
+  module_src_ui_admin_pages_GeneratedApiToggle_tsx["src/ui/admin/pages/GeneratedApiToggle.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_GeneratedApiToggle_tsx
+  module_src_ui_admin_pages_GeneratedApiToggle_tsx --> module_src_ui_admin_pages_generatedApiEditorStyles_ts
   module_src_ui_admin_pages_ManualRestSourceCard_tsx["src/ui/admin/pages/ManualRestSourceCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ManualRestSourceCard_tsx
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_core_StudioContext_ts

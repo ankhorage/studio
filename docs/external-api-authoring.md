@@ -8,7 +8,7 @@ The browser submits only authoring intent and provider-neutral credential refere
 
 ## Persistence
 
-Successful OpenAPI discovery, GraphQL introspection, and manual REST creation upsert the resulting `DataSourceConfig` directly into the editable Studio manifest. Reusing a normalized source ID updates that source. There is no secondary API catalog or unsaved API model.
+Successful OpenAPI discovery, GraphQL introspection, and manual REST creation upsert an external API source directly into the editable Studio manifest. External sources use `kind: 'api'`, `origin: 'external'`, and their actual `protocol: 'rest' | 'graphql'`; OpenAPI remains import metadata rather than a source kind. Reusing a normalized source ID updates that source. There is no secondary API catalog or unsaved API model.
 
 ## Authoring flows
 
