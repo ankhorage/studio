@@ -57,21 +57,6 @@ jobs:
       - name: Run tests
         run: bun run test
 
-      - name: Run Studio web smoke test
-        run: bun run test:smoke:studio-web
-
-      - name: Run generated app web E2E
-        run: bun run test:e2e:generated-app-web
-
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v2
-        with:
-          version: latest
-          github-token: ${{ github.token }}
-
-      - name: Run infra E2E
-        run: bun run test:e2e:infra
-
       - name: Run typecheck
         run: bun run typecheck
 
@@ -90,7 +75,7 @@ jobs:
           CHANGESET_HEAD_SHA: HEAD
         run: bash ./scripts/check-changeset-status.sh
 
-      - name: Commit validated ADM 5 runtime wiring
+      - name: Materialize validated branch state
         run: |
           rm .github/workflows/finalize-adm5-runtime-db.yml
           rm .github/scripts/finalize-adm5-runtime.mjs
@@ -99,3 +84,18 @@ jobs:
           git add -A
           git commit -m 'feat: wire generated database runtime adapters'
           git push origin HEAD:agent/adm-5-generated-api-authoring
+
+      - name: Run Studio web smoke test
+        run: bun run test:smoke:studio-web
+
+      - name: Run generated app web E2E
+        run: bun run test:e2e:generated-app-web
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v2
+        with:
+          version: latest
+          github-token: ${{ github.token }}
+
+      - name: Run infra E2E
+        run: bun run test:e2e:infra
