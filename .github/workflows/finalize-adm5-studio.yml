@@ -64,8 +64,62 @@ jobs:
           fs.writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`);
           NODE
 
+      - name: Apply strict lint corrections
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const replaceExactly = (path, before, after) => {
+            const source = fs.readFileSync(path, 'utf8');
+            if (!source.includes(before)) {
+              throw new Error(`Expected source fragment was not found in ${path}`);
+            }
+            fs.writeFileSync(path, source.replace(before, after));
+          };
+
+          replaceExactly(
+            'src/core/StudioProvider.ts',
+            '        diagnostics = result.diagnostics;',
+            '        ({ diagnostics } = result);',
+          );
+
+          const modelTestPath = 'src/ui/admin/pages/generatedApiEditorModel.test.ts';
+          let modelTest = fs.readFileSync(modelTestPath, 'utf8');
+          const resourceDeclaration = '    const resource = draft.resources[0];';
+          const resourceCount = modelTest.split(resourceDeclaration).length - 1;
+          if (resourceCount !== 2) {
+            throw new Error(`Expected two resource declarations, found ${resourceCount}`);
+          }
+          modelTest = modelTest.replaceAll(
+            resourceDeclaration,
+            '    const [resource] = draft.resources;',
+          );
+
+          const resultMarker = '    const result = resolveGeneratedApiEditorDraft({';
+          if (!modelTest.includes(resultMarker)) {
+            throw new Error('Expected generated API editor result marker was not found.');
+          }
+          modelTest = modelTest.replace(
+            resultMarker,
+            "    const [idField] = resource.fields;\n    if (!idField) throw new Error('Expected default field.');\n\n" + resultMarker,
+          );
+
+          const assertedField = "            { ...resource.fields[0]!, name: 'id' },";
+          if (!modelTest.includes(assertedField)) {
+            throw new Error('Expected non-null asserted field fixture was not found.');
+          }
+          modelTest = modelTest.replace(
+            assertedField,
+            "            { ...idField, name: 'id' },",
+          );
+          fs.writeFileSync(modelTestPath, modelTest);
+          NODE
+
       - name: Refresh released dependencies
         run: bun install
+
+      - name: Apply lint autofixes
+        run: bun run lint:fix
 
       - name: Format sources
         run: bun run format
