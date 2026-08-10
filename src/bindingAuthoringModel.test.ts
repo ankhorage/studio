@@ -4,7 +4,7 @@ import type {
   PropBinding,
   UiNode,
 } from '@ankhorage/contracts';
-import { ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
+import { ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, test } from 'bun:test';
 
 import {
