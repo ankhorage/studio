@@ -6,14 +6,17 @@ import {
   resolveExpoRuntimeNativeOutput,
 } from '@ankhorage/expo-runtime/planning';
 
+import type { GeneratedDatabaseRuntimeProvider } from '../generatedDatabaseRuntime';
 import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility.js';
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
-const CONTRACTS_VERSION = '^4.0.0';
-const RUNTIME_VERSION = '^0.3.0';
+const CONTRACTS_VERSION = '^4.0.2';
+const DATA_SOURCES_VERSION = '^1.0.1';
+const RUNTIME_VERSION = '^1.0.0';
 const SUPABASE_AUTH_VERSION = '^1.1.2';
+const SUPABASE_DB_VERSION = '^1.0.0';
 const ZORA_VERSION = '^2.9.0';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
@@ -295,6 +298,7 @@ export function getPackageJson(args: {
   name: string;
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
+  databaseRuntimeProvider?: GeneratedDatabaseRuntimeProvider | null;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
 }) {
@@ -302,6 +306,7 @@ export function getPackageJson(args: {
     name,
     includeStudio = false,
     authProvider = null,
+    databaseRuntimeProvider = null,
     storageProvider = null,
     runtimePlan,
   } = args;
@@ -323,7 +328,7 @@ export function getPackageJson(args: {
     },
     dependencies: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
-      '@ankhorage/data-sources': 'latest',
+      '@ankhorage/data-sources': DATA_SOURCES_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
       '@ankhorage/studio': 'latest',
       ...(authProvider === 'supabase'
@@ -332,6 +337,9 @@ export function getPackageJson(args: {
             'expo-secure-store': EXPO_SECURE_STORE_VERSION,
             'expo-web-browser': EXPO_WEB_BROWSER_VERSION,
           }
+        : {}),
+      ...(databaseRuntimeProvider === 'supabase'
+        ? { '@ankhorage/supabase-db': SUPABASE_DB_VERSION }
         : {}),
       ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),
       '@ankhorage/zora': ZORA_VERSION,

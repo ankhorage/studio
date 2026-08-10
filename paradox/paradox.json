@@ -760,6 +760,29 @@
       "exports": []
     },
     {
+      "path": "src/host/generatedDatabaseRuntime.integration.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/generatedDatabaseRuntime.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/generatedDatabaseRuntime.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/generatedDatabaseRuntime.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/generatedDatabaseRuntime.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "GeneratedDatabaseRuntimeManifest",
+        "GeneratedDatabaseRuntimeProvider",
+        "GeneratedDatabaseRuntimeSelection",
+        "resolveGeneratedDatabaseRuntime"
+      ]
+    },
+    {
       "path": "src/host/generatedOAuthLifecycle.e2e.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/templates/auth/oauth.ts"],
@@ -949,6 +972,25 @@
       "exports": []
     },
     {
+      "path": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/layoutGenerator.ts", "src/host/templateRegistry/index.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/generatedDatabaseRuntime.ts",
+        "src/host/layout/utils/escapeStringLiteral.ts"
+      ],
+      "exports": [
+        "GENERATED_DATABASE_ADAPTERS_EXPRESSION",
+        "getGeneratedDatabaseRuntimeImports",
+        "getGeneratedDatabaseRuntimeModuleDeclarations"
+      ]
+    },
+    {
       "path": "src/host/layout/generatedImportComposer.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/generatedImportComposer.ts"],
@@ -970,7 +1012,9 @@
       "path": "src/host/layout/layoutGenerator.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/generatedDatabaseRuntime.ts",
         "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "src/host/layout/generatedDatabaseRuntimeSource.ts",
         "src/host/layout/generatedImportComposer.ts",
         "src/host/layout/templates/index.ts",
         "src/host/layout/templates/utils/routes.ts",
@@ -1325,6 +1369,7 @@
       "path": "src/host/orchestrator/projectManager.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/generatedDatabaseRuntime.ts",
         "src/host/layout/layoutGenerator.ts",
         "src/host/manifestSystem/index.ts",
         "src/host/modules/layout.ts",
@@ -1382,6 +1427,7 @@
       "path": "src/host/orchestrator/scaffolder.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/generatedDatabaseRuntime.ts",
         "src/host/manifestSystem/index.ts",
         "src/host/orchestrator/generatedAppFiles.ts",
         "src/host/orchestrator/templates.ts",
@@ -1424,7 +1470,10 @@
     {
       "path": "src/host/orchestrator/templates.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/expoSdk54AnimationCompatibility.ts"],
+      "dependencies": [
+        "src/host/generatedDatabaseRuntime.ts",
+        "src/host/orchestrator/expoSdk54AnimationCompatibility.ts"
+      ],
       "exports": [
         "GeneratedAuthProvider",
         "GeneratedStorageProvider",
@@ -9938,6 +9987,24 @@
       }
     },
     {
+      "name": "generatedApi",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedDatabaseRuntime.test.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveGeneratedDatabaseRuntime",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedDatabaseRuntime.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
       "name": "runIsolatedScenario",
       "description": null,
       "sourceLocation": {
@@ -10586,6 +10653,24 @@
       }
     },
     {
+      "name": "getGeneratedDatabaseRuntimeImports",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "getGeneratedDatabaseRuntimeModuleDeclarations",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
       "name": "composeGeneratedImports",
       "description": null,
       "sourceLocation": {
@@ -10752,7 +10837,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 47,
+        "line": 53,
         "column": 1
       }
     },
@@ -10761,7 +10846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 65,
+        "line": 71,
         "column": 1
       }
     },
@@ -10770,7 +10855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 76,
+        "line": 82,
         "column": 1
       }
     },
@@ -10779,7 +10864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 99,
+        "line": 105,
         "column": 11
       }
     },
@@ -10788,7 +10873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 111,
+        "line": 117,
         "column": 11
       }
     },
@@ -10797,7 +10882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 442,
+        "line": 458,
         "column": 1
       }
     },
@@ -10806,7 +10891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 456,
+        "line": 472,
         "column": 1
       }
     },
@@ -10815,7 +10900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 463,
+        "line": 479,
         "column": 1
       }
     },
@@ -10824,7 +10909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 486,
+        "line": 502,
         "column": 1
       }
     },
@@ -10833,7 +10918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 500,
+        "line": 516,
         "column": 1
       }
     },
@@ -10842,7 +10927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 504,
+        "line": 520,
         "column": 1
       }
     },
@@ -10851,7 +10936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 548,
+        "line": 564,
         "column": 1
       }
     },
@@ -10860,7 +10945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 556,
+        "line": 572,
         "column": 1
       }
     },
@@ -10869,7 +10954,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 561,
+        "line": 577,
         "column": 1
       }
     },
@@ -11148,7 +11233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 33,
+        "line": 34,
         "column": 1
       }
     },
@@ -11157,7 +11242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 67,
+        "line": 68,
         "column": 1
       }
     },
@@ -11166,7 +11251,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 71,
+        "line": 72,
         "column": 1
       }
     },
@@ -11175,7 +11260,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 78,
+        "line": 79,
         "column": 1
       }
     },
@@ -11859,7 +11944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 502,
+        "line": 505,
         "column": 1
       }
     },
@@ -11868,7 +11953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 511,
+        "line": 514,
         "column": 1
       }
     },
@@ -11877,7 +11962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 520,
+        "line": 523,
         "column": 1
       }
     },
@@ -11886,7 +11971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 529,
+        "line": 532,
         "column": 1
       }
     },
@@ -12021,7 +12106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 307,
+        "line": 315,
         "column": 1
       }
     },
@@ -12030,7 +12115,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 316,
+        "line": 324,
         "column": 1
       }
     },
@@ -12039,7 +12124,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 329,
+        "line": 337,
         "column": 1
       }
     },
@@ -12048,7 +12133,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 393,
+        "line": 406,
         "column": 1
       }
     },
@@ -12093,7 +12178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 94,
+        "line": 97,
         "column": 1
       }
     },
@@ -12102,7 +12187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 102,
+        "line": 105,
         "column": 1
       }
     },
@@ -12111,7 +12196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 144,
+        "line": 147,
         "column": 1
       }
     },
@@ -12120,7 +12205,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 158,
+        "line": 161,
         "column": 1
       }
     },
@@ -12129,7 +12214,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 171,
+        "line": 174,
         "column": 1
       }
     },
@@ -12138,7 +12223,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 193,
+        "line": 196,
         "column": 1
       }
     },
@@ -12147,7 +12232,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 203,
+        "line": 206,
         "column": 1
       }
     },
@@ -12156,7 +12241,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 207,
+        "line": 210,
         "column": 1
       }
     },
@@ -12165,7 +12250,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 212,
+        "line": 215,
         "column": 1
       }
     },
@@ -12174,7 +12259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 226,
+        "line": 229,
         "column": 1
       }
     },
@@ -12183,7 +12268,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 262,
+        "line": 265,
         "column": 1
       }
     },
@@ -12192,7 +12277,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 270,
+        "line": 273,
         "column": 1
       }
     },
@@ -12201,7 +12286,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 294,
+        "line": 297,
         "column": 1
       }
     },
@@ -12210,7 +12295,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 383,
+        "line": 391,
         "column": 1
       }
     },
@@ -12219,7 +12304,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 407,
+        "line": 415,
         "column": 1
       }
     },
@@ -12228,7 +12313,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 412,
+        "line": 420,
         "column": 1
       }
     },
@@ -12237,7 +12322,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 427,
+        "line": 435,
         "column": 1
       }
     },
@@ -18445,6 +18530,16 @@
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
+        "fromPath": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedDatabaseRuntime.test.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/generatedDatabaseRuntime.test.ts"
+      },
+      {
         "fromPath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
         "toPath": "src/host/layout/templates/auth/oauth.ts",
         "sourcePath": "src/host/generatedOAuthLifecycle.e2e.test.ts"
@@ -19155,6 +19250,26 @@
         "sourcePath": "src/host/layout/authRootBootstrap.test.ts"
       },
       {
+        "fromPath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toPath": "src/host/layout/layoutGenerator.ts",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromPath": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeSource.ts"
+      },
+      {
+        "fromPath": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+        "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeSource.ts"
+      },
+      {
         "fromPath": "src/host/layout/generatedImportComposer.test.ts",
         "toPath": "src/host/layout/generatedImportComposer.ts",
         "sourcePath": "src/host/layout/generatedImportComposer.test.ts"
@@ -19176,12 +19291,22 @@
       },
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/modules/layout.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
         "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/layout/auth/resolveAuthLayoutPlan.ts",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGenerator.ts",
+        "toPath": "src/host/layout/generatedDatabaseRuntimeSource.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -19301,6 +19426,11 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/layout/layoutGenerator.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
@@ -19411,6 +19541,11 @@
       },
       {
         "fromPath": "src/host/orchestrator/scaffolder.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/scaffolder.ts",
         "toPath": "src/host/manifestSystem/index.ts",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
@@ -19463,6 +19598,11 @@
         "fromPath": "src/host/orchestrator/templates.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/templates.ts",
+        "toPath": "src/host/generatedDatabaseRuntime.ts",
+        "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
         "fromPath": "src/host/orchestrator/templates.ts",
@@ -28316,6 +28456,78 @@
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "afterAll",
+        "callExpression": "afterAll",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "createGeneratedApiDataSource",
+        "callExpression": "createGeneratedApiDataSource",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "createSupabaseDbAdapter",
+        "callExpression": "createSupabaseDbAdapter",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "createRuntimeDataSourceOperationExecutor",
+        "callExpression": "createRuntimeDataSourceOperationExecutor",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.integration.test.ts",
+        "toSymbol": "executor",
+        "callExpression": "executor",
+        "sourcePath": "src/host/generatedDatabaseRuntime.integration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/generatedDatabaseRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.test.ts",
+        "toSymbol": "generatedApi",
+        "callExpression": "generatedApi",
+        "sourcePath": "src/host/generatedDatabaseRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedDatabaseRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedDatabaseRuntime.test.ts",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
+        "sourcePath": "src/host/generatedDatabaseRuntime.test.ts"
+      },
+      {
         "fromSymbol": "src/host/generatedOAuthLifecycle.e2e.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -32288,6 +32500,36 @@
         "sourcePath": "src/host/layout/authRootBootstrap.test.ts"
       },
       {
+        "fromSymbol": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toSymbol": "getProjectTemplate",
+        "callExpression": "getProjectTemplate",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator().generateFiles",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/generatedDatabaseRuntimeSource.ts",
+        "toSymbol": "escapeStringLiteral",
+        "callExpression": "escapeStringLiteral",
+        "sourcePath": "src/host/layout/generatedDatabaseRuntimeSource.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/generatedImportComposer.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -32583,6 +32825,12 @@
       },
       {
         "fromSymbol": "getAuthShellLayoutContent",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getAuthShellLayoutContent",
         "toSymbol": "composeGeneratedImports",
         "callExpression": "composeGeneratedImports",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
@@ -32601,6 +32849,12 @@
       },
       {
         "fromSymbol": "getAuthShellLayoutContent",
+        "toSymbol": "getGeneratedDatabaseRuntimeImports",
+        "callExpression": "getGeneratedDatabaseRuntimeImports",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getAuthShellLayoutContent",
         "toSymbol": "getRootLayoutTsx",
         "callExpression": "getRootLayoutTsx",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
@@ -32615,6 +32869,12 @@
         "fromSymbol": "getAuthShellLayoutContent",
         "toSymbol": "getGeneratedRuntimeRegistryDeclarations",
         "callExpression": "getGeneratedRuntimeRegistryDeclarations",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getAuthShellLayoutContent",
+        "toSymbol": "getGeneratedDatabaseRuntimeModuleDeclarations",
+        "callExpression": "getGeneratedDatabaseRuntimeModuleDeclarations",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -32637,8 +32897,20 @@
       },
       {
         "fromSymbol": "getRootLayoutContent",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getRootLayoutContent",
         "toSymbol": "getPackageOwnedRuntimeImports",
         "callExpression": "getPackageOwnedRuntimeImports",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getRootLayoutContent",
+        "toSymbol": "getGeneratedDatabaseRuntimeImports",
+        "callExpression": "getGeneratedDatabaseRuntimeImports",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -32669,6 +32941,12 @@
         "fromSymbol": "getRootLayoutContent",
         "toSymbol": "getGeneratedRuntimeRegistryDeclarations",
         "callExpression": "getGeneratedRuntimeRegistryDeclarations",
+        "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "getRootLayoutContent",
+        "toSymbol": "getGeneratedDatabaseRuntimeModuleDeclarations",
+        "callExpression": "getGeneratedDatabaseRuntimeModuleDeclarations",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
@@ -34269,6 +34547,12 @@
       },
       {
         "fromSymbol": "createProject",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "createProject",
         "toSymbol": "resolveExpoRuntimePlan",
         "callExpression": "resolveExpoRuntimePlan",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -34697,6 +34981,12 @@
         "fromSymbol": "syncProjectScaffold",
         "toSymbol": "resolveGeneratedAuthProvider",
         "callExpression": "resolveGeneratedAuthProvider",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "resolveGeneratedDatabaseRuntime",
+        "callExpression": "resolveGeneratedDatabaseRuntime",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {

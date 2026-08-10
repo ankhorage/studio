@@ -11,12 +11,24 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.0');
-    expect(dependencies['@ankhorage/runtime']).toBe('^0.3.0');
+    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.2');
+    expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');
+    expect(dependencies['@ankhorage/runtime']).toBe('^1.0.0');
     expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
     expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.1.2');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
+  });
+
+  it('adds the released Supabase DB adapter only for generated database runtime', () => {
+    const generatedDb = getPackageJson({
+      name: 'generated-db-app',
+      databaseRuntimeProvider: 'supabase',
+    });
+    const plain = getPackageJson({ name: 'plain-app' });
+
+    expect(generatedDb.dependencies['@ankhorage/supabase-db']).toBe('^1.0.0');
+    expect(plain.dependencies['@ankhorage/supabase-db']).toBeUndefined();
   });
 
   it('requires the first ZORA release that enforces interactionPolicy', () => {

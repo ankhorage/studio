@@ -63,6 +63,9 @@ graph LR
   module_src_host_dataSources_studioExternalApiService_ts["src/host/dataSources/studioExternalApiService.ts"]
   module_src_host_generatedAdminExpoWeb_smoke_test_ts["src/host/generatedAdminExpoWeb.smoke.test.ts"]
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
+  module_src_host_generatedDatabaseRuntime_integration_test_ts["src/host/generatedDatabaseRuntime.integration.test.ts"]
+  module_src_host_generatedDatabaseRuntime_test_ts["src/host/generatedDatabaseRuntime.test.ts"]
+  module_src_host_generatedDatabaseRuntime_ts["src/host/generatedDatabaseRuntime.ts"]
   module_src_host_generatedOAuthLifecycle_e2e_test_ts["src/host/generatedOAuthLifecycle.e2e.test.ts"]
   module_src_host_hostLifecycle_smoke_test_ts["src/host/hostLifecycle.smoke.test.ts"]
   module_src_host_hostOwnership_test_ts["src/host/hostOwnership.test.ts"]
@@ -80,6 +83,8 @@ graph LR
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts["src/host/layout/auth/resolveAuthLayoutPlan.test.ts"]
   module_src_host_layout_auth_resolveAuthLayoutPlan_ts["src/host/layout/auth/resolveAuthLayoutPlan.ts"]
   module_src_host_layout_authRootBootstrap_test_ts["src/host/layout/authRootBootstrap.test.ts"]
+  module_src_host_layout_generatedDatabaseRuntimeGeneration_test_ts["src/host/layout/generatedDatabaseRuntimeGeneration.test.ts"]
+  module_src_host_layout_generatedDatabaseRuntimeSource_ts["src/host/layout/generatedDatabaseRuntimeSource.ts"]
   module_src_host_layout_generatedImportComposer_test_ts["src/host/layout/generatedImportComposer.test.ts"]
   module_src_host_layout_generatedImportComposer_ts["src/host/layout/generatedImportComposer.ts"]
   module_src_host_layout_layoutGenerator_test_ts["src/host/layout/layoutGenerator.test.ts"]
@@ -405,6 +410,8 @@ graph LR
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedDatabaseRuntime_integration_test_ts --> module_src_host_generatedDatabaseRuntime_ts
+  module_src_host_generatedDatabaseRuntime_test_ts --> module_src_host_generatedDatabaseRuntime_ts
   module_src_host_generatedOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_hostLifecycle_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -445,9 +452,15 @@ graph LR
   module_src_host_installedPackageProvenance_test_ts --> module_src_host_installedPackageProvenance_ts
   module_src_host_layout_auth_resolveAuthLayoutPlan_test_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
   module_src_host_layout_authRootBootstrap_test_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_layout_generatedDatabaseRuntimeGeneration_test_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_layout_generatedDatabaseRuntimeGeneration_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_layout_generatedDatabaseRuntimeSource_ts --> module_src_host_generatedDatabaseRuntime_ts
+  module_src_host_layout_generatedDatabaseRuntimeSource_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_generatedImportComposer_test_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_test_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_generatedDatabaseRuntime_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_auth_resolveAuthLayoutPlan_ts
+  module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_generatedDatabaseRuntimeSource_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_generatedImportComposer_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_host_layout_templates_utils_routes_ts
@@ -503,6 +516,7 @@ graph LR
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
   module_src_host_orchestrator_projectDeletion_test_ts --> module_src_host_orchestrator_projectDeletion_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_generatedDatabaseRuntime_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
@@ -526,6 +540,7 @@ graph LR
   module_src_host_orchestrator_projectStoreSummary_test_ts --> module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_layout_ts
+  module_src_host_orchestrator_scaffolder_ts --> module_src_host_generatedDatabaseRuntime_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_scaffolder_ts --> module_src_host_orchestrator_templates_ts
@@ -537,6 +552,7 @@ graph LR
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_templates_ts --> module_src_host_generatedDatabaseRuntime_ts
   module_src_host_orchestrator_templates_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_authSettings_ts
   module_src_host_secrets_projectSecretService_test_ts --> module_src_host_secrets_projectSecretService_ts

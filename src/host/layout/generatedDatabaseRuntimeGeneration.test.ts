@@ -19,5 +19,8 @@ test('generated apps register canonical generated API database adapter ids', () 
   );
   expect(rootLayout.content).toContain("'primary-db': generatedSupabaseDbAdapter");
   expect(rootLayout.content).toContain('databaseAdapters: GENERATED_DATABASE_ADAPTERS');
+  expect(rootLayout.content).toContain('fetch: generatedSupabaseDbFetch');
+  expect(rootLayout.content).toContain('getStoredAuthSession()');
+  expect(rootLayout.content).toContain("headers.set('Authorization'");
   expect(rootLayout.content).not.toContain('serviceRole');
 });

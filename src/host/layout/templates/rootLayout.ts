@@ -23,6 +23,7 @@ interface GetRootLayoutTsxArgs {
   innerNavigation: BuiltNavigatorJsx;
   includeStudio: boolean;
   authRuntime?: RootLayoutAuthRuntimeConfig;
+  databaseAdaptersExpression?: string;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
   runtimeProviderEnd?: string[];
@@ -84,6 +85,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     innerNavigation,
     includeStudio,
     authRuntime,
+    databaseAdaptersExpression,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
     runtimeProviderEnd = [],
@@ -531,6 +533,7 @@ ${indentedRootHookBlock}
   const executeOperation = useMemo(
     () =>
       createRuntimeDataSourceOperationExecutor({
+        ${databaseAdaptersExpression ? `databaseAdapters: ${databaseAdaptersExpression},` : ''}
         fetch: runtimeDataSourceFetch,
         ${
           useStoredAuthSessionCredentialResolver
