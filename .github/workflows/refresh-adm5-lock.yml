@@ -35,10 +35,14 @@ jobs:
       - name: Refresh lockfile
         run: bun install
 
+      - name: Capture worktree
+        run: zip -qr studio-worktree.zip . -x '.git/*' 'node_modules/*'
+
       - name: Upload refreshed dependency files
         uses: actions/upload-artifact@v4
         with:
-          name: adm5-dependency-files
+          name: adm5-worktree
           path: |
             package.json
             bun.lock
+            studio-worktree.zip
