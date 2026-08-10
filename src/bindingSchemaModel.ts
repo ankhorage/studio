@@ -1,11 +1,15 @@
 import type {
   DataSchema,
+  DataSchemaPrimitiveType,
   DataSchemaRegistry,
   UiBindableValueFieldMeta,
   UiBindableValueMeta,
 } from '@ankhorage/contracts';
 
-import type { StudioBindingCompatibility, StudioBindingResponsePathOption } from './bindingAuthoringContracts';
+import type {
+  StudioBindingCompatibility,
+  StudioBindingResponsePathOption,
+} from './bindingAuthoringContracts';
 
 export function resolveStudioSchemaValueMeta(
   schema: DataSchema | undefined,
@@ -17,7 +21,9 @@ export function resolveStudioSchemaValueMeta(
   const type = resolveSchemaType(resolved);
   const fields = resolveSchemaFields(resolved, schemas, seen);
   const itemType =
-    type === 'array' ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type : undefined;
+    type === 'array'
+      ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type
+      : undefined;
 
   return {
     type,
@@ -62,7 +68,11 @@ function collectObjectPaths(
   if (!resolved?.properties) return;
   for (const [name, property] of Object.entries(resolved.properties)) {
     const path = prefix ? `${prefix}.${name}` : name;
-    paths.push({ path, label: path, value: resolveStudioSchemaValueMeta(property, schemas, seen) });
+    paths.push({
+      path,
+      label: path,
+      value: resolveStudioSchemaValueMeta(property, schemas, seen),
+    });
     collectObjectPaths(property, schemas, path, paths, new Set(seen));
   }
 }
@@ -91,10 +101,15 @@ function resolveSchemaFields(
 
 function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
   if (schema.format === 'date' || schema.format === 'date-time') return 'date';
-  const rawType = Array.isArray(schema.type) ? (schema.type.length === 1 ? schema.type[0] : undefined) : schema.type;
+  const rawType = resolveSingleSchemaType(schema.type);
   if (rawType === 'integer') return 'number';
   if (rawType === 'object') return schema.additionalProperties ? 'record' : 'object';
-  if (rawType === 'array' || rawType === 'boolean' || rawType === 'number' || rawType === 'string') {
+  if (
+    rawType === 'array' ||
+    rawType === 'boolean' ||
+    rawType === 'number' ||
+    rawType === 'string'
+  ) {
     return rawType;
   }
   if (!rawType && schema.properties) return 'object';
@@ -102,10 +117,20 @@ function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
   return 'unknown';
 }
 
+function resolveSingleSchemaType(
+  type: DataSchema['type'],
+): DataSchemaPrimitiveType | undefined {
+  if (typeof type === 'string') return type;
+  return type?.length === 1 ? type[0] : undefined;
+}
+
 function isObjectLike(type: UiBindableValueMeta['type']): boolean {
   return type === 'object' || type === 'record';
 }
 
 function isImageAssetShape(value: UiBindableValueMeta): boolean {
-  return isObjectLike(value.type) && value.fields?.some((field) => field.path === 'uri' && field.type === 'string') === true;
+  return (
+    isObjectLike(value.type) &&
+    value.fields?.some((field) => field.path === 'uri' && field.type === 'string') === true
+  );
 }
