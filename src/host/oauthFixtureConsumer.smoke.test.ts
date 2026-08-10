@@ -4,7 +4,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { ProjectManager } from './orchestrator/projectManager';
-import { getProjectPath } from './orchestrator/projectPaths';
 import { ProjectSecretService } from './secrets/projectSecretService';
 
 const ROOT = path.join(process.cwd(), '.tmp-oauth-fixture-consumer');
@@ -33,7 +32,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
   });
 
   const initial = await manager.getProjectManifest(created.id);
-  const auth = initial.infra.auth;
+  const { auth } = initial.infra;
   if (!auth) throw new Error('Expected auth config.');
 
   const configured: AppManifest = {
@@ -132,9 +131,9 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       listSecretRefs: async () => [...SECRET_STORE.keys()],
     }),
   });
-  expect(await secretService.getProjectSecretUsage(PROJECT_ID, `${SECRET_SENTINEL}/google`)).toEqual(
-    expect.objectContaining({ count: 1 }),
-  );
+  expect(
+    await secretService.getProjectSecretUsage(PROJECT_ID, `${SECRET_SENTINEL}/google`),
+  ).toEqual(expect.objectContaining({ count: 1 }));
 });
 
 async function readProjectFile(projectPath: string, relativePath: string): Promise<string> {
