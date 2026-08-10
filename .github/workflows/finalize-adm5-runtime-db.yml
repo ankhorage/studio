@@ -5,6 +5,10 @@ on:
     branches:
       - agent/adm-5-generated-api-authoring
 
+concurrency:
+  group: adm-5-generated-database-runtime-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
