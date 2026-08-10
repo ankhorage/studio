@@ -60,8 +60,10 @@ test('executes canonical generated create through the released Supabase DB adapt
 
   const calls: { readonly method?: string; readonly url: string }[] = [];
   const mockedFetch = Object.assign(
-    (...args: Parameters<typeof fetch>): ReturnType<typeof fetch> => {
-      const [input, init] = args;
+    (
+      input: string | URL | Request,
+      init?: RequestInit | BunFetchRequestInit,
+    ): Promise<Response> => {
       const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
       calls.push({ url, method: init?.method });
       return Promise.resolve(
