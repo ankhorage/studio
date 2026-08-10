@@ -51,7 +51,6 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
     node,
     registry,
     componentMeta: BINDABLE_COMPONENT_META,
-    dataSources: studio.manifest.dataSources ?? {},
     operations,
     actionTypes: Object.keys(ACTION_REGISTRY),
   });
