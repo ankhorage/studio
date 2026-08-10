@@ -1,14 +1,13 @@
 import type {
   BindingInputValue,
+  BindingOperationRef,
   ComponentDataBindingRegistry,
-  DataSourceRegistry,
   EventBinding,
   PropBinding,
   UiBindableValueMeta,
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
-import { validateRuntimeBindingOperationRef } from '@ankhorage/runtime';
 
 import type {
   StudioBindingDiagnostic,
@@ -22,7 +21,6 @@ export function diagnoseStudioComponentBindings(args: {
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
   readonly componentMeta: UiComponentMetaRegistry;
-  readonly dataSources: DataSourceRegistry;
   readonly operations: readonly StudioBindingOperationOption[];
   readonly actionTypes: readonly string[];
 }): readonly StudioBindingDiagnostic[] {
@@ -56,26 +54,13 @@ function diagnosePropBinding(
   }
   if (binding.source.kind !== 'operation') return [];
 
-  const runtimeDiagnostics = validateRuntimeBindingOperationRef(
-    binding.source.operation,
-    args.dataSources,
-  );
-  if (runtimeDiagnostics.length > 0) {
-    return [
-      {
-        ...diagnostic(
-          'missing-operation',
-          runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.',
-          `props.${name}`,
-        ),
-        runtimeDiagnostics,
-      },
-    ];
+  const operation = findStudioBindingOperationOption(args.operations, binding.source.operation);
+  if (!operation) {
+    return [missingOperationDiagnostic(binding.source.operation, `props.${name}`)];
   }
 
-  const operation = findStudioBindingOperationOption(args.operations, binding.source.operation);
   const path = binding.source.path ?? '';
-  const response = operation?.responsePaths.find((candidate) => candidate.path === path);
+  const response = operation.responsePaths.find((candidate) => candidate.path === path);
   if (!response) {
     return [
       diagnostic(
@@ -116,27 +101,14 @@ function diagnoseEventBinding(
       : [diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path)];
   }
 
-  const runtimeDiagnostics = validateRuntimeBindingOperationRef(
-    binding.target.operation,
-    args.dataSources,
-  );
-  if (runtimeDiagnostics.length > 0) {
-    return [
-      {
-        ...diagnostic(
-          'missing-operation',
-          runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.',
-          path,
-        ),
-        runtimeDiagnostics,
-      },
-    ];
+  const operation = findStudioBindingOperationOption(args.operations, binding.target.operation);
+  if (!operation) {
+    return [missingOperationDiagnostic(binding.target.operation, path)];
   }
 
-  const operation = findStudioBindingOperationOption(args.operations, binding.target.operation);
   return diagnoseEventInputs(
     binding,
-    operation?.inputFields ?? [],
+    operation.inputFields,
     eventMeta.payload?.fields ?? [],
     path,
   );
@@ -203,6 +175,16 @@ function resolveEventSourceValue(
       (candidate.type === 'object' || candidate.type === 'record' || candidate.type === 'unknown'),
   );
   return parent ? { type: 'unknown' } : undefined;
+}
+
+function missingOperationDiagnostic(
+  operation: BindingOperationRef,
+  path: string,
+): StudioBindingDiagnostic {
+  const ref = [operation.dataSourceId, operation.endpointId, operation.operationId]
+    .filter((part): part is string => part !== undefined)
+    .join(' · ');
+  return diagnostic('missing-operation', `Operation '${ref}' is unavailable.`, path);
 }
 
 function toBindableType(type: string): UiBindableValueMeta['type'] {
