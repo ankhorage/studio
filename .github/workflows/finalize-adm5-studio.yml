@@ -33,7 +33,7 @@ jobs:
             .adm5-overlay/part04a \
             .adm5-overlay/part04b \
             | base64 -d > /tmp/adm5-overlay.tar.gz
-          echo '901ab9cd587f6997cec1aac11ed647302134abe661323187fe452583cd93f790  /tmp/adm5-overlay.tar.gz' | sha256sum -c -
+          echo 'cbd8be5755f382f9f8eb2eb5c49fb5f9e598ee4f578fb310614fe5157b9cb5d2  /tmp/adm5-overlay.tar.gz' | sha256sum -c -
           tar -xzf /tmp/adm5-overlay.tar.gz
 
           node <<'NODE'
