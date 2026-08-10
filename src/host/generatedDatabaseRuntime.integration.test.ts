@@ -46,7 +46,9 @@ test('executes canonical generated create through the released Supabase DB adapt
 
   const calls: Array<{ readonly method?: string; readonly url: string }> = [];
   const mockedFetch: typeof fetch = (input, init) => {
-    calls.push({ url: String(input), method: init?.method });
+    const url =
+      typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    calls.push({ url, method: init?.method });
     return Promise.resolve(
       new Response(JSON.stringify([{ id: 'item-1', name: 'Created' }]), {
         status: 201,
