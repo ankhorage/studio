@@ -59,16 +59,20 @@ test('executes canonical generated create through the released Supabase DB adapt
   if (!endpoint) throw new Error('Expected generated items endpoint.');
 
   const calls: { readonly method?: string; readonly url: string }[] = [];
-  const mockedFetch: typeof fetch = (input, init) => {
-    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-    calls.push({ url, method: init?.method });
-    return Promise.resolve(
-      new Response(JSON.stringify([{ id: 'item-1', name: 'Created' }]), {
-        status: 201,
-        headers: { 'content-type': 'application/json' },
-      }),
-    );
-  };
+  const mockedFetch = Object.assign(
+    (...args: Parameters<typeof fetch>): ReturnType<typeof fetch> => {
+      const [input, init] = args;
+      const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+      calls.push({ url, method: init?.method });
+      return Promise.resolve(
+        new Response(JSON.stringify([{ id: 'item-1', name: 'Created' }]), {
+          status: 201,
+          headers: { 'content-type': 'application/json' },
+        }),
+      );
+    },
+    { preconnect: fetch.preconnect },
+  ) satisfies typeof fetch;
   const adapter = createSupabaseDbAdapter({
     url: 'https://supabase.example.test',
     anonKey: 'anon-key',
