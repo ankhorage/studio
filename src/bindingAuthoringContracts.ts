@@ -1,6 +1,5 @@
 import type {
   BindingOperationRef,
-  DataSourceDiagnostic,
   UiBindableEventMeta,
   UiBindablePropMeta,
   UiBindableValueMeta,
@@ -55,5 +54,4 @@ export interface StudioBindingDiagnostic {
   readonly message: string;
   readonly severity: 'error' | 'warning';
   readonly path?: string;
-  readonly runtimeDiagnostics?: readonly DataSourceDiagnostic[];
 }
