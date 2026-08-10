@@ -1,5 +1,6 @@
 import type {
   BindingInputMap,
+  BindingOperationRef,
   BindingValue,
   EventBinding,
   PropBinding,
@@ -93,8 +94,8 @@ export function formatStudioBindingLiteral(value: BindingValue): string {
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
-export function createStudioOperationKey(option: StudioBindingOperationOption): string {
-  const { dataSourceId, endpointId, operationId } = option.operation;
+export function createStudioOperationKey(operation: BindingOperationRef): string {
+  const { dataSourceId, endpointId, operationId } = operation;
   return `${dataSourceId}::${endpointId ?? ''}::${operationId}`;
 }
 
@@ -102,7 +103,7 @@ export function findStudioOperationByKey(
   operations: readonly StudioBindingOperationOption[],
   key: string,
 ): StudioBindingOperationOption | undefined {
-  return operations.find((option) => createStudioOperationKey(option) === key);
+  return operations.find((option) => createStudioOperationKey(option.operation) === key);
 }
 
 function createStudioEventInputMap(
