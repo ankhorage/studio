@@ -4,6 +4,7 @@ import type {
   DataSourceRegistry,
   EventBinding,
   PropBinding,
+  UiBindableValueMeta,
   UiComponentMetaRegistry,
   UiNode,
 } from '@ankhorage/contracts';
@@ -36,12 +37,10 @@ export function diagnoseStudioComponentBindings(args: {
 
   return [
     ...Object.entries(binding.props ?? {}).flatMap(([name, prop]) =>
-      diagnosePropBinding(name, prop, meta.props?.[name], args),
+      diagnosePropBinding(name, prop, args),
     ),
     ...Object.entries(binding.events ?? {}).flatMap(([name, events]) =>
-      events.flatMap((event, index) =>
-        diagnoseEventBinding(name, index, event, meta.events?.[name], args),
-      ),
+      events.flatMap((event, index) => diagnoseEventBinding(name, index, event, args)),
     ),
   ];
 }
@@ -49,12 +48,12 @@ export function diagnoseStudioComponentBindings(args: {
 function diagnosePropBinding(
   name: string,
   binding: PropBinding,
-  meta: UiComponentMetaRegistry[string]['bindings'] extends infer _T ? unknown : never,
   args: Parameters<typeof diagnoseStudioComponentBindings>[0],
 ): readonly StudioBindingDiagnostic[] {
   const propMeta = args.componentMeta[args.node.type]?.bindings?.props?.[name];
-  if (!propMeta)
+  if (!propMeta) {
     return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
+  }
   if (binding.source.kind !== 'operation') return [];
 
   const runtimeDiagnostics = validateRuntimeBindingOperationRef(
@@ -103,21 +102,18 @@ function diagnoseEventBinding(
   eventName: string,
   index: number,
   binding: EventBinding,
-  _meta: unknown,
   args: Parameters<typeof diagnoseStudioComponentBindings>[0],
 ): readonly StudioBindingDiagnostic[] {
   const eventMeta = args.componentMeta[args.node.type]?.bindings?.events?.[eventName];
   const path = `events.${eventName}.${index}`;
-  if (!eventMeta)
+  if (!eventMeta) {
     return [diagnostic('unknown-event', `Event '${eventName}' is not bindable.`, path)];
+  }
 
   if (binding.target.kind === 'action') {
-    if (!args.actionTypes.includes(binding.target.type)) {
-      return [
-        diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path),
-      ];
-    }
-    return [];
+    return args.actionTypes.includes(binding.target.type)
+      ? []
+      : [diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path)];
   }
 
   const runtimeDiagnostics = validateRuntimeBindingOperationRef(
@@ -176,35 +172,50 @@ function diagnoseInputCompatibility(
   path: string,
 ): readonly StudioBindingDiagnostic[] {
   if (input.kind !== 'source' || input.source.kind !== 'event') return [];
-  const eventField = eventFields.find((candidate) => candidate.path === input.source.path);
-  if (!eventField)
+  const eventValue = resolveEventSourceValue(input.source.path, eventFields);
+  if (!eventValue) {
     return [
       diagnostic('incompatible-input', `Event path '${input.source.path}' is unavailable.`, path),
     ];
-  const compatibility = assessStudioBindingCompatibility(field.value, {
-    type: toBindableType(eventField.type),
-  });
+  }
+  const compatibility = assessStudioBindingCompatibility(field.value, eventValue);
   return compatibility === 'incompatible'
     ? [
         diagnostic(
           'incompatible-input',
-          `Event field '${eventField.path}' is incompatible with ${field.value.type}.`,
+          `Event path '${input.source.path}' is incompatible with ${field.value.type}.`,
           path,
         ),
       ]
     : [];
 }
 
-function toBindableType(type: string) {
+function resolveEventSourceValue(
+  path: string,
+  eventFields: readonly { readonly path: string; readonly type: string }[],
+): UiBindableValueMeta | undefined {
+  const exact = eventFields.find((candidate) => candidate.path === path);
+  if (exact) return { type: toBindableType(exact.type) };
+
+  const parent = eventFields.find(
+    (candidate) =>
+      path.startsWith(`${candidate.path}.`) &&
+      (candidate.type === 'object' || candidate.type === 'record' || candidate.type === 'unknown'),
+  );
+  return parent ? { type: 'unknown' } : undefined;
+}
+
+function toBindableType(type: string): UiBindableValueMeta['type'] {
   if (
     type === 'string' ||
     type === 'number' ||
     type === 'boolean' ||
     type === 'object' ||
     type === 'record'
-  )
+  ) {
     return type;
-  return 'unknown' as const;
+  }
+  return 'unknown';
 }
 
 function diagnostic(
