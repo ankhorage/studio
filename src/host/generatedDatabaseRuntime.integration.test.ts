@@ -44,10 +44,9 @@ test('executes canonical generated create through the released Supabase DB adapt
   const endpoint = normalized.data.endpoints.items;
   if (!endpoint) throw new Error('Expected generated items endpoint.');
 
-  const calls: Array<{ readonly method?: string; readonly url: string }> = [];
+  const calls: { readonly method?: string; readonly url: string }[] = [];
   const mockedFetch: typeof fetch = (input, init) => {
-    const url =
-      typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
     calls.push({ url, method: init?.method });
     return Promise.resolve(
       new Response(JSON.stringify([{ id: 'item-1', name: 'Created' }]), {
