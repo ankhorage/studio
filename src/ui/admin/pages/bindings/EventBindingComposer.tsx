@@ -42,7 +42,7 @@ export function EventBindingComposer(props: {
   const [targetKind, setTargetKind] = useState<'action' | 'operation'>('action');
   const [actionType, setActionType] = useState(ACTION_OPTIONS[0]?.value ?? 'navigate');
   const [operationKey, setOperationKey] = useState(
-    operations[0] ? createStudioOperationKey(operations[0]) : '',
+    operations[0] ? createStudioOperationKey(operations[0].operation) : '',
   );
   const selectedOperation = findStudioOperationByKey(operations, operationKey);
   const fields = useMemo(
@@ -88,7 +88,7 @@ export function EventBindingComposer(props: {
               <Select
                 value={operationKey}
                 options={operations.map((operation) => ({
-                  value: createStudioOperationKey(operation),
+                  value: createStudioOperationKey(operation.operation),
                   label: operation.label,
                 }))}
                 onValueChange={setOperationKey}
