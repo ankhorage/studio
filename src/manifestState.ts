@@ -1,5 +1,4 @@
 import type {
-  AppDataManifest,
   AppManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
@@ -106,7 +105,7 @@ export function createStudioManifestFingerprint(manifest: StudioManifest | null)
   return JSON.stringify({
     navigator: manifest.navigator,
     screens: Object.keys(manifest.screens),
-    data: manifest.data ?? {},
+    generatedApis: Object.keys(manifest.generatedApis ?? {}),
     dataBindings: Object.keys(manifest.dataBindings ?? {}),
     dataSources: Object.keys(manifest.dataSources ?? {}),
     themes: manifest.themes.map((theme) => theme.id),
@@ -419,13 +418,6 @@ export function moveStudioManifestNodeToPlacement(args: {
     },
     movedNodeId: removed.removedNode.id,
   };
-}
-
-export function updateStudioManifestAppData(
-  manifest: StudioManifest,
-  data: AppDataManifest,
-): StudioManifest {
-  return { ...manifest, data };
 }
 
 export function updateStudioManifestDataBindings(

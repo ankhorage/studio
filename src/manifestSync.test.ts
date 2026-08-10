@@ -21,7 +21,6 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
         },
       },
     },
-    data: {},
     dataBindings: {},
     dataSources: {},
     themes: [],

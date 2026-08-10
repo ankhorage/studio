@@ -1,8 +1,4 @@
-import type {
-  DataContractValue,
-  DataSourceDiagnostic,
-  DataSourceKind,
-} from '@ankhorage/contracts/data';
+import type { DataContractValue, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 
 import { API_BASE } from './core/constants';
 import type {
@@ -81,7 +77,7 @@ function parseConnectResult(value: unknown): ExternalApiConnectResult {
   if (!record.ok) return { ok: false, diagnostics, attempts };
   if (
     typeof record.sourceId !== 'string' ||
-    !isDataSourceKind(record.kind) ||
+    record.kind !== 'api' ||
     !isConnectedProtocol(record.protocol) ||
     typeof record.created !== 'boolean'
   ) {
@@ -182,18 +178,8 @@ function isStructuredFailure(value: unknown): boolean {
   return readRecord(value)?.ok === false;
 }
 
-function isConnectedProtocol(value: unknown): value is 'graphql' | 'openapi' | 'rest' {
-  return value === 'graphql' || value === 'openapi' || value === 'rest';
-}
-
-function isDataSourceKind(value: unknown): value is DataSourceKind {
-  return (
-    value === 'database' ||
-    value === 'graphql' ||
-    value === 'managed-api' ||
-    value === 'openapi' ||
-    value === 'rest'
-  );
+function isConnectedProtocol(value: unknown): value is 'graphql' | 'rest' {
+  return value === 'graphql' || value === 'rest';
 }
 
 function isSeverity(value: unknown): value is DataSourceDiagnostic['severity'] {

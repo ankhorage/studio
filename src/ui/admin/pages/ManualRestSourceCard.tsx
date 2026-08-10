@@ -63,7 +63,7 @@ export function ManualRestSourceCard() {
   }, [baseUrl, endpointId, intent, method, operationId, path, sourceId, studio]);
 
   return (
-    <Card title="Manual REST fallback">
+    <Card title="Manual external REST API">
       <View style={externalApiAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           Use this when no OpenAPI document exists. Additional operations can be introduced through

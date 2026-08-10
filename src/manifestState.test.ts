@@ -71,7 +71,6 @@ function createManifest(): StudioManifest {
         root: { id: 'root-about', type: 'Screen', children: [] },
       },
     },
-    data: {},
     dataBindings: { 'text-1': { sourceId: 'source-1', path: 'title' } },
     dataSources: {},
     themes: [
@@ -247,7 +246,18 @@ describe('manifestState', () => {
 
   test('creates fingerprints from tracked manifest fields', () => {
     const first = createManifest();
-    const second = { ...first, data: { fingerprintProbe: true } } as StudioManifest;
+    const second = {
+      ...first,
+      generatedApis: {
+        probe: {
+          id: 'probe',
+          protocol: 'rest',
+          basePath: '/api/probe',
+          database: { id: 'primary-db', kind: 'database' },
+          resources: [],
+        },
+      },
+    } as StudioManifest;
 
     expect(createStudioManifestFingerprint(first)).not.toBe(
       createStudioManifestFingerprint(second),

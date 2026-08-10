@@ -28,7 +28,6 @@ import {
   setStudioManifestActiveThemeMode,
   toCanonicalRoutePattern,
   updateNavigatorAtPath,
-  updateStudioManifestAppData,
   updateStudioManifestDataBindings,
   updateStudioManifestDataSources,
 } from './manifestState';
@@ -64,7 +63,6 @@ function createManifest(): StudioManifest {
         },
       },
     },
-    data: {},
     dataBindings: {},
     dataSources: {},
     themes: [createDefaultThemeConfig(0, 'theme-1'), createDefaultThemeConfig(1, 'theme-2')],
@@ -141,7 +139,6 @@ describe('manifestState public surface', () => {
     const rootNode = manifest.screens['screen-home']?.root;
     if (!rootNode) throw new Error('Expected screen-home root node.');
 
-    const appData = { collections: {} } as never;
     const dataBindings = {
       'text-1': { sourceId: 'source-1', path: '$.title' },
     } as never;
@@ -152,8 +149,7 @@ describe('manifestState public surface', () => {
       manifest,
       [...manifest.navigator.routes].reverse(),
     );
-    const withData = updateStudioManifestAppData(manifest, appData);
-    const withBindings = updateStudioManifestDataBindings(withData, dataBindings);
+    const withBindings = updateStudioManifestDataBindings(manifest, dataBindings);
     const withSources = updateStudioManifestDataSources(withBindings, dataSources);
     const activeTheme = setStudioManifestActiveThemeId(withSources, 'theme-1');
     const darkTheme = setStudioManifestActiveThemeMode(activeTheme, 'dark');
@@ -161,7 +157,6 @@ describe('manifestState public surface', () => {
 
     expect(findNodeInManifest(rootNode, 'text-1')?.id).toBe('text-1');
     expect(reordered.navigator.routes.map((route) => route.name)).toEqual(['auth', '(app)']);
-    expect(withData.data).toBe(appData);
     expect(withBindings.dataBindings).toBe(dataBindings);
     expect(withSources.dataSources).toBe(dataSources);
     expect(darkTheme.activeThemeMode).toBe('dark');

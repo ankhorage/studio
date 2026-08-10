@@ -44,21 +44,32 @@ test('accepts manifests with valid optional domains', () => {
         networking: { cdn: false },
         plugins: [],
       },
-      data: {
-        apis: {
-          tasks: {
-            id: 'tasks',
-            kind: 'generated',
-            basePath: '/api/tasks',
-            endpoints: [{ id: 'list-tasks', method: 'GET', path: '/', intent: 'list' }],
-            preset: 'crud',
-          },
+      generatedApis: {
+        tasks: {
+          id: 'tasks',
+          protocol: 'rest',
+          basePath: '/api/tasks',
+          database: { id: 'primary-db', kind: 'database' },
+          resources: [
+            {
+              id: 'tasks',
+              path: '/tasks',
+              collection: {
+                name: 'tasks',
+                primaryKey: 'id',
+                fields: [{ name: 'id', type: 'uuid', required: true }],
+              },
+              operations: ['list', 'read'],
+            },
+          ],
         },
       },
       dataSources: {
         tasks: {
           id: 'tasks',
-          kind: 'rest',
+          kind: 'api',
+          origin: 'external',
+          protocol: 'rest',
           baseUrl: 'https://api.example.test',
           endpoints: {
             tasks: {
@@ -95,6 +106,8 @@ test('rejects malformed optional manifest domains', () => {
   expect(isAppManifest(withPath('infra.storage.provider', 'disk'))).toBe(false);
   expect(isAppManifest(withPath('infra.networking.cdn', 'yes'))).toBe(false);
   expect(isAppManifest(withPath('dataSources', []))).toBe(false);
+  expect(isAppManifest(withPath('generatedApis.tasks.protocol', 'graphql'))).toBe(false);
+  expect(isAppManifest(withPath('dataSources.tasks.kind', 'managed-api'))).toBe(false);
   expect(isAppManifest(withPath('dataBindings.title.props.text.source.kind', 'unknown'))).toBe(
     false,
   );

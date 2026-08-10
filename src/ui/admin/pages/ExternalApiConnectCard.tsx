@@ -53,7 +53,9 @@ export function ExternalApiConnectCard() {
       setResult(next);
       if (next.ok) {
         await studio.refetchManifest();
-        setMessage(`${next.created ? 'Connected' : 'Updated'} ${next.sourceId} as ${next.kind}.`);
+        setMessage(
+          `${next.created ? 'Connected' : 'Updated'} ${next.sourceId} as ${next.kind}/${next.protocol}.`,
+        );
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'External API connection failed.');
@@ -63,7 +65,7 @@ export function ExternalApiConnectCard() {
   }, [credentialId, credentialKind, credentialScope, name, protocol, sourceId, studio, url]);
 
   return (
-    <Card title="Connect existing API">
+    <Card title="Connect external API">
       <View style={externalApiAdminStyles.stack}>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="Data-source ID">

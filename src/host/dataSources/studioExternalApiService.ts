@@ -1,5 +1,5 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { DataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contracts/data';
+import type { ApiDataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contracts/data';
 import {
   createManualRestDataSource,
   discoverOpenApiDataSource,
@@ -62,7 +62,7 @@ export class StudioExternalApiService {
 
     if (input.protocol === 'graphql') return this.connectGraphQl(projectId, input, []);
     const openApi = await this.discoverOpenApi(input);
-    if (openApi.ok) return this.persist(projectId, openApi.data, 'openapi', openApi.attempts);
+    if (openApi.ok) return this.persist(projectId, openApi.data, openApi.attempts);
     if (input.protocol === 'openapi') return openApi;
     return this.connectGraphQl(projectId, input, openApi.attempts, openApi.diagnostics);
   }
@@ -95,7 +95,7 @@ export class StudioExternalApiService {
       ],
     });
     return result.ok
-      ? this.persist(projectId, result.data, 'rest', [], result.diagnostics ?? [])
+      ? this.persist(projectId, result.data, [], result.diagnostics ?? [])
       : { ok: false, attempts: [], diagnostics: result.diagnostics };
   }
 
@@ -106,6 +106,9 @@ export class StudioExternalApiService {
     const manifest = await this.readEditableManifest(projectId);
     const source = manifest.dataSources?.[request.sourceId];
     if (!source) return missingSourceResult(request.sourceId);
+    if (source.kind !== 'api' || source.origin !== 'external') {
+      return unsupportedTestSourceResult(request.sourceId);
+    }
     const credentialResolver = this.secretService
       ? createProjectEndpointCredentialResolver({
           projectId,
@@ -150,7 +153,7 @@ export class StudioExternalApiService {
       credential: request.credential,
     });
     return result.ok
-      ? this.persist(projectId, result.data, 'graphql', attempts, result.diagnostics)
+      ? this.persist(projectId, result.data, attempts, result.diagnostics)
       : {
           ok: false,
           attempts,
@@ -160,8 +163,7 @@ export class StudioExternalApiService {
 
   private async persist(
     projectId: string,
-    source: DataSourceConfig,
-    protocol: 'graphql' | 'openapi' | 'rest',
+    source: ApiDataSourceConfig,
     attempts: ExternalApiConnectResult['attempts'],
     diagnostics: readonly DataSourceDiagnostic[] = [],
   ): Promise<ExternalApiConnectResult> {
@@ -175,7 +177,7 @@ export class StudioExternalApiService {
       ok: true,
       sourceId: source.id,
       kind: source.kind,
-      protocol,
+      protocol: source.protocol,
       created: upsert.created,
       attempts,
       diagnostics,
@@ -196,6 +198,20 @@ function invalidResult(message: string): ExternalApiConnectResult {
     ok: false,
     attempts: [],
     diagnostics: [{ code: 'invalid-config', message, severity: 'error' }],
+  };
+}
+
+function unsupportedTestSourceResult(sourceId: string): ExternalApiOperationTestResult {
+  return {
+    ok: false,
+    diagnostics: [
+      {
+        code: 'invalid-config',
+        dataSourceId: sourceId,
+        message: 'Studio HTTP operation testing supports external API sources only.',
+        severity: 'error',
+      },
+    ],
   };
 }
 

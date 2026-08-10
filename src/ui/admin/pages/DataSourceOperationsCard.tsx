@@ -59,18 +59,24 @@ export function DataSourceOperationsCard({
                   {row.sourceId} / {row.endpointId} · {row.method ?? row.protocol ?? 'operation'}{' '}
                   {row.path ?? ''} · {row.kind}
                 </Text>
-                <View style={externalApiAdminStyles.actions}>
-                  <Button
-                    variant="outline"
-                    loading={busyKey === key}
-                    onPress={() => void run(row, true)}
-                  >
-                    Dry run
-                  </Button>
-                  <Button loading={busyKey === key} onPress={() => void run(row, false)}>
-                    Execute
-                  </Button>
-                </View>
+                {row.testable ? (
+                  <View style={externalApiAdminStyles.actions}>
+                    <Button
+                      variant="outline"
+                      loading={busyKey === key}
+                      onPress={() => void run(row, true)}
+                    >
+                      Dry run
+                    </Button>
+                    <Button loading={busyKey === key} onPress={() => void run(row, false)}>
+                      Execute
+                    </Button>
+                  </View>
+                ) : (
+                  <Text color="neutral" variant="caption">
+                    Generated database operation · executed by Runtime through its database adapter.
+                  </Text>
+                )}
                 {result ? <OperationResult result={result} /> : null}
               </View>
             );

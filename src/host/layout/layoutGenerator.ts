@@ -10,12 +10,18 @@ import {
   getStudioAdminRouteDefinition,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
+import { resolveGeneratedDatabaseRuntime } from '../generatedDatabaseRuntime';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,
   type EnabledAuthLayoutPlan,
   resolveAuthLayoutPlan,
 } from './auth/resolveAuthLayoutPlan';
+import {
+  GENERATED_DATABASE_ADAPTERS_EXPRESSION,
+  getGeneratedDatabaseRuntimeImports,
+  getGeneratedDatabaseRuntimeModuleDeclarations,
+} from './generatedDatabaseRuntimeSource';
 import { composeGeneratedImports } from './generatedImportComposer';
 import {
   buildNavigatorJsx,
@@ -253,6 +259,7 @@ export class GeneratedAppFileGenerator {
     const pluginImports = mutations.flatMap((m) => m.imports);
     const pluginHooks = mutations.flatMap((m) => m.hooks);
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
+    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
@@ -283,6 +290,7 @@ export class GeneratedAppFileGenerator {
   subscribeToAuthSessionChanges,
 } from '@/auth/session';`,
       getPackageOwnedRuntimeImports(),
+      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -305,9 +313,12 @@ export class GeneratedAppFileGenerator {
       innerNavigation,
       includeStudio,
       authRuntime: authLayoutPlan,
+      databaseAdaptersExpression:
+        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,
       initialRouteNameOverride: '(app)',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(),
+        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime, true),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],
@@ -334,6 +345,7 @@ export class GeneratedAppFileGenerator {
     const needsZoraDrawerContent = innerNavigation.usesZoraDrawerContent;
     const needsZoraNavigationRouteMap = innerNavigation.usesZoraNavigationRouteMap;
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
+    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
     const coreImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
@@ -364,6 +376,7 @@ export class GeneratedAppFileGenerator {
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       getPackageOwnedRuntimeImports(),
+      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -393,8 +406,11 @@ export class GeneratedAppFileGenerator {
       allHooks,
       innerNavigation,
       includeStudio,
+      databaseAdaptersExpression:
+        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(),
+        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime, false),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],

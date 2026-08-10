@@ -1,12 +1,7 @@
 import { COLOR_HARMONIES, type ColorHarmony } from '@ankhorage/color-theory';
 import {
-  APP_API_ENDPOINT_INTENTS,
-  APP_API_ENDPOINT_METHODS,
-  APP_API_GENERATED_PRESETS,
-  APP_API_KINDS,
   APP_CATEGORIES,
   type AppCategory,
-  type AppDataManifest,
   type AppManifest,
   type AppSettings,
   AUTH_OAUTH_PROVIDER_IDS,
@@ -24,6 +19,7 @@ import {
   type DatabaseSpec,
   type DataSourceRegistry,
   type DeploymentSpec,
+  type GeneratedApiRegistry,
   type InfraManifest,
   NAVIGATOR_TYPES,
   type NavigatorSpec,
@@ -42,10 +38,6 @@ import {
 } from '@ankhorage/contracts';
 
 const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
-const APP_API_ENDPOINT_INTENT_SET = new Set<string>(APP_API_ENDPOINT_INTENTS);
-const APP_API_ENDPOINT_METHOD_SET = new Set<string>(APP_API_ENDPOINT_METHODS);
-const APP_API_GENERATED_PRESET_SET = new Set<string>(APP_API_GENERATED_PRESETS);
-const APP_API_KIND_SET = new Set<string>(APP_API_KINDS);
 const AUTH_OAUTH_PROVIDER_SET = new Set<string>(AUTH_OAUTH_PROVIDER_IDS);
 const AUTH_PROFILE_CREATE_STRATEGY_SET = new Set<string>(AUTH_PROFILE_CREATE_STRATEGIES);
 const AUTH_PROFILE_PRIMARY_KEY_STRATEGY_SET = new Set<string>(AUTH_PROFILE_PRIMARY_KEY_STRATEGIES);
@@ -411,55 +403,29 @@ function isScreenRequirements(value: unknown): boolean {
   );
 }
 
-function isAppDataManifest(value: unknown): value is AppDataManifest {
-  return (
-    isRecord(value) &&
-    (value.apis === undefined ||
-      (isRecord(value.apis) && Object.values(value.apis).every(isAppApiDefinition)))
-  );
+function isGeneratedApiRegistry(value: unknown): value is GeneratedApiRegistry {
+  return isRecord(value) && Object.values(value).every(isGeneratedApiDefinition);
 }
 
-function isAppApiDefinition(value: unknown): boolean {
+function isGeneratedApiDefinition(value: unknown): boolean {
   return (
     isRecord(value) &&
     typeof value.id === 'string' &&
-    typeof value.kind === 'string' &&
-    APP_API_KIND_SET.has(value.kind) &&
-    isOptionalString(value.label) &&
+    value.protocol === 'rest' &&
+    isOptionalString(value.name) &&
     isOptionalString(value.description) &&
     typeof value.basePath === 'string' &&
-    Array.isArray(value.endpoints) &&
-    value.endpoints.every(isAppApiEndpointDefinition) &&
-    (value.auth === undefined || isAppApiAuthRequirement(value.auth)) &&
-    (value.metadata === undefined || isManifestValue(value.metadata)) &&
-    (value.kind !== 'generated' ||
-      ((value.preset === undefined ||
-        (typeof value.preset === 'string' && APP_API_GENERATED_PRESET_SET.has(value.preset))) &&
-        (value.resource === undefined || isAppApiResourceDefinition(value.resource)))) &&
-    (value.kind !== 'external' ||
-      (isOptionalString(value.baseUrl) && isOptionalString(value.openApiUrl)))
-  );
-}
-
-function isAppApiEndpointDefinition(value: unknown): boolean {
-  return (
-    isRecord(value) &&
-    typeof value.id === 'string' &&
-    isOptionalString(value.label) &&
-    isOptionalString(value.description) &&
-    typeof value.method === 'string' &&
-    APP_API_ENDPOINT_METHOD_SET.has(value.method) &&
-    typeof value.path === 'string' &&
-    (value.intent === undefined ||
-      (typeof value.intent === 'string' && APP_API_ENDPOINT_INTENT_SET.has(value.intent))) &&
-    (value.request === undefined || isDataOperationRequest(value.request)) &&
-    (value.response === undefined || isDataOperationResponse(value.response)) &&
-    (value.auth === undefined || isAppApiAuthRequirement(value.auth)) &&
+    isRecord(value.database) &&
+    value.database.kind === 'database' &&
+    isAdapterRef(value.database) &&
+    Array.isArray(value.resources) &&
+    value.resources.every(isGeneratedApiResourceDefinition) &&
+    (value.auth === undefined || isGeneratedApiAuthRequirement(value.auth)) &&
     (value.metadata === undefined || isManifestValue(value.metadata))
   );
 }
 
-function isAppApiAuthRequirement(value: unknown): boolean {
+function isGeneratedApiAuthRequirement(value: unknown): boolean {
   return (
     isRecord(value) &&
     isOptionalBoolean(value.required) &&
@@ -470,17 +436,36 @@ function isAppApiAuthRequirement(value: unknown): boolean {
   );
 }
 
-function isAppApiResourceDefinition(value: unknown): boolean {
+function isGeneratedApiResourceDefinition(value: unknown): boolean {
   return (
     isRecord(value) &&
-    value.kind === 'collection' &&
+    typeof value.id === 'string' &&
+    isOptionalString(value.name) &&
+    isOptionalString(value.description) &&
+    typeof value.path === 'string' &&
     isDbCollectionDefinition(value.collection) &&
+    Array.isArray(value.operations) &&
+    value.operations.every(isGeneratedApiCrudOperation) &&
     (value.seed === undefined ||
       (Array.isArray(value.seed) &&
         value.seed.every(
           (record) => isRecord(record) && Object.values(record).every(isManifestValue),
         ))) &&
+    (value.policies === undefined ||
+      (Array.isArray(value.policies) && value.policies.every(isGeneratedApiPolicyRef))) &&
     (value.metadata === undefined || isManifestValue(value.metadata))
+  );
+}
+
+function isGeneratedApiCrudOperation(value: unknown): boolean {
+  return ['create', 'delete', 'list', 'read', 'update'].includes(String(value));
+}
+
+function isGeneratedApiPolicyRef(value: unknown): boolean {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    (value.operation === undefined || isGeneratedApiCrudOperation(value.operation))
   );
 }
 
@@ -498,7 +483,9 @@ function isDbCollectionDefinition(value: unknown): boolean {
         ['text', 'number', 'boolean', 'datetime', 'json', 'uuid'].includes(field.type) &&
         isOptionalBoolean(field.required) &&
         isOptionalBoolean(field.unique) &&
-        (field.defaultValue === undefined || isManifestValue(field.defaultValue)),
+        (field.defaultValue === undefined ||
+          field.defaultValue === null ||
+          ['boolean', 'number', 'string'].includes(typeof field.defaultValue)),
     ) &&
     isOptionalString(value.primaryKey)
   );
@@ -509,50 +496,64 @@ function isDataSourceRegistry(value: unknown): value is DataSourceRegistry {
 }
 
 function isDataSourceConfig(value: unknown): boolean {
+  if (
+    !isRecord(value) ||
+    typeof value.id !== 'string' ||
+    (value.kind !== 'api' && value.kind !== 'database') ||
+    !isOptionalString(value.name) ||
+    !isOptionalString(value.description) ||
+    (value.credential !== undefined && !isCredentialRef(value.credential)) ||
+    !isDataEndpointRegistry(value.endpoints) ||
+    (value.schemas !== undefined && !isRecord(value.schemas)) ||
+    (value.metadata !== undefined && !isManifestValue(value.metadata))
+  ) {
+    return false;
+  }
+
+  if (value.kind === 'database') {
+    return (
+      isRecord(value.adapter) && value.adapter.kind === 'database' && isAdapterRef(value.adapter)
+    );
+  }
+
+  if (value.origin === 'generated') {
+    return (
+      value.protocol === 'rest' &&
+      typeof value.generatedApiId === 'string' &&
+      isRecord(value.adapter) &&
+      value.adapter.kind === 'database' &&
+      isAdapterRef(value.adapter)
+    );
+  }
+
+  if (value.origin !== 'external') return false;
+  if (value.protocol === 'rest') {
+    return (
+      typeof value.baseUrl === 'string' &&
+      (value.openApi === undefined || isOpenApiDocumentRef(value.openApi))
+    );
+  }
+  if (value.protocol === 'graphql') {
+    return (
+      typeof value.endpointUrl === 'string' &&
+      (value.introspection === undefined || isGraphQlIntrospection(value.introspection))
+    );
+  }
+  return false;
+}
+
+function isOpenApiDocumentRef(value: unknown): boolean {
   return (
     isRecord(value) &&
-    typeof value.id === 'string' &&
-    typeof value.kind === 'string' &&
-    ['database', 'graphql', 'managed-api', 'openapi', 'rest'].includes(value.kind) &&
-    isOptionalString(value.name) &&
-    isOptionalString(value.description) &&
-    (value.credential === undefined || isCredentialRef(value.credential)) &&
-    isDataEndpointRegistry(value.endpoints) &&
-    (value.schemas === undefined || isRecord(value.schemas)) &&
-    (value.metadata === undefined || isManifestValue(value.metadata)) &&
-    (value.kind !== 'rest' || typeof value.baseUrl === 'string') &&
-    (value.kind !== 'openapi' ||
-      (isOptionalString(value.baseUrl) &&
-        (value.import === undefined ||
-          (isRecord(value.import) &&
-            isOptionalString(value.import.url) &&
-            isOptionalString(value.import.documentId) &&
-            isOptionalString(value.import.version))))) &&
-    (value.kind !== 'graphql' ||
-      (typeof value.endpointUrl === 'string' &&
-        (value.introspection === undefined ||
-          (isRecord(value.introspection) &&
-            typeof value.introspection.enabled === 'boolean' &&
-            isOptionalString(value.introspection.schemaVersion))))) &&
-    (value.kind !== 'database' || isAdapterRef(value.adapter)) &&
-    (value.kind !== 'managed-api' ||
-      (isAdapterRef(value.adapter) &&
-        Array.isArray(value.resources) &&
-        value.resources.every(isManagedApiResourceConfig)))
+    isOptionalString(value.url) &&
+    isOptionalString(value.documentId) &&
+    isOptionalString(value.version)
   );
 }
 
-function isManagedApiResourceConfig(value: unknown): boolean {
+function isGraphQlIntrospection(value: unknown): boolean {
   return (
-    isRecord(value) &&
-    typeof value.name === 'string' &&
-    isDbCollectionDefinition(value.collection) &&
-    (value.operations === undefined ||
-      (Array.isArray(value.operations) &&
-        value.operations.every((operation) =>
-          ['create', 'delete', 'list', 'read', 'update'].includes(String(operation)),
-        ))) &&
-    (value.metadata === undefined || isManifestValue(value.metadata))
+    isRecord(value) && typeof value.enabled === 'boolean' && isOptionalString(value.schemaVersion)
   );
 }
 
@@ -734,16 +735,10 @@ function isOptionalBindingTransforms(value: unknown): boolean {
 function isScreenDataLoaderDefinition(value: unknown): boolean {
   return (
     isRecord(value) &&
-    typeof value.kind === 'string' &&
-    ((value.kind === 'api' &&
-      typeof value.apiId === 'string' &&
-      ['byId', 'list', 'one', 'random'].includes(String(value.mode)) &&
-      typeof value.targetPath === 'string' &&
-      (value.id === undefined || typeof value.id === 'string' || typeof value.id === 'number')) ||
-      (value.kind === 'operation' &&
-        isOptionalString(value.id) &&
-        isBindingOperationRef(value.operation) &&
-        (value.input === undefined || isBindingInputMap(value.input))))
+    value.kind === 'operation' &&
+    isOptionalString(value.id) &&
+    isBindingOperationRef(value.operation) &&
+    (value.input === undefined || isBindingInputMap(value.input))
   );
 }
 
@@ -787,7 +782,7 @@ export function isAppManifest(value: unknown): value is AppManifest {
     isInfraManifest(value.infra) &&
     isNavigatorSpec(value.navigator) &&
     isScreenRegistry(value.screens) &&
-    (value.data === undefined || isAppDataManifest(value.data)) &&
+    (value.generatedApis === undefined || isGeneratedApiRegistry(value.generatedApis)) &&
     (value.dataSources === undefined || isDataSourceRegistry(value.dataSources)) &&
     (value.dataBindings === undefined || isComponentDataBindingRegistry(value.dataBindings)) &&
     isAppSettings(value.settings)

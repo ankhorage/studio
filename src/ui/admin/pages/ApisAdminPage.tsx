@@ -6,6 +6,7 @@ import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
 import { DataSourceCatalogCard } from './DataSourceCatalogCard';
 import { DataSourceOperationsCard } from './DataSourceOperationsCard';
 import { ExternalApiConnectCard } from './ExternalApiConnectCard';
+import { GeneratedApiAuthoringCard } from './GeneratedApiAuthoringCard';
 import { ManualRestSourceCard } from './ManualRestSourceCard';
 
 export type ApisAdminRouteId = Extract<
@@ -30,8 +31,9 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
               ? 'Data sources'
               : 'APIs'
         }
-        description="Connect external services into canonical data sources and inspect their runtime operations."
+        description="Connect external APIs or create generated REST/CRUD APIs, then inspect their canonical runtime operations."
       />
+      {showAuthoring ? <GeneratedApiAuthoringCard /> : null}
       {showAuthoring ? <ExternalApiConnectCard /> : null}
       {showAuthoring ? <ManualRestSourceCard /> : null}
       {showSources ? <DataSourceCatalogCard dataSources={dataSources} /> : null}

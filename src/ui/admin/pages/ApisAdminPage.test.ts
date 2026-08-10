@@ -7,7 +7,9 @@ test('collects operations through data sources, endpoints, and operations', () =
   const dataSources = {
     crm: {
       id: 'crm',
-      kind: 'rest',
+      kind: 'api',
+      origin: 'external',
+      protocol: 'rest',
       baseUrl: 'https://api.example.test',
       endpoints: {
         contacts: {
@@ -43,6 +45,9 @@ test('collects operations through data sources, endpoints, and operations', () =
       protocol: 'http',
       method: 'GET',
       path: '/contacts',
+      sourceOrigin: 'external',
+      sourceProtocol: 'rest',
+      testable: true,
     },
     {
       sourceId: 'crm',
@@ -53,6 +58,9 @@ test('collects operations through data sources, endpoints, and operations', () =
       protocol: 'http',
       method: 'POST',
       path: '/contacts',
+      sourceOrigin: 'external',
+      sourceProtocol: 'rest',
+      testable: true,
     },
   ]);
 });
