@@ -26,13 +26,11 @@ export function PropertyBindingEditor(props: {
   readonly onChange: (binding: PropBinding) => void;
   readonly onRemove: () => void;
 }) {
-  const { binding, onChange, onRemove, operationOptions, option, operations } = {
-    ...props,
-    operationOptions: props.operations.map((operation) => ({
-      value: createStudioOperationKey(operation),
-      label: operation.label,
-    })),
-  };
+  const { binding, onChange, onRemove, option, operations } = props;
+  const operationOptions = operations.map((operation) => ({
+    value: createStudioOperationKey(operation.operation),
+    label: operation.label,
+  }));
   const sourceKind = binding?.source.kind ?? 'literal';
 
   return (
@@ -66,7 +64,9 @@ export function PropertyBindingEditor(props: {
       ) : (
         <Button
           variant="soft"
-          onPress={() => onChange(createStudioPropBindingForSource('literal', option.meta.value, operations))}
+          onPress={() =>
+            onChange(createStudioPropBindingForSource('literal', option.meta.value, operations))
+          }
         >
           Add binding
         </Button>
@@ -104,7 +104,10 @@ function PropertyBindingSourceFields(props: {
       <Input
         value={formatStudioBindingLiteral(source.value)}
         onChangeText={(value) =>
-          onChange({ ...binding, source: { kind: 'literal', value: parseStudioBindingLiteral(value, expected) } })
+          onChange({
+            ...binding,
+            source: { kind: 'literal', value: parseStudioBindingLiteral(value, expected) },
+          })
         }
       />
     );
@@ -124,13 +127,7 @@ function PropertyBindingSourceFields(props: {
     return <Text color="danger">Event sources are not available for persistent property bindings.</Text>;
   }
 
-  const operationKey = createStudioOperationKey({
-    operation: source.operation,
-    label: '',
-    sourceLabel: '',
-    inputFields: [],
-    responsePaths: [],
-  });
+  const operationKey = createStudioOperationKey(source.operation);
   const operation = findStudioOperationByKey(operations, operationKey);
   const responseOptions = (operation?.responsePaths ?? []).map((response) => {
     const compatibility = assessStudioBindingCompatibility(expected, response.value);
