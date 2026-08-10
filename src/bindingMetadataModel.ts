@@ -1,6 +1,9 @@
 import type { UiComponentMetaRegistry, UiNode } from '@ankhorage/contracts';
 
-import type { StudioBindableEventOption, StudioBindablePropOption } from './bindingAuthoringContracts';
+import type {
+  StudioBindableEventOption,
+  StudioBindablePropOption,
+} from './bindingAuthoringContracts';
 
 export function resolveStudioBindableProps(
   node: UiNode,

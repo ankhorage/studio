@@ -86,13 +86,12 @@ const dataSources: DataSourceRegistry = {
 
 describe('binding authoring metadata', () => {
   test('derives only explicitly bindable props and events from ZORA metadata', () => {
-    expect(resolveStudioBindableProps(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name)).toEqual([
-      'children',
-      'disabled',
-    ]);
-    expect(resolveStudioBindableEvents(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name)).toEqual([
-      'press',
-    ]);
+    expect(
+      resolveStudioBindableProps(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name),
+    ).toEqual(['children', 'disabled']);
+    expect(
+      resolveStudioBindableEvents(button, ZORA_BINDABLE_COMPONENT_META).map((entry) => entry.name),
+    ).toEqual(['press']);
   });
 });
 
@@ -111,7 +110,14 @@ describe('binding registry mutations', () => {
       kind: 'action',
       type: 'navigate',
     });
-    expect(removeStudioEventBinding(removeStudioPropBinding(serialized, button, 'children'), button, 'press', 0)).toEqual({});
+    expect(
+      removeStudioEventBinding(
+        removeStudioPropBinding(serialized, button, 'children'),
+        button,
+        'press',
+        0,
+      ),
+    ).toEqual({});
   });
 });
 
@@ -130,9 +136,15 @@ describe('binding operations and schemas', () => {
   });
 
   test('reports meaningful schema compatibility', () => {
-    expect(assessStudioBindingCompatibility({ type: 'string' }, { type: 'string' })).toBe('compatible');
-    expect(assessStudioBindingCompatibility({ type: 'number' }, { type: 'string' })).toBe('incompatible');
-    expect(assessStudioBindingCompatibility({ type: 'record' }, { type: 'object' })).toBe('compatible');
+    expect(assessStudioBindingCompatibility({ type: 'string' }, { type: 'string' })).toBe(
+      'compatible',
+    );
+    expect(assessStudioBindingCompatibility({ type: 'number' }, { type: 'string' })).toBe(
+      'incompatible',
+    );
+    expect(assessStudioBindingCompatibility({ type: 'record' }, { type: 'object' })).toBe(
+      'compatible',
+    );
   });
 });
 

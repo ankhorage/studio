@@ -80,5 +80,7 @@ function writeBinding(
 }
 
 function isEmptyBinding(binding: ComponentDataBinding): boolean {
-  return Object.keys(binding.props ?? {}).length === 0 && Object.keys(binding.events ?? {}).length === 0;
+  return (
+    Object.keys(binding.props ?? {}).length === 0 && Object.keys(binding.events ?? {}).length === 0
+  );
 }

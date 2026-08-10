@@ -93,7 +93,14 @@ function describeSource(source: DataSourceConfig): string {
 }
 
 export function createStudioActionInputFields(
-  payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean }>> | undefined,
+  payloadSchema:
+    | Readonly<
+        Record<
+          string,
+          { readonly label: string; readonly type: string; readonly required?: boolean }
+        >
+      >
+    | undefined,
 ): readonly StudioBindingInputFieldOption[] {
   return Object.entries(payloadSchema ?? {}).map(([name, field]) => ({
     name,
@@ -104,6 +111,7 @@ export function createStudioActionInputFields(
 }
 
 function toBindableType(type: string): UiBindableValueMeta['type'] {
-  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object') return type;
+  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object')
+    return type;
   return 'unknown';
 }

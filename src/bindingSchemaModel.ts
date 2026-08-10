@@ -21,9 +21,7 @@ export function resolveStudioSchemaValueMeta(
   const type = resolveSchemaType(resolved);
   const fields = resolveSchemaFields(resolved, schemas, seen);
   const itemType =
-    type === 'array'
-      ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type
-      : undefined;
+    type === 'array' ? resolveStudioSchemaValueMeta(resolved.items, schemas, seen).type : undefined;
 
   return {
     type,
@@ -117,9 +115,7 @@ function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
   return 'unknown';
 }
 
-function resolveSingleSchemaType(
-  type: DataSchema['type'],
-): DataSchemaPrimitiveType | undefined {
+function resolveSingleSchemaType(type: DataSchema['type']): DataSchemaPrimitiveType | undefined {
   if (typeof type === 'string') return type;
   return type?.length === 1 ? type[0] : undefined;
 }

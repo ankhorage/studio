@@ -29,7 +29,9 @@ export function diagnoseStudioComponentBindings(args: {
   if (!binding) return [];
   const meta = args.componentMeta[args.node.type]?.bindings;
   if (!meta) {
-    return [diagnostic('missing-binding-meta', 'This component exposes no canonical binding metadata.')];
+    return [
+      diagnostic('missing-binding-meta', 'This component exposes no canonical binding metadata.'),
+    ];
   }
 
   return [
@@ -37,7 +39,9 @@ export function diagnoseStudioComponentBindings(args: {
       diagnosePropBinding(name, prop, meta.props?.[name], args),
     ),
     ...Object.entries(binding.events ?? {}).flatMap(([name, events]) =>
-      events.flatMap((event, index) => diagnoseEventBinding(name, index, event, meta.events?.[name], args)),
+      events.flatMap((event, index) =>
+        diagnoseEventBinding(name, index, event, meta.events?.[name], args),
+      ),
     ),
   ];
 }
@@ -49,14 +53,22 @@ function diagnosePropBinding(
   args: Parameters<typeof diagnoseStudioComponentBindings>[0],
 ): readonly StudioBindingDiagnostic[] {
   const propMeta = args.componentMeta[args.node.type]?.bindings?.props?.[name];
-  if (!propMeta) return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
+  if (!propMeta)
+    return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
   if (binding.source.kind !== 'operation') return [];
 
-  const runtimeDiagnostics = validateRuntimeBindingOperationRef(binding.source.operation, args.dataSources);
+  const runtimeDiagnostics = validateRuntimeBindingOperationRef(
+    binding.source.operation,
+    args.dataSources,
+  );
   if (runtimeDiagnostics.length > 0) {
     return [
       {
-        ...diagnostic('missing-operation', runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.', `props.${name}`),
+        ...diagnostic(
+          'missing-operation',
+          runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.',
+          `props.${name}`,
+        ),
         runtimeDiagnostics,
       },
     ];
@@ -66,12 +78,24 @@ function diagnosePropBinding(
   const path = binding.source.path ?? '';
   const response = operation?.responsePaths.find((candidate) => candidate.path === path);
   if (!response) {
-    return [diagnostic('missing-response-path', `Response path '${path || '<response>'}' is unavailable.`, `props.${name}`)];
+    return [
+      diagnostic(
+        'missing-response-path',
+        `Response path '${path || '<response>'}' is unavailable.`,
+        `props.${name}`,
+      ),
+    ];
   }
 
   const compatibility = assessStudioBindingCompatibility(propMeta.value, response.value);
   return compatibility === 'incompatible'
-    ? [diagnostic('incompatible-response', `Response '${response.label}' is incompatible with ${propMeta.value.type}.`, `props.${name}`)]
+    ? [
+        diagnostic(
+          'incompatible-response',
+          `Response '${response.label}' is incompatible with ${propMeta.value.type}.`,
+          `props.${name}`,
+        ),
+      ]
     : [];
 }
 
@@ -84,22 +108,42 @@ function diagnoseEventBinding(
 ): readonly StudioBindingDiagnostic[] {
   const eventMeta = args.componentMeta[args.node.type]?.bindings?.events?.[eventName];
   const path = `events.${eventName}.${index}`;
-  if (!eventMeta) return [diagnostic('unknown-event', `Event '${eventName}' is not bindable.`, path)];
+  if (!eventMeta)
+    return [diagnostic('unknown-event', `Event '${eventName}' is not bindable.`, path)];
 
   if (binding.target.kind === 'action') {
     if (!args.actionTypes.includes(binding.target.type)) {
-      return [diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path)];
+      return [
+        diagnostic('missing-action', `Action '${binding.target.type}' is unavailable.`, path),
+      ];
     }
     return [];
   }
 
-  const runtimeDiagnostics = validateRuntimeBindingOperationRef(binding.target.operation, args.dataSources);
+  const runtimeDiagnostics = validateRuntimeBindingOperationRef(
+    binding.target.operation,
+    args.dataSources,
+  );
   if (runtimeDiagnostics.length > 0) {
-    return [{ ...diagnostic('missing-operation', runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.', path), runtimeDiagnostics }];
+    return [
+      {
+        ...diagnostic(
+          'missing-operation',
+          runtimeDiagnostics[0]?.message ?? 'Operation is unavailable.',
+          path,
+        ),
+        runtimeDiagnostics,
+      },
+    ];
   }
 
   const operation = findStudioBindingOperationOption(args.operations, binding.target.operation);
-  return diagnoseEventInputs(binding, operation?.inputFields ?? [], eventMeta.payload?.fields ?? [], path);
+  return diagnoseEventInputs(
+    binding,
+    operation?.inputFields ?? [],
+    eventMeta.payload?.fields ?? [],
+    path,
+  );
 }
 
 function diagnoseEventInputs(
@@ -111,7 +155,15 @@ function diagnoseEventInputs(
   return fields.flatMap((field) => {
     const input = binding.input?.[field.name];
     if (!input) {
-      return field.required ? [diagnostic('missing-input', `Required input '${field.name}' is not mapped.`, `${path}.input.${field.name}`)] : [];
+      return field.required
+        ? [
+            diagnostic(
+              'missing-input',
+              `Required input '${field.name}' is not mapped.`,
+              `${path}.input.${field.name}`,
+            ),
+          ]
+        : [];
     }
     return diagnoseInputCompatibility(input, field, eventFields, `${path}.input.${field.name}`);
   });
@@ -125,15 +177,33 @@ function diagnoseInputCompatibility(
 ): readonly StudioBindingDiagnostic[] {
   if (input.kind !== 'source' || input.source.kind !== 'event') return [];
   const eventField = eventFields.find((candidate) => candidate.path === input.source.path);
-  if (!eventField) return [diagnostic('incompatible-input', `Event path '${input.source.path}' is unavailable.`, path)];
-  const compatibility = assessStudioBindingCompatibility(field.value, { type: toBindableType(eventField.type) });
+  if (!eventField)
+    return [
+      diagnostic('incompatible-input', `Event path '${input.source.path}' is unavailable.`, path),
+    ];
+  const compatibility = assessStudioBindingCompatibility(field.value, {
+    type: toBindableType(eventField.type),
+  });
   return compatibility === 'incompatible'
-    ? [diagnostic('incompatible-input', `Event field '${eventField.path}' is incompatible with ${field.value.type}.`, path)]
+    ? [
+        diagnostic(
+          'incompatible-input',
+          `Event field '${eventField.path}' is incompatible with ${field.value.type}.`,
+          path,
+        ),
+      ]
     : [];
 }
 
 function toBindableType(type: string) {
-  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'object' || type === 'record') return type;
+  if (
+    type === 'string' ||
+    type === 'number' ||
+    type === 'boolean' ||
+    type === 'object' ||
+    type === 'record'
+  )
+    return type;
   return 'unknown' as const;
 }
 
