@@ -55,7 +55,7 @@ export function removeStudioEventBinding(
 ): ComponentDataBindingRegistry {
   const current = registry[node.id];
   const bindings = current?.events?.[eventName];
-  if (!bindings?.[bindingIndex]) return registry;
+  if (!current || !bindings?.[bindingIndex]) return registry;
   const events = { ...(current.events ?? {}) };
   const next = bindings.filter((_, index) => index !== bindingIndex);
   if (next.length > 0) events[eventName] = next;
