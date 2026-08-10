@@ -23,6 +23,7 @@ export interface StudioAdminRouteRenderState {
   routeAdminId: StudioAdminRouteId | null;
   resolvedAdminRouteId: StudioAdminRouteId;
   routeAdminPath: StudioAdminRoutePath | null;
+  bindingsNodeId: string | null;
   propertiesNodeId: string | null;
   shouldRenderAppContent: boolean;
   shouldRenderAdminShell: boolean;
@@ -162,7 +163,10 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
   }
 
   const route = STUDIO_ADMIN_ROUTE_REGISTRY.find(
-    (candidate) => candidate.path !== '/ankh/properties/:nodeId' && candidate.path === pathname,
+    (candidate) =>
+      candidate.path !== '/ankh/bindings/:nodeId' &&
+      candidate.path !== '/ankh/properties/:nodeId' &&
+      candidate.path === pathname,
   );
 
   return route?.id ?? null;
@@ -180,7 +184,7 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
     return nodeId ? createStudioPropertiesRoutePath(nodeId) : null;
   }
 
-  return getStudioAdminRouteDefinition(routeId).path;
+  return getStudioAdminRouteDefinition(routeId).path as StudioAdminStaticRoutePath;
 }
 
 export function resolveStudioBindingsNodeId(pathname: string): string | null {
@@ -210,7 +214,7 @@ export function createStudioAdminRoutePath(args: {
     return args.selectedNodeId ? createStudioPropertiesRoutePath(args.selectedNodeId) : null;
   }
 
-  return getStudioAdminRouteDefinition(args.routeId).path;
+  return getStudioAdminRouteDefinition(args.routeId).path as StudioAdminStaticRoutePath;
 }
 
 export function isStudioAdminRouteAvailable(
@@ -302,7 +306,6 @@ export function resolveStudioLastNonAdminLocation(args: {
   if (isStudioAdminPath(args.pathname)) return null;
   return args.navigableLocation ?? resolveStudioNavigableLocation(args.pathname);
 }
-
 
 function resolveStudioContextNodeId(pathname: string, prefix: string): string | null {
   if (!pathname.startsWith(prefix)) return null;
