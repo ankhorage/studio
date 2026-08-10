@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 
 import { useStudio } from '../core/StudioContext';
 import {
+  createStudioBindingsRoutePath,
   createStudioPropertiesRoutePath,
   isStudioAdminPath,
   resolveStudioLastNonAdminLocation,
@@ -40,6 +41,11 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
     selectedNodeId: studio.selectedNodeId,
   });
 
+  const openBindings = useCallback(() => {
+    if (!selection.selectedNodeId) return;
+    router.push(createStudioBindingsRoutePath(selection.selectedNodeId));
+  }, [router, selection.selectedNodeId]);
+
   const openProperties = useCallback(() => {
     if (!selection.selectedNodeId) return;
     router.push(createStudioPropertiesRoutePath(selection.selectedNodeId));
@@ -74,7 +80,9 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
           const handler =
             action.id === 'properties'
               ? openProperties
-              : action.id === 'selectParent'
+              : action.id === 'bindings'
+                ? openBindings
+                : action.id === 'selectParent'
                 ? selectParent
                 : clearSelection;
           return React.createElement(IconButton, {
@@ -82,7 +90,9 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
             icon:
               action.id === 'properties'
                 ? { name: 'options-outline' }
-                : action.id === 'selectParent'
+                : action.id === 'bindings'
+                  ? { name: 'git-branch-outline' }
+                  : action.id === 'selectParent'
                   ? { name: 'arrow-up-outline' }
                   : { name: 'close-outline' },
             label: action.label,

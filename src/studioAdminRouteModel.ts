@@ -7,7 +7,10 @@ import type {
 
 export interface StudioAdminRouteDefinition {
   readonly id: StudioAdminRouteId;
-  readonly path: StudioAdminStaticRoutePath | '/ankh/properties/:nodeId';
+  readonly path:
+    | StudioAdminStaticRoutePath
+    | '/ankh/bindings/:nodeId'
+    | '/ankh/properties/:nodeId';
   readonly label: string;
   readonly icon: string;
   readonly order: number;
@@ -116,16 +119,26 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     description: 'Active theme editing.',
   },
   {
+    id: 'bindings',
+    path: '/ankh/bindings/:nodeId',
+    label: 'Bindings',
+    icon: 'git-branch-outline',
+    order: 50,
+    contextual: true,
+    description: 'Selected node property/data and event/action bindings.',
+  },
+  {
     id: 'properties',
     path: '/ankh/properties/:nodeId',
     label: 'Properties',
     icon: 'options-outline',
-    order: 50,
+    order: 51,
     contextual: true,
     description: 'Selected node properties.',
   },
 ];
 
+const BINDINGS_ROUTE_PREFIX = '/ankh/bindings/';
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
 
 export function getStudioAdminRouteDefinition(
@@ -140,6 +153,10 @@ export function getStudioAdminRouteDefinition(
 }
 
 export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId | null {
+  if (pathname.startsWith(BINDINGS_ROUTE_PREFIX)) {
+    return resolveStudioBindingsNodeId(pathname) ? 'bindings' : null;
+  }
+
   if (pathname.startsWith(PROPERTIES_ROUTE_PREFIX)) {
     return resolveStudioPropertiesNodeId(pathname) ? 'properties' : null;
   }
@@ -154,6 +171,10 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
 export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
   const routeId = resolveStudioAdminRouteId(pathname);
   if (!routeId) return null;
+  if (routeId === 'bindings') {
+    const nodeId = resolveStudioBindingsNodeId(pathname);
+    return nodeId ? createStudioBindingsRoutePath(nodeId) : null;
+  }
   if (routeId === 'properties') {
     const nodeId = resolveStudioPropertiesNodeId(pathname);
     return nodeId ? createStudioPropertiesRoutePath(nodeId) : null;
@@ -162,21 +183,16 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
   return getStudioAdminRouteDefinition(routeId).path;
 }
 
+export function resolveStudioBindingsNodeId(pathname: string): string | null {
+  return resolveStudioContextNodeId(pathname, BINDINGS_ROUTE_PREFIX);
+}
+
+export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
+  return `/ankh/bindings/${encodeURIComponent(nodeId)}`;
+}
+
 export function resolveStudioPropertiesNodeId(pathname: string): string | null {
-  if (!pathname.startsWith(PROPERTIES_ROUTE_PREFIX)) {
-    return null;
-  }
-
-  const [encodedNodeId] = pathname.slice(PROPERTIES_ROUTE_PREFIX.length).split('/');
-  if (!encodedNodeId) {
-    return null;
-  }
-
-  try {
-    return decodeURIComponent(encodedNodeId);
-  } catch {
-    return encodedNodeId;
-  }
+  return resolveStudioContextNodeId(pathname, PROPERTIES_ROUTE_PREFIX);
 }
 
 export function createStudioPropertiesRoutePath(nodeId: string): `/ankh/properties/${string}` {
@@ -187,6 +203,9 @@ export function createStudioAdminRoutePath(args: {
   routeId: StudioAdminRouteId;
   selectedNodeId?: string | null;
 }): StudioAdminRoutePath | null {
+  if (args.routeId === 'bindings') {
+    return args.selectedNodeId ? createStudioBindingsRoutePath(args.selectedNodeId) : null;
+  }
   if (args.routeId === 'properties') {
     return args.selectedNodeId ? createStudioPropertiesRoutePath(args.selectedNodeId) : null;
   }
@@ -198,7 +217,7 @@ export function isStudioAdminRouteAvailable(
   routeId: StudioAdminRouteId,
   context: StudioAdminRouteAvailabilityContext,
 ): boolean {
-  if (routeId === 'properties') {
+  if (routeId === 'bindings' || routeId === 'properties') {
     return context.selectedNodeId !== null;
   }
 
@@ -238,6 +257,7 @@ export function createStudioAdminRouteRenderState(args: {
     routeAdminId,
     resolvedAdminRouteId,
     routeAdminPath,
+    bindingsNodeId: resolveStudioBindingsNodeId(args.pathname),
     propertiesNodeId: resolveStudioPropertiesNodeId(args.pathname),
     shouldRenderAppContent: routeAdminId === null,
     shouldRenderAdminShell: routeAdminId !== null,
@@ -281,4 +301,16 @@ export function resolveStudioLastNonAdminLocation(args: {
 }): string | null {
   if (isStudioAdminPath(args.pathname)) return null;
   return args.navigableLocation ?? resolveStudioNavigableLocation(args.pathname);
+}
+
+
+function resolveStudioContextNodeId(pathname: string, prefix: string): string | null {
+  if (!pathname.startsWith(prefix)) return null;
+  const [encodedNodeId] = pathname.slice(prefix.length).split('/');
+  if (!encodedNodeId) return null;
+  try {
+    return decodeURIComponent(encodedNodeId);
+  } catch {
+    return encodedNodeId;
+  }
 }
