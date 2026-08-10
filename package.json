@@ -240,9 +240,9 @@
   "dependencies": {
     "@ankhorage/color-theory": "^0.0.8",
     "@ankhorage/contracts": "^4.0.2",
-    "@ankhorage/data-sources": "^1.0.0",
+    "@ankhorage/data-sources": "^1.0.1",
     "@ankhorage/expo-runtime": "^1.0.0",
-    "@ankhorage/infra": "^2.0.0",
+    "@ankhorage/infra": "^2.0.1",
     "@ankhorage/orchestrator": "^0.2.4",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.1.2",
     "@ankhorage/orchestrator-module-expo-localization": "^0.1.5",

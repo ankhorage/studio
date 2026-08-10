@@ -10,7 +10,10 @@ import type {
   GeneratedRestApiDataSourceConfig,
 } from '@ankhorage/contracts';
 import { GENERATED_API_CRUD_OPERATIONS } from '@ankhorage/contracts';
-import { createGeneratedApiDataSource } from '@ankhorage/data-sources';
+import {
+  createGeneratedApiDataSource,
+  validateGeneratedApiDefinition,
+} from '@ankhorage/data-sources';
 
 export interface GeneratedApiFieldDraft {
   readonly name: string;
@@ -122,10 +125,6 @@ export function resolveGeneratedApiEditorDraft(
   if (!draft.databaseAdapterId.trim()) {
     diagnostics.push(diagnostic(draft.id, 'A database adapter ID is required.', 'database.id'));
   }
-  if (diagnostics.some((entry) => entry.severity === 'error')) {
-    return { diagnostics };
-  }
-
   const definition: GeneratedApiDefinition = {
     id: draft.id.trim(),
     protocol: 'rest',
@@ -135,6 +134,13 @@ export function resolveGeneratedApiEditorDraft(
     database: { id: draft.databaseAdapterId.trim(), kind: 'database' },
     resources,
   };
+  if (diagnostics.some((entry) => entry.severity === 'error')) {
+    return {
+      definition,
+      diagnostics: [...diagnostics, ...validateGeneratedApiDefinition(definition)],
+    };
+  }
+
   const projection = createGeneratedApiDataSource(definition);
   if (!projection.ok) {
     return { definition, diagnostics: [...diagnostics, ...projection.diagnostics] };
@@ -156,27 +162,8 @@ function resolveResourceDraft(
   const fields = draft.fields.map((field, fieldIndex) =>
     resolveFieldDraft(apiId, field, resourceIndex, fieldIndex, diagnostics),
   );
-  if (fields.length === 0) {
-    diagnostics.push(
-      diagnostic(
-        apiId,
-        'Generated API resources require at least one field.',
-        `resources.${resourceIndex}.collection.fields`,
-      ),
-    );
-  }
-  validateFieldNames(apiId, fields, resourceIndex, diagnostics);
   const seed = parseSeed(apiId, draft.seedText, resourceIndex, diagnostics);
   const primaryKey = clean(draft.primaryKey);
-  if (primaryKey && !fields.some((field) => field.name === primaryKey)) {
-    diagnostics.push(
-      diagnostic(
-        apiId,
-        `Primary key '${primaryKey}' does not match a field.`,
-        `resources.${resourceIndex}.collection.primaryKey`,
-      ),
-    );
-  }
 
   return {
     id: draft.id.trim(),
@@ -202,16 +189,6 @@ function resolveFieldDraft(
   diagnostics: DataSourceDiagnostic[],
 ): DbFieldDefinition {
   const name = draft.name.trim();
-  if (!name) {
-    diagnostics.push(
-      diagnostic(
-        apiId,
-        'Field name is required.',
-        `resources.${resourceIndex}.collection.fields.${fieldIndex}.name`,
-      ),
-    );
-  }
-
   const parsedDefault = parseDefaultValue(draft);
   if (!parsedDefault.ok) {
     diagnostics.push(
@@ -230,28 +207,6 @@ function resolveFieldDraft(
     unique: draft.unique || undefined,
     defaultValue: parsedDefault.ok ? parsedDefault.value : undefined,
   };
-}
-
-function validateFieldNames(
-  apiId: string,
-  fields: readonly DbFieldDefinition[],
-  resourceIndex: number,
-  diagnostics: DataSourceDiagnostic[],
-): void {
-  const seen = new Set<string>();
-  fields.forEach((field, fieldIndex) => {
-    if (!field.name || !seen.has(field.name)) {
-      if (field.name) seen.add(field.name);
-      return;
-    }
-    diagnostics.push(
-      diagnostic(
-        apiId,
-        `Field '${field.name}' is duplicated.`,
-        `resources.${resourceIndex}.collection.fields.${fieldIndex}.name`,
-      ),
-    );
-  });
 }
 
 function parseSeed(

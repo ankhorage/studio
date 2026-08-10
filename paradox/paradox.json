@@ -16809,7 +16809,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 52,
+        "line": 55,
         "column": 1
       }
     },
@@ -16818,7 +16818,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 77,
+        "line": 80,
         "column": 1
       }
     },
@@ -16827,7 +16827,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 101,
+        "line": 104,
         "column": 1
       }
     },
@@ -16836,7 +16836,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 111,
+        "line": 114,
         "column": 1
       }
     },
@@ -16845,7 +16845,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 150,
+        "line": 156,
         "column": 1
       }
     },
@@ -16854,16 +16854,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 197,
-        "column": 1
-      }
-    },
-    {
-      "name": "validateFieldNames",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 235,
+        "line": 184,
         "column": 1
       }
     },
@@ -16872,7 +16863,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 257,
+        "line": 212,
         "column": 1
       }
     },
@@ -16881,7 +16872,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 288,
+        "line": 243,
         "column": 1
       }
     },
@@ -16890,7 +16881,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 292,
+        "line": 247,
         "column": 1
       }
     },
@@ -16899,7 +16890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 299,
+        "line": 254,
         "column": 1
       }
     },
@@ -16908,7 +16899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 331,
+        "line": 286,
         "column": 1
       }
     },
@@ -16917,7 +16908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 352,
+        "line": 307,
         "column": 1
       }
     },
@@ -16926,7 +16917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 358,
+        "line": 313,
         "column": 1
       }
     },
@@ -16935,7 +16926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 363,
+        "line": 318,
         "column": 1
       }
     },
@@ -16944,7 +16935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/generatedApiEditorModel.ts",
-        "line": 373,
+        "line": 328,
         "column": 1
       }
     },
@@ -38586,6 +38577,12 @@
       },
       {
         "fromSymbol": "resolveGeneratedApiEditorDraft",
+        "toSymbol": "validateGeneratedApiDefinition",
+        "callExpression": "validateGeneratedApiDefinition",
+        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
+      },
+      {
+        "fromSymbol": "resolveGeneratedApiEditorDraft",
         "toSymbol": "createGeneratedApiDataSource",
         "callExpression": "createGeneratedApiDataSource",
         "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
@@ -38594,18 +38591,6 @@
         "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
         "toSymbol": "resolveFieldDraft",
         "callExpression": "resolveFieldDraft",
-        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
-      },
-      {
-        "fromSymbol": "resolveResourceDraft",
-        "toSymbol": "diagnostic",
-        "callExpression": "diagnostic",
-        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
-      },
-      {
-        "fromSymbol": "resolveResourceDraft",
-        "toSymbol": "validateFieldNames",
-        "callExpression": "validateFieldNames",
         "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
       },
       {
@@ -38622,18 +38607,12 @@
       },
       {
         "fromSymbol": "resolveFieldDraft",
-        "toSymbol": "diagnostic",
-        "callExpression": "diagnostic",
-        "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
-      },
-      {
-        "fromSymbol": "resolveFieldDraft",
         "toSymbol": "parseDefaultValue",
         "callExpression": "parseDefaultValue",
         "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/generatedApiEditorModel.ts",
+        "fromSymbol": "resolveFieldDraft",
         "toSymbol": "diagnostic",
         "callExpression": "diagnostic",
         "sourcePath": "src/ui/admin/pages/generatedApiEditorModel.ts"

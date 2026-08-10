@@ -56,6 +56,30 @@ describe('generated API editor model', () => {
     expect(result.dataSource?.endpoints.items?.operations['items.create']).toBeDefined();
   });
 
+  test('surfaces canonical field diagnostics from Data Sources', () => {
+    const draft = createGeneratedApiEditorDraft();
+    const [resource] = draft.resources;
+    if (!resource) throw new Error('Expected default resource.');
+
+    const [field] = resource.fields;
+    if (!field) throw new Error('Expected default field.');
+
+    const result = resolveGeneratedApiEditorDraft({
+      ...draft,
+      id: 'broken-fields',
+      resources: [
+        {
+          ...resource,
+          fields: [field, { ...field }],
+        },
+      ],
+    });
+
+    expect(result.diagnostics.map((entry) => entry.path)).toContain(
+      'resources.items.collection.fields.1.name',
+    );
+  });
+
   test('returns structured diagnostics for invalid seed JSON and primary keys', () => {
     const draft = createGeneratedApiEditorDraft();
     const [resource] = draft.resources;
@@ -68,7 +92,7 @@ describe('generated API editor model', () => {
     });
 
     expect(result.diagnostics.map((entry) => entry.path)).toContain(
-      'resources.0.collection.primaryKey',
+      'resources.items.collection.primaryKey',
     );
     expect(result.diagnostics.map((entry) => entry.path)).toContain('resources.0.seed');
   });
