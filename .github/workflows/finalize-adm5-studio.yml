@@ -25,6 +25,20 @@ jobs:
 
       - name: Apply Studio Phase 4 overlay
         run: |
+          wc -c \
+            .adm5-overlay/part00 \
+            .adm5-overlay/part01 \
+            .adm5-overlay/part02 \
+            .adm5-overlay/part03 \
+            .adm5-overlay/part04a \
+            .adm5-overlay/part04b
+          sha256sum \
+            .adm5-overlay/part00 \
+            .adm5-overlay/part01 \
+            .adm5-overlay/part02 \
+            .adm5-overlay/part03 \
+            .adm5-overlay/part04a \
+            .adm5-overlay/part04b
           cat \
             .adm5-overlay/part00 \
             .adm5-overlay/part01 \
@@ -32,7 +46,9 @@ jobs:
             .adm5-overlay/part03 \
             .adm5-overlay/part04a \
             .adm5-overlay/part04b \
-            | base64 -d > /tmp/adm5-overlay.tar.gz
+            > /tmp/adm5-overlay.b64
+          echo '58735f99ff0adae22f64bd2ee37e8e7ca5e12574f649304f953ff4c3d0a21f6a  /tmp/adm5-overlay.b64' | sha256sum -c -
+          base64 -d /tmp/adm5-overlay.b64 > /tmp/adm5-overlay.tar.gz
           echo 'cbd8be5755f382f9f8eb2eb5c49fb5f9e598ee4f578fb310614fe5157b9cb5d2  /tmp/adm5-overlay.tar.gz' | sha256sum -c -
           tar -xzf /tmp/adm5-overlay.tar.gz
 
