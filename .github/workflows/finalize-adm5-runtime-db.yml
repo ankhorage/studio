@@ -1,0 +1,532 @@
+name: Finalize ADM 5 Generated Database Runtime
+
+on:
+  push:
+    branches:
+      - agent/adm-5-generated-api-authoring
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Wire generated database runtime
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const replaceExactly = (path, before, after) => {
+            const source = fs.readFileSync(path, 'utf8');
+            if (!source.includes(before)) {
+              throw new Error(`Expected source fragment was not found in ${path}: ${before.slice(0, 120)}`);
+            }
+            fs.writeFileSync(path, source.replace(before, after));
+          };
+
+          const packagePath = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+          pkg.devDependencies['@ankhorage/supabase-db'] = '^1.0.0';
+          fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+
+          fs.writeFileSync(
+            'src/host/generatedDatabaseRuntime.ts',
+            `import type { AppManifest } from '@ankhorage/contracts';
+
+export type GeneratedDatabaseRuntimeManifest = Pick<AppManifest, 'generatedApis' | 'infra'>;
+export type GeneratedDatabaseRuntimeProvider = 'supabase';
+
+export interface GeneratedDatabaseRuntimeSelection {
+  readonly provider: GeneratedDatabaseRuntimeProvider;
+  readonly adapterIds: readonly string[];
+}
+
+export function resolveGeneratedDatabaseRuntime(
+  manifest: GeneratedDatabaseRuntimeManifest,
+): GeneratedDatabaseRuntimeSelection | null {
+  const adapterIds = [
+    ...new Set(
+      Object.values(manifest.generatedApis ?? {})
+        .map((definition) => definition.database.id.trim())
+        .filter(Boolean),
+    ),
+  ].sort();
+
+  if (adapterIds.length === 0 || manifest.infra.database?.provider !== 'supabase') {
+    return null;
+  }
+
+  return { provider: 'supabase', adapterIds };
+}
+`,
+          );
+
+          fs.writeFileSync(
+            'src/host/generatedDatabaseRuntime.test.ts',
+            `import type { GeneratedApiDefinition } from '@ankhorage/contracts';
+import { expect, test } from 'bun:test';
+
+import {
+  type GeneratedDatabaseRuntimeManifest,
+  resolveGeneratedDatabaseRuntime,
+} from './generatedDatabaseRuntime';
+
+const generatedApi = (id, adapterId) => ({
+  id,
+  protocol: 'rest',
+  basePath: '/api',
+  database: { id: adapterId, kind: 'database' },
+  resources: [],
+});
+
+test('selects unique generated adapter ids for the provisioned Supabase database', () => {
+  const manifest = {
+    infra: { database: { provider: 'supabase', tier: 'dev' }, plugins: [] },
+    generatedApis: {
+      alpha: generatedApi('alpha', 'primary-db'),
+      beta: generatedApi('beta', 'analytics-db'),
+      gamma: generatedApi('gamma', 'primary-db'),
+    },
+  } satisfies GeneratedDatabaseRuntimeManifest;
+
+  expect(resolveGeneratedDatabaseRuntime(manifest)).toEqual({
+    provider: 'supabase',
+    adapterIds: ['analytics-db', 'primary-db'],
+  });
+});
+
+test('does not claim a runtime adapter for unsupported database providers', () => {
+  const definition: GeneratedApiDefinition = generatedApi('alpha', 'primary-db');
+  const manifest = {
+    infra: { database: { provider: 'postgres-other', tier: 'dev' }, plugins: [] },
+    generatedApis: { alpha: definition },
+  } satisfies GeneratedDatabaseRuntimeManifest;
+
+  expect(resolveGeneratedDatabaseRuntime(manifest)).toBeNull();
+});
+`,
+          );
+
+          fs.writeFileSync(
+            'src/host/layout/generatedDatabaseRuntimeSource.ts',
+            `import type { GeneratedDatabaseRuntimeSelection } from '../generatedDatabaseRuntime';
+import { escapeStringLiteral } from './utils/escapeStringLiteral';
+
+export const GENERATED_DATABASE_ADAPTERS_EXPRESSION = 'GENERATED_DATABASE_ADAPTERS';
+
+export function getGeneratedDatabaseRuntimeImports(
+  selection: GeneratedDatabaseRuntimeSelection | null,
+): readonly string[] {
+  return selection?.provider === 'supabase'
+    ? [\"import { createSupabaseDbAdapter } from '@ankhorage/supabase-db';\"]
+    : [];
+}
+
+export function getGeneratedDatabaseRuntimeModuleDeclarations(
+  selection: GeneratedDatabaseRuntimeSelection | null,
+): string {
+  if (selection?.provider !== 'supabase') return '';
+
+  const adapterEntries = selection.adapterIds
+    .map((id) => \`      '\${escapeStringLiteral(id)}': generatedSupabaseDbAdapter,\`)
+    .join('\\n');
+
+  return \`const generatedSupabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? '';
+const generatedSupabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? '';
+const generatedSupabaseDbAdapter =
+  generatedSupabaseUrl.length > 0 && generatedSupabaseAnonKey.length > 0
+    ? createSupabaseDbAdapter({ url: generatedSupabaseUrl, anonKey: generatedSupabaseAnonKey })
+    : null;
+const GENERATED_DATABASE_ADAPTERS =
+  generatedSupabaseDbAdapter === null
+    ? {}
+    : {
+\${adapterEntries}
+      };\`;
+}
+`,
+          );
+
+          fs.writeFileSync(
+            'src/host/layout/generatedDatabaseRuntimeGeneration.test.ts',
+            `import { expect, test } from 'bun:test';
+
+import { getProjectTemplate } from '../templateRegistry';
+import { GeneratedAppFileGenerator } from './layoutGenerator';
+
+test('generated apps register canonical generated API database adapter ids', () => {
+  const manifest = getProjectTemplate({
+    category: 'food_drink',
+    templateId: 'nutrition-catalog-scan',
+  });
+  const files = new GeneratedAppFileGenerator().generateFiles('', manifest, [], {
+    includeStudio: false,
+  });
+  const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx');
+  if (!rootLayout) throw new Error('Expected generated root layout.');
+
+  expect(rootLayout.content).toContain(
+    \"import { createSupabaseDbAdapter } from '@ankhorage/supabase-db';\",
+  );
+  expect(rootLayout.content).toContain("'primary-db': generatedSupabaseDbAdapter");
+  expect(rootLayout.content).toContain('databaseAdapters: GENERATED_DATABASE_ADAPTERS');
+  expect(rootLayout.content).not.toContain('serviceRole');
+});
+`,
+          );
+
+          fs.writeFileSync(
+            'src/host/generatedDatabaseRuntime.integration.test.ts',
+            `import type { GeneratedApiDefinition } from '@ankhorage/contracts';
+import { createGeneratedApiDataSource } from '@ankhorage/data-sources';
+import { createRuntimeDataSourceOperationExecutor } from '@ankhorage/runtime';
+import { createSupabaseDbAdapter } from '@ankhorage/supabase-db';
+import { expect, test } from 'bun:test';
+
+import {
+  type GeneratedDatabaseRuntimeManifest,
+  resolveGeneratedDatabaseRuntime,
+} from './generatedDatabaseRuntime';
+
+test('executes canonical generated create through the released Supabase DB adapter', async () => {
+  const definition: GeneratedApiDefinition = {
+    id: 'items-api',
+    protocol: 'rest',
+    basePath: '/api',
+    database: { id: 'primary-db', kind: 'database' },
+    resources: [
+      {
+        id: 'items',
+        path: '/items',
+        collection: {
+          name: 'items',
+          schema: 'public',
+          primaryKey: 'id',
+          fields: [
+            { name: 'id', type: 'uuid', required: true, unique: true },
+            { name: 'name', type: 'text', required: true },
+          ],
+        },
+        operations: ['create'],
+      },
+    ],
+  };
+  const manifest = {
+    infra: { database: { provider: 'supabase', tier: 'dev' }, plugins: [] },
+    generatedApis: { [definition.id]: definition },
+  } satisfies GeneratedDatabaseRuntimeManifest;
+  const runtimeSelection = resolveGeneratedDatabaseRuntime(manifest);
+  expect(runtimeSelection?.adapterIds).toEqual(['primary-db']);
+
+  const normalized = createGeneratedApiDataSource(definition);
+  if (!normalized.ok) throw new Error('Expected generated API fixture to normalize.');
+  const endpoint = normalized.data.endpoints.items;
+  if (!endpoint) throw new Error('Expected generated items endpoint.');
+
+  const calls = [];
+  const mockedFetch = (input, init) => {
+    calls.push({ url: String(input), method: init?.method });
+    return Promise.resolve(
+      new Response(JSON.stringify([{ id: 'item-1', name: 'Created' }]), {
+        status: 201,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+  };
+  const adapter = createSupabaseDbAdapter({
+    url: 'https://supabase.example.test',
+    anonKey: 'anon-key',
+    fetch: mockedFetch,
+  });
+  const executor = createRuntimeDataSourceOperationExecutor({
+    databaseAdapters: { 'primary-db': adapter },
+  });
+
+  const result = await executor({
+    dataSource: normalized.data,
+    endpoint,
+    input: { name: 'Created' },
+    operation: {
+      dataSourceId: definition.id,
+      endpointId: 'items',
+      operationId: 'items.create',
+    },
+  });
+
+  expect(result).toEqual({
+    ok: true,
+    data: { id: 'item-1', name: 'Created' },
+    diagnostics: [],
+  });
+  expect(calls).toHaveLength(1);
+  expect(calls[0]?.url).toContain('https://supabase.example.test/rest/v1/items');
+  expect(calls[0]?.method).toBe('POST');
+});
+`,
+          );
+
+          replaceExactly(
+            'src/host/layout/templates/rootLayout.ts',
+            `  authRuntime?: RootLayoutAuthRuntimeConfig;\n  initialRouteNameOverride?: string;`,
+            `  authRuntime?: RootLayoutAuthRuntimeConfig;\n  databaseAdaptersExpression?: string;\n  initialRouteNameOverride?: string;`,
+          );
+          replaceExactly(
+            'src/host/layout/templates/rootLayout.ts',
+            `    authRuntime,\n    initialRouteNameOverride,`,
+            `    authRuntime,\n    databaseAdaptersExpression,\n    initialRouteNameOverride,`,
+          );
+          replaceExactly(
+            'src/host/layout/templates/rootLayout.ts',
+            `      createRuntimeDataSourceOperationExecutor({\n        fetch: runtimeDataSourceFetch,`,
+            `      createRuntimeDataSourceOperationExecutor({\n        \${databaseAdaptersExpression ? \`databaseAdapters: \${databaseAdaptersExpression},\` : ''}\n        fetch: runtimeDataSourceFetch,`,
+          );
+
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `import type { StudioAdminRouteId } from '../../index';`,
+            `import type { StudioAdminRouteId } from '../../index';\nimport { resolveGeneratedDatabaseRuntime } from '../generatedDatabaseRuntime';`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `import { composeGeneratedImports } from './generatedImportComposer';`,
+            `import { composeGeneratedImports } from './generatedImportComposer';\nimport {\n  GENERATED_DATABASE_ADAPTERS_EXPRESSION,\n  getGeneratedDatabaseRuntimeImports,\n  getGeneratedDatabaseRuntimeModuleDeclarations,\n} from './generatedDatabaseRuntimeSource';`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `    const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);\n\n    const allImports = composeGeneratedImports([`,
+            `    const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);\n    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);\n\n    const allImports = composeGeneratedImports([`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `      getPackageOwnedRuntimeImports(),\n      includeStudio`,
+            `      getPackageOwnedRuntimeImports(),\n      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),\n      includeStudio`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `      runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(\n        getGeneratedRuntimeRegistryDeclarations(),\n        ...runtimeLayoutIntegration.moduleDeclarations,\n      ),`,
+            `      databaseAdaptersExpression:\n        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,\n      runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(\n        getGeneratedRuntimeRegistryDeclarations(),\n        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime),\n        ...runtimeLayoutIntegration.moduleDeclarations,\n      ),`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `    const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);\n\n    const coreImports = [`,
+            `    const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);\n    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);\n\n    const coreImports = [`,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `      getPackageOwnedRuntimeImports(),\n      includeStudio\n        ? \`import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';\``,
+            `      getPackageOwnedRuntimeImports(),\n      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),\n      includeStudio\n        ? \`import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';\``,
+          );
+          replaceExactly(
+            'src/host/layout/layoutGenerator.ts',
+            `      runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(\n        getGeneratedRuntimeRegistryDeclarations(),\n        ...runtimeLayoutIntegration.moduleDeclarations,\n      ),\n      runtimeProviderEnd:`,
+            `      databaseAdaptersExpression:\n        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,\n      runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(\n        getGeneratedRuntimeRegistryDeclarations(),\n        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime),\n        ...runtimeLayoutIntegration.moduleDeclarations,\n      ),\n      runtimeProviderEnd:`,
+          );
+
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `import type { SplashScreenSpec } from '@ankhorage/contracts';`,
+            `import type { SplashScreenSpec } from '@ankhorage/contracts';\n\nimport type { GeneratedDatabaseRuntimeProvider } from '../generatedDatabaseRuntime';`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `const CONTRACTS_VERSION = '^4.0.0';\nconst RUNTIME_VERSION = '^0.3.0';\nconst SUPABASE_AUTH_VERSION = '^1.1.2';`,
+            `const CONTRACTS_VERSION = '^4.0.2';\nconst DATA_SOURCES_VERSION = '^1.0.1';\nconst RUNTIME_VERSION = '^1.0.0';\nconst SUPABASE_AUTH_VERSION = '^1.1.2';\nconst SUPABASE_DB_VERSION = '^1.0.0';`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `  authProvider?: GeneratedAuthProvider;\n  storageProvider?: GeneratedStorageProvider;`,
+            `  authProvider?: GeneratedAuthProvider;\n  databaseRuntimeProvider?: GeneratedDatabaseRuntimeProvider | null;\n  storageProvider?: GeneratedStorageProvider;`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `    authProvider = null,\n    storageProvider = null,`,
+            `    authProvider = null,\n    databaseRuntimeProvider = null,\n    storageProvider = null,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `      '@ankhorage/contracts': CONTRACTS_VERSION,\n      '@ankhorage/data-sources': 'latest',\n      '@ankhorage/runtime': RUNTIME_VERSION,`,
+            `      '@ankhorage/contracts': CONTRACTS_VERSION,\n      '@ankhorage/data-sources': DATA_SOURCES_VERSION,\n      '@ankhorage/runtime': RUNTIME_VERSION,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.ts',
+            `      ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),\n      '@ankhorage/zora': ZORA_VERSION,`,
+            `      ...(databaseRuntimeProvider === 'supabase'\n        ? { '@ankhorage/supabase-db': SUPABASE_DB_VERSION }\n        : {}),\n      ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),\n      '@ankhorage/zora': ZORA_VERSION,`,
+          );
+
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `import { applySystemTemplates } from '../manifestSystem';`,
+            `import type { GeneratedDatabaseRuntimeProvider } from '../generatedDatabaseRuntime';\nimport { applySystemTemplates } from '../manifestSystem';`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `  authProvider?: GeneratedAuthProvider;\n  storageProvider?: GeneratedStorageProvider;`,
+            `  authProvider?: GeneratedAuthProvider;\n  databaseRuntimeProvider?: GeneratedDatabaseRuntimeProvider | null;\n  storageProvider?: GeneratedStorageProvider;`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `      authProvider = null,\n      storageProvider = null,`,
+            `      authProvider = null,\n      databaseRuntimeProvider = null,\n      storageProvider = null,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `      authProvider,\n      storageProvider,\n      zoraExtensions,`,
+            `      authProvider,\n      databaseRuntimeProvider,\n      storageProvider,\n      zoraExtensions,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `      authProvider = null,\n      storageProvider = null,\n      splashScreen = null,`,
+            `      authProvider = null,\n      databaseRuntimeProvider = null,\n      storageProvider = null,\n      splashScreen = null,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `        authProvider,\n        storageProvider,\n        runtimePlan,`,
+            `        authProvider,\n        databaseRuntimeProvider,\n        storageProvider,\n        runtimePlan,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `    authProvider: GeneratedAuthProvider,\n    storageProvider: GeneratedStorageProvider,`,
+            `    authProvider: GeneratedAuthProvider,\n    databaseRuntimeProvider: GeneratedDatabaseRuntimeProvider | null,\n    storageProvider: GeneratedStorageProvider,`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `        authProvider,\n        storageProvider,\n        runtimePlan,\n      }),`,
+            `        authProvider,\n        databaseRuntimeProvider,\n        storageProvider,\n        runtimePlan,\n      }),`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `  const supabaseStudioTemplate = getPackageJson({\n    name: template.name,\n    includeStudio: true,\n    authProvider: 'supabase',\n    storageProvider: 'supabase',\n  });`,
+            `  const supabaseStudioTemplate = getPackageJson({\n    name: template.name,\n    includeStudio: true,\n    authProvider: 'supabase',\n    storageProvider: 'supabase',\n  });\n  const supabaseDatabaseTemplate = getPackageJson({\n    name: template.name,\n    databaseRuntimeProvider: 'supabase',\n  });`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/scaffolder.ts',
+            `    ...Object.keys(supabaseStudioTemplate.dependencies),\n    ...Object.keys(template.dependencies),`,
+            `    ...Object.keys(supabaseStudioTemplate.dependencies),\n    ...Object.keys(supabaseDatabaseTemplate.dependencies),\n    ...Object.keys(template.dependencies),`,
+          );
+
+          replaceExactly(
+            'src/host/orchestrator/projectManager.ts',
+            `import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';`,
+            `import { resolveGeneratedDatabaseRuntime } from '../generatedDatabaseRuntime';\nimport { GeneratedAppFileGenerator } from '../layout/layoutGenerator';`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/projectManager.ts',
+            `      authProvider: resolveGeneratedAuthProvider(scaffoldManifest),\n      runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),`,
+            `      authProvider: resolveGeneratedAuthProvider(scaffoldManifest),\n      databaseRuntimeProvider: resolveGeneratedDatabaseRuntime(scaffoldManifest)?.provider ?? null,\n      runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/projectManager.ts',
+            `      authProvider: resolveGeneratedAuthProvider(manifest),\n      runtimePlan,`,
+            `      authProvider: resolveGeneratedAuthProvider(manifest),\n      databaseRuntimeProvider: resolveGeneratedDatabaseRuntime(manifest)?.provider ?? null,\n      runtimePlan,`,
+          );
+
+          replaceExactly(
+            'src/host/orchestrator/templates.test.ts',
+            `    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.0');\n    expect(dependencies['@ankhorage/runtime']).toBe('^0.3.0');`,
+            `    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.2');\n    expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');\n    expect(dependencies['@ankhorage/runtime']).toBe('^1.0.0');`,
+          );
+          replaceExactly(
+            'src/host/orchestrator/templates.test.ts',
+            `  it('requires the first ZORA release that enforces interactionPolicy', () => {`,
+            `  it('adds the released Supabase DB adapter only for generated database runtime', () => {\n    const generatedDb = getPackageJson({\n      name: 'generated-db-app',\n      databaseRuntimeProvider: 'supabase',\n    });\n    const plain = getPackageJson({ name: 'plain-app' });\n\n    expect(generatedDb.dependencies['@ankhorage/supabase-db']).toBe('^1.0.0');\n    expect(plain.dependencies['@ankhorage/supabase-db']).toBeUndefined();\n  });\n\n  it('requires the first ZORA release that enforces interactionPolicy', () => {`,
+          );
+
+          const changesetPath = '.changeset/adm-5-generated-api-authoring.md';
+          const changeset = fs.readFileSync(changesetPath, 'utf8');
+          if (!changeset.includes('generated Runtime')) {
+            fs.writeFileSync(
+              changesetPath,
+              `${changeset.trim()}\n- wire generated Runtime 1 CRUD operations to released Supabase DB adapters through canonical generated API adapter IDs.\n`,
+            );
+          }
+
+          const docsPath = 'docs/generated-api-authoring.md';
+          const docs = fs.readFileSync(docsPath, 'utf8');
+          if (!docs.includes('Runtime database execution')) {
+            fs.writeFileSync(
+              docsPath,
+              `${docs.trim()}\n\n## Runtime database execution\n\nGenerated apps that use the supported Supabase database provider install the released Supabase DB adapter and register it under every database adapter ID referenced by canonical generated API desired state. Runtime 1 receives that registry through \`createRuntimeDataSourceOperationExecutor\`; Studio does not execute database operations itself. The generated client uses only \`EXPO_PUBLIC_SUPABASE_URL\` and \`EXPO_PUBLIC_SUPABASE_ANON_KEY\`. Missing client-safe environment values intentionally leave the registry empty so Runtime returns its structured \`missing-adapter\` diagnostic.\n`,
+            );
+          }
+          NODE
+
+      - name: Refresh released dependency lockfile
+        run: bun install
+
+      - name: Apply lint fixes
+        run: bun run lint:fix
+
+      - name: Format sources
+        run: bun run format
+
+      - name: Run build
+        run: bun run build
+
+      - name: Validate repository
+        run: bunx @ankhorage/ankh doctor validate .
+
+      - name: Run lint
+        run: bun run lint
+
+      - name: Run format check
+        run: bun run format:check
+
+      - name: Run Knip
+        run: bun run knip
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Run Studio web smoke test
+        run: bun run test:smoke:studio-web
+
+      - name: Run generated app web E2E
+        run: bun run test:e2e:generated-app-web
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v2
+        with:
+          version: latest
+          github-token: ${{ github.token }}
+
+      - name: Run infra E2E
+        run: bun run test:e2e:infra
+
+      - name: Run typecheck
+        run: bun run typecheck
+
+      - name: Generate docs
+        run: bun run docs
+
+      - name: Format generated docs
+        run: bun run format
+
+      - name: Check generated docs formatting
+        run: bun run format:check
+
+      - name: Check changeset
+        env:
+          CHANGESET_BASE_SHA: origin/main
+          CHANGESET_HEAD_SHA: HEAD
+        run: bash ./scripts/check-changeset-status.sh
+
+      - name: Commit validated ADM 5 runtime wiring
+        run: |
+          rm .github/workflows/finalize-adm5-runtime-db.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: wire generated database runtime adapters'
+          git push origin HEAD:agent/adm-5-generated-api-authoring
