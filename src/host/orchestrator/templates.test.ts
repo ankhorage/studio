@@ -15,7 +15,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');
     expect(dependencies['@ankhorage/runtime']).toBe('^1.0.0');
     expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
-    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
+    expect(dependencies['@ankhorage/zora']).toBe('^2.10.0');
     expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.1.2');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
@@ -36,7 +36,7 @@ describe('generated OAuth scaffold templates', () => {
     const pkg = getPackageJson({ name: 'studio-enabled-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
+    expect(dependencies['@ankhorage/zora']).toBe('^2.10.0');
   });
 
   it('pins the intentional Expo SDK 54 Reanimated and Worklets compatibility pair', () => {
