@@ -43,14 +43,7 @@ export interface HostModuleAdminRuntime {
 }
 
 export function resolveHostModuleAdminRuntime(value: unknown): HostModuleAdminRuntime | null {
-  if (!isRecord(value) || value.kind !== 'module-admin-runtime') return null;
-  const execute = value.execute;
-  if (typeof execute !== 'function') return null;
-
-  return {
-    kind: 'module-admin-runtime',
-    execute: async (context, invocation) => await execute(context, invocation),
-  };
+  return isHostModuleAdminRuntime(value) ? value : null;
 }
 
 export async function executeHostModuleAdminRuntime(args: {
@@ -65,6 +58,14 @@ export async function executeHostModuleAdminRuntime(args: {
     operation,
     ...(args.request.input === undefined ? {} : { input: args.request.input }),
   });
+}
+
+function isHostModuleAdminRuntime(value: unknown): value is HostModuleAdminRuntime {
+  return (
+    isRecord(value) &&
+    value.kind === 'module-admin-runtime' &&
+    typeof value.execute === 'function'
+  );
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
