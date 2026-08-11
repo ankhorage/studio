@@ -18,6 +18,8 @@ import {
   type StudioModuleAdminDraft,
 } from '../../../moduleAdminModel';
 import { AdminHeader, AdminScroll, Field, KeyValue } from '../adminPagePrimitives';
+import { ModuleAdminViewHost } from '../ModuleAdminViewHost';
+import { getStudioModuleAdminView } from '../moduleAdminViewRegistry';
 
 export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string | null }) {
   const studio = useStudio();
@@ -140,6 +142,8 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
     );
   }
 
+  const adminView = getStudioModuleAdminView(module.id);
+
   return (
     <AdminScroll>
       <AdminHeader title={module.name} description={module.description} />
@@ -179,7 +183,21 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
         </ButtonGroup>
       </Card>
 
-      {!module.admin ? (
+      {adminView && !module.installed ? (
+        <Card title={module.admin?.title ?? 'Administration'} description={module.admin?.description}>
+          <Text color="neutral" emphasis="muted">
+            Install the module before using its package-owned administration view.
+          </Text>
+        </Card>
+      ) : adminView && module.pendingRemoval ? (
+        <Card title="Administration unavailable">
+          <Text color="neutral" emphasis="muted">
+            This module is pending removal and cannot be administered.
+          </Text>
+        </Card>
+      ) : adminView ? (
+        <ModuleAdminViewHost moduleId={module.id} contribution={adminView} />
+      ) : !module.admin ? (
         <Card
           title={
             module.adminError
