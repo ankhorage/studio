@@ -18,6 +18,7 @@ export interface HostModuleContribution {
   readonly normalizeConfig: (input: unknown) => unknown;
   readonly layout?: LayoutMutation;
   readonly admin?: HostModuleAdminContribution;
+  readonly adminRuntime?: unknown;
 }
 
 const HOST_MODULE_CONTRIBUTIONS = [

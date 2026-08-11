@@ -28,7 +28,7 @@
       "devDependencies": {
         "@ankhorage/ankh": "^0.7.0",
         "@ankhorage/devtools": "^1.2.1",
-        "@ankhorage/paradox": "^0.1.19",
+        "@ankhorage/paradox": "^0.1.20",
         "@ankhorage/supabase-db": "^1.0.0",
         "@changesets/cli": "^2.31.0",
         "@types/bun": "^1.3.13",
@@ -105,7 +105,7 @@
 
     "@ankhorage/orchestrator-module-expo-localization": ["@ankhorage/orchestrator-module-expo-localization@0.2.0", "", { "dependencies": { "@ankhorage/orchestrator": "^0.3.0" } }, "sha512-WLFPoqBhjR29ERxt0WqHbq5VjYjOvSDc4A74W2phvcEptK8KRUfIzgFxcSBTyNVuBZlyCNJrm97TZn2Egc+AEw=="],
 
-    "@ankhorage/paradox": ["@ankhorage/paradox@0.1.19", "", { "dependencies": { "ts-morph": "^24.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-2EeC+jA7oeEmKBi2ilBr8s1Px0jxBotZmw1eIG6QlDEGJfMm5n9odCEBo7aA2BnseRyBICY9dnRChdpxlCh9Wg=="],
+    "@ankhorage/paradox": ["@ankhorage/paradox@0.1.20", "", { "dependencies": { "ts-morph": "^24.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-5GW4vomRp6zEvMvNlygPny0Vz/nzeytKOkCMgCK6cd5ILb7pMlncV6qqD8+JmSjjGgVXmIDH8jimEAmb9DKwIg=="],
 
     "@ankhorage/permissions": ["@ankhorage/permissions@0.2.2", "", { "peerDependencies": { "react": ">=18.2.0 || >=19.0.0" } }, "sha512-j/m9wU49l76iRsPYvq7OOXCZAeLwyCvNaBI1C/XTC158Wqn+Yx+nc8STRuLPs0WDmuJaid205kI/a0Hnv1T/RQ=="],
 

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.17.0",
+      "value": "v0.18.1",
       "color": "cb3837"
     },
     {
@@ -911,6 +911,13 @@
         "getProjectPath",
         "getProjectTemplate",
         "getTemplateCatalog",
+        "HostModuleAdminAuthoringContext",
+        "HostModuleAdminExecutionRequest",
+        "HostModuleAdminInvocation",
+        "HostModuleAdminManifestScreen",
+        "HostModuleAdminRuntime",
+        "HostModuleAdminRuntimeContext",
+        "HostModuleManifestFieldMutation",
         "isOriginAllowed",
         "ModuleManager",
         "ProjectAuthHealthResult",
@@ -1069,6 +1076,12 @@
         "src/host/layout/utils/escapeStringLiteral.ts"
       ],
       "exports": ["getAuthOAuthRuntimeTs"]
+    },
+    {
+      "path": "src/host/layout/templates/auth/screen.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/templates/auth/screen.ts"],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/auth/screen.ts",
@@ -1236,9 +1249,31 @@
       "exports": ["ManifestSystemTemplate"]
     },
     {
+      "path": "src/host/modules/adminRuntime.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/modules/adminRuntime.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/modules/adminRuntime.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "executeHostModuleAdminRuntime",
+        "HostModuleAdminAuthoringContext",
+        "HostModuleAdminExecutionRequest",
+        "HostModuleAdminInvocation",
+        "HostModuleAdminManifestScreen",
+        "HostModuleAdminRuntime",
+        "HostModuleAdminRuntimeContext",
+        "HostModuleManifestFieldMutation",
+        "resolveHostModuleAdminRuntime"
+      ]
+    },
+    {
       "path": "src/host/modules/catalog.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/modules/catalog.ts"],
+      "dependencies": ["src/host/modules/adminRuntime.ts", "src/host/modules/catalog.ts"],
       "exports": []
     },
     {
@@ -1354,10 +1389,12 @@
       "path": "src/host/orchestrator/moduleManager.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/modules/adminRuntime.ts",
         "src/host/modules/catalog.ts",
         "src/host/modules/runtime/LocalFsTargetAdapter.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/resolveMutations.ts",
+        "src/manifestState.ts",
         "src/moduleAdminContracts.ts"
       ],
       "exports": ["HostModuleState", "ModuleManager"]
@@ -5636,7 +5673,7 @@
       "relatedSymbols": ["StudioBindableEventOption"],
       "signatures": [
         {
-          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
           "parameters": [
             {
               "name": "node",
@@ -5646,7 +5683,7 @@
             },
             {
               "name": "registry",
-              "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+              "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
               "required": true,
               "description": null
             }
@@ -5674,7 +5711,7 @@
       "relatedSymbols": ["StudioBindablePropOption"],
       "signatures": [
         {
-          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
           "parameters": [
             {
               "name": "node",
@@ -5684,7 +5721,7 @@
             },
             {
               "name": "registry",
-              "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+              "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
               "required": true,
               "description": null
             }
@@ -11770,11 +11807,20 @@
       }
     },
     {
+      "name": "createAdminOnlyManager",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/moduleRoutes.test.ts",
+        "line": 170,
+        "column": 1
+      }
+    },
+    {
       "name": "createModuleState",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.test.ts",
-        "line": 124,
+        "line": 196,
         "column": 1
       }
     },
@@ -11783,7 +11829,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.ts",
-        "line": 23,
+        "line": 28,
         "column": 1
       }
     },
@@ -11792,7 +11838,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.ts",
-        "line": 102,
+        "line": 127,
         "column": 1
       }
     },
@@ -11801,7 +11847,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.ts",
-        "line": 106,
+        "line": 131,
         "column": 1
       }
     },
@@ -12913,11 +12959,56 @@
       }
     },
     {
+      "name": "createContext",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/adminRuntime.test.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveHostModuleAdminRuntime",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/adminRuntime.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeHostModuleAdminRuntime",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/adminRuntime.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "isHostModuleAdminRuntime",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/adminRuntime.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/adminRuntime.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
       "name": "listHostModules",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       }
     },
@@ -12926,7 +13017,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 39,
+        "line": 40,
         "column": 1
       }
     },
@@ -12935,7 +13026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 43,
+        "line": 44,
         "column": 1
       }
     },
@@ -12944,7 +13035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 56,
+        "line": 57,
         "column": 1
       }
     },
@@ -12953,7 +13044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 67,
+        "line": 68,
         "column": 1
       }
     },
@@ -12962,7 +13053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 78,
+        "line": 79,
         "column": 1
       }
     },
@@ -12971,7 +13062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 85,
+        "line": 86,
         "column": 1
       }
     },
@@ -13412,7 +13503,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/moduleManager.ts",
-        "line": 398,
+        "line": 493,
         "column": 1
       }
     },
@@ -13754,7 +13845,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 97,
+        "line": 98,
         "column": 1
       }
     },
@@ -13763,7 +13854,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 105,
+        "line": 106,
         "column": 1
       }
     },
@@ -13772,7 +13863,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 147,
+        "line": 148,
         "column": 1
       }
     },
@@ -13781,7 +13872,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 161,
+        "line": 162,
         "column": 1
       }
     },
@@ -13790,7 +13881,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 174,
+        "line": 175,
         "column": 1
       }
     },
@@ -13799,7 +13890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 196,
+        "line": 197,
         "column": 1
       }
     },
@@ -13808,7 +13899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 206,
+        "line": 207,
         "column": 1
       }
     },
@@ -13817,7 +13908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 210,
+        "line": 211,
         "column": 1
       }
     },
@@ -13826,7 +13917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 215,
+        "line": 216,
         "column": 1
       }
     },
@@ -13835,7 +13926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 229,
+        "line": 230,
         "column": 1
       }
     },
@@ -13844,7 +13935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 265,
+        "line": 266,
         "column": 1
       }
     },
@@ -13853,7 +13944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 273,
+        "line": 274,
         "column": 1
       }
     },
@@ -13862,7 +13953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 297,
+        "line": 298,
         "column": 1
       }
     },
@@ -13871,7 +13962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 391,
+        "line": 393,
         "column": 1
       }
     },
@@ -13880,7 +13971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 415,
+        "line": 417,
         "column": 1
       }
     },
@@ -13889,7 +13980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 420,
+        "line": 422,
         "column": 1
       }
     },
@@ -13898,7 +13989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 425,
+        "line": 427,
         "column": 1
       }
     },
@@ -20879,6 +20970,11 @@
       },
       {
         "fromPath": "src/host/index.ts",
+        "toPath": "src/host/modules/adminRuntime.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
         "toPath": "src/host/orchestrator/moduleManager.ts",
         "sourcePath": "src/host/index.ts"
       },
@@ -21618,6 +21714,16 @@
         "sourcePath": "src/host/manifestSystem/index.ts"
       },
       {
+        "fromPath": "src/host/modules/adminRuntime.test.ts",
+        "toPath": "src/host/modules/adminRuntime.ts",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromPath": "src/host/modules/catalog.test.ts",
+        "toPath": "src/host/modules/adminRuntime.ts",
+        "sourcePath": "src/host/modules/catalog.test.ts"
+      },
+      {
         "fromPath": "src/host/modules/catalog.test.ts",
         "toPath": "src/host/modules/catalog.ts",
         "sourcePath": "src/host/modules/catalog.test.ts"
@@ -21669,7 +21775,17 @@
       },
       {
         "fromPath": "src/host/orchestrator/moduleManager.ts",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/moduleManager.ts",
         "toPath": "src/moduleAdminContracts.ts",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/moduleManager.ts",
+        "toPath": "src/host/modules/adminRuntime.ts",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -22866,6 +22982,11 @@
         "fromPath": "src/host/layout/templates/auth/oauth.ts",
         "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
         "sourcePath": "src/host/layout/templates/auth/oauth.ts"
+      },
+      {
+        "fromPath": "src/host/layout/templates/auth/screen.test.ts",
+        "toPath": "src/host/layout/templates/auth/screen.ts",
+        "sourcePath": "src/host/layout/templates/auth/screen.test.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/screen.ts",
@@ -35528,6 +35649,12 @@
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
       },
       {
+        "fromSymbol": "src/host/http/moduleRoutes.test.ts",
+        "toSymbol": "createAdminOnlyManager",
+        "callExpression": "createAdminOnlyManager",
+        "sourcePath": "src/host/http/moduleRoutes.test.ts"
+      },
+      {
         "fromSymbol": "src/host/http/moduleRoutes.ts",
         "toSymbol": "applyPendingOperations",
         "callExpression": "orchestrator.applyPendingOperations",
@@ -35573,6 +35700,12 @@
         "fromSymbol": "src/host/http/moduleRoutes.ts",
         "toSymbol": "updateModuleConfig",
         "callExpression": "orchestrator.updateModuleConfig",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "executeModuleAdminOperation",
+        "callExpression": "orchestrator.executeModuleAdminOperation",
         "sourcePath": "src/host/http/moduleRoutes.ts"
       },
       {
@@ -36506,6 +36639,60 @@
         "sourcePath": "src/host/manifestSystem/index.ts"
       },
       {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "resolveHostModuleAdminRuntime",
+        "callExpression": "resolveHostModuleAdminRuntime",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "executeHostModuleAdminRuntime",
+        "callExpression": "executeHostModuleAdminRuntime",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/adminRuntime.test.ts",
+        "toSymbol": "createContext",
+        "callExpression": "createContext",
+        "sourcePath": "src/host/modules/adminRuntime.test.ts"
+      },
+      {
+        "fromSymbol": "resolveHostModuleAdminRuntime",
+        "toSymbol": "isHostModuleAdminRuntime",
+        "callExpression": "isHostModuleAdminRuntime",
+        "sourcePath": "src/host/modules/adminRuntime.ts"
+      },
+      {
+        "fromSymbol": "executeHostModuleAdminRuntime",
+        "toSymbol": "execute",
+        "callExpression": "args.runtime.execute",
+        "sourcePath": "src/host/modules/adminRuntime.ts"
+      },
+      {
+        "fromSymbol": "isHostModuleAdminRuntime",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/modules/adminRuntime.ts"
+      },
+      {
         "fromSymbol": "src/host/modules/catalog.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -36539,6 +36726,12 @@
         "fromSymbol": "src/host/modules/catalog.test.ts",
         "toSymbol": "resolveHostModuleAdminContribution",
         "callExpression": "resolveHostModuleAdminContribution",
+        "sourcePath": "src/host/modules/catalog.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/modules/catalog.test.ts",
+        "toSymbol": "resolveHostModuleAdminRuntime",
+        "callExpression": "resolveHostModuleAdminRuntime",
         "sourcePath": "src/host/modules/catalog.test.ts"
       },
       {
@@ -37340,6 +37533,48 @@
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "getAppPath",
+        "callExpression": "this.getAppPath",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "ensureProjectExists",
+        "callExpression": "this.ensureProjectExists",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "requireHostModule",
+        "callExpression": "this.requireHostModule",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "resolveHostModuleAdminRuntime",
+        "callExpression": "resolveHostModuleAdminRuntime",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "getModuleState",
+        "callExpression": "this.getModuleState",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "createModuleAdminRuntimeContext",
+        "callExpression": "this.createModuleAdminRuntimeContext",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "executeModuleAdminOperation",
+        "toSymbol": "executeHostModuleAdminRuntime",
+        "callExpression": "executeHostModuleAdminRuntime",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
         "fromSymbol": "applyPendingOperations",
         "toSymbol": "getAppPath",
         "callExpression": "this.getAppPath",
@@ -37493,6 +37728,54 @@
         "fromSymbol": "rebuildRootLayout",
         "toSymbol": "resolveLayoutMutations",
         "callExpression": "this.resolveLayoutMutations",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "readConfig",
+        "toSymbol": "getModuleOrchestrator",
+        "callExpression": "this.getModuleOrchestrator",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "reconfigureConfig",
+        "toSymbol": "updateModuleConfig",
+        "callExpression": "this.updateModuleConfig",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "readAuthoringContext",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "this.projectManager.getStudioManifest",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "mutateManifestField",
+        "toSymbol": "mutateModuleAdminManifestField",
+        "callExpression": "this.mutateModuleAdminManifestField",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "mutateModuleAdminManifestField",
+        "toSymbol": "getStudioManifest",
+        "callExpression": "this.projectManager.getStudioManifest",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "mutateModuleAdminManifestField",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "mutateModuleAdminManifestField",
+        "toSymbol": "updateStudioManifestNode",
+        "callExpression": "updateStudioManifestNode",
+        "sourcePath": "src/host/orchestrator/moduleManager.ts"
+      },
+      {
+        "fromSymbol": "mutateModuleAdminManifestField",
+        "toSymbol": "saveStudioManifest",
+        "callExpression": "this.saveStudioManifest",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -43988,6 +44271,24 @@
         "sourcePath": "src/host/layout/templates/auth/oauth.ts"
       },
       {
+        "fromSymbol": "src/host/layout/templates/auth/screen.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/templates/auth/screen.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/screen.test.ts",
+        "toSymbol": "getAuthScreenTsx",
+        "callExpression": "getAuthScreenTsx",
+        "sourcePath": "src/host/layout/templates/auth/screen.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/auth/screen.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/templates/auth/screen.test.ts"
+      },
+      {
         "fromSymbol": "src/host/layout/templates/auth/screen.ts",
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
@@ -44891,11 +45192,6 @@
         "sourcePath": "src/bindingMetadataModel.ts"
       },
       {
-        "fromSymbol": "resolveStudioBindableProps",
-        "toType": "Users",
-        "sourcePath": "src/bindingMetadataModel.ts"
-      },
-      {
         "fromSymbol": "resolveStudioBindableEvents",
         "toType": "Readonly",
         "sourcePath": "src/bindingMetadataModel.ts"
@@ -44913,11 +45209,6 @@
       {
         "fromSymbol": "resolveStudioBindableEvents",
         "toType": "UiNode",
-        "sourcePath": "src/bindingMetadataModel.ts"
-      },
-      {
-        "fromSymbol": "resolveStudioBindableEvents",
-        "toType": "Users",
         "sourcePath": "src/bindingMetadataModel.ts"
       },
       {
