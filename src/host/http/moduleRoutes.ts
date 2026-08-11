@@ -5,6 +5,7 @@ import type { ModuleManager } from '../orchestrator/moduleManager';
 type ProjectModuleRouteManager = Pick<
   ModuleManager,
   | 'applyPendingOperations'
+  | 'executeModuleAdminOperation'
   | 'getModuleState'
   | 'installModule'
   | 'listModules'
@@ -18,6 +19,10 @@ interface ProjectParams {
 
 interface ProjectModuleParams extends ProjectParams {
   readonly moduleId: string;
+}
+
+interface ProjectModuleAdminParams extends ProjectModuleParams {
+  readonly operation: string;
 }
 
 export function registerProjectModuleRoutes(
@@ -91,6 +96,30 @@ export function registerProjectModuleRoutes(
           req.params.id,
           req.params.moduleId,
           req.body.config,
+        );
+      } catch (error: unknown) {
+        return reply.status(400).send({ error: toMessage(error) });
+      }
+    },
+  );
+
+  fastify.post<{ Params: ProjectModuleAdminParams; Body: unknown }>(
+    '/api/projects/:id/modules/:moduleId/admin/:operation',
+    async (req, reply) => {
+      if (req.body !== undefined && !isRecord(req.body)) {
+        return reply.status(400).send({ error: 'admin operation body must be an object' });
+      }
+
+      const body = isRecord(req.body) ? req.body : {};
+      try {
+        return await orchestrator.executeModuleAdminOperation(
+          req.params.id,
+          req.params.moduleId,
+          {
+            operation: req.params.operation,
+            ...(body.input === undefined ? {} : { input: body.input }),
+            ...(body.componentMeta === undefined ? {} : { componentMeta: body.componentMeta }),
+          },
         );
       } catch (error: unknown) {
         return reply.status(400).send({ error: toMessage(error) });
