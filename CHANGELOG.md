@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.18.1
+
+### Patch Changes
+
+- 3b2faae: Use the canonical `@ankhorage/utility` validators in generated auth screens and declare the utility dependency for generated auth apps.
+
 ## 0.18.0
 
 ### Minor Changes
