@@ -64,40 +64,28 @@ replace_once(augmentation_path, '  appMode?: unknown;\n', '')
 replace_once(augmentation_path, '  overflow?: unknown;\n', '')
 
 layout_path = 'src/host/layout/layoutGenerator.ts'
-replace_once(
+replace_exact_count(
     layout_path,
     "`import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,",
     "`import type { AppManifest } from '@ankhorage/contracts';`,",
+    2,
 )
-replace_once(
+replace_exact_count(
     layout_path,
     "        includeStudio ? 'AppBar' : '',\n",
     "        'AppBar',\n        'ThemeModeToggle',\n",
+    2,
 )
-replace_once(
+replace_exact_count(
     layout_path,
     "      includeStudio\n        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`\n        : '',\n",
     '',
-)
-replace_once(
-    layout_path,
-    "      `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,",
-    "      `import type { AppManifest } from '@ankhorage/contracts';`,",
-)
-replace_once(
-    layout_path,
-    "        includeStudio ? 'AppBar' : '',\n",
-    "        'AppBar',\n        'ThemeModeToggle',\n",
+    2,
 )
 replace_once(
     layout_path,
     "      rootNavigator.type === 'tabs'\n        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`\n        : rootNavigator.type === 'drawer'\n          ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\\n` : ''}import { Drawer } from 'expo-router/drawer';`\n          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,",
     "      rootNavigator.type === 'tabs'\n        ? `import { Tabs, usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';`\n        : rootNavigator.type === 'drawer'\n          ? `import { usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';\\nimport { Drawer } from 'expo-router/drawer';`\n          : `import { Stack, usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';`,",
-)
-replace_once(
-    layout_path,
-    "      includeStudio\n        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`\n        : '',\n",
-    '',
 )
 
 root_path = 'src/host/layout/templates/rootLayout.ts'
