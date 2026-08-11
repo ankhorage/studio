@@ -3,8 +3,13 @@ import type { CanvasDropZoneResolution } from '../../canvasDropZones';
 import type { NodePlacement } from '../../index';
 
 export interface CanvasDragSessionCallbacks {
+  readonly restartDraggable: () => void;
   readonly setActiveDragNodeId: (nodeId: string | null) => void;
   readonly setActiveDropZoneId: (zoneId: string | null) => void;
+}
+
+export function createCanvasDraggableSessionKey(nodeId: string, revision: number): string {
+  return `${nodeId}:${revision}`;
 }
 
 export function sortCanvasDropTargetsBySpecificity<
@@ -18,6 +23,7 @@ export function sortCanvasDropTargetsBySpecificity<
 export function resetCanvasDragSession(callbacks: CanvasDragSessionCallbacks): void {
   callbacks.setActiveDropZoneId(null);
   callbacks.setActiveDragNodeId(null);
+  callbacks.restartDraggable();
 }
 
 export function commitCanvasDrop(
@@ -30,6 +36,21 @@ export function commitCanvasDrop(
   }
 
   return moveNodeToPlacement(payload.nodeId, zone.placement);
+}
+
+export function completeCanvasDropAfterAdapter(
+  payload: unknown,
+  zone: CanvasDropZoneResolution,
+  moveNodeToPlacement: (nodeId: string, placement: NodePlacement) => boolean,
+  resetDrag: () => void,
+): Promise<boolean> {
+  return Promise.resolve().then(() => {
+    try {
+      return commitCanvasDrop(payload, zone, moveNodeToPlacement);
+    } finally {
+      resetDrag();
+    }
+  });
 }
 
 export function activateCanvasDrag(

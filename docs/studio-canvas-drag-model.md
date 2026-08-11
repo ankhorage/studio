@@ -9,6 +9,7 @@ movement payloads, placement slots, measured drop-zone geometry, and drag-previe
 import {
   createStudioCanvasDragPayload,
   isStudioCanvasDragPayload,
+  resolveCanvasDragSession,
   resolveCanvasDragPreviewText,
   resolveCanvasDropZoneRect,
   resolveCanvasDropZoneSlots,
@@ -23,6 +24,7 @@ import {
 - resolving before, inside, and after placement slots
 - deriving drop-zone rectangles from measured Runtime node bounds
 - selecting concise authored text for the measured-bounds drag preview
+- resolving whether an active drag still belongs to the current edit selection and manifest tree
 
 ## Runtime integration
 
@@ -37,6 +39,14 @@ supplies a synthetic root target on native, where the normal selection recorder 
 not wrap the root. More specific targets are registered before broad ancestor zones so nested
 placements win overlapping collision checks.
 
-The UI adapter owns transient drag and hover state and resets it after cancellation or commit. A
-valid drop invokes the context's placement mutation exactly once. The package-neutral model remains
-free of gestures, React lifecycle, concrete ZORA metadata, and manifest persistence.
+The UI adapter owns transient drag and hover state and resets it after cancellation or commit. Each
+reset also advances the Draggable session identity, remounting the web adapter after it reports a
+drop so committed translation and `DROPPED` state cannot leak into the next interaction. The
+selected node ID is part of that identity, so changing selection also creates a fresh adapter
+instance.
+
+An active drag is exposed to Runtime measurement and the overlay only while Edit mode is active,
+the active node is still selected, and the node still exists in the current root. Selection loss,
+tree removal, and Preview transitions synchronously suppress drag geometry and clear transient
+state. A valid drop invokes the context's placement mutation exactly once. The package-neutral
+model remains free of gestures, React lifecycle, concrete ZORA metadata, and manifest persistence.

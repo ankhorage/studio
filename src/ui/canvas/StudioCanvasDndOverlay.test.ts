@@ -23,10 +23,11 @@ describe('Studio canvas DnD adapter integration', () => {
     expect(source).toContain('indicatorRects: props.indicatorRects');
   });
 
-  test('shows canonical invalid reasons and resets after adapter completion', () => {
+  test('wires canonical invalid reasons and lifecycle helpers into the adapter', () => {
     expect(source).toContain('props.zone.resolution.reason.message');
-    expect(source).toContain('commitCanvasDrop(payload');
-    expect(source).toContain('resetAfterDrop(props.resetDrag)');
-    expect(source).toContain('state === DraggableState.IDLE');
+    expect(source).toContain('completeCanvasDropAfterAdapter(');
+    expect(source).toContain(
+      'key={createCanvasDraggableSessionKey(selectedNode.id, dragSessionRevision)}',
+    );
   });
 });

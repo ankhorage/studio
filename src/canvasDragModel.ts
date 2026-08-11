@@ -1,3 +1,5 @@
+import type { UiNode } from '@ankhorage/contracts';
+
 import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { PlacementKind } from './index';
 
@@ -21,6 +23,38 @@ export interface CanvasDropZoneSlots {
   beforeDropZone: ValidCanvasDropZoneResolution | null;
   insideDropZone: ValidCanvasDropZoneResolution | null;
   afterDropZone: ValidCanvasDropZoneResolution | null;
+}
+
+export interface CanvasDragSessionResolution {
+  readonly activeDragNodeId: string | null;
+  readonly shouldReset: boolean;
+}
+
+function treeContainsNode(root: UiNode, nodeId: string): boolean {
+  if (root.id === nodeId) return true;
+  return root.children?.some((child) => treeContainsNode(child, nodeId)) ?? false;
+}
+
+export function resolveCanvasDragSession(args: {
+  readonly activeDragNodeId: string | null;
+  readonly isEditMode: boolean;
+  readonly rootNode: UiNode | null;
+  readonly selectedNodeId: string | null;
+}): CanvasDragSessionResolution {
+  const { activeDragNodeId } = args;
+  if (!activeDragNodeId) {
+    return { activeDragNodeId: null, shouldReset: false };
+  }
+
+  const isValid =
+    args.isEditMode &&
+    args.selectedNodeId === activeDragNodeId &&
+    args.rootNode !== null &&
+    treeContainsNode(args.rootNode, activeDragNodeId);
+
+  return isValid
+    ? { activeDragNodeId, shouldReset: false }
+    : { activeDragNodeId: null, shouldReset: true };
 }
 
 export function createStudioCanvasDragPayload(nodeId: string): StudioCanvasDragPayload {

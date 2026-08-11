@@ -352,7 +352,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/canvasDragModel.ts">
                 src/canvasDragModel.ts
-                <small>7 functions</small>
+                <small>9 functions</small>
               </button>
             </li>
             <li>
@@ -2106,7 +2106,7 @@
                 data-target="src/ui/canvas/canvasDndInteraction.ts"
               >
                 src/ui/canvas/canvasDndInteraction.ts
-                <small>4 functions</small>
+                <small>6 functions</small>
               </button>
             </li>
             <li>
@@ -2116,7 +2116,7 @@
                 data-target="src/ui/canvas/StudioCanvasDndOverlay.tsx"
               >
                 src/ui/canvas/StudioCanvasDndOverlay.tsx
-                <small>6 functions</small>
+                <small>5 functions</small>
               </button>
             </li>
             <li>
@@ -2587,7 +2587,7 @@
             </article>
             <article
               class="item"
-              data-search="src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts CanvasDropZoneSlots CanvasRect createStudioCanvasDragPayload isStudioCanvasDragPayload isValidCanvasDropZone resolveCanvasDragPreviewText resolveCanvasDropZoneRect resolveCanvasDropZoneSlots StudioCanvasDragPayload"
+              data-search="src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts CanvasDragSessionResolution CanvasDropZoneSlots CanvasRect createStudioCanvasDragPayload isStudioCanvasDragPayload isValidCanvasDropZone resolveCanvasDragPreviewText resolveCanvasDragSession resolveCanvasDropZoneRect resolveCanvasDropZoneSlots StudioCanvasDragPayload"
             >
               <h3>src/canvasDragModel.ts</h3>
               <p class="muted">Referenced module</p>
@@ -2596,11 +2596,12 @@
                 <code>src/index.ts</code>
               </p>
               <p>
-                <strong>Exports:</strong> <code>CanvasDropZoneSlots</code>, <code>CanvasRect</code>,
+                <strong>Exports:</strong> <code>CanvasDragSessionResolution</code>,
+                <code>CanvasDropZoneSlots</code>, <code>CanvasRect</code>,
                 <code>createStudioCanvasDragPayload</code>, <code>isStudioCanvasDragPayload</code>,
                 <code>isValidCanvasDropZone</code>, <code>resolveCanvasDragPreviewText</code>,
-                <code>resolveCanvasDropZoneRect</code>, <code>resolveCanvasDropZoneSlots</code>,
-                <code>StudioCanvasDragPayload</code>
+                <code>resolveCanvasDragSession</code>, <code>resolveCanvasDropZoneRect</code>,
+                <code>resolveCanvasDropZoneSlots</code>, <code>StudioCanvasDragPayload</code>
               </p>
             </article>
             <article
@@ -5233,13 +5234,13 @@
             </article>
             <article
               class="item"
-              data-search="src/runtime/stationarySelection.ts src/index.ts src/runtime/indicatorRefreshCoordinator.ts src/runtime/indicatorSettleCoordinator.ts src/runtime/runtimeNodeMeasurement.ts src/runtime/stationarySelectionCoordinator.ts src/runtime/stationarySelectionInputState.ts src/ui/canvas/StudioCanvasDndOverlay.tsx CommitSelectionResult createStudioStationarySelectionWrapNode StationarySelectionCoordinator StationaryTapSelector StudioCanvasInteractionAdapter TransactionState useStudioUnsupportedNodeMeasurement"
+              data-search="src/runtime/stationarySelection.ts src/canvasDragModel.ts src/index.ts src/runtime/indicatorRefreshCoordinator.ts src/runtime/indicatorSettleCoordinator.ts src/runtime/runtimeNodeMeasurement.ts src/runtime/stationarySelectionCoordinator.ts src/runtime/stationarySelectionInputState.ts src/ui/canvas/StudioCanvasDndOverlay.tsx CommitSelectionResult createStudioStationarySelectionWrapNode StationarySelectionCoordinator StationaryTapSelector StudioCanvasInteractionAdapter TransactionState useStudioUnsupportedNodeMeasurement"
             >
               <h3>src/runtime/stationarySelection.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong> <code>src/index.ts</code>,
-                <code>src/runtime/indicatorRefreshCoordinator.ts</code>,
+                <strong>Dependencies:</strong> <code>src/canvasDragModel.ts</code>,
+                <code>src/index.ts</code>, <code>src/runtime/indicatorRefreshCoordinator.ts</code>,
                 <code>src/runtime/indicatorSettleCoordinator.ts</code>,
                 <code>src/runtime/runtimeNodeMeasurement.ts</code>,
                 <code>src/runtime/stationarySelectionCoordinator.ts</code>,
@@ -6173,7 +6174,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/canvas/canvasDndInteraction.ts src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts activateCanvasDrag CanvasDragSessionCallbacks commitCanvasDrop resetCanvasDragSession sortCanvasDropTargetsBySpecificity"
+              data-search="src/ui/canvas/canvasDndInteraction.ts src/canvasDragModel.ts src/canvasDropZones.ts src/index.ts activateCanvasDrag CanvasDragSessionCallbacks commitCanvasDrop completeCanvasDropAfterAdapter createCanvasDraggableSessionKey resetCanvasDragSession sortCanvasDropTargetsBySpecificity"
             >
               <h3>src/ui/canvas/canvasDndInteraction.ts</h3>
               <p class="muted">Referenced module</p>
@@ -6184,7 +6185,9 @@
               <p>
                 <strong>Exports:</strong> <code>activateCanvasDrag</code>,
                 <code>CanvasDragSessionCallbacks</code>, <code>commitCanvasDrop</code>,
-                <code>resetCanvasDragSession</code>, <code>sortCanvasDropTargetsBySpecificity</code>
+                <code>completeCanvasDropAfterAdapter</code>,
+                <code>createCanvasDraggableSessionKey</code>, <code>resetCanvasDragSession</code>,
+                <code>sortCanvasDropTargetsBySpecificity</code>
               </p>
             </article>
             <article class="item" data-search="src/ui/canvas/StudioCanvasDndOverlay.test.ts">
@@ -12597,6 +12600,7 @@
                 package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_test_ts
                 module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_ts
+                module_src_runtime_stationarySelection_ts --&gt; module_src_canvasDragModel_ts
                 module_src_runtime_stationarySelection_ts --&gt; module_src_index_ts
                 module_src_runtime_stationarySelection_ts --&gt;
                 module_src_runtime_indicatorRefreshCoordinator_ts
@@ -13894,6 +13898,7 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_test_ts
   module_src_runtime_stationarySelection_ts[&quot;src/runtime/stationarySelection.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_runtime_stationarySelection_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_canvasDragModel_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_index_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_indicatorSettleCoordinator_ts
@@ -15093,6 +15098,7 @@ graph TD
                 module_src_runtime_runtimeNodeMeasurement_ts
                 module_src_runtime_stationarySelection_public_test_ts --&gt;
                 module_src_runtime_index_ts module_src_runtime_stationarySelection_ts --&gt;
+                module_src_canvasDragModel_ts module_src_runtime_stationarySelection_ts --&gt;
                 module_src_index_ts module_src_runtime_stationarySelection_ts --&gt;
                 module_src_runtime_indicatorRefreshCoordinator_ts
                 module_src_runtime_stationarySelection_ts --&gt;
@@ -16039,6 +16045,7 @@ graph LR
   module_src_runtime_previewRuntimeConfig_ts --&gt; module_src_runtime_previewRegistry_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --&gt; module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_public_test_ts --&gt; module_src_runtime_index_ts
+  module_src_runtime_stationarySelection_ts --&gt; module_src_canvasDragModel_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_index_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --&gt; module_src_runtime_indicatorSettleCoordinator_ts
@@ -19111,37 +19118,47 @@ sequenceDiagram
         >
           <section class="panel">
             <h2>src/canvasDragModel.ts</h2>
+            <article class="item" data-search="treeContainsNode src/canvasDragModel.ts ">
+              <h3>treeContainsNode</h3>
+              <p class="muted"><code>src/canvasDragModel.ts:33:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article class="item" data-search="resolveCanvasDragSession src/canvasDragModel.ts ">
+              <h3>resolveCanvasDragSession</h3>
+              <p class="muted"><code>src/canvasDragModel.ts:38:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
             <article
               class="item"
               data-search="createStudioCanvasDragPayload src/canvasDragModel.ts "
             >
               <h3>createStudioCanvasDragPayload</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:26:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:60:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStudioCanvasDragPayload src/canvasDragModel.ts ">
               <h3>isStudioCanvasDragPayload</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:30:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:64:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isValidCanvasDropZone src/canvasDragModel.ts ">
               <h3>isValidCanvasDropZone</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:38:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:72:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveCanvasDropZoneSlots src/canvasDragModel.ts ">
               <h3>resolveCanvasDropZoneSlots</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:44:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:78:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="findDropZoneByKind src/canvasDragModel.ts ">
               <h3>findDropZoneByKind</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:57:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:91:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resolveCanvasDropZoneRect src/canvasDragModel.ts ">
               <h3>resolveCanvasDropZoneRect</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:64:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:98:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -19149,7 +19166,7 @@ sequenceDiagram
               data-search="resolveCanvasDragPreviewText src/canvasDragModel.ts "
             >
               <h3>resolveCanvasDragPreviewText</h3>
-              <p class="muted"><code>src/canvasDragModel.ts:98:1</code></p>
+              <p class="muted"><code>src/canvasDragModel.ts:132:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -26354,7 +26371,7 @@ sequenceDiagram
               data-search="isWebElementLike src/runtime/stationarySelection.ts "
             >
               <h3>isWebElementLike</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:88:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:89:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26362,7 +26379,7 @@ sequenceDiagram
               data-search="getWebResizeTarget src/runtime/stationarySelection.ts "
             >
               <h3>getWebResizeTarget</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:98:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:99:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26370,12 +26387,12 @@ sequenceDiagram
               data-search="getWebDescendantResizeTargets src/runtime/stationarySelection.ts "
             >
               <h3>getWebDescendantResizeTargets</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:102:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:103:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="toMeasuredRect src/runtime/stationarySelection.ts ">
               <h3>toMeasuredRect</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:113:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:114:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26383,12 +26400,12 @@ sequenceDiagram
               data-search="measureRenderedBoxes src/runtime/stationarySelection.ts "
             >
               <h3>measureRenderedBoxes</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:122:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:123:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="measureRootView src/runtime/stationarySelection.ts ">
               <h3>measureRootView</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:131:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:132:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26396,7 +26413,7 @@ sequenceDiagram
               data-search="measureRuntimeNodeWebView src/runtime/stationarySelection.ts "
             >
               <h3>measureRuntimeNodeWebView</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:143:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:144:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26404,7 +26421,7 @@ sequenceDiagram
               data-search="measureAuthoredWebView src/runtime/stationarySelection.ts "
             >
               <h3>measureAuthoredWebView</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:157:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:158:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26412,7 +26429,7 @@ sequenceDiagram
               data-search="areIndicatorRectsEqual src/runtime/stationarySelection.ts "
             >
               <h3>areIndicatorRectsEqual</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:166:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:167:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26420,7 +26437,7 @@ sequenceDiagram
               data-search="useStudioUnsupportedNodeMeasurement src/runtime/stationarySelection.ts "
             >
               <h3>useStudioUnsupportedNodeMeasurement</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:190:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:191:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26428,7 +26445,7 @@ sequenceDiagram
               data-search="StudioNodeTouchRecorder src/runtime/stationarySelection.ts "
             >
               <h3>StudioNodeTouchRecorder</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:223:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:224:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26436,7 +26453,7 @@ sequenceDiagram
               data-search="recordInteraction src/runtime/stationarySelection.ts "
             >
               <h3>recordInteraction</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:235:3</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:236:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26444,7 +26461,7 @@ sequenceDiagram
               data-search="handlePointerDown src/runtime/stationarySelection.ts "
             >
               <h3>handlePointerDown</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:249:3</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:250:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26452,7 +26469,7 @@ sequenceDiagram
               data-search="handleTouchStart src/runtime/stationarySelection.ts "
             >
               <h3>handleTouchStart</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:260:3</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:261:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26460,12 +26477,12 @@ sequenceDiagram
               data-search="handleInteractionCompletion src/runtime/stationarySelection.ts "
             >
               <h3>handleInteractionCompletion</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:269:3</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:270:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="handleLayout src/runtime/stationarySelection.ts ">
               <h3>handleLayout</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:273:3</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:274:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26473,7 +26490,7 @@ sequenceDiagram
               data-search="createStudioStationarySelectionWrapNode src/runtime/stationarySelection.ts "
             >
               <h3>createStudioStationarySelectionWrapNode</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:362:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:363:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26481,17 +26498,17 @@ sequenceDiagram
               data-search="StationaryTapSelector src/runtime/stationarySelection.ts "
             >
               <h3>StationaryTapSelector</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:409:1</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:410:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="handleScroll src/runtime/stationarySelection.ts ">
               <h3>handleScroll</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:694:11</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:704:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="handleResize src/runtime/stationarySelection.ts ">
               <h3>handleResize</h3>
-              <p class="muted"><code>src/runtime/stationarySelection.ts:695:11</code></p>
+              <p class="muted"><code>src/runtime/stationarySelection.ts:705:11</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28859,7 +28876,7 @@ sequenceDiagram
               data-search="moveNode src/ui/canvas/canvasDndInteraction.test.ts "
             >
               <h3>moveNode</h3>
-              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.test.ts:41:11</code></p>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.test.ts:43:11</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28874,10 +28891,18 @@ sequenceDiagram
             <h2>src/ui/canvas/canvasDndInteraction.ts</h2>
             <article
               class="item"
+              data-search="createCanvasDraggableSessionKey src/ui/canvas/canvasDndInteraction.ts "
+            >
+              <h3>createCanvasDraggableSessionKey</h3>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:11:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="sortCanvasDropTargetsBySpecificity src/ui/canvas/canvasDndInteraction.ts "
             >
               <h3>sortCanvasDropTargetsBySpecificity</h3>
-              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:10:1</code></p>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:15:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28885,7 +28910,7 @@ sequenceDiagram
               data-search="resetCanvasDragSession src/ui/canvas/canvasDndInteraction.ts "
             >
               <h3>resetCanvasDragSession</h3>
-              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:18:1</code></p>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:23:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28893,7 +28918,15 @@ sequenceDiagram
               data-search="commitCanvasDrop src/ui/canvas/canvasDndInteraction.ts "
             >
               <h3>commitCanvasDrop</h3>
-              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:23:1</code></p>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:29:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="completeCanvasDropAfterAdapter src/ui/canvas/canvasDndInteraction.ts "
+            >
+              <h3>completeCanvasDropAfterAdapter</h3>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:41:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28901,7 +28934,7 @@ sequenceDiagram
               data-search="activateCanvasDrag src/ui/canvas/canvasDndInteraction.ts "
             >
               <h3>activateCanvasDrag</h3>
-              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:35:1</code></p>
+              <p class="muted"><code>src/ui/canvas/canvasDndInteraction.ts:56:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28916,18 +28949,10 @@ sequenceDiagram
             <h2>src/ui/canvas/StudioCanvasDndOverlay.tsx</h2>
             <article
               class="item"
-              data-search="resetAfterDrop src/ui/canvas/StudioCanvasDndOverlay.tsx "
-            >
-              <h3>resetAfterDrop</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:56:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
               data-search="resolveDropZoneViews src/ui/canvas/StudioCanvasDndOverlay.tsx "
             >
               <h3>resolveDropZoneViews</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:60:1</code></p>
+              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:57:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28935,7 +28960,7 @@ sequenceDiagram
               data-search="CanvasDropZone src/ui/canvas/StudioCanvasDndOverlay.tsx "
             >
               <h3>CanvasDropZone</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:90:1</code></p>
+              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:87:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28943,7 +28968,7 @@ sequenceDiagram
               data-search="CanvasDragPreview src/ui/canvas/StudioCanvasDndOverlay.tsx "
             >
               <h3>CanvasDragPreview</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:139:1</code></p>
+              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:140:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28951,12 +28976,12 @@ sequenceDiagram
               data-search="StudioCanvasDndOverlay src/ui/canvas/StudioCanvasDndOverlay.tsx "
             >
               <h3>StudioCanvasDndOverlay</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:178:1</code></p>
+              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:179:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="resetDrag src/ui/canvas/StudioCanvasDndOverlay.tsx ">
               <h3>resetDrag</h3>
-              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:209:9</code></p>
+              <p class="muted"><code>src/ui/canvas/StudioCanvasDndOverlay.tsx:211:9</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

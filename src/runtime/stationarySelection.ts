@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
+import { resolveCanvasDragSession } from '../canvasDragModel.js';
 import type { NodePlacement, StudioComponentMetaRegistry } from '../index.js';
 import { StudioCanvasDndOverlay } from '../ui/canvas/StudioCanvasDndOverlay.js';
 import {
@@ -454,9 +455,14 @@ function StationaryTapSelector(props: {
   );
   const selectedIndicatorNodeId = shouldRenderSelectedChrome ? props.selectedNodeId : null;
   const measurementSelectedNodeId = props.isEditMode ? props.selectedNodeId : null;
-  const activeDragNodeId = props.isEditMode
-    ? (props.canvasInteraction?.activeDragNodeId ?? null)
-    : null;
+  const requestedActiveDragNodeId = props.canvasInteraction?.activeDragNodeId ?? null;
+  const canvasDragSession = resolveCanvasDragSession({
+    activeDragNodeId: requestedActiveDragNodeId,
+    isEditMode: props.isEditMode,
+    rootNode: props.canvasInteraction?.rootNode ?? null,
+    selectedNodeId: props.selectedNodeId,
+  });
+  const { activeDragNodeId } = canvasDragSession;
   measurementSelectedNodeIdRef.current = measurementSelectedNodeId;
   activeDragNodeIdRef.current = activeDragNodeId;
   selectNodeRef.current = props.selectNode;
@@ -662,10 +668,14 @@ function StationaryTapSelector(props: {
   ]);
 
   React.useEffect(() => {
-    if (!props.isEditMode && props.canvasInteraction?.activeDragNodeId) {
-      props.canvasInteraction.setActiveDragNodeId(null);
+    if (canvasDragSession.shouldReset) {
+      props.canvasInteraction?.setActiveDragNodeId(null);
     }
-  }, [props.canvasInteraction, props.isEditMode]);
+  }, [
+    canvasDragSession.shouldReset,
+    props.canvasInteraction?.setActiveDragNodeId,
+    requestedActiveDragNodeId,
+  ]);
 
   React.useEffect(() => {
     mountedRef.current = true;
@@ -780,7 +790,7 @@ function StationaryTapSelector(props: {
         props.isEditMode && props.canvasInteraction
           ? React.createElement(StudioCanvasDndOverlay, {
               key: 'studio-canvas-dnd-overlay',
-              activeDragNodeId: props.canvasInteraction.activeDragNodeId,
+              activeDragNodeId,
               componentMeta: props.canvasInteraction.componentMeta,
               indicatorRects,
               moveNodeToPlacement: props.canvasInteraction.moveNodeToPlacement,

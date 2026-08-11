@@ -380,12 +380,14 @@
       "isEntrypoint": false,
       "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
       "exports": [
+        "CanvasDragSessionResolution",
         "CanvasDropZoneSlots",
         "CanvasRect",
         "createStudioCanvasDragPayload",
         "isStudioCanvasDragPayload",
         "isValidCanvasDropZone",
         "resolveCanvasDragPreviewText",
+        "resolveCanvasDragSession",
         "resolveCanvasDropZoneRect",
         "resolveCanvasDropZoneSlots",
         "StudioCanvasDragPayload"
@@ -2487,6 +2489,7 @@
       "path": "src/runtime/stationarySelection.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/canvasDragModel.ts",
         "src/index.ts",
         "src/runtime/indicatorRefreshCoordinator.ts",
         "src/runtime/indicatorSettleCoordinator.ts",
@@ -3190,6 +3193,8 @@
         "activateCanvasDrag",
         "CanvasDragSessionCallbacks",
         "commitCanvasDrop",
+        "completeCanvasDropAfterAdapter",
+        "createCanvasDraggableSessionKey",
         "resetCanvasDragSession",
         "sortCanvasDropTargetsBySpecificity"
       ]
@@ -8922,25 +8927,16 @@
       }
     },
     {
-      "name": "createStudioCanvasDragPayload",
+      "name": "treeContainsNode",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 26,
+        "line": 33,
         "column": 1
       }
     },
     {
-      "name": "isStudioCanvasDragPayload",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/canvasDragModel.ts",
-        "line": 30,
-        "column": 1
-      }
-    },
-    {
-      "name": "isValidCanvasDropZone",
+      "name": "resolveCanvasDragSession",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
@@ -8949,25 +8945,16 @@
       }
     },
     {
-      "name": "resolveCanvasDropZoneSlots",
+      "name": "createStudioCanvasDragPayload",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 44,
+        "line": 60,
         "column": 1
       }
     },
     {
-      "name": "findDropZoneByKind",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/canvasDragModel.ts",
-        "line": 57,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveCanvasDropZoneRect",
+      "name": "isStudioCanvasDragPayload",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
@@ -8976,11 +8963,47 @@
       }
     },
     {
-      "name": "resolveCanvasDragPreviewText",
+      "name": "isValidCanvasDropZone",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDropZoneSlots",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "findDropZoneByKind",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDropZoneRect",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
         "line": 98,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDragPreviewText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 132,
         "column": 1
       }
     },
@@ -16495,7 +16518,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 88,
+        "line": 89,
         "column": 1
       }
     },
@@ -16504,7 +16527,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 98,
+        "line": 99,
         "column": 1
       }
     },
@@ -16513,7 +16536,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 102,
+        "line": 103,
         "column": 1
       }
     },
@@ -16522,7 +16545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 113,
+        "line": 114,
         "column": 1
       }
     },
@@ -16531,7 +16554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 122,
+        "line": 123,
         "column": 1
       }
     },
@@ -16540,7 +16563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 131,
+        "line": 132,
         "column": 1
       }
     },
@@ -16549,7 +16572,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 143,
+        "line": 144,
         "column": 1
       }
     },
@@ -16558,7 +16581,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 157,
+        "line": 158,
         "column": 1
       }
     },
@@ -16567,7 +16590,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 166,
+        "line": 167,
         "column": 1
       }
     },
@@ -16576,7 +16599,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 190,
+        "line": 191,
         "column": 1
       }
     },
@@ -16585,7 +16608,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 223,
+        "line": 224,
         "column": 1
       }
     },
@@ -16594,7 +16617,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 235,
+        "line": 236,
         "column": 3
       }
     },
@@ -16603,7 +16626,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 249,
+        "line": 250,
         "column": 3
       }
     },
@@ -16612,7 +16635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 260,
+        "line": 261,
         "column": 3
       }
     },
@@ -16621,7 +16644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 269,
+        "line": 270,
         "column": 3
       }
     },
@@ -16630,7 +16653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 273,
+        "line": 274,
         "column": 3
       }
     },
@@ -16639,7 +16662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 362,
+        "line": 363,
         "column": 1
       }
     },
@@ -16648,7 +16671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 409,
+        "line": 410,
         "column": 1
       }
     },
@@ -16657,7 +16680,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 694,
+        "line": 704,
         "column": 11
       }
     },
@@ -16666,7 +16689,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 695,
+        "line": 705,
         "column": 11
       }
     },
@@ -18826,8 +18849,17 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/canvasDndInteraction.test.ts",
-        "line": 41,
+        "line": 43,
         "column": 11
+      }
+    },
+    {
+      "name": "createCanvasDraggableSessionKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 11,
+        "column": 1
       }
     },
     {
@@ -18835,7 +18867,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/canvasDndInteraction.ts",
-        "line": 10,
+        "line": 15,
         "column": 1
       }
     },
@@ -18844,7 +18876,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/canvasDndInteraction.ts",
-        "line": 18,
+        "line": 23,
         "column": 1
       }
     },
@@ -18853,7 +18885,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/canvasDndInteraction.ts",
-        "line": 23,
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "completeCanvasDropAfterAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 41,
         "column": 1
       }
     },
@@ -18862,15 +18903,6 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/canvasDndInteraction.ts",
-        "line": 35,
-        "column": 1
-      }
-    },
-    {
-      "name": "resetAfterDrop",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
         "line": 56,
         "column": 1
       }
@@ -18880,7 +18912,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "line": 60,
+        "line": 57,
         "column": 1
       }
     },
@@ -18889,7 +18921,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "line": 90,
+        "line": 87,
         "column": 1
       }
     },
@@ -18898,7 +18930,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "line": 139,
+        "line": 140,
         "column": 1
       }
     },
@@ -18907,7 +18939,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "line": 178,
+        "line": 179,
         "column": 1
       }
     },
@@ -18916,7 +18948,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "line": 209,
+        "line": 211,
         "column": 9
       }
     },
@@ -20578,6 +20610,11 @@
         "fromPath": "src/runtime/stationarySelection.public.test.ts",
         "toPath": "src/runtime/index.ts",
         "sourcePath": "src/runtime/stationarySelection.public.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
         "fromPath": "src/runtime/stationarySelection.ts",
@@ -23288,6 +23325,12 @@
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/canvasDragModel.public.test.ts"
@@ -23351,6 +23394,24 @@
         "toSymbol": "resolveCanvasDragPreviewText",
         "callExpression": "resolveCanvasDragPreviewText",
         "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.ts",
+        "toSymbol": "treeContainsNode",
+        "callExpression": "treeContainsNode",
+        "sourcePath": "src/canvasDragModel.ts"
+      },
+      {
+        "fromSymbol": "resolveCanvasDragSession",
+        "toSymbol": "treeContainsNode",
+        "callExpression": "treeContainsNode",
+        "sourcePath": "src/canvasDragModel.ts"
       },
       {
         "fromSymbol": "resolveCanvasDropZoneSlots",
@@ -33092,6 +33153,12 @@
       },
       {
         "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
         "toSymbol": "createStationarySelectionInputState",
         "callExpression": "createStationarySelectionInputState",
         "sourcePath": "src/runtime/stationarySelection.ts"
@@ -33213,7 +33280,7 @@
       {
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "setActiveDragNodeId",
-        "callExpression": "props.canvasInteraction.setActiveDragNodeId",
+        "callExpression": "props.canvasInteraction?.setActiveDragNodeId",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -39278,6 +39345,18 @@
       },
       {
         "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "createCanvasDraggableSessionKey",
+        "callExpression": "createCanvasDraggableSessionKey",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "completeCanvasDropAfterAdapter",
+        "callExpression": "completeCanvasDropAfterAdapter",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
         "toSymbol": "sortCanvasDropTargetsBySpecificity",
         "callExpression": "sortCanvasDropTargetsBySpecificity",
         "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
@@ -39295,6 +39374,12 @@
         "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
       },
       {
+        "fromSymbol": "resetCanvasDragSession",
+        "toSymbol": "restartDraggable",
+        "callExpression": "callbacks.restartDraggable",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
         "fromSymbol": "commitCanvasDrop",
         "toSymbol": "isStudioCanvasDragPayload",
         "callExpression": "isStudioCanvasDragPayload",
@@ -39304,6 +39389,18 @@
         "fromSymbol": "commitCanvasDrop",
         "toSymbol": "moveNodeToPlacement",
         "callExpression": "moveNodeToPlacement",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.ts",
+        "toSymbol": "commitCanvasDrop",
+        "callExpression": "commitCanvasDrop",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.ts",
+        "toSymbol": "resetDrag",
+        "callExpression": "resetDrag",
         "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
       },
       {
@@ -39380,14 +39477,8 @@
       },
       {
         "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "toSymbol": "commitCanvasDrop",
-        "callExpression": "commitCanvasDrop",
-        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
-        "toSymbol": "resetAfterDrop",
-        "callExpression": "resetAfterDrop",
+        "toSymbol": "completeCanvasDropAfterAdapter",
+        "callExpression": "completeCanvasDropAfterAdapter",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {
@@ -39442,6 +39533,18 @@
         "fromSymbol": "resetDrag",
         "toSymbol": "resetCanvasDragSession",
         "callExpression": "resetCanvasDragSession",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "restartDraggable",
+        "toSymbol": "setDragSessionRevision",
+        "callExpression": "setDragSessionRevision",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "createCanvasDraggableSessionKey",
+        "callExpression": "createCanvasDraggableSessionKey",
         "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {

@@ -20,7 +20,8 @@ import { resolveNodeLabel } from '../../insertModalModel';
 import type { RuntimeNodeIndicatorRect } from '../../runtime/runtimeNodeMeasurement';
 import {
   activateCanvasDrag,
-  commitCanvasDrop,
+  completeCanvasDropAfterAdapter,
+  createCanvasDraggableSessionKey,
   resetCanvasDragSession,
   sortCanvasDropTargetsBySpecificity,
 } from './canvasDndInteraction';
@@ -52,10 +53,6 @@ interface CanvasDropZoneProps {
 }
 
 const MAX_DROP_CAPACITY = Number.MAX_SAFE_INTEGER;
-
-function resetAfterDrop(callback: () => void): void {
-  void Promise.resolve().then(callback);
-}
 
 function resolveDropZoneViews(args: {
   readonly componentMeta: StudioComponentMetaRegistry;
@@ -106,8 +103,12 @@ function CanvasDropZone(props: CanvasDropZoneProps): React.JSX.Element {
         )
       }
       onDrop={(payload: unknown) => {
-        commitCanvasDrop(payload, props.zone.resolution, props.moveNodeToPlacement);
-        resetAfterDrop(props.resetDrag);
+        void completeCanvasDropAfterAdapter(
+          payload,
+          props.zone.resolution,
+          props.moveNodeToPlacement,
+          props.resetDrag,
+        );
       }}
       style={{
         position: 'absolute',
@@ -179,6 +180,7 @@ export function StudioCanvasDndOverlay(
   props: StudioCanvasDndOverlayProps,
 ): React.JSX.Element | null {
   const [activeDropZoneId, setActiveDropZoneId] = React.useState<string | null>(null);
+  const [dragSessionRevision, setDragSessionRevision] = React.useState(0);
   const dragStartedRef = React.useRef(false);
   const rootNode = props.rootNode;
   const selectedNode =
@@ -208,12 +210,17 @@ export function StudioCanvasDndOverlay(
       : [];
   const resetDrag = (): void => {
     dragStartedRef.current = false;
-    resetCanvasDragSession({ setActiveDropZoneId, setActiveDragNodeId: props.setActiveDragNodeId });
+    resetCanvasDragSession({
+      restartDraggable: () => setDragSessionRevision((revision) => revision + 1),
+      setActiveDropZoneId,
+      setActiveDragNodeId: props.setActiveDragNodeId,
+    });
   };
 
   return (
     <DropProvider>
       <Draggable
+        key={createCanvasDraggableSessionKey(selectedNode.id, dragSessionRevision)}
         collisionAlgorithm="center"
         data={payload}
         draggableId={`studio-node:${selectedNode.id}`}

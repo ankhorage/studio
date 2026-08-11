@@ -127,9 +127,11 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('canvasRootNodeId: props.canvasInteraction?.rootNode?.id');
   });
 
-  it('mounts direct adapter-backed canvas interaction only in Edit mode', () => {
+  it('mounts direct adapter-backed canvas interaction only for a valid Edit drag session', () => {
     expect(source).toContain('StudioCanvasDndOverlay');
     expect(source).toContain('props.isEditMode && props.canvasInteraction');
+    expect(source).toContain('resolveCanvasDragSession({');
+    expect(source).toContain('activeDragNodeId,');
     expect(source).toContain('setActiveDragNodeId(null)');
   });
 

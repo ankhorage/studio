@@ -4,6 +4,8 @@ import type { CanvasDropZoneResolution } from '../../canvasDropZones';
 import {
   activateCanvasDrag,
   commitCanvasDrop,
+  completeCanvasDropAfterAdapter,
+  createCanvasDraggableSessionKey,
   resetCanvasDragSession,
   sortCanvasDropTargetsBySpecificity,
 } from './canvasDndInteraction';
@@ -55,7 +57,11 @@ describe('canvas DnD interaction', () => {
   test('activates the payload node and clears all transient state on reset', () => {
     const activeNodeIds: (string | null)[] = [];
     const activeZoneIds: (string | null)[] = ['target:inside'];
+    let revision = 0;
     const callbacks = {
+      restartDraggable: () => {
+        revision += 1;
+      },
       setActiveDragNodeId: (nodeId: string | null) => {
         activeNodeIds.push(nodeId);
       },
@@ -70,6 +76,73 @@ describe('canvas DnD interaction', () => {
     resetCanvasDragSession(callbacks);
     expect(activeNodeIds).toEqual(['text', null]);
     expect(activeZoneIds).toEqual(['target:inside', null]);
+    expect(revision).toBe(1);
+  });
+
+  test('remounts a neutral draggable session after a successful adapter drop', async () => {
+    const activeNodeIds: (string | null)[] = [];
+    const activeZoneIds: (string | null)[] = [];
+    const moveCalls: unknown[][] = [];
+    let revision = 0;
+    const callbacks = {
+      restartDraggable: () => {
+        revision += 1;
+      },
+      setActiveDragNodeId: (nodeId: string | null) => activeNodeIds.push(nodeId),
+      setActiveDropZoneId: (zoneId: string | null) => activeZoneIds.push(zoneId),
+    };
+    const initialKey = createCanvasDraggableSessionKey('text', revision);
+
+    const completion = completeCanvasDropAfterAdapter(
+      { kind: 'studio-canvas-node', nodeId: 'text' },
+      VALID_ZONE,
+      (...args) => {
+        moveCalls.push(args);
+        return true;
+      },
+      () => resetCanvasDragSession(callbacks),
+    );
+
+    expect(moveCalls).toEqual([]);
+    expect(revision).toBe(0);
+    expect(await completion).toBe(true);
+    expect(moveCalls).toEqual([['text', VALID_ZONE.placement]]);
+    expect(activeNodeIds).toEqual([null]);
+    expect(activeZoneIds).toEqual([null]);
+    expect(createCanvasDraggableSessionKey('text', revision)).not.toBe(initialKey);
+  });
+
+  test('remounts away adapter translation after an invalid droppable hit', async () => {
+    let moveCount = 0;
+    let revision = 0;
+    const initialKey = createCanvasDraggableSessionKey('text', revision);
+
+    const committed = await completeCanvasDropAfterAdapter(
+      { kind: 'studio-canvas-node', nodeId: 'text' },
+      INVALID_ZONE,
+      () => {
+        moveCount += 1;
+        return true;
+      },
+      () =>
+        resetCanvasDragSession({
+          restartDraggable: () => {
+            revision += 1;
+          },
+          setActiveDragNodeId: () => undefined,
+          setActiveDropZoneId: () => undefined,
+        }),
+    );
+
+    expect(committed).toBe(false);
+    expect(moveCount).toBe(0);
+    expect(createCanvasDraggableSessionKey('text', revision)).not.toBe(initialKey);
+  });
+
+  test('uses selected node identity as part of the adapter session key', () => {
+    expect(createCanvasDraggableSessionKey('node-a', 3)).not.toBe(
+      createCanvasDraggableSessionKey('node-b', 3),
+    );
   });
 
   test('orders nested measured targets before broad ancestor targets', () => {

@@ -1,3 +1,4 @@
+import type { UiNode } from '@ankhorage/contracts';
 import { describe, expect, test } from 'bun:test';
 
 import {
@@ -5,6 +6,7 @@ import {
   isStudioCanvasDragPayload,
   isValidCanvasDropZone,
   resolveCanvasDragPreviewText,
+  resolveCanvasDragSession,
   resolveCanvasDropZoneRect,
   resolveCanvasDropZoneSlots,
 } from './canvasDragModel';
@@ -26,6 +28,15 @@ const VALID_AFTER_ZONE: CanvasDropZoneResolution = {
   kind: 'after',
   status: 'valid',
   placement: { parentId: 'root', index: 1, kind: 'after', referenceId: 'child' },
+};
+
+const ROOT_NODE: UiNode = {
+  id: 'root',
+  type: 'Screen',
+  children: [
+    { id: 'node-a', type: 'Text' },
+    { id: 'node-b', type: 'Text' },
+  ],
 };
 
 describe('canvasDragModel', () => {
@@ -88,5 +99,65 @@ describe('canvasDragModel', () => {
     expect(resolveCanvasDragPreviewText({ children: 12, label: 'Card' })).toBe('Card');
     expect(resolveCanvasDragPreviewText({ children: 12 })).toBeNull();
     expect(resolveCanvasDragPreviewText(undefined)).toBeNull();
+  });
+
+  test('keeps a drag active while edit selection and the current tree own that node', () => {
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: 'node-a',
+        isEditMode: true,
+        rootNode: ROOT_NODE,
+        selectedNodeId: 'node-a',
+      }),
+    ).toEqual({ activeDragNodeId: 'node-a', shouldReset: false });
+  });
+
+  test('resets an active drag when selection changes or is lost', () => {
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: 'node-a',
+        isEditMode: true,
+        rootNode: ROOT_NODE,
+        selectedNodeId: 'node-b',
+      }),
+    ).toEqual({ activeDragNodeId: null, shouldReset: true });
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: 'node-a',
+        isEditMode: true,
+        rootNode: ROOT_NODE,
+        selectedNodeId: null,
+      }),
+    ).toEqual({ activeDragNodeId: null, shouldReset: true });
+  });
+
+  test('resets an active drag in Preview or when the node leaves the current root', () => {
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: 'node-a',
+        isEditMode: false,
+        rootNode: ROOT_NODE,
+        selectedNodeId: 'node-a',
+      }),
+    ).toEqual({ activeDragNodeId: null, shouldReset: true });
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: 'missing-node',
+        isEditMode: true,
+        rootNode: ROOT_NODE,
+        selectedNodeId: 'missing-node',
+      }),
+    ).toEqual({ activeDragNodeId: null, shouldReset: true });
+  });
+
+  test('does not request another reset after transient drag state is already clear', () => {
+    expect(
+      resolveCanvasDragSession({
+        activeDragNodeId: null,
+        isEditMode: false,
+        rootNode: null,
+        selectedNodeId: null,
+      }),
+    ).toEqual({ activeDragNodeId: null, shouldReset: false });
   });
 });
