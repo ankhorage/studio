@@ -43,6 +43,15 @@ cleanup. Registered module packages supply optional host contributions from thei
 package boundary. The Orchestrator ledger is authoritative and manifest module fields are
 deterministic projections synchronized after lifecycle operations.
 
+Optional package-owned administration runtimes are hosted through one generic entry point. Studio
+passes an opaque operation name and payload to the module runtime and does not interpret module-domain
+operations. The host supplies only generic capabilities: the project root, lifecycle configuration
+read/reconfigure, current manifest screens with caller-supplied component metadata, and a validated
+manifest-field mutation. Module-specific validation, operation names, resource persistence, and
+results remain owned by the module package. HTTP clients invoke this boundary through
+`POST /api/projects/<project-id>/modules/<module-id>/admin/<operation>`; this does not create a
+module-specific Studio route or service.
+
 The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, and bounds command output returned by HTTP.
 
 For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Minikube projects. Each app slug maps to its own Minikube profile, generated Infra owns the `app`, `supabase`, and provider namespaces, and generated Infra owns `kubectl port-forward` process lifecycle through `infra/minikube/scripts/port-forward.sh`. Studio orchestrates generated lifecycle scripts and, on shutdown, asks registered projects' generated `port-forward.sh stop all` scripts to stop forwards; it does not run host Supabase or terminate arbitrary forward PIDs itself.
