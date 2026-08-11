@@ -40,18 +40,6 @@
       "types": "./dist/cli/index.d.ts",
       "import": "./dist/cli/index.js"
     },
-    "./dnd": {
-      "types": "./dist/dnd/index.d.ts",
-      "import": "./dist/dnd/index.js"
-    },
-    "./dnd/primitives": {
-      "types": "./dist/dnd/primitives.d.ts",
-      "import": "./dist/dnd/primitives.js"
-    },
-    "./dnd/state": {
-      "types": "./dist/dnd/state.d.ts",
-      "import": "./dist/dnd/state.js"
-    },
     "./runtime": {
       "types": "./dist/runtime/index.d.ts",
       "import": "./dist/runtime/index.js"

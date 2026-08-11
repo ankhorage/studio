@@ -25,6 +25,11 @@ function buildRoot(): UiNode {
         type: 'Container',
         children: [{ id: 'text', type: 'Text' }],
       },
+      {
+        id: 'source-container',
+        type: 'Container',
+        children: [{ id: 'dragged-text', type: 'Text' }],
+      },
     ],
   };
 }

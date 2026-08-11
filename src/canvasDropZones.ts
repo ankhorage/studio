@@ -1,7 +1,12 @@
 import type { UiNode } from '@ankhorage/contracts';
 
-import type { NodePlacement, PlacementKind, StudioComponentMetaRegistry } from './index';
-import { resolveInsertPlacement } from './index';
+import type {
+  NodePlacement,
+  PlacementFailureReason,
+  PlacementKind,
+  StudioComponentMetaRegistry,
+} from './index';
+import { resolveInsertPlacement, resolveMoveNodePlacement } from './index';
 
 export interface ValidCanvasDropZoneResolution {
   kind: PlacementKind;
@@ -12,7 +17,7 @@ export interface ValidCanvasDropZoneResolution {
 interface InvalidCanvasDropZoneResolution {
   kind: PlacementKind;
   status: 'invalid';
-  reason: string;
+  reason: PlacementFailureReason;
 }
 
 export type CanvasDropZoneResolution =
@@ -33,7 +38,10 @@ export function resolveCanvasDropZones(args: {
       return {
         kind,
         status: 'invalid',
-        reason: 'Cannot drop a node onto itself.',
+        reason: {
+          code: 'cannot-move-into-self',
+          message: 'Cannot drop a node onto itself.',
+        },
       };
     }
 
@@ -49,14 +57,28 @@ export function resolveCanvasDropZones(args: {
       return {
         kind,
         status: 'invalid',
-        reason: placement.reason.message,
+        reason: placement.reason,
+      };
+    }
+
+    const movement = resolveMoveNodePlacement({
+      root,
+      nodeId: draggedNode.id,
+      placement: placement.placement,
+      componentMeta,
+    });
+    if (!movement.ok) {
+      return {
+        kind,
+        status: 'invalid',
+        reason: movement.reason,
       };
     }
 
     return {
       kind,
       status: 'valid',
-      placement: placement.placement,
+      placement: movement.placement,
     };
   });
 }

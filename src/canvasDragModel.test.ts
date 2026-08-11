@@ -17,7 +17,7 @@ const VALID_INSIDE_ZONE: CanvasDropZoneResolution = {
 const INVALID_BEFORE_ZONE: CanvasDropZoneResolution = {
   kind: 'before',
   status: 'invalid',
-  reason: 'Cannot insert here.',
+  reason: { code: 'child-not-allowed', message: 'Cannot insert here.' },
 };
 
 const VALID_AFTER_ZONE: CanvasDropZoneResolution = {

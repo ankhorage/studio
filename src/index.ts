@@ -196,6 +196,7 @@ export type PlacementFailureCode =
   | 'missing-parent'
   | 'child-not-allowed'
   | 'invalid-index'
+  | 'invalid-reference'
   | 'no-valid-target'
   | 'cannot-move-root'
   | 'cannot-move-into-self'
@@ -368,7 +369,6 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
-  moveNode: (id: StudioNodeId, direction: 'up' | 'down') => void;
   reorderScreens: (newRoutes: RouteDefinition[]) => void;
   setActiveScreenId: (id: StudioScreenId) => void;
   findNode: (root: UiNode, id: StudioNodeId) => UiNode | null;
@@ -603,69 +603,6 @@ export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null 
   return hasChanged ? { ...root, children: nextChildren } : root;
 };
 
-export const addNodeToTree = (args: {
-  root: UiNode;
-  targetId: string;
-  newNode: UiNode;
-  componentMeta: StudioComponentMetaRegistry;
-  mode?: 'append' | 'prepend';
-}): UiNode => {
-  const { root, targetId, newNode, componentMeta, mode = 'append' } = args;
-
-  if (root.id === targetId) {
-    if (!canAcceptChild({ parentType: root.type, childType: newNode.type, componentMeta })) {
-      return root;
-    }
-
-    const children = root.children ?? [];
-    return {
-      ...root,
-      children: mode === 'prepend' ? [newNode, ...children] : [...children, newNode],
-    };
-  }
-
-  if (!root.children) {
-    return root;
-  }
-
-  const nextChildren = root.children.map((child) =>
-    addNodeToTree({ root: child, targetId, newNode, componentMeta, mode }),
-  );
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
-};
-
-export const moveNodeInTree = (root: UiNode, nodeId: string, direction: 'up' | 'down'): UiNode => {
-  if (root.id === nodeId || !root.children) return root;
-
-  const index = root.children.findIndex((child) => child.id === nodeId);
-  if (index !== -1) {
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= root.children.length) {
-      return root;
-    }
-
-    const currentNode = root.children[index];
-    const targetNode = root.children[targetIndex];
-    if (!currentNode || !targetNode) {
-      return root;
-    }
-
-    const nextChildren = [...root.children];
-    nextChildren[index] = targetNode;
-    nextChildren[targetIndex] = currentNode;
-    return { ...root, children: nextChildren };
-  }
-
-  const nextChildren = root.children.map((child) => moveNodeInTree(child, nodeId, direction));
-  const hasChanged = nextChildren.some(
-    (child, childIndex) => child !== root.children?.[childIndex],
-  );
-
-  return hasChanged ? { ...root, children: nextChildren } : root;
-};
-
 interface NodeWithParent {
   node: UiNode;
   parent: UiNode | null;
@@ -803,25 +740,57 @@ export function validateNodePlacement(args: {
   }
 
   const children = parent.children ?? [];
-  if (placement.referenceId) {
-    const hasReference = children.some((child) => child.id === placement.referenceId);
-    if (!hasReference) {
-      return {
-        ok: false,
-        reason: {
-          code: 'missing-target',
-          message: `Reference node ${placement.referenceId} was not found under ${parent.id}.`,
-        },
-      };
-    }
-  }
-
   if (placement.index < 0 || placement.index > children.length) {
     return {
       ok: false,
       reason: {
         code: 'invalid-index',
         message: `Index ${placement.index} is out of bounds for ${parent.id}.`,
+      },
+    };
+  }
+
+  if (placement.kind === 'inside') {
+    if (placement.referenceId) {
+      return {
+        ok: false,
+        reason: {
+          code: 'invalid-reference',
+          message: 'Inside placements cannot include a sibling reference.',
+        },
+      };
+    }
+    return { ok: true };
+  }
+
+  if (!placement.referenceId) {
+    return {
+      ok: false,
+      reason: {
+        code: 'invalid-reference',
+        message: `${placement.kind} placements require a sibling reference.`,
+      },
+    };
+  }
+
+  const referenceIndex = children.findIndex((child) => child.id === placement.referenceId);
+  if (referenceIndex === -1) {
+    return {
+      ok: false,
+      reason: {
+        code: 'missing-target',
+        message: `Reference node ${placement.referenceId} was not found under ${parent.id}.`,
+      },
+    };
+  }
+
+  const expectedIndex = placement.kind === 'before' ? referenceIndex : referenceIndex + 1;
+  if (placement.index !== expectedIndex) {
+    return {
+      ok: false,
+      reason: {
+        code: 'invalid-index',
+        message: `${placement.kind} placement index ${placement.index} does not match reference ${placement.referenceId}.`,
       },
     };
   }
@@ -1060,35 +1029,61 @@ function getAdjustedMovePlacement(args: {
   };
 }
 
-export function moveNodeToPlacement(
-  args: MoveNodeToPlacementArgs,
-): MoveNodeToPlacementResult | null {
+export function resolveMoveNodePlacement(args: MoveNodeToPlacementArgs): PlacementResolutionResult {
   const { root, nodeId, placement, componentMeta } = args;
   const source = findNodeWithParent(root, nodeId);
   if (!source) {
-    return null;
+    return {
+      ok: false,
+      reason: { code: 'missing-target', message: `Node ${nodeId} was not found.` },
+    };
   }
 
   if (!source.parent) {
-    return null;
+    return {
+      ok: false,
+      reason: { code: 'cannot-move-root', message: 'The active screen root cannot be moved.' },
+    };
   }
 
   if (placement.parentId === nodeId) {
-    return null;
+    return {
+      ok: false,
+      reason: { code: 'cannot-move-into-self', message: 'A node cannot be moved inside itself.' },
+    };
   }
 
   if (isDescendantNode(source.node, placement.parentId)) {
-    return null;
+    return {
+      ok: false,
+      reason: {
+        code: 'cannot-move-into-descendant',
+        message: 'A node cannot be moved into one of its descendants.',
+      },
+    };
+  }
+
+  if (placement.referenceId === nodeId) {
+    return {
+      ok: false,
+      reason: { code: 'no-op', message: 'The node is already at that location.' },
+    };
   }
 
   const adjustedPlacement = getAdjustedMovePlacement({ source, placement });
   if (!adjustedPlacement) {
-    return null;
+    return {
+      ok: false,
+      reason: { code: 'no-op', message: 'The node is already at that location.' },
+    };
   }
 
   const removed = removeNodeForMove({ node: root, nodeId });
   if (!removed.removedNode) {
-    return null;
+    return {
+      ok: false,
+      reason: { code: 'missing-target', message: `Node ${nodeId} could not be removed.` },
+    };
   }
 
   const validation = validateNodePlacement({
@@ -1097,14 +1092,27 @@ export function moveNodeToPlacement(
     childType: removed.removedNode.type,
     componentMeta,
   });
-  if (!validation.ok) {
+  if (!validation.ok) return validation;
+
+  return { ok: true, placement: adjustedPlacement };
+}
+
+export function moveNodeToPlacement(
+  args: MoveNodeToPlacementArgs,
+): MoveNodeToPlacementResult | null {
+  const { root, nodeId, placement, componentMeta } = args;
+  const resolution = resolveMoveNodePlacement({ root, nodeId, placement, componentMeta });
+  if (!resolution.ok) return null;
+
+  const removed = removeNodeForMove({ node: root, nodeId });
+  if (!removed.removedNode) {
     return null;
   }
 
   const inserted = insertChildAtIndex({
     node: removed.node,
-    parentId: adjustedPlacement.parentId,
-    index: adjustedPlacement.index,
+    parentId: resolution.placement.parentId,
+    index: resolution.placement.index,
     newNode: removed.removedNode,
   });
   if (!inserted.inserted) {

@@ -9,7 +9,6 @@ import {
   deleteStudioManifestNode,
   deleteStudioManifestScreen,
   insertStudioManifestNodeAtPlacement,
-  moveStudioManifestNode,
   moveStudioManifestNodeToPlacement,
   resolveActiveRootNode,
   resolveInitialActiveScreenId,
@@ -294,13 +293,11 @@ describe('manifestState', () => {
     });
     expect(moved?.movedNodeId).toBe('button-1');
 
-    const reordered = moveStudioManifestNode(
+    const deleted = deleteStudioManifestNode(
       moved?.manifest ?? updated,
       'screen-home',
       'text-1',
-      'down',
     );
-    const deleted = deleteStudioManifestNode(reordered, 'screen-home', 'text-1');
     expect(JSON.stringify(resolveActiveRootNode(deleted, 'screen-home'))).not.toContain('text-1');
     expect(deleted.dataBindings?.['text-1']).toBeUndefined();
   });
