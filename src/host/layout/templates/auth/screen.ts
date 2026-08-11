@@ -117,6 +117,7 @@ ${zoraOAuthImport}  SignInForm,
   useZoraTheme,
 } from '@ankhorage/zora';
 import { ManifestProvider } from '@ankhorage/runtime';
+import { isEmail, isPhone, isUsername } from '@ankhorage/utility/regex';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
@@ -631,48 +632,6 @@ function fieldLabel(normalized: string): string {
     default:
       return normalized;
   }
-}
-
-function isEmail(value: string): boolean {
-  const normalized = value.trim();
-  if (normalized.length === 0 || normalized.length > 254) return false;
-  const atIndex = normalized.indexOf('@');
-  if (atIndex <= 0 || atIndex !== normalized.lastIndexOf('@')) return false;
-  const localPart = normalized.slice(0, atIndex);
-  const domainPart = normalized.slice(atIndex + 1);
-  if (localPart.length > 64 || domainPart.length === 0) return false;
-  if (!/^[A-Za-z0-9.!#$%&'*+/=?^_\`{|}~-]+$/.test(localPart)) return false;
-  if (!/^[A-Za-z0-9.-]+$/.test(domainPart)) return false;
-  if (domainPart.startsWith('.') || domainPart.endsWith('.') || domainPart.includes('..')) return false;
-  const labels = domainPart.split('.');
-  const [topLevelDomain] = labels.slice(-1);
-  if (labels.length < 2) return false;
-  if (
-    labels.some(
-      (label) =>
-        label.length === 0 ||
-        label.length > 63 ||
-        label.startsWith('-') ||
-        label.endsWith('-') ||
-        !/^[A-Za-z0-9-]+$/.test(label),
-    )
-  ) return false;
-  return (topLevelDomain ?? '').length >= 2;
-}
-
-function isPhone(value: string): boolean {
-  const normalized = value.trim();
-  if (normalized.length === 0) return false;
-  if (!/^[+()\\d\\s.-]+$/.test(normalized)) return false;
-  const digitCount = (normalized.match(/\\d/g) ?? []).length;
-  if (digitCount < 7 || digitCount > 15) return false;
-  const plusCount = (normalized.match(/\\+/g) ?? []).length;
-  if (plusCount > 1 || (plusCount === 1 && !normalized.startsWith('+'))) return false;
-  return (normalized.match(/\\(/g) ?? []).length === (normalized.match(/\\)/g) ?? []).length;
-}
-
-function isUsername(value: string): boolean {
-  return /^[a-zA-Z0-9._-]{3,}$/.test(value);
 }
 
 function unique(values: string[]): string[] {

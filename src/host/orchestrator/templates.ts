@@ -15,6 +15,7 @@ const EXPO_MODULES_CORE_VERSION = '~3.0.30';
 const CONTRACTS_VERSION = '^4.0.2';
 const DATA_SOURCES_VERSION = '^1.0.1';
 const RUNTIME_VERSION = '^1.0.0';
+const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.1.2';
 const SUPABASE_DB_VERSION = '^1.0.0';
 const ZORA_VERSION = '^2.9.0';
@@ -331,6 +332,7 @@ export function getPackageJson(args: {
       '@ankhorage/data-sources': DATA_SOURCES_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
       '@ankhorage/studio': 'latest',
+      ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
       ...(authProvider === 'supabase'
         ? {
             '@ankhorage/supabase-auth': SUPABASE_AUTH_VERSION,
