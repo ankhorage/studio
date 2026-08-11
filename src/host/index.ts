@@ -20,6 +20,15 @@ export {
   type StartStudioHostServerOptions,
 } from './http/server';
 export { startStudioHostServerWithSecrets } from './http/serverWithSecrets';
+export type {
+  HostModuleAdminAuthoringContext,
+  HostModuleAdminExecutionRequest,
+  HostModuleAdminInvocation,
+  HostModuleAdminManifestScreen,
+  HostModuleAdminRuntime,
+  HostModuleAdminRuntimeContext,
+  HostModuleManifestFieldMutation,
+} from './modules/adminRuntime';
 export { ModuleManager } from './orchestrator/moduleManager';
 export { ProjectManager } from './orchestrator/projectManager';
 export { assertProjectId, getAppsRoot, getProjectPath } from './orchestrator/projectPaths';
