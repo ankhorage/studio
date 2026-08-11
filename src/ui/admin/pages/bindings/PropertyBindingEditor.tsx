@@ -124,7 +124,9 @@ function PropertyBindingSourceFields(props: {
   }
 
   if (source.kind === 'event') {
-    return <Text color="danger">Event sources are not available for persistent property bindings.</Text>;
+    return (
+      <Text color="danger">Event sources are not available for persistent property bindings.</Text>
+    );
   }
 
   const operationKey = createStudioOperationKey(source.operation);

@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant participant_assessStudioBindingCompatibility as assessStudioBindingCompatibility
+  participant participant_isImageAssetShape as isImageAssetShape
+  participant participant_isObjectLike as isObjectLike
+  participant_assessStudioBindingCompatibility->>participant_isObjectLike: isObjectLike()
+  participant_isObjectLike-->>participant_assessStudioBindingCompatibility: return
+  participant_assessStudioBindingCompatibility->>participant_isImageAssetShape: isImageAssetShape()
+  participant_isImageAssetShape->>participant_isObjectLike: isObjectLike()
+  participant_isObjectLike-->>participant_isImageAssetShape: return
+  participant_isImageAssetShape-->>participant_assessStudioBindingCompatibility: return

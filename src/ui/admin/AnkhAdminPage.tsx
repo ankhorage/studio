@@ -63,9 +63,7 @@ const ADMIN_PAGE_RENDERERS = {
   ),
   secrets: ({ studio }) => <SecretsAdminPage projectId={studio.projectId} />,
   theme: () => <ThemeAdminPage />,
-  bindings: ({ pathname }) => (
-    <BindingsAdminPage nodeId={resolveStudioBindingsNodeId(pathname)} />
-  ),
+  bindings: ({ pathname }) => <BindingsAdminPage nodeId={resolveStudioBindingsNodeId(pathname)} />,
   properties: ({ pathname }) => (
     <PropertiesAdminPage nodeId={resolveStudioPropertiesNodeId(pathname)} />
   ),

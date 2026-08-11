@@ -1,0 +1,18 @@
+sequenceDiagram
+  participant participant_resolveSchemaFields as resolveSchemaFields
+  participant participant_resolveSchemaRef as resolveSchemaRef
+  participant participant_resolveSchemaType as resolveSchemaType
+  participant participant_resolveSingleSchemaType as resolveSingleSchemaType
+  participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
+  participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaRef: resolveSchemaRef()
+  participant_resolveSchemaRef->>participant_resolveSchemaRef: resolveSchemaRef()
+  participant_resolveSchemaRef-->>participant_resolveSchemaRef: return
+  participant_resolveSchemaRef-->>participant_resolveStudioSchemaValueMeta: return
+  participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaType: resolveSchemaType()
+  participant_resolveSchemaType->>participant_resolveSingleSchemaType: resolveSingleSchemaType()
+  participant_resolveSingleSchemaType-->>participant_resolveSchemaType: return
+  participant_resolveSchemaType-->>participant_resolveStudioSchemaValueMeta: return
+  participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaFields: resolveSchemaFields()
+  participant_resolveSchemaFields-->>participant_resolveStudioSchemaValueMeta: return
+  participant_resolveStudioSchemaValueMeta->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
+  participant_resolveStudioSchemaValueMeta-->>participant_resolveStudioSchemaValueMeta: return

@@ -75,7 +75,11 @@ export function EventBindingsCard(props: {
 }
 
 function EventPayloadSummary(props: {
-  readonly fields: readonly { readonly path: string; readonly type: string; readonly label?: string }[];
+  readonly fields: readonly {
+    readonly path: string;
+    readonly type: string;
+    readonly label?: string;
+  }[];
 }) {
   return (
     <Text color="neutral" emphasis="muted" variant="bodySmall">
@@ -89,7 +93,14 @@ function EventPayloadSummary(props: {
 function describeEventBinding(binding: {
   readonly target:
     | { readonly kind: 'action'; readonly type: string }
-    | { readonly kind: 'operation'; readonly operation: { readonly dataSourceId: string; readonly endpointId?: string; readonly operationId: string } };
+    | {
+        readonly kind: 'operation';
+        readonly operation: {
+          readonly dataSourceId: string;
+          readonly endpointId?: string;
+          readonly operationId: string;
+        };
+      };
   readonly input?: Readonly<Record<string, unknown>>;
 }): string {
   if (binding.target.kind === 'action') return `Action · ${binding.target.type}`;

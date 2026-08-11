@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.12.0",
+      "value": "v0.13.0",
       "color": "cb3837"
     },
     {
@@ -251,6 +251,116 @@
         "StudioAuthSettingsMutation",
         "StudioAuthSettingsValidationResult",
         "validateStudioAuthSettings"
+      ]
+    },
+    {
+      "path": "src/bindingAuthoringContracts.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "StudioBindableEventOption",
+        "StudioBindablePropOption",
+        "StudioBindingCompatibility",
+        "StudioBindingDiagnostic",
+        "StudioBindingInputFieldOption",
+        "StudioBindingOperationOption",
+        "StudioBindingResponsePathOption"
+      ]
+    },
+    {
+      "path": "src/bindingAuthoringModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/bindingAuthoringModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "appendStudioEventBinding",
+        "assessStudioBindingCompatibility",
+        "collectStudioBindingOperationOptions",
+        "collectStudioResponsePaths",
+        "createStudioActionInputFields",
+        "diagnoseStudioComponentBindings",
+        "findStudioBindingOperationOption",
+        "removeStudioEventBinding",
+        "removeStudioPropBinding",
+        "resolveStudioBindableEvents",
+        "resolveStudioBindableProps",
+        "resolveStudioSchemaValueMeta",
+        "StudioBindableEventOption",
+        "StudioBindablePropOption",
+        "StudioBindingCompatibility",
+        "StudioBindingDiagnostic",
+        "StudioBindingInputFieldOption",
+        "StudioBindingOperationOption",
+        "StudioBindingResponsePathOption",
+        "upsertStudioPropBinding"
+      ]
+    },
+    {
+      "path": "src/bindingDiagnosticsModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringContracts.ts",
+        "src/bindingOperationModel.ts",
+        "src/bindingSchemaModel.ts"
+      ],
+      "exports": ["diagnoseStudioComponentBindings"]
+    },
+    {
+      "path": "src/bindingManifestPersistence.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/studioManifestDraftModel.ts",
+        "src/index.ts",
+        "src/manifestSync.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/bindingMetadataModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringContracts.ts"],
+      "exports": ["resolveStudioBindableEvents", "resolveStudioBindableProps"]
+    },
+    {
+      "path": "src/bindingMutationAcceptance.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/bindingMutationModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "appendStudioEventBinding",
+        "removeStudioEventBinding",
+        "removeStudioPropBinding",
+        "upsertStudioPropBinding"
+      ]
+    },
+    {
+      "path": "src/bindingOperationModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringContracts.ts", "src/bindingSchemaModel.ts"],
+      "exports": [
+        "collectStudioBindingOperationOptions",
+        "createStudioActionInputFields",
+        "findStudioBindingOperationOption"
+      ]
+    },
+    {
+      "path": "src/bindingSchemaModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringContracts.ts"],
+      "exports": [
+        "assessStudioBindingCompatibility",
+        "collectStudioResponsePaths",
+        "resolveStudioSchemaValueMeta"
       ]
     },
     {
@@ -1629,13 +1739,20 @@
         "ACTION_REGISTRY",
         "ActionDefinition",
         "addNodeToTree",
+        "appendStudioEventBinding",
+        "assessStudioBindingCompatibility",
         "buildInsertCatalogEntries",
         "canAcceptChild",
         "cloneWithNewIds",
+        "collectStudioBindingOperationOptions",
+        "collectStudioResponsePaths",
         "createNodeFromCatalogEntry",
+        "createStudioActionInputFields",
         "createStudioInstancePropertyPatch",
         "deriveProjectId",
+        "diagnoseStudioComponentBindings",
         "findNodeById",
+        "findStudioBindingOperationOption",
         "generateStudioId",
         "getInsertCatalogCategoryLabel",
         "InsertCatalogComponentEntry",
@@ -1678,11 +1795,16 @@
         "ProjectSecretUsageSummary",
         "ProjectSortKey",
         "removeNodeFromTree",
+        "removeStudioEventBinding",
+        "removeStudioPropBinding",
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
         "resolveInsertPlacement",
+        "resolveStudioBindableEvents",
+        "resolveStudioBindableProps",
         "resolveStudioInstancePropertyFields",
         "resolveStudioInstancePropertyGroups",
+        "resolveStudioSchemaValueMeta",
         "STUDIO_INSERT_RECIPES",
         "STUDIO_PACKAGE_BOUNDARY",
         "STUDIO_PACKAGE_NAME",
@@ -1696,6 +1818,13 @@
         "StudioAuthoringComponentMeta",
         "StudioAuthoringMetaRegistry",
         "StudioAuthoringPropSchema",
+        "StudioBindableEventOption",
+        "StudioBindablePropOption",
+        "StudioBindingCompatibility",
+        "StudioBindingDiagnostic",
+        "StudioBindingInputFieldOption",
+        "StudioBindingOperationOption",
+        "StudioBindingResponsePathOption",
         "StudioCommand",
         "StudioComponentBlueprint",
         "StudioComponentMeta",
@@ -1729,6 +1858,7 @@
         "ThemeUpdates",
         "TPL_SCREEN_EMPTY",
         "updateNodeInTree",
+        "upsertStudioPropBinding",
         "validateInsertRecipe",
         "validateNodePlacement",
         "validateProjectCreationInput"
@@ -2091,19 +2221,26 @@
         "AnkhAdminPage",
         "AnkhAdminShell",
         "AnkhStudio",
+        "appendStudioEventBinding",
         "assertMetadataOnlyResponse",
+        "assessStudioBindingCompatibility",
         "buildInsertCatalogEntries",
         "canAcceptChild",
         "cloneWithNewIds",
+        "collectStudioBindingOperationOptions",
+        "collectStudioResponsePaths",
         "CreateCategoriesScreen",
         "CreateCategoryTemplatesScreen",
         "createNodeFromCatalogEntry",
         "CreateProjectFromTemplateScreen",
+        "createStudioActionInputFields",
         "createStudioInstancePropertyPatch",
         "deriveProjectId",
+        "diagnoseStudioComponentBindings",
         "findNodeById",
         "findProjectSecretUsages",
         "findRawSecretResponseKey",
+        "findStudioBindingOperationOption",
         "generateStudioId",
         "getInsertCatalogCategoryLabel",
         "InsertCatalogComponentEntry",
@@ -2150,11 +2287,16 @@
         "RAW_SECRET_RESPONSE_KEYS",
         "RawSecretResponseKeyMatch",
         "removeNodeFromTree",
+        "removeStudioEventBinding",
+        "removeStudioPropBinding",
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
         "resolveInsertPlacement",
+        "resolveStudioBindableEvents",
+        "resolveStudioBindableProps",
         "resolveStudioInstancePropertyFields",
         "resolveStudioInstancePropertyGroups",
+        "resolveStudioSchemaValueMeta",
         "STUDIO_INSERT_RECIPES",
         "STUDIO_PACKAGE_BOUNDARY",
         "STUDIO_PACKAGE_NAME",
@@ -2169,6 +2311,13 @@
         "StudioAuthoringComponentMeta",
         "StudioAuthoringMetaRegistry",
         "StudioAuthoringPropSchema",
+        "StudioBindableEventOption",
+        "StudioBindablePropOption",
+        "StudioBindingCompatibility",
+        "StudioBindingDiagnostic",
+        "StudioBindingInputFieldOption",
+        "StudioBindingOperationOption",
+        "StudioBindingResponsePathOption",
         "StudioCommand",
         "StudioComponentBlueprint",
         "StudioComponentMeta",
@@ -2203,6 +2352,7 @@
         "ThemeUpdates",
         "TPL_SCREEN_EMPTY",
         "updateNodeInTree",
+        "upsertStudioPropBinding",
         "useStudio",
         "useStudioAppBarAugmentation",
         "validateInsertRecipe",
@@ -2597,6 +2747,7 @@
       "exports": [
         "createStudioAdminRoutePath",
         "createStudioAdminRouteRenderState",
+        "createStudioBindingsRoutePath",
         "createStudioPropertiesRoutePath",
         "getStudioAdminRouteDefinition",
         "isStudioAdminPath",
@@ -2606,6 +2757,7 @@
         "resolveStudioAdminActiveRouteId",
         "resolveStudioAdminRouteId",
         "resolveStudioAdminRoutePath",
+        "resolveStudioBindingsNodeId",
         "resolveStudioLastNonAdminLocation",
         "resolveStudioNavigableLocation",
         "resolveStudioPropertiesNodeId",
@@ -2693,6 +2845,7 @@
         "src/studioAdminRouteModel.ts",
         "src/ui/admin/pages/ApisAdminPage.tsx",
         "src/ui/admin/pages/AuthAdminPage.tsx",
+        "src/ui/admin/pages/BindingsAdminPage.tsx",
         "src/ui/admin/pages/OverviewAdminPage.tsx",
         "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "src/ui/admin/pages/SecretsAdminPage.tsx",
@@ -2856,6 +3009,97 @@
         "src/ui/admin/pages/adminAuthSessionModel.ts"
       ],
       "exports": ["AuthAdminPage", "AuthAdminPageProps"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["bindingAdminStyles"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/pages/bindings/bindingAdminStyles.ts"
+      ],
+      "exports": ["BindingDiagnosticsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/bindingAuthoringModel.ts"],
+      "exports": [
+        "createStudioEventBinding",
+        "createStudioEventInputDrafts",
+        "createStudioOperationKey",
+        "createStudioPropBindingForSource",
+        "findStudioOperationByKey",
+        "formatStudioBindingLiteral",
+        "parseStudioBindingLiteral",
+        "STUDIO_BINDING_SOURCE_OPTIONS",
+        "StudioBindingSourceKind",
+        "StudioEventInputDraft",
+        "StudioEventInputSourceKind"
+      ]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/index.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      ],
+      "exports": ["EventBindingComposer"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      ],
+      "exports": ["EventBindingsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      ],
+      "exports": ["PropertyBindingEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      ],
+      "exports": ["PropertyBindingsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/BindingsAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/bindingAuthoringModel.ts",
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/manifestState.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+        "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      ],
+      "exports": ["BindingsAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
@@ -3138,7 +3382,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 378,
+        "line": 384,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3156,7 +3400,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 284,
+        "line": 290,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3210,7 +3454,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 600,
+        "line": 606,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3234,6 +3478,94 @@
       "structuredRows": []
     },
     {
+      "name": "appendStudioEventBinding",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMutationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 34,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, binding: EventBinding) => Readonly<Record<string, ComponentDataBinding>>",
+          "parameters": [
+            {
+              "name": "binding",
+              "type": "EventBinding",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "eventName",
+              "type": "string",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, ComponentDataBinding>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "assessStudioBindingCompatibility",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingSchemaModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 43,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingCompatibility"],
+      "signatures": [
+        {
+          "label": "(expected: UiBindableValueMeta, actual: UiBindableValueMeta) => StudioBindingCompatibility",
+          "parameters": [
+            {
+              "name": "actual",
+              "type": "UiBindableValueMeta",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "expected",
+              "type": "UiBindableValueMeta",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "StudioBindingCompatibility",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "buildInsertCatalogEntries",
       "description": null,
       "isReadme": false,
@@ -3242,7 +3574,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1312,
+        "line": 1318,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3274,7 +3606,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 765,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3306,7 +3638,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 525,
+        "line": 531,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3336,6 +3668,76 @@
       "structuredRows": []
     },
     {
+      "name": "collectStudioBindingOperationOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingOperationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 16,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingOperationOption"],
+      "signatures": [
+        {
+          "label": "(dataSources: Readonly<Record<string, DataSourceConfig>>) => readonly StudioBindingOperationOption[]",
+          "parameters": [
+            {
+              "name": "dataSources",
+              "type": "Readonly<Record<string, DataSourceConfig>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindingOperationOption[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "collectStudioResponsePaths",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingSchemaModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 33,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingResponsePathOption"],
+      "signatures": [
+        {
+          "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined) => readonly StudioBindingResponsePathOption[]",
+          "parameters": [
+            {
+              "name": "schema",
+              "type": "DataSchema | undefined",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "schemas",
+              "type": "Readonly<Record<string, DataSchema>> | undefined",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindingResponsePathOption[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "createNodeFromCatalogEntry",
       "description": null,
       "isReadme": false,
@@ -3344,7 +3746,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1231,
+        "line": 1237,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3373,6 +3775,38 @@
             }
           ],
           "returnType": "UiNode",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createStudioActionInputFields",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingOperationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 95,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingInputFieldOption"],
+      "signatures": [
+        {
+          "label": "(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]",
+          "parameters": [
+            {
+              "name": "payloadSchema",
+              "type": "Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindingInputFieldOption[]",
           "returnDescription": null
         }
       ],
@@ -3456,6 +3890,38 @@
       "structuredRows": []
     },
     {
+      "name": "diagnoseStudioComponentBindings",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingDiagnosticsModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 20,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingDiagnostic", "StudioBindingOperationOption"],
+      "signatures": [
+        {
+          "label": "(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]",
+          "parameters": [
+            {
+              "name": "args",
+              "type": "{ readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindingDiagnostic[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "findNodeById",
       "description": null,
       "isReadme": false,
@@ -3464,7 +3930,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 548,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3494,6 +3960,44 @@
       "structuredRows": []
     },
     {
+      "name": "findStudioBindingOperationOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingOperationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 24,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingOperationOption"],
+      "signatures": [
+        {
+          "label": "(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "readonly StudioBindingOperationOption[]",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "ref",
+              "type": "BindingOperationRef",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "StudioBindingOperationOption | undefined",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "generateStudioId",
       "description": null,
       "isReadme": false,
@@ -3502,7 +4006,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 518,
+        "line": 524,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3534,7 +4038,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1157,
+        "line": 1163,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3566,7 +4070,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 262,
+        "line": 268,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3659,7 +4163,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 244,
+        "line": 250,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3699,7 +4203,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 221,
+        "line": 227,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3717,7 +4221,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 272,
+        "line": 278,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3735,7 +4239,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 250,
+        "line": 256,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3822,7 +4326,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 218,
+        "line": 224,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3840,7 +4344,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 219,
+        "line": 225,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3858,7 +4362,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 267,
+        "line": 273,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3952,7 +4456,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 989,
+        "line": 995,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3984,7 +4488,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 932,
+        "line": 938,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4031,7 +4535,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 939,
+        "line": 945,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4064,7 +4568,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 229,
+        "line": 235,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4118,7 +4622,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 237,
+        "line": 243,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4165,7 +4669,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 224,
+        "line": 230,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4198,7 +4702,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 292,
+        "line": 298,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4245,7 +4749,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 639,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4289,7 +4793,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1057,
+        "line": 1063,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4321,7 +4825,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1016,
+        "line": 1022,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4368,7 +4872,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1023,
+        "line": 1029,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4401,7 +4905,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 180,
+        "line": 186,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4448,7 +4952,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 187,
+        "line": 193,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4466,7 +4970,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 199,
+        "line": 205,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4499,7 +5003,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 178,
+        "line": 184,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4517,7 +5021,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 211,
+        "line": 217,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4535,7 +5039,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 204,
+        "line": 210,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5011,7 +5515,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 582,
+        "line": 588,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5041,6 +5545,100 @@
       "structuredRows": []
     },
     {
+      "name": "removeStudioEventBinding",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMutationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 50,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, bindingIndex: number) => Readonly<Record<string, ComponentDataBinding>>",
+          "parameters": [
+            {
+              "name": "bindingIndex",
+              "type": "number",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "eventName",
+              "type": "string",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, ComponentDataBinding>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "removeStudioPropBinding",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMutationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 22,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string) => Readonly<Record<string, ComponentDataBinding>>",
+          "parameters": [
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "propName",
+              "type": "string",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, ComponentDataBinding>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "resolveDefaultInsertPlacement",
       "description": null,
       "isReadme": false,
@@ -5049,7 +5647,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 887,
+        "line": 893,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5081,7 +5679,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1354,
+        "line": 1360,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5113,7 +5711,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 826,
+        "line": 832,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5134,6 +5732,82 @@
             }
           ],
           "returnType": "PlacementResolutionResult",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "resolveStudioBindableEvents",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMetadataModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMetadataModel.ts",
+        "line": 21,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindableEventOption"],
+      "signatures": [
+        {
+          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+          "parameters": [
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindableEventOption[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "resolveStudioBindableProps",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMetadataModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMetadataModel.ts",
+        "line": 8,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindablePropOption"],
+      "signatures": [
+        {
+          "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+          "parameters": [
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioBindablePropOption[]",
           "returnDescription": null
         }
       ],
@@ -5217,6 +5891,50 @@
       "structuredRows": []
     },
     {
+      "name": "resolveStudioSchemaValueMeta",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingSchemaModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 14,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined, seen?: ReadonlySet<string>) => UiBindableValueMeta",
+          "parameters": [
+            {
+              "name": "schema",
+              "type": "DataSchema | undefined",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "schemas",
+              "type": "Readonly<Record<string, DataSchema>> | undefined",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "seen",
+              "type": "ReadonlySet<string>",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "UiBindableValueMeta",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "STUDIO_INSERT_RECIPES",
       "description": null,
       "isReadme": false,
@@ -5225,7 +5943,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1124,
+        "line": 1130,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5268,7 +5986,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 59,
+        "line": 60,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5286,7 +6004,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 51,
+        "line": 52,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5304,7 +6022,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 87,
+        "line": 88,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5322,7 +6040,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 276,
+        "line": 282,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5362,7 +6080,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 274,
+        "line": 280,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5380,7 +6098,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 282,
+        "line": 288,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5398,7 +6116,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 122,
+        "line": 126,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5416,7 +6134,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 145,
+        "line": 150,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5434,7 +6152,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 134,
+        "line": 139,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5556,6 +6274,292 @@
       "structuredRows": []
     },
     {
+      "name": "StudioBindableEventOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 16,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "meta",
+          "kind": "property",
+          "type": "UiBindableEventMeta",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindablePropOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "meta",
+          "kind": "property",
+          "type": "UiBindablePropMeta",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindingCompatibility",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 8,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindingDiagnostic",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 43,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "code",
+          "kind": "property",
+          "type": "\"incompatible-input\" | \"incompatible-response\" | \"missing-action\" | \"missing-binding-meta\" | \"missing-input\" | \"missing-operation\" | \"missing-response-path\" | \"unknown-event\" | \"unknown-prop\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "path",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "severity",
+          "kind": "property",
+          "type": "\"warning\" | \"error\"",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindingInputFieldOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 22,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "required",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "value",
+          "kind": "property",
+          "type": "UiBindableValueMeta",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindingOperationOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 35,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioBindingInputFieldOption", "StudioBindingResponsePathOption"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "inputFields",
+          "kind": "property",
+          "type": "readonly StudioBindingInputFieldOption[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "operation",
+          "kind": "property",
+          "type": "BindingOperationRef",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "responsePaths",
+          "kind": "property",
+          "type": "readonly StudioBindingResponsePathOption[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "sourceLabel",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioBindingResponsePathOption",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/bindingAuthoringContracts.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingAuthoringContracts.ts",
+        "line": 29,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "label",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "path",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "value",
+          "kind": "property",
+          "type": "UiBindableValueMeta",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
       "name": "StudioCommand",
       "description": null,
       "isReadme": false,
@@ -5564,7 +6568,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 317,
+        "line": 323,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5582,7 +6586,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 301,
+        "line": 307,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5615,7 +6619,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 306,
+        "line": 312,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5662,7 +6666,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 313,
+        "line": 319,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5680,7 +6684,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 333,
+        "line": 339,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6083,7 +7087,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 326,
+        "line": 332,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6101,7 +7105,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 315,
+        "line": 321,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6270,7 +7274,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 117,
+        "line": 121,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6288,7 +7292,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 147,
+        "line": 153,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6306,7 +7310,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 119,
+        "line": 123,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6324,7 +7328,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 116,
+        "line": 120,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6342,7 +7346,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 114,
+        "line": 118,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6360,7 +7364,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 53,
+        "line": 54,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6400,7 +7404,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 121,
+        "line": 125,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6418,7 +7422,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 112,
+        "line": 116,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6525,7 +7529,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 110,
+        "line": 114,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6543,7 +7547,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 120,
+        "line": 124,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6561,7 +7565,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 115,
+        "line": 119,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6579,7 +7583,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 158,
+        "line": 164,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6633,7 +7637,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 113,
+        "line": 117,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6651,7 +7655,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 166,
+        "line": 172,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6899,7 +7903,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 153,
+        "line": 159,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6917,7 +7921,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 470,
+        "line": 476,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6935,7 +7939,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 554,
+        "line": 560,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6971,6 +7975,56 @@
       "structuredRows": []
     },
     {
+      "name": "upsertStudioPropBinding",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/bindingMutationModel.ts",
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 9,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string, binding: PropBinding) => Readonly<Record<string, ComponentDataBinding>>",
+          "parameters": [
+            {
+              "name": "binding",
+              "type": "PropBinding",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "node",
+              "type": "UiNode",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "propName",
+              "type": "string",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, ComponentDataBinding>>",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "validateInsertRecipe",
       "description": null,
       "isReadme": false,
@@ -6979,7 +8033,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1174,
+        "line": 1180,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7017,7 +8071,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 771,
+        "line": 777,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7661,6 +8715,330 @@
       "sourceLocation": {
         "filePath": "src/authSettings.ts",
         "line": 596,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnoseStudioComponentBindings",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnosePropBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnoseEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 86,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnoseEventInputs",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnoseInputCompatibility",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 135,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveEventSourceValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "missingOperationDiagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 175,
+        "column": 1
+      }
+    },
+    {
+      "name": "toBindableType",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "diagnostic",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingDiagnosticsModel.ts",
+        "line": 198,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingManifestPersistence.test.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioBindableProps",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMetadataModel.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioBindableEvents",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMetadataModel.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "upsertStudioPropBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeStudioPropBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "appendStudioEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeStudioEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "isEmptyBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingMutationModel.ts",
+        "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectStudioBindingOperationOptions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "findStudioBindingOperationOption",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectSourceOperations",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectOperationInputFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSlotSchema",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 83,
+        "column": 1
+      }
+    },
+    {
+      "name": "describeSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioActionInputFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "toBindableType",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingOperationModel.ts",
+        "line": 113,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioSchemaValueMeta",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectStudioResponsePaths",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "assessStudioBindingCompatibility",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectObjectPaths",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSchemaRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSchemaFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 88,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSchemaType",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveSingleSchemaType",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "isObjectLike",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "isImageAssetShape",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/bindingSchemaModel.ts",
+        "line": 127,
         "column": 1
       }
     },
@@ -13087,7 +14465,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 518,
+        "line": 524,
         "column": 14
       }
     },
@@ -13096,7 +14474,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 525,
+        "line": 531,
         "column": 14
       }
     },
@@ -13105,7 +14483,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 548,
         "column": 14
       }
     },
@@ -13114,7 +14492,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 554,
+        "line": 560,
         "column": 14
       }
     },
@@ -13123,7 +14501,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 582,
+        "line": 588,
         "column": 14
       }
     },
@@ -13132,7 +14510,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 600,
+        "line": 606,
         "column": 14
       }
     },
@@ -13141,7 +14519,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 639,
         "column": 14
       }
     },
@@ -13150,7 +14528,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 669,
+        "line": 675,
         "column": 1
       }
     },
@@ -13159,7 +14537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 674,
+        "line": 680,
         "column": 9
       }
     },
@@ -13168,7 +14546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 693,
+        "line": 699,
         "column": 1
       }
     },
@@ -13177,7 +14555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 704,
+        "line": 710,
         "column": 1
       }
     },
@@ -13186,7 +14564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 765,
         "column": 1
       }
     },
@@ -13195,7 +14573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 771,
+        "line": 777,
         "column": 1
       }
     },
@@ -13204,7 +14582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 826,
+        "line": 832,
         "column": 1
       }
     },
@@ -13213,7 +14591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 887,
+        "line": 893,
         "column": 1
       }
     },
@@ -13222,7 +14600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 944,
+        "line": 950,
         "column": 1
       }
     },
@@ -13231,7 +14609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 989,
+        "line": 995,
         "column": 1
       }
     },
@@ -13240,7 +14618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1028,
+        "line": 1034,
         "column": 1
       }
     },
@@ -13249,7 +14627,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1057,
+        "line": 1063,
         "column": 1
       }
     },
@@ -13258,7 +14636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1157,
+        "line": 1163,
         "column": 1
       }
     },
@@ -13267,7 +14645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1161,
+        "line": 1167,
         "column": 1
       }
     },
@@ -13276,7 +14654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1166,
+        "line": 1172,
         "column": 1
       }
     },
@@ -13285,7 +14663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1174,
+        "line": 1180,
         "column": 1
       }
     },
@@ -13294,7 +14672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1178,
+        "line": 1184,
         "column": 9
       }
     },
@@ -13303,7 +14681,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1211,
+        "line": 1217,
         "column": 1
       }
     },
@@ -13312,7 +14690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1216,
+        "line": 1222,
         "column": 9
       }
     },
@@ -13321,7 +14699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1231,
+        "line": 1237,
         "column": 1
       }
     },
@@ -13330,7 +14708,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1251,
+        "line": 1257,
         "column": 1
       }
     },
@@ -13339,7 +14717,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1274,
+        "line": 1280,
         "column": 1
       }
     },
@@ -13348,7 +14726,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1312,
+        "line": 1318,
         "column": 1
       }
     },
@@ -13357,7 +14735,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1338,
+        "line": 1344,
         "column": 1
       }
     },
@@ -13366,7 +14744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1354,
+        "line": 1360,
         "column": 1
       }
     },
@@ -13375,7 +14753,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1403,
+        "line": 1409,
         "column": 1
       }
     },
@@ -15778,7 +17156,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 131,
+        "line": 142,
         "column": 1
       }
     },
@@ -15787,7 +17165,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 142,
+        "line": 153,
         "column": 1
       }
     },
@@ -15796,7 +17174,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 154,
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioBindingsNodeId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 187,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioBindingsRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 191,
         "column": 1
       }
     },
@@ -15805,7 +17201,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 165,
+        "line": 195,
         "column": 1
       }
     },
@@ -15814,7 +17210,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 182,
+        "line": 199,
         "column": 1
       }
     },
@@ -15823,7 +17219,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 186,
+        "line": 203,
         "column": 1
       }
     },
@@ -15832,7 +17228,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 197,
+        "line": 217,
         "column": 1
       }
     },
@@ -15841,7 +17237,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 208,
+        "line": 228,
         "column": 1
       }
     },
@@ -15850,7 +17246,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 212,
+        "line": 232,
         "column": 1
       }
     },
@@ -15859,7 +17255,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 229,
+        "line": 249,
         "column": 1
       }
     },
@@ -15868,7 +17264,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 247,
+        "line": 268,
         "column": 1
       }
     },
@@ -15877,7 +17273,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 264,
+        "line": 285,
         "column": 1
       }
     },
@@ -15886,7 +17282,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 268,
+        "line": 289,
         "column": 1
       }
     },
@@ -15895,7 +17291,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 278,
+        "line": 299,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioContextNodeId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 307,
         "column": 1
       }
     },
@@ -16066,7 +17471,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
-        "line": 67,
+        "line": 74,
         "column": 1
       }
     },
@@ -16746,6 +18151,213 @@
       }
     },
     {
+      "name": "BindingDiagnosticsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioPropBindingForSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioEventInputDrafts",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseStudioBindingLiteral",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatStudioBindingLiteral",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioOperationKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "findStudioOperationByKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioEventInputMap",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 106,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDefaultBindingValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 129,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseStructuredValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 137,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBindingValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "EventBindingComposer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "add",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "line": 62,
+        "column": 9
+      }
+    },
+    {
+      "name": "EventInputDrafts",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "EventBindingsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "EventPayloadSummary",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "describeEventBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "describeBindingInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "PropertyBindingEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "PropertyBindingSourceFields",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "line": 78,
+        "column": 1
+      }
+    },
+    {
+      "name": "PropertyBindingsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "BindingsAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
       "name": "DataSourceCatalogCard",
       "description": null,
       "sourceLocation": {
@@ -17407,7 +19019,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 21,
+        "line": 22,
         "column": 1
       }
     },
@@ -17522,6 +19134,22 @@
     },
     {
       "kind": "export",
+      "name": "appendStudioEventBinding",
+      "sourcePath": "src/bindingMutationModel.ts",
+      "symbolName": "appendStudioEventBinding",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "assessStudioBindingCompatibility",
+      "sourcePath": "src/bindingSchemaModel.ts",
+      "symbolName": "assessStudioBindingCompatibility",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "buildInsertCatalogEntries",
       "sourcePath": "src/index.ts",
       "symbolName": "buildInsertCatalogEntries",
@@ -17546,9 +19174,33 @@
     },
     {
       "kind": "export",
+      "name": "collectStudioBindingOperationOptions",
+      "sourcePath": "src/bindingOperationModel.ts",
+      "symbolName": "collectStudioBindingOperationOptions",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "collectStudioResponsePaths",
+      "sourcePath": "src/bindingSchemaModel.ts",
+      "symbolName": "collectStudioResponsePaths",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "createNodeFromCatalogEntry",
       "sourcePath": "src/index.ts",
       "symbolName": "createNodeFromCatalogEntry",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createStudioActionInputFields",
+      "sourcePath": "src/bindingOperationModel.ts",
+      "symbolName": "createStudioActionInputFields",
       "description": null,
       "isReadme": false
     },
@@ -17570,9 +19222,25 @@
     },
     {
       "kind": "export",
+      "name": "diagnoseStudioComponentBindings",
+      "sourcePath": "src/bindingDiagnosticsModel.ts",
+      "symbolName": "diagnoseStudioComponentBindings",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "findNodeById",
       "sourcePath": "src/index.ts",
       "symbolName": "findNodeById",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "findStudioBindingOperationOption",
+      "sourcePath": "src/bindingOperationModel.ts",
+      "symbolName": "findStudioBindingOperationOption",
       "description": null,
       "isReadme": false
     },
@@ -17626,6 +19294,22 @@
     },
     {
       "kind": "export",
+      "name": "removeStudioEventBinding",
+      "sourcePath": "src/bindingMutationModel.ts",
+      "symbolName": "removeStudioEventBinding",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "removeStudioPropBinding",
+      "sourcePath": "src/bindingMutationModel.ts",
+      "symbolName": "removeStudioPropBinding",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "resolveDefaultInsertPlacement",
       "sourcePath": "src/index.ts",
       "symbolName": "resolveDefaultInsertPlacement",
@@ -17650,6 +19334,22 @@
     },
     {
       "kind": "export",
+      "name": "resolveStudioBindableEvents",
+      "sourcePath": "src/bindingMetadataModel.ts",
+      "symbolName": "resolveStudioBindableEvents",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "resolveStudioBindableProps",
+      "sourcePath": "src/bindingMetadataModel.ts",
+      "symbolName": "resolveStudioBindableProps",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "resolveStudioInstancePropertyFields",
       "sourcePath": "src/propertiesAuthoringModel.ts",
       "symbolName": "resolveStudioInstancePropertyFields",
@@ -17666,9 +19366,25 @@
     },
     {
       "kind": "export",
+      "name": "resolveStudioSchemaValueMeta",
+      "sourcePath": "src/bindingSchemaModel.ts",
+      "symbolName": "resolveStudioSchemaValueMeta",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "updateNodeInTree",
       "sourcePath": "src/index.ts",
       "symbolName": "updateNodeInTree",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "upsertStudioPropBinding",
+      "sourcePath": "src/bindingMutationModel.ts",
+      "symbolName": "upsertStudioPropBinding",
       "description": null,
       "isReadme": false
     },
@@ -17708,6 +19424,96 @@
         "fromPath": "src/authSettings.test.ts",
         "toPath": "src/authSettings.ts",
         "sourcePath": "src/authSettings.test.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.test.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingDiagnosticsModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingMetadataModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingMutationModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingOperationModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingAuthoringModel.ts",
+        "toPath": "src/bindingSchemaModel.ts",
+        "sourcePath": "src/bindingAuthoringModel.ts"
+      },
+      {
+        "fromPath": "src/bindingDiagnosticsModel.ts",
+        "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromPath": "src/bindingDiagnosticsModel.ts",
+        "toPath": "src/bindingOperationModel.ts",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromPath": "src/bindingDiagnosticsModel.ts",
+        "toPath": "src/bindingSchemaModel.ts",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromPath": "src/bindingManifestPersistence.test.ts",
+        "toPath": "src/core/studioManifestDraftModel.ts",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromPath": "src/bindingManifestPersistence.test.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromPath": "src/bindingManifestPersistence.test.ts",
+        "toPath": "src/manifestSync.ts",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromPath": "src/bindingMetadataModel.ts",
+        "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromPath": "src/bindingMutationAcceptance.test.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromPath": "src/bindingOperationModel.ts",
+        "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromPath": "src/bindingOperationModel.ts",
+        "toPath": "src/bindingSchemaModel.ts",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromPath": "src/bindingSchemaModel.ts",
+        "toPath": "src/bindingAuthoringContracts.ts",
+        "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
         "fromPath": "src/canvasDragModel.public.test.ts",
@@ -17812,6 +19618,11 @@
       {
         "fromPath": "src/index.ts",
         "toPath": "src/authSettings.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
         "sourcePath": "src/index.ts"
       },
       {
@@ -19706,6 +21517,11 @@
       },
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
         "toPath": "src/ui/admin/pages/OverviewAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
@@ -20055,6 +21871,46 @@
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/manifestState.ts",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
         "fromPath": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/DataSourceCatalogCard.tsx"
@@ -20388,6 +22244,96 @@
         "fromPath": "src/host/manifestSystem/auth/shared/index.ts",
         "toPath": "src/host/manifestSystem/auth/shared/global.auth.system.tpl.ts",
         "sourcePath": "src/host/manifestSystem/auth/shared/index.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toPath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toPath": "src/bindingAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toPath": "src/ui/admin/pages/bindings/bindingAdminStyles.ts",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
       }
     ],
     "calls": [
@@ -20876,6 +22822,420 @@
         "toSymbol": "asRecord",
         "callExpression": "asRecord",
         "sourcePath": "src/authSettings.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "resolveStudioBindableProps",
+        "callExpression": "resolveStudioBindableProps",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "resolveStudioBindableEvents",
+        "callExpression": "resolveStudioBindableEvents",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "upsertStudioPropBinding",
+        "callExpression": "upsertStudioPropBinding",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "appendStudioEventBinding",
+        "callExpression": "appendStudioEventBinding",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "removeStudioEventBinding",
+        "callExpression": "removeStudioEventBinding",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "removeStudioPropBinding",
+        "callExpression": "removeStudioPropBinding",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "collectStudioBindingOperationOptions",
+        "callExpression": "collectStudioBindingOperationOptions",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "assessStudioBindingCompatibility",
+        "callExpression": "assessStudioBindingCompatibility",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingAuthoringModel.test.ts",
+        "toSymbol": "diagnoseStudioComponentBindings",
+        "callExpression": "diagnoseStudioComponentBindings",
+        "sourcePath": "src/bindingAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingDiagnosticsModel.ts",
+        "toSymbol": "diagnosePropBinding",
+        "callExpression": "diagnosePropBinding",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingDiagnosticsModel.ts",
+        "toSymbol": "diagnoseEventBinding",
+        "callExpression": "diagnoseEventBinding",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnosePropBinding",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnosePropBinding",
+        "toSymbol": "findStudioBindingOperationOption",
+        "callExpression": "findStudioBindingOperationOption",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnosePropBinding",
+        "toSymbol": "missingOperationDiagnostic",
+        "callExpression": "missingOperationDiagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnosePropBinding",
+        "toSymbol": "assessStudioBindingCompatibility",
+        "callExpression": "assessStudioBindingCompatibility",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseEventBinding",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseEventBinding",
+        "toSymbol": "findStudioBindingOperationOption",
+        "callExpression": "findStudioBindingOperationOption",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseEventBinding",
+        "toSymbol": "missingOperationDiagnostic",
+        "callExpression": "missingOperationDiagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseEventBinding",
+        "toSymbol": "diagnoseEventInputs",
+        "callExpression": "diagnoseEventInputs",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingDiagnosticsModel.ts",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingDiagnosticsModel.ts",
+        "toSymbol": "diagnoseInputCompatibility",
+        "callExpression": "diagnoseInputCompatibility",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseInputCompatibility",
+        "toSymbol": "resolveEventSourceValue",
+        "callExpression": "resolveEventSourceValue",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseInputCompatibility",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseInputCompatibility",
+        "toSymbol": "assessStudioBindingCompatibility",
+        "callExpression": "assessStudioBindingCompatibility",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "resolveEventSourceValue",
+        "toSymbol": "toBindableType",
+        "callExpression": "toBindableType",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "missingOperationDiagnostic",
+        "toSymbol": "diagnostic",
+        "callExpression": "diagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "updateStudioManifestDraftDataBindings",
+        "callExpression": "updateStudioManifestDraftDataBindings",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingManifestPersistence.test.ts",
+        "toSymbol": "createStudioManifestSignature",
+        "callExpression": "createStudioManifestSignature",
+        "sourcePath": "src/bindingManifestPersistence.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingMutationAcceptance.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingMutationAcceptance.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingMutationAcceptance.test.ts",
+        "toSymbol": "upsertStudioPropBinding",
+        "callExpression": "upsertStudioPropBinding",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingMutationAcceptance.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromSymbol": "src/bindingMutationAcceptance.test.ts",
+        "toSymbol": "appendStudioEventBinding",
+        "callExpression": "appendStudioEventBinding",
+        "sourcePath": "src/bindingMutationAcceptance.test.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioPropBinding",
+        "toSymbol": "writeBinding",
+        "callExpression": "writeBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioPropBinding",
+        "toSymbol": "writeBinding",
+        "callExpression": "writeBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "appendStudioEventBinding",
+        "toSymbol": "writeBinding",
+        "callExpression": "writeBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioEventBinding",
+        "toSymbol": "writeBinding",
+        "callExpression": "writeBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "writeBinding",
+        "toSymbol": "isEmptyBinding",
+        "callExpression": "isEmptyBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "collectSourceOperations",
+        "callExpression": "collectSourceOperations",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "describeSource",
+        "callExpression": "describeSource",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "collectOperationInputFields",
+        "callExpression": "collectOperationInputFields",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "collectStudioResponsePaths",
+        "callExpression": "collectStudioResponsePaths",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "resolveSlotSchema",
+        "callExpression": "resolveSlotSchema",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "collectOperationInputFields",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "collectOperationInputFields",
+        "toSymbol": "resolveSlotSchema",
+        "callExpression": "resolveSlotSchema",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingOperationModel.ts",
+        "toSymbol": "toBindableType",
+        "callExpression": "toBindableType",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toSymbol": "resolveSchemaRef",
+        "callExpression": "resolveSchemaRef",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toSymbol": "resolveSchemaType",
+        "callExpression": "resolveSchemaType",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toSymbol": "resolveSchemaFields",
+        "callExpression": "resolveSchemaFields",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioResponsePaths",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioResponsePaths",
+        "toSymbol": "collectObjectPaths",
+        "callExpression": "collectObjectPaths",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "assessStudioBindingCompatibility",
+        "toSymbol": "isObjectLike",
+        "callExpression": "isObjectLike",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "assessStudioBindingCompatibility",
+        "toSymbol": "isImageAssetShape",
+        "callExpression": "isImageAssetShape",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectObjectPaths",
+        "toSymbol": "resolveSchemaRef",
+        "callExpression": "resolveSchemaRef",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectObjectPaths",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectObjectPaths",
+        "toSymbol": "collectObjectPaths",
+        "callExpression": "collectObjectPaths",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveSchemaRef",
+        "toSymbol": "resolveSchemaRef",
+        "callExpression": "resolveSchemaRef",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "src/bindingSchemaModel.ts",
+        "toSymbol": "resolveStudioSchemaValueMeta",
+        "callExpression": "resolveStudioSchemaValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveSchemaType",
+        "toSymbol": "resolveSingleSchemaType",
+        "callExpression": "resolveSingleSchemaType",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "isImageAssetShape",
+        "toSymbol": "isObjectLike",
+        "callExpression": "isObjectLike",
+        "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
@@ -25121,6 +27481,24 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioBindingsNodeId",
+        "callExpression": "resolveStudioBindingsNodeId",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioBindingsRoutePath",
+        "callExpression": "createStudioBindingsRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioAdminRoutePath",
+        "callExpression": "createStudioAdminRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "resolveStudioPropertiesNodeId",
         "callExpression": "resolveStudioPropertiesNodeId",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
@@ -25129,12 +27507,6 @@
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "createStudioPropertiesRoutePath",
         "callExpression": "createStudioPropertiesRoutePath",
-        "sourcePath": "src/studioAdminRouteModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/studioAdminRouteModel.test.ts",
-        "toSymbol": "createStudioAdminRoutePath",
-        "callExpression": "createStudioAdminRoutePath",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
       },
       {
@@ -25175,6 +27547,12 @@
       },
       {
         "fromSymbol": "resolveStudioAdminRouteId",
+        "toSymbol": "resolveStudioBindingsNodeId",
+        "callExpression": "resolveStudioBindingsNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRouteId",
         "toSymbol": "resolveStudioPropertiesNodeId",
         "callExpression": "resolveStudioPropertiesNodeId",
         "sourcePath": "src/studioAdminRouteModel.ts"
@@ -25183,6 +27561,18 @@
         "fromSymbol": "resolveStudioAdminRoutePath",
         "toSymbol": "resolveStudioAdminRouteId",
         "callExpression": "resolveStudioAdminRouteId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "resolveStudioBindingsNodeId",
+        "callExpression": "resolveStudioBindingsNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "createStudioBindingsRoutePath",
+        "callExpression": "createStudioBindingsRoutePath",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -25201,6 +27591,24 @@
         "fromSymbol": "resolveStudioAdminRoutePath",
         "toSymbol": "getStudioAdminRouteDefinition",
         "callExpression": "getStudioAdminRouteDefinition",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindingsNodeId",
+        "toSymbol": "resolveStudioContextNodeId",
+        "callExpression": "resolveStudioContextNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioPropertiesNodeId",
+        "toSymbol": "resolveStudioContextNodeId",
+        "callExpression": "resolveStudioContextNodeId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRoutePath",
+        "toSymbol": "createStudioBindingsRoutePath",
+        "callExpression": "createStudioBindingsRoutePath",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -25237,6 +27645,12 @@
         "fromSymbol": "createStudioAdminRouteRenderState",
         "toSymbol": "resolveStudioAdminRoutePath",
         "callExpression": "resolveStudioAdminRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRouteRenderState",
+        "toSymbol": "resolveStudioBindingsNodeId",
+        "callExpression": "resolveStudioBindingsNodeId",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -31157,6 +33571,12 @@
       },
       {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "createStudioBindingsRoutePath",
+        "callExpression": "createStudioBindingsRoutePath",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
         "toSymbol": "createStudioPropertiesRoutePath",
         "callExpression": "createStudioPropertiesRoutePath",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -36424,6 +38844,12 @@
         "sourcePath": "src/ui/admin/AnkhAdminPage.test.ts"
       },
       {
+        "fromSymbol": "bindings",
+        "toSymbol": "resolveStudioBindingsNodeId",
+        "callExpression": "resolveStudioBindingsNodeId",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
         "fromSymbol": "properties",
         "toSymbol": "resolveStudioPropertiesNodeId",
         "callExpression": "resolveStudioPropertiesNodeId",
@@ -38548,6 +40974,48 @@
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
+        "fromSymbol": "BindingsAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "BindingsAdminPage",
+        "toSymbol": "findScreenIdForNode",
+        "callExpression": "findScreenIdForNode",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "BindingsAdminPage",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toSymbol": "setActiveScreenId",
+        "callExpression": "studio.setActiveScreenId",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "toSymbol": "selectNode",
+        "callExpression": "studio.selectNode",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "BindingsAdminPage",
+        "toSymbol": "collectStudioBindingOperationOptions",
+        "callExpression": "collectStudioBindingOperationOptions",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "BindingsAdminPage",
+        "toSymbol": "diagnoseStudioComponentBindings",
+        "callExpression": "diagnoseStudioComponentBindings",
+        "sourcePath": "src/ui/admin/pages/BindingsAdminPage.tsx"
+      },
+      {
         "fromSymbol": "src/ui/admin/pages/DataSourceCatalogCard.tsx",
         "toSymbol": "describeSourceKind",
         "callExpression": "describeSourceKind",
@@ -39752,6 +42220,228 @@
         "toSymbol": "escapeStringLiteral",
         "callExpression": "escapeStringLiteral",
         "sourcePath": "src/host/layout/templates/auth/screen.ts"
+      },
+      {
+        "fromSymbol": "createStudioPropBindingForSource",
+        "toSymbol": "createDefaultBindingValue",
+        "callExpression": "createDefaultBindingValue",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioEventBinding",
+        "toSymbol": "createStudioEventInputMap",
+        "callExpression": "createStudioEventInputMap",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "parseStudioBindingLiteral",
+        "toSymbol": "parseStructuredValue",
+        "callExpression": "parseStructuredValue",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "toSymbol": "createStudioOperationKey",
+        "callExpression": "createStudioOperationKey",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/bindingEditorModel.ts",
+        "toSymbol": "parseStudioBindingLiteral",
+        "callExpression": "parseStudioBindingLiteral",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "parseStructuredValue",
+        "toSymbol": "isBindingValue",
+        "callExpression": "isBindingValue",
+        "sourcePath": "src/ui/admin/pages/bindings/bindingEditorModel.ts"
+      },
+      {
+        "fromSymbol": "EventBindingComposer",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "EventBindingComposer",
+        "toSymbol": "createStudioOperationKey",
+        "callExpression": "createStudioOperationKey",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "EventBindingComposer",
+        "toSymbol": "findStudioOperationByKey",
+        "callExpression": "findStudioOperationByKey",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "EventBindingComposer",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "createStudioActionInputFields",
+        "callExpression": "createStudioActionInputFields",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "EventBindingComposer",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "setDrafts",
+        "callExpression": "setDrafts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "createStudioEventInputDrafts",
+        "callExpression": "createStudioEventInputDrafts",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "add",
+        "toSymbol": "onAdd",
+        "callExpression": "onAdd",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "add",
+        "toSymbol": "createStudioEventBinding",
+        "callExpression": "createStudioEventBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "createStudioOperationKey",
+        "callExpression": "createStudioOperationKey",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingComposer.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingComposer.tsx"
+      },
+      {
+        "fromSymbol": "EventBindingsCard",
+        "toSymbol": "resolveStudioBindableEvents",
+        "callExpression": "resolveStudioBindableEvents",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toSymbol": "describeEventBinding",
+        "callExpression": "describeEventBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toSymbol": "describeBindingInput",
+        "callExpression": "describeBindingInput",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toSymbol": "removeStudioEventBinding",
+        "callExpression": "removeStudioEventBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
+        "toSymbol": "appendStudioEventBinding",
+        "callExpression": "appendStudioEventBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "createStudioOperationKey",
+        "callExpression": "createStudioOperationKey",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "createStudioPropBindingForSource",
+        "callExpression": "createStudioPropBindingForSource",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "PropertyBindingSourceFields",
+        "toSymbol": "formatStudioBindingLiteral",
+        "callExpression": "formatStudioBindingLiteral",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "parseStudioBindingLiteral",
+        "callExpression": "parseStudioBindingLiteral",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "PropertyBindingSourceFields",
+        "toSymbol": "createStudioOperationKey",
+        "callExpression": "createStudioOperationKey",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "PropertyBindingSourceFields",
+        "toSymbol": "findStudioOperationByKey",
+        "callExpression": "findStudioOperationByKey",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "assessStudioBindingCompatibility",
+        "callExpression": "assessStudioBindingCompatibility",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
+        "toSymbol": "findStudioOperationByKey",
+        "callExpression": "findStudioOperationByKey",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"
+      },
+      {
+        "fromSymbol": "PropertyBindingsCard",
+        "toSymbol": "resolveStudioBindableProps",
+        "callExpression": "resolveStudioBindableProps",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toSymbol": "upsertStudioPropBinding",
+        "callExpression": "upsertStudioPropBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
+        "toSymbol": "removeStudioPropBinding",
+        "callExpression": "removeStudioPropBinding",
+        "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
       }
     ],
     "typeReferences": [
@@ -40274,6 +42964,266 @@
         "fromSymbol": "MoveNodeToPlacementResult",
         "toType": "UiNode",
         "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioBindablePropOption",
+        "toType": "UiBindablePropMeta",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindableEventOption",
+        "toType": "UiBindableEventMeta",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingInputFieldOption",
+        "toType": "UiBindableValueMeta",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingResponsePathOption",
+        "toType": "UiBindableValueMeta",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingOperationOption",
+        "toType": "BindingOperationRef",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingOperationOption",
+        "toType": "StudioBindingInputFieldOption",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "StudioBindingOperationOption",
+        "toType": "StudioBindingResponsePathOption",
+        "sourcePath": "src/bindingAuthoringContracts.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toType": "ComponentDataBindingRegistry",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toType": "StudioBindingDiagnostic",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toType": "StudioBindingOperationOption",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toType": "UiComponentMetaRegistry",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "diagnoseStudioComponentBindings",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingDiagnosticsModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableProps",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableProps",
+        "toType": "StudioBindablePropOption",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableProps",
+        "toType": "UiComponentMeta",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableProps",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableProps",
+        "toType": "Users",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableEvents",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableEvents",
+        "toType": "StudioBindableEventOption",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableEvents",
+        "toType": "UiComponentMeta",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableEvents",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioBindableEvents",
+        "toType": "Users",
+        "sourcePath": "src/bindingMetadataModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioPropBinding",
+        "toType": "ComponentDataBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioPropBinding",
+        "toType": "PropBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioPropBinding",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioPropBinding",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioPropBinding",
+        "toType": "ComponentDataBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioPropBinding",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioPropBinding",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "appendStudioEventBinding",
+        "toType": "ComponentDataBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "appendStudioEventBinding",
+        "toType": "EventBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "appendStudioEventBinding",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "appendStudioEventBinding",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioEventBinding",
+        "toType": "ComponentDataBinding",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioEventBinding",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioEventBinding",
+        "toType": "UiNode",
+        "sourcePath": "src/bindingMutationModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioBindingOperationOptions",
+        "toType": "DataSourceConfig",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioBindingOperationOptions",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioBindingOperationOptions",
+        "toType": "StudioBindingOperationOption",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "findStudioBindingOperationOption",
+        "toType": "BindingOperationRef",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "findStudioBindingOperationOption",
+        "toType": "StudioBindingOperationOption",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioActionInputFields",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioActionInputFields",
+        "toType": "StudioBindingInputFieldOption",
+        "sourcePath": "src/bindingOperationModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toType": "DataSchema",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toType": "ReadonlySet",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioSchemaValueMeta",
+        "toType": "UiBindableValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioResponsePaths",
+        "toType": "DataSchema",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioResponsePaths",
+        "toType": "Readonly",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioResponsePaths",
+        "toType": "StudioBindingResponsePathOption",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "assessStudioBindingCompatibility",
+        "toType": "StudioBindingCompatibility",
+        "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "assessStudioBindingCompatibility",
+        "toType": "UiBindableValueMeta",
+        "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
         "fromSymbol": "resolveStudioInstancePropertyFields",

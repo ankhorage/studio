@@ -75,6 +75,38 @@ graph TD
   module_src_authSettings_test_ts --> module_src_authSettings_ts
   module_src_authSettings_ts["src/authSettings.ts"]
   package__ankhorage_studio -.-> module_src_authSettings_ts
+  module_src_bindingAuthoringContracts_ts["src/bindingAuthoringContracts.ts"]
+  package__ankhorage_studio -.-> module_src_bindingAuthoringContracts_ts
+  module_src_bindingAuthoringModel_test_ts["src/bindingAuthoringModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_bindingAuthoringModel_test_ts
+  module_src_bindingAuthoringModel_test_ts --> module_src_bindingAuthoringModel_ts
+  module_src_bindingAuthoringModel_ts["src/bindingAuthoringModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingAuthoringModel_ts
+  module_src_bindingDiagnosticsModel_ts["src/bindingDiagnosticsModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingDiagnosticsModel_ts
+  module_src_bindingDiagnosticsModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_bindingDiagnosticsModel_ts --> module_src_bindingOperationModel_ts
+  module_src_bindingDiagnosticsModel_ts --> module_src_bindingSchemaModel_ts
+  module_src_bindingManifestPersistence_test_ts["src/bindingManifestPersistence.test.ts"]
+  package__ankhorage_studio -.-> module_src_bindingManifestPersistence_test_ts
+  module_src_bindingManifestPersistence_test_ts --> module_src_core_studioManifestDraftModel_ts
+  module_src_bindingManifestPersistence_test_ts --> module_src_index_ts
+  module_src_bindingManifestPersistence_test_ts --> module_src_manifestSync_ts
+  module_src_bindingMetadataModel_ts["src/bindingMetadataModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingMetadataModel_ts
+  module_src_bindingMetadataModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_bindingMutationAcceptance_test_ts["src/bindingMutationAcceptance.test.ts"]
+  package__ankhorage_studio -.-> module_src_bindingMutationAcceptance_test_ts
+  module_src_bindingMutationAcceptance_test_ts --> module_src_bindingAuthoringModel_ts
+  module_src_bindingMutationModel_ts["src/bindingMutationModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingMutationModel_ts
+  module_src_bindingOperationModel_ts["src/bindingOperationModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingOperationModel_ts
+  module_src_bindingOperationModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_bindingOperationModel_ts --> module_src_bindingSchemaModel_ts
+  module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
+  package__ankhorage_studio -.-> module_src_bindingSchemaModel_ts
+  module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
   module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDragModel_public_test_ts
   module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
@@ -847,6 +879,7 @@ graph TD
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_studioAdminRouteModel_ts
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ApisAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_AuthAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_BindingsAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_PropertiesAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_SecretsAdminPage_tsx
@@ -926,6 +959,48 @@ graph TD
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthHealthFlow_ts
   module_src_ui_admin_pages_AuthAdminPage_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_pages_bindings_bindingAdminStyles_ts["src/ui/admin/pages/bindings/bindingAdminStyles.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx["src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx
+  module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx --> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_bindingEditorModel_ts["src/ui/admin/pages/bindings/bindingEditorModel.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_bindingEditorModel_ts
+  module_src_ui_admin_pages_bindings_bindingEditorModel_ts --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx["src/ui/admin/pages/bindings/EventBindingComposer.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_EventBindingComposer_tsx
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_index_ts
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx --> module_src_ui_admin_pages_bindings_bindingEditorModel_ts
+  module_src_ui_admin_pages_bindings_EventBindingsCard_tsx["src/ui/admin/pages/bindings/EventBindingsCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_EventBindingsCard_tsx
+  module_src_ui_admin_pages_bindings_EventBindingsCard_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_EventBindingsCard_tsx --> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_EventBindingsCard_tsx --> module_src_ui_admin_pages_bindings_EventBindingComposer_tsx
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx["src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx --> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx --> module_src_ui_admin_pages_bindings_bindingEditorModel_ts
+  module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx["src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx
+  module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx --> module_src_ui_admin_pages_bindings_bindingAdminStyles_ts
+  module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx --> module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx
+  module_src_ui_admin_pages_BindingsAdminPage_tsx["src/ui/admin/pages/BindingsAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_BindingsAdminPage_tsx
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_bindingAuthoringModel_ts
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_index_ts
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_manifestState_ts
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_ui_admin_pages_bindings_EventBindingsCard_tsx
+  module_src_ui_admin_pages_BindingsAdminPage_tsx --> module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx
   module_src_ui_admin_pages_DataSourceCatalogCard_tsx["src/ui/admin/pages/DataSourceCatalogCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_DataSourceCatalogCard_tsx
   module_src_ui_admin_pages_DataSourceCatalogCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx

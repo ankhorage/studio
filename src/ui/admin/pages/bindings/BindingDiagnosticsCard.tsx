@@ -17,7 +17,10 @@ export function BindingDiagnosticsCard(props: {
         ) : (
           props.diagnostics.map((diagnostic, index) => (
             <View key={`${diagnostic.code}:${diagnostic.path ?? index}`}>
-              <Text color={diagnostic.severity === 'error' ? 'danger' : 'warning'} variant="bodySmall">
+              <Text
+                color={diagnostic.severity === 'error' ? 'danger' : 'warning'}
+                variant="bodySmall"
+              >
                 {diagnostic.message}
               </Text>
               {diagnostic.path ? (

@@ -136,7 +136,9 @@ function EventInputDrafts(props: {
         return (
           <View key={field.name} style={bindingAdminStyles.row}>
             <View style={bindingAdminStyles.grow}>
-              <Field label={`${field.label} · ${field.value.type}${field.required ? ' · required' : ''}`}>
+              <Field
+                label={`${field.label} · ${field.value.type}${field.required ? ' · required' : ''}`}
+              >
                 <Select
                   value={draft.kind}
                   options={INPUT_SOURCE_OPTIONS}

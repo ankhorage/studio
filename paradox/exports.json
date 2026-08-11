@@ -8,7 +8,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 378,
+      "line": 384,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -26,7 +26,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 284,
+      "line": 290,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -80,7 +80,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 600,
+      "line": 606,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -104,6 +104,94 @@
     "structuredRows": []
   },
   {
+    "name": "appendStudioEventBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMutationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMutationModel.ts",
+      "line": 34,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, binding: EventBinding) => Readonly<Record<string, ComponentDataBinding>>",
+        "parameters": [
+          {
+            "name": "binding",
+            "type": "EventBinding",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "eventName",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, ComponentDataBinding>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "assessStudioBindingCompatibility",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingSchemaModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingSchemaModel.ts",
+      "line": 43,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingCompatibility"],
+    "signatures": [
+      {
+        "label": "(expected: UiBindableValueMeta, actual: UiBindableValueMeta) => StudioBindingCompatibility",
+        "parameters": [
+          {
+            "name": "actual",
+            "type": "UiBindableValueMeta",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "expected",
+            "type": "UiBindableValueMeta",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "StudioBindingCompatibility",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "buildInsertCatalogEntries",
     "description": null,
     "isReadme": false,
@@ -112,7 +200,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1312,
+      "line": 1318,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -144,7 +232,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 759,
+      "line": 765,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -176,7 +264,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 525,
+      "line": 531,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -206,6 +294,76 @@
     "structuredRows": []
   },
   {
+    "name": "collectStudioBindingOperationOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingOperationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingOperationModel.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingOperationOption"],
+    "signatures": [
+      {
+        "label": "(dataSources: Readonly<Record<string, DataSourceConfig>>) => readonly StudioBindingOperationOption[]",
+        "parameters": [
+          {
+            "name": "dataSources",
+            "type": "Readonly<Record<string, DataSourceConfig>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindingOperationOption[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "collectStudioResponsePaths",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingSchemaModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingSchemaModel.ts",
+      "line": 33,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingResponsePathOption"],
+    "signatures": [
+      {
+        "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined) => readonly StudioBindingResponsePathOption[]",
+        "parameters": [
+          {
+            "name": "schema",
+            "type": "DataSchema | undefined",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "schemas",
+            "type": "Readonly<Record<string, DataSchema>> | undefined",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindingResponsePathOption[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "createNodeFromCatalogEntry",
     "description": null,
     "isReadme": false,
@@ -214,7 +372,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1231,
+      "line": 1237,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -243,6 +401,38 @@
           }
         ],
         "returnType": "UiNode",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createStudioActionInputFields",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingOperationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingOperationModel.ts",
+      "line": 95,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingInputFieldOption"],
+    "signatures": [
+      {
+        "label": "(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]",
+        "parameters": [
+          {
+            "name": "payloadSchema",
+            "type": "Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindingInputFieldOption[]",
         "returnDescription": null
       }
     ],
@@ -326,6 +516,38 @@
     "structuredRows": []
   },
   {
+    "name": "diagnoseStudioComponentBindings",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingDiagnosticsModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingDiagnosticsModel.ts",
+      "line": 20,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingDiagnostic", "StudioBindingOperationOption"],
+    "signatures": [
+      {
+        "label": "(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]",
+        "parameters": [
+          {
+            "name": "args",
+            "type": "{ readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindingDiagnostic[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "findNodeById",
     "description": null,
     "isReadme": false,
@@ -334,7 +556,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 542,
+      "line": 548,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -364,6 +586,44 @@
     "structuredRows": []
   },
   {
+    "name": "findStudioBindingOperationOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingOperationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingOperationModel.ts",
+      "line": 24,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingOperationOption"],
+    "signatures": [
+      {
+        "label": "(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "readonly StudioBindingOperationOption[]",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "ref",
+            "type": "BindingOperationRef",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "StudioBindingOperationOption | undefined",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "generateStudioId",
     "description": null,
     "isReadme": false,
@@ -372,7 +632,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 518,
+      "line": 524,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -404,7 +664,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1157,
+      "line": 1163,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -436,7 +696,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 262,
+      "line": 268,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -525,7 +785,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 244,
+      "line": 250,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -565,7 +825,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 221,
+      "line": 227,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -583,7 +843,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 272,
+      "line": 278,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -601,7 +861,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 250,
+      "line": 256,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -688,7 +948,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 218,
+      "line": 224,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -706,7 +966,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 219,
+      "line": 225,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -724,7 +984,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 267,
+      "line": 273,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -818,7 +1078,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 989,
+      "line": 995,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -850,7 +1110,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 932,
+      "line": 938,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -897,7 +1157,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 939,
+      "line": 945,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -930,7 +1190,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 229,
+      "line": 235,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -984,7 +1244,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 237,
+      "line": 243,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1031,7 +1291,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 224,
+      "line": 230,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1064,7 +1324,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 292,
+      "line": 298,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1111,7 +1371,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 633,
+      "line": 639,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1155,7 +1415,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1057,
+      "line": 1063,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1187,7 +1447,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1016,
+      "line": 1022,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1234,7 +1494,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1023,
+      "line": 1029,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1267,7 +1527,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 180,
+      "line": 186,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1314,7 +1574,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 187,
+      "line": 193,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1332,7 +1592,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 199,
+      "line": 205,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1365,7 +1625,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 178,
+      "line": 184,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1383,7 +1643,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 211,
+      "line": 217,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1401,7 +1661,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 204,
+      "line": 210,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1877,7 +2137,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 582,
+      "line": 588,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -1907,6 +2167,100 @@
     "structuredRows": []
   },
   {
+    "name": "removeStudioEventBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMutationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMutationModel.ts",
+      "line": 50,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, bindingIndex: number) => Readonly<Record<string, ComponentDataBinding>>",
+        "parameters": [
+          {
+            "name": "bindingIndex",
+            "type": "number",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "eventName",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, ComponentDataBinding>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "removeStudioPropBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMutationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMutationModel.ts",
+      "line": 22,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string) => Readonly<Record<string, ComponentDataBinding>>",
+        "parameters": [
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "propName",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, ComponentDataBinding>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "resolveDefaultInsertPlacement",
     "description": null,
     "isReadme": false,
@@ -1915,7 +2269,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 887,
+      "line": 893,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1947,7 +2301,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1354,
+      "line": 1360,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1979,7 +2333,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 826,
+      "line": 832,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1996,6 +2350,82 @@
           }
         ],
         "returnType": "PlacementResolutionResult",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveStudioBindableEvents",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMetadataModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMetadataModel.ts",
+      "line": 21,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindableEventOption"],
+    "signatures": [
+      {
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+        "parameters": [
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindableEventOption[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "resolveStudioBindableProps",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMetadataModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMetadataModel.ts",
+      "line": 8,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindablePropOption"],
+    "signatures": [
+      {
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+        "parameters": [
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, import(\"/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "readonly StudioBindablePropOption[]",
         "returnDescription": null
       }
     ],
@@ -2079,6 +2509,50 @@
     "structuredRows": []
   },
   {
+    "name": "resolveStudioSchemaValueMeta",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingSchemaModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingSchemaModel.ts",
+      "line": 14,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined, seen?: ReadonlySet<string>) => UiBindableValueMeta",
+        "parameters": [
+          {
+            "name": "schema",
+            "type": "DataSchema | undefined",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "schemas",
+            "type": "Readonly<Record<string, DataSchema>> | undefined",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "seen",
+            "type": "ReadonlySet<string>",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "UiBindableValueMeta",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "STUDIO_INSERT_RECIPES",
     "description": null,
     "isReadme": false,
@@ -2087,7 +2561,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1124,
+      "line": 1130,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2130,7 +2604,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 59,
+      "line": 60,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2148,7 +2622,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 51,
+      "line": 52,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2166,7 +2640,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 87,
+      "line": 88,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2184,7 +2658,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 276,
+      "line": 282,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2224,7 +2698,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 274,
+      "line": 280,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2242,7 +2716,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 282,
+      "line": 288,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2260,7 +2734,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 122,
+      "line": 126,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2278,7 +2752,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 145,
+      "line": 150,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2296,7 +2770,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 134,
+      "line": 139,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2418,6 +2892,292 @@
     "structuredRows": []
   },
   {
+    "name": "StudioBindableEventOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 16,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "meta",
+        "kind": "property",
+        "type": "UiBindableEventMeta",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "name",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindablePropOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 10,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "meta",
+        "kind": "property",
+        "type": "UiBindablePropMeta",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "name",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindingCompatibility",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 8,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindingDiagnostic",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 43,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "code",
+        "kind": "property",
+        "type": "\"incompatible-input\" | \"incompatible-response\" | \"missing-action\" | \"missing-binding-meta\" | \"missing-input\" | \"missing-operation\" | \"missing-response-path\" | \"unknown-event\" | \"unknown-prop\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "message",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "path",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "severity",
+        "kind": "property",
+        "type": "\"warning\" | \"error\"",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindingInputFieldOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 22,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "name",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "required",
+        "kind": "property",
+        "type": "boolean",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "value",
+        "kind": "property",
+        "type": "UiBindableValueMeta",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindingOperationOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 35,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": ["StudioBindingInputFieldOption", "StudioBindingResponsePathOption"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "inputFields",
+        "kind": "property",
+        "type": "readonly StudioBindingInputFieldOption[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "operation",
+        "kind": "property",
+        "type": "BindingOperationRef",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "responsePaths",
+        "kind": "property",
+        "type": "readonly StudioBindingResponsePathOption[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "sourceLabel",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "StudioBindingResponsePathOption",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/bindingAuthoringContracts.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingAuthoringContracts.ts",
+      "line": 29,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "label",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "path",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "value",
+        "kind": "property",
+        "type": "UiBindableValueMeta",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "StudioCommand",
     "description": null,
     "isReadme": false,
@@ -2426,7 +3186,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 317,
+      "line": 323,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2444,7 +3204,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 301,
+      "line": 307,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2477,7 +3237,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 306,
+      "line": 312,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2524,7 +3284,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 313,
+      "line": 319,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2542,7 +3302,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 333,
+      "line": 339,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2945,7 +3705,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 326,
+      "line": 332,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2963,7 +3723,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 315,
+      "line": 321,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3132,7 +3892,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 117,
+      "line": 121,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3150,7 +3910,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 147,
+      "line": 153,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3168,7 +3928,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 119,
+      "line": 123,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3186,7 +3946,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 116,
+      "line": 120,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3204,7 +3964,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 114,
+      "line": 118,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3222,7 +3982,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 53,
+      "line": 54,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3262,7 +4022,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 121,
+      "line": 125,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3280,7 +4040,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 112,
+      "line": 116,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3387,7 +4147,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 110,
+      "line": 114,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3405,7 +4165,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 120,
+      "line": 124,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3423,7 +4183,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 115,
+      "line": 119,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3441,7 +4201,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 158,
+      "line": 164,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3495,7 +4255,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 113,
+      "line": 117,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3513,7 +4273,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 166,
+      "line": 172,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3761,7 +4521,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 153,
+      "line": 159,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3779,7 +4539,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 470,
+      "line": 476,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -3797,7 +4557,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 554,
+      "line": 560,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -3833,6 +4593,56 @@
     "structuredRows": []
   },
   {
+    "name": "upsertStudioPropBinding",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/bindingMutationModel.ts",
+    "sourceLocation": {
+      "filePath": "src/bindingMutationModel.ts",
+      "line": 9,
+      "column": 1
+    },
+    "exportPaths": ["src/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string, binding: PropBinding) => Readonly<Record<string, ComponentDataBinding>>",
+        "parameters": [
+          {
+            "name": "binding",
+            "type": "PropBinding",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "node",
+            "type": "UiNode",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "propName",
+            "type": "string",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "registry",
+            "type": "Readonly<Record<string, ComponentDataBinding>>",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Readonly<Record<string, ComponentDataBinding>>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
     "name": "validateInsertRecipe",
     "description": null,
     "isReadme": false,
@@ -3841,7 +4651,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1174,
+      "line": 1180,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3879,7 +4689,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 771,
+      "line": 777,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

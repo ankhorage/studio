@@ -1,0 +1,8 @@
+sequenceDiagram
+  participant participant_appendStudioEventBinding as appendStudioEventBinding
+  participant participant_isEmptyBinding as isEmptyBinding
+  participant participant_writeBinding as writeBinding
+  participant_appendStudioEventBinding->>participant_writeBinding: writeBinding()
+  participant_writeBinding->>participant_isEmptyBinding: isEmptyBinding()
+  participant_isEmptyBinding-->>participant_writeBinding: return
+  participant_writeBinding-->>participant_appendStudioEventBinding: return

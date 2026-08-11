@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_diagnoseStudioComponentBindings as diagnoseStudioComponentBindings
+  participant participant_diagnostic as diagnostic
+  participant_diagnoseStudioComponentBindings->>participant_diagnostic: diagnostic()
+  participant_diagnostic-->>participant_diagnoseStudioComponentBindings: return

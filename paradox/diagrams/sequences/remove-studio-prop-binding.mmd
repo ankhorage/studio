@@ -1,0 +1,8 @@
+sequenceDiagram
+  participant participant_isEmptyBinding as isEmptyBinding
+  participant participant_removeStudioPropBinding as removeStudioPropBinding
+  participant participant_writeBinding as writeBinding
+  participant_removeStudioPropBinding->>participant_writeBinding: writeBinding()
+  participant_writeBinding->>participant_isEmptyBinding: isEmptyBinding()
+  participant_isEmptyBinding-->>participant_writeBinding: return
+  participant_writeBinding-->>participant_removeStudioPropBinding: return
