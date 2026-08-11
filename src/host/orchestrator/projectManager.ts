@@ -19,7 +19,6 @@ import { runProjectInfraScript } from './infraRuntime';
 import { cleanupProjectGeneratedAppImage } from './projectDeletion';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
-import { resolveModuleLayoutMutations } from './resolveMutations';
 import { ProjectScaffolder } from './scaffolder';
 import type { GeneratedAuthProvider, GeneratedStorageProvider } from './templates';
 import { runWorkspaceInstall } from './workspaceRuntime';
@@ -269,8 +268,12 @@ export class ProjectManager {
     return { success: true };
   }
 
-  async syncStudioRuntime(args: { projectId: string; manifest: AppManifest }) {
-    const { projectId, manifest } = args;
+  async syncStudioRuntime(args: {
+    projectId: string;
+    manifest: AppManifest;
+    mutations: LayoutMutation[];
+  }) {
+    const { projectId, manifest, mutations } = args;
     const normalizedManifest = applySystemTemplates(manifest);
     const projectPath = getProjectPath(this.rootPath, projectId);
     const includeStudio = await this.shouldIncludeStudio(projectPath);
@@ -284,15 +287,10 @@ export class ProjectManager {
       includeStudio,
       runtimePlan,
     );
-    await this.writeGeneratedFiles(
-      projectPath,
-      normalizedManifest,
-      resolveModuleLayoutMutations(normalizedManifest.infra.plugins),
-      {
-        includeStudio,
-        runtimePlan,
-      },
-    );
+    await this.writeGeneratedFiles(projectPath, normalizedManifest, mutations, {
+      includeStudio,
+      runtimePlan,
+    });
     await syncProjectInfrastructure({
       projectId,
       projectPath,
@@ -391,61 +389,6 @@ export class ProjectManager {
   }
 
   // =========================================================================
-  //  LOCALIZATION (PUBLIC API)
-  // =========================================================================
-
-  async getLocalizationLocales(projectId: string): Promise<string[]> {
-    const localesPath = path.join(
-      getProjectPath(this.rootPath, projectId),
-      'src/modules/localization/locales',
-    );
-
-    if (!(await exists(localesPath))) return [];
-
-    const entries = await fs.readdir(localesPath);
-    return entries
-      .filter((e) => e.endsWith('.json'))
-      .map((e) => e.replace('.json', ''))
-      .sort();
-  }
-
-  async getLocalizationLocale(projectId: string, locale: string): Promise<Record<string, string>> {
-    this.validateLocale(locale);
-    const localePath = path.join(
-      getProjectPath(this.rootPath, projectId),
-      `src/modules/localization/locales/${locale}.json`,
-    );
-
-    if (!(await exists(localePath))) return {};
-
-    const content = await fs.readFile(localePath, 'utf8');
-    const parsed: unknown = JSON.parse(content);
-
-    if (!isStringRecord(parsed)) {
-      throw new Error(`Invalid localization dictionary for locale: ${locale}`);
-    }
-
-    return parsed;
-  }
-
-  async saveLocalizationLocale(projectId: string, locale: string, dict: Record<string, string>) {
-    this.validateLocale(locale);
-    const localePath = path.join(
-      getProjectPath(this.rootPath, projectId),
-      `src/modules/localization/locales/${locale}.json`,
-    );
-
-    await this.writeText(localePath, JSON.stringify(dict, null, 2) + '\n');
-    return { success: true };
-  }
-
-  private validateLocale(locale: string) {
-    if (!/^[a-z]{2,3}([-_][a-zA-Z0-9]+)*$/.test(locale)) {
-      throw new Error(`Invalid locale format: ${locale}`);
-    }
-  }
-
-  // =========================================================================
   //  INTERNAL
   // =========================================================================
 
@@ -500,15 +443,6 @@ export class ProjectManager {
       splashScreen: manifest.splashScreen ?? null,
     });
   }
-}
-
-function isStringRecord(value: unknown): value is Record<string, string> {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    !Array.isArray(value) &&
-    Object.values(value).every((entry) => typeof entry === 'string')
-  );
 }
 
 async function exists(p: string) {

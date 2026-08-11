@@ -23,7 +23,7 @@ function createManifest(): AppManifest {
       },
     },
     infra: {
-      plugins: [],
+      modules: [],
       auth: {
         scope: 'global',
         provider: 'supabase',

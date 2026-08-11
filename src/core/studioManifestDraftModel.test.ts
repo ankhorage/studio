@@ -19,7 +19,7 @@ function createManifest(): StudioManifest {
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
-      plugins: [],
+      modules: [],
       modulesConfig: { preserved: true },
     },
     navigator: {

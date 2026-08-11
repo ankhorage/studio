@@ -94,12 +94,12 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     useStoredAuthSessionCredentialResolver = false,
   } = args;
 
-  const pluginProvidersStart = mutations.flatMap((m) => m.providerStart);
-  const pluginProvidersEnd = mutations.flatMap((m) => m.providerEnd).reverse();
+  const moduleProvidersStart = mutations.flatMap((m) => m.providerStart);
+  const moduleProvidersEnd = mutations.flatMap((m) => m.providerEnd).reverse();
   const innerThemeHook = innerNavigation.usesTheme ? '  const { theme } = useZoraTheme();\n' : '';
 
-  const providersStart = [...runtimeProviderStart, ...pluginProvidersStart].join('\n    ');
-  const providersEnd = [...pluginProvidersEnd, ...runtimeProviderEnd].join('\n    ');
+  const providersStart = [...runtimeProviderStart, ...moduleProvidersStart].join('\n    ');
+  const providersEnd = [...moduleProvidersEnd, ...runtimeProviderEnd].join('\n    ');
 
   const finalJsx = providersStart ? `{${providersStart}{output}${providersEnd}}` : '{output}';
   const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');

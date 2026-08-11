@@ -173,7 +173,7 @@ function createSmokeManifest(category: AppManifest['metadata']['category']): App
     activeThemeId: 'smoke-theme',
     activeThemeMode: 'light',
     infra: {
-      plugins: [],
+      modules: [],
       deployment: { target: 'minikube', monitoring: false },
       storage: { provider: 'auto', buckets: ['public'] },
       networking: { cdn: false },

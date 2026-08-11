@@ -1,37 +1,33 @@
-import { createOrchestrator, type Orchestrator } from '@ankhorage/orchestrator';
+import type { AppManifest } from '@ankhorage/contracts';
+import { createOrchestrator, type ModuleState, type Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
+import type { StudioModuleState } from '../../moduleAdminContracts';
 import {
-  type HostManifest,
-  type HostModuleDefinition,
+  getHostModule,
+  type HostModuleContribution,
   listHostModules,
-  MODULE_CATALOG,
+  resolveHostModuleAdminContribution,
 } from '../modules/catalog';
 import { LocalFsTargetAdapter } from '../modules/runtime/LocalFsTargetAdapter';
 import { ProjectManager } from './projectManager';
 import { resolveModuleLayoutMutations } from './resolveMutations';
 
 interface PendingOperation {
-  type: 'uninstall';
-  moduleId: string;
-  at: string;
+  readonly type: 'uninstall';
+  readonly moduleId: string;
+  readonly at: string;
 }
 
 interface PendingOpsData {
-  ops: PendingOperation[];
+  readonly ops: readonly PendingOperation[];
 }
+
+export type HostModuleState = StudioModuleState;
 
 const PENDING_OPS_FILE = '.ankh/pending.json';
 
-const MANAGED_MODULE_DIRS = {
-  'expo-localization': 'src/modules/localization',
-  'expo-google-fonts': 'src/modules/google-fonts',
-} as const;
-
-/**
- * ModuleManager remains the host boundary for bridge and CLI routes.
- * Internally it operates only on orchestrator-backed host modules.
- */
+/** Generic Studio host adapter over the standalone Orchestrator lifecycle. */
 export class ModuleManager {
   private readonly appsRoot: string;
   private readonly projectManager: ProjectManager;
@@ -44,70 +40,70 @@ export class ModuleManager {
     this.adapter = new LocalFsTargetAdapter();
   }
 
-  getAvailableModules() {
-    return listHostModules().map((module) => ({
-      id: module.id,
-      name: module.name,
-      description: module.description,
-      ui: module.ui,
-    }));
+  async listModules(projectId: string): Promise<readonly HostModuleState[]> {
+    const appPath = this.getAppPath(projectId);
+    await this.ensureProjectExists(projectId);
+    const [states, pending] = await Promise.all([
+      this.getModuleOrchestrator(appPath).listModules(),
+      this.readPending(appPath),
+    ]);
+    const pendingIds = new Set(pending.ops.map((operation) => operation.moduleId));
+
+    return states.map((state) =>
+      this.toHostModuleState(state, getHostModule(state.moduleId), pendingIds.has(state.moduleId)),
+    );
   }
 
-  async proxyGet(moduleId: string, requestPath: string) {
-    const module = this.getModule(moduleId);
-    if (!module.proxyGet) {
-      throw new Error(`Module '${moduleId}' does not support proxyGet.`);
-    }
-    return await module.proxyGet(requestPath);
+  async getModuleState(projectId: string, moduleId: string): Promise<HostModuleState | null> {
+    const appPath = this.getAppPath(projectId);
+    await this.ensureProjectExists(projectId);
+    const [state, pending] = await Promise.all([
+      this.getModuleOrchestrator(appPath).getModule(moduleId),
+      this.readPending(appPath),
+    ]);
+    if (!state) return null;
+
+    return this.toHostModuleState(
+      state,
+      getHostModule(moduleId),
+      pending.ops.some((operation) => operation.moduleId === moduleId),
+    );
   }
 
   async installModule(projectId: string, moduleId: string, config?: unknown) {
+    await this.prepareProjectForLifecycle(projectId);
     const appPath = this.getAppPath(projectId);
-    await this.ensureProjectExists(projectId);
-
-    const manifest = await this.readManifest(appPath);
-    const module = this.getModule(moduleId);
-    const resolvedConfig =
-      config === undefined
-        ? module.readStoredConfig(manifest)
-        : this.requirePlainObject(config, moduleId);
-    const validatedConfig = this.validateModuleConfig(module, resolvedConfig);
-
+    const contribution = this.requireHostModule(moduleId);
     const orchestrator = this.getModuleOrchestrator(appPath);
-    await orchestrator.installModule(moduleId, {
-      config: validatedConfig,
-    });
+    const current = await orchestrator.getModule(moduleId);
+    if (current?.installed) {
+      throw new Error(`Module '${moduleId}' is already installed.`);
+    }
 
+    const normalizedConfig = this.normalizeConfig(contribution, config ?? {});
+    const result = await orchestrator.installModule(moduleId, { config: normalizedConfig });
     await this.removePendingOperation(appPath, moduleId);
+    await this.persistLifecycleProjection(projectId);
 
-    const nextManifest = this.applyInstalledModuleState(manifest, moduleId, validatedConfig);
-    await this.writeManifest(appPath, nextManifest);
-    await this.projectManager.updateStudioManifestIfExists(projectId, (draft) =>
-      this.applyInstalledModuleState(draft, moduleId, validatedConfig),
-    );
-    await this.rebuildRootLayout(projectId);
-    await this.generateModuleRegistry(projectId);
-
-    return { success: true, moduleId };
+    return {
+      success: true,
+      installed: result.installed,
+      module: await this.getModuleState(projectId, moduleId),
+      needsReload: false,
+    };
   }
 
   async uninstallModule(projectId: string, moduleId: string) {
+    await this.prepareProjectForLifecycle(projectId);
     const appPath = this.getAppPath(projectId);
-    await this.ensureProjectExists(projectId);
-
-    const manifest = await this.readManifest(appPath);
-    const pendingData = await this.readPending(appPath);
-    const hasPendingUninstall = pendingData.ops.some((op) => op.moduleId === moduleId);
-
-    if (!manifest.infra.plugins.includes(moduleId)) {
-      if (hasPendingUninstall) {
-        return { success: true, needsReload: true, pending: true };
-      }
-      return {
-        success: false,
-        needsReload: false,
-        error: `Module '${moduleId}' is not installed.`,
-      };
+    const state = await this.getModuleOrchestrator(appPath).getModule(moduleId);
+    if (!state?.installed) {
+      throw new Error(`Module '${moduleId}' is not installed.`);
+    }
+    if (state.installation.dependents.length > 0) {
+      throw new Error(
+        `Cannot remove '${moduleId}' while installed modules still depend on it: ${state.installation.dependents.join(', ')}`,
+      );
     }
 
     await this.enqueuePending(appPath, {
@@ -115,136 +111,184 @@ export class ModuleManager {
       moduleId,
       at: new Date().toISOString(),
     });
-
-    const nextManifest = this.applyUninstalledModuleState(manifest, moduleId);
-    await this.writeManifest(appPath, nextManifest);
-    await this.projectManager.updateStudioManifestIfExists(projectId, (draft) =>
-      this.applyUninstalledModuleState(draft, moduleId),
-    );
     await this.rebuildRootLayout(projectId);
-    await this.generateModuleRegistry(projectId);
 
-    return { success: true, needsReload: true };
+    return {
+      success: true,
+      module: await this.getModuleState(projectId, moduleId),
+      needsReload: true,
+      pending: true,
+    };
+  }
+
+  async updateModuleConfig(projectId: string, moduleId: string, config: unknown) {
+    await this.prepareProjectForLifecycle(projectId);
+    const appPath = this.getAppPath(projectId);
+    const contribution = this.requireHostModule(moduleId);
+    const orchestrator = this.getModuleOrchestrator(appPath);
+    const current = await orchestrator.getModule(moduleId);
+    if (!current?.installed) {
+      throw new Error(`Module '${moduleId}' is not installed.`);
+    }
+
+    const normalizedConfig = this.normalizeConfig(contribution, config);
+    const result = await orchestrator.reconfigureModule(moduleId, { config: normalizedConfig });
+    await this.removePendingOperation(appPath, moduleId);
+    await this.persistLifecycleProjection(projectId);
+
+    return {
+      success: true,
+      installed: result.installed,
+      reconfigured: result.reconfigured,
+      module: await this.getModuleState(projectId, moduleId),
+      needsReload: false,
+    };
   }
 
   async applyPendingOperations(projectId: string) {
     const appPath = this.getAppPath(projectId);
-    const pendingData = await this.readPending(appPath);
-    if (pendingData.ops.length === 0) {
+    await this.ensureProjectExists(projectId);
+    const pending = await this.readPending(appPath);
+    if (pending.ops.length === 0) {
       return { success: true, applied: 0 };
     }
 
+    await this.projectManager.syncProject({
+      projectId,
+      mutations: await this.resolveLayoutMutations(projectId),
+    });
+
     const orchestrator = this.getModuleOrchestrator(appPath);
-    for (const op of pendingData.ops) {
-      // Pending ops should be safe to apply repeatedly (e.g. after partial cleanups).
-      try {
-        await orchestrator.removeModule(op.moduleId);
-      } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : String(error);
-        // If module is already absent, continue cleanup without failing the whole finalize step.
-        if (!message.toLowerCase().includes('not installed')) {
-          throw error;
-        }
+    let applied = 0;
+    for (const operation of pending.ops) {
+      const state = await orchestrator.getModule(operation.moduleId);
+      if (state?.installed) {
+        await orchestrator.removeModule(operation.moduleId);
+        applied += 1;
       }
-      await this.removeManagedModuleDir(appPath, op.moduleId);
-      await this.projectManager.updateStudioManifestIfExists(projectId, (draft) =>
-        this.applyUninstalledModuleState(draft, op.moduleId),
-      );
     }
 
     await this.clearPending(appPath);
-    await this.rebuildRootLayout(projectId);
-    await this.generateModuleRegistry(projectId);
-
-    return { success: true, applied: pendingData.ops.length };
-  }
-
-  async finalizeUninstalls(projectId: string) {
-    return this.applyPendingOperations(projectId);
-  }
-
-  async generateModuleRegistry(projectId: string) {
-    const appPath = this.getAppPath(projectId);
-    const content = `/* generated by @ankhorage/studio */
-export const MODULE_PANEL_LOADERS: Record<string, () => Promise<unknown>> = {};
-`;
-
-    const registryPath = path.join(appPath, 'src/modules/registry.ts');
-    await this.adapter.ensureDir(path.dirname(registryPath));
-    await this.adapter.writeText(registryPath, content);
-  }
-
-  async pruneDependencies(_appPath: string) {
-    // Dependency cleanup is handled by orchestrator.removeModule().
+    await this.persistLifecycleProjection(projectId);
+    return { success: true, applied };
   }
 
   async syncProject(args: { projectId: string; includeStudio?: boolean }) {
     const { projectId, includeStudio = true } = args;
     await this.ensureProjectExists(projectId);
     await this.applyPendingOperations(projectId);
+    return await this.projectManager.syncProject({
+      projectId,
+      mutations: await this.resolveLayoutMutations(projectId),
+      includeStudio,
+    });
+  }
 
-    const mutations = await this.resolveLayoutMutations(projectId);
-    const result = await this.projectManager.syncProject({ projectId, mutations, includeStudio });
-    await this.generateModuleRegistry(projectId);
-    return result;
+  async saveStudioManifest(args: { projectId: string; manifest: AppManifest }) {
+    await this.ensureProjectExists(args.projectId);
+    return await this.projectManager.saveStudioManifest({
+      ...args,
+      manifest: await this.projectLifecycleState(args.projectId, args.manifest),
+    });
+  }
+
+  async syncStudioRuntime(args: { projectId: string; manifest: AppManifest }) {
+    await this.ensureProjectExists(args.projectId);
+    return await this.projectManager.syncStudioRuntime({
+      ...args,
+      manifest: await this.projectLifecycleState(args.projectId, args.manifest),
+      mutations: await this.resolveLayoutMutations(args.projectId),
+    });
+  }
+
+  async saveProjectManifest(args: { projectId: string; manifest: AppManifest }) {
+    await this.ensureProjectExists(args.projectId);
+    return await this.projectManager.saveProjectManifest({
+      ...args,
+      manifest: await this.projectLifecycleState(args.projectId, args.manifest),
+      mutations: await this.resolveLayoutMutations(args.projectId),
+      regenerateRouterFiles: true,
+    });
   }
 
   async rebuildRootLayout(projectId: string) {
     await this.ensureProjectExists(projectId);
-    const mutations = await this.resolveLayoutMutations(projectId);
-    return this.projectManager.rebuildRootLayout({ projectId, mutations });
+    return await this.projectManager.rebuildRootLayout({
+      projectId,
+      mutations: await this.resolveLayoutMutations(projectId),
+    });
   }
 
-  async updateModuleConfig(projectId: string, moduleId: string, config: unknown) {
-    const appPath = this.getAppPath(projectId);
+  private async prepareProjectForLifecycle(projectId: string) {
     await this.ensureProjectExists(projectId);
-
-    const manifest = await this.readManifest(appPath);
-    if (!manifest.infra.plugins.includes(moduleId)) {
-      throw new Error(`Module '${moduleId}' is not installed.`);
-    }
-
-    const module = this.getModule(moduleId);
-    const validatedConfig = this.validateModuleConfig(
-      module,
-      this.requirePlainObject(config, moduleId),
-    );
-
-    const orchestrator = this.getModuleOrchestrator(appPath);
-    await orchestrator.installModule(moduleId, {
-      config: validatedConfig,
+    await this.projectManager.syncProject({
+      projectId,
+      mutations: await this.resolveLayoutMutations(projectId),
     });
-    await this.removePendingOperation(appPath, moduleId);
+    await this.applyPendingOperations(projectId);
+  }
 
-    const nextManifest = this.applyInstalledModuleState(manifest, moduleId, validatedConfig);
-    await this.writeManifest(appPath, nextManifest);
-    await this.projectManager.updateStudioManifestIfExists(projectId, (draft) =>
-      this.applyInstalledModuleState(draft, moduleId, validatedConfig),
+  private async persistLifecycleProjection(projectId: string) {
+    const manifest = await this.projectManager.getProjectManifest(projectId);
+    const nextManifest = await this.projectLifecycleState(projectId, manifest);
+
+    await this.projectManager.saveProjectManifest({
+      projectId,
+      manifest: nextManifest,
+      mutations: await this.resolveLayoutMutations(projectId),
+      regenerateRouterFiles: true,
+    });
+    return nextManifest;
+  }
+
+  private async projectLifecycleState(
+    projectId: string,
+    manifest: AppManifest,
+  ): Promise<AppManifest> {
+    const states = await this.getModuleOrchestrator(this.getAppPath(projectId)).listModules();
+    const installed = states.filter((state) => state.installed);
+    const modules = installed
+      .map((state) => state.moduleId)
+      .sort((left, right) => left.localeCompare(right));
+    const modulesConfig = Object.fromEntries(
+      installed.map((state) => [state.moduleId, state.installation.config]),
     );
-    await this.rebuildRootLayout(projectId);
-    await this.generateModuleRegistry(projectId);
 
     return {
-      success: true,
-      ankhConfig: nextManifest,
-      installedModules: [...nextManifest.infra.plugins],
-      needsReload: false,
+      ...manifest,
+      infra: {
+        ...manifest.infra,
+        modules,
+        modulesConfig,
+      },
     };
   }
 
-  private getModule(moduleId: string): HostModuleDefinition {
-    const module = MODULE_CATALOG[moduleId];
-    if (!module) {
-      throw new Error(`Module '${moduleId}' not found in catalog.`);
+  private async resolveLayoutMutations(projectId: string) {
+    const appPath = this.getAppPath(projectId);
+    const [states, pending] = await Promise.all([
+      this.getModuleOrchestrator(appPath).listModules(),
+      this.readPending(appPath),
+    ]);
+    const pendingIds = new Set(pending.ops.map((operation) => operation.moduleId));
+    return resolveModuleLayoutMutations(
+      states
+        .filter((state) => state.installed && !pendingIds.has(state.moduleId))
+        .map((state) => state.moduleId),
+    );
+  }
+
+  private requireHostModule(moduleId: string): HostModuleContribution {
+    const contribution = getHostModule(moduleId);
+    if (!contribution) {
+      throw new Error(`Module '${moduleId}' is not available in the host registry.`);
     }
-    return module;
+    return contribution;
   }
 
   private getModuleOrchestrator(appPath: string): Orchestrator {
     const cached = this.orchestratorsByAppRoot.get(appPath);
-    if (cached) {
-      return cached;
-    }
+    if (cached) return cached;
 
     const orchestrator = createOrchestrator({
       modules: listHostModules().map((module) => module.definition),
@@ -252,6 +296,57 @@ export const MODULE_PANEL_LOADERS: Record<string, () => Promise<unknown>> = {};
     });
     this.orchestratorsByAppRoot.set(appPath, orchestrator);
     return orchestrator;
+  }
+
+  private toHostModuleState(
+    state: ModuleState,
+    contribution: HostModuleContribution | null,
+    pendingRemoval: boolean,
+  ): HostModuleState {
+    const admin = resolveHostModuleAdminContribution(contribution);
+    return {
+      id: state.moduleId,
+      name: contribution?.name ?? state.moduleId,
+      description:
+        contribution?.description ??
+        'Installed module is unavailable in the current host registry.',
+      available: state.available,
+      installed: state.installed,
+      pendingRemoval,
+      ...(state.available && state.registration.version
+        ? { registrationVersion: state.registration.version }
+        : {}),
+      ...(state.installed && state.installation.version
+        ? { installedVersion: state.installation.version }
+        : {}),
+      ...(state.installed ? { installedAt: state.installation.installedAt } : {}),
+      dependencies: state.available
+        ? state.registration.dependencies
+        : state.installation.dependencies,
+      dependents: state.installed ? state.installation.dependents : [],
+      config: state.installed ? state.installation.config : null,
+      admin: admin.admin,
+      ...(admin.error ? { adminError: admin.error } : {}),
+    };
+  }
+
+  private normalizeConfig(
+    contribution: HostModuleContribution,
+    config: unknown,
+  ): Record<string, unknown> {
+    if (!isRecord(config)) {
+      throw new Error(`Invalid config for module '${contribution.id}': expected an object.`);
+    }
+    const normalized = contribution.normalizeConfig(config);
+    if (!isRecord(normalized)) {
+      throw new Error(`Invalid normalized config for module '${contribution.id}'.`);
+    }
+    try {
+      JSON.stringify(normalized);
+    } catch {
+      throw new Error(`Invalid config for module '${contribution.id}': must be JSON serializable.`);
+    }
+    return normalized;
   }
 
   private getAppPath(projectId: string) {
@@ -265,100 +360,9 @@ export const MODULE_PANEL_LOADERS: Record<string, () => Promise<unknown>> = {};
     }
   }
 
-  private async resolveLayoutMutations(projectId: string) {
-    const manifest = await this.readManifest(this.getAppPath(projectId));
-    return resolveModuleLayoutMutations(manifest.infra.plugins);
-  }
-
-  private async readManifest(appPath: string): Promise<HostManifest> {
-    const manifestPath = path.join(appPath, 'ankh.config.json');
-    const manifest = await this.adapter.readJson<HostManifest>(manifestPath);
-    if (!manifest) {
-      throw new Error(`Manifest not found at ${manifestPath}`);
-    }
-    return manifest;
-  }
-
-  private async writeManifest(appPath: string, manifest: HostManifest) {
-    await this.adapter.writeJson(path.join(appPath, 'ankh.config.json'), manifest);
-  }
-
-  private applyInstalledModuleState(
-    manifest: HostManifest,
-    moduleId: string,
-    config: Record<string, unknown>,
-  ): HostManifest {
-    const module = this.getModule(moduleId);
-    const normalizedConfig = module.normalizeConfig(config);
-    const modulesConfig = {
-      ...(manifest.infra.modulesConfig ?? {}),
-      [moduleId]: normalizedConfig,
-    };
-    const nextModules = Array.from(new Set([...manifest.infra.plugins, moduleId])).sort(
-      (left, right) => left.localeCompare(right),
-    );
-
-    const nextManifest = module.applyManifestConfig(manifest, normalizedConfig);
-    return {
-      ...nextManifest,
-      infra: {
-        ...nextManifest.infra,
-        plugins: nextModules,
-        modulesConfig,
-      },
-    };
-  }
-
-  private applyUninstalledModuleState(manifest: HostManifest, moduleId: string): HostManifest {
-    const nextModulesConfig = manifest.infra.modulesConfig
-      ? Object.fromEntries(
-          Object.entries(manifest.infra.modulesConfig).filter((entry) => entry[0] !== moduleId),
-        )
-      : undefined;
-
-    return {
-      ...manifest,
-      infra: {
-        ...manifest.infra,
-        plugins: manifest.infra.plugins.filter((id) => id !== moduleId),
-        modulesConfig: nextModulesConfig,
-      },
-    };
-  }
-
-  private requirePlainObject(config: unknown, moduleId: string): Record<string, unknown> {
-    if (!isRecord(config)) {
-      throw new Error(`Invalid config for module '${moduleId}': must be a plain object.`);
-    }
-    return config;
-  }
-
-  private validateModuleConfig(
-    module: HostModuleDefinition,
-    config: Record<string, unknown>,
-  ): Record<string, unknown> {
-    try {
-      JSON.stringify(config);
-    } catch {
-      throw new Error(`Invalid config for module '${module.id}': must be JSON serializable.`);
-    }
-
-    return module.normalizeConfig(config);
-  }
-
-  private async removeManagedModuleDir(appPath: string, moduleId: string) {
-    if (!isManagedModuleId(moduleId)) {
-      return;
-    }
-
-    await this.adapter.remove(path.join(appPath, MANAGED_MODULE_DIRS[moduleId]));
-  }
-
   private async readPending(appPath: string): Promise<PendingOpsData> {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
-    if (!(await this.adapter.exists(fullPath))) {
-      return { ops: [] };
-    }
+    if (!(await this.adapter.exists(fullPath))) return { ops: [] };
     return (await this.adapter.readJson<PendingOpsData>(fullPath)) ?? { ops: [] };
   }
 
@@ -368,42 +372,29 @@ export const MODULE_PANEL_LOADERS: Record<string, () => Promise<unknown>> = {};
     await this.adapter.writeJson(fullPath, data);
   }
 
-  private async enqueuePending(appPath: string, op: PendingOperation) {
+  private async enqueuePending(appPath: string, operation: PendingOperation) {
     const data = await this.readPending(appPath);
-    if (data.ops.some((pending) => pending.moduleId === op.moduleId)) {
-      return;
-    }
-    data.ops.push(op);
-    await this.writePending(appPath, data);
+    if (data.ops.some((pending) => pending.moduleId === operation.moduleId)) return;
+    await this.writePending(appPath, { ops: [...data.ops, operation] });
   }
 
   private async removePendingOperation(appPath: string, moduleId: string) {
     const data = await this.readPending(appPath);
-    const next = data.ops.filter((op) => op.moduleId !== moduleId);
-    if (next.length === data.ops.length) {
-      return;
-    }
-
-    if (next.length === 0) {
+    const ops = data.ops.filter((operation) => operation.moduleId !== moduleId);
+    if (ops.length === data.ops.length) return;
+    if (ops.length === 0) {
       await this.clearPending(appPath);
       return;
     }
-
-    await this.writePending(appPath, { ops: next });
+    await this.writePending(appPath, { ops });
   }
 
   private async clearPending(appPath: string) {
     const fullPath = path.join(appPath, PENDING_OPS_FILE);
-    if (await this.adapter.exists(fullPath)) {
-      await this.adapter.remove(fullPath);
-    }
+    if (await this.adapter.exists(fullPath)) await this.adapter.remove(fullPath);
   }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function isManagedModuleId(moduleId: string): moduleId is keyof typeof MANAGED_MODULE_DIRS {
-  return Object.prototype.hasOwnProperty.call(MANAGED_MODULE_DIRS, moduleId);
 }

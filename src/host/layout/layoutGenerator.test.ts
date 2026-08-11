@@ -17,7 +17,7 @@ function createManifest(): AppManifest {
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { plugins: [] },
+    infra: { modules: [] },
     navigator: {
       type: 'stack',
       initialRouteName: 'index',
@@ -39,7 +39,7 @@ function createOAuthManifest(): AppManifest {
   return {
     ...createManifest(),
     infra: {
-      plugins: [],
+      modules: [],
       auth: {
         scope: 'global',
         provider: 'supabase',
@@ -121,6 +121,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/ankh/index.tsx');
     expect(paths).toContain('src/app/ankh/screens/index.tsx');
     expect(paths).toContain('src/app/ankh/screens/[screenId].tsx');
+    expect(paths).toContain('src/app/ankh/modules/index.tsx');
+    expect(paths).toContain('src/app/ankh/modules/[moduleId].tsx');
     expect(paths).toContain('src/app/ankh/apis/index.tsx');
     expect(paths).toContain('src/app/ankh/apis/data-sources.tsx');
     expect(paths).toContain('src/app/ankh/apis/operations.tsx');
@@ -143,6 +145,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).toContain('routeId="auth-providers"');
     expect(adminSources).toContain('routeId="screens"');
     expect(adminSources).toContain('routeId="screen-detail"');
+    expect(adminSources).toContain('routeId="modules"');
+    expect(adminSources).toContain('routeId="module-detail"');
     expect(adminSources).toContain('routeId="api-data-sources"');
     expect(adminSources).not.toContain('return null;');
   });

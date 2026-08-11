@@ -58,7 +58,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     const created = await projectManager.createProject(
       PROJECT_NAME,
       { category: 'developer_tools', templateId: template.templateId },
-      (projectId) => moduleManager.generateModuleRegistry(projectId),
+      undefined,
       { includeStudio: false },
     );
     expect(created.id).toBe(PROJECT_ID);

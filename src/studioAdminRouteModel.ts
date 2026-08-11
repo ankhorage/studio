@@ -10,6 +10,7 @@ export interface StudioAdminRouteDefinition {
   readonly path:
     | StudioAdminStaticRoutePath
     | '/ankh/screens/:screenId'
+    | '/ankh/modules/:moduleId'
     | '/ankh/bindings/:nodeId'
     | '/ankh/properties/:nodeId';
   readonly label: string;
@@ -25,6 +26,7 @@ export interface StudioAdminRouteRenderState {
   resolvedAdminRouteId: StudioAdminRouteId;
   routeAdminPath: StudioAdminRoutePath | null;
   screenId: string | null;
+  moduleId: string | null;
   bindingsNodeId: string | null;
   propertiesNodeId: string | null;
   shouldRenderAppContent: boolean;
@@ -34,6 +36,7 @@ export interface StudioAdminRouteRenderState {
 export interface StudioAdminRouteAvailabilityContext {
   readonly selectedNodeId: string | null;
   readonly screenId?: string | null;
+  readonly moduleId?: string | null;
 }
 
 export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] = [
@@ -88,6 +91,24 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     order: 12,
     parentId: 'apis',
     description: 'Runtime data-source operations.',
+  },
+  {
+    id: 'modules',
+    path: '/ankh/modules',
+    label: 'Modules',
+    icon: 'extension-puzzle-outline',
+    order: 15,
+    description: 'Available and installed app modules.',
+  },
+  {
+    id: 'module-detail',
+    path: '/ankh/modules/:moduleId',
+    label: 'Module detail',
+    icon: 'options-outline',
+    order: 16,
+    parentId: 'modules',
+    contextual: true,
+    description: 'Module lifecycle status and package-owned administration.',
   },
   {
     id: 'auth',
@@ -163,6 +184,7 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
 const BINDINGS_ROUTE_PREFIX = '/ankh/bindings/';
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
 const SCREEN_ROUTE_PREFIX = '/ankh/screens/';
+const MODULE_ROUTE_PREFIX = '/ankh/modules/';
 
 export function getStudioAdminRouteDefinition(
   routeId: StudioAdminRouteId,
@@ -176,6 +198,10 @@ export function getStudioAdminRouteDefinition(
 }
 
 export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId | null {
+  if (pathname.startsWith(MODULE_ROUTE_PREFIX)) {
+    return resolveStudioModuleId(pathname) ? 'module-detail' : null;
+  }
+
   if (pathname.startsWith(SCREEN_ROUTE_PREFIX)) {
     return resolveStudioScreenId(pathname) ? 'screen-detail' : null;
   }
@@ -193,6 +219,7 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
       candidate.path !== '/ankh/bindings/:nodeId' &&
       candidate.path !== '/ankh/properties/:nodeId' &&
       candidate.path !== '/ankh/screens/:screenId' &&
+      candidate.path !== '/ankh/modules/:moduleId' &&
       candidate.path === pathname,
   );
 
@@ -205,6 +232,10 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
   if (routeId === 'screen-detail') {
     const screenId = resolveStudioScreenId(pathname);
     return screenId ? createStudioScreenRoutePath(screenId) : null;
+  }
+  if (routeId === 'module-detail') {
+    const moduleId = resolveStudioModuleId(pathname);
+    return moduleId ? createStudioModuleRoutePath(moduleId) : null;
   }
   if (routeId === 'bindings') {
     const nodeId = resolveStudioBindingsNodeId(pathname);
@@ -230,6 +261,14 @@ export function createStudioScreenRoutePath(screenId: string): `/ankh/screens/${
   return `/ankh/screens/${encodeURIComponent(screenId)}`;
 }
 
+export function resolveStudioModuleId(pathname: string): string | null {
+  return resolveStudioDetailId(pathname, MODULE_ROUTE_PREFIX);
+}
+
+export function createStudioModuleRoutePath(moduleId: string): `/ankh/modules/${string}` {
+  return `/ankh/modules/${encodeURIComponent(moduleId)}`;
+}
+
 export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
   return `/ankh/bindings/${encodeURIComponent(nodeId)}`;
 }
@@ -246,12 +285,16 @@ export function createStudioAdminRoutePath(args: {
   routeId: StudioAdminRouteId;
   selectedNodeId?: string | null;
   screenId?: string | null;
+  moduleId?: string | null;
 }): StudioAdminRoutePath | null {
   if (args.routeId === 'screen-detail') {
     return args.screenId ? createStudioScreenRoutePath(args.screenId) : null;
   }
   if (args.routeId === 'bindings') {
     return args.selectedNodeId ? createStudioBindingsRoutePath(args.selectedNodeId) : null;
+  }
+  if (args.routeId === 'module-detail') {
+    return args.moduleId ? createStudioModuleRoutePath(args.moduleId) : null;
   }
   if (args.routeId === 'properties') {
     return args.selectedNodeId ? createStudioPropertiesRoutePath(args.selectedNodeId) : null;
@@ -269,6 +312,9 @@ export function isStudioAdminRouteAvailable(
   }
   if (routeId === 'screen-detail') {
     return Boolean(context.screenId);
+  }
+  if (routeId === 'module-detail') {
+    return Boolean(context.moduleId);
   }
 
   return true;
@@ -308,6 +354,7 @@ export function createStudioAdminRouteRenderState(args: {
     resolvedAdminRouteId,
     routeAdminPath,
     screenId: resolveStudioScreenId(args.pathname),
+    moduleId: resolveStudioModuleId(args.pathname),
     bindingsNodeId: resolveStudioBindingsNodeId(args.pathname),
     propertiesNodeId: resolveStudioPropertiesNodeId(args.pathname),
     shouldRenderAppContent: routeAdminId === null,
@@ -319,6 +366,7 @@ export function openStudioAdminRoute(args: {
   next: StudioAdminRouteId;
   selectedNodeId?: string | null;
   screenId?: string | null;
+  moduleId?: string | null;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
   pushRoute: (routePath: StudioAdminRoutePath) => void;
 }): boolean {
@@ -326,6 +374,7 @@ export function openStudioAdminRoute(args: {
     routeId: args.next,
     selectedNodeId: args.selectedNodeId ?? null,
     screenId: args.screenId ?? null,
+    moduleId: args.moduleId ?? null,
   });
   if (!routePath) return false;
 

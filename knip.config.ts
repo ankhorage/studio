@@ -15,7 +15,6 @@ export default createKnipConfig({
         'src/runtime/index.ts',
         'src/runtime/actionSuppression.ts',
         'src/runtime/appExtensionRegistry.ts',
-        'src/runtime/localizationPreview.ts',
         'src/runtime/registry.tsx',
         'src/runtime/runtimeActions.ts',
         'src/runtime/useRuntimeAction.ts',

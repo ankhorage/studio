@@ -31,7 +31,7 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     },
     infra: {
       modulesConfig: {},
-      plugins: ['expo-camera', 'expo-localization'],
+      modules: ['expo-camera', 'expo-localization'],
     },
     ...overrides,
   } as unknown as StudioManifest;
@@ -77,7 +77,7 @@ describe('manifestSync', () => {
           postSignInRoute: '/',
         },
       },
-      plugins: [],
+      modules: [],
     });
     const first = createManifest({ infra: createAuthInfra('sign-in') });
     const second = createManifest({ infra: createAuthInfra('login') });
@@ -87,9 +87,9 @@ describe('manifestSync', () => {
     );
   });
 
-  test('normalizes plugin order in runtime signatures', () => {
-    const first = createManifest({ infra: { modulesConfig: {}, plugins: ['b', 'a'] } });
-    const second = createManifest({ infra: { modulesConfig: {}, plugins: ['a', 'b'] } });
+  test('normalizes module order in runtime signatures', () => {
+    const first = createManifest({ infra: { modulesConfig: {}, modules: ['b', 'a'] } });
+    const second = createManifest({ infra: { modulesConfig: {}, modules: ['a', 'b'] } });
 
     expect(createStudioRuntimeSyncSignature(first)).toBe(createStudioRuntimeSyncSignature(second));
   });

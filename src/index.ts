@@ -12,6 +12,14 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+export type {
+  StudioModuleAdminContribution,
+  StudioModuleAdminControl,
+  StudioModuleAdminField,
+  StudioModuleOperationResult,
+  StudioModuleState,
+} from './moduleAdminContracts';
+
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
 
 export * from './bindingAuthoringModel';
@@ -68,6 +76,8 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     '@ankhorage/contracts',
     '@ankhorage/runtime',
     '@ankhorage/expo-runtime',
+    '@ankhorage/orchestrator',
+    'standalone module-owned host contributions',
     '@ankhorage/templates',
     '@ankhorage/ankh',
   ],
@@ -77,6 +87,8 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
     'Expo runtime planning',
     'generated-app runtime composition code',
     'template catalog content',
+    'module lifecycle, ledger, config normalization, or generated output ownership',
+    'module-specific administration behavior',
     'root command bus behavior',
     'React Native UI components',
     'DnD implementation',
@@ -104,6 +116,9 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'ProjectSecretUsageSummary',
   'StudioAdminRouteId',
   'StudioAdminRoutePath',
+  'StudioModuleAdminContribution',
+  'StudioModuleOperationResult',
+  'StudioModuleState',
   'ACTION_REGISTRY',
   'TPL_SCREEN_EMPTY',
   'resolveDefaultInsertPlacement',
@@ -117,15 +132,16 @@ export type StudioSessionId = string;
 export type StudioNodeId = string;
 export type StudioScreenId = string;
 export type StudioModuleId = string;
-export type StudioLocale = string;
 
 export type StudioMode = 'light' | 'dark';
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
-export type StudioPanelId = 'layers' | 'modules' | 'localization';
+export type StudioPanelId = 'layers';
 export type StudioAdminRouteId =
   | 'overview'
   | 'screens'
   | 'screen-detail'
+  | 'modules'
+  | 'module-detail'
   | 'apis'
   | 'api-data-sources'
   | 'api-operations'
@@ -140,6 +156,7 @@ export type StudioAdminRouteId =
 export type StudioAdminStaticRoutePath =
   | '/ankh'
   | '/ankh/screens'
+  | '/ankh/modules'
   | '/ankh/apis'
   | '/ankh/apis/data-sources'
   | '/ankh/apis/operations'
@@ -152,14 +169,11 @@ export type StudioAdminStaticRoutePath =
 export type StudioAdminRoutePath =
   | StudioAdminStaticRoutePath
   | `/ankh/screens/${string}`
+  | `/ankh/modules/${string}`
   | `/ankh/bindings/${string}`
   | `/ankh/properties/${string}`;
 
-export type StudioManifest = AppManifest & {
-  infra: AppManifest['infra'] & {
-    modulesConfig?: Record<string, unknown>;
-  };
-};
+export type StudioManifest = AppManifest;
 
 export type ThemeUpdates = Partial<Omit<ThemeConfig, 'light' | 'dark'>> & {
   light?: Partial<ThemeModeConfig>;
@@ -177,7 +191,6 @@ export interface StudioSelectionState {
 export interface StudioSessionState {
   projectId: StudioProjectId;
   sessionId?: StudioSessionId;
-  activeLocale: StudioLocale;
   studioMode: StudioMode;
   previewMode: boolean;
   lastNonAdminLocation: string;
@@ -301,15 +314,6 @@ export interface ActionDefinition {
   payloadSchema?: StudioActionPayloadSchema;
 }
 
-export interface ModuleDefinition {
-  id: StudioModuleId;
-  name: string;
-  description: string;
-  ui?: {
-    modal?: { title: string };
-  };
-}
-
 export interface StudioComponentBlueprint {
   label?: string;
   defaultProps?: Record<string, unknown>;
@@ -379,15 +383,11 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setActiveThemeMode: (mode: StudioMode) => void;
   updateAuthSettings: (settings: StudioAuthSettings) => void;
   mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
-  updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
   setActiveScreenId: (id: StudioScreenId) => void;
   findNode: (root: UiNode, id: StudioNodeId) => UiNode | null;
   setStudioMode: (mode: StudioMode) => void;
   togglePreviewMode: () => void;
-  t: (key: string) => string;
-  setActiveLocale: (locale: StudioLocale) => void;
-  reloadDictionaries: () => Promise<void>;
   refetchManifest: () => Promise<void>;
   flushManifest: () => Promise<void>;
 }

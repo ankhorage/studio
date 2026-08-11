@@ -142,11 +142,10 @@ async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
   const input = parseCreateProjectArgs(request.argv);
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
-    const project = await studioHost.projectManager.createProject(
-      input.name,
-      { category: input.category, templateId: input.templateId },
-      (projectId) => studioHost.moduleManager.generateModuleRegistry(projectId),
-    );
+    const project = await studioHost.projectManager.createProject(input.name, {
+      category: input.category,
+      templateId: input.templateId,
+    });
     request.context.writeStdout(`${JSON.stringify(project, null, 2)}
 `);
     return { exitCode: 0 };

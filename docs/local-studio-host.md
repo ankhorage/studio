@@ -36,6 +36,13 @@ The dashboard uses the HTTP adapter. Studio CLI project commands call `ProjectMa
 
 The HTTP routes are transport adapters only. Project generation, manifest persistence, module changes, dependency installation, infrastructure operations, launch behavior, and process cleanup stay in shared `src/host` services.
 
+Module transport is project-scoped under `/api/projects/<project-id>/modules`. The generic host
+adapter queries and mutates lifecycle state through `@ankhorage/orchestrator`; it does not read the
+private `.ankh/ledger` storage or implement module-specific parsing, generated paths, providers, or
+cleanup. Registered module packages supply optional host contributions from their dedicated
+package boundary. The Orchestrator ledger is authoritative and manifest module fields are
+deterministic projections synchronized after lifecycle operations.
+
 The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, and bounds command output returned by HTTP.
 
 For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Minikube projects. Each app slug maps to its own Minikube profile, generated Infra owns the `app`, `supabase`, and provider namespaces, and generated Infra owns `kubectl port-forward` process lifecycle through `infra/minikube/scripts/port-forward.sh`. Studio orchestrates generated lifecycle scripts and, on shutdown, asks registered projects' generated `port-forward.sh stop all` scripts to stop forwards; it does not run host Supabase or terminate arbitrary forward PIDs itself.

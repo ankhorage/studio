@@ -79,6 +79,8 @@ graph LR
   module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
   module_src_host_http_authRoutes_ts["src/host/http/authRoutes.ts"]
   module_src_host_http_dataSourceRoutes_ts["src/host/http/dataSourceRoutes.ts"]
+  module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
+  module_src_host_http_moduleRoutes_ts["src/host/http/moduleRoutes.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   module_src_host_http_security_ts["src/host/http/security.ts"]
   module_src_host_http_server_ts["src/host/http/server.ts"]
@@ -122,6 +124,7 @@ graph LR
   module_src_host_manifestSystem_auth_shared_index_ts["src/host/manifestSystem/auth/shared/index.ts"]
   module_src_host_manifestSystem_index_ts["src/host/manifestSystem/index.ts"]
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
+  module_src_host_modules_catalog_test_ts["src/host/modules/catalog.test.ts"]
   module_src_host_modules_catalog_ts["src/host/modules/catalog.ts"]
   module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
@@ -172,17 +175,18 @@ graph LR
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
   module_src_insertModalModel_test_ts["src/insertModalModel.test.ts"]
   module_src_insertModalModel_ts["src/insertModalModel.ts"]
-  module_src_localizationConfig_public_test_ts["src/localizationConfig.public.test.ts"]
-  module_src_localizationConfig_test_ts["src/localizationConfig.test.ts"]
-  module_src_localizationConfig_ts["src/localizationConfig.ts"]
-  module_src_localizationPanelModel_test_ts["src/localizationPanelModel.test.ts"]
-  module_src_localizationPanelModel_ts["src/localizationPanelModel.ts"]
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   module_src_manifestState_routes_test_ts["src/manifestState.routes.test.ts"]
   module_src_manifestState_test_ts["src/manifestState.test.ts"]
   module_src_manifestState_ts["src/manifestState.ts"]
   module_src_manifestSync_test_ts["src/manifestSync.test.ts"]
   module_src_manifestSync_ts["src/manifestSync.ts"]
+  module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
+  module_src_moduleAdminApi_test_ts["src/moduleAdminApi.test.ts"]
+  module_src_moduleAdminApi_ts["src/moduleAdminApi.ts"]
+  module_src_moduleAdminContracts_ts["src/moduleAdminContracts.ts"]
+  module_src_moduleAdminModel_test_ts["src/moduleAdminModel.test.ts"]
+  module_src_moduleAdminModel_ts["src/moduleAdminModel.ts"]
   module_src_normalizeExternalApiSourceId_ts["src/normalizeExternalApiSourceId.ts"]
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
@@ -214,7 +218,6 @@ graph LR
   module_src_runtime_interactionPolicy_test_ts["src/runtime/interactionPolicy.test.ts"]
   module_src_runtime_interactionPolicy_ts["src/runtime/interactionPolicy.ts"]
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
-  module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
@@ -230,9 +233,6 @@ graph LR
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
-  module_src_runtimeLocalization_public_test_ts["src/runtimeLocalization.public.test.ts"]
-  module_src_runtimeLocalization_test_ts["src/runtimeLocalization.test.ts"]
-  module_src_runtimeLocalization_ts["src/runtimeLocalization.ts"]
   module_src_secretResponseGuard_test_ts["src/secretResponseGuard.test.ts"]
   module_src_secretResponseGuard_ts["src/secretResponseGuard.ts"]
   module_src_studioAdminRouteModel_test_ts["src/studioAdminRouteModel.test.ts"]
@@ -286,6 +286,8 @@ graph LR
   module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx["src/ui/admin/pages/GeneratedApiResourceEditor.tsx"]
   module_src_ui_admin_pages_GeneratedApiToggle_tsx["src/ui/admin/pages/GeneratedApiToggle.tsx"]
   module_src_ui_admin_pages_ManualRestSourceCard_tsx["src/ui/admin/pages/ManualRestSourceCard.tsx"]
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx["src/ui/admin/pages/ModuleDetailAdminPage.tsx"]
+  module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
   module_src_ui_admin_pages_PropertiesAdminPage_test_ts["src/ui/admin/pages/PropertiesAdminPage.test.ts"]
   module_src_ui_admin_pages_PropertiesAdminPage_tsx["src/ui/admin/pages/PropertiesAdminPage.tsx"]
@@ -413,8 +415,6 @@ graph LR
   module_src_index_ts --> export_InsertRecipeIssue
   export_InsertRecipeNode["InsertRecipeNode"]
   module_src_index_ts --> export_InsertRecipeNode
-  export_ModuleDefinition["ModuleDefinition"]
-  module_src_index_ts --> export_ModuleDefinition
   export_moveNodeToPlacement["moveNodeToPlacement"]
   module_src_index_ts --> export_moveNodeToPlacement
   export_moveNodeToPlacement -.-> export_MoveNodeToPlacementArgs
@@ -573,10 +573,7 @@ graph LR
   export_StudioContextValue -.-> export_NodePlacement
   export_StudioContextValue -.-> export_StudioAdminRouteId
   export_StudioContextValue -.-> export_StudioComponentMetaRegistry
-  export_StudioContextValue -.-> export_StudioLocale
-  export_StudioContextValue -.-> export_StudioManifest
   export_StudioContextValue -.-> export_StudioMode
-  export_StudioContextValue -.-> export_StudioModuleId
   export_StudioContextValue -.-> export_StudioNodeId
   export_StudioContextValue -.-> export_StudioPanelId
   export_StudioContextValue -.-> export_StudioSaveStatus
@@ -596,14 +593,25 @@ graph LR
   export_StudioInstancePropertyGroup -.-> export_StudioInstancePropertyField
   export_StudioInstancePropertyValue["StudioInstancePropertyValue"]
   module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
-  export_StudioLocale["StudioLocale"]
-  module_src_index_ts --> export_StudioLocale
   export_StudioManifest["StudioManifest"]
   module_src_index_ts --> export_StudioManifest
   export_StudioMode["StudioMode"]
   module_src_index_ts --> export_StudioMode
+  export_StudioModuleAdminContribution["StudioModuleAdminContribution"]
+  module_src_moduleAdminContracts_ts --> export_StudioModuleAdminContribution
+  export_StudioModuleAdminContribution -.-> export_StudioModuleAdminField
+  export_StudioModuleAdminControl["StudioModuleAdminControl"]
+  module_src_moduleAdminContracts_ts --> export_StudioModuleAdminControl
+  export_StudioModuleAdminField["StudioModuleAdminField"]
+  module_src_moduleAdminContracts_ts --> export_StudioModuleAdminField
   export_StudioModuleId["StudioModuleId"]
   module_src_index_ts --> export_StudioModuleId
+  export_StudioModuleOperationResult["StudioModuleOperationResult"]
+  module_src_moduleAdminContracts_ts --> export_StudioModuleOperationResult
+  export_StudioModuleOperationResult -.-> export_StudioModuleState
+  export_StudioModuleState["StudioModuleState"]
+  module_src_moduleAdminContracts_ts --> export_StudioModuleState
+  export_StudioModuleState -.-> export_StudioModuleAdminContribution
   export_StudioNodeId["StudioNodeId"]
   module_src_index_ts --> export_StudioNodeId
   export_StudioPackageBoundary["StudioPackageBoundary"]
@@ -623,7 +631,6 @@ graph LR
   export_StudioSelectionState["StudioSelectionState"]
   module_src_index_ts --> export_StudioSelectionState
   export_StudioSelectionState -.-> export_StudioAdminRouteId
-  export_StudioSelectionState -.-> export_StudioPanelId
   export_StudioSessionId["StudioSessionId"]
   module_src_index_ts --> export_StudioSessionId
   export_StudioSessionState["StudioSessionState"]

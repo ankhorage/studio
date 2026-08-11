@@ -14,7 +14,7 @@ function createManifest(): AppManifest {
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
-      plugins: [],
+      modules: [],
       auth: {
         scope: 'global',
         provider: 'supabase',

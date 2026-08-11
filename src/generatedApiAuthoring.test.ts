@@ -38,7 +38,7 @@ function createManifest(): StudioManifest {
     },
     themes: [],
     activeThemeId: 'default',
-    infra: { plugins: [] },
+    infra: { modules: [] },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },

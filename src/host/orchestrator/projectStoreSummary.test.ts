@@ -33,7 +33,7 @@ test('project summary reads canonical category, active theme, and timestamps', a
       ],
       activeThemeId: 'default',
       activeThemeMode: 'dark',
-      infra: { plugins: [] },
+      infra: { modules: [] },
       navigator: { type: 'stack', routes: [] },
       screens: {},
       settings: { localization: { defaultLocale: 'en', locales: ['en'] } },

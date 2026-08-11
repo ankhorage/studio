@@ -5,12 +5,15 @@ import { useStudio } from '../../core/StudioContext';
 import type { StudioAdminRouteId, StudioContextValue } from '../../index';
 import {
   resolveStudioBindingsNodeId,
+  resolveStudioModuleId,
   resolveStudioPropertiesNodeId,
   resolveStudioScreenId,
 } from '../../studioAdminRouteModel';
 import { ApisAdminPage, type ApisAdminRouteId } from './pages/ApisAdminPage';
 import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
 import { BindingsAdminPage } from './pages/BindingsAdminPage';
+import { ModuleDetailAdminPage } from './pages/ModuleDetailAdminPage';
+import { ModulesAdminPage } from './pages/ModulesAdminPage';
 import { OverviewAdminPage } from './pages/OverviewAdminPage';
 import { PropertiesAdminPage } from './pages/PropertiesAdminPage';
 import { ScreensAdminPage } from './pages/ScreensAdminPage';
@@ -36,6 +39,10 @@ const ADMIN_PAGE_RENDERERS = {
   screens: () => <ScreensAdminPage />,
   'screen-detail': ({ pathname }) => (
     <ScreenDetailAdminPage screenId={resolveStudioScreenId(pathname)} />
+  ),
+  modules: () => <ModulesAdminPage />,
+  'module-detail': ({ pathname }) => (
+    <ModuleDetailAdminPage moduleId={resolveStudioModuleId(pathname)} />
   ),
   apis: ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
   'api-data-sources': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,

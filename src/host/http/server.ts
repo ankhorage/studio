@@ -15,11 +15,11 @@ import {
 } from '../orchestrator/infraRuntime';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
-import { resolveModuleLayoutMutations } from '../orchestrator/resolveMutations';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
+import { registerProjectModuleRoutes } from './moduleRoutes';
 import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
@@ -125,12 +125,9 @@ export async function createStudioHostServer(args: {
     }
 
     try {
-      const result = await projectManager.createProject(
-        name,
-        templateSelection,
-        (id) => orchestrator.generateModuleRegistry(id),
-        { includeStudio },
-      );
+      const result = await projectManager.createProject(name, templateSelection, undefined, {
+        includeStudio,
+      });
       return result;
     } catch (err: unknown) {
       if (err instanceof ProjectCreationValidationError) {
@@ -374,7 +371,7 @@ export async function createStudioHostServer(args: {
       }
 
       try {
-        return await projectManager.saveStudioManifest({
+        return await orchestrator.saveStudioManifest({
           projectId: id,
           manifest: req.body,
         });
@@ -395,7 +392,7 @@ export async function createStudioHostServer(args: {
       }
 
       try {
-        return await projectManager.syncStudioRuntime({
+        return await orchestrator.syncStudioRuntime({
           projectId: id,
           manifest: req.body,
         });
@@ -418,10 +415,7 @@ export async function createStudioHostServer(args: {
         await orchestrator.applyPendingOperations(id);
       }
 
-      const manifest = await projectManager.getProjectManifest(id);
-      // Ensure registry exists for this project (self-healing)
-      await orchestrator.generateModuleRegistry(id);
-      return manifest;
+      return await projectManager.getProjectManifest(id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       reply.status(404).send({ error: message });
@@ -472,19 +466,6 @@ export async function createStudioHostServer(args: {
     },
   );
 
-  fastify.post(
-    '/api/projects/:id/modules/finalize-pending',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id } = req.params as { id: string };
-      try {
-        return await orchestrator.applyPendingOperations(id);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
-
   // PUT (Save) Manifest
   fastify.put('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
@@ -494,14 +475,9 @@ export async function createStudioHostServer(args: {
     }
 
     try {
-      const activeModules = req.body.infra.plugins;
-      const mutations = resolveModuleLayoutMutations(activeModules);
-
-      return await projectManager.saveProjectManifest({
+      return await orchestrator.saveProjectManifest({
         projectId: id,
         manifest: req.body,
-        mutations,
-        regenerateRouterFiles: true,
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -509,125 +485,9 @@ export async function createStudioHostServer(args: {
     }
   });
 
-  // --- LOCALIZATION ROUTES ---
-
-  fastify.get('/api/projects/:id/localization/locales', async (req: FastifyRequest) => {
-    const { id } = req.params as { id: string };
-    return await projectManager.getLocalizationLocales(id);
-  });
-
-  fastify.get(
-    '/api/projects/:id/localization/locales/:locale',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, locale } = req.params as { id: string; locale: string };
-      try {
-        return await projectManager.getLocalizationLocale(id, locale);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(404).send({ error: message });
-      }
-    },
-  );
-
-  fastify.put(
-    '/api/projects/:id/localization/locales/:locale',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, locale } = req.params as { id: string; locale: string };
-      const dict = req.body as Record<string, string> | null;
-
-      if (!dict || typeof dict !== 'object' || Array.isArray(dict)) {
-        return reply.status(400).send({ error: 'Dictionary object required' });
-      }
-
-      // Basic validation: all values must be strings
-      for (const [k, v] of Object.entries(dict)) {
-        if (typeof v !== 'string') {
-          return reply
-            .status(400)
-            .send({ error: `Invalid value for key "${k}": must be a string` });
-        }
-      }
-
-      // Locale format validation (sync with ProjectManager)
-      if (!/^[a-z]{2,3}([-_][a-zA-Z0-9]+)*$/.test(locale)) {
-        return reply.status(400).send({ error: `Invalid locale format: ${locale}` });
-      }
-
-      try {
-        return await projectManager.saveLocalizationLocale(id, locale, dict);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
-
   // --- MODULE ROUTES ---
 
-  fastify.get('/api/modules/available', () => orchestrator.getAvailableModules());
-
-  fastify.get(
-    '/api/modules/:moduleId/proxy/*',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { moduleId } = req.params as { moduleId: string };
-      const path = (req.params as { '*'?: string })['*'] ?? '';
-      const query = req.query as Record<string, string>;
-
-      const queryString = new URLSearchParams(query).toString();
-      const fullPath = `/${path}${queryString ? `?${queryString}` : ''}`;
-
-      try {
-        return await orchestrator.proxyGet(moduleId, fullPath);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
-
-  fastify.post('/api/modules/install', async (req: FastifyRequest, reply: FastifyReply) => {
-    const { projectId, moduleId, config } = req.body as {
-      projectId: string;
-      moduleId: string;
-      config?: Record<string, unknown>;
-    };
-
-    if (!projectId) return reply.status(400).send({ error: 'projectId required' });
-
-    try {
-      return await orchestrator.installModule(projectId, moduleId, config);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
-    }
-  });
-
-  fastify.post('/api/modules/uninstall', async (req: FastifyRequest, reply: FastifyReply) => {
-    const { projectId, moduleId } = req.body as { projectId: string; moduleId: string };
-    try {
-      return await orchestrator.uninstallModule(projectId, moduleId);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
-    }
-  });
-
-  fastify.post(
-    '/api/projects/:id/modules/:moduleId/config',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, moduleId } = req.params as { id: string; moduleId: string };
-      const body = req.body as { config?: Record<string, unknown> };
-
-      if (!body.config) return reply.status(400).send({ error: 'config body required' });
-
-      try {
-        return await orchestrator.updateModuleConfig(id, moduleId, body.config);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
+  registerProjectModuleRoutes(fastify, orchestrator);
 
   // Health check
   fastify.get('/health', () => ({ status: 'ok', workspace: projectRoot }));

@@ -26,7 +26,7 @@ function createManifest(
         ...(args.flow ? { flow: args.flow } : {}),
         ...(args.oauth ? { oauth: args.oauth } : {}),
       },
-      plugins: [],
+      modules: [],
     },
     navigator: {
       type: 'stack',

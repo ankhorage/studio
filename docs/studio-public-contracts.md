@@ -16,6 +16,7 @@ to integrate the Studio package boundary:
 - insert catalog entry contracts
 - Studio command/event contracts
 - the type-only context value shape
+- generic module lifecycle/admin contribution view contracts
 
 `StudioContextValue` now carries the caller-injected `componentMeta` registry and concrete
 `insertFromCatalogEntry`, `moveNodeToPlacement`, and `deleteNode` capabilities. `StudioProvider`
@@ -38,6 +39,11 @@ The obsolete `@ankhorage/studio/manifestNavigatorPreviewModel`,
 `@ankhorage/studio/runtime/previewRuntimeConfig` exports are removed as well. Generated apps use
 their canonical manifest navigator and Runtime registry in both Edit and Preview; Studio contributes
 only mode policy and its declared app extensions.
+
+ADM 10 also removes the Studio-owned localization config, localization panel, and localization
+runtime helper subpaths. Those were module-specific domain surfaces. Generic module administration
+now consumes optional package-owned contributions and persists only through the Orchestrator
+lifecycle; it does not expose a parallel Studio module configuration API.
 
 ## Deliberately not moved here
 
