@@ -101,7 +101,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain('<GeneratedStatusBar />');
   expect(generated).toContain('function GeneratedAppHeader');
   expect(generated).toContain('function StudioAugmentedAppHeader');
-  expect(generated).toContain('<ThemeModeToggle />');
+  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
   expect(generated).toContain('actions={studioAppBar.actions}');
   expect(generated).toContain('...Children.toArray(actions)');
   expect(generated).not.toContain('function StudioAppHeader');
@@ -206,7 +206,7 @@ test('keeps generated app chrome Studio-independent when Studio is excluded', ()
   expect(generated).not.toContain('disableActions');
   expect(generated).not.toContain('wrapNode: studioWrapNode');
   expect(generated).toContain('function GeneratedAppHeader');
-  expect(generated).toContain('<ThemeModeToggle />');
+  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
   expect(generated).toContain('<AppShell header={appHeader}>');
   expect(generated).not.toContain('StudioAugmentedAppHeader');
 });
@@ -290,6 +290,6 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('Pressable');
   expect(generated).not.toContain('GestureResponderEvent');
   expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
-  expect(generated).toContain('<ThemeModeToggle />');
+  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
   expect(generated).toContain('function GeneratedAppHeader');
 });
