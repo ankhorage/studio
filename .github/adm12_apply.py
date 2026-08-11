@@ -124,7 +124,7 @@ replace_once(
     "  const shell = (\n    <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>\n      <SafeAreaProvider>\n        <AppShell>\n",
     "  const appHeader = shouldMountAppHeader ? (\n    <GeneratedAppHeader appHeaderTitle={runtimeManifest.metadata.name} />\n  ) : undefined;\n  const shell = (\n    <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>\n      <SafeAreaProvider>\n        <AppShell header={appHeader}>\n",
 )
-replace_once(root_path, '    activeScreenId,\n', '')
+replace_exact_count(root_path, '    activeScreenId,\n', '', 2)
 sub_once(
     root_path,
     r"   const appHeaderTitle = resolveStudioAppHeaderTitle\(\{.*?   const activeStudioTheme =\n",

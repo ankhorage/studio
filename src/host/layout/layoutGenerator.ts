@@ -263,7 +263,7 @@ export class GeneratedAppFileGenerator {
 
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
-      `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      `import type { AppManifest } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
       `import { ${[
         'AppShell',
@@ -271,7 +271,8 @@ export class GeneratedAppFileGenerator {
         'ZORA_COMPONENT_REGISTRY',
         includeStudio ? 'ZORA_COMPONENT_META' : '',
         'useZoraTheme',
-        includeStudio ? 'AppBar' : '',
+        'AppBar',
+        'ThemeModeToggle',
       ]
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
@@ -297,9 +298,6 @@ export class GeneratedAppFileGenerator {
         : '',
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
-        : '',
-      includeStudio
-        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`
         : '',
       ...moduleImports,
     ]);
@@ -349,7 +347,7 @@ export class GeneratedAppFileGenerator {
     const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
     const coreImports = [
-      `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
+      `import type { AppManifest } from '@ankhorage/contracts';`,
       ...runtimeLayoutIntegration.imports,
       needsZoraNavigationRouteMap
         ? `import type { ZoraNavigationRouteMap } from '@ankhorage/zora';`
@@ -360,7 +358,8 @@ export class GeneratedAppFileGenerator {
         'ZORA_COMPONENT_REGISTRY',
         includeStudio ? 'ZORA_COMPONENT_META' : '',
         'useZoraTheme',
-        includeStudio ? 'AppBar' : '',
+        'AppBar',
+        'ThemeModeToggle',
         needsZoraTabBar ? 'ZoraTabBar' : '',
         needsZoraDrawerContent ? 'ZoraDrawerContent' : '',
         needsIcon ? 'Icon' : '',
@@ -369,10 +368,10 @@ export class GeneratedAppFileGenerator {
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
       rootNavigator.type === 'tabs'
-        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`
+        ? `import { Tabs, usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';`
         : rootNavigator.type === 'drawer'
-          ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
-          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
+          ? `import { usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';\nimport { Drawer } from 'expo-router/drawer';`
+          : `import { Stack, usePathname${includeStudio ? ', useGlobalSearchParams' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { useEffect, useMemo, useRef } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
@@ -384,9 +383,6 @@ export class GeneratedAppFileGenerator {
         : '',
       includeStudio
         ? `import { isStudioAdminPath, resolveStudioLastNonAdminLocation, resolveStudioNavigableLocation } from '@ankhorage/studio/studioAdminRouteModel';`
-        : '',
-      includeStudio
-        ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`
         : '',
     ];
 
