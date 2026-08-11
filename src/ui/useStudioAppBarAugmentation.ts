@@ -83,8 +83,8 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
               : action.id === 'bindings'
                 ? openBindings
                 : action.id === 'selectParent'
-                ? selectParent
-                : clearSelection;
+                  ? selectParent
+                  : clearSelection;
           return React.createElement(IconButton, {
             key: action.id,
             icon:
@@ -93,8 +93,8 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
                 : action.id === 'bindings'
                   ? { name: 'git-branch-outline' }
                   : action.id === 'selectParent'
-                  ? { name: 'arrow-up-outline' }
-                  : { name: 'close-outline' },
+                    ? { name: 'arrow-up-outline' }
+                    : { name: 'close-outline' },
             label: action.label,
             variant: 'ghost',
             color: 'neutral',

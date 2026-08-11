@@ -106,12 +106,7 @@ function diagnoseEventBinding(
     return [missingOperationDiagnostic(binding.target.operation, path)];
   }
 
-  return diagnoseEventInputs(
-    binding,
-    operation.inputFields,
-    eventMeta.payload?.fields ?? [],
-    path,
-  );
+  return diagnoseEventInputs(binding, operation.inputFields, eventMeta.payload?.fields ?? [], path);
 }
 
 function diagnoseEventInputs(

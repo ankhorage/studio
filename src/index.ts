@@ -15,6 +15,7 @@ import type {
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
 
+export * from './bindingAuthoringModel';
 export type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -40,7 +41,6 @@ export type {
   ProjectSortKey,
   StudioProjectSummary,
 } from './projectWorkspaceContracts';
-export * from './bindingAuthoringModel';
 export * from './propertiesAuthoringModel';
 export type {
   TemplateCatalog,
@@ -148,9 +148,7 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/secrets'
   | '/ankh/theme';
 export type StudioAdminRoutePath =
-  | StudioAdminStaticRoutePath
-  | `/ankh/bindings/${string}`
-  | `/ankh/properties/${string}`;
+  StudioAdminStaticRoutePath | `/ankh/bindings/${string}` | `/ankh/properties/${string}`;
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {

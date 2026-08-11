@@ -7,10 +7,7 @@ import type {
 
 export interface StudioAdminRouteDefinition {
   readonly id: StudioAdminRouteId;
-  readonly path:
-    | StudioAdminStaticRoutePath
-    | '/ankh/bindings/:nodeId'
-    | '/ankh/properties/:nodeId';
+  readonly path: StudioAdminStaticRoutePath | '/ankh/bindings/:nodeId' | '/ankh/properties/:nodeId';
   readonly label: string;
   readonly icon: string;
   readonly order: number;
@@ -184,7 +181,7 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
     return nodeId ? createStudioPropertiesRoutePath(nodeId) : null;
   }
 
-  return getStudioAdminRouteDefinition(routeId).path as StudioAdminStaticRoutePath;
+  return getStudioAdminRouteDefinition(routeId).path;
 }
 
 export function resolveStudioBindingsNodeId(pathname: string): string | null {
@@ -214,7 +211,7 @@ export function createStudioAdminRoutePath(args: {
     return args.selectedNodeId ? createStudioPropertiesRoutePath(args.selectedNodeId) : null;
   }
 
-  return getStudioAdminRouteDefinition(args.routeId).path as StudioAdminStaticRoutePath;
+  return getStudioAdminRouteDefinition(args.routeId).path;
 }
 
 export function isStudioAdminRouteAvailable(

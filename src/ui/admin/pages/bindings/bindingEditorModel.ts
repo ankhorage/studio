@@ -74,10 +74,7 @@ export function createStudioEventInputDrafts(
   );
 }
 
-export function parseStudioBindingLiteral(
-  input: string,
-  meta: UiBindableValueMeta,
-): BindingValue {
+export function parseStudioBindingLiteral(input: string, meta: UiBindableValueMeta): BindingValue {
   if (meta.type === 'boolean') return input === 'true';
   if (meta.type === 'number') {
     const number = Number(input);
@@ -119,7 +116,10 @@ function createStudioEventInputMap(
           field.name,
           draft.kind === 'event'
             ? { kind: 'source' as const, source: { kind: 'event' as const, path: draft.value } }
-            : { kind: 'literal' as const, value: parseStudioBindingLiteral(draft.value, field.value) },
+            : {
+                kind: 'literal' as const,
+                value: parseStudioBindingLiteral(draft.value, field.value),
+              },
         ],
       ];
     }),
@@ -145,7 +145,8 @@ function parseStructuredValue(input: string, fallback: BindingValue): BindingVal
 
 function isBindingValue(value: unknown): value is BindingValue {
   if (value === null) return true;
-  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return true;
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
+    return true;
   if (Array.isArray(value)) return value.every(isBindingValue);
   if (typeof value !== 'object') return false;
   return Object.values(value as Record<string, unknown>).every(isBindingValue);
