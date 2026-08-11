@@ -20,6 +20,12 @@ test('uses canonical manifestState mutations for provider authoring state', () =
   expect(source).toContain('insertStudioManifestNodeAtPlacement');
   expect(source).toContain('moveStudioManifestNodeToPlacement');
   expect(source).toContain('deleteStudioManifestNode');
+  expect(source).toContain('addStudioManifestScreen');
+  expect(source).toContain('deleteStudioManifestScreen');
+  expect(source).toContain('hasCanonicalStudioScreenRegistryIdentity');
+  expect(source).toContain('moveStudioManifestRoute');
+  expect(source).toContain('setStudioManifestRoutePrimaryNavigationVisibility');
+  expect(source).not.toContain('reorderScreens:');
   expect(source).toContain('createNodeFromCatalogEntry');
 });
 
@@ -34,6 +40,7 @@ test('owns Studio draft hydration and autosave through the host manifest boundar
   expect(source).toContain('createStudioManifestSignature');
   expect(source).toContain('StudioManifestPersistenceCoordinator');
   expect(source).toContain('lastPersistedSignatureRef');
+  expect(source).toContain('createStudioManifestSignature(currentManifest) !== loadedSignature');
   expect(source).toContain('refetchManifest: persistence.refetchManifest');
   expect(source).toContain('flushManifest: persistence.flushManifest');
   expect(source).not.toContain('pendingSaveRef');

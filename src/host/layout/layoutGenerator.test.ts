@@ -119,6 +119,8 @@ describe('GeneratedAppFileGenerator', () => {
 
     expect(paths).toContain('src/app/ankh/_layout.tsx');
     expect(paths).toContain('src/app/ankh/index.tsx');
+    expect(paths).toContain('src/app/ankh/screens/index.tsx');
+    expect(paths).toContain('src/app/ankh/screens/[screenId].tsx');
     expect(paths).toContain('src/app/ankh/apis/index.tsx');
     expect(paths).toContain('src/app/ankh/apis/data-sources.tsx');
     expect(paths).toContain('src/app/ankh/apis/operations.tsx');
@@ -127,7 +129,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/ankh/auth/routes.tsx');
     expect(paths).toContain('src/app/ankh/auth/profile.tsx');
     expect(paths).toContain('src/app/ankh/secrets.tsx');
-    expect(paths).toContain('src/app/ankh/properties/[id].tsx');
+    expect(paths).toContain('src/app/ankh/bindings/[nodeId].tsx');
+    expect(paths).toContain('src/app/ankh/properties/[nodeId].tsx');
     expect(paths).toContain('src/app/ankh/theme.tsx');
 
     const adminSources = files
@@ -138,6 +141,8 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).toContain('AnkhAdminShell');
     expect(adminSources).toContain('AnkhAdminPage');
     expect(adminSources).toContain('routeId="auth-providers"');
+    expect(adminSources).toContain('routeId="screens"');
+    expect(adminSources).toContain('routeId="screen-detail"');
     expect(adminSources).toContain('routeId="api-data-sources"');
     expect(adminSources).not.toContain('return null;');
   });
@@ -158,6 +163,8 @@ describe('GeneratedAppFileGenerator', () => {
     )?.content;
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
+    expect(rootLayout).not.toContain("if (authState === 'pending') {");
+    expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
     expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');

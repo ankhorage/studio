@@ -5,7 +5,6 @@ import type {
   DataSourceRegistry,
   GeneratedApiDefinition,
   NavigatorType,
-  RouteDefinition,
   UiNode,
 } from '@ankhorage/contracts';
 import { DEFAULT_AUTH_FLOW } from '@ankhorage/contracts';
@@ -34,11 +33,18 @@ import {
   type ThemeUpdates,
 } from '../index';
 import {
+  addStudioManifestScreen,
   deleteStudioManifestNode,
+  deleteStudioManifestScreen,
+  hasCanonicalStudioScreenRegistryIdentity,
   insertStudioManifestNodeAtPlacement,
   moveStudioManifestNodeToPlacement,
+  moveStudioManifestRoute,
   resolveActiveRootNode,
   resolveInitialActiveScreenId,
+  setStudioManifestNavigatorInitialRoute,
+  setStudioManifestNavigatorType,
+  setStudioManifestRoutePrimaryNavigationVisibility,
 } from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
 import { resolveScreenIdForPathname } from '../routeUtils';
@@ -280,6 +286,92 @@ export const StudioProvider = ({
     [activeScreenId, updateManifest],
   );
 
+  const addScreen = useCallback(
+    (name: string) => {
+      const { current } = manifestRef;
+      if (!current) return;
+      const result = addStudioManifestScreen({
+        manifest: current,
+        name,
+        activeScreenId,
+      });
+      if (result.manifest === current || !result.activeScreenId) return;
+      updateManifest(() => result.manifest);
+      setRequestedActiveScreenId(result.activeScreenId);
+      selectNode(null);
+      setActiveCanvasDragNodeId(null);
+    },
+    [activeScreenId, updateManifest],
+  );
+
+  const deleteScreen = useCallback(
+    (screenId: StudioScreenId) => {
+      const { current } = manifestRef;
+      if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
+      const deletedRoot = current.screens[screenId]?.root;
+      const result = deleteStudioManifestScreen(current, screenId, activeScreenId);
+      if (result.manifest === current || !deletedRoot) return;
+      updateManifest(() => result.manifest);
+      setRequestedActiveScreenId(result.activeScreenId);
+      if (selectedNodeId && findNodeById(deletedRoot, selectedNodeId)) {
+        selectNode(null);
+      }
+      setActiveCanvasDragNodeId((nodeId) =>
+        nodeId && findNodeById(deletedRoot, nodeId) ? null : nodeId,
+      );
+    },
+    [activeScreenId, selectedNodeId, updateManifest],
+  );
+
+  const setNavigatorType = useCallback(
+    (type: NavigatorType) => {
+      updateManifest((current) => setStudioManifestNavigatorType(current, type));
+    },
+    [updateManifest],
+  );
+
+  const setNavigatorInitialRoute = useCallback(
+    (routeName: string) => {
+      updateManifest((current) => setStudioManifestNavigatorInitialRoute(current, routeName));
+    },
+    [updateManifest],
+  );
+
+  const setRoutePrimaryNavigationVisibility = useCallback(
+    (parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => {
+      updateManifest((current) =>
+        setStudioManifestRoutePrimaryNavigationVisibility({
+          manifest: current,
+          parentPath,
+          routeName,
+          showInPrimaryNavigation,
+        }),
+      );
+    },
+    [updateManifest],
+  );
+
+  const moveRoute = useCallback(
+    (parentPath: string[], routeName: string, toIndex: number) => {
+      updateManifest((current) =>
+        moveStudioManifestRoute({ manifest: current, parentPath, routeName, toIndex }),
+      );
+    },
+    [updateManifest],
+  );
+
+  const setActiveScreenId = useCallback((screenId: StudioScreenId) => {
+    const { current } = manifestRef;
+    if (
+      !current ||
+      !hasCanonicalStudioScreenRegistryIdentity(current.screens) ||
+      current.screens[screenId]?.id !== screenId
+    ) {
+      return;
+    }
+    setRequestedActiveScreenId(screenId);
+  }, []);
+
   const value = useMemo<StudioContextValue>(
     () => ({
       projectId,
@@ -313,10 +405,12 @@ export const StudioProvider = ({
       deleteNode,
       insertFromCatalogEntry,
       moveNodeToPlacement: moveSelectedNodeToPlacement,
-      addScreen: noop,
-      deleteScreen: noop,
-      setNavigatorType: (_type: NavigatorType) => undefined,
-      setNavigatorInitialRoute: noop,
+      addScreen,
+      deleteScreen,
+      setNavigatorType,
+      setNavigatorInitialRoute,
+      setRoutePrimaryNavigationVisibility,
+      moveRoute,
       addTheme: noop,
       updateTheme,
       deleteTheme: noop,
@@ -327,8 +421,7 @@ export const StudioProvider = ({
       updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
         undefined,
       updateOAuthProviders,
-      reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
-      setActiveScreenId: setRequestedActiveScreenId,
+      setActiveScreenId,
       findNode: findNodeById,
       setStudioMode,
       togglePreviewMode: () => setPreviewMode((current) => !current),
@@ -365,7 +458,14 @@ export const StudioProvider = ({
       deleteNode,
       insertFromCatalogEntry,
       moveSelectedNodeToPlacement,
+      addScreen,
+      deleteScreen,
+      setNavigatorType,
+      setNavigatorInitialRoute,
+      setRoutePrimaryNavigationVisibility,
+      moveRoute,
       updateTheme,
+      setActiveScreenId,
       persistence.refetchManifest,
       persistence.flushManifest,
     ],
@@ -425,8 +525,12 @@ function useStudioManifestPersistence(args: {
     setError(null);
     try {
       const loaded = await requestStudioManifest(projectId);
-      replaceManifest(loaded);
-      lastPersistedSignatureRef.current = createStudioManifestSignature(loaded);
+      const loadedSignature = createStudioManifestSignature(loaded);
+      const currentManifest = manifestRef.current;
+      if (!currentManifest || createStudioManifestSignature(currentManifest) !== loadedSignature) {
+        replaceManifest(loaded);
+      }
+      lastPersistedSignatureRef.current = loadedSignature;
       setSaveStatus('saved');
     } catch (caught) {
       const fallbackSignature = initialManifest
@@ -439,7 +543,15 @@ function useStudioManifestPersistence(args: {
       hydratedRef.current = true;
       setIsLoading(false);
     }
-  }, [initialManifest, projectId, replaceManifest, setError, setIsLoading, setSaveStatus]);
+  }, [
+    initialManifest,
+    manifestRef,
+    projectId,
+    replaceManifest,
+    setError,
+    setIsLoading,
+    setSaveStatus,
+  ]);
 
   useEffect(() => {
     void loadManifest();

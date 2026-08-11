@@ -3,9 +3,7 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   collectScreenRouteEntries,
-  findRoutesAtParentPath,
   listScreenIdsInRouteOrder,
-  reorderLeafRoutesWithinParent,
   resolveScreenIdForPathname,
 } from './routeUtils';
 
@@ -43,22 +41,6 @@ describe('routeUtils', () => {
       'screen-cart',
       'screen-profile',
     ]);
-  });
-
-  test('reorders leaf routes at the root parent', () => {
-    const routes = buildRoutes();
-    const rootReordered = reorderLeafRoutesWithinParent(routes, [], ['profile', 'cart']);
-
-    expect(rootReordered.map((route) => route.name)).toEqual(['home', 'profile', 'cart']);
-  });
-
-  test('reorders leaf routes only within a selected nested parent', () => {
-    const routes = buildRoutes();
-    const nestedReordered = reorderLeafRoutesWithinParent(routes, ['home'], ['details', 'index']);
-    const nested = findRoutesAtParentPath(nestedReordered, ['home']) ?? [];
-
-    expect(nested.map((route) => route.name)).toEqual(['details', 'index']);
-    expect(rootRouteNames(nestedReordered)).toEqual(['home', 'cart', 'profile']);
   });
 
   test('resolves flat navigator screens from normalized pathnames', () => {
@@ -215,8 +197,21 @@ describe('routeUtils', () => {
     expect(resolveScreenIdForPathname(navigator, '/', screens)).toBe('screen-home');
     expect(resolveScreenIdForPathname(navigator, '/profile', screens)).toBeNull();
   });
-});
 
-function rootRouteNames(routes: RouteDefinition[]): string[] {
-  return routes.map((route) => route.name);
-}
+  test('rejects pathname identity resolution for a mismatched screen registry', () => {
+    const navigator = {
+      type: 'stack',
+      routes: [{ name: 'home', screenId: 'registry-home' }],
+    } satisfies NavigatorSpec;
+    const screens = {
+      'registry-home': {
+        id: 'stable-home',
+        name: 'Home',
+        root: { id: 'home-root', type: 'Screen' },
+      },
+    } satisfies AppManifest['screens'];
+
+    expect(resolveScreenIdForPathname(navigator, '/home', screens)).toBeNull();
+    expect(resolveScreenIdForPathname(navigator, '/', screens)).toBeNull();
+  });
+});

@@ -23,6 +23,11 @@ requires that registry so the generated Studio app uses the same component rules
 `resolveMoveNodePlacement` is public for validating and normalizing a placement before mutation;
 `invalid-reference` identifies incoherent sibling references.
 
+The context exposes parent-scoped `moveRoute` and
+`setRoutePrimaryNavigationVisibility` capabilities backed by the package-neutral manifest model.
+The broad `reorderScreens` context method and the duplicate public route reorder helpers were
+removed so Studio and generated apps edit one canonical nested navigation tree.
+
 The obsolete `addNodeToTree`, `moveNodeInTree`, directional `moveStudioManifestNode`, and
 `StudioContextValue.moveNode` APIs have been removed. The `@ankhorage/studio/dnd`,
 `@ankhorage/studio/dnd/primitives`, and `@ankhorage/studio/dnd/state` exports are also removed;

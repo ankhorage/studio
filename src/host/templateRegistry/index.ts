@@ -40,38 +40,10 @@ function createSeed(category: AppCategory): TemplateSeed {
   };
 }
 
-function normalizeProjectTemplateManifest(
-  selection: ProjectTemplateSelection,
-  manifest: AppManifest,
-): AppManifest {
-  if (
-    selection.category !== 'food_drink' ||
-    selection.templateId !== 'nutrition-catalog-scan' ||
-    manifest.navigator.type !== 'tabs'
-  ) {
-    return manifest;
-  }
-
-  const normalizedRoutes = manifest.navigator.routes.filter(
-    (route) => !(route.hideInTabBar === true && route.path === '/'),
-  );
-
-  return {
-    ...manifest,
-    navigator: {
-      ...manifest.navigator,
-      routes: normalizedRoutes,
-    },
-  };
-}
-
 function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
-  return normalizeProjectTemplateManifest(
-    selection,
-    createStarterTemplate(createSeed(selection.category), {
-      templateId: selection.templateId,
-    }),
-  );
+  return createStarterTemplate(createSeed(selection.category), {
+    templateId: selection.templateId,
+  });
 }
 
 const PROJECT_TEMPLATE_INDEX = createTemplateIndex();

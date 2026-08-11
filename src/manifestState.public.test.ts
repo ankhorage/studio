@@ -7,6 +7,7 @@ import {
   createDefaultThemeConfig,
   DEFAULT_STUDIO_SCREEN_TEMPLATE,
   deleteStudioManifestTheme,
+  deriveStudioScreenNavigationModel,
   findNavigatorAtPath,
   findNodeInManifest,
   findParentPathForScreenId,
@@ -14,18 +15,26 @@ import {
   generateManifestStateId,
   getPrimaryNavigatorPath,
   groupScreenRouteEntries,
+  hasCanonicalStudioScreenRegistryIdentity,
   insertRouteAtParentPath,
   isRouteGroupSegment,
   makeUniqueRouteNameForParent,
   makeUniqueSiblingRouteName,
+  moveStudioManifestRoute,
   pathToKey,
   removeScreenIdFromRoutes,
-  reorderStudioManifestScreens,
   resolveInitialScreenId,
+  resolveStudioScreenAppPath,
   type ScreenRouteEntry,
   type ScreenRouteGroup,
   setStudioManifestActiveThemeId,
   setStudioManifestActiveThemeMode,
+  setStudioManifestRoutePrimaryNavigationVisibility,
+  type StudioScreenNavigationDiagnostic,
+  type StudioScreenNavigationDiagnosticCode,
+  type StudioScreenNavigationEntry,
+  type StudioScreenNavigationModel,
+  type StudioScreenRouteReference,
   toCanonicalRoutePattern,
   updateNavigatorAtPath,
   updateStudioManifestDataBindings,
@@ -145,21 +154,40 @@ describe('manifestState public surface', () => {
     const dataSources = {
       'source-1': { id: 'source-1', type: 'static', config: {} },
     } as never;
-    const reordered = reorderStudioManifestScreens(
-      manifest,
-      [...manifest.navigator.routes].reverse(),
-    );
     const withBindings = updateStudioManifestDataBindings(manifest, dataBindings);
     const withSources = updateStudioManifestDataSources(withBindings, dataSources);
     const activeTheme = setStudioManifestActiveThemeId(withSources, 'theme-1');
     const darkTheme = setStudioManifestActiveThemeMode(activeTheme, 'dark');
     const deletedTheme = deleteStudioManifestTheme(darkTheme, 'theme-1');
+    const model: StudioScreenNavigationModel = deriveStudioScreenNavigationModel(manifest);
+    const entry: StudioScreenNavigationEntry | undefined = model.screens[0];
+    const reference: StudioScreenRouteReference | undefined = entry?.routeReferences[0];
+    const diagnostic: StudioScreenNavigationDiagnostic | undefined = model.diagnostics.find(
+      (item) => item.code === 'missing-screen-reference',
+    );
+    const diagnosticCode: StudioScreenNavigationDiagnosticCode | undefined = diagnostic?.code;
+    const hidden = setStudioManifestRoutePrimaryNavigationVisibility({
+      manifest,
+      parentPath: ['(app)'],
+      routeName: 'index',
+      showInPrimaryNavigation: false,
+    });
+    const moved = moveStudioManifestRoute({
+      manifest: hidden,
+      parentPath: ['(app)'],
+      routeName: 'index',
+      toIndex: 1,
+    });
 
     expect(findNodeInManifest(rootNode, 'text-1')?.id).toBe('text-1');
-    expect(reordered.navigator.routes.map((route) => route.name)).toEqual(['auth', '(app)']);
+    expect(hasCanonicalStudioScreenRegistryIdentity(manifest.screens)).toBe(true);
     expect(withBindings.dataBindings).toBe(dataBindings);
     expect(withSources.dataSources).toBe(dataSources);
     expect(darkTheme.activeThemeMode).toBe('dark');
     expect(deletedTheme.activeThemeId).toBe('theme-2');
+    expect(reference?.pathnamePattern).toBe('/');
+    expect(resolveStudioScreenAppPath(model, entry?.screenId ?? '')).toBe('/');
+    expect(diagnosticCode).toBe('missing-screen-reference');
+    expect(findNavigatorAtPath(moved.navigator, ['(app)'])?.routes[1]?.name).toBe('index');
   });
 });

@@ -6,9 +6,11 @@ import type {
   NavigatorSpec,
   NavigatorType,
   RouteDefinition,
+  ScreenSpec,
   ThemeConfig,
   UiNode,
 } from '@ankhorage/contracts';
+import { NAVIGATOR_TYPES } from '@ankhorage/contracts';
 
 import type {
   NodePlacement,
@@ -36,6 +38,50 @@ export interface ScreenRouteGroup {
 export interface StudioManifestScreenMutationResult {
   manifest: StudioManifest;
   activeScreenId: string | null;
+}
+
+export type StudioScreenNavigationDiagnosticCode =
+  | 'ambiguous-route-target'
+  | 'ambiguous-screen-route-reference'
+  | 'duplicate-screen-id'
+  | 'duplicate-sibling-route-name'
+  | 'empty-navigator'
+  | 'invalid-initial-route'
+  | 'missing-route-target'
+  | 'missing-screen-reference'
+  | 'screen-registry-key-mismatch';
+
+export interface StudioScreenNavigationDiagnostic {
+  code: StudioScreenNavigationDiagnosticCode;
+  message: string;
+  parentPath: string[];
+  routeName?: string;
+  screenId?: string;
+}
+
+export interface StudioScreenRouteReference {
+  route: RouteDefinition;
+  parentPath: string[];
+  routePath: string[];
+  pathnamePattern: string;
+  siblingIndex: number;
+  navigatorType: NavigatorType;
+  isPrimaryNavigatorMember: boolean;
+  showInPrimaryNavigation: boolean;
+  isPrimaryInitialRoute: boolean;
+}
+
+export interface StudioScreenNavigationEntry {
+  screenId: string;
+  screen: ScreenSpec;
+  routeReferences: StudioScreenRouteReference[];
+}
+
+export interface StudioScreenNavigationModel {
+  primaryNavigatorPath: string[];
+  primaryNavigator: NavigatorSpec;
+  screens: StudioScreenNavigationEntry[];
+  diagnostics: StudioScreenNavigationDiagnostic[];
 }
 
 export interface StudioManifestNodeInsertResult {
@@ -170,6 +216,266 @@ export function groupScreenRouteEntries(entries: ScreenRouteEntry[]): ScreenRout
   return Array.from(groups.values());
 }
 
+/**
+ * Verifies the Studio manifest invariant that route registry keys and stable
+ * ScreenSpec identities are the same unique value.
+ */
+export function hasCanonicalStudioScreenRegistryIdentity(
+  screens: StudioManifest['screens'],
+): boolean {
+  const screenIds = new Set<string>();
+  for (const [registryKey, screen] of Object.entries(screens)) {
+    if (registryKey !== screen.id || screenIds.has(screen.id)) return false;
+    screenIds.add(screen.id);
+  }
+  return true;
+}
+
+function resolveCanonicalStudioScreen(
+  manifest: StudioManifest,
+  screenId: string,
+): ScreenSpec | undefined {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return undefined;
+  return manifest.screens[screenId];
+}
+
+/**
+ * Derives the complete package-neutral screen/navigation authoring model from
+ * the manifest without flattening its navigator tree.
+ */
+export function deriveStudioScreenNavigationModel(
+  manifest: StudioManifest,
+): StudioScreenNavigationModel {
+  const primaryNavigatorPath = getPrimaryNavigatorPath(manifest.navigator.routes);
+  const primaryNavigator =
+    findNavigatorAtPath(manifest.navigator, primaryNavigatorPath) ?? manifest.navigator;
+  const diagnostics: StudioScreenNavigationDiagnostic[] = [];
+  const referencesByRegistryKey = new Map<string, StudioScreenRouteReference[]>();
+
+  collectNavigationModelReferences({
+    navigator: manifest.navigator,
+    screens: manifest.screens,
+    primaryNavigatorPath,
+    parentPath: [],
+    routePathPrefix: [],
+    runtimePathPrefix: [],
+    diagnostics,
+    referencesByRegistryKey,
+  });
+
+  const screenIdCounts = new Map<string, number>();
+  for (const screen of Object.values(manifest.screens)) {
+    screenIdCounts.set(screen.id, (screenIdCounts.get(screen.id) ?? 0) + 1);
+  }
+  const reportedDuplicateScreenIds = new Set<string>();
+
+  const screens = Object.entries(manifest.screens).map(([registryKey, screen]) => {
+    const screenId = screen.id;
+    const routeReferences = referencesByRegistryKey.get(registryKey) ?? [];
+    if (registryKey !== screenId) {
+      diagnostics.push({
+        code: 'screen-registry-key-mismatch',
+        message: `Screen registry key "${registryKey}" does not match stable ScreenSpec.id "${screenId}".`,
+        parentPath: [],
+        screenId,
+      });
+    }
+    if ((screenIdCounts.get(screenId) ?? 0) > 1 && !reportedDuplicateScreenIds.has(screenId)) {
+      reportedDuplicateScreenIds.add(screenId);
+      diagnostics.push({
+        code: 'duplicate-screen-id',
+        message: `Stable ScreenSpec.id "${screenId}" is used by multiple screen registry entries.`,
+        parentPath: [],
+        screenId,
+      });
+    }
+    if (routeReferences.length > 1) {
+      diagnostics.push({
+        code: 'ambiguous-screen-route-reference',
+        message: `Screen "${screenId}" is referenced by ${routeReferences.length} routes.`,
+        parentPath: [],
+        screenId,
+      });
+    }
+
+    return { screenId, screen, routeReferences };
+  });
+
+  return {
+    primaryNavigatorPath,
+    primaryNavigator,
+    screens,
+    diagnostics,
+  };
+}
+
+/**
+ * Returns a concrete canonical app pathname only when a screen has one route
+ * reference and that route does not require runtime parameters.
+ */
+export function resolveStudioScreenAppPath(
+  model: StudioScreenNavigationModel,
+  screenId: string,
+): string | null {
+  const matchingEntries = model.screens.filter((candidate) => candidate.screenId === screenId);
+  if (matchingEntries.length !== 1) return null;
+  const [entry] = matchingEntries;
+  if (!entry) return null;
+  if (entry.routeReferences.length !== 1) return null;
+  const [reference] = entry.routeReferences;
+  if (!reference) return null;
+
+  const hasDynamicSegment = reference.pathnamePattern
+    .split('/')
+    .some((segment) => segment.startsWith(':') || /^\[.*\]$/u.test(segment));
+  if (hasDynamicSegment) return null;
+
+  const matchingReferences = model.screens.flatMap((candidate) =>
+    candidate.routeReferences.filter(
+      (candidateReference) => candidateReference.pathnamePattern === reference.pathnamePattern,
+    ),
+  );
+  return matchingReferences.length === 1 ? reference.pathnamePattern : null;
+}
+
+function collectNavigationModelReferences(args: {
+  navigator: NavigatorSpec;
+  screens: StudioManifest['screens'];
+  primaryNavigatorPath: string[];
+  parentPath: string[];
+  routePathPrefix: string[];
+  runtimePathPrefix: string[];
+  diagnostics: StudioScreenNavigationDiagnostic[];
+  referencesByRegistryKey: Map<string, StudioScreenRouteReference[]>;
+}): void {
+  const {
+    navigator,
+    screens,
+    primaryNavigatorPath,
+    parentPath,
+    routePathPrefix,
+    runtimePathPrefix,
+    diagnostics,
+    referencesByRegistryKey,
+  } = args;
+  const siblingNameCounts = new Map<string, number>();
+  for (const route of navigator.routes) {
+    siblingNameCounts.set(route.name, (siblingNameCounts.get(route.name) ?? 0) + 1);
+  }
+
+  if (navigator.routes.length === 0) {
+    diagnostics.push({
+      code: 'empty-navigator',
+      message: `Navigator at "${formatParentPath(parentPath)}" has no routes.`,
+      parentPath,
+    });
+  }
+
+  if (
+    navigator.initialRouteName !== undefined &&
+    siblingNameCounts.get(navigator.initialRouteName) !== 1
+  ) {
+    diagnostics.push({
+      code: 'invalid-initial-route',
+      message: `Initial route "${navigator.initialRouteName}" is not one unambiguous direct route of "${formatParentPath(parentPath)}".`,
+      parentPath,
+      routeName: navigator.initialRouteName,
+    });
+  }
+
+  for (const [siblingIndex, route] of navigator.routes.entries()) {
+    const routePath = [...routePathPrefix, route.name];
+    const runtimePath = appendRuntimeRoutePath(runtimePathPrefix, route);
+    const isPrimaryNavigatorMember = pathsEqual(parentPath, primaryNavigatorPath);
+
+    if (
+      (siblingNameCounts.get(route.name) ?? 0) > 1 &&
+      navigator.routes.findIndex((candidate) => candidate.name === route.name) === siblingIndex
+    ) {
+      diagnostics.push({
+        code: 'duplicate-sibling-route-name',
+        message: `Route name "${route.name}" is duplicated under "${formatParentPath(parentPath)}".`,
+        parentPath,
+        routeName: route.name,
+        screenId: route.screenId,
+      });
+    }
+
+    if (!route.screenId && !route.navigator) {
+      diagnostics.push({
+        code: 'missing-route-target',
+        message: `Route "${route.name}" has neither a screen nor a nested navigator.`,
+        parentPath,
+        routeName: route.name,
+      });
+    } else if (route.screenId && route.navigator) {
+      diagnostics.push({
+        code: 'ambiguous-route-target',
+        message: `Route "${route.name}" targets both a screen and a nested navigator.`,
+        parentPath,
+        routeName: route.name,
+        screenId: route.screenId,
+      });
+    }
+
+    if (route.screenId) {
+      if (!screens[route.screenId]) {
+        diagnostics.push({
+          code: 'missing-screen-reference',
+          message: `Route "${route.name}" references missing screen "${route.screenId}".`,
+          parentPath,
+          routeName: route.name,
+          screenId: route.screenId,
+        });
+      } else {
+        const reference: StudioScreenRouteReference = {
+          route,
+          parentPath,
+          routePath,
+          pathnamePattern: toCanonicalRoutePattern(runtimePath),
+          siblingIndex,
+          navigatorType: navigator.type,
+          isPrimaryNavigatorMember,
+          showInPrimaryNavigation: route.showInPrimaryNavigation !== false,
+          isPrimaryInitialRoute:
+            isPrimaryNavigatorMember && navigator.initialRouteName === route.name,
+        };
+        const currentReferences = referencesByRegistryKey.get(route.screenId) ?? [];
+        currentReferences.push(reference);
+        referencesByRegistryKey.set(route.screenId, currentReferences);
+      }
+    }
+
+    if (route.navigator) {
+      collectNavigationModelReferences({
+        navigator: route.navigator,
+        screens,
+        primaryNavigatorPath,
+        parentPath: routePath,
+        routePathPrefix: routePath,
+        runtimePathPrefix: runtimePath,
+        diagnostics,
+        referencesByRegistryKey,
+      });
+    }
+  }
+}
+
+function appendRuntimeRoutePath(runtimePathPrefix: string[], route: RouteDefinition): string[] {
+  const explicitPath = route.path?.trim();
+  const segmentPath = explicitPath ?? route.name;
+  const segments = segmentPath.split('/').filter(Boolean);
+  return explicitPath?.startsWith('/') ? segments : [...runtimePathPrefix, ...segments];
+}
+
+function pathsEqual(first: readonly string[], second: readonly string[]): boolean {
+  return first.length === second.length && first.every((value, index) => value === second[index]);
+}
+
+function formatParentPath(parentPath: readonly string[]): string {
+  return parentPath.length === 0 ? '<root>' : parentPath.join('/');
+}
+
 export function listScreenIdsInRouteOrder(routes: RouteDefinition[]): string[] {
   return collectScreenRouteEntries(routes).map((entry) => entry.screenId);
 }
@@ -183,6 +489,7 @@ export function resolveInitialScreenId(
   navigator: NavigatorSpec,
   screens?: AppManifest['screens'],
 ): string | null {
+  if (screens && !hasCanonicalStudioScreenRegistryIdentity(screens)) return null;
   const initialRoute = navigator.initialRouteName
     ? navigator.routes.find((route) => route.name === navigator.initialRouteName)
     : undefined;
@@ -197,7 +504,7 @@ export function resolveInitialScreenId(
     }
 
     if (route.screenId && (!screens || screens[route.screenId])) {
-      return route.screenId;
+      return screens ? (screens[route.screenId]?.id ?? null) : route.screenId;
     }
   }
 
@@ -205,10 +512,10 @@ export function resolveInitialScreenId(
 }
 
 export function resolveInitialActiveScreenId(manifest: StudioManifest | null): string | null {
-  if (!manifest) return null;
+  if (!manifest || !hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
 
   const firstRoutedScreenId = resolveInitialScreenId(manifest.navigator, manifest.screens);
-  const [firstScreenId] = Object.keys(manifest.screens);
+  const [firstScreenId] = Object.values(manifest.screens).map((screen) => screen.id);
   return firstRoutedScreenId ?? firstScreenId ?? null;
 }
 
@@ -217,7 +524,7 @@ export function resolveActiveRootNode(
   activeScreenId: string | null,
 ): UiNode | null {
   if (!manifest || !activeScreenId) return null;
-  return manifest.screens[activeScreenId]?.root ?? null;
+  return resolveCanonicalStudioScreen(manifest, activeScreenId)?.root ?? null;
 }
 
 export function findNodeInManifest(root: UiNode, id: string): UiNode | null {
@@ -240,9 +547,10 @@ export function resolveSafeSelectedNodeId(
 }
 
 export function findScreenIdForNode(manifest: StudioManifest, nodeId: string): string | null {
-  for (const [screenId, screen] of Object.entries(manifest.screens)) {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
+  for (const screen of Object.values(manifest.screens)) {
     if (findNodeInManifest(screen.root, nodeId)) {
-      return screenId;
+      return screen.id;
     }
   }
 
@@ -256,7 +564,7 @@ export function updateStudioManifestNode(
   newProps: Record<string, unknown>,
 ): StudioManifest {
   if (!activeScreenId) return manifest;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return manifest;
 
   const newRoot = updateNodeInManifestTree(screen.root, nodeId, newProps);
@@ -280,7 +588,7 @@ export function deleteStudioManifestNode(
   nodeId: string,
 ): StudioManifest {
   if (!activeScreenId) return manifest;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen || screen.root.id === nodeId) return manifest;
 
   const deletedNode = findNodeInManifest(screen.root, nodeId);
@@ -320,7 +628,7 @@ export function insertStudioManifestNodeAtPlacement(args: {
 }): StudioManifestNodeInsertResult | null {
   const { manifest, activeScreenId, placement, newNode, componentMeta } = args;
   if (!activeScreenId) return null;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return null;
   const insertion = insertNodeAtPlacement({
     root: screen.root,
@@ -354,7 +662,7 @@ export function moveStudioManifestNodeToPlacement(args: {
 }): StudioManifestNodeMoveResult | null {
   const { manifest, activeScreenId, nodeId, placement, componentMeta } = args;
   if (!activeScreenId) return null;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return null;
 
   const movement = moveNodeToPlacement({
@@ -596,7 +904,9 @@ export function findRoutesAtParentPath(
 
   const [segment, ...rest] = parentPath;
   if (!segment) return null;
-  const route = routes.find((item) => item.name === segment);
+  const matches = routes.filter((item) => item.name === segment);
+  if (matches.length !== 1) return null;
+  const [route] = matches;
   if (!route?.navigator?.routes) return null;
 
   return findRoutesAtParentPath(route.navigator.routes, rest);
@@ -610,8 +920,11 @@ export function insertRouteAtParentPath(
   if (parentPath.length === 0) return [...routes, newRoute];
 
   const [segment, ...rest] = parentPath;
+  const matches = routes.filter((route) => route.name === segment && route.navigator);
+  if (matches.length !== 1) return routes;
+  const [targetRoute] = matches;
   return routes.map((route) => {
-    if (route.name !== segment || !route.navigator?.routes) return route;
+    if (route !== targetRoute || !route.navigator?.routes) return route;
 
     return {
       ...route,
@@ -631,7 +944,9 @@ export function findNavigatorAtPath(
 
   const [segment, ...rest] = parentPath;
   if (!segment) return null;
-  const route = navigator.routes.find((item) => item.name === segment);
+  const matches = navigator.routes.filter((item) => item.name === segment);
+  if (matches.length !== 1) return null;
+  const [route] = matches;
   if (!route?.navigator) return null;
 
   return findNavigatorAtPath(route.navigator, rest);
@@ -645,10 +960,13 @@ export function updateNavigatorAtPath(
   if (parentPath.length === 0) return updater(navigator);
 
   const [segment, ...rest] = parentPath;
+  const matches = navigator.routes.filter((route) => route.name === segment && route.navigator);
+  if (matches.length !== 1) return navigator;
+  const [targetRoute] = matches;
   return {
     ...navigator,
     routes: navigator.routes.map((route) => {
-      if (route.name !== segment || !route.navigator) return route;
+      if (route !== targetRoute || !route.navigator) return route;
 
       return {
         ...route,
@@ -662,6 +980,7 @@ export function setStudioManifestNavigatorType(
   manifest: StudioManifest,
   type: NavigatorType,
 ): StudioManifest {
+  if (!NAVIGATOR_TYPES.includes(type)) return manifest;
   const primaryNavigatorPath = getPrimaryNavigatorPath(manifest.navigator.routes);
   const currentNavigator = findNavigatorAtPath(manifest.navigator, primaryNavigatorPath);
   if (!currentNavigator || currentNavigator.type === type) return manifest;
@@ -685,7 +1004,9 @@ export function setStudioManifestNavigatorInitialRoute(
   const primaryNavigatorPath = getPrimaryNavigatorPath(manifest.navigator.routes);
   const currentNavigator = findNavigatorAtPath(manifest.navigator, primaryNavigatorPath);
   if (!currentNavigator) return manifest;
-  if (!currentNavigator.routes.some((route) => route.name === normalizedRoute)) return manifest;
+  if (currentNavigator.routes.filter((route) => route.name === normalizedRoute).length !== 1) {
+    return manifest;
+  }
   if (currentNavigator.initialRouteName === normalizedRoute) return manifest;
 
   return {
@@ -697,39 +1018,97 @@ export function setStudioManifestNavigatorInitialRoute(
   };
 }
 
+export function setStudioManifestRoutePrimaryNavigationVisibility(args: {
+  manifest: StudioManifest;
+  parentPath: string[];
+  routeName: string;
+  showInPrimaryNavigation: boolean;
+}): StudioManifest {
+  const { manifest, parentPath, routeName, showInPrimaryNavigation } = args;
+  const navigator = findNavigatorAtPath(manifest.navigator, parentPath);
+  if (!navigator) return manifest;
+  const matches = navigator.routes.filter((route) => route.name === routeName);
+  if (matches.length !== 1) return manifest;
+  const [matchedRoute] = matches;
+  if (!matchedRoute) return manifest;
+
+  const alreadyCanonical = showInPrimaryNavigation
+    ? matchedRoute.showInPrimaryNavigation === undefined
+    : matchedRoute.showInPrimaryNavigation === false;
+  if (alreadyCanonical) return manifest;
+
+  return {
+    ...manifest,
+    navigator: updateNavigatorAtPath(manifest.navigator, parentPath, (current) => ({
+      ...current,
+      routes: current.routes.map((route) => {
+        if (route !== matchedRoute) return route;
+        if (!showInPrimaryNavigation) {
+          return { ...route, showInPrimaryNavigation: false };
+        }
+        const { showInPrimaryNavigation: _visibility, ...visibleRoute } = route;
+        return visibleRoute;
+      }),
+    })),
+  };
+}
+
+export function moveStudioManifestRoute(args: {
+  manifest: StudioManifest;
+  parentPath: string[];
+  routeName: string;
+  toIndex: number;
+}): StudioManifest {
+  const { manifest, parentPath, routeName, toIndex } = args;
+  if (!Number.isInteger(toIndex)) return manifest;
+  const navigator = findNavigatorAtPath(manifest.navigator, parentPath);
+  if (!navigator || toIndex < 0 || toIndex >= navigator.routes.length) return manifest;
+  const matchingIndexes = navigator.routes.flatMap((route, index) =>
+    route.name === routeName ? [index] : [],
+  );
+  if (matchingIndexes.length !== 1) return manifest;
+  const [fromIndex] = matchingIndexes;
+  if (fromIndex === undefined || fromIndex === toIndex) return manifest;
+
+  return {
+    ...manifest,
+    navigator: updateNavigatorAtPath(manifest.navigator, parentPath, (current) => {
+      const routes = [...current.routes];
+      const [route] = routes.splice(fromIndex, 1);
+      if (!route) return current;
+      routes.splice(toIndex, 0, route);
+      return { ...current, routes };
+    }),
+  };
+}
+
 export function addStudioManifestScreen(args: {
   manifest: StudioManifest;
   name: string;
   activeScreenId: string | null;
+  parentPath?: string[];
   createId?: StudioIdGenerator;
   screenTemplate?: UiNode;
 }): StudioManifestScreenMutationResult {
   const { manifest, activeScreenId, createId = generateManifestStateId } = args;
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) {
+    return { manifest, activeScreenId };
+  }
   const trimmedName = args.name.trim();
   if (!trimmedName) return { manifest, activeScreenId };
 
   const baseRouteName = normalizeRouteName(trimmedName);
-  const activeParentPath = activeScreenId
-    ? findParentPathForScreenId(manifest.navigator.routes, activeScreenId)
-    : null;
-  const fallbackParentPath = getPrimaryNavigatorPath(manifest.navigator.routes);
-  const activeParentRoutes =
-    activeParentPath !== null
-      ? findRoutesAtParentPath(manifest.navigator.routes, activeParentPath)
-      : null;
-  const parentPath = activeParentPath && activeParentRoutes ? activeParentPath : fallbackParentPath;
-  const siblingRoutes = findRoutesAtParentPath(manifest.navigator.routes, parentPath) ?? [];
+  const parentPath = args.parentPath ?? getPrimaryNavigatorPath(manifest.navigator.routes);
+  const siblingRoutes = findRoutesAtParentPath(manifest.navigator.routes, parentPath);
+  if (!siblingRoutes) return { manifest, activeScreenId };
 
+  const existingScreenIds = new Set(Object.values(manifest.screens).map((screen) => screen.id));
   let screenId = createId('Screen');
-  while (manifest.screens[screenId]) {
+  while (manifest.screens[screenId] || existingScreenIds.has(screenId)) {
     screenId = createId('Screen');
   }
 
-  const existingPatterns = new Set(
-    collectScreenRouteEntries(manifest.navigator.routes).map((entry) =>
-      toCanonicalRoutePattern(entry.routePath),
-    ),
-  );
+  const existingPatterns = new Set(collectCanonicalRoutePatterns(manifest.navigator.routes));
   const routeName = makeUniqueRouteNameForParent(
     baseRouteName,
     siblingRoutes,
@@ -769,24 +1148,16 @@ export function deleteStudioManifestScreen(
   screenId: string,
   activeScreenId: string | null,
 ): StudioManifestScreenMutationResult {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) {
+    return { manifest, activeScreenId };
+  }
   if (Object.keys(manifest.screens).length <= 1) return { manifest, activeScreenId };
+  const deletedScreen = manifest.screens[screenId];
+  if (!deletedScreen) return { manifest, activeScreenId };
 
   const { [screenId]: _deletedScreen, ...remainingScreens } = manifest.screens;
   const remainingScreenIds = Object.keys(remainingScreens);
-  let safeRoutes = removeScreenIdFromRoutes(manifest.navigator.routes, screenId);
-
-  if (safeRoutes.length === 0 && remainingScreenIds.length > 0) {
-    const [fallbackScreenId] = remainingScreenIds;
-    if (!fallbackScreenId) return { manifest, activeScreenId };
-    const fallbackScreen = remainingScreens[fallbackScreenId];
-    safeRoutes = [
-      {
-        name: makeUniqueSiblingRouteName('screen', []),
-        label: fallbackScreen?.name ?? 'Screen',
-        screenId: fallbackScreenId,
-      },
-    ];
-  }
+  const safeRoutes = removeScreenIdFromRoutes(manifest.navigator.routes, screenId);
 
   const orderedScreenIds = listScreenIdsInRouteOrder(safeRoutes).filter(
     (id) => !!remainingScreens[id],
@@ -795,29 +1166,24 @@ export function deleteStudioManifestScreen(
     !activeScreenId || activeScreenId === screenId || !remainingScreens[activeScreenId]
       ? (orderedScreenIds[0] ?? remainingScreenIds[0] ?? null)
       : activeScreenId;
+  const deletedNodeIds = collectNodeIds(deletedScreen.root);
+  const dataBindings = Object.fromEntries(
+    Object.entries(manifest.dataBindings ?? {}).filter(
+      ([componentId, binding]) =>
+        !deletedNodeIds.has(componentId) && !deletedNodeIds.has(binding.componentId),
+    ),
+  );
 
   return {
     activeScreenId: nextActiveScreenId,
     manifest: {
       ...manifest,
+      dataBindings,
       screens: remainingScreens,
-      navigator: {
+      navigator: normalizeNavigatorAfterRouteUpdate({
         ...manifest.navigator,
         routes: safeRoutes,
-      },
-    },
-  };
-}
-
-export function reorderStudioManifestScreens(
-  manifest: StudioManifest,
-  newRoutes: RouteDefinition[],
-): StudioManifest {
-  return {
-    ...manifest,
-    navigator: {
-      ...manifest.navigator,
-      routes: newRoutes,
+      }),
     },
   };
 }
@@ -903,6 +1269,21 @@ function normalizeRouteName(value: string): string {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '') || 'screen'
   );
+}
+
+function collectCanonicalRoutePatterns(
+  routes: RouteDefinition[],
+  runtimePathPrefix: string[] = [],
+): string[] {
+  const patterns: string[] = [];
+  for (const route of routes) {
+    const runtimePath = appendRuntimeRoutePath(runtimePathPrefix, route);
+    patterns.push(toCanonicalRoutePattern(runtimePath));
+    if (route.navigator) {
+      patterns.push(...collectCanonicalRoutePatterns(route.navigator.routes, runtimePath));
+    }
+  }
+  return patterns;
 }
 
 function cloneNodeWithNewIds(node: UiNode, createId: StudioIdGenerator): UiNode {

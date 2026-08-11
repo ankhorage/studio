@@ -113,6 +113,53 @@ test('rejects malformed optional manifest domains', () => {
   );
 });
 
+test('validates canonical primary-navigation visibility', () => {
+  const manifest = createManifest();
+  manifest.navigator.routes = [
+    { name: 'home', screenId: 'home' },
+    { name: 'details', screenId: 'details', showInPrimaryNavigation: false },
+  ];
+  manifest.screens = {
+    home: { id: 'home', name: 'Home', root: { id: 'home-root', type: 'Screen' } },
+    details: { id: 'details', name: 'Details', root: { id: 'details-root', type: 'Screen' } },
+  };
+
+  expect(isAppManifest(manifest)).toBe(true);
+  expect(
+    isAppManifest(withPath('navigator.routes', [{ name: 'home', showInPrimaryNavigation: 0 }])),
+  ).toBe(false);
+});
+
+test('requires each screen registry key to equal its stable ScreenSpec.id', () => {
+  const mismatched = createManifest();
+  mismatched.screens = {
+    'registry-home': {
+      id: 'stable-home',
+      name: 'Home',
+      root: { id: 'home-root', type: 'Screen' },
+    },
+  };
+  mismatched.navigator.routes = [{ name: 'home', screenId: 'registry-home' }];
+
+  expect(isAppManifest(mismatched)).toBe(false);
+
+  const duplicate = createManifest();
+  duplicate.screens = {
+    'duplicate-id': {
+      id: 'duplicate-id',
+      name: 'First',
+      root: { id: 'first-root', type: 'Screen' },
+    },
+    alias: {
+      id: 'duplicate-id',
+      name: 'Second',
+      root: { id: 'second-root', type: 'Screen' },
+    },
+  };
+
+  expect(isAppManifest(duplicate)).toBe(false);
+});
+
 function createManifest(): AppManifest {
   return {
     metadata: {

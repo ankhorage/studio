@@ -384,7 +384,7 @@ function ensureAuthSignOutRoute(
       ...navigator.routes,
       {
         name: signOutRouteName,
-        ...(navigator.type === 'stack' ? {} : { hideInTabBar: true }),
+        ...(navigator.type === 'stack' ? {} : { showInPrimaryNavigation: false }),
       },
     ],
   };
@@ -478,7 +478,7 @@ function buildGeneratedAuthRoute(args: {
     label: routeLabel,
     screenId,
     guards: [PUBLIC_GUARD],
-    ...(navigatorType === 'tabs' ? { hideInTabBar: true } : {}),
+    ...(navigatorType === 'tabs' ? { showInPrimaryNavigation: false } : {}),
   };
 }
 

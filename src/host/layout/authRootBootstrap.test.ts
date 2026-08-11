@@ -64,7 +64,7 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
 }
 
 describe('generated auth root bootstrap', () => {
-  test('keeps the canonical root route single-owned and gates both auth trees', () => {
+  test('keeps Studio routes mounted while bootstrap gates both auth trees', () => {
     const files = generateAuthFiles('index');
     const paths = files.map((file) => file.path);
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
@@ -77,9 +77,10 @@ describe('generated auth root bootstrap', () => {
     );
     expect(rootLayout).toContain("if (!isAuthRuntimeReady) return 'pending';");
     expect(rootLayout).toContain('<InnerContent authState={authState}');
-    expect(rootLayout).toContain("if (authState === 'pending') {");
+    expect(rootLayout).not.toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
+    expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
   });
 
   test('keeps non-root / matchable while the root layout alone canonicalizes navigation', () => {

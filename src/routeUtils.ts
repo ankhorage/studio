@@ -1,7 +1,8 @@
-import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
 
 import {
   collectScreenRouteEntries,
+  hasCanonicalStudioScreenRegistryIdentity,
   isRouteGroupSegment,
   resolveInitialScreenId,
 } from './manifestState';
@@ -44,15 +45,17 @@ export function resolveScreenIdForPathname(
   pathname: string,
   screens?: AppManifest['screens'],
 ): string | null {
+  if (screens && !hasCanonicalStudioScreenRegistryIdentity(screens)) return null;
   const pathnameSegments = normalizePathnameSegments(pathname);
   let bestMatch: ScreenRouteMatch | null = null;
 
   for (const entry of collectScreenRouteEntries(navigator.routes)) {
-    if (screens && !screens[entry.screenId]) continue;
+    const screen = screens?.[entry.screenId];
+    if (screens && !screen) continue;
     const patternSegments = normalizeRoutePatternSegments(entry.routePath);
     const score = scoreRoutePatternMatch(patternSegments, pathnameSegments);
     if (score === null || (bestMatch && score <= bestMatch.score)) continue;
-    bestMatch = { screenId: entry.screenId, score };
+    bestMatch = { screenId: screen?.id ?? entry.screenId, score };
   }
 
   if (bestMatch) return bestMatch.screenId;
@@ -121,58 +124,4 @@ function scoreRoutePatternMatch(
   }
 
   return pathnameIndex === pathname.length ? score + (exactMatch ? 5 : 0) : null;
-}
-
-export function reorderLeafRoutesWithinParent(
-  routes: RouteDefinition[],
-  parentPath: string[],
-  orderedRouteNames: string[],
-): RouteDefinition[] {
-  if (parentPath.length === 0) {
-    return reorderMatchingRoutes(routes, orderedRouteNames);
-  }
-
-  const [segment, ...rest] = parentPath;
-
-  return routes.map((route) => {
-    if (route.name !== segment || !route.navigator?.routes) {
-      return route;
-    }
-
-    return {
-      ...route,
-      navigator: {
-        ...route.navigator,
-        routes: reorderLeafRoutesWithinParent(route.navigator.routes, rest, orderedRouteNames),
-      },
-    };
-  });
-}
-
-function reorderMatchingRoutes(
-  routes: RouteDefinition[],
-  orderedRouteNames: string[],
-): RouteDefinition[] {
-  const rank = new Map(orderedRouteNames.map((name, index) => [name, index]));
-  const sortableRoutes = routes
-    .filter((route) => rank.has(route.name))
-    .sort((a, b) => (rank.get(a.name) ?? 0) - (rank.get(b.name) ?? 0));
-
-  if (sortableRoutes.length <= 1) {
-    return routes;
-  }
-
-  let cursor = 0;
-  return routes.map((route) => {
-    if (!rank.has(route.name)) return route;
-    if (cursor >= sortableRoutes.length) {
-      return route;
-    }
-    const next = sortableRoutes[cursor];
-    if (!next) {
-      return route;
-    }
-    cursor += 1;
-    return next;
-  });
 }

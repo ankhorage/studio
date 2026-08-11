@@ -6,6 +6,8 @@ first-class Expo Router section, not a set of route anchors backed by the normal
 Canonical routes:
 
 - `/ankh`
+- `/ankh/screens`
+- `/ankh/screens/<screen-id>`
 - `/ankh/apis`
 - `/ankh/apis/data-sources`
 - `/ankh/apis/operations`
@@ -18,9 +20,26 @@ Canonical routes:
 - `/ankh/properties/<node-id>`
 
 `@ankhorage/studio/studioAdminRouteModel` owns the canonical registry for route IDs, paths,
-labels, icons, hierarchy, active matching, contextual availability, and Properties path
-construction/decoding. Generated pages and navigation should consume this registry instead of
-assembling admin paths directly.
+labels, icons, hierarchy, active matching, contextual availability, and contextual path
+construction/decoding. `createStudioScreenRoutePath` and `resolveStudioScreenId` encode and decode
+stable `ScreenSpec.id` values; the static `/ankh/screens` route is never treated as a detail route.
+Generated pages and navigation consume this registry instead of assembling admin paths directly.
+
+Screens administration at `/ankh/screens` consumes the package-neutral manifest screen/navigation
+model. It represents unrouted and multiply referenced screens honestly, shows navigator
+diagnostics, and sends create/delete, visibility, initial-route, sibling-order, and navigator-type
+actions through `StudioProvider`'s canonical draft/autosave path. Hidden routes remain routable;
+the overview never substitutes a second navigation model or a component-tree/Layers interface.
+
+Screen detail at `/ankh/screens/<screen-id>` is a manifest-derived, refresh-safe projection keyed
+only by `ScreenSpec.id`, independent of component selection. It shows canonical screen metadata and
+every resolved route reference, including pathname/pattern, navigator parent, sibling order,
+primary-navigation visibility, and initial-route state. Missing or deleted IDs render an explicit
+state. Studio offers an app-screen action only for one concrete, parameter-free route reference;
+unrouted, dynamic, and multiply referenced screens are reported honestly rather than choosing a
+route. The canonical Studio manifest invariant requires each screen registry key to equal its
+unique `ScreenSpec.id`; malformed mismatches or duplicate stable IDs are diagnosed and never used
+to choose an arbitrary detail screen. ADM 8 does not provide route-key or path renaming.
 
 The normal app bar exposes one Administration action while Studio is active. Inside `/ankh`, the
 admin shell provides a desktop sidebar and a compact drawer. `Back to app` returns to the latest
