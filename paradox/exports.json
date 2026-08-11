@@ -3807,7 +3807,7 @@
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
       "filePath": "src/moduleAdminContracts.ts",
-      "line": 10,
+      "line": 11,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3854,7 +3854,7 @@
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
       "filePath": "src/moduleAdminContracts.ts",
-      "line": 1,
+      "line": 2,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3872,17 +3872,17 @@
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
       "filePath": "src/moduleAdminContracts.ts",
-      "line": 3,
+      "line": 4,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
-    "relatedSymbols": ["StudioModuleAdminControl"],
+    "relatedSymbols": [],
     "signatures": [],
     "members": [
       {
         "name": "control",
         "kind": "property",
-        "type": "StudioModuleAdminControl",
+        "type": "string",
         "required": true,
         "description": null
       },
@@ -3937,7 +3937,7 @@
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
       "filePath": "src/moduleAdminContracts.ts",
-      "line": 34,
+      "line": 35,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3998,7 +3998,7 @@
     "modulePath": "src/moduleAdminContracts.ts",
     "sourceLocation": {
       "filePath": "src/moduleAdminContracts.ts",
-      "line": 17,
+      "line": 18,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

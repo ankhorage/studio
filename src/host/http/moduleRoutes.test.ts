@@ -1,12 +1,11 @@
 import { afterEach, describe, expect, test } from 'bun:test';
-import Fastify from 'fastify';
+import Fastify, { type FastifyInstance } from 'fastify';
 
 import type { StudioModuleState } from '../../moduleAdminContracts';
 import type { ModuleManager } from '../orchestrator/moduleManager';
-import type { ProjectManager } from '../orchestrator/projectManager';
-import { createStudioHostServer } from './server';
+import { registerProjectModuleRoutes } from './moduleRoutes';
 
-const servers: Awaited<ReturnType<typeof createStudioHostServer>>[] = [];
+const servers: FastifyInstance[] = [];
 
 afterEach(async () => {
   await Promise.all(servers.splice(0).map((server) => server.close()));
@@ -16,21 +15,34 @@ describe('canonical module HTTP adapter', () => {
   test('delegates project-scoped lifecycle and config operations to ModuleManager', async () => {
     const calls: unknown[][] = [];
     const moduleState = createModuleState();
-    const orchestrator = {
-      listModules: (...args: unknown[]) => {
-        calls.push(['listModules', ...args]);
+    const orchestrator: Pick<
+      ModuleManager,
+      | 'applyPendingOperations'
+      | 'getModuleState'
+      | 'installModule'
+      | 'listModules'
+      | 'uninstallModule'
+      | 'updateModuleConfig'
+    > = {
+      listModules: (projectId) => {
+        calls.push(['listModules', projectId]);
         return Promise.resolve([moduleState]);
       },
-      getModuleState: (...args: unknown[]) => {
-        calls.push(['getModuleState', ...args]);
+      getModuleState: (projectId, moduleId) => {
+        calls.push(['getModuleState', projectId, moduleId]);
         return Promise.resolve(moduleState);
       },
-      installModule: (...args: unknown[]) => {
-        calls.push(['installModule', ...args]);
-        return Promise.resolve({ success: true, module: moduleState, needsReload: false });
+      installModule: (projectId, moduleId, config) => {
+        calls.push(['installModule', projectId, moduleId, config]);
+        return Promise.resolve({
+          success: true,
+          installed: [moduleId],
+          module: moduleState,
+          needsReload: false,
+        });
       },
-      uninstallModule: (...args: unknown[]) => {
-        calls.push(['uninstallModule', ...args]);
+      uninstallModule: (projectId, moduleId) => {
+        calls.push(['uninstallModule', projectId, moduleId]);
         return Promise.resolve({
           success: true,
           module: moduleState,
@@ -38,21 +50,24 @@ describe('canonical module HTTP adapter', () => {
           pending: true,
         });
       },
-      updateModuleConfig: (...args: unknown[]) => {
-        calls.push(['updateModuleConfig', ...args]);
-        return Promise.resolve({ success: true, module: moduleState, needsReload: false });
+      updateModuleConfig: (projectId, moduleId, config) => {
+        calls.push(['updateModuleConfig', projectId, moduleId, config]);
+        return Promise.resolve({
+          success: true,
+          installed: [moduleId],
+          reconfigured: moduleId,
+          module: moduleState,
+          needsReload: false,
+        });
       },
-      applyPendingOperations: (...args: unknown[]) => {
-        calls.push(['applyPendingOperations', ...args]);
+      applyPendingOperations: (projectId) => {
+        calls.push(['applyPendingOperations', projectId]);
         return Promise.resolve({ success: true, applied: 1 });
       },
-    } as unknown as ModuleManager;
-    const server = await createStudioHostServer({
-      projectManager: {} as ProjectManager,
-      orchestrator,
-      projectRoot: import.meta.dir,
-      fastifyInstance: Fastify({ logger: false }),
-    });
+    };
+    const server = Fastify({ logger: false });
+    registerProjectModuleRoutes(server, orchestrator);
+    await server.ready();
     servers.push(server);
 
     expect((await server.inject('/api/projects/project-one/modules')).statusCode).toBe(200);

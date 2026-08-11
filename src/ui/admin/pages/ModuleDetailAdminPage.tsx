@@ -205,7 +205,7 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
               <Input
                 accessibilityLabel={field.label}
                 value={draft[field.key] ?? ''}
-                multiline={field.control === 'locale-string-map'}
+                multiline={field.control !== 'text' && field.control !== 'string-list'}
                 autoCapitalize="none"
                 onChangeText={(value) =>
                   setDraft((current) => ({ ...current, [field.key]: value }))
@@ -216,9 +216,9 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
                   Comma-separated values
                 </Text>
               ) : null}
-              {field.control === 'locale-string-map' ? (
+              {field.control !== 'text' && field.control !== 'string-list' ? (
                 <Text color="neutral" emphasis="muted" variant="caption">
-                  JSON object mapping locale IDs to string dictionaries
+                  JSON value
                 </Text>
               ) : null}
             </Field>

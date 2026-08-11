@@ -114,11 +114,15 @@ test('rejects malformed optional manifest domains', () => {
 });
 
 test('rejects legacy Ankhorage module keys only at the infra contract boundary', async () => {
-  const legacy = structuredClone(createManifest()) as AppManifest & {
-    infra: AppManifest['infra'] & { plugins?: string[]; pluginsConfig?: Record<string, unknown> };
+  const manifest = createManifest();
+  const legacy = {
+    ...manifest,
+    infra: {
+      ...manifest.infra,
+      plugins: [],
+      pluginsConfig: {},
+    },
   };
-  legacy.infra.plugins = [];
-  legacy.infra.pluginsConfig = {};
 
   expect(isAppManifest(legacy)).toBe(false);
 

@@ -19,6 +19,7 @@ import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
+import { registerProjectModuleRoutes } from './moduleRoutes';
 import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
@@ -465,19 +466,6 @@ export async function createStudioHostServer(args: {
     },
   );
 
-  fastify.post(
-    '/api/projects/:id/modules/finalize-pending',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id } = req.params as { id: string };
-      try {
-        return await orchestrator.applyPendingOperations(id);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
-
   // PUT (Save) Manifest
   fastify.put('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
@@ -499,76 +487,7 @@ export async function createStudioHostServer(args: {
 
   // --- MODULE ROUTES ---
 
-  fastify.get('/api/projects/:id/modules', async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as { id: string };
-    try {
-      return await orchestrator.listModules(id);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
-    }
-  });
-
-  fastify.get(
-    '/api/projects/:id/modules/:moduleId',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, moduleId } = req.params as { id: string; moduleId: string };
-      try {
-        const moduleState = await orchestrator.getModuleState(id, moduleId);
-        if (!moduleState) return reply.status(404).send({ error: 'Module not found' });
-        return moduleState;
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        return reply.status(500).send({ error: message });
-      }
-    },
-  );
-
-  fastify.post(
-    '/api/projects/:id/modules/:moduleId/install',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, moduleId } = req.params as { id: string; moduleId: string };
-      const body = (req.body as { config?: unknown } | undefined) ?? {};
-      try {
-        return await orchestrator.installModule(id, moduleId, body.config);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        return reply.status(400).send({ error: message });
-      }
-    },
-  );
-
-  fastify.post(
-    '/api/projects/:id/modules/:moduleId/uninstall',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, moduleId } = req.params as { id: string; moduleId: string };
-      try {
-        return await orchestrator.uninstallModule(id, moduleId);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        return reply.status(400).send({ error: message });
-      }
-    },
-  );
-
-  fastify.put(
-    '/api/projects/:id/modules/:moduleId/config',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, moduleId } = req.params as { id: string; moduleId: string };
-      const body = req.body as { config?: unknown };
-
-      if (body.config === undefined) {
-        return reply.status(400).send({ error: 'config body required' });
-      }
-
-      try {
-        return await orchestrator.updateModuleConfig(id, moduleId, body.config);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        return reply.status(400).send({ error: message });
-      }
-    },
-  );
+  registerProjectModuleRoutes(fastify, orchestrator);
 
   // Health check
   fastify.get('/health', () => ({ status: 'ok', workspace: projectRoot }));

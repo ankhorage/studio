@@ -3,12 +3,7 @@ import { expoLocalizationHostContribution } from '@ankhorage/orchestrator-module
 import { describe, expect, test } from 'bun:test';
 import path from 'path';
 
-import {
-  getHostModule,
-  type HostModuleContribution,
-  listHostModules,
-  resolveHostModuleAdminContribution,
-} from './catalog';
+import { getHostModule, listHostModules, resolveHostModuleAdminContribution } from './catalog';
 
 describe('generic host module registry', () => {
   test('registers unwrapped package-owned lifecycle, layout, and optional admin contributions', () => {
@@ -35,7 +30,7 @@ describe('generic host module registry', () => {
     const malformed = {
       ...expoGoogleFontsHostContribution,
       admin: { kind: 'broken' },
-    } as unknown as HostModuleContribution;
+    };
 
     expect(resolveHostModuleAdminContribution(malformed)).toEqual({
       admin: null,

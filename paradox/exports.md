@@ -1177,7 +1177,7 @@ Source: `src/index.ts:136:1`
 
 Kind: `type`
 Module: `src/moduleAdminContracts.ts`
-Source: `src/moduleAdminContracts.ts:10:1`
+Source: `src/moduleAdminContracts.ts:11:1`
 
 ### Members
 
@@ -1192,22 +1192,22 @@ Source: `src/moduleAdminContracts.ts:10:1`
 
 Kind: `unknown`
 Module: `src/moduleAdminContracts.ts`
-Source: `src/moduleAdminContracts.ts:1:1`
+Source: `src/moduleAdminContracts.ts:2:1`
 
 ## StudioModuleAdminField
 
 Kind: `type`
 Module: `src/moduleAdminContracts.ts`
-Source: `src/moduleAdminContracts.ts:3:1`
+Source: `src/moduleAdminContracts.ts:4:1`
 
 ### Members
 
-| Name     | Kind     | Type                       | Required | Description |
-| -------- | -------- | -------------------------- | -------- | ----------- |
-| control  | property | `StudioModuleAdminControl` | yes      |             |
-| key      | property | `string`                   | yes      |             |
-| label    | property | `string`                   | yes      |             |
-| required | property | `boolean`                  | yes      |             |
+| Name     | Kind     | Type      | Required | Description |
+| -------- | -------- | --------- | -------- | ----------- |
+| control  | property | `string`  | yes      |             |
+| key      | property | `string`  | yes      |             |
+| label    | property | `string`  | yes      |             |
+| required | property | `boolean` | yes      |             |
 
 ## StudioModuleId
 
@@ -1219,7 +1219,7 @@ Source: `src/index.ts:134:1`
 
 Kind: `type`
 Module: `src/moduleAdminContracts.ts`
-Source: `src/moduleAdminContracts.ts:34:1`
+Source: `src/moduleAdminContracts.ts:35:1`
 
 ### Members
 
@@ -1236,7 +1236,7 @@ Source: `src/moduleAdminContracts.ts:34:1`
 
 Kind: `type`
 Module: `src/moduleAdminContracts.ts`
-Source: `src/moduleAdminContracts.ts:17:1`
+Source: `src/moduleAdminContracts.ts:18:1`
 
 ### Members
 

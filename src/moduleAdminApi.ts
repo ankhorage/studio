@@ -175,7 +175,7 @@ function parseOperationResult(value: unknown): StudioModuleOperationResult {
     module: record.module === null ? null : parseStudioModuleState(record.module),
     needsReload: record.needsReload,
     ...(typeof record.pending === 'boolean' ? { pending: record.pending } : {}),
-    ...(Array.isArray(record.installed) ? { installed: [...record.installed] as string[] } : {}),
+    ...(isStringArray(record.installed) ? { installed: [...record.installed] } : {}),
     ...(typeof record.reconfigured === 'string' ? { reconfigured: record.reconfigured } : {}),
   };
 }
@@ -207,9 +207,11 @@ export function createProjectModuleApiPath(input: {
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : null;
+  return isRecord(value) ? value : null;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function isStringArray(value: unknown): value is string[] {
@@ -217,7 +219,7 @@ function isStringArray(value: unknown): value is string[] {
 }
 
 function isAdminControl(value: unknown): value is StudioModuleAdminControl {
-  return value === 'locale-string-map' || value === 'string-list' || value === 'text';
+  return typeof value === 'string' && value.length > 0;
 }
 
 function invalidResponse(message: string): StudioModuleApiError {

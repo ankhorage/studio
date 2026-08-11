@@ -732,7 +732,8 @@
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/semverRange.ts",
-        "src/host/templateRegistry/index.ts"
+        "src/host/templateRegistry/index.ts",
+        "src/moduleAdminContracts.ts"
       ],
       "exports": []
     },
@@ -826,12 +827,17 @@
       "path": "src/host/http/moduleRoutes.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/http/server.ts",
+        "src/host/http/moduleRoutes.ts",
         "src/host/orchestrator/moduleManager.ts",
-        "src/host/orchestrator/projectManager.ts",
         "src/moduleAdminContracts.ts"
       ],
       "exports": []
+    },
+    {
+      "path": "src/host/http/moduleRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/moduleManager.ts"],
+      "exports": ["registerProjectModuleRoutes"]
     },
     {
       "path": "src/host/http/secretRoutes.ts",
@@ -853,6 +859,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/contractGuards.ts",
+        "src/host/http/moduleRoutes.ts",
         "src/host/http/security.ts",
         "src/host/orchestrator/infraRuntime.ts",
         "src/host/orchestrator/moduleManager.ts",
@@ -7155,7 +7162,7 @@
       "modulePath": "src/moduleAdminContracts.ts",
       "sourceLocation": {
         "filePath": "src/moduleAdminContracts.ts",
-        "line": 10,
+        "line": 11,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7202,7 +7209,7 @@
       "modulePath": "src/moduleAdminContracts.ts",
       "sourceLocation": {
         "filePath": "src/moduleAdminContracts.ts",
-        "line": 1,
+        "line": 2,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7220,17 +7227,17 @@
       "modulePath": "src/moduleAdminContracts.ts",
       "sourceLocation": {
         "filePath": "src/moduleAdminContracts.ts",
-        "line": 3,
+        "line": 4,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["StudioModuleAdminControl"],
+      "relatedSymbols": [],
       "signatures": [],
       "members": [
         {
           "name": "control",
           "kind": "property",
-          "type": "StudioModuleAdminControl",
+          "type": "string",
           "required": true,
           "description": null
         },
@@ -7285,7 +7292,7 @@
       "modulePath": "src/moduleAdminContracts.ts",
       "sourceLocation": {
         "filePath": "src/moduleAdminContracts.ts",
-        "line": 34,
+        "line": 35,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7346,7 +7353,7 @@
       "modulePath": "src/moduleAdminContracts.ts",
       "sourceLocation": {
         "filePath": "src/moduleAdminContracts.ts",
-        "line": 17,
+        "line": 18,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9382,7 +9389,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.test.ts",
-        "line": 178,
+        "line": 182,
         "column": 1
       }
     },
@@ -9391,7 +9398,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.test.ts",
-        "line": 217,
+        "line": 221,
         "column": 1
       }
     },
@@ -10966,7 +10973,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 104,
+        "line": 105,
         "column": 1
       }
     },
@@ -10975,7 +10982,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 183,
+        "line": 184,
         "column": 1
       }
     },
@@ -10984,7 +10991,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 427,
+        "line": 428,
         "column": 9
       }
     },
@@ -10993,7 +11000,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 781,
+        "line": 782,
         "column": 1
       }
     },
@@ -11002,7 +11009,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1025,
+        "line": 1026,
         "column": 1
       }
     },
@@ -11011,7 +11018,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1253,
+        "line": 1254,
         "column": 1
       }
     },
@@ -11020,7 +11027,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1280,
+        "line": 1281,
         "column": 1
       }
     },
@@ -11029,7 +11036,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1299,
+        "line": 1300,
         "column": 1
       }
     },
@@ -11038,7 +11045,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1319,
+        "line": 1320,
         "column": 1
       }
     },
@@ -11047,7 +11054,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1338,
+        "line": 1339,
         "column": 1
       }
     },
@@ -11056,7 +11063,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1359,
+        "line": 1360,
         "column": 1
       }
     },
@@ -11065,7 +11072,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1363,
+        "line": 1364,
         "column": 1
       }
     },
@@ -11074,7 +11081,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1383,
+        "line": 1384,
         "column": 1
       }
     },
@@ -11083,7 +11090,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1404,
+        "line": 1405,
         "column": 1
       }
     },
@@ -11092,7 +11099,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1426,
+        "line": 1427,
         "column": 1
       }
     },
@@ -11101,7 +11108,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1465,
+        "line": 1466,
         "column": 1
       }
     },
@@ -11110,7 +11117,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1479,
+        "line": 1480,
         "column": 1
       }
     },
@@ -11119,7 +11126,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1508,
+        "line": 1509,
         "column": 1
       }
     },
@@ -11128,7 +11135,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1515,
+        "line": 1516,
         "column": 1
       }
     },
@@ -11137,7 +11144,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1522,
+        "line": 1523,
         "column": 1
       }
     },
@@ -11146,7 +11153,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1531,
+        "line": 1532,
         "column": 1
       }
     },
@@ -11155,7 +11162,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1556,
+        "line": 1557,
         "column": 1
       }
     },
@@ -11164,7 +11171,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1563,
+        "line": 1564,
         "column": 1
       }
     },
@@ -11173,7 +11180,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1602,
+        "line": 1603,
         "column": 1
       }
     },
@@ -11182,7 +11189,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1636,
+        "line": 1637,
         "column": 1
       }
     },
@@ -11191,7 +11198,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1665,
+        "line": 1666,
         "column": 1
       }
     },
@@ -11200,7 +11207,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1943,
+        "line": 1944,
         "column": 1
       }
     },
@@ -11209,7 +11216,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1966,
+        "line": 1967,
         "column": 1
       }
     },
@@ -11218,7 +11225,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1983,
+        "line": 1984,
         "column": 1
       }
     },
@@ -11227,7 +11234,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1999,
+        "line": 2000,
         "column": 1
       }
     },
@@ -11236,7 +11243,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2021,
+        "line": 2022,
         "column": 1
       }
     },
@@ -11245,7 +11252,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2048,
+        "line": 2049,
         "column": 1
       }
     },
@@ -11254,7 +11261,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2102,
+        "line": 2103,
         "column": 1
       }
     },
@@ -11263,7 +11270,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2135,
+        "line": 2136,
         "column": 1
       }
     },
@@ -11272,7 +11279,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2149,
+        "line": 2150,
         "column": 1
       }
     },
@@ -11281,7 +11288,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2158,
+        "line": 2159,
         "column": 1
       }
     },
@@ -11290,7 +11297,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2174,
+        "line": 2175,
         "column": 1
       }
     },
@@ -11299,7 +11306,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2181,
+        "line": 2182,
         "column": 1
       }
     },
@@ -11308,7 +11315,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2187,
+        "line": 2188,
         "column": 1
       }
     },
@@ -11317,7 +11324,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2200,
+        "line": 2201,
         "column": 1
       }
     },
@@ -11326,7 +11333,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2217,
+        "line": 2218,
         "column": 1
       }
     },
@@ -11335,7 +11342,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2234,
+        "line": 2235,
         "column": 1
       }
     },
@@ -11344,7 +11351,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2240,
+        "line": 2241,
         "column": 1
       }
     },
@@ -11353,7 +11360,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2246,
+        "line": 2247,
         "column": 1
       }
     },
@@ -11362,7 +11369,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2262,
+        "line": 2263,
         "column": 1
       }
     },
@@ -11371,7 +11378,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2812,
+        "line": 2813,
         "column": 1
       }
     },
@@ -11380,7 +11387,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2827,
+        "line": 2828,
         "column": 1
       }
     },
@@ -11389,7 +11396,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2831,
+        "line": 2832,
         "column": 1
       }
     },
@@ -11398,7 +11405,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2840,
+        "line": 2841,
         "column": 1
       }
     },
@@ -11407,7 +11414,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2851,
+        "line": 2852,
         "column": 1
       }
     },
@@ -11767,7 +11774,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.test.ts",
-        "line": 109,
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
+      "name": "registerProjectModuleRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/moduleRoutes.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/moduleRoutes.ts",
+        "line": 102,
+        "column": 1
+      }
+    },
+    {
+      "name": "toMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/moduleRoutes.ts",
+        "line": 106,
         "column": 1
       }
     },
@@ -11848,7 +11882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 26,
+        "line": 27,
         "column": 1
       }
     },
@@ -11857,7 +11891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       }
     },
@@ -11866,7 +11900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 57,
+        "line": 58,
         "column": 1
       }
     },
@@ -11875,7 +11909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 67,
+        "line": 68,
         "column": 1
       }
     },
@@ -11884,7 +11918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 85,
+        "line": 86,
         "column": 1
       }
     },
@@ -11893,7 +11927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 589,
+        "line": 508,
         "column": 1
       }
     },
@@ -11902,7 +11936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 603,
+        "line": 522,
         "column": 1
       }
     },
@@ -12883,7 +12917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 29,
+        "line": 35,
         "column": 1
       }
     },
@@ -12892,7 +12926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 33,
+        "line": 39,
         "column": 1
       }
     },
@@ -12901,12 +12935,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 37,
+        "line": 43,
         "column": 1
       }
     },
     {
-      "name": "isAdminField",
+      "name": "isAdminContribution",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
@@ -12915,11 +12949,20 @@
       }
     },
     {
+      "name": "isAdminField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/modules/catalog.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
       "name": "invalidAdmin",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 68,
+        "line": 78,
         "column": 1
       }
     },
@@ -12928,7 +12971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/modules/catalog.ts",
-        "line": 72,
+        "line": 85,
         "column": 1
       }
     },
@@ -15687,11 +15730,20 @@
       }
     },
     {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/moduleAdminApi.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
       "name": "isStringArray",
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 215,
+        "line": 217,
         "column": 1
       }
     },
@@ -15700,7 +15752,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 219,
+        "line": 221,
         "column": 1
       }
     },
@@ -15709,7 +15761,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 223,
+        "line": 225,
         "column": 1
       }
     },
@@ -15736,7 +15788,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminModel.ts",
-        "line": 73,
+        "line": 68,
         "column": 1
       }
     },
@@ -15745,7 +15797,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminModel.ts",
-        "line": 77,
+        "line": 72,
         "column": 1
       }
     },
@@ -15754,16 +15806,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminModel.ts",
-        "line": 81,
-        "column": 1
-      }
-    },
-    {
-      "name": "isLocaleStringMap",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/moduleAdminModel.ts",
-        "line": 85,
+        "line": 76,
         "column": 1
       }
     },
@@ -18814,7 +18857,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModulesAdminPage.tsx",
-        "line": 163,
+        "line": 164,
         "column": 1
       }
     },
@@ -18823,7 +18866,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModulesAdminPage.tsx",
-        "line": 170,
+        "line": 171,
         "column": 1
       }
     },
@@ -20691,6 +20734,11 @@
       },
       {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
+        "toPath": "src/moduleAdminContracts.ts",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/host/installedPackageProvenance.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
@@ -21361,13 +21409,13 @@
       },
       {
         "fromPath": "src/host/http/moduleRoutes.test.ts",
-        "toPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/http/moduleRoutes.ts",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
       },
       {
-        "fromPath": "src/host/http/moduleRoutes.test.ts",
-        "toPath": "src/host/http/server.ts",
-        "sourcePath": "src/host/http/moduleRoutes.test.ts"
+        "fromPath": "src/host/http/moduleRoutes.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
       },
       {
         "fromPath": "src/host/http/secretRoutes.ts",
@@ -21422,6 +21470,11 @@
       {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/utils/workspaceRoot.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/http/moduleRoutes.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -26877,6 +26930,12 @@
         "sourcePath": "src/moduleAdminApi.ts"
       },
       {
+        "fromSymbol": "asRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
         "fromSymbol": "src/moduleAdminModel.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -26919,12 +26978,6 @@
         "sourcePath": "src/moduleAdminModel.ts"
       },
       {
-        "fromSymbol": "src/moduleAdminModel.ts",
-        "toSymbol": "isLocaleStringMap",
-        "callExpression": "isLocaleStringMap",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
         "fromSymbol": "parseStudioModuleAdminDraft",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
@@ -26934,24 +26987,6 @@
         "fromSymbol": "parseStudioModuleAdminDraft",
         "toSymbol": "requiredField",
         "callExpression": "requiredField",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "parseStudioModuleAdminDraft",
-        "toSymbol": "isLocaleStringMap",
-        "callExpression": "isLocaleStringMap",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "isLocaleStringMap",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/moduleAdminModel.ts"
-      },
-      {
-        "fromSymbol": "src/moduleAdminModel.ts",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
         "sourcePath": "src/moduleAdminModel.ts"
       },
       {
@@ -35476,14 +35511,14 @@
       },
       {
         "fromSymbol": "src/host/http/moduleRoutes.test.ts",
-        "toSymbol": "createStudioHostServer",
-        "callExpression": "createStudioHostServer",
+        "toSymbol": "Fastify",
+        "callExpression": "Fastify",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
       },
       {
         "fromSymbol": "src/host/http/moduleRoutes.test.ts",
-        "toSymbol": "Fastify",
-        "callExpression": "Fastify",
+        "toSymbol": "registerProjectModuleRoutes",
+        "callExpression": "registerProjectModuleRoutes",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
       },
       {
@@ -35491,6 +35526,54 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "applyPendingOperations",
+        "callExpression": "orchestrator.applyPendingOperations",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "toMessage",
+        "callExpression": "toMessage",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "listModules",
+        "callExpression": "orchestrator.listModules",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "getModuleState",
+        "callExpression": "orchestrator.getModuleState",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "installModule",
+        "callExpression": "orchestrator.installModule",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "uninstallModule",
+        "callExpression": "orchestrator.uninstallModule",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/moduleRoutes.ts",
+        "toSymbol": "updateModuleConfig",
+        "callExpression": "orchestrator.updateModuleConfig",
+        "sourcePath": "src/host/http/moduleRoutes.ts"
       },
       {
         "fromSymbol": "src/host/http/secretRoutes.ts",
@@ -35757,33 +35840,9 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "listModules",
-        "callExpression": "orchestrator.listModules",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "getModuleState",
-        "callExpression": "orchestrator.getModuleState",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "installModule",
-        "callExpression": "orchestrator.installModule",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "uninstallModule",
-        "callExpression": "orchestrator.uninstallModule",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "updateModuleConfig",
-        "callExpression": "orchestrator.updateModuleConfig",
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "registerProjectModuleRoutes",
+        "callExpression": "registerProjectModuleRoutes",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -36484,14 +36543,20 @@
       },
       {
         "fromSymbol": "resolveHostModuleAdminContribution",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
+        "toSymbol": "isAdminContribution",
+        "callExpression": "isAdminContribution",
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
         "fromSymbol": "resolveHostModuleAdminContribution",
         "toSymbol": "invalidAdmin",
         "callExpression": "invalidAdmin",
+        "sourcePath": "src/host/modules/catalog.ts"
+      },
+      {
+        "fromSymbol": "isAdminContribution",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
@@ -42988,6 +43053,12 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ModulesAdminPage.tsx",
+        "toSymbol": "setFinalizing",
+        "callExpression": "setFinalizing",
+        "sourcePath": "src/ui/admin/pages/ModulesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ModulesAdminPage.tsx",
         "toSymbol": "finalizePendingProjectModules",
         "callExpression": "finalizePendingProjectModules",
         "sourcePath": "src/ui/admin/pages/ModulesAdminPage.tsx"
@@ -44382,11 +44453,6 @@
       {
         "fromSymbol": "StudioModuleAdminContribution",
         "toType": "StudioModuleAdminField",
-        "sourcePath": "src/moduleAdminContracts.ts"
-      },
-      {
-        "fromSymbol": "StudioModuleAdminField",
-        "toType": "StudioModuleAdminControl",
         "sourcePath": "src/moduleAdminContracts.ts"
       },
       {

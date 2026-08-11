@@ -8,12 +8,12 @@ const contribution: StudioModuleAdminContribution = {
   title: 'Example',
   description: 'Example schema',
   fields: [
-    { key: 'defaultLocale', label: 'Default locale', control: 'text', required: true },
-    { key: 'locales', label: 'Locales', control: 'string-list', required: true },
+    { key: 'name', label: 'Name', control: 'text', required: true },
+    { key: 'tags', label: 'Tags', control: 'string-list', required: true },
     {
-      key: 'translations',
-      label: 'Translations',
-      control: 'locale-string-map',
+      key: 'metadata',
+      label: 'Metadata',
+      control: 'structured-json',
       required: false,
     },
   ],
@@ -22,35 +22,46 @@ const contribution: StudioModuleAdminContribution = {
 describe('moduleAdminModel', () => {
   test('round-trips a package-owned serializable config schema', () => {
     const config = {
-      defaultLocale: 'en',
-      locales: ['en', 'de'],
-      translations: { en: { hello: 'Hello' } },
+      name: 'Example',
+      tags: ['mobile', 'public'],
+      metadata: { retries: 3, enabled: true },
       packageOwnedExtra: true,
     };
     const draft = createStudioModuleAdminDraft({ contribution, config });
     const result = parseStudioModuleAdminDraft({ contribution, currentConfig: config, draft });
 
-    expect(draft.locales).toBe('en, de');
+    expect(draft.tags).toBe('mobile, public');
     expect(result).toEqual({ ok: true, config });
+
+    expect(
+      parseStudioModuleAdminDraft({
+        contribution,
+        currentConfig: config,
+        draft: { ...draft, metadata: '["one", 2, true]' },
+      }),
+    ).toEqual({
+      ok: true,
+      config: { ...config, metadata: ['one', 2, true] },
+    });
   });
 
-  test('rejects invalid required and locale-map values locally', () => {
+  test('validates only generic required and JSON syntax constraints', () => {
     expect(
       parseStudioModuleAdminDraft({
         contribution,
         currentConfig: {},
-        draft: { defaultLocale: '', locales: 'en', translations: '{}' },
+        draft: { name: '', tags: 'mobile', metadata: '{}' },
       }),
-    ).toEqual({ ok: false, message: 'Default locale is required.' });
+    ).toEqual({ ok: false, message: 'Name is required.' });
     expect(
       parseStudioModuleAdminDraft({
         contribution,
         currentConfig: {},
-        draft: { defaultLocale: 'en', locales: 'en', translations: '[]' },
+        draft: { name: 'Example', tags: 'mobile', metadata: '{invalid' },
       }),
     ).toEqual({
       ok: false,
-      message: 'Translations must map locale IDs to string dictionaries.',
+      message: 'Metadata must be valid JSON.',
     });
   });
 });

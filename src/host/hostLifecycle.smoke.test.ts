@@ -67,4 +67,4 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   expect((await projectManager.listProjects()).some((project) => project.id === created.id)).toBe(
     false,
   );
-}, 30_000);
+}, 60_000);

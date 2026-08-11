@@ -270,6 +270,7 @@ graph TD
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_moduleAdminContracts_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts["src/host/generatedAuthAdapterRuntime.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedAuthAdapterRuntime_smoke_test_ts
   module_src_host_generatedAuthAdapterRuntime_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
@@ -313,10 +314,12 @@ graph TD
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
   package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_test_ts
-  module_src_host_http_moduleRoutes_test_ts --> module_src_host_http_server_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_http_moduleRoutes_ts
   module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_moduleManager_ts
-  module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_moduleRoutes_test_ts --> module_src_moduleAdminContracts_ts
+  module_src_host_http_moduleRoutes_ts["src/host/http/moduleRoutes.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_ts
+  module_src_host_http_moduleRoutes_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_secretRoutes_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
@@ -326,6 +329,7 @@ graph TD
   module_src_host_http_server_ts["src/host/http/server.ts"]
   package__ankhorage_studio -.-> module_src_host_http_server_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
+  module_src_host_http_server_ts --> module_src_host_http_moduleRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts

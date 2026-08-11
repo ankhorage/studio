@@ -1,4 +1,5 @@
-export type StudioModuleAdminControl = 'locale-string-map' | 'string-list' | 'text';
+/** Package-owned control identifier interpreted through Studio's generic scalar/list/JSON model. */
+export type StudioModuleAdminControl = string;
 
 export interface StudioModuleAdminField {
   readonly key: string;

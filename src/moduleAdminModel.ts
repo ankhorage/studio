@@ -17,8 +17,8 @@ export function createStudioModuleAdminDraft(args: {
       if (field.control === 'string-list') {
         return [field.key, isStringArray(value) ? value.join(', ') : ''];
       }
-      if (field.control === 'locale-string-map') {
-        return [field.key, isLocaleStringMap(value) ? JSON.stringify(value, null, 2) : '{}'];
+      if (field.control !== 'text') {
+        return [field.key, value === undefined ? '' : JSON.stringify(value, null, 2)];
       }
       return [field.key, typeof value === 'string' ? value : ''];
     }),
@@ -51,19 +51,14 @@ export function parseStudioModuleAdminDraft(args: {
       continue;
     }
 
+    if (field.required && !raw) return requiredField(field.label);
+
     let parsed: unknown;
     try {
-      parsed = raw ? JSON.parse(raw) : {};
+      parsed = raw ? JSON.parse(raw) : null;
     } catch {
       return { ok: false, message: `${field.label} must be valid JSON.` };
     }
-    if (!isLocaleStringMap(parsed)) {
-      return {
-        ok: false,
-        message: `${field.label} must map locale IDs to string dictionaries.`,
-      };
-    }
-    if (field.required && Object.keys(parsed).length === 0) return requiredField(field.label);
     config[field.key] = parsed;
   }
 
@@ -80,15 +75,4 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
-}
-
-function isLocaleStringMap(value: unknown): value is Record<string, Record<string, string>> {
-  return (
-    isRecord(value) &&
-    Object.values(value).every(
-      (dictionary) =>
-        isRecord(dictionary) &&
-        Object.values(dictionary).every((translation) => typeof translation === 'string'),
-    )
-  );
 }

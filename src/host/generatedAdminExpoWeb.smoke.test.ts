@@ -13,6 +13,7 @@ import path from 'node:path';
 import type { AppManifest, UiNode } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
+import type { StudioModuleState } from '../moduleAdminContracts';
 import {
   bunLockfileReferencesPackageVersion,
   isPathInsideResolved,
@@ -2099,14 +2100,14 @@ async function handleSmokeStudioApiRequest(args: {
   writeJsonResponse(args.response, 405, { error: 'Method not allowed' });
 }
 
-function createSmokeModuleStates() {
+function createSmokeModuleStates(): readonly StudioModuleState[] {
   const base = {
     available: true,
     installed: true,
     pendingRemoval: false,
     dependencies: [],
     dependents: [],
-  } as const;
+  };
   return [
     {
       ...base,
