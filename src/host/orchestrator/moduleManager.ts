@@ -2,7 +2,15 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { createOrchestrator, type ModuleState, type Orchestrator } from '@ankhorage/orchestrator';
 import path from 'path';
 
+import { findNodeInManifest, updateStudioManifestNode } from '../../manifestState';
 import type { StudioModuleState } from '../../moduleAdminContracts';
+import {
+  executeHostModuleAdminRuntime,
+  resolveHostModuleAdminRuntime,
+  type HostModuleAdminExecutionRequest,
+  type HostModuleAdminRuntimeContext,
+  type HostModuleManifestFieldMutation,
+} from '../modules/adminRuntime';
 import {
   getHostModule,
   type HostModuleContribution,
@@ -145,6 +153,35 @@ export class ModuleManager {
     };
   }
 
+  async executeModuleAdminOperation(
+    projectId: string,
+    moduleId: string,
+    request: HostModuleAdminExecutionRequest,
+  ) {
+    const appPath = this.getAppPath(projectId);
+    await this.ensureProjectExists(projectId);
+    const contribution = this.requireHostModule(moduleId);
+    const runtime = resolveHostModuleAdminRuntime(contribution.adminRuntime);
+    if (!runtime) {
+      throw new Error(`Module '${moduleId}' does not provide a valid admin runtime.`);
+    }
+
+    const state = await this.getModuleState(projectId, moduleId);
+    if (!state?.installed) throw new Error(`Module '${moduleId}' is not installed.`);
+    if (state.pendingRemoval) {
+      throw new Error(`Module '${moduleId}' is pending removal and cannot be administered.`);
+    }
+
+    const context = this.createModuleAdminRuntimeContext(
+      projectId,
+      moduleId,
+      appPath,
+      request.componentMeta,
+    );
+    const result = await executeHostModuleAdminRuntime({ runtime, context, request });
+    return { success: true, result };
+  }
+
   async applyPendingOperations(projectId: string) {
     const appPath = this.getAppPath(projectId);
     await this.ensureProjectExists(projectId);
@@ -217,6 +254,64 @@ export class ModuleManager {
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
     });
+  }
+
+  private createModuleAdminRuntimeContext(
+    projectId: string,
+    moduleId: string,
+    appPath: string,
+    componentMeta: unknown,
+  ): HostModuleAdminRuntimeContext {
+    return {
+      projectRoot: appPath,
+      readConfig: async () => {
+        const state = await this.getModuleOrchestrator(appPath).getModule(moduleId);
+        if (!state?.installed) throw new Error(`Module '${moduleId}' is not installed.`);
+        return state.installation.config;
+      },
+      reconfigureConfig: async (config) => {
+        await this.updateModuleConfig(projectId, moduleId, config);
+      },
+      readAuthoringContext: async () => {
+        const manifest = await this.projectManager.getStudioManifest(projectId);
+        return {
+          screens: Object.values(manifest.screens).map((screen) => ({
+            id: screen.id,
+            root: screen.root,
+          })),
+          componentMeta: componentMeta ?? {},
+        };
+      },
+      mutateManifestField: async (mutation) => {
+        await this.mutateModuleAdminManifestField(projectId, mutation);
+      },
+    };
+  }
+
+  private async mutateModuleAdminManifestField(
+    projectId: string,
+    mutation: HostModuleManifestFieldMutation,
+  ): Promise<void> {
+    const screenId = mutation.screenId.trim();
+    const nodeId = mutation.nodeId.trim();
+    const prop = mutation.prop.trim();
+    if (!screenId || !nodeId || !prop) {
+      throw new Error('Module admin manifest mutation requires screenId, nodeId, and prop.');
+    }
+
+    const manifest = await this.projectManager.getStudioManifest(projectId);
+    const screen = manifest.screens[screenId];
+    if (!screen || screen.id !== screenId) {
+      throw new Error(`Screen '${screenId}' is not available for module administration.`);
+    }
+    if (!findNodeInManifest(screen.root, nodeId)) {
+      throw new Error(`Node '${nodeId}' is not available on screen '${screenId}'.`);
+    }
+
+    const nextManifest = updateStudioManifestNode(manifest, screenId, nodeId, {
+      [prop]: mutation.value,
+    });
+    await this.saveStudioManifest({ projectId, manifest: nextManifest });
   }
 
   private async prepareProjectForLifecycle(projectId: string) {
