@@ -158,7 +158,7 @@ describe('canonical module HTTP adapter', () => {
     const response = await server.inject({
       method: 'POST',
       url: '/api/projects/project-one/modules/vendor%2Fmodule/admin/domain.operation',
-      payload: 'invalid',
+      payload: ['invalid'],
       headers: { 'content-type': 'application/json' },
     });
 
