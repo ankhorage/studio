@@ -12,12 +12,13 @@ afterEach(async () => {
 });
 
 describe('canonical module HTTP adapter', () => {
-  test('delegates project-scoped lifecycle and config operations to ModuleManager', async () => {
+  test('delegates lifecycle, config, and opaque admin operations to ModuleManager', async () => {
     const calls: unknown[][] = [];
     const moduleState = createModuleState();
     const orchestrator: Pick<
       ModuleManager,
       | 'applyPendingOperations'
+      | 'executeModuleAdminOperation'
       | 'getModuleState'
       | 'installModule'
       | 'listModules'
@@ -60,6 +61,10 @@ describe('canonical module HTTP adapter', () => {
           needsReload: false,
         });
       },
+      executeModuleAdminOperation: (projectId, moduleId, request) => {
+        calls.push(['executeModuleAdminOperation', projectId, moduleId, request]);
+        return Promise.resolve({ success: true, result: { handled: true } });
+      },
       applyPendingOperations: (projectId) => {
         calls.push(['applyPendingOperations', projectId]);
         return Promise.resolve({ success: true, applied: 1 });
@@ -96,6 +101,18 @@ describe('canonical module HTTP adapter', () => {
       (
         await server.inject({
           method: 'POST',
+          url: '/api/projects/project-one/modules/vendor%2Fmodule/admin/domain.operation',
+          payload: {
+            input: { value: 3 },
+            componentMeta: { Text: { authoring: { fields: [] } } },
+          },
+        })
+      ).statusCode,
+    ).toBe(200);
+    expect(
+      (
+        await server.inject({
+          method: 'POST',
           url: '/api/projects/project-one/modules/vendor%2Fmodule/uninstall',
         })
       ).statusCode,
@@ -115,11 +132,64 @@ describe('canonical module HTTP adapter', () => {
       ['getModuleState', 'project-one', 'vendor/module'],
       ['installModule', 'project-one', 'vendor/module', { value: 'one' }],
       ['updateModuleConfig', 'project-one', 'vendor/module', { value: 'two' }],
+      [
+        'executeModuleAdminOperation',
+        'project-one',
+        'vendor/module',
+        {
+          operation: 'domain.operation',
+          input: { value: 3 },
+          componentMeta: { Text: { authoring: { fields: [] } } },
+        },
+      ],
       ['uninstallModule', 'project-one', 'vendor/module'],
       ['applyPendingOperations', 'project-one'],
     ]);
   });
+
+  test('rejects a non-object admin operation body before delegation', async () => {
+    const calls: unknown[][] = [];
+    const orchestrator = createAdminOnlyManager(calls);
+    const server = Fastify({ logger: false });
+    registerProjectModuleRoutes(server, orchestrator);
+    await server.ready();
+    servers.push(server);
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/api/projects/project-one/modules/vendor%2Fmodule/admin/domain.operation',
+      payload: 'invalid',
+      headers: { 'content-type': 'application/json' },
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(calls).toEqual([]);
+  });
 });
+
+function createAdminOnlyManager(calls: unknown[][]): Pick<
+  ModuleManager,
+  | 'applyPendingOperations'
+  | 'executeModuleAdminOperation'
+  | 'getModuleState'
+  | 'installModule'
+  | 'listModules'
+  | 'uninstallModule'
+  | 'updateModuleConfig'
+> {
+  return {
+    listModules: () => Promise.resolve([]),
+    getModuleState: () => Promise.resolve(null),
+    installModule: () => Promise.reject(new Error('unexpected install')),
+    uninstallModule: () => Promise.reject(new Error('unexpected uninstall')),
+    updateModuleConfig: () => Promise.reject(new Error('unexpected config update')),
+    executeModuleAdminOperation: (projectId, moduleId, request) => {
+      calls.push([projectId, moduleId, request]);
+      return Promise.resolve({ success: true, result: null });
+    },
+    applyPendingOperations: () => Promise.resolve({ success: true, applied: 0 }),
+  };
+}
 
 function createModuleState(): StudioModuleState {
   return {
