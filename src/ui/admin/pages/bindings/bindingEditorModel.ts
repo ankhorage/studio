@@ -35,7 +35,7 @@ export function createStudioPropBindingForSource(
   if (kind === 'state' || kind === 'context') return { source: { kind, path: '' } };
   if (kind === 'event') return { source: { kind, path: '' } };
 
-  const operation = operations[0];
+  const [operation] = operations;
   return operation
     ? { source: { kind, operation: operation.operation, path: operation.responsePaths[0]?.path } }
     : { source: { kind: 'context', path: '' } };
