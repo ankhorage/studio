@@ -301,7 +301,7 @@ export class ModuleManager {
 
     const manifest = await this.projectManager.getStudioManifest(projectId);
     const screen = manifest.screens[screenId];
-    if (!screen || screen.id !== screenId) {
+    if (screen?.id !== screenId) {
       throw new Error(`Screen '${screenId}' is not available for module administration.`);
     }
     if (!findNodeInManifest(screen.root, nodeId)) {
