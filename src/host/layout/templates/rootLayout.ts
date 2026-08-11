@@ -38,6 +38,7 @@ export function getRootLayoutImportRequirements(
     {
       source: 'react',
       namedImports: [
+        { imported: 'Children' },
         { imported: 'ReactNode', typeOnly: true },
         ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
@@ -632,12 +633,10 @@ function GeneratedAppHeader({
   return (
     <AppBar
       title={appHeaderTitle}
-      actions={
-        <>
-          <ThemeModeToggle />
-          {actions}
-        </>
-      }
+      actions={[
+        <ThemeModeToggle key="theme-mode" />,
+        ...Children.toArray(actions),
+      ]}
     />
   );
 }

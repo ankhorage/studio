@@ -103,6 +103,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain('function StudioAugmentedAppHeader');
   expect(generated).toContain('<ThemeModeToggle />');
   expect(generated).toContain('actions={studioAppBar.actions}');
+  expect(generated).toContain('...Children.toArray(actions)');
   expect(generated).not.toContain('function StudioAppHeader');
 });
 
