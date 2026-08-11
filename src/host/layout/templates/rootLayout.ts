@@ -450,6 +450,7 @@ const shouldMountAppHeader =
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
         activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
+        componentMeta={ZORA_COMPONENT_META}
       >
         <StudioShell
           output={output}
@@ -579,11 +580,16 @@ function StudioShell({
   shouldMountAppHeader: boolean;
 }) {
   const {
+    activeCanvasDragNodeId,
     activeScreenId,
+    componentMeta,
     manifest: studioManifest,
+    moveNodeToPlacement,
     previewMode,
+    rootNode,
     selectedNodeId,
     selectNode,
+    setActiveCanvasDragNodeId,
     setLastNonAdminLocation,
   } = useStudio();
   useEffect(() => {
@@ -639,6 +645,13 @@ function StudioShell({
    );
   const studioOutput = (
     <StationaryTapSelector
+      canvasInteraction={{
+        activeDragNodeId: activeCanvasDragNodeId,
+        componentMeta,
+        moveNodeToPlacement,
+        rootNode,
+        setActiveDragNodeId: setActiveCanvasDragNodeId,
+      }}
       isEditMode={!previewMode}
       selectedNodeId={selectedNodeId}
       selectNode={selectNode}
@@ -672,6 +685,7 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
         actions={studioAppBar.actions}
         overflow={studioAppBar.overflow}
       />
+      {studioAppBar.overlays}
     </>
   );
 }`

@@ -3,7 +3,7 @@
 
 # @ankhorage/studio
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v0.13.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v0.14.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Standalone Studio authoring package for Ankhorage apps.
 
@@ -29,7 +29,6 @@ Manage Studio development and projects through the Ankh CLI.
 - [Architecture overview](././paradox/diagrams/architecture-overview.mmd)
 - [Module relationships](././paradox/diagrams/module-relationships.mmd)
 - [Export graph](././paradox/diagrams/export-graph.mmd)
-- [addNodeToTree sequence](././paradox/diagrams/sequences/add-node-to-tree.mmd)
 - [appendStudioEventBinding sequence](././paradox/diagrams/sequences/append-studio-event-binding.mmd)
 - [assessStudioBindingCompatibility sequence](././paradox/diagrams/sequences/assess-studio-binding-compatibility.mmd)
 - [buildInsertCatalogEntries sequence](././paradox/diagrams/sequences/build-insert-catalog-entries.mmd)
@@ -40,6 +39,7 @@ Manage Studio development and projects through the Ankh CLI.
 - [findNodeById sequence](././paradox/diagrams/sequences/find-node-by-id.mmd)
 - [removeStudioEventBinding sequence](././paradox/diagrams/sequences/remove-studio-event-binding.mmd)
 - [removeStudioPropBinding sequence](././paradox/diagrams/sequences/remove-studio-prop-binding.mmd)
+- [resolveInsertPlacement sequence](././paradox/diagrams/sequences/resolve-insert-placement.mmd)
 - [resolveStudioInstancePropertyGroups sequence](././paradox/diagrams/sequences/resolve-studio-instance-property-groups.mmd)
 - [resolveStudioSchemaValueMeta sequence](././paradox/diagrams/sequences/resolve-studio-schema-value-meta.mmd)
 - [updateNodeInTree sequence](././paradox/diagrams/sequences/update-node-in-tree.mmd)

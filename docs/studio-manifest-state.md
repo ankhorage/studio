@@ -28,6 +28,15 @@ Host packages still own lifecycle and concrete integration inputs:
 
 Where a mutation needs component placement rules, callers pass `StudioComponentMetaRegistry` instead of this package importing Zora.
 
+Insert and move wrappers delegate to the same canonical tree placement functions exported from the
+root authoring model. `resolveMoveNodePlacement` validates the requested parent, reference, index,
+component compatibility, root/self/descendant safety, and same-parent index adjustment before a
+move is applied. This keeps Insert UI and canvas DnD on one `NodePlacement` contract rather than
+directional or gesture-specific mutation APIs.
+
+Deleting a node removes the full subtree. Data and event bindings keyed by, or owned by, any node
+in that subtree are removed in the same immutable manifest mutation.
+
 ## Import path
 
 Use the manifest-state subpath when consuming these helpers:

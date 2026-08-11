@@ -18,10 +18,12 @@ import {
 } from '../authSettings';
 import { deleteStudioGeneratedApi, upsertStudioGeneratedApi } from '../generatedApiAuthoring';
 import {
+  createNodeFromCatalogEntry,
   findNodeById,
   type InsertCatalogEntry,
   type NodePlacement,
   type StudioAdminRouteId,
+  type StudioComponentMetaRegistry,
   type StudioContextValue,
   type StudioManifest,
   type StudioMode,
@@ -31,10 +33,19 @@ import {
   type StudioScreenId,
   type ThemeUpdates,
 } from '../index';
-import { resolveActiveRootNode, resolveInitialActiveScreenId } from '../manifestState';
+import {
+  deleteStudioManifestNode,
+  insertStudioManifestNodeAtPlacement,
+  moveStudioManifestNodeToPlacement,
+  resolveActiveRootNode,
+  resolveInitialActiveScreenId,
+} from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
 import { resolveScreenIdForPathname } from '../routeUtils';
-import { resolveStudioSelectedNodeId } from '../studioSelectionModel';
+import {
+  resolveStudioSelectedNodeId,
+  resolveStudioSelectionParentNodeId,
+} from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
 import { StudioContext } from './StudioContext';
@@ -54,6 +65,7 @@ export interface StudioProviderProps {
   projectId: string;
   initialManifest?: StudioManifest | null;
   activePathname?: string;
+  componentMeta: StudioComponentMetaRegistry;
 }
 
 const noop = () => undefined;
@@ -65,6 +77,7 @@ export const StudioProvider = ({
   projectId,
   initialManifest = null,
   activePathname,
+  componentMeta,
 }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
@@ -211,6 +224,62 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
+  const insertFromCatalogEntry = useCallback(
+    (entry: InsertCatalogEntry): boolean => {
+      if (entry.status !== 'enabled' || !entry.placement) return false;
+      const { placement } = entry;
+      const { current } = manifestRef;
+      if (!current) return false;
+      const insertion = insertStudioManifestNodeAtPlacement({
+        manifest: current,
+        activeScreenId,
+        placement,
+        newNode: createNodeFromCatalogEntry(entry, componentMeta),
+        componentMeta,
+      });
+      if (!insertion) return false;
+      updateManifest(() => insertion.manifest);
+      selectNode(insertion.insertedNodeId);
+      return true;
+    },
+    [activeScreenId, componentMeta, updateManifest],
+  );
+
+  const moveSelectedNodeToPlacement = useCallback(
+    (nodeId: StudioNodeId, placement: NodePlacement): boolean => {
+      const { current } = manifestRef;
+      if (!current) return false;
+      const movement = moveStudioManifestNodeToPlacement({
+        manifest: current,
+        activeScreenId,
+        nodeId,
+        placement,
+        componentMeta,
+      });
+      if (!movement) return false;
+      updateManifest(() => movement.manifest);
+      selectNode(movement.movedNodeId);
+      return true;
+    },
+    [activeScreenId, componentMeta, updateManifest],
+  );
+
+  const deleteNode = useCallback(
+    (nodeId: StudioNodeId) => {
+      const currentRoot = resolveActiveRootNode(manifestRef.current, activeScreenId);
+      if (!currentRoot || currentRoot.id === nodeId || !findNodeById(currentRoot, nodeId)) return;
+      const parentNodeId = resolveStudioSelectionParentNodeId(currentRoot, nodeId);
+      const { current } = manifestRef;
+      if (!current) return;
+      const next = deleteStudioManifestNode(current, activeScreenId, nodeId);
+      if (next === current) return;
+      updateManifest(() => next);
+      selectNode(parentNodeId);
+      setActiveCanvasDragNodeId((activeNodeId) => (activeNodeId === nodeId ? null : activeNodeId));
+    },
+    [activeScreenId, updateManifest],
+  );
+
   const value = useMemo<StudioContextValue>(
     () => ({
       projectId,
@@ -228,6 +297,7 @@ export const StudioProvider = ({
       error,
       manifest,
       rootNode,
+      componentMeta,
       selectNode,
       setActivePanelId,
       setActiveAdminRouteId,
@@ -240,9 +310,9 @@ export const StudioProvider = ({
         updateManifest((current) => updateStudioManifestDraftDataSources(current, dataSources)),
       upsertGeneratedApi,
       deleteGeneratedApi,
-      deleteNode: noop,
-      insertFromCatalogEntry: (_entry: InsertCatalogEntry) => false,
-      moveNodeToPlacement: (_nodeId: StudioNodeId, _placement: NodePlacement) => false,
+      deleteNode,
+      insertFromCatalogEntry,
+      moveNodeToPlacement: moveSelectedNodeToPlacement,
       addScreen: noop,
       deleteScreen: noop,
       setNavigatorType: (_type: NavigatorType) => undefined,
@@ -257,7 +327,6 @@ export const StudioProvider = ({
       updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
         undefined,
       updateOAuthProviders,
-      moveNode: noop,
       reorderScreens: (_newRoutes: RouteDefinition[]) => undefined,
       setActiveScreenId: setRequestedActiveScreenId,
       findNode: findNodeById,
@@ -282,6 +351,7 @@ export const StudioProvider = ({
       previewMode,
       projectId,
       rootNode,
+      componentMeta,
       saveStatus,
       selectedNodeId,
       studioMode,
@@ -292,6 +362,9 @@ export const StudioProvider = ({
       updateOAuthProviders,
       upsertGeneratedApi,
       deleteGeneratedApi,
+      deleteNode,
+      insertFromCatalogEntry,
+      moveSelectedNodeToPlacement,
       updateTheme,
       persistence.refetchManifest,
       persistence.flushManifest,

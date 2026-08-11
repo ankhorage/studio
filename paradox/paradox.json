@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.13.0",
+      "value": "v0.14.0",
       "color": "cb3837"
     },
     {
@@ -380,10 +380,15 @@
       "isEntrypoint": false,
       "dependencies": ["src/canvasDropZones.ts", "src/index.ts"],
       "exports": [
+        "CanvasDragSessionResolution",
         "CanvasDropZoneSlots",
+        "CanvasRect",
         "createStudioCanvasDragPayload",
         "isStudioCanvasDragPayload",
         "isValidCanvasDropZone",
+        "resolveCanvasDragPreviewText",
+        "resolveCanvasDragSession",
+        "resolveCanvasDropZoneRect",
         "resolveCanvasDropZoneSlots",
         "StudioCanvasDragPayload"
       ]
@@ -521,134 +526,6 @@
         "src/ui/admin/AuthAdminSession.tsx"
       ],
       "exports": ["StudioProvider", "StudioProviderProps"]
-    },
-    {
-      "path": "src/dnd/index.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "AnimationFunction",
-        "clamp",
-        "CollisionAlgorithm",
-        "createIdleStudioDragState",
-        "Draggable",
-        "DraggableContextValue",
-        "DraggableHandleProps",
-        "DraggableProps",
-        "DraggableState",
-        "DropAlignment",
-        "DropOffset",
-        "Droppable",
-        "DroppableProps",
-        "DroppedItemsMap",
-        "DropProvider",
-        "DropProviderProps",
-        "DropProviderRef",
-        "DropSlot",
-        "HorizontalScrollDirection",
-        "HorizontalSortableItemProps",
-        "HorizontalSortableProps",
-        "HorizontalSortableRenderItemProps",
-        "listToObject",
-        "objectMove",
-        "PositionUpdateListener",
-        "ScrollDirection",
-        "setAutoScroll",
-        "setPosition",
-        "SlotsContext",
-        "SlotsContextValue",
-        "Sortable",
-        "SortableContextValue",
-        "SortableDirection",
-        "SortableHandleProps",
-        "SortableItem",
-        "SortableItemProps",
-        "SortableProps",
-        "SortableRenderItemProps",
-        "StudioDragState",
-        "useDraggable",
-        "UseDraggableOptions",
-        "UseDraggableReturn",
-        "useDroppable",
-        "UseDroppableOptions",
-        "UseDroppableReturn",
-        "UseHorizontalSortableListOptions",
-        "UseHorizontalSortableListReturn",
-        "UseHorizontalSortableOptions",
-        "UseHorizontalSortableReturn",
-        "useSortable",
-        "useSortableList",
-        "UseSortableListOptions",
-        "UseSortableListReturn",
-        "UseSortableOptions",
-        "UseSortableReturn"
-      ]
-    },
-    {
-      "path": "src/dnd/primitives.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "AnimationFunction",
-        "clamp",
-        "CollisionAlgorithm",
-        "Draggable",
-        "DraggableContextValue",
-        "DraggableHandleProps",
-        "DraggableProps",
-        "DraggableState",
-        "DropAlignment",
-        "DropOffset",
-        "Droppable",
-        "DroppableProps",
-        "DroppedItemsMap",
-        "DropProvider",
-        "DropProviderProps",
-        "DropProviderRef",
-        "DropSlot",
-        "HorizontalScrollDirection",
-        "HorizontalSortableItemProps",
-        "HorizontalSortableProps",
-        "HorizontalSortableRenderItemProps",
-        "listToObject",
-        "objectMove",
-        "PositionUpdateListener",
-        "ScrollDirection",
-        "setAutoScroll",
-        "setPosition",
-        "SlotsContext",
-        "SlotsContextValue",
-        "Sortable",
-        "SortableContextValue",
-        "SortableDirection",
-        "SortableHandleProps",
-        "SortableItem",
-        "SortableItemProps",
-        "SortableProps",
-        "SortableRenderItemProps",
-        "useDraggable",
-        "UseDraggableOptions",
-        "UseDraggableReturn",
-        "useDroppable",
-        "UseDroppableOptions",
-        "UseDroppableReturn",
-        "UseHorizontalSortableListOptions",
-        "UseHorizontalSortableListReturn",
-        "UseHorizontalSortableOptions",
-        "UseHorizontalSortableReturn",
-        "useSortable",
-        "useSortableList",
-        "UseSortableListOptions",
-        "UseSortableListReturn",
-        "UseSortableOptions",
-        "UseSortableReturn"
-      ]
-    },
-    {
-      "path": "src/dnd/state.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": ["createIdleStudioDragState", "StudioDragState"]
     },
     {
       "path": "src/externalApiApi.ts",
@@ -1738,7 +1615,6 @@
       "exports": [
         "ACTION_REGISTRY",
         "ActionDefinition",
-        "addNodeToTree",
         "appendStudioEventBinding",
         "assessStudioBindingCompatibility",
         "buildInsertCatalogEntries",
@@ -1770,7 +1646,6 @@
         "InsertRecipeIssue",
         "InsertRecipeNode",
         "ModuleDefinition",
-        "moveNodeInTree",
         "moveNodeToPlacement",
         "MoveNodeToPlacementArgs",
         "MoveNodeToPlacementResult",
@@ -1800,6 +1675,7 @@
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
         "resolveInsertPlacement",
+        "resolveMoveNodePlacement",
         "resolveStudioBindableEvents",
         "resolveStudioBindableProps",
         "resolveStudioInstancePropertyFields",
@@ -2006,7 +1882,6 @@
         "listScreenIdsInRouteOrder",
         "makeUniqueRouteNameForParent",
         "makeUniqueSiblingRouteName",
-        "moveStudioManifestNode",
         "moveStudioManifestNodeToPlacement",
         "pathToKey",
         "removeScreenIdFromRoutes",
@@ -2216,7 +2091,6 @@
       "exports": [
         "ACTION_REGISTRY",
         "ActionDefinition",
-        "addNodeToTree",
         "analyzeProjectAuthHealth",
         "AnkhAdminPage",
         "AnkhAdminShell",
@@ -2258,7 +2132,6 @@
         "InsertRecipeIssue",
         "InsertRecipeNode",
         "ModuleDefinition",
-        "moveNodeInTree",
         "moveNodeToPlacement",
         "MoveNodeToPlacementArgs",
         "MoveNodeToPlacementResult",
@@ -2292,6 +2165,7 @@
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
         "resolveInsertPlacement",
+        "resolveMoveNodePlacement",
         "resolveStudioBindableEvents",
         "resolveStudioBindableProps",
         "resolveStudioInstancePropertyFields",
@@ -2441,6 +2315,7 @@
         "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY",
         "STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT",
         "STUDIO_PREVIEW_COMPONENT_REGISTRY",
+        "StudioCanvasInteractionAdapter",
         "StudioInteractionPolicyResolverArgs",
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput",
@@ -2614,17 +2489,21 @@
       "path": "src/runtime/stationarySelection.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/canvasDragModel.ts",
+        "src/index.ts",
         "src/runtime/indicatorRefreshCoordinator.ts",
         "src/runtime/indicatorSettleCoordinator.ts",
         "src/runtime/runtimeNodeMeasurement.ts",
         "src/runtime/stationarySelectionCoordinator.ts",
-        "src/runtime/stationarySelectionInputState.ts"
+        "src/runtime/stationarySelectionInputState.ts",
+        "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       ],
       "exports": [
         "CommitSelectionResult",
         "createStudioStationarySelectionWrapNode",
         "StationarySelectionCoordinator",
         "StationaryTapSelector",
+        "StudioCanvasInteractionAdapter",
         "TransactionState",
         "useStudioUnsupportedNodeMeasurement"
       ]
@@ -3301,6 +3180,45 @@
       "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
+      "path": "src/ui/canvas/canvasDndInteraction.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDropZones.ts", "src/ui/canvas/canvasDndInteraction.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/canvas/canvasDndInteraction.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/canvasDragModel.ts", "src/canvasDropZones.ts", "src/index.ts"],
+      "exports": [
+        "activateCanvasDrag",
+        "CanvasDragSessionCallbacks",
+        "commitCanvasDrop",
+        "completeCanvasDropAfterAdapter",
+        "createCanvasDraggableSessionKey",
+        "resetCanvasDragSession",
+        "sortCanvasDropTargetsBySpecificity"
+      ]
+    },
+    {
+      "path": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/canvasDragModel.ts",
+        "src/canvasDropZones.ts",
+        "src/index.ts",
+        "src/insertModalModel.ts",
+        "src/runtime/runtimeNodeMeasurement.ts",
+        "src/ui/canvas/canvasDndInteraction.ts"
+      ],
+      "exports": ["StudioCanvasDndOverlay", "StudioCanvasDndOverlayProps"]
+    },
+    {
       "path": "src/ui/studioAppBarModel.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -3309,6 +3227,18 @@
         "ResolveStudioAppBarContextActionsArgs",
         "StudioAppBarContextAction"
       ]
+    },
+    {
+      "path": "src/ui/StudioDeleteDialog.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["StudioDeleteDialog", "StudioDeleteDialogProps"]
+    },
+    {
+      "path": "src/ui/StudioInsertDialog.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/index.ts", "src/insertModalModel.ts"],
+      "exports": ["StudioInsertDialog", "StudioInsertDialogProps"]
     },
     {
       "path": "src/ui/useStudioAppBarAugmentation.test.ts",
@@ -3321,9 +3251,13 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/insertModalModel.ts",
         "src/studioAdminRouteModel.ts",
         "src/studioSelectionModel.ts",
-        "src/ui/studioAppBarModel.ts"
+        "src/ui/studioAppBarModel.ts",
+        "src/ui/StudioDeleteDialog.tsx",
+        "src/ui/StudioInsertDialog.tsx"
       ],
       "exports": ["StudioAppBarAugmentation", "useStudioAppBarAugmentation"]
     },
@@ -3337,14 +3271,7 @@
       "path": "src/utils/treeUtils.ts",
       "isEntrypoint": false,
       "dependencies": ["src/index.ts"],
-      "exports": [
-        "addNodeToTree",
-        "cloneWithNewIds",
-        "findNodeById",
-        "moveNodeInTree",
-        "removeNodeFromTree",
-        "updateNodeInTree"
-      ]
+      "exports": ["cloneWithNewIds", "findNodeById", "removeNodeFromTree", "updateNodeInTree"]
     },
     {
       "path": "src/workspacePlatform.test.ts",
@@ -3382,7 +3309,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 384,
+        "line": 385,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3400,7 +3327,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 290,
+        "line": 291,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3443,38 +3370,6 @@
           "description": null
         }
       ],
-      "structuredRows": []
-    },
-    {
-      "name": "addNodeToTree",
-      "description": null,
-      "isReadme": false,
-      "examples": [],
-      "kind": "value",
-      "modulePath": "src/index.ts",
-      "sourceLocation": {
-        "filePath": "src/index.ts",
-        "line": 606,
-        "column": 14
-      },
-      "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["StudioComponentMetaRegistry"],
-      "signatures": [
-        {
-          "label": "(args: { root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: \"append\" | \"prepend\"; }) => UiNode",
-          "parameters": [
-            {
-              "name": "args",
-              "type": "{ root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: \"append\" | \"prepend\"; }",
-              "required": true,
-              "description": null
-            }
-          ],
-          "returnType": "UiNode",
-          "returnDescription": null
-        }
-      ],
-      "members": [],
       "structuredRows": []
     },
     {
@@ -3574,7 +3469,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1318,
+        "line": 1327,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3606,7 +3501,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 765,
+        "line": 703,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3638,7 +3533,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 531,
+        "line": 532,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3746,7 +3641,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1237,
+        "line": 1246,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3930,7 +3825,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 548,
+        "line": 549,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4006,7 +3901,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 524,
+        "line": 525,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4038,7 +3933,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1163,
+        "line": 1172,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4070,7 +3965,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 268,
+        "line": 269,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4163,7 +4058,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 250,
+        "line": 251,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4203,7 +4098,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 227,
+        "line": 228,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4221,7 +4116,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 278,
+        "line": 279,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4239,7 +4134,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 256,
+        "line": 257,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4326,7 +4221,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 224,
+        "line": 225,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4344,7 +4239,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 225,
+        "line": 226,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4362,7 +4257,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 273,
+        "line": 274,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4456,7 +4351,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 995,
+        "line": 965,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4488,7 +4383,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 938,
+        "line": 908,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4535,7 +4430,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 945,
+        "line": 915,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4568,7 +4463,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 235,
+        "line": 236,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4622,7 +4517,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 243,
+        "line": 244,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4669,7 +4564,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 230,
+        "line": 231,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4702,7 +4597,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 298,
+        "line": 299,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4741,50 +4636,6 @@
       "structuredRows": []
     },
     {
-      "name": "moveNodeInTree",
-      "description": null,
-      "isReadme": false,
-      "examples": [],
-      "kind": "value",
-      "modulePath": "src/index.ts",
-      "sourceLocation": {
-        "filePath": "src/index.ts",
-        "line": 639,
-        "column": 14
-      },
-      "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [],
-      "signatures": [
-        {
-          "label": "(root: UiNode, nodeId: string, direction: \"up\" | \"down\") => UiNode",
-          "parameters": [
-            {
-              "name": "direction",
-              "type": "\"up\" | \"down\"",
-              "required": true,
-              "description": null
-            },
-            {
-              "name": "nodeId",
-              "type": "string",
-              "required": true,
-              "description": null
-            },
-            {
-              "name": "root",
-              "type": "UiNode",
-              "required": true,
-              "description": null
-            }
-          ],
-          "returnType": "UiNode",
-          "returnDescription": null
-        }
-      ],
-      "members": [],
-      "structuredRows": []
-    },
-    {
       "name": "moveNodeToPlacement",
       "description": null,
       "isReadme": false,
@@ -4793,7 +4644,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1063,
+        "line": 1101,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4825,7 +4676,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1022,
+        "line": 992,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4872,7 +4723,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1029,
+        "line": 999,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4970,7 +4821,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 205,
+        "line": 206,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5021,7 +4872,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 217,
+        "line": 218,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5039,7 +4890,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 210,
+        "line": 211,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5515,7 +5366,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 588,
+        "line": 589,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5647,7 +5498,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 893,
+        "line": 863,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5679,7 +5530,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1360,
+        "line": 1369,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5711,7 +5562,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 832,
+        "line": 802,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5727,6 +5578,38 @@
             {
               "name": "args",
               "type": "{ root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "PlacementResolutionResult",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "resolveMoveNodePlacement",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/index.ts",
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 1033,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["MoveNodeToPlacementArgs", "PlacementResolutionResult"],
+      "signatures": [
+        {
+          "label": "(args: MoveNodeToPlacementArgs) => PlacementResolutionResult",
+          "parameters": [
+            {
+              "name": "args",
+              "type": "MoveNodeToPlacementArgs",
               "required": true,
               "description": null
             }
@@ -5943,7 +5826,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1130,
+        "line": 1139,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6040,7 +5923,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 282,
+        "line": 283,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6080,7 +5963,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 280,
+        "line": 281,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6098,7 +5981,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 288,
+        "line": 289,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6568,7 +6451,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 323,
+        "line": 324,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6586,7 +6469,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 307,
+        "line": 308,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6619,7 +6502,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 312,
+        "line": 313,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6666,7 +6549,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 319,
+        "line": 320,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6684,7 +6567,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 339,
+        "line": 340,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6692,6 +6575,7 @@
         "InsertCatalogEntry",
         "NodePlacement",
         "StudioAdminRouteId",
+        "StudioComponentMetaRegistry",
         "StudioLocale",
         "StudioManifest",
         "StudioMode",
@@ -6750,6 +6634,13 @@
           "name": "addTheme",
           "kind": "property",
           "type": "() => void",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "componentMeta",
+          "kind": "property",
+          "type": "StudioComponentMetaRegistry",
           "required": true,
           "description": null
         },
@@ -6827,13 +6718,6 @@
           "name": "manifest",
           "kind": "property",
           "type": "StudioManifest | null",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "moveNode",
-          "kind": "property",
-          "type": "(id: StudioNodeId, direction: \"up\" | \"down\") => void",
           "required": true,
           "description": null
         },
@@ -7087,7 +6971,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 332,
+        "line": 333,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7105,7 +6989,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 321,
+        "line": 322,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7921,7 +7805,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 476,
+        "line": 477,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -7939,7 +7823,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 560,
+        "line": 561,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8033,7 +7917,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1180,
+        "line": 1189,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8071,7 +7955,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 777,
+        "line": 715,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9043,11 +8927,29 @@
       }
     },
     {
+      "name": "treeContainsNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDragSession",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
       "name": "createStudioCanvasDragPayload",
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 16,
+        "line": 60,
         "column": 1
       }
     },
@@ -9056,7 +8958,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 20,
+        "line": 64,
         "column": 1
       }
     },
@@ -9065,7 +8967,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 28,
+        "line": 72,
         "column": 1
       }
     },
@@ -9074,7 +8976,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 34,
+        "line": 78,
         "column": 1
       }
     },
@@ -9083,7 +8985,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDragModel.ts",
-        "line": 47,
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDropZoneRect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 98,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveCanvasDragPreviewText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canvasDragModel.ts",
+        "line": 132,
         "column": 1
       }
     },
@@ -9101,7 +9021,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDropZones.ts",
-        "line": 23,
+        "line": 28,
         "column": 1
       }
     },
@@ -9110,7 +9030,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/canvasDropZones.ts",
-        "line": 64,
+        "line": 86,
         "column": 1
       }
     },
@@ -9965,7 +9885,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 59,
+        "line": 71,
         "column": 7
       }
     },
@@ -9974,7 +9894,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 60,
+        "line": 72,
         "column": 7
       }
     },
@@ -9983,7 +9903,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 63,
+        "line": 75,
         "column": 14
       }
     },
@@ -9992,7 +9912,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 308,
+        "line": 381,
         "column": 1
       }
     },
@@ -10001,7 +9921,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 409,
+        "line": 482,
         "column": 1
       }
     },
@@ -10010,7 +9930,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 418,
+        "line": 491,
         "column": 1
       }
     },
@@ -10019,7 +9939,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 431,
+        "line": 504,
         "column": 1
       }
     },
@@ -10028,7 +9948,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 439,
+        "line": 512,
         "column": 1
       }
     },
@@ -10037,17 +9957,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 446,
+        "line": 519,
         "column": 1
-      }
-    },
-    {
-      "name": "createIdleStudioDragState",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/dnd/state.ts",
-        "line": 6,
-        "column": 14
       }
     },
     {
@@ -12260,7 +12171,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 458,
+        "line": 460,
         "column": 1
       }
     },
@@ -12269,7 +12180,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 472,
+        "line": 474,
         "column": 1
       }
     },
@@ -12278,7 +12189,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 479,
+        "line": 481,
         "column": 1
       }
     },
@@ -12287,7 +12198,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 502,
+        "line": 504,
         "column": 1
       }
     },
@@ -12296,7 +12207,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 516,
+        "line": 518,
         "column": 1
       }
     },
@@ -12305,7 +12216,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 520,
+        "line": 522,
         "column": 1
       }
     },
@@ -12314,7 +12225,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 564,
+        "line": 566,
         "column": 1
       }
     },
@@ -12323,7 +12234,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 572,
+        "line": 574,
         "column": 1
       }
     },
@@ -12332,7 +12243,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 577,
+        "line": 579,
         "column": 1
       }
     },
@@ -14456,7 +14367,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.test.ts",
-        "line": 51,
+        "line": 53,
         "column": 7
       }
     },
@@ -14465,7 +14376,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 524,
+        "line": 525,
         "column": 14
       }
     },
@@ -14474,7 +14385,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 531,
+        "line": 532,
         "column": 14
       }
     },
@@ -14483,7 +14394,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 548,
+        "line": 549,
         "column": 14
       }
     },
@@ -14492,7 +14403,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 560,
+        "line": 561,
         "column": 14
       }
     },
@@ -14501,25 +14412,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 588,
-        "column": 14
-      }
-    },
-    {
-      "name": "addNodeToTree",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/index.ts",
-        "line": 606,
-        "column": 14
-      }
-    },
-    {
-      "name": "moveNodeInTree",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/index.ts",
-        "line": 639,
+        "line": 589,
         "column": 14
       }
     },
@@ -14528,7 +14421,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 675,
+        "line": 613,
         "column": 1
       }
     },
@@ -14537,7 +14430,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 680,
+        "line": 618,
         "column": 9
       }
     },
@@ -14546,7 +14439,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 699,
+        "line": 637,
         "column": 1
       }
     },
@@ -14555,7 +14448,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 710,
+        "line": 648,
         "column": 1
       }
     },
@@ -14564,7 +14457,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 765,
+        "line": 703,
         "column": 1
       }
     },
@@ -14573,7 +14466,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 777,
+        "line": 715,
         "column": 1
       }
     },
@@ -14582,7 +14475,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 832,
+        "line": 802,
         "column": 1
       }
     },
@@ -14591,7 +14484,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 893,
+        "line": 863,
         "column": 1
       }
     },
@@ -14600,7 +14493,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 950,
+        "line": 920,
         "column": 1
       }
     },
@@ -14609,7 +14502,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 995,
+        "line": 965,
         "column": 1
       }
     },
@@ -14618,7 +14511,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1034,
+        "line": 1004,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveMoveNodePlacement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/index.ts",
+        "line": 1033,
         "column": 1
       }
     },
@@ -14627,7 +14529,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1063,
+        "line": 1101,
         "column": 1
       }
     },
@@ -14636,7 +14538,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1163,
+        "line": 1172,
         "column": 1
       }
     },
@@ -14645,7 +14547,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1167,
+        "line": 1176,
         "column": 1
       }
     },
@@ -14654,7 +14556,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1172,
+        "line": 1181,
         "column": 1
       }
     },
@@ -14663,7 +14565,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1180,
+        "line": 1189,
         "column": 1
       }
     },
@@ -14672,7 +14574,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1184,
+        "line": 1193,
         "column": 9
       }
     },
@@ -14681,7 +14583,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1217,
+        "line": 1226,
         "column": 1
       }
     },
@@ -14690,7 +14592,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1222,
+        "line": 1231,
         "column": 9
       }
     },
@@ -14699,7 +14601,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1237,
+        "line": 1246,
         "column": 1
       }
     },
@@ -14708,7 +14610,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1257,
+        "line": 1266,
         "column": 1
       }
     },
@@ -14717,7 +14619,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1280,
+        "line": 1289,
         "column": 1
       }
     },
@@ -14726,7 +14628,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1318,
+        "line": 1327,
         "column": 1
       }
     },
@@ -14735,7 +14637,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1344,
+        "line": 1353,
         "column": 1
       }
     },
@@ -14744,7 +14646,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1360,
+        "line": 1369,
         "column": 1
       }
     },
@@ -14753,7 +14655,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1409,
+        "line": 1418,
         "column": 1
       }
     },
@@ -15041,7 +14943,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 37,
+        "line": 36,
         "column": 1
       }
     },
@@ -15050,7 +14952,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 91,
+        "line": 90,
         "column": 1
       }
     },
@@ -15059,7 +14961,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.test.ts",
-        "line": 310,
+        "line": 313,
         "column": 11
       }
     },
@@ -15068,7 +14970,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 95,
+        "line": 96,
         "column": 14
       }
     },
@@ -15077,7 +14979,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 102,
+        "line": 103,
         "column": 1
       }
     },
@@ -15086,7 +14988,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 119,
+        "line": 120,
         "column": 1
       }
     },
@@ -15095,7 +14997,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 123,
+        "line": 124,
         "column": 1
       }
     },
@@ -15104,7 +15006,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 127,
+        "line": 128,
         "column": 1
       }
     },
@@ -15113,7 +15015,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 153,
+        "line": 154,
         "column": 1
       }
     },
@@ -15122,7 +15024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 172,
+        "line": 173,
         "column": 1
       }
     },
@@ -15131,7 +15033,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 181,
+        "line": 182,
         "column": 1
       }
     },
@@ -15140,7 +15042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 206,
+        "line": 207,
         "column": 1
       }
     },
@@ -15149,7 +15051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 214,
+        "line": 215,
         "column": 1
       }
     },
@@ -15158,7 +15060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 222,
+        "line": 223,
         "column": 1
       }
     },
@@ -15167,7 +15069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 233,
+        "line": 234,
         "column": 1
       }
     },
@@ -15176,7 +15078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 241,
+        "line": 242,
         "column": 1
       }
     },
@@ -15185,7 +15087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 251,
+        "line": 252,
         "column": 1
       }
     },
@@ -15194,16 +15096,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 276,
-        "column": 1
-      }
-    },
-    {
-      "name": "moveStudioManifestNode",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 305,
+        "line": 277,
         "column": 1
       }
     },
@@ -15212,7 +15105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 330,
+        "line": 314,
         "column": 1
       }
     },
@@ -15221,7 +15114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 367,
+        "line": 348,
         "column": 1
       }
     },
@@ -15230,7 +15123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 423,
+        "line": 383,
         "column": 1
       }
     },
@@ -15239,7 +15132,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 430,
+        "line": 390,
         "column": 1
       }
     },
@@ -15248,7 +15141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 437,
+        "line": 397,
         "column": 1
       }
     },
@@ -15257,7 +15150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 455,
+        "line": 415,
         "column": 1
       }
     },
@@ -15266,7 +15159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 462,
+        "line": 422,
         "column": 1
       }
     },
@@ -15275,7 +15168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 482,
+        "line": 442,
         "column": 1
       }
     },
@@ -15284,7 +15177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 497,
+        "line": 457,
         "column": 1
       }
     },
@@ -15293,7 +15186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 504,
+        "line": 464,
         "column": 1
       }
     },
@@ -15302,7 +15195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 511,
+        "line": 471,
         "column": 1
       }
     },
@@ -15311,7 +15204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 567,
+        "line": 527,
         "column": 1
       }
     },
@@ -15320,7 +15213,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 598,
+        "line": 558,
         "column": 1
       }
     },
@@ -15329,7 +15222,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 608,
+        "line": 568,
         "column": 1
       }
     },
@@ -15338,7 +15231,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 631,
+        "line": 591,
         "column": 1
       }
     },
@@ -15347,7 +15240,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 645,
+        "line": 605,
         "column": 1
       }
     },
@@ -15356,7 +15249,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 666,
+        "line": 626,
         "column": 1
       }
     },
@@ -15365,7 +15258,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 680,
+        "line": 640,
         "column": 1
       }
     },
@@ -15374,7 +15267,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 701,
+        "line": 661,
         "column": 1
       }
     },
@@ -15383,7 +15276,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 718,
+        "line": 678,
         "column": 1
       }
     },
@@ -15392,7 +15285,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 740,
+        "line": 700,
         "column": 1
       }
     },
@@ -15401,7 +15294,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 807,
+        "line": 767,
         "column": 1
       }
     },
@@ -15410,7 +15303,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 852,
+        "line": 812,
         "column": 1
       }
     },
@@ -15419,7 +15312,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 865,
+        "line": 825,
         "column": 1
       }
     },
@@ -15428,7 +15321,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 897,
+        "line": 857,
         "column": 1
       }
     },
@@ -15437,7 +15330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 910,
+        "line": 870,
         "column": 1
       }
     },
@@ -15446,7 +15339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 917,
+        "line": 877,
         "column": 1
       }
     },
@@ -15455,7 +15348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 938,
+        "line": 898,
         "column": 1
       }
     },
@@ -15464,7 +15357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 948,
+        "line": 908,
         "column": 1
       }
     },
@@ -15473,7 +15366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 962,
+        "line": 922,
         "column": 1
       }
     },
@@ -15482,25 +15375,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 987,
+        "line": 947,
         "column": 1
       }
     },
     {
-      "name": "moveNodeInManifestTree",
+      "name": "collectNodeIds",
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1003,
-        "column": 1
-      }
-    },
-    {
-      "name": "findNodeWithParent",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1036,
+        "line": 963,
         "column": 1
       }
     },
@@ -15509,53 +15393,8 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1039,
+        "line": 965,
         "column": 9
-      }
-    },
-    {
-      "name": "validateManifestNodePlacement",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1054,
-        "column": 1
-      }
-    },
-    {
-      "name": "insertChildAtIndex",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1074,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDescendantNode",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1105,
-        "column": 1
-      }
-    },
-    {
-      "name": "removeNodeForMove",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1113,
-        "column": 1
-      }
-    },
-    {
-      "name": "adjustMovePlacement",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestState.ts",
-        "line": 1155,
-        "column": 1
       }
     },
     {
@@ -15563,7 +15402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1170,
+        "line": 973,
         "column": 1
       }
     },
@@ -15572,7 +15411,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 1191,
+        "line": 994,
         "column": 1
       }
     },
@@ -16580,7 +16419,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 63,
+        "line": 65,
         "column": 1
       }
     },
@@ -16589,7 +16428,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 77,
+        "line": 79,
         "column": 1
       }
     },
@@ -16598,7 +16437,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 95,
+        "line": 97,
         "column": 1
       }
     },
@@ -16607,7 +16446,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 105,
+        "line": 107,
         "column": 1
       }
     },
@@ -16616,7 +16455,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 116,
+        "line": 118,
         "column": 1
       }
     },
@@ -16625,7 +16464,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 149,
+        "line": 151,
         "column": 1
       }
     },
@@ -16634,7 +16473,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 158,
+        "line": 160,
         "column": 1
       }
     },
@@ -16643,7 +16482,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 175,
+        "line": 179,
         "column": 1
       }
     },
@@ -16652,7 +16491,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 183,
+        "line": 191,
         "column": 1
       }
     },
@@ -16661,7 +16500,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 233,
+        "line": 266,
         "column": 1
       }
     },
@@ -16670,7 +16509,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/runtimeNodeMeasurement.ts",
-        "line": 276,
+        "line": 309,
         "column": 1
       }
     },
@@ -16679,7 +16518,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 85,
+        "line": 89,
         "column": 1
       }
     },
@@ -16688,7 +16527,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 95,
+        "line": 99,
         "column": 1
       }
     },
@@ -16697,7 +16536,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 99,
+        "line": 103,
         "column": 1
       }
     },
@@ -16706,7 +16545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 110,
+        "line": 114,
         "column": 1
       }
     },
@@ -16715,7 +16554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 119,
+        "line": 123,
         "column": 1
       }
     },
@@ -16724,7 +16563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 128,
+        "line": 132,
         "column": 1
       }
     },
@@ -16733,7 +16572,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 140,
+        "line": 144,
         "column": 1
       }
     },
@@ -16742,7 +16581,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 154,
+        "line": 158,
         "column": 1
       }
     },
@@ -16751,7 +16590,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 163,
+        "line": 167,
         "column": 1
       }
     },
@@ -16760,7 +16599,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 187,
+        "line": 191,
         "column": 1
       }
     },
@@ -16769,7 +16608,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 220,
+        "line": 224,
         "column": 1
       }
     },
@@ -16778,7 +16617,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 232,
+        "line": 236,
         "column": 3
       }
     },
@@ -16787,7 +16626,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 246,
+        "line": 250,
         "column": 3
       }
     },
@@ -16796,7 +16635,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 257,
+        "line": 261,
         "column": 3
       }
     },
@@ -16805,7 +16644,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 266,
+        "line": 270,
         "column": 3
       }
     },
@@ -16814,7 +16653,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 270,
+        "line": 274,
         "column": 3
       }
     },
@@ -16823,7 +16662,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 350,
+        "line": 363,
         "column": 1
       }
     },
@@ -16832,7 +16671,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 389,
+        "line": 410,
         "column": 1
       }
     },
@@ -16841,7 +16680,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 646,
+        "line": 704,
         "column": 11
       }
     },
@@ -16850,7 +16689,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/runtime/stationarySelection.ts",
-        "line": 647,
+        "line": 705,
         "column": 11
       }
     },
@@ -17471,7 +17310,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
-        "line": 74,
+        "line": 72,
         "column": 1
       }
     },
@@ -18308,7 +18147,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
-        "line": 89,
+        "line": 93,
         "column": 1
       }
     },
@@ -18317,7 +18156,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/bindings/EventBindingsCard.tsx",
-        "line": 100,
+        "line": 111,
         "column": 1
       }
     },
@@ -19006,11 +18845,146 @@
       }
     },
     {
+      "name": "moveNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "line": 43,
+        "column": 11
+      }
+    },
+    {
+      "name": "createCanvasDraggableSessionKey",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "sortCanvasDropTargetsBySpecificity",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "resetCanvasDragSession",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "commitCanvasDrop",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "completeCanvasDropAfterAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "activateCanvasDrag",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/canvasDndInteraction.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveDropZoneViews",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "CanvasDropZone",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
+      "name": "CanvasDragPreview",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioCanvasDndOverlay",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "resetDrag",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "line": 211,
+        "column": 9
+      }
+    },
+    {
       "name": "resolveStudioAppBarContextActions",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/studioAppBarModel.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioDeleteDialog",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioDeleteDialog.tsx",
         "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "StudioInsertDialog",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/StudioInsertDialog.tsx",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveContextActionIcon",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/useStudioAppBarAugmentation.ts",
+        "line": 32,
         "column": 1
       }
     },
@@ -19019,7 +18993,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 22,
+        "line": 41,
         "column": 1
       }
     },
@@ -19124,14 +19098,6 @@
     }
   ],
   "sequenceScenarios": [
-    {
-      "kind": "export",
-      "name": "addNodeToTree",
-      "sourcePath": "src/index.ts",
-      "symbolName": "addNodeToTree",
-      "description": null,
-      "isReadme": false
-    },
     {
       "kind": "export",
       "name": "appendStudioEventBinding",
@@ -19270,14 +19236,6 @@
     },
     {
       "kind": "export",
-      "name": "moveNodeInTree",
-      "sourcePath": "src/index.ts",
-      "symbolName": "moveNodeInTree",
-      "description": null,
-      "isReadme": false
-    },
-    {
-      "kind": "export",
       "name": "moveNodeToPlacement",
       "sourcePath": "src/index.ts",
       "symbolName": "moveNodeToPlacement",
@@ -19329,6 +19287,14 @@
       "name": "resolveInsertPlacement",
       "sourcePath": "src/index.ts",
       "symbolName": "resolveInsertPlacement",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "resolveMoveNodePlacement",
+      "sourcePath": "src/index.ts",
+      "symbolName": "resolveMoveNodePlacement",
       "description": null,
       "isReadme": false
     },
@@ -20241,16 +20207,6 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromPath": "src/dnd/index.ts",
-        "toPath": "src/dnd/primitives.ts",
-        "sourcePath": "src/dnd/index.ts"
-      },
-      {
-        "fromPath": "src/dnd/index.ts",
-        "toPath": "src/dnd/state.ts",
-        "sourcePath": "src/dnd/index.ts"
-      },
-      {
         "fromPath": "src/hooks/useProjects.ts",
         "toPath": "src/contractGuards.ts",
         "sourcePath": "src/hooks/useProjects.ts"
@@ -20657,6 +20613,21 @@
       },
       {
         "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
+        "toPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromPath": "src/runtime/stationarySelection.ts",
         "toPath": "src/runtime/indicatorRefreshCoordinator.ts",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
@@ -20701,6 +20672,16 @@
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
+        "fromPath": "src/ui/StudioInsertDialog.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromPath": "src/ui/StudioInsertDialog.tsx",
+        "toPath": "src/insertModalModel.ts",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
         "fromPath": "src/ui/useStudioAppBarAugmentation.test.ts",
         "toPath": "src/ui/studioAppBarModel.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
@@ -20708,6 +20689,16 @@
       {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/insertModalModel.ts",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -20723,6 +20714,16 @@
       {
         "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
         "toPath": "src/ui/studioAppBarModel.ts",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/ui/StudioDeleteDialog.tsx",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromPath": "src/ui/useStudioAppBarAugmentation.ts",
+        "toPath": "src/ui/StudioInsertDialog.tsx",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -21564,6 +21565,61 @@
         "fromPath": "src/ui/admin/AuthAdminSession.tsx",
         "toPath": "src/ui/admin/pages/adminAuthSessionModel.ts",
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromPath": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toPath": "src/ui/canvas/canvasDndInteraction.ts",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromPath": "src/ui/canvas/canvasDndInteraction.ts",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromPath": "src/ui/canvas/canvasDndInteraction.ts",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromPath": "src/ui/canvas/canvasDndInteraction.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/canvasDragModel.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/canvasDropZones.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/insertModalModel.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/runtime/runtimeNodeMeasurement.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromPath": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toPath": "src/ui/canvas/canvasDndInteraction.ts",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
       },
       {
         "fromPath": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
@@ -23269,6 +23325,12 @@
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
+        "sourcePath": "src/canvasDragModel.public.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.public.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/canvasDragModel.public.test.ts"
@@ -23322,6 +23384,36 @@
         "sourcePath": "src/canvasDragModel.test.ts"
       },
       {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "resolveCanvasDropZoneRect",
+        "callExpression": "resolveCanvasDropZoneRect",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "resolveCanvasDragPreviewText",
+        "callExpression": "resolveCanvasDragPreviewText",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.test.ts",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
+        "sourcePath": "src/canvasDragModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDragModel.ts",
+        "toSymbol": "treeContainsNode",
+        "callExpression": "treeContainsNode",
+        "sourcePath": "src/canvasDragModel.ts"
+      },
+      {
+        "fromSymbol": "resolveCanvasDragSession",
+        "toSymbol": "treeContainsNode",
+        "callExpression": "treeContainsNode",
+        "sourcePath": "src/canvasDragModel.ts"
+      },
+      {
         "fromSymbol": "resolveCanvasDropZoneSlots",
         "toSymbol": "findDropZoneByKind",
         "callExpression": "findDropZoneByKind",
@@ -23367,6 +23459,12 @@
         "fromSymbol": "src/canvasDropZones.ts",
         "toSymbol": "resolveInsertPlacement",
         "callExpression": "resolveInsertPlacement",
+        "sourcePath": "src/canvasDropZones.ts"
+      },
+      {
+        "fromSymbol": "src/canvasDropZones.ts",
+        "toSymbol": "resolveMoveNodePlacement",
+        "callExpression": "resolveMoveNodePlacement",
         "sourcePath": "src/canvasDropZones.ts"
       },
       {
@@ -24721,6 +24819,18 @@
       },
       {
         "fromSymbol": "src/index.test.ts",
+        "toSymbol": "validateNodePlacement",
+        "callExpression": "validateNodePlacement",
+        "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromSymbol": "src/index.test.ts",
+        "toSymbol": "resolveMoveNodePlacement",
+        "callExpression": "resolveMoveNodePlacement",
+        "sourcePath": "src/index.test.ts"
+      },
+      {
+        "fromSymbol": "src/index.test.ts",
         "toSymbol": "updateNodeInTree",
         "callExpression": "updateNodeInTree",
         "sourcePath": "src/index.test.ts"
@@ -24765,24 +24875,6 @@
         "fromSymbol": "src/index.ts",
         "toSymbol": "removeNodeFromTree",
         "callExpression": "removeNodeFromTree",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "addNodeToTree",
-        "toSymbol": "canAcceptChild",
-        "callExpression": "canAcceptChild",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "src/index.ts",
-        "toSymbol": "addNodeToTree",
-        "callExpression": "addNodeToTree",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "src/index.ts",
-        "toSymbol": "moveNodeInTree",
-        "callExpression": "moveNodeInTree",
         "sourcePath": "src/index.ts"
       },
       {
@@ -24864,33 +24956,45 @@
         "sourcePath": "src/index.ts"
       },
       {
-        "fromSymbol": "moveNodeToPlacement",
+        "fromSymbol": "resolveMoveNodePlacement",
         "toSymbol": "findNodeWithParent",
         "callExpression": "findNodeWithParent",
         "sourcePath": "src/index.ts"
       },
       {
-        "fromSymbol": "moveNodeToPlacement",
+        "fromSymbol": "resolveMoveNodePlacement",
         "toSymbol": "isDescendantNode",
         "callExpression": "isDescendantNode",
         "sourcePath": "src/index.ts"
       },
       {
-        "fromSymbol": "moveNodeToPlacement",
+        "fromSymbol": "resolveMoveNodePlacement",
         "toSymbol": "getAdjustedMovePlacement",
         "callExpression": "getAdjustedMovePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "resolveMoveNodePlacement",
+        "toSymbol": "removeNodeForMove",
+        "callExpression": "removeNodeForMove",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "resolveMoveNodePlacement",
+        "toSymbol": "validateNodePlacement",
+        "callExpression": "validateNodePlacement",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "moveNodeToPlacement",
+        "toSymbol": "resolveMoveNodePlacement",
+        "callExpression": "resolveMoveNodePlacement",
         "sourcePath": "src/index.ts"
       },
       {
         "fromSymbol": "moveNodeToPlacement",
         "toSymbol": "removeNodeForMove",
         "callExpression": "removeNodeForMove",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "moveNodeToPlacement",
-        "toSymbol": "validateNodePlacement",
-        "callExpression": "validateNodePlacement",
         "sourcePath": "src/index.ts"
       },
       {
@@ -25693,12 +25797,6 @@
       },
       {
         "fromSymbol": "src/manifestState.test.ts",
-        "toSymbol": "moveStudioManifestNode",
-        "callExpression": "moveStudioManifestNode",
-        "sourcePath": "src/manifestState.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.test.ts",
         "toSymbol": "deleteStudioManifestNode",
         "callExpression": "deleteStudioManifestNode",
         "sourcePath": "src/manifestState.test.ts"
@@ -25807,62 +25905,32 @@
       },
       {
         "fromSymbol": "deleteStudioManifestNode",
+        "toSymbol": "findNodeInManifest",
+        "callExpression": "findNodeInManifest",
+        "sourcePath": "src/manifestState.ts"
+      },
+      {
+        "fromSymbol": "deleteStudioManifestNode",
         "toSymbol": "removeNodeFromManifestTree",
         "callExpression": "removeNodeFromManifestTree",
         "sourcePath": "src/manifestState.ts"
       },
       {
-        "fromSymbol": "moveStudioManifestNode",
-        "toSymbol": "moveNodeInManifestTree",
-        "callExpression": "moveNodeInManifestTree",
+        "fromSymbol": "deleteStudioManifestNode",
+        "toSymbol": "collectNodeIds",
+        "callExpression": "collectNodeIds",
         "sourcePath": "src/manifestState.ts"
       },
       {
         "fromSymbol": "insertStudioManifestNodeAtPlacement",
-        "toSymbol": "validateManifestNodePlacement",
-        "callExpression": "validateManifestNodePlacement",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "insertStudioManifestNodeAtPlacement",
-        "toSymbol": "insertChildAtIndex",
-        "callExpression": "insertChildAtIndex",
+        "toSymbol": "insertNodeAtPlacement",
+        "callExpression": "insertNodeAtPlacement",
         "sourcePath": "src/manifestState.ts"
       },
       {
         "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "findNodeWithParent",
-        "callExpression": "findNodeWithParent",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "isDescendantNode",
-        "callExpression": "isDescendantNode",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "adjustMovePlacement",
-        "callExpression": "adjustMovePlacement",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "removeNodeForMove",
-        "callExpression": "removeNodeForMove",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "validateManifestNodePlacement",
-        "callExpression": "validateManifestNodePlacement",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "moveStudioManifestNodeToPlacement",
-        "toSymbol": "insertChildAtIndex",
-        "callExpression": "insertChildAtIndex",
+        "toSymbol": "moveNodeToPlacement",
+        "callExpression": "moveNodeToPlacement",
         "sourcePath": "src/manifestState.ts"
       },
       {
@@ -26088,45 +26156,15 @@
         "sourcePath": "src/manifestState.ts"
       },
       {
-        "fromSymbol": "src/manifestState.ts",
-        "toSymbol": "moveNodeInManifestTree",
-        "callExpression": "moveNodeInManifestTree",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
         "fromSymbol": "visit",
         "toSymbol": "visit",
         "callExpression": "visit",
         "sourcePath": "src/manifestState.ts"
       },
       {
-        "fromSymbol": "findNodeWithParent",
+        "fromSymbol": "collectNodeIds",
         "toSymbol": "visit",
         "callExpression": "visit",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "validateManifestNodePlacement",
-        "toSymbol": "findNodeInManifest",
-        "callExpression": "findNodeInManifest",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "src/manifestState.ts",
-        "toSymbol": "insertChildAtIndex",
-        "callExpression": "insertChildAtIndex",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "isDescendantNode",
-        "toSymbol": "isDescendantNode",
-        "callExpression": "isDescendantNode",
-        "sourcePath": "src/manifestState.ts"
-      },
-      {
-        "fromSymbol": "removeNodeForMove",
-        "toSymbol": "removeNodeForMove",
-        "callExpression": "removeNodeForMove",
         "sourcePath": "src/manifestState.ts"
       },
       {
@@ -29031,6 +29069,48 @@
         "fromSymbol": "src/core/StudioProvider.ts",
         "toSymbol": "deleteStudioGeneratedApi",
         "callExpression": "deleteStudioGeneratedApi",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "insertStudioManifestNodeAtPlacement",
+        "callExpression": "insertStudioManifestNodeAtPlacement",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "createNodeFromCatalogEntry",
+        "callExpression": "createNodeFromCatalogEntry",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "moveStudioManifestNodeToPlacement",
+        "callExpression": "moveStudioManifestNodeToPlacement",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "findNodeById",
+        "callExpression": "findNodeById",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "resolveStudioSelectionParentNodeId",
+        "callExpression": "resolveStudioSelectionParentNodeId",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "deleteStudioManifestNode",
+        "callExpression": "deleteStudioManifestNode",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "setActiveCanvasDragNodeId",
+        "callExpression": "setActiveCanvasDragNodeId",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -33024,6 +33104,12 @@
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
+        "fromSymbol": "measure",
+        "toSymbol": "measureNativeRuntimeNodeView",
+        "callExpression": "measureNativeRuntimeNodeView",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
         "fromSymbol": "registerView",
         "toSymbol": "registerRuntimeNode",
         "callExpression": "ctx.registerRuntimeNode",
@@ -33063,6 +33149,12 @@
         "fromSymbol": "StationaryTapSelector",
         "toSymbol": "shouldRenderSelectedNodeChrome",
         "callExpression": "shouldRenderSelectedNodeChrome",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "StationaryTapSelector",
+        "toSymbol": "resolveCanvasDragSession",
+        "callExpression": "resolveCanvasDragSession",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -33183,6 +33275,12 @@
         "fromSymbol": "src/runtime/stationarySelection.ts",
         "toSymbol": "areIndicatorRectsEqual",
         "callExpression": "areIndicatorRectsEqual",
+        "sourcePath": "src/runtime/stationarySelection.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/stationarySelection.ts",
+        "toSymbol": "setActiveDragNodeId",
+        "callExpression": "props.canvasInteraction?.setActiveDragNodeId",
         "sourcePath": "src/runtime/stationarySelection.ts"
       },
       {
@@ -33486,6 +33584,42 @@
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
+        "fromSymbol": "src/ui/StudioInsertDialog.tsx",
+        "toSymbol": "setQuery",
+        "callExpression": "setQuery",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromSymbol": "StudioInsertDialog",
+        "toSymbol": "groupInsertEntries",
+        "callExpression": "groupInsertEntries",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromSymbol": "StudioInsertDialog",
+        "toSymbol": "filterInsertCatalogEntries",
+        "callExpression": "filterInsertCatalogEntries",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioInsertDialog.tsx",
+        "toSymbol": "getPlacementHint",
+        "callExpression": "getPlacementHint",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromSymbol": "findNode",
+        "toSymbol": "findNode",
+        "callExpression": "props.findNode",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/StudioInsertDialog.tsx",
+        "toSymbol": "onInsert",
+        "callExpression": "props.onInsert",
+        "sourcePath": "src/ui/StudioInsertDialog.tsx"
+      },
+      {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -33588,15 +33722,99 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "buildInsertCatalogEntries",
+        "callExpression": "buildInsertCatalogEntries",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "resolveInsertCatalogEntries",
+        "callExpression": "resolveInsertCatalogEntries",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "findNodeById",
+        "callExpression": "findNodeById",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
         "fromSymbol": "useStudioAppBarAugmentation",
         "toSymbol": "resolveStudioAppBarContextActions",
         "callExpression": "resolveStudioAppBarContextActions",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setInsertVisible",
+        "callExpression": "setInsertVisible",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setDeleteCandidateId",
+        "callExpression": "setDeleteCandidateId",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "deleteNode",
+        "callExpression": "studio.deleteNode",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
         "fromSymbol": "useStudioAppBarAugmentation",
         "toSymbol": "isStudioAdminPath",
         "callExpression": "isStudioAdminPath",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "resolveContextActionIcon",
+        "callExpression": "resolveContextActionIcon",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "getActionHandler",
+        "callExpression": "getActionHandler",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "findNode",
+        "toSymbol": "findNode",
+        "callExpression": "studio.findNode",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "onDismiss",
+        "toSymbol": "setInsertVisible",
+        "callExpression": "setInsertVisible",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "onInsert",
+        "toSymbol": "insertFromCatalogEntry",
+        "callExpression": "studio.insertFromCatalogEntry",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "onInsert",
+        "toSymbol": "setInsertVisible",
+        "callExpression": "setInsertVisible",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "onCancel",
+        "toSymbol": "setDeleteCandidateId",
+        "callExpression": "setDeleteCandidateId",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -39090,6 +39308,258 @@
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
       },
       {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "commitCanvasDrop",
+        "callExpression": "commitCanvasDrop",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "activateCanvasDrag",
+        "callExpression": "activateCanvasDrag",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "resetCanvasDragSession",
+        "callExpression": "resetCanvasDragSession",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "createCanvasDraggableSessionKey",
+        "callExpression": "createCanvasDraggableSessionKey",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "completeCanvasDropAfterAdapter",
+        "callExpression": "completeCanvasDropAfterAdapter",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
+        "toSymbol": "sortCanvasDropTargetsBySpecificity",
+        "callExpression": "sortCanvasDropTargetsBySpecificity",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
+      },
+      {
+        "fromSymbol": "resetCanvasDragSession",
+        "toSymbol": "setActiveDropZoneId",
+        "callExpression": "callbacks.setActiveDropZoneId",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "resetCanvasDragSession",
+        "toSymbol": "setActiveDragNodeId",
+        "callExpression": "callbacks.setActiveDragNodeId",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "resetCanvasDragSession",
+        "toSymbol": "restartDraggable",
+        "callExpression": "callbacks.restartDraggable",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "commitCanvasDrop",
+        "toSymbol": "isStudioCanvasDragPayload",
+        "callExpression": "isStudioCanvasDragPayload",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "commitCanvasDrop",
+        "toSymbol": "moveNodeToPlacement",
+        "callExpression": "moveNodeToPlacement",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.ts",
+        "toSymbol": "commitCanvasDrop",
+        "callExpression": "commitCanvasDrop",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/canvasDndInteraction.ts",
+        "toSymbol": "resetDrag",
+        "callExpression": "resetDrag",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "activateCanvasDrag",
+        "toSymbol": "setActiveDragNodeId",
+        "callExpression": "callbacks.setActiveDragNodeId",
+        "sourcePath": "src/ui/canvas/canvasDndInteraction.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "findNodeById",
+        "callExpression": "findNodeById",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "resolveCanvasDropZones",
+        "callExpression": "resolveCanvasDropZones",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "resolveCanvasDropZoneRect",
+        "callExpression": "resolveCanvasDropZoneRect",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "resolveDropZoneViews",
+        "toSymbol": "sortCanvasDropTargetsBySpecificity",
+        "callExpression": "sortCanvasDropTargetsBySpecificity",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "CanvasDropZone",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "setActiveDropZoneId",
+        "callExpression": "props.setActiveDropZoneId",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "completeCanvasDropAfterAdapter",
+        "callExpression": "completeCanvasDropAfterAdapter",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "CanvasDropZone",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "CanvasDragPreview",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "CanvasDragPreview",
+        "toSymbol": "resolveCanvasDragPreviewText",
+        "callExpression": "resolveCanvasDragPreviewText",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "findNodeById",
+        "callExpression": "findNodeById",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "setActiveDropZoneId",
+        "callExpression": "setActiveDropZoneId",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "createStudioCanvasDragPayload",
+        "callExpression": "createStudioCanvasDragPayload",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "resolveNodeLabel",
+        "callExpression": "resolveNodeLabel",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "resolveDropZoneViews",
+        "callExpression": "resolveDropZoneViews",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "resetDrag",
+        "toSymbol": "resetCanvasDragSession",
+        "callExpression": "resetCanvasDragSession",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "restartDraggable",
+        "toSymbol": "setDragSessionRevision",
+        "callExpression": "setDragSessionRevision",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "StudioCanvasDndOverlay",
+        "toSymbol": "createCanvasDraggableSessionKey",
+        "callExpression": "createCanvasDraggableSessionKey",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "activateCanvasDrag",
+        "callExpression": "activateCanvasDrag",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/canvas/StudioCanvasDndOverlay.tsx",
+        "toSymbol": "resetDrag",
+        "callExpression": "resetDrag",
+        "sourcePath": "src/ui/canvas/StudioCanvasDndOverlay.tsx"
+      },
+      {
         "fromSymbol": "src/host/layout/auth/resolveAuthLayoutPlan.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -42516,6 +42986,16 @@
         "sourcePath": "src/index.ts"
       },
       {
+        "fromSymbol": "resolveMoveNodePlacement",
+        "toType": "MoveNodeToPlacementArgs",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "resolveMoveNodePlacement",
+        "toType": "PlacementResolutionResult",
+        "sourcePath": "src/index.ts"
+      },
+      {
         "fromSymbol": "moveNodeToPlacement",
         "toType": "MoveNodeToPlacementArgs",
         "sourcePath": "src/index.ts"
@@ -42837,6 +43317,11 @@
       },
       {
         "fromSymbol": "StudioContextValue",
+        "toType": "StudioComponentMetaRegistry",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
         "toType": "StudioLocale",
         "sourcePath": "src/index.ts"
       },
@@ -42907,21 +43392,6 @@
       },
       {
         "fromSymbol": "removeNodeFromTree",
-        "toType": "UiNode",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "addNodeToTree",
-        "toType": "StudioComponentMetaRegistry",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "addNodeToTree",
-        "toType": "UiNode",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "moveNodeInTree",
         "toType": "UiNode",
         "sourcePath": "src/index.ts"
       },

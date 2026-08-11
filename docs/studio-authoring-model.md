@@ -10,7 +10,7 @@ This package now owns the package-neutral Studio authoring/model helpers used by
 - component metadata contract shape used by authoring helpers
 - empty screen starter template
 - Studio ID generation helper
-- UI tree helpers for cloning, finding, updating, removing, adding, and moving nodes
+- UI tree helpers for cloning, finding, updating, removing, inserting, and placement-backed moving
 - node placement validation/resolution
 - insert catalog entry construction and placement resolution
 - catalog entry node creation
@@ -19,7 +19,13 @@ This package now owns the package-neutral Studio authoring/model helpers used by
 
 The package intentionally does not import Zora or any concrete component registry. Host packages pass component metadata through `StudioComponentMetaRegistry` when resolving placement, building insert catalog entries, or creating nodes.
 
-This keeps `@ankhorage/studio` as the authoring-model owner while letting `ankhorage4` and future hosts decide which component registry powers the Studio catalog.
+This keeps `@ankhorage/studio` as the authoring-model owner while letting the first-party Studio app
+and generated app hosts inject the same component registry that powers their Runtime rendering.
+
+Placement mutation is intentionally singular. `insertNodeAtPlacement`,
+`resolveMoveNodePlacement`, and `moveNodeToPlacement` are the canonical tree APIs. The older
+directional `addNodeToTree`, `moveNodeInTree`, and `moveStudioManifestNode` APIs are removed, as are
+the `@ankhorage/studio/dnd*` wrapper subpaths.
 
 ## Deliberately not moved here
 
@@ -32,10 +38,14 @@ This slice still does not move product shell or platform code. In particular, th
 - panels
 - React Native components
 - Expo Router code
-- DnD provider/runtime implementation
+- package-neutral DnD provider/runtime implementation
 - Supabase/storage implementation
 - generated-app runtime composition code
 - template catalog ownership
+
+The local generated Studio runtime may compose the shared cross-platform DnD adapter directly for
+its app-facing canvas UI. That integration does not change ownership of the package-neutral tree
+and placement model.
 
 ## Dependency rule
 

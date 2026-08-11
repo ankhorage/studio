@@ -201,7 +201,7 @@ describe('GeneratedAppFileGenerator', () => {
     const screen = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
 
     expect(rootLayout).toContain(
-      "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, useZoraTheme, AppBar } from '@ankhorage/zora';",
+      "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, ZORA_COMPONENT_META, useZoraTheme, AppBar } from '@ankhorage/zora';",
     );
     expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');

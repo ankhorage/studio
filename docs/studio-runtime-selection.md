@@ -5,6 +5,20 @@ Generated apps compose Studio selection through the normal Runtime renderer conf
 selection. Edit mode supplies `interactionPolicy="passive"` only to components that explicitly
 support the canonical policy; Preview restores `enabled`.
 
+The same root selection surface owns canvas drag composition in Edit mode. A selected non-root node
+gets one 48-point `Draggable.Handle`; the selected component itself remains on the stationary tap
+path. The handle and every drop target use `@ankhorage/react-native-reanimated-dnd-web` directly,
+so native and web share the adapter contract without `@ankhorage/studio/dnd*` wrapper APIs. Preview
+mounts no drag overlay and clears an active drag if mode changes.
+
+Starting a drag activates public geometry measurement for every rendered Runtime node. Web uses
+DOM descendant bounds and native uses `measureInWindow`; the root surface contributes its own
+bounds when native root instrumentation is intentionally absent. Before, inside, and after zones
+are resolved through caller-injected component metadata and the canonical `NodePlacement` rules.
+Invalid zones remain visible with their structured reason. A measured-bounds ghost includes the
+component label and the first useful authored text property. Cancellation and commit both release
+drag geometry, hover state, and the ghost.
+
 Stationary native Runtime selection remains supported and was validated on Android: stationary
 Edit taps select the deepest intended node once, movement and scrolling cancel unintended
 selection, passive interaction preserves nested scrolling and authored state, and Preview restores
@@ -41,7 +55,8 @@ refresh it without a layout-changing wrapper or private React Native/Fabric APIs
 On web, Runtime-node registration stores a lazy `getResizeTargets()` callback. Descendants are not
 traversed and are not observed merely because a node rendered. Inactive registration changes also
 avoid a complete scan of the Runtime-node registry. Only the selected node and visible unsupported
-nodes activate resize targets. Selection or Edit/Preview changes compute the complete desired
+nodes activate resize targets while idle; an active canvas drag temporarily activates every
+rendered Runtime node. Selection, drag, or Edit/Preview changes compute the complete desired
 target set, observe newly required elements, and unobserve elements no longer required. Because the
 set is deduplicated before diffing, a shared descendant is observed once and remains observed while
 any active measurement still requires it.
@@ -51,7 +66,8 @@ selection surface. Web selected chrome and unsupported overlays both use `pointe
 never intercept authored input. Scroll, viewport resize, responsive layout, and authored-root
 `onLayout` refresh applicable geometry. Changing or clearing selection immediately removes the
 previous web outline. Preview releases authoring ResizeObserver targets and renders neither
-selected nor unsupported chrome. Unmount disconnects the observer and clears desired-target
+selected chrome, unsupported chrome, nor canvas drag affordances. Unmount disconnects the observer
+and clears desired-target
 ownership; navigation and active measurement removal cancel pending work once no indicator remains.
 
 The generated Studio shell synchronizes the current app pathname into `StudioProvider`. Studio

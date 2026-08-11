@@ -10,7 +10,7 @@ export interface RuntimeNodeIndicatorRect extends MeasuredRect {
   readonly showUnsupportedIndicator: boolean;
 }
 
-type RuntimeNodeMeasurementSource = 'authored-root' | 'web-recorder';
+type RuntimeNodeMeasurementSource = 'authored-root' | 'runtime-recorder';
 
 export interface RuntimeNodeMeasurement<TResizeTarget = Element> {
   readonly getResizeTargets?: () => readonly TResizeTarget[];
@@ -49,13 +49,15 @@ export interface RuntimeNodeMeasurementRegistry<TResizeTarget = Element> {
 
 export function runtimeNodeMeasurementChangeAffectsActiveIndicators<TResizeTarget>(options: {
   readonly isEditMode: boolean;
+  readonly activeDragNodeId?: string | null;
   readonly measurements: ReadonlySet<RuntimeNodeMeasurement<TResizeTarget>>;
   readonly nodeId: string;
   readonly selectedNodeId: string | null;
 }): boolean {
   return (
     options.isEditMode &&
-    (options.nodeId === options.selectedNodeId ||
+    ((options.activeDragNodeId !== null && options.activeDragNodeId !== undefined) ||
+      options.nodeId === options.selectedNodeId ||
       [...options.measurements].some((measurement) => measurement.showUnsupportedIndicator))
   );
 }
@@ -159,6 +161,7 @@ export function getActiveRuntimeNodeMeasurements<TResizeTarget>(
   runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>,
   isEditMode: boolean,
   selectedNodeId: string | null,
+  activeDragNodeId: string | null = null,
 ): readonly RuntimeNodeMeasurement<TResizeTarget>[] {
   if (!isEditMode) {
     return [];
@@ -166,6 +169,7 @@ export function getActiveRuntimeNodeMeasurements<TResizeTarget>(
 
   return [...runtimeNodes.entries()].flatMap(([nodeId, measurements]) => {
     const needsGeometry =
+      activeDragNodeId !== null ||
       nodeId === selectedNodeId ||
       [...measurements].some((measurement) => measurement.showUnsupportedIndicator);
     return needsGeometry ? selectPreferredRuntimeNodeMeasurements(measurements) : [];
@@ -176,23 +180,37 @@ export function hasActiveRuntimeNodeMeasurements<TResizeTarget>(
   runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>,
   isEditMode: boolean,
   selectedNodeId: string | null,
+  activeDragNodeId: string | null = null,
 ): boolean {
-  return getActiveRuntimeNodeMeasurements(runtimeNodes, isEditMode, selectedNodeId).length > 0;
+  return (
+    getActiveRuntimeNodeMeasurements(runtimeNodes, isEditMode, selectedNodeId, activeDragNodeId)
+      .length > 0
+  );
 }
 
 export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
   readonly isEditMode: boolean;
+  readonly activeDragNodeId?: string | null;
+  readonly canvasRootNodeId?: string | null;
   readonly rootRect: MeasuredRect | null;
   readonly runtimeNodes: RuntimeNodeMeasurements<TResizeTarget>;
   readonly selectedNodeId: string | null;
 }): Promise<readonly RuntimeNodeIndicatorRect[]> {
-  const { isEditMode, rootRect, runtimeNodes, selectedNodeId } = options;
+  const {
+    activeDragNodeId = null,
+    canvasRootNodeId = null,
+    isEditMode,
+    rootRect,
+    runtimeNodes,
+    selectedNodeId,
+  } = options;
   if (!isEditMode || !rootRect) {
     return [];
   }
 
   const activeNodes = [...runtimeNodes.entries()].filter(
     ([nodeId, measurements]) =>
+      activeDragNodeId !== null ||
       nodeId === selectedNodeId ||
       [...measurements].some((measurement) => measurement.showUnsupportedIndicator),
   );
@@ -212,22 +230,37 @@ export async function measureRuntimeNodeIndicators<TResizeTarget>(options: {
     }),
   );
 
-  return measured
-    .flatMap(({ nodeId, rect, showUnsupportedIndicator }) =>
-      rect
-        ? [
-            {
-              nodeId,
-              showUnsupportedIndicator,
-              x: rect.x - rootRect.x,
-              y: rect.y - rootRect.y,
-              width: rect.width,
-              height: rect.height,
-            },
-          ]
-        : [],
-    )
-    .sort((left, right) => left.nodeId.localeCompare(right.nodeId));
+  const indicators = measured.flatMap(({ nodeId, rect, showUnsupportedIndicator }) =>
+    rect
+      ? [
+          {
+            nodeId,
+            showUnsupportedIndicator,
+            x: rect.x - rootRect.x,
+            y: rect.y - rootRect.y,
+            width: rect.width,
+            height: rect.height,
+          },
+        ]
+      : [],
+  );
+
+  if (
+    activeDragNodeId !== null &&
+    canvasRootNodeId !== null &&
+    !indicators.some((rect) => rect.nodeId === canvasRootNodeId)
+  ) {
+    indicators.push({
+      nodeId: canvasRootNodeId,
+      showUnsupportedIndicator: false,
+      x: 0,
+      y: 0,
+      width: rootRect.width,
+      height: rootRect.height,
+    });
+  }
+
+  return indicators.sort((left, right) => left.nodeId.localeCompare(right.nodeId));
 }
 
 export function createActiveResizeTargetCoordinator<TResizeTarget>(

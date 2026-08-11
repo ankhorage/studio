@@ -61,7 +61,7 @@ function createTargetMeasurement(options: {
     },
     measure: () => Promise.resolve({ x: 0, y: 0, width: 20, height: 20 }),
     showUnsupportedIndicator: options.unsupported === true,
-    source: 'web-recorder',
+    source: 'runtime-recorder',
   };
 }
 
@@ -270,6 +270,49 @@ describe('active web Runtime node resize targets', () => {
       throw new Error('Expected the deepest target fixture.');
     }
     expect(observer.observed()).toEqual([selectedTarget]);
+  });
+
+  it('activates every Runtime node measurement only while a canvas drag is active', async () => {
+    const firstTarget = { id: 'first-target' };
+    const secondTarget = { id: 'second-target' };
+    const registry = createRuntimeNodeMeasurementRegistry<TestTarget>();
+    registry.register('first', createTargetMeasurement({ targets: [firstTarget] }));
+    registry.register('second', createTargetMeasurement({ targets: [secondTarget] }));
+
+    expect(
+      getActiveRuntimeNodeMeasurements(registry.getMeasurements(), true, 'first'),
+    ).toHaveLength(1);
+    expect(
+      getActiveRuntimeNodeMeasurements(registry.getMeasurements(), true, 'first', 'first'),
+    ).toHaveLength(2);
+    expect(
+      runtimeNodeMeasurementChangeAffectsActiveIndicators({
+        activeDragNodeId: 'first',
+        isEditMode: true,
+        measurements:
+          registry.getMeasurements().get('second') ?? new Set<RuntimeNodeMeasurement<TestTarget>>(),
+        nodeId: 'second',
+        selectedNodeId: 'first',
+      }),
+    ).toBe(true);
+
+    expect(
+      await measureRuntimeNodeIndicators({
+        activeDragNodeId: 'first',
+        canvasRootNodeId: 'root',
+        isEditMode: true,
+        rootRect: { x: 0, y: 0, width: 400, height: 800 },
+        runtimeNodes: registry.getMeasurements(),
+        selectedNodeId: 'first',
+      }),
+    ).toEqual([
+      expect.objectContaining({ nodeId: 'first' }),
+      expect.objectContaining({ nodeId: 'root', x: 0, y: 0, width: 400, height: 800 }),
+      expect.objectContaining({ nodeId: 'second' }),
+    ]);
+    expect(
+      getActiveRuntimeNodeMeasurements(registry.getMeasurements(), false, 'first', 'first'),
+    ).toEqual([]);
   });
 
   it('diffs selection targets and observes overlapping ownership exactly once', () => {

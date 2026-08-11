@@ -12,6 +12,7 @@ sequenceDiagram
   participant_visit->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
   participant_visit->>participant_visit: visit()
+  participant_visit->>participant_visit: visit()
   participant_visit->>participant_resolveRouteScreenFilePath: resolveRouteScreenFilePath()
   participant_resolveRouteScreenFilePath->>participant_normalizeRel: normalizeRel()
   participant_normalizeRel-->>participant_resolveRouteScreenFilePath: return
@@ -19,8 +20,7 @@ sequenceDiagram
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
   participant_visit-->>participant_visit: return
-  participant_visit-->>participant_findNodeWithParent: return
-  participant_findNodeWithParent->>participant_visit: visit()
+  participant_visit-->>participant_visit: return
   participant_visit-->>participant_findNodeWithParent: return
   participant_findNodeWithParent-->>participant_resolveInsertPlacement: return
   participant_resolveInsertPlacement->>participant_validateNodePlacement: validateNodePlacement()

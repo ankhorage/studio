@@ -17,6 +17,17 @@ to integrate the Studio package boundary:
 - Studio command/event contracts
 - the type-only context value shape
 
+`StudioContextValue` now carries the caller-injected `componentMeta` registry and concrete
+`insertFromCatalogEntry`, `moveNodeToPlacement`, and `deleteNode` capabilities. `StudioProvider`
+requires that registry so the generated Studio app uses the same component rules as its Runtime.
+`resolveMoveNodePlacement` is public for validating and normalizing a placement before mutation;
+`invalid-reference` identifies incoherent sibling references.
+
+The obsolete `addNodeToTree`, `moveNodeInTree`, directional `moveStudioManifestNode`, and
+`StudioContextValue.moveNode` APIs have been removed. The `@ankhorage/studio/dnd`,
+`@ankhorage/studio/dnd/primitives`, and `@ankhorage/studio/dnd/state` exports are also removed;
+app-facing canvas code imports the maintained cross-platform adapter directly.
+
 ## Deliberately not moved here
 
 This slice does not move product UI or app-host implementation code. In particular, this package

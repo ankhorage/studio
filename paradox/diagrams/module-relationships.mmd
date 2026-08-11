@@ -47,9 +47,6 @@ graph LR
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
   module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
-  module_src_dnd_index_ts["src/dnd/index.ts"]
-  module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
-  module_src_dnd_state_ts["src/dnd/state.ts"]
   module_src_externalApiApi_ts["src/externalApiApi.ts"]
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   module_src_externalApiAuthoring_ts["src/externalApiAuthoring.ts"]
@@ -301,7 +298,13 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_test_ts["src/ui/admin/pages/ThemeAdminPage.test.ts"]
   module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
+  module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
+  module_src_ui_canvas_canvasDndInteraction_ts["src/ui/canvas/canvasDndInteraction.ts"]
+  module_src_ui_canvas_StudioCanvasDndOverlay_test_ts["src/ui/canvas/StudioCanvasDndOverlay.test.ts"]
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx["src/ui/canvas/StudioCanvasDndOverlay.tsx"]
   module_src_ui_studioAppBarModel_ts["src/ui/studioAppBarModel.ts"]
+  module_src_ui_StudioDeleteDialog_tsx["src/ui/StudioDeleteDialog.tsx"]
+  module_src_ui_StudioInsertDialog_tsx["src/ui/StudioInsertDialog.tsx"]
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_upsertExternalApiDataSource_ts["src/upsertExternalApiDataSource.ts"]
@@ -657,11 +660,14 @@ graph LR
   module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
+  module_src_runtime_stationarySelection_ts --> module_src_canvasDragModel_ts
+  module_src_runtime_stationarySelection_ts --> module_src_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --> module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelectionInputState_test_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
@@ -804,11 +810,28 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeHarmony_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_ui_canvas_canvasDndInteraction_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_canvasDragModel_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_index_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_canvasDragModel_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_index_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_insertModalModel_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_ui_canvas_canvasDndInteraction_ts
+  module_src_ui_StudioInsertDialog_tsx --> module_src_index_ts
+  module_src_ui_StudioInsertDialog_tsx --> module_src_insertModalModel_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts --> module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_index_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_insertModalModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioSelectionModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_studioAppBarModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioDeleteDialog_tsx
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioInsertDialog_tsx
   module_src_utils_treeUtils_ts --> module_src_index_ts
   module_src_workspacePlatform_test_ts --> module_src_workspacePlatform_ts
   module_src_workspaceSearch_ts --> module_src_projectWorkspaceContracts_ts

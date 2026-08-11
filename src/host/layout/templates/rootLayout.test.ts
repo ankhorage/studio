@@ -72,6 +72,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );
@@ -160,6 +161,10 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).toContain('wrapNode: studioWrapNode');
   expect(generated).toContain('selectedNodeId');
   expect(generated).toContain('selectNode');
+  expect(generated).toContain('canvasInteraction={{');
+  expect(generated).toContain('activeDragNodeId: activeCanvasDragNodeId');
+  expect(generated).toContain('moveNodeToPlacement');
+  expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
   expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
   expect(generated).not.toContain('<Pressable');
