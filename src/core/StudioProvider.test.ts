@@ -14,6 +14,19 @@ test('uses canonical manifestState mutations for provider authoring state', () =
   expect(source).toContain('updateStudioManifestDraftAuthSettings');
   expect(source).not.toContain('updateNode: noop');
   expect(source).not.toContain('updateTheme: (_id: string, _updates: ThemeUpdates)');
+  expect(source).not.toContain('deleteNode: noop');
+  expect(source).not.toContain('insertFromCatalogEntry: (_entry');
+  expect(source).not.toContain('moveNodeToPlacement: (_nodeId');
+  expect(source).toContain('insertStudioManifestNodeAtPlacement');
+  expect(source).toContain('moveStudioManifestNodeToPlacement');
+  expect(source).toContain('deleteStudioManifestNode');
+  expect(source).toContain('createNodeFromCatalogEntry');
+});
+
+test('requires caller-injected component metadata for package-neutral placement', () => {
+  expect(source).toContain('componentMeta: StudioComponentMetaRegistry');
+  expect(source).toContain('componentMeta,');
+  expect(source).not.toContain("from '@ankhorage/zora'");
 });
 
 test('owns Studio draft hydration and autosave through the host manifest boundary', () => {

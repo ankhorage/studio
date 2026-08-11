@@ -340,6 +340,7 @@ export type StudioEvent =
 export interface StudioContextValue extends StudioSelectionState, StudioSessionState {
   manifest: StudioManifest | null;
   rootNode: UiNode | null;
+  componentMeta: StudioComponentMetaRegistry;
   selectNode: (id: StudioNodeId | null) => void;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
   setActiveAdminRouteId: (routeId: StudioAdminRouteId) => void;

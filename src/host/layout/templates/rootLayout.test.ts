@@ -72,6 +72,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );

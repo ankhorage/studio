@@ -1,13 +1,3 @@
-import {
-  cloneWithNewIds,
-  findNodeById,
-  removeNodeFromTree,
-  updateNodeInTree,
-} from '../index';
+import { cloneWithNewIds, findNodeById, removeNodeFromTree, updateNodeInTree } from '../index';
 
-export {
-  cloneWithNewIds,
-  findNodeById,
-  removeNodeFromTree,
-  updateNodeInTree,
-};
+export { cloneWithNewIds, findNodeById, removeNodeFromTree, updateNodeInTree };

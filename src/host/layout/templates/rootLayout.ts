@@ -450,6 +450,7 @@ const shouldMountAppHeader =
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
         activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
+        componentMeta={ZORA_COMPONENT_META}
       >
         <StudioShell
           output={output}
@@ -672,6 +673,7 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
         actions={studioAppBar.actions}
         overflow={studioAppBar.overflow}
       />
+      {studioAppBar.overlays}
     </>
   );
 }`

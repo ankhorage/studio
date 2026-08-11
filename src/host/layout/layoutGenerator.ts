@@ -269,6 +269,7 @@ export class GeneratedAppFileGenerator {
         'AppShell',
         'ZoraProvider',
         'ZORA_COMPONENT_REGISTRY',
+        includeStudio ? 'ZORA_COMPONENT_META' : '',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
       ]
@@ -357,6 +358,7 @@ export class GeneratedAppFileGenerator {
         'AppShell',
         'ZoraProvider',
         'ZORA_COMPONENT_REGISTRY',
+        includeStudio ? 'ZORA_COMPONENT_META' : '',
         'useZoraTheme',
         includeStudio ? 'AppBar' : '',
         needsZoraTabBar ? 'ZoraTabBar' : '',

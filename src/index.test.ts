@@ -13,12 +13,14 @@ import {
   type ProjectSecretUsageSummary,
   resolveDefaultInsertPlacement,
   resolveInsertCatalogEntries,
+  resolveMoveNodePlacement,
   STUDIO_PACKAGE_BOUNDARY,
   STUDIO_PACKAGE_NAME,
   STUDIO_PUBLIC_CONTRACTS,
   type StudioComponentMetaRegistry,
   TPL_SCREEN_EMPTY,
   updateNodeInTree,
+  validateNodePlacement,
 } from './index';
 
 const componentMeta: StudioComponentMetaRegistry = {
@@ -240,6 +242,133 @@ describe('@ankhorage/studio', () => {
     expect(movement.movedNodeId).toBe('text-a');
     expect(findNodeById(movement.root, 'section-a')?.children).toEqual([]);
     expect(findNodeById(movement.root, 'section-b')?.children?.[0]?.id).toBe('text-a');
+  });
+
+  test('rejects malformed placement references and indices', () => {
+    const root = createRoot();
+
+    const missingReference = validateNodePlacement({
+      root,
+      placement: { parentId: 'screen', index: 0, kind: 'before' },
+      childType: 'Text',
+      componentMeta,
+    });
+    expect(missingReference.ok).toBe(false);
+    if (missingReference.ok) throw new Error('Expected invalid reference.');
+    expect(missingReference.reason.code).toBe('invalid-reference');
+
+    const invalidIndex = validateNodePlacement({
+      root,
+      placement: {
+        parentId: 'screen',
+        index: 2,
+        kind: 'before',
+        referenceId: 'section-a',
+      },
+      childType: 'Text',
+      componentMeta,
+    });
+    expect(invalidIndex.ok).toBe(false);
+    if (invalidIndex.ok) throw new Error('Expected invalid index.');
+    expect(invalidIndex.reason.code).toBe('invalid-index');
+  });
+
+  test('rejects root, self, descendant, and no-op moves with stable diagnostics', () => {
+    const root = createRoot();
+    const nestedRoot: UiNode = {
+      ...root,
+      children: [
+        {
+          id: 'parent',
+          type: 'Section',
+          children: [{ id: 'descendant', type: 'Section', children: [] }],
+        },
+      ],
+    };
+
+    const cases = [
+      {
+        result: resolveMoveNodePlacement({
+          root,
+          nodeId: 'screen',
+          placement: { parentId: 'section-a', index: 0, kind: 'inside' },
+          componentMeta,
+        }),
+        code: 'cannot-move-root',
+      },
+      {
+        result: resolveMoveNodePlacement({
+          root,
+          nodeId: 'section-a',
+          placement: { parentId: 'section-a', index: 0, kind: 'inside' },
+          componentMeta,
+        }),
+        code: 'cannot-move-into-self',
+      },
+      {
+        result: resolveMoveNodePlacement({
+          root: nestedRoot,
+          nodeId: 'parent',
+          placement: { parentId: 'descendant', index: 0, kind: 'inside' },
+          componentMeta,
+        }),
+        code: 'cannot-move-into-descendant',
+      },
+      {
+        result: resolveMoveNodePlacement({
+          root,
+          nodeId: 'section-a',
+          placement: {
+            parentId: 'screen',
+            index: 0,
+            kind: 'before',
+            referenceId: 'section-a',
+          },
+          componentMeta,
+        }),
+        code: 'no-op',
+      },
+    ] as const;
+
+    for (const testCase of cases) {
+      expect(testCase.result.ok).toBe(false);
+      if (testCase.result.ok) throw new Error(`Expected ${testCase.code}.`);
+      expect(testCase.result.reason.code).toBe(testCase.code);
+    }
+  });
+
+  test('adjusts same-parent movement in both directions without partial invalid mutation', () => {
+    const root: UiNode = {
+      id: 'screen',
+      type: 'Screen',
+      children: ['a', 'b', 'c'].map((id) => ({ id, type: 'Text' })),
+    };
+    const down = moveNodeToPlacement({
+      root,
+      nodeId: 'a',
+      placement: { parentId: 'screen', index: 3, kind: 'after', referenceId: 'c' },
+      componentMeta,
+    });
+    expect(down?.root.children?.map((node) => node.id)).toEqual(['b', 'c', 'a']);
+
+    const up = moveNodeToPlacement({
+      root: down?.root ?? root,
+      nodeId: 'a',
+      placement: { parentId: 'screen', index: 0, kind: 'before', referenceId: 'b' },
+      componentMeta,
+    });
+    expect(up?.root.children?.map((node) => node.id)).toEqual(['a', 'b', 'c']);
+
+    const snapshot = JSON.stringify(root);
+    expect(
+      moveNodeToPlacement({
+        root,
+        nodeId: 'a',
+        placement: { parentId: 'missing', index: 0, kind: 'inside' },
+        componentMeta,
+      }),
+    ).toBeNull();
+    expect(JSON.stringify(root)).toBe(snapshot);
   });
 
   test('updates node props and clones empty screen templates with new ids', () => {

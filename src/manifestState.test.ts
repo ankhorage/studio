@@ -293,12 +293,18 @@ describe('manifestState', () => {
     });
     expect(moved?.movedNodeId).toBe('button-1');
 
-    const deleted = deleteStudioManifestNode(
-      moved?.manifest ?? updated,
-      'screen-home',
-      'text-1',
-    );
+    const deleted = deleteStudioManifestNode(moved?.manifest ?? updated, 'screen-home', 'text-1');
     expect(JSON.stringify(resolveActiveRootNode(deleted, 'screen-home'))).not.toContain('text-1');
+    expect(deleted.dataBindings?.['text-1']).toBeUndefined();
+  });
+
+  test('protects roots and removes bindings owned by an entire deleted subtree', () => {
+    const manifest = createManifest();
+    const rootProtected = deleteStudioManifestNode(manifest, 'screen-home', 'root-home');
+    expect(rootProtected).toBe(manifest);
+
+    const deleted = deleteStudioManifestNode(manifest, 'screen-home', 'section-1');
+    expect(resolveActiveRootNode(deleted, 'screen-home')?.children).toEqual([]);
     expect(deleted.dataBindings?.['text-1']).toBeUndefined();
   });
 
