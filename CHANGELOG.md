@@ -1,5 +1,14 @@
 # @ankhorage/studio
 
+## 0.17.0
+
+### Minor Changes
+
+- 3527949: Restore the generated-app Preview mode through the Studio AppBar, suppress authoring affordances
+  while Preview is active, and keep Runtime interaction, actions, and navigation on the canonical app
+  tree. Remove the obsolete preview registry, preview Runtime config, and manifest navigator preview
+  model subpaths.
+
 ## 0.16.0
 
 ### Minor Changes
