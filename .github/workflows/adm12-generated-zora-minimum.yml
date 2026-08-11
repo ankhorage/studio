@@ -1,0 +1,30 @@
+name: ADM12 generated ZORA minimum
+
+on:
+  push:
+    branches:
+      - issue-127/canonical-theme-mode
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue-127/canonical-theme-mode
+      - name: Align generated app ZORA minimum
+        run: |
+          python -c "from pathlib import Path; p=Path('src/host/orchestrator/templates.ts'); s=p.read_text(); old=\"const ZORA_VERSION = '^2.9.0';\"; assert s.count(old)==1; p.write_text(s.replace(old, \"const ZORA_VERSION = '^2.10.0';\", 1))"
+          python -c "from pathlib import Path; p=Path('src/host/orchestrator/templates.test.ts'); s=p.read_text(); old=\"expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');\"; assert s.count(old)==2; p.write_text(s.replace(old, \"expect(dependencies['@ankhorage/zora']).toBe('^2.10.0');\"))"
+          rm .github/workflows/adm12-generated-zora-minimum.yml
+      - name: Commit focused generated dependency fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/host/orchestrator/templates.ts src/host/orchestrator/templates.test.ts .github/workflows/adm12-generated-zora-minimum.yml
+          git commit -m "Require ZORA 2.10 in generated apps"
+          git push origin HEAD:issue-127/canonical-theme-mode
