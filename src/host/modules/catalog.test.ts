@@ -3,6 +3,7 @@ import { expoLocalizationHostContribution } from '@ankhorage/orchestrator-module
 import { describe, expect, test } from 'bun:test';
 import path from 'path';
 
+import { resolveHostModuleAdminRuntime } from './adminRuntime';
 import { getHostModule, listHostModules, resolveHostModuleAdminContribution } from './catalog';
 
 describe('generic host module registry', () => {
@@ -26,7 +27,7 @@ describe('generic host module registry', () => {
     expect(getHostModule('unknown/module')).toBeNull();
   });
 
-  test('isolates a malformed optional admin contribution from generic lifecycle state', () => {
+  test('isolates malformed optional admin contributions from generic lifecycle state', () => {
     const malformed = {
       ...expoGoogleFontsHostContribution,
       admin: { kind: 'broken' },
@@ -38,6 +39,17 @@ describe('generic host module registry', () => {
     });
   });
 
+  test('accepts only the generic single-entry admin runtime shape', () => {
+    const runtime = resolveHostModuleAdminRuntime({
+      kind: 'module-admin-runtime',
+      execute: () => Promise.resolve(null),
+    });
+
+    expect(runtime?.kind).toBe('module-admin-runtime');
+    expect(resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime' })).toBeNull();
+    expect(resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime', load: () => null })).toBeNull();
+  });
+
   test('keeps module domain and Orchestrator ledger implementation out of generic Studio code', async () => {
     const sourceRoot = path.join(import.meta.dir, '..');
     const managerSource = await Bun.file(
@@ -46,7 +58,8 @@ describe('generic host module registry', () => {
     const resolverSource = await Bun.file(
       path.join(sourceRoot, 'orchestrator/resolveMutations.ts'),
     ).text();
-    const genericSource = `${managerSource}\n${resolverSource}`;
+    const runtimeSource = await Bun.file(path.join(import.meta.dir, 'adminRuntime.ts')).text();
+    const genericSource = `${managerSource}\n${resolverSource}\n${runtimeSource}`;
 
     expect(genericSource).not.toContain('expo-localization');
     expect(genericSource).not.toContain('expo-google-fonts');
