@@ -2281,7 +2281,7 @@
     "relatedSymbols": ["StudioBindableEventOption"],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2291,7 +2291,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
             "required": true,
             "description": null
           }
@@ -2319,7 +2319,7 @@
     "relatedSymbols": ["StudioBindablePropOption"],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2329,7 +2329,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
             "required": true,
             "description": null
           }

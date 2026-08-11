@@ -742,9 +742,9 @@ Source: `src/bindingMetadataModel.ts:21:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>`
   - returns: `readonly StudioBindableEventOption[]`
 
 ## resolveStudioBindableProps
@@ -755,9 +755,9 @@ Source: `src/bindingMetadataModel.ts:8:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>`
   - returns: `readonly StudioBindablePropOption[]`
 
 ## resolveStudioInstancePropertyFields
