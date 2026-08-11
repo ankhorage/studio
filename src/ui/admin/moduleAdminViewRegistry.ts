@@ -1,12 +1,12 @@
 import { expoLocalizationAdminViewContribution } from '@ankhorage/orchestrator-module-expo-localization/admin-view';
 import type { ComponentType } from 'react';
 
-export type StudioModuleAdminViewExecutor = (
+type StudioModuleAdminViewExecutor = (
   operation: string,
   input?: unknown,
 ) => Promise<unknown>;
 
-export interface StudioModuleAdminViewProps {
+interface StudioModuleAdminViewProps {
   readonly execute: StudioModuleAdminViewExecutor;
   readonly onProjectChange?: () => Promise<void> | void;
 }
