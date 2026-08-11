@@ -20,7 +20,18 @@ jobs:
         with:
           bun-version: 1.3.13
       - name: Apply source migration
-        run: python .github/adm12_apply.py
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/adm12_apply.py')
+          text = path.read_text()
+          old = "replace_once(root_path, '    activeScreenId,\\n', '')"
+          new = "replace_exact_count(root_path, '    activeScreenId,\\n', '', 2)"
+          if text.count(old) != 1:
+              raise SystemExit(f'expected one activeScreenId migration line, found {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          python .github/adm12_apply.py
       - name: Update lockfile
         run: bun install
       - name: Format and lint-fix
