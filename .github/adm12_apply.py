@@ -11,6 +11,15 @@ def replace_once(path: str, old: str, new: str) -> None:
     target.write_text(text.replace(old, new, 1))
 
 
+def replace_exact_count(path: str, old: str, new: str, expected: int) -> None:
+    target = Path(path)
+    text = target.read_text()
+    count = text.count(old)
+    if count != expected:
+        raise SystemExit(f'{path}: expected {expected} exact matches, found {count}')
+    target.write_text(text.replace(old, new))
+
+
 def sub_once(path: str, pattern: str, replacement: str) -> None:
     target = Path(path)
     text = target.read_text()
@@ -36,12 +45,11 @@ provider_path = 'src/core/StudioProvider.ts'
 for old in (
     '  type StudioMode,\n',
     "  const [studioMode, setStudioMode] = useState<StudioMode>('dark');\n",
-    '      studioMode,\n',
     '      setActiveThemeMode: setStudioMode,\n',
     '      setStudioMode,\n',
-    '      studioMode,\n',
 ):
     replace_once(provider_path, old, '')
+replace_exact_count(provider_path, '      studioMode,\n', '', 2)
 
 manifest_path = 'src/manifestState.ts'
 replace_once(manifest_path, '  StudioMode,\n', '')
