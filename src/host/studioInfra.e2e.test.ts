@@ -567,7 +567,7 @@ function createManifest(projectId: string, oauth: boolean): AppManifest {
       secretStore: {
         provider: 'supabase-vault',
       },
-      plugins: [],
+      modules: [],
     },
     navigator: {
       type: 'stack',

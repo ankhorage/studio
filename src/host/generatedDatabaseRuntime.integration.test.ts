@@ -47,7 +47,7 @@ test('executes canonical generated create through the released Supabase DB adapt
     ],
   };
   const manifest = {
-    infra: { database: { provider: 'supabase', tier: 'dev' }, plugins: [] },
+    infra: { database: { provider: 'supabase', tier: 'dev' }, modules: [] },
     generatedApis: { [definition.id]: definition },
   } satisfies GeneratedDatabaseRuntimeManifest;
   const runtimeSelection = resolveGeneratedDatabaseRuntime(manifest);

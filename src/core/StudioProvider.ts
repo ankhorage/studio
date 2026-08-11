@@ -26,7 +26,6 @@ import {
   type StudioContextValue,
   type StudioManifest,
   type StudioMode,
-  type StudioModuleId,
   type StudioNodeId,
   type StudioPanelId,
   type StudioScreenId,
@@ -75,7 +74,6 @@ export interface StudioProviderProps {
 }
 
 const noop = () => undefined;
-const noopAsync = () => Promise.resolve();
 const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;
 
 export const StudioProvider = ({
@@ -99,7 +97,6 @@ export const StudioProvider = ({
   const [error, setError] = useState<string | null>(null);
   const [studioMode, setStudioMode] = useState<StudioMode>('dark');
   const [previewMode, setPreviewMode] = useState(false);
-  const [activeLocale, setActiveLocale] = useState('en');
   const manifestRef = useRef<StudioManifest | null>(initialManifest);
   const replaceManifest = useCallback((nextManifest: StudioManifest | null) => {
     manifestRef.current = nextManifest;
@@ -375,7 +372,6 @@ export const StudioProvider = ({
   const value = useMemo<StudioContextValue>(
     () => ({
       projectId,
-      activeLocale,
       activeScreenId,
       selectedNodeId,
       activePanelId,
@@ -418,23 +414,17 @@ export const StudioProvider = ({
       setActiveThemeMode: setStudioMode,
       updateAuthSettings,
       mutateAuthSettings,
-      updateModuleConfig: (_moduleId: StudioModuleId, _config: Record<string, unknown>) =>
-        undefined,
       updateOAuthProviders,
       setActiveScreenId,
       findNode: findNodeById,
       setStudioMode,
       togglePreviewMode: () => setPreviewMode((current) => !current),
-      t: (key: string) => key,
-      setActiveLocale,
-      reloadDictionaries: noopAsync,
       refetchManifest: persistence.refetchManifest,
       flushManifest: persistence.flushManifest,
     }),
     [
       activeAdminRouteId,
       activeCanvasDragNodeId,
-      activeLocale,
       activePanelId,
       activeScreenId,
       error,

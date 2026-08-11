@@ -646,6 +646,7 @@ adminWebSmokeTest(
           '/dashboard',
           '/ankh',
           '/ankh/screens',
+          '/ankh/modules',
           '/ankh/theme',
           '/ankh/auth/providers',
         ]) {
@@ -680,6 +681,38 @@ adminWebSmokeTest(
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
         }
+
+        await page.navigateStudio('/ankh/modules', expoOutput);
+        const moduleList = await waitForBodyText(
+          page,
+          (text) => text.includes('Example configurable module'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(moduleList).toContain('Example enable-only module');
+
+        await page.navigateStudio('/ankh/modules/example-config', expoOutput);
+        const configurableModule = await waitForBodyText(
+          page,
+          (text) => text.includes('Package-owned example config'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(configurableModule).toContain('Save configuration');
+
+        await page.navigateStudio('/ankh/modules/example-enable-only', expoOutput);
+        const enableOnlyModule = await waitForBodyText(
+          page,
+          (text) => text.includes('No administration contribution'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(enableOnlyModule).toContain('lifecycle-only');
+
+        await page.navigateStudio('/ankh/modules/unknown-module', expoOutput);
+        const unknownModule = await waitForBodyText(
+          page,
+          (text) => text.includes('Unknown module'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(unknownModule).toContain('not registered');
 
         await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
         const detailBeforeRefresh = await waitForBodyText(
@@ -1549,7 +1582,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
   const created = await projectManager.createProject(
     'Generated Admin Web Smoke',
     { category: 'developer_tools', templateId: template.templateId },
-    (projectId) => moduleManager.generateModuleRegistry(projectId),
+    undefined,
     { includeStudio: true },
   );
 
@@ -1992,10 +2025,12 @@ async function startSmokeStudioApi(args: {
   const { projectId } = args;
   let { manifest } = args;
   const manifestPath = `/api/projects/${encodeURIComponent(projectId)}/studio/manifest`;
+  const modulesPath = `/api/projects/${encodeURIComponent(projectId)}/modules`;
   const server = createHttpServer((request, response) => {
     void handleSmokeStudioApiRequest({
       manifest,
       manifestPath,
+      modulesPath,
       request,
       response,
       updateManifest: (nextManifest) => {
@@ -2013,6 +2048,7 @@ async function startSmokeStudioApi(args: {
 async function handleSmokeStudioApiRequest(args: {
   readonly manifest: AppManifest;
   readonly manifestPath: string;
+  readonly modulesPath: string;
   readonly request: IncomingMessage;
   readonly response: ServerResponse;
   readonly updateManifest: (manifest: AppManifest) => void;
@@ -2023,6 +2059,19 @@ async function handleSmokeStudioApiRequest(args: {
   if (method === 'OPTIONS') {
     args.response.statusCode = 204;
     args.response.end();
+    return;
+  }
+
+  if (method === 'GET' && url.pathname === args.modulesPath) {
+    writeJsonResponse(args.response, 200, createSmokeModuleStates());
+    return;
+  }
+
+  if (method === 'GET' && url.pathname.startsWith(`${args.modulesPath}/`)) {
+    const encodedId = url.pathname.slice(args.modulesPath.length + 1);
+    const moduleId = decodeURIComponent(encodedId);
+    const module = createSmokeModuleStates().find((candidate) => candidate.id === moduleId);
+    writeJsonResponse(args.response, module ? 200 : 404, module ?? { error: 'Module not found' });
     return;
   }
 
@@ -2048,6 +2097,39 @@ async function handleSmokeStudioApiRequest(args: {
   }
 
   writeJsonResponse(args.response, 405, { error: 'Method not allowed' });
+}
+
+function createSmokeModuleStates() {
+  const base = {
+    available: true,
+    installed: true,
+    pendingRemoval: false,
+    dependencies: [],
+    dependents: [],
+  } as const;
+  return [
+    {
+      ...base,
+      id: 'example-config',
+      name: 'Example configurable module',
+      description: 'Browser smoke config contribution',
+      config: { value: 'current' },
+      admin: {
+        kind: 'config-schema',
+        title: 'Package-owned example config',
+        description: 'Rendered through the generic host.',
+        fields: [{ key: 'value', label: 'Value', control: 'text', required: false }],
+      },
+    },
+    {
+      ...base,
+      id: 'example-enable-only',
+      name: 'Example enable-only module',
+      description: 'Browser smoke lifecycle-only contribution',
+      config: {},
+      admin: null,
+    },
+  ];
 }
 
 function listenOnLocalhost(server: Server): Promise<number> {

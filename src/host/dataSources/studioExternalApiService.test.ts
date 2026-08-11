@@ -25,7 +25,7 @@ function createManifest(overrides: Partial<StudioManifest> = {}): StudioManifest
     activeThemeId: '',
     activeThemeMode: 'light',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { plugins: [], modulesConfig: {} },
+    infra: { modules: [], modulesConfig: {} },
     ...overrides,
   } as StudioManifest;
 }

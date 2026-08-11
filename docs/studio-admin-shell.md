@@ -8,6 +8,8 @@ Canonical routes:
 - `/ankh`
 - `/ankh/screens`
 - `/ankh/screens/<screen-id>`
+- `/ankh/modules`
+- `/ankh/modules/<module-id>`
 - `/ankh/apis`
 - `/ankh/apis/data-sources`
 - `/ankh/apis/operations`
@@ -23,6 +25,8 @@ Canonical routes:
 labels, icons, hierarchy, active matching, contextual availability, and contextual path
 construction/decoding. `createStudioScreenRoutePath` and `resolveStudioScreenId` encode and decode
 stable `ScreenSpec.id` values; the static `/ankh/screens` route is never treated as a detail route.
+The equivalent module helpers encode and decode stable Orchestrator module IDs without creating
+module-specific top-level routes.
 Generated pages and navigation consume this registry instead of assembling admin paths directly.
 
 Screens administration at `/ankh/screens` consumes the package-neutral manifest screen/navigation
@@ -58,6 +62,19 @@ browser-safe secret responses.
 Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
 the existing manifest theme state for the currently active rendered theme mode. It does not
 introduce mode-specific routes, mode switching UI, or a second theme model.
+
+Modules administration uses the standalone Orchestrator ledger as the canonical lifecycle and
+configuration source. `/ankh/modules` lists registered and installed states and invokes install or
+uninstall through the Orchestrator adapter. `/ankh/modules/<module-id>` hosts an optional
+package-owned administration contribution. Contribution absence is a supported lifecycle-only
+state, and an unknown ID renders explicitly instead of inventing a configuration form.
+When a running generated app requires removal to be deferred, the page keeps the pending state
+visible and offers explicit finalization after the app has been reloaded.
+
+Studio owns only generic contribution registration, transport, routing, and schema rendering.
+Standalone module packages own config normalization, generated paths/files, layout contribution,
+cleanup behavior, and their optional admin schema. Manifest `infra.modules` and
+`infra.modulesConfig` are deterministic lifecycle projections, not a second writable Studio store.
 
 Properties is contextual. The selected node ID is encoded in `/ankh/properties/<node-id>`, decoded
 through the route model, resolved across the Studio manifest, mapped to its owning screen, and then

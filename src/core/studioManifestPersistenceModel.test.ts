@@ -14,7 +14,7 @@ function createManifest(name: string): StudioManifest {
       themeId: 'theme-1',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { plugins: [] },
+    infra: { modules: [] },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [

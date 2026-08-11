@@ -42,7 +42,7 @@ test('accepts manifests with valid optional domains', () => {
         storage: { provider: 'auto', buckets: ['public'] },
         state: { provider: 'legend', persistence: 'local' },
         networking: { cdn: false },
-        plugins: [],
+        modules: [],
       },
       generatedApis: {
         tasks: {
@@ -113,6 +113,21 @@ test('rejects malformed optional manifest domains', () => {
   );
 });
 
+test('rejects legacy Ankhorage module keys only at the infra contract boundary', async () => {
+  const legacy = structuredClone(createManifest()) as AppManifest & {
+    infra: AppManifest['infra'] & { plugins?: string[]; pluginsConfig?: Record<string, unknown> };
+  };
+  legacy.infra.plugins = [];
+  legacy.infra.pluginsConfig = {};
+
+  expect(isAppManifest(legacy)).toBe(false);
+
+  const expoConfig = await Bun.file(
+    new URL('../apps/studio/app.config.ts', import.meta.url),
+  ).text();
+  expect(expoConfig).toContain('plugins: [...(config.plugins ?? [])]');
+});
+
 test('validates canonical primary-navigation visibility', () => {
   const manifest = createManifest();
   manifest.navigator.routes = [
@@ -179,7 +194,7 @@ function createManifest(): AppManifest {
     ],
     activeThemeId: 'default',
     infra: {
-      plugins: [],
+      modules: [],
       storage: { provider: 'auto', buckets: ['public'] },
       networking: { cdn: true },
     },

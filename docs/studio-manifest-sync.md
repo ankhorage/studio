@@ -15,7 +15,7 @@ import {
 
 - Full Studio manifest signatures for draft persistence equality.
 - Runtime-sync signatures for runtime-relevant manifest fields.
-- Stable plugin ordering before runtime signature creation.
+- Stable module ordering before runtime signature creation.
 - Screen metadata-only runtime signatures, so authoring-only root changes do not force runtime sync.
 
 ## Host-owned inputs and effects
@@ -37,6 +37,6 @@ Hosts still own:
 - sorted screen metadata (`id`, `name`, `title`)
 - app data, data bindings, and data sources
 - auth flow and auth config
-- sorted plugin names
+- sorted module names
 
 It intentionally does not include the full screen root tree. Studio draft persistence should use `createStudioManifestSignature` when full authoring state equality matters.

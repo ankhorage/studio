@@ -36,11 +36,10 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
     throw new Error('Published templates package returned no templates.');
   }
 
-  const created = await projectManager.createProject(
-    'Host Smoke App',
-    { category: category.id, templateId: template.templateId },
-    (projectId) => moduleManager.generateModuleRegistry(projectId),
-  );
+  const created = await projectManager.createProject('Host Smoke App', {
+    category: category.id,
+    templateId: template.templateId,
+  });
   expect(created.success).toBe(true);
 
   const projects = await projectManager.listProjects();

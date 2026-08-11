@@ -256,8 +256,8 @@ export class GeneratedAppFileGenerator {
       usesZoraNavigationRouteMap: false,
     };
 
-    const pluginImports = mutations.flatMap((m) => m.imports);
-    const pluginHooks = mutations.flatMap((m) => m.hooks);
+    const moduleImports = mutations.flatMap((m) => m.imports);
+    const moduleHooks = mutations.flatMap((m) => m.hooks);
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
     const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
@@ -301,10 +301,10 @@ export class GeneratedAppFileGenerator {
       includeStudio
         ? `import { resolveScreenIdForPathname } from '@ankhorage/studio/routeUtils';`
         : '',
-      ...pluginImports,
+      ...moduleImports,
     ]);
 
-    const allHooks = pluginHooks.join('\n  ');
+    const allHooks = moduleHooks.join('\n  ');
 
     return getRootLayoutTsx({
       manifest,
@@ -390,16 +390,16 @@ export class GeneratedAppFileGenerator {
         : '',
     ];
 
-    const pluginImports = mutations.flatMap((m) => m.imports);
-    const pluginHooks = mutations.flatMap((m) => m.hooks);
+    const moduleImports = mutations.flatMap((m) => m.imports);
+    const moduleHooks = mutations.flatMap((m) => m.hooks);
 
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
       ...coreImports,
-      ...pluginImports,
+      ...moduleImports,
     ]);
 
-    const allHooks = pluginHooks.join('\n  ');
+    const allHooks = moduleHooks.join('\n  ');
 
     return getRootLayoutTsx({
       manifest,

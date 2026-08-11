@@ -1,6 +1,6 @@
 export interface LayoutMutation {
-  imports: string[];
-  hooks: string[];
-  providerStart: string[];
-  providerEnd: string[];
+  readonly imports: readonly string[];
+  readonly hooks: readonly string[];
+  readonly providerStart: readonly string[];
+  readonly providerEnd: readonly string[];
 }

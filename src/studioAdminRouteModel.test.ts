@@ -4,6 +4,7 @@ import {
   createStudioAdminRoutePath,
   createStudioAdminRouteRenderState,
   createStudioBindingsRoutePath,
+  createStudioModuleRoutePath,
   createStudioPropertiesRoutePath,
   createStudioScreenRoutePath,
   isStudioAdminRouteActive,
@@ -13,6 +14,7 @@ import {
   resolveStudioAdminRoutePath,
   resolveStudioBindingsNodeId,
   resolveStudioLastNonAdminLocation,
+  resolveStudioModuleId,
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
   resolveStudioScreenId,
@@ -28,6 +30,8 @@ describe('studioAdminRouteModel', () => {
       'apis',
       'api-data-sources',
       'api-operations',
+      'modules',
+      'module-detail',
       'auth',
       'auth-providers',
       'auth-routes',
@@ -44,6 +48,8 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/screens')).toBe('screens');
     expect(resolveStudioAdminRoutePath('/ankh/screens')).toBe('/ankh/screens');
     expect(createStudioAdminRoutePath({ routeId: 'screens' })).toBe('/ankh/screens');
+    expect(resolveStudioAdminRouteId('/ankh/modules')).toBe('modules');
+    expect(resolveStudioAdminRoutePath('/ankh/modules')).toBe('/ankh/modules');
     expect(resolveStudioAdminRouteId('/ankh/apis')).toBe('apis');
     expect(resolveStudioAdminRouteId('/ankh/apis/data-sources')).toBe('api-data-sources');
     expect(resolveStudioAdminRouteId('/ankh/apis/operations')).toBe('api-operations');
@@ -58,6 +64,22 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRoutePath('/ankh/bindings/node-1')).toBe('/ankh/bindings/node-1');
     expect(resolveStudioAdminRoutePath('/ankh/properties/node-1')).toBe('/ankh/properties/node-1');
     expect(resolveStudioAdminRouteId('/app')).toBeNull();
+  });
+
+  test('round-trips encoded stable module ids without treating the overview as detail', () => {
+    const moduleId = 'vendor/module / café';
+    const routePath = createStudioModuleRoutePath(moduleId);
+
+    expect(routePath).toBe('/ankh/modules/vendor%2Fmodule%20%2F%20caf%C3%A9');
+    expect(resolveStudioModuleId(routePath)).toBe(moduleId);
+    expect(resolveStudioAdminRouteId(routePath)).toBe('module-detail');
+    expect(resolveStudioAdminRoutePath(routePath)).toBe(routePath);
+    expect(createStudioAdminRoutePath({ routeId: 'module-detail', moduleId })).toBe(routePath);
+    expect(resolveStudioModuleId('/ankh/modules')).toBeNull();
+    expect(resolveStudioModuleId('/ankh/modules/')).toBeNull();
+    expect(resolveStudioModuleId('/ankh/modules/module/extra')).toBeNull();
+    expect(resolveStudioModuleId('/ankh/modules/%E0%A4%A')).toBeNull();
+    expect(createStudioAdminRoutePath({ routeId: 'module-detail' })).toBeNull();
   });
 
   test('round-trips encoded stable screen ids without treating the overview as detail', () => {
@@ -107,6 +129,7 @@ describe('studioAdminRouteModel', () => {
       resolvedAdminRouteId: 'auth-providers',
       routeAdminPath: '/ankh/auth/providers',
       screenId: null,
+      moduleId: null,
       bindingsNodeId: null,
       propertiesNodeId: null,
       shouldRenderAppContent: false,
@@ -130,6 +153,18 @@ describe('studioAdminRouteModel', () => {
       shouldRenderAppContent: false,
       shouldRenderAdminShell: true,
     });
+    expect(
+      createStudioAdminRouteRenderState({
+        pathname: '/ankh/modules/vendor%2Fmodule',
+        activeAdminRouteId: 'overview',
+      }),
+    ).toMatchObject({
+      routeAdminId: 'module-detail',
+      resolvedAdminRouteId: 'module-detail',
+      moduleId: 'vendor/module',
+      shouldRenderAppContent: false,
+      shouldRenderAdminShell: true,
+    });
   });
 
   test('tracks hierarchy and contextual availability', () => {
@@ -137,6 +172,19 @@ describe('studioAdminRouteModel', () => {
       isStudioAdminRouteActive({
         currentRouteId: 'auth-providers',
         candidateRouteId: 'auth',
+      }),
+    ).toBe(true);
+    expect(isStudioAdminRouteAvailable('module-detail', { selectedNodeId: null })).toBe(false);
+    expect(
+      isStudioAdminRouteAvailable('module-detail', {
+        selectedNodeId: null,
+        moduleId: 'vendor/module',
+      }),
+    ).toBe(true);
+    expect(
+      isStudioAdminRouteActive({
+        currentRouteId: 'module-detail',
+        candidateRouteId: 'modules',
       }),
     ).toBe(true);
     expect(

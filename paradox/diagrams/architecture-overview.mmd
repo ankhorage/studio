@@ -311,6 +311,12 @@ graph TD
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_dataSources_studioExternalApiService_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_test_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_http_server_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_moduleAdminContracts_ts
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_secretRoutes_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
@@ -324,7 +330,6 @@ graph TD
   module_src_host_http_server_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_http_server_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
@@ -467,9 +472,13 @@ graph TD
   module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
   package__ankhorage_studio -.-> module_src_host_manifestSystem_types_ts
+  module_src_host_modules_catalog_test_ts["src/host/modules/catalog.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_modules_catalog_test_ts
+  module_src_host_modules_catalog_test_ts --> module_src_host_modules_catalog_ts
   module_src_host_modules_catalog_ts["src/host/modules/catalog.ts"]
   package__ankhorage_studio -.-> module_src_host_modules_catalog_ts
   module_src_host_modules_catalog_ts --> module_src_host_modules_layout_ts
+  module_src_host_modules_catalog_ts --> module_src_moduleAdminContracts_ts
   module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
   package__ankhorage_studio -.-> module_src_host_modules_layout_ts
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
@@ -510,6 +519,7 @@ graph TD
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_moduleAdminContracts_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectCreationSafety_test_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -532,7 +542,6 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
-  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
@@ -650,19 +659,6 @@ graph TD
   module_src_insertModalModel_ts["src/insertModalModel.ts"]
   package__ankhorage_studio -.-> module_src_insertModalModel_ts
   module_src_insertModalModel_ts --> module_src_index_ts
-  module_src_localizationConfig_public_test_ts["src/localizationConfig.public.test.ts"]
-  package__ankhorage_studio -.-> module_src_localizationConfig_public_test_ts
-  module_src_localizationConfig_public_test_ts --> module_src_localizationConfig_ts
-  module_src_localizationConfig_test_ts["src/localizationConfig.test.ts"]
-  package__ankhorage_studio -.-> module_src_localizationConfig_test_ts
-  module_src_localizationConfig_test_ts --> module_src_localizationConfig_ts
-  module_src_localizationConfig_ts["src/localizationConfig.ts"]
-  package__ankhorage_studio -.-> module_src_localizationConfig_ts
-  module_src_localizationPanelModel_test_ts["src/localizationPanelModel.test.ts"]
-  package__ankhorage_studio -.-> module_src_localizationPanelModel_test_ts
-  module_src_localizationPanelModel_test_ts --> module_src_localizationPanelModel_ts
-  module_src_localizationPanelModel_ts["src/localizationPanelModel.ts"]
-  package__ankhorage_studio -.-> module_src_localizationPanelModel_ts
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   package__ankhorage_studio -.-> module_src_manifestState_public_test_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
@@ -685,6 +681,25 @@ graph TD
   module_src_manifestSync_ts["src/manifestSync.ts"]
   package__ankhorage_studio -.-> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
+  module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdmin_public_test_ts
+  module_src_moduleAdmin_public_test_ts --> module_src_index_ts
+  module_src_moduleAdmin_public_test_ts --> module_src_root_ts
+  module_src_moduleAdminApi_test_ts["src/moduleAdminApi.test.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdminApi_test_ts
+  module_src_moduleAdminApi_test_ts --> module_src_moduleAdminApi_ts
+  module_src_moduleAdminApi_ts["src/moduleAdminApi.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdminApi_ts
+  module_src_moduleAdminApi_ts --> module_src_moduleAdminContracts_ts
+  module_src_moduleAdminContracts_ts["src/moduleAdminContracts.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdminContracts_ts
+  module_src_moduleAdminModel_test_ts["src/moduleAdminModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdminModel_test_ts
+  module_src_moduleAdminModel_test_ts --> module_src_moduleAdminContracts_ts
+  module_src_moduleAdminModel_test_ts --> module_src_moduleAdminModel_ts
+  module_src_moduleAdminModel_ts["src/moduleAdminModel.ts"]
+  package__ankhorage_studio -.-> module_src_moduleAdminModel_ts
+  module_src_moduleAdminModel_ts --> module_src_moduleAdminContracts_ts
   module_src_normalizeExternalApiSourceId_ts["src/normalizeExternalApiSourceId.ts"]
   package__ankhorage_studio -.-> module_src_normalizeExternalApiSourceId_ts
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
@@ -771,8 +786,6 @@ graph TD
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
   package__ankhorage_studio -.-> module_src_runtime_interactionPolicyCore_ts
-  module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
-  package__ankhorage_studio -.-> module_src_runtime_localizationPreview_ts
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   package__ankhorage_studio -.-> module_src_runtime_registry_tsx
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
@@ -817,14 +830,6 @@ graph TD
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
   package__ankhorage_studio -.-> module_src_runtimeDiagnosticsModel_ts
-  module_src_runtimeLocalization_public_test_ts["src/runtimeLocalization.public.test.ts"]
-  package__ankhorage_studio -.-> module_src_runtimeLocalization_public_test_ts
-  module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts
-  module_src_runtimeLocalization_test_ts["src/runtimeLocalization.test.ts"]
-  package__ankhorage_studio -.-> module_src_runtimeLocalization_test_ts
-  module_src_runtimeLocalization_test_ts --> module_src_runtimeLocalization_ts
-  module_src_runtimeLocalization_ts["src/runtimeLocalization.ts"]
-  package__ankhorage_studio -.-> module_src_runtimeLocalization_ts
   module_src_secretResponseGuard_test_ts["src/secretResponseGuard.test.ts"]
   package__ankhorage_studio -.-> module_src_secretResponseGuard_test_ts
   module_src_secretResponseGuard_test_ts --> module_src_secretResponseGuard_ts
@@ -863,6 +868,8 @@ graph TD
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ApisAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_AuthAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_BindingsAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModulesAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_PropertiesAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ScreenDetailAdminPage_tsx
@@ -1052,6 +1059,20 @@ graph TD
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_externalApiApi_ts
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_externalApiAuthoringContracts_ts
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx["src/ui/admin/pages/ModuleDetailAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminApi_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminContracts_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ModulesAdminPage_tsx
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_moduleAdminApi_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_moduleAdminContracts_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_core_StudioContext_ts

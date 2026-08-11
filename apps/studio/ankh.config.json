@@ -23,7 +23,7 @@
   "activeThemeId": "studio-default",
   "activeThemeMode": "dark",
   "infra": {
-    "plugins": []
+    "modules": []
   },
   "navigator": {
     "type": "stack",

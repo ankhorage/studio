@@ -79,7 +79,7 @@ function createRuntimeSmokeManifest(): AppManifest {
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
     infra: {
-      plugins: [],
+      modules: [],
       auth: {
         scope: 'global',
         provider: 'supabase',
@@ -139,7 +139,7 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
   const created = await projectManager.createProject(
     PROJECT_NAME,
     { category: 'developer_tools', templateId: template.templateId },
-    (projectId) => moduleManager.generateModuleRegistry(projectId),
+    undefined,
     { includeStudio: false },
   );
 

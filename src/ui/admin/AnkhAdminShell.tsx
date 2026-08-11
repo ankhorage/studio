@@ -12,6 +12,7 @@ import {
   isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   resolveStudioAdminActiveRouteId,
+  resolveStudioModuleId,
   resolveStudioScreenId,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
@@ -29,6 +30,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const activeRouteId = resolveStudioAdminActiveRouteId(pathname);
   const contextualScreenId = resolveStudioScreenId(pathname) ?? studio.activeScreenId;
+  const contextualModuleId = resolveStudioModuleId(pathname);
   const activeDefinition = getStudioAdminRouteDefinition(activeRouteId);
   const compact = width < 900;
 
@@ -37,6 +39,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
       routeId,
       selectedNodeId: studio.selectedNodeId,
       screenId: contextualScreenId,
+      moduleId: contextualModuleId,
     });
     if (!path) return;
 
@@ -54,6 +57,7 @@ export function AnkhAdminShell({ children }: AnkhAdminShellProps) {
       activeRouteId={activeRouteId}
       selectedNodeId={studio.selectedNodeId}
       screenId={contextualScreenId}
+      moduleId={contextualModuleId}
       onRoutePress={openRoute}
     />
   );
@@ -112,6 +116,7 @@ function AdminNavigation(props: {
   readonly activeRouteId: StudioAdminRouteId;
   readonly selectedNodeId: string | null;
   readonly screenId: string | null;
+  readonly moduleId: string | null;
   readonly onRoutePress: (routeId: StudioAdminRouteId) => void;
 }) {
   const { theme } = useZoraTheme();
@@ -125,6 +130,7 @@ function AdminNavigation(props: {
         const available = isStudioAdminRouteAvailable(route.id, {
           selectedNodeId: props.selectedNodeId,
           screenId: props.screenId,
+          moduleId: props.moduleId,
         });
         const active = isStudioAdminRouteActive({
           currentRouteId: props.activeRouteId,

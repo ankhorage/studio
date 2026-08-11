@@ -22,7 +22,6 @@ import {
   setStudioManifestNavigatorInitialRoute,
   setStudioManifestNavigatorType,
   setStudioManifestRoutePrimaryNavigationVisibility,
-  updateStudioManifestModuleConfig,
   updateStudioManifestNode,
   updateStudioManifestOAuthProviders,
   updateStudioManifestTheme,
@@ -671,7 +670,7 @@ describe('manifestState', () => {
     ).toBe(visible);
   });
 
-  test('updates navigator, theme, module config, and OAuth providers', () => {
+  test('updates navigator, theme, and OAuth providers', () => {
     const manifest = createManifest();
     const drawer = setStudioManifestNavigatorType(manifest, 'drawer');
     const initialRoute = setStudioManifestNavigatorInitialRoute(drawer, 'about');
@@ -685,18 +684,13 @@ describe('manifestState', () => {
       name: 'Updated Theme',
       light: { primaryColor: '#555555' },
     });
-    const localized = updateStudioManifestModuleConfig(themed, 'expo-localization', {
-      defaultLocale: 'de',
-      locales: ['de', 'en'],
-    });
-    const oauth = updateStudioManifestOAuthProviders(localized, [
+    const oauth = updateStudioManifestOAuthProviders(themed, [
       { id: 'github', provider: 'github', label: 'GitHub', enabled: true },
     ] as never);
 
     expect(oauth.navigator.type).toBe('drawer');
     expect(oauth.navigator.initialRouteName).toBe('about');
     expect(oauth.themes.find((theme) => theme.id === 'theme-2')?.name).toBe('Updated Theme');
-    expect(oauth.settings.localization.defaultLocale).toBe('de');
     expect(oauth.infra.auth?.oauth?.providers).toHaveLength(1);
   });
 });

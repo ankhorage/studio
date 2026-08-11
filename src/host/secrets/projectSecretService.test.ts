@@ -23,7 +23,7 @@ function createManifest(): AppManifest {
       secretStore: {
         provider: 'supabase-vault',
       },
-      plugins: [],
+      modules: [],
     },
     navigator: {
       type: 'stack',

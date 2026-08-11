@@ -79,6 +79,7 @@ graph LR
   module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
   module_src_host_http_authRoutes_ts["src/host/http/authRoutes.ts"]
   module_src_host_http_dataSourceRoutes_ts["src/host/http/dataSourceRoutes.ts"]
+  module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   module_src_host_http_security_ts["src/host/http/security.ts"]
   module_src_host_http_server_ts["src/host/http/server.ts"]
@@ -122,6 +123,7 @@ graph LR
   module_src_host_manifestSystem_auth_shared_index_ts["src/host/manifestSystem/auth/shared/index.ts"]
   module_src_host_manifestSystem_index_ts["src/host/manifestSystem/index.ts"]
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
+  module_src_host_modules_catalog_test_ts["src/host/modules/catalog.test.ts"]
   module_src_host_modules_catalog_ts["src/host/modules/catalog.ts"]
   module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
@@ -172,17 +174,18 @@ graph LR
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
   module_src_insertModalModel_test_ts["src/insertModalModel.test.ts"]
   module_src_insertModalModel_ts["src/insertModalModel.ts"]
-  module_src_localizationConfig_public_test_ts["src/localizationConfig.public.test.ts"]
-  module_src_localizationConfig_test_ts["src/localizationConfig.test.ts"]
-  module_src_localizationConfig_ts["src/localizationConfig.ts"]
-  module_src_localizationPanelModel_test_ts["src/localizationPanelModel.test.ts"]
-  module_src_localizationPanelModel_ts["src/localizationPanelModel.ts"]
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   module_src_manifestState_routes_test_ts["src/manifestState.routes.test.ts"]
   module_src_manifestState_test_ts["src/manifestState.test.ts"]
   module_src_manifestState_ts["src/manifestState.ts"]
   module_src_manifestSync_test_ts["src/manifestSync.test.ts"]
   module_src_manifestSync_ts["src/manifestSync.ts"]
+  module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
+  module_src_moduleAdminApi_test_ts["src/moduleAdminApi.test.ts"]
+  module_src_moduleAdminApi_ts["src/moduleAdminApi.ts"]
+  module_src_moduleAdminContracts_ts["src/moduleAdminContracts.ts"]
+  module_src_moduleAdminModel_test_ts["src/moduleAdminModel.test.ts"]
+  module_src_moduleAdminModel_ts["src/moduleAdminModel.ts"]
   module_src_normalizeExternalApiSourceId_ts["src/normalizeExternalApiSourceId.ts"]
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
   module_src_projectAuthApi_ts["src/projectAuthApi.ts"]
@@ -214,7 +217,6 @@ graph LR
   module_src_runtime_interactionPolicy_test_ts["src/runtime/interactionPolicy.test.ts"]
   module_src_runtime_interactionPolicy_ts["src/runtime/interactionPolicy.ts"]
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
-  module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
@@ -230,9 +232,6 @@ graph LR
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
-  module_src_runtimeLocalization_public_test_ts["src/runtimeLocalization.public.test.ts"]
-  module_src_runtimeLocalization_test_ts["src/runtimeLocalization.test.ts"]
-  module_src_runtimeLocalization_ts["src/runtimeLocalization.ts"]
   module_src_secretResponseGuard_test_ts["src/secretResponseGuard.test.ts"]
   module_src_secretResponseGuard_ts["src/secretResponseGuard.ts"]
   module_src_studioAdminRouteModel_test_ts["src/studioAdminRouteModel.test.ts"]
@@ -286,6 +285,8 @@ graph LR
   module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx["src/ui/admin/pages/GeneratedApiResourceEditor.tsx"]
   module_src_ui_admin_pages_GeneratedApiToggle_tsx["src/ui/admin/pages/GeneratedApiToggle.tsx"]
   module_src_ui_admin_pages_ManualRestSourceCard_tsx["src/ui/admin/pages/ManualRestSourceCard.tsx"]
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx["src/ui/admin/pages/ModuleDetailAdminPage.tsx"]
+  module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
   module_src_ui_admin_pages_PropertiesAdminPage_test_ts["src/ui/admin/pages/PropertiesAdminPage.test.ts"]
   module_src_ui_admin_pages_PropertiesAdminPage_tsx["src/ui/admin/pages/PropertiesAdminPage.tsx"]
@@ -463,6 +464,10 @@ graph LR
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_dataSources_studioExternalApiService_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_http_server_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_moduleRoutes_test_ts --> module_src_moduleAdminContracts_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
@@ -470,7 +475,6 @@ graph LR
   module_src_host_http_server_ts --> module_src_host_orchestrator_infraRuntime_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_projectManager_ts
-  module_src_host_http_server_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_http_server_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_http_server_ts --> module_src_host_utils_trimOutput_ts
@@ -533,7 +537,9 @@ graph LR
   module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_auth_index_ts
   module_src_host_manifestSystem_index_ts --> module_src_host_manifestSystem_types_ts
   module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
+  module_src_host_modules_catalog_test_ts --> module_src_host_modules_catalog_ts
   module_src_host_modules_catalog_ts --> module_src_host_modules_layout_ts
+  module_src_host_modules_catalog_ts --> module_src_moduleAdminContracts_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
@@ -548,6 +554,7 @@ graph LR
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_modules_runtime_LocalFsTargetAdapter_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_moduleManager_ts --> module_src_host_orchestrator_resolveMutations_ts
+  module_src_host_orchestrator_moduleManager_ts --> module_src_moduleAdminContracts_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
@@ -562,7 +569,6 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectDeletion_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
-  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
@@ -617,9 +623,6 @@ graph LR
   module_src_insertModalModel_test_ts --> module_src_index_ts
   module_src_insertModalModel_test_ts --> module_src_insertModalModel_ts
   module_src_insertModalModel_ts --> module_src_index_ts
-  module_src_localizationConfig_public_test_ts --> module_src_localizationConfig_ts
-  module_src_localizationConfig_test_ts --> module_src_localizationConfig_ts
-  module_src_localizationPanelModel_test_ts --> module_src_localizationPanelModel_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_manifestState_ts
   module_src_manifestState_routes_test_ts --> module_src_index_ts
@@ -630,6 +633,13 @@ graph LR
   module_src_manifestSync_test_ts --> module_src_index_ts
   module_src_manifestSync_test_ts --> module_src_manifestSync_ts
   module_src_manifestSync_ts --> module_src_index_ts
+  module_src_moduleAdmin_public_test_ts --> module_src_index_ts
+  module_src_moduleAdmin_public_test_ts --> module_src_root_ts
+  module_src_moduleAdminApi_test_ts --> module_src_moduleAdminApi_ts
+  module_src_moduleAdminApi_ts --> module_src_moduleAdminContracts_ts
+  module_src_moduleAdminModel_test_ts --> module_src_moduleAdminContracts_ts
+  module_src_moduleAdminModel_test_ts --> module_src_moduleAdminModel_ts
+  module_src_moduleAdminModel_ts --> module_src_moduleAdminContracts_ts
   module_src_projectAuthApi_test_ts --> module_src_projectAuthApi_ts
   module_src_projectAuthApi_ts --> module_src_projectAuthHealth_ts
   module_src_projectAuthApi_ts --> module_src_secretResponseGuard_ts
@@ -668,8 +678,6 @@ graph LR
   module_src_runtime_stationarySelectionInputState_test_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
   module_src_runtimeDiagnosticsModel_test_ts --> module_src_runtimeDiagnosticsModel_ts
-  module_src_runtimeLocalization_public_test_ts --> module_src_runtimeLocalization_ts
-  module_src_runtimeLocalization_test_ts --> module_src_runtimeLocalization_ts
   module_src_secretResponseGuard_test_ts --> module_src_secretResponseGuard_ts
   module_src_studioAdminRouteModel_test_ts --> module_src_studioAdminRouteModel_ts
   module_src_studioAdminRouteModel_ts --> module_src_index_ts
@@ -682,6 +690,8 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ApisAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_AuthAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_BindingsAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModulesAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_PropertiesAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ScreenDetailAdminPage_tsx
@@ -791,6 +801,16 @@ graph LR
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_externalApiApi_ts
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_externalApiAuthoringContracts_ts
   module_src_ui_admin_pages_ManualRestSourceCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminApi_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminContracts_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminModel_ts
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_moduleAdminApi_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_moduleAdminContracts_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_OverviewAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_core_StudioContext_ts

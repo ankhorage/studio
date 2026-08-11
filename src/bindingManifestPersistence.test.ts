@@ -20,7 +20,7 @@ function createManifest(): StudioManifest {
     themes: [],
     activeThemeId: 'default',
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { plugins: [] },
+    infra: { modules: [] },
   };
 }
 

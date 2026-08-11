@@ -846,7 +846,7 @@ function createFallbackManifest(): AppManifest {
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-    infra: { plugins: [] },
+    infra: { modules: [] },
     navigator: { type: 'stack', routes: [] },
     screens: {},
     themes: [],

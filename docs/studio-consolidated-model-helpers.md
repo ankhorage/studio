@@ -16,10 +16,6 @@ render-state helpers for Studio admin routes.
 
 `@ankhorage/studio/studioSelectionModel` owns the package-neutral selection adapter model. Hosts still bridge it to their concrete UI selection provider.
 
-## Localization panel model
-
-`@ankhorage/studio/localizationPanelModel` owns translatable-field collection, localization-key creation, filtering, and locale add/remove model helpers.
-
 ## Host-owned concerns
 
 Hosts still own React state, rendering, Zora component metadata, runtime config composition, routing implementation, persistence, network fetches, and concrete UI components.

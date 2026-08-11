@@ -29,7 +29,7 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
     dataBindings: manifest.dataBindings ?? {},
     dataSources: manifest.dataSources ?? {},
     auth: manifest.infra.auth ?? null,
-    plugins: [...manifest.infra.plugins].sort(),
+    modules: [...manifest.infra.modules].sort(),
   });
 }
 

@@ -238,7 +238,7 @@ function createOAuthManifest(args: {
       secretStore: {
         provider: 'supabase-vault',
       },
-      plugins: [],
+      modules: [],
     },
     navigator: {
       type: 'stack',

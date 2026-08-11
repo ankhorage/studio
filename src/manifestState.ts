@@ -776,62 +776,6 @@ export function setStudioManifestActiveThemeMode(
   return { ...manifest, activeThemeMode };
 }
 
-export function updateStudioManifestModuleConfig(
-  manifest: StudioManifest,
-  moduleId: string,
-  config: Record<string, unknown>,
-): StudioManifest {
-  const previousModuleConfig = manifest.infra.modulesConfig?.[moduleId];
-  const updatedModuleConfig = {
-    ...manifest.infra.modulesConfig,
-    [moduleId]: {
-      ...(typeof previousModuleConfig === 'object' && previousModuleConfig !== null
-        ? previousModuleConfig
-        : {}),
-      ...config,
-    },
-  };
-
-  let nextManifest: StudioManifest = {
-    ...manifest,
-    infra: {
-      ...manifest.infra,
-      modulesConfig: updatedModuleConfig,
-    },
-  };
-
-  if (moduleId === 'expo-localization') {
-    const previousLocalization = manifest.settings.localization;
-    const nextLocalization = { ...previousLocalization };
-    let hasLocalizationUpdate = false;
-
-    if (typeof config.defaultLocale === 'string') {
-      nextLocalization.defaultLocale = config.defaultLocale;
-      hasLocalizationUpdate = true;
-    }
-
-    if (
-      Array.isArray(config.locales) &&
-      config.locales.every((locale: unknown) => typeof locale === 'string')
-    ) {
-      nextLocalization.locales = config.locales;
-      hasLocalizationUpdate = true;
-    }
-
-    if (hasLocalizationUpdate) {
-      nextManifest = {
-        ...nextManifest,
-        settings: {
-          ...manifest.settings,
-          localization: nextLocalization,
-        },
-      };
-    }
-  }
-
-  return nextManifest;
-}
-
 export function updateStudioManifestOAuthProviders(
   manifest: StudioManifest,
   providers: AuthOAuthProviderConfig[],

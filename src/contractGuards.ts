@@ -330,9 +330,11 @@ function isInfraManifest(value: unknown): value is InfraManifest {
     (value.storage === undefined || isStorageSpec(value.storage)) &&
     (value.state === undefined || isStateSpec(value.state)) &&
     (value.networking === undefined || isNetworkingSpec(value.networking)) &&
-    Array.isArray(value.plugins) &&
-    value.plugins.every((plugin) => typeof plugin === 'string') &&
-    (value.pluginsConfig === undefined || isRecord(value.pluginsConfig))
+    Array.isArray(value.modules) &&
+    value.modules.every((moduleId) => typeof moduleId === 'string') &&
+    (value.modulesConfig === undefined || isRecord(value.modulesConfig)) &&
+    !('plugins' in value) &&
+    !('pluginsConfig' in value)
   );
 }
 
