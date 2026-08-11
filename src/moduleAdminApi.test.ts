@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import {
+  createProjectModuleAdminOperationApiPath,
   createProjectModuleApiPath,
   parseStudioModuleState,
   StudioModuleApiError,
@@ -11,6 +12,20 @@ describe('moduleAdminApi', () => {
     expect(
       createProjectModuleApiPath({ projectId: 'project one', moduleId: 'vendor/module' }),
     ).toBe('/projects/project%20one/modules/vendor%2Fmodule');
+    expect(
+      createProjectModuleAdminOperationApiPath({
+        projectId: 'project one',
+        moduleId: 'vendor/module',
+        operation: 'domain.operation/value',
+      }),
+    ).toBe('/projects/project%20one/modules/vendor%2Fmodule/admin/domain.operation%2Fvalue');
+    expect(() =>
+      createProjectModuleAdminOperationApiPath({
+        projectId: 'project one',
+        moduleId: 'vendor/module',
+        operation: '   ',
+      }),
+    ).toThrow('Module admin operation must not be empty.');
   });
 
   test('parses contribution absence and exposes explicit HTTP error status', () => {
