@@ -69,8 +69,11 @@ interface RuntimeNodeInteractionPage {
 
 const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
   const router = useRouter();
+  const studio = useStudio();
 
   useEffect(() => {
+    if (studio.isLoading) return;
+
     type SmokeNavigate = (href: string, options?: { replace?: boolean }) => void;
     const smokeGlobal = globalThis as typeof globalThis & {
       __studioSmokeNavigate?: SmokeNavigate;
@@ -93,7 +96,7 @@ const SMOKE_NAVIGATION_PROBE_SOURCE = `export function SmokeNavigationProbe() {
         delete smokeGlobal.__studioSmokeNavigationReady;
       }
     };
-  }, [router]);
+  }, [router, studio.isLoading]);
 
   return null;
 }`;
@@ -434,6 +437,7 @@ test('native unsupported layout fixture covers layout-sensitive Runtime relation
 });
 
 test('root-owned smoke navigation probe publishes readiness and cleans up only owned callbacks', () => {
+  expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain('if (studio.isLoading) return;');
   expect(SMOKE_NAVIGATION_PROBE_SOURCE).toContain(
     'smokeGlobal.__studioSmokeNavigationReady = navigate;',
   );
@@ -660,6 +664,55 @@ adminWebSmokeTest(
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
         }
+
+        await page.navigateStudio('/ankh/screens/dashboard', expoOutput);
+        const detailBeforeRefresh = await waitForBodyText(
+          page,
+          (text) =>
+            text.includes('Stable screen ID') &&
+            text.includes('dashboard') &&
+            text.includes('Canonical pathname/pattern') &&
+            text.includes('/dashboard'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(detailBeforeRefresh).toContain('Open app screen');
+        expect(detailBeforeRefresh).toContain('Hidden');
+
+        const detailUrl = await page.evaluate<string>('globalThis.location.href');
+        expect(new URL(detailUrl).pathname).toBe('/ankh/screens/dashboard');
+        const directPage = await openChromePage(debugPort);
+        try {
+          await directPage.navigate(detailUrl);
+          expect(
+            new URL(await directPage.evaluate<string>('globalThis.location.href')).pathname,
+          ).toBe('/ankh/screens/dashboard');
+          await directPage.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+          expect(
+            new URL(await directPage.evaluate<string>('globalThis.location.href')).pathname,
+          ).toBe('/ankh/screens/dashboard');
+          const refreshedDetail = await waitForBodyText(
+            directPage,
+            (text) =>
+              text.includes('Stable screen ID') &&
+              text.includes('dashboard') &&
+              text.includes('Canonical pathname/pattern') &&
+              text.includes('/dashboard'),
+            HTTP_TIMEOUT_MS,
+          );
+          expect(refreshedDetail).toContain('Open app screen');
+          expect(refreshedDetail).toContain('Hidden');
+          expect(directPage.errors).toEqual([]);
+        } finally {
+          directPage.close();
+        }
+
+        await page.navigateStudio('/ankh/screens/deleted-screen', expoOutput);
+        const missingDetail = await waitForBodyText(
+          page,
+          (text) => text.includes('Screen not found') && text.includes('deleted-screen'),
+          HTTP_TIMEOUT_MS,
+        );
+        expect(missingDetail).toContain('missing or was deleted');
         expect(page.errors).toEqual([]);
       } finally {
         page.close();
@@ -2071,8 +2124,9 @@ class ChromePage {
   }
 
   async navigate(url: string): Promise<void> {
+    const loaded = this.waitForLoad();
     await this.send('Page.navigate', { url });
-    await this.waitForLoad();
+    await loaded;
   }
 
   async waitForStudioNavigationReady(

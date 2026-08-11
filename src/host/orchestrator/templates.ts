@@ -418,17 +418,7 @@ export function getPrettierRcJs() {
 }
 
 export function getIndexJs() {
-  return `import React from 'react';
-import { registerRootComponent } from 'expo';
-import { ExpoRoot } from 'expo-router';
-
-function App() {
-  const ctx = require.context('./src/app');
-
-  return <ExpoRoot context={ctx} />;
-}
-
-registerRootComponent(App);
+  return `import 'expo-router/entry';
 `;
 }
 

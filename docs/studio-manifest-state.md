@@ -43,6 +43,11 @@ canonical nested navigator tree. It includes unrouted screens and reports missin
 references, ambiguous screen references, duplicate sibling route names, invalid initial routes,
 empty navigators, and malformed route targets without flattening the manifest.
 
+`resolveStudioScreenAppPath` returns a pathname only when one parameter-free, globally unambiguous
+canonical route reference resolves to a screen. It returns `null` for unrouted, multiply
+referenced, colliding, or dynamic route patterns so admin UI cannot silently choose a route or
+invent missing route parameters.
+
 Screen creation targets the primary app navigator (`(app)`, then `app`, then the root) unless an
 explicit valid parent path is supplied. Screen deletion removes every route reference and every
 binding owned by the deleted screen subtree, normalizes affected initial routes, and selects a
@@ -63,6 +68,7 @@ import {
   deriveStudioScreenNavigationModel,
   moveStudioManifestRoute,
   resolveInitialScreenId,
+  resolveStudioScreenAppPath,
   updateStudioManifestNode,
 } from '@ankhorage/studio/manifestState';
 ```

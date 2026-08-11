@@ -260,6 +260,33 @@ export function deriveStudioScreenNavigationModel(
   };
 }
 
+/**
+ * Returns a concrete canonical app pathname only when a screen has one route
+ * reference and that route does not require runtime parameters.
+ */
+export function resolveStudioScreenAppPath(
+  model: StudioScreenNavigationModel,
+  screenId: string,
+): string | null {
+  const entry = model.screens.find((candidate) => candidate.screenId === screenId);
+  if (!entry) return null;
+  if (entry.routeReferences.length !== 1) return null;
+  const [reference] = entry.routeReferences;
+  if (!reference) return null;
+
+  const hasDynamicSegment = reference.pathnamePattern
+    .split('/')
+    .some((segment) => segment.startsWith(':') || /^\[.*\]$/u.test(segment));
+  if (hasDynamicSegment) return null;
+
+  const matchingReferences = model.screens.flatMap((candidate) =>
+    candidate.routeReferences.filter(
+      (candidateReference) => candidateReference.pathnamePattern === reference.pathnamePattern,
+    ),
+  );
+  return matchingReferences.length === 1 ? reference.pathnamePattern : null;
+}
+
 function collectNavigationModelReferences(args: {
   navigator: NavigatorSpec;
   screens: StudioManifest['screens'];

@@ -125,6 +125,7 @@ export type StudioPanelId = 'layers' | 'modules' | 'localization';
 export type StudioAdminRouteId =
   | 'overview'
   | 'screens'
+  | 'screen-detail'
   | 'apis'
   | 'api-data-sources'
   | 'api-operations'
@@ -149,7 +150,10 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/secrets'
   | '/ankh/theme';
 export type StudioAdminRoutePath =
-  StudioAdminStaticRoutePath | `/ankh/bindings/${string}` | `/ankh/properties/${string}`;
+  | StudioAdminStaticRoutePath
+  | `/ankh/screens/${string}`
+  | `/ankh/bindings/${string}`
+  | `/ankh/properties/${string}`;
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {

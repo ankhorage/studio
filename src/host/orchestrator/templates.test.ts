@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 
 import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility';
-import { getAppConfigTs, getBabelConfigJs, getPackageJson } from './templates';
+import { getAppConfigTs, getBabelConfigJs, getIndexJs, getPackageJson } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
   it('pins the canonical runtime, ZORA, Supabase auth, and Expo persistence dependencies', () => {
@@ -80,5 +80,13 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).toContain("scheme: 'ankh-oauthapp'");
     expect(appConfig).toContain("package: 'com.ankh.oauthapp'");
     expect(appConfig).toContain("bundleIdentifier: 'com.ankh.oauthapp'");
+  });
+
+  it('uses the canonical Expo Router entry for cold deep links', () => {
+    const entry = getIndexJs();
+
+    expect(entry).toBe("import 'expo-router/entry';\n");
+    expect(entry).not.toContain('ExpoRoot');
+    expect(entry).not.toContain('require.context');
   });
 });

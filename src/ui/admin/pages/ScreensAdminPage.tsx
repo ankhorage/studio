@@ -12,6 +12,7 @@ import {
   Text,
 } from '@ankhorage/zora';
 import React, { useMemo, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
@@ -21,6 +22,7 @@ import {
   type StudioScreenNavigationEntry,
   type StudioScreenRouteReference,
 } from '../../../manifestState';
+import { createStudioScreenRoutePath } from '../../../studioAdminRouteModel';
 import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
 import { applyScreensAdminAction } from './screens/screensAdminActions';
 
@@ -36,6 +38,7 @@ interface PendingScreenDelete {
 
 export function ScreensAdminPage() {
   const studio = useStudio();
+  const router = useRouter();
   const [newScreenName, setNewScreenName] = useState('');
   const [pendingDelete, setPendingDelete] = useState<PendingScreenDelete | null>(null);
   const model = useMemo(
@@ -144,6 +147,7 @@ export function ScreensAdminPage() {
               screenCount={model.screens.length}
               manifest={manifest}
               dispatch={dispatch}
+              onOpenDetail={(screenId) => router.push(createStudioScreenRoutePath(screenId))}
               onRequestDelete={setPendingDelete}
             />
           ))}
@@ -172,6 +176,7 @@ function ScreenOverviewRow(props: {
   screenCount: number;
   manifest: NonNullable<ReturnType<typeof useStudio>['manifest']>;
   dispatch: (action: Parameters<typeof applyScreensAdminAction>[1]) => void;
+  onOpenDetail: (screenId: string) => void;
   onRequestDelete: (pending: PendingScreenDelete) => void;
 }) {
   const { entry } = props;
@@ -184,14 +189,19 @@ function ScreenOverviewRow(props: {
       meta={entry.screenId}
       variant="card"
       action={
-        <Button
-          color="danger"
-          variant="ghost"
-          disabled={!canDelete}
-          onPress={() => props.onRequestDelete({ screenId: entry.screenId, label })}
-        >
-          Delete
-        </Button>
+        <ButtonGroup orientation="responsive" align="end">
+          <Button variant="outline" onPress={() => props.onOpenDetail(entry.screenId)}>
+            Details
+          </Button>
+          <Button
+            color="danger"
+            variant="ghost"
+            disabled={!canDelete}
+            onPress={() => props.onRequestDelete({ screenId: entry.screenId, label })}
+          >
+            Delete
+          </Button>
+        </ButtonGroup>
       }
       description={
         <View style={styles.screenDetails}>

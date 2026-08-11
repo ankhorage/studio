@@ -517,8 +517,12 @@ function useStudioManifestPersistence(args: {
     setError(null);
     try {
       const loaded = await requestStudioManifest(projectId);
-      replaceManifest(loaded);
-      lastPersistedSignatureRef.current = createStudioManifestSignature(loaded);
+      const loadedSignature = createStudioManifestSignature(loaded);
+      const currentManifest = manifestRef.current;
+      if (!currentManifest || createStudioManifestSignature(currentManifest) !== loadedSignature) {
+        replaceManifest(loaded);
+      }
+      lastPersistedSignatureRef.current = loadedSignature;
       setSaveStatus('saved');
     } catch (caught) {
       const fallbackSignature = initialManifest
@@ -531,7 +535,15 @@ function useStudioManifestPersistence(args: {
       hydratedRef.current = true;
       setIsLoading(false);
     }
-  }, [initialManifest, projectId, replaceManifest, setError, setIsLoading, setSaveStatus]);
+  }, [
+    initialManifest,
+    manifestRef,
+    projectId,
+    replaceManifest,
+    setError,
+    setIsLoading,
+    setSaveStatus,
+  ]);
 
   useEffect(() => {
     void loadManifest();

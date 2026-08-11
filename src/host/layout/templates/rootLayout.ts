@@ -327,13 +327,14 @@ useEffect(() => {
     onReady?.();
   }, [onReady]);`
     : '';
-  const innerContentPendingBoundary = authRuntime
-    ? `
+  const innerContentPendingBoundary =
+    authRuntime && !includeStudio
+      ? `
   if (authState === 'pending') {
     return null;
   }
 `
-    : '';
+      : '';
   const runtimeOperationHelpers = `
 async function runtimeDataSourceFetch(
   url: string,
@@ -397,12 +398,16 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
   const outputDeclaration = includeStudio
     ? `${runtimeContentDeclaration}
   const output = __DEV__ ? (
-    <AnkhStudio
-      runtimeRegistry={runtimeComponentRegistry}
-      runtimeConfig={generatedRuntimeConfig}
-    >
-      {runtimeContent}
-    </AnkhStudio>
+    isStudioAdminPath(appPathname) ? (
+      runtimeContent
+    ) : (
+      <AnkhStudio
+        runtimeRegistry={runtimeComponentRegistry}
+        runtimeConfig={generatedRuntimeConfig}
+      >
+        {runtimeContent}
+      </AnkhStudio>
+    )
   ) : (
     runtimeContent
   );`

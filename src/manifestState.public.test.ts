@@ -23,6 +23,7 @@ import {
   pathToKey,
   removeScreenIdFromRoutes,
   resolveInitialScreenId,
+  resolveStudioScreenAppPath,
   type ScreenRouteEntry,
   type ScreenRouteGroup,
   setStudioManifestActiveThemeId,
@@ -183,6 +184,7 @@ describe('manifestState public surface', () => {
     expect(darkTheme.activeThemeMode).toBe('dark');
     expect(deletedTheme.activeThemeId).toBe('theme-2');
     expect(reference?.pathnamePattern).toBe('/');
+    expect(resolveStudioScreenAppPath(model, entry?.screenId ?? '')).toBe('/');
     expect(diagnosticCode).toBe('missing-screen-reference');
     expect(findNavigatorAtPath(moved.navigator, ['(app)'])?.routes[1]?.name).toBe('index');
   });

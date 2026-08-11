@@ -5,6 +5,7 @@ import {
   createStudioAdminRouteRenderState,
   createStudioBindingsRoutePath,
   createStudioPropertiesRoutePath,
+  createStudioScreenRoutePath,
   isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   openStudioAdminRoute,
@@ -14,6 +15,7 @@ import {
   resolveStudioLastNonAdminLocation,
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
+  resolveStudioScreenId,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from './studioAdminRouteModel';
 
@@ -22,6 +24,7 @@ describe('studioAdminRouteModel', () => {
     expect(STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => route.id)).toEqual([
       'overview',
       'screens',
+      'screen-detail',
       'apis',
       'api-data-sources',
       'api-operations',
@@ -57,6 +60,22 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/app')).toBeNull();
   });
 
+  test('round-trips encoded stable screen ids without treating the overview as detail', () => {
+    const screenId = 'screen / café';
+    const routePath = createStudioScreenRoutePath(screenId);
+
+    expect(routePath).toBe('/ankh/screens/screen%20%2F%20caf%C3%A9');
+    expect(resolveStudioScreenId(routePath)).toBe(screenId);
+    expect(resolveStudioAdminRouteId(routePath)).toBe('screen-detail');
+    expect(resolveStudioAdminRoutePath(routePath)).toBe(routePath);
+    expect(createStudioAdminRoutePath({ routeId: 'screen-detail', screenId })).toBe(routePath);
+    expect(resolveStudioScreenId('/ankh/screens')).toBeNull();
+    expect(resolveStudioScreenId('/ankh/screens/')).toBeNull();
+    expect(resolveStudioScreenId('/ankh/screens/screen-1/extra')).toBeNull();
+    expect(resolveStudioScreenId('/ankh/screens/%E0%A4%A')).toBeNull();
+    expect(createStudioAdminRoutePath({ routeId: 'screen-detail' })).toBeNull();
+  });
+
   test('resolves contextual node ids and creates contextual paths', () => {
     expect(resolveStudioBindingsNodeId('/ankh/bindings/node-1')).toBe('node-1');
     expect(resolveStudioBindingsNodeId('/ankh/bindings/node%201')).toBe('node 1');
@@ -87,6 +106,7 @@ describe('studioAdminRouteModel', () => {
       routeAdminId: 'auth-providers',
       resolvedAdminRouteId: 'auth-providers',
       routeAdminPath: '/ankh/auth/providers',
+      screenId: null,
       bindingsNodeId: null,
       propertiesNodeId: null,
       shouldRenderAppContent: false,
@@ -98,6 +118,18 @@ describe('studioAdminRouteModel', () => {
         activeAdminRouteId: 'overview',
       }).bindingsNodeId,
     ).toBe('button-1');
+    expect(
+      createStudioAdminRouteRenderState({
+        pathname: '/ankh/screens/screen%20one',
+        activeAdminRouteId: 'overview',
+      }),
+    ).toMatchObject({
+      routeAdminId: 'screen-detail',
+      resolvedAdminRouteId: 'screen-detail',
+      screenId: 'screen one',
+      shouldRenderAppContent: false,
+      shouldRenderAdminShell: true,
+    });
   });
 
   test('tracks hierarchy and contextual availability', () => {
@@ -117,6 +149,19 @@ describe('studioAdminRouteModel', () => {
     expect(isStudioAdminRouteAvailable('bindings', { selectedNodeId: 'node-1' })).toBe(true);
     expect(isStudioAdminRouteAvailable('properties', { selectedNodeId: null })).toBe(false);
     expect(isStudioAdminRouteAvailable('properties', { selectedNodeId: 'node-1' })).toBe(true);
+    expect(isStudioAdminRouteAvailable('screen-detail', { selectedNodeId: null })).toBe(false);
+    expect(
+      isStudioAdminRouteAvailable('screen-detail', {
+        selectedNodeId: null,
+        screenId: 'screen-1',
+      }),
+    ).toBe(true);
+    expect(
+      isStudioAdminRouteActive({
+        currentRouteId: 'screen-detail',
+        candidateRouteId: 'screens',
+      }),
+    ).toBe(true);
   });
 
   test('opens admin routes through canonical path helpers', () => {
@@ -139,8 +184,17 @@ describe('studioAdminRouteModel', () => {
       }),
     ).toBe(false);
 
-    expect(panelIds).toEqual([null]);
-    expect(routes).toEqual(['/ankh/screens']);
+    expect(
+      openStudioAdminRoute({
+        next: 'screen-detail',
+        screenId: 'screen 1',
+        setActivePanelId: (panelId) => panelIds.push(panelId),
+        pushRoute: (routePath) => routes.push(routePath),
+      }),
+    ).toBe(true);
+
+    expect(panelIds).toEqual([null, null]);
+    expect(routes).toEqual(['/ankh/screens', '/ankh/screens/screen%201']);
   });
 
   test('preserves search and hash when the runtime location matches the pathname', () => {

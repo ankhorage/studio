@@ -39,6 +39,7 @@ test('owns Studio draft hydration and autosave through the host manifest boundar
   expect(source).toContain('createStudioManifestSignature');
   expect(source).toContain('StudioManifestPersistenceCoordinator');
   expect(source).toContain('lastPersistedSignatureRef');
+  expect(source).toContain('createStudioManifestSignature(currentManifest) !== loadedSignature');
   expect(source).toContain('refetchManifest: persistence.refetchManifest');
   expect(source).toContain('flushManifest: persistence.flushManifest');
   expect(source).not.toContain('pendingSaveRef');

@@ -7,7 +7,11 @@ import type {
 
 export interface StudioAdminRouteDefinition {
   readonly id: StudioAdminRouteId;
-  readonly path: StudioAdminStaticRoutePath | '/ankh/bindings/:nodeId' | '/ankh/properties/:nodeId';
+  readonly path:
+    | StudioAdminStaticRoutePath
+    | '/ankh/screens/:screenId'
+    | '/ankh/bindings/:nodeId'
+    | '/ankh/properties/:nodeId';
   readonly label: string;
   readonly icon: string;
   readonly order: number;
@@ -20,6 +24,7 @@ export interface StudioAdminRouteRenderState {
   routeAdminId: StudioAdminRouteId | null;
   resolvedAdminRouteId: StudioAdminRouteId;
   routeAdminPath: StudioAdminRoutePath | null;
+  screenId: string | null;
   bindingsNodeId: string | null;
   propertiesNodeId: string | null;
   shouldRenderAppContent: boolean;
@@ -28,6 +33,7 @@ export interface StudioAdminRouteRenderState {
 
 export interface StudioAdminRouteAvailabilityContext {
   readonly selectedNodeId: string | null;
+  readonly screenId?: string | null;
 }
 
 export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] = [
@@ -46,6 +52,16 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     icon: 'phone-portrait-outline',
     order: 10,
     description: 'Screens and primary app navigation.',
+  },
+  {
+    id: 'screen-detail',
+    path: '/ankh/screens/:screenId',
+    label: 'Screen detail',
+    icon: 'document-text-outline',
+    order: 11,
+    parentId: 'screens',
+    contextual: true,
+    description: 'Canonical screen metadata and resolved route context.',
   },
   {
     id: 'apis',
@@ -146,6 +162,7 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
 
 const BINDINGS_ROUTE_PREFIX = '/ankh/bindings/';
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
+const SCREEN_ROUTE_PREFIX = '/ankh/screens/';
 
 export function getStudioAdminRouteDefinition(
   routeId: StudioAdminRouteId,
@@ -159,6 +176,10 @@ export function getStudioAdminRouteDefinition(
 }
 
 export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId | null {
+  if (pathname.startsWith(SCREEN_ROUTE_PREFIX)) {
+    return resolveStudioScreenId(pathname) ? 'screen-detail' : null;
+  }
+
   if (pathname.startsWith(BINDINGS_ROUTE_PREFIX)) {
     return resolveStudioBindingsNodeId(pathname) ? 'bindings' : null;
   }
@@ -171,6 +192,7 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
     (candidate) =>
       candidate.path !== '/ankh/bindings/:nodeId' &&
       candidate.path !== '/ankh/properties/:nodeId' &&
+      candidate.path !== '/ankh/screens/:screenId' &&
       candidate.path === pathname,
   );
 
@@ -180,6 +202,10 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
 export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRoutePath | null {
   const routeId = resolveStudioAdminRouteId(pathname);
   if (!routeId) return null;
+  if (routeId === 'screen-detail') {
+    const screenId = resolveStudioScreenId(pathname);
+    return screenId ? createStudioScreenRoutePath(screenId) : null;
+  }
   if (routeId === 'bindings') {
     const nodeId = resolveStudioBindingsNodeId(pathname);
     return nodeId ? createStudioBindingsRoutePath(nodeId) : null;
@@ -194,6 +220,14 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
 
 export function resolveStudioBindingsNodeId(pathname: string): string | null {
   return resolveStudioContextNodeId(pathname, BINDINGS_ROUTE_PREFIX);
+}
+
+export function resolveStudioScreenId(pathname: string): string | null {
+  return resolveStudioDetailId(pathname, SCREEN_ROUTE_PREFIX);
+}
+
+export function createStudioScreenRoutePath(screenId: string): `/ankh/screens/${string}` {
+  return `/ankh/screens/${encodeURIComponent(screenId)}`;
 }
 
 export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
@@ -211,7 +245,11 @@ export function createStudioPropertiesRoutePath(nodeId: string): `/ankh/properti
 export function createStudioAdminRoutePath(args: {
   routeId: StudioAdminRouteId;
   selectedNodeId?: string | null;
+  screenId?: string | null;
 }): StudioAdminRoutePath | null {
+  if (args.routeId === 'screen-detail') {
+    return args.screenId ? createStudioScreenRoutePath(args.screenId) : null;
+  }
   if (args.routeId === 'bindings') {
     return args.selectedNodeId ? createStudioBindingsRoutePath(args.selectedNodeId) : null;
   }
@@ -228,6 +266,9 @@ export function isStudioAdminRouteAvailable(
 ): boolean {
   if (routeId === 'bindings' || routeId === 'properties') {
     return context.selectedNodeId !== null;
+  }
+  if (routeId === 'screen-detail') {
+    return Boolean(context.screenId);
   }
 
   return true;
@@ -266,6 +307,7 @@ export function createStudioAdminRouteRenderState(args: {
     routeAdminId,
     resolvedAdminRouteId,
     routeAdminPath,
+    screenId: resolveStudioScreenId(args.pathname),
     bindingsNodeId: resolveStudioBindingsNodeId(args.pathname),
     propertiesNodeId: resolveStudioPropertiesNodeId(args.pathname),
     shouldRenderAppContent: routeAdminId === null,
@@ -276,12 +318,14 @@ export function createStudioAdminRouteRenderState(args: {
 export function openStudioAdminRoute(args: {
   next: StudioAdminRouteId;
   selectedNodeId?: string | null;
+  screenId?: string | null;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
   pushRoute: (routePath: StudioAdminRoutePath) => void;
 }): boolean {
   const routePath = createStudioAdminRoutePath({
     routeId: args.next,
     selectedNodeId: args.selectedNodeId ?? null,
+    screenId: args.screenId ?? null,
   });
   if (!routePath) return false;
 
@@ -320,5 +364,16 @@ function resolveStudioContextNodeId(pathname: string, prefix: string): string | 
     return decodeURIComponent(encodedNodeId);
   } catch {
     return encodedNodeId;
+  }
+}
+
+function resolveStudioDetailId(pathname: string, prefix: string): string | null {
+  if (!pathname.startsWith(prefix)) return null;
+  const remainder = pathname.slice(prefix.length);
+  if (!remainder || remainder.includes('/')) return null;
+  try {
+    return decodeURIComponent(remainder) || null;
+  } catch {
+    return null;
   }
 }

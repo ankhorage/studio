@@ -484,7 +484,7 @@ function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
     .replace(/^\/ankh\/?/u, '')
     .split('/')
     .filter(Boolean)
-    .map((segment) => (segment.startsWith(':') ? '[id]' : segment));
+    .map((segment) => (segment.startsWith(':') ? `[${segment.slice(1)}]` : segment));
   const hasChildren = STUDIO_ADMIN_ROUTE_REGISTRY.some(
     (candidate) => candidate.parentId === routeId,
   );

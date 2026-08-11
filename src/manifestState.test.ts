@@ -17,6 +17,7 @@ import {
   resolveInitialActiveScreenId,
   resolveInitialScreenId,
   resolveSafeSelectedNodeId,
+  resolveStudioScreenAppPath,
   setStudioManifestNavigatorInitialRoute,
   setStudioManifestNavigatorType,
   setStudioManifestRoutePrimaryNavigationVisibility,
@@ -398,6 +399,30 @@ describe('manifestState', () => {
     });
     expect(unrouted?.routeReferences).toEqual([]);
     expect(model.diagnostics).toEqual([]);
+  });
+
+  test('resolves an app pathname only for one concrete canonical route reference', () => {
+    const manifest = createManifest();
+    let model = deriveStudioScreenNavigationModel(manifest);
+    const home = model.screens.find((entry) => entry.screenId === 'screen-home');
+    expect(resolveStudioScreenAppPath(model, home?.screenId ?? '')).toBe('/home');
+
+    manifest.navigator.routes.push({ name: 'home-alias', screenId: 'screen-home' });
+    model = deriveStudioScreenNavigationModel(manifest);
+    const ambiguousHome = model.screens.find((entry) => entry.screenId === 'screen-home');
+    expect(resolveStudioScreenAppPath(model, ambiguousHome?.screenId ?? '')).toBeNull();
+
+    manifest.navigator.routes = [{ name: '[id]', path: 'products/:id', screenId: 'screen-home' }];
+    model = deriveStudioScreenNavigationModel(manifest);
+    const dynamicHome = model.screens.find((entry) => entry.screenId === 'screen-home');
+    expect(resolveStudioScreenAppPath(model, dynamicHome?.screenId ?? '')).toBeNull();
+
+    manifest.navigator.routes = [
+      { name: 'home', path: '/shared', screenId: 'screen-home' },
+      { name: 'about', path: '/shared', screenId: 'screen-about' },
+    ];
+    model = deriveStudioScreenNavigationModel(manifest);
+    expect(resolveStudioScreenAppPath(model, 'screen-home')).toBeNull();
   });
 
   test('reports malformed navigator and route references deterministically', () => {
