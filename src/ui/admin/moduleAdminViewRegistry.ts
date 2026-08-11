@@ -1,10 +1,7 @@
 import { expoLocalizationAdminViewContribution } from '@ankhorage/orchestrator-module-expo-localization/admin-view';
 import type { ComponentType } from 'react';
 
-type StudioModuleAdminViewExecutor = (
-  operation: string,
-  input?: unknown,
-) => Promise<unknown>;
+type StudioModuleAdminViewExecutor = (operation: string, input?: unknown) => Promise<unknown>;
 
 interface StudioModuleAdminViewProps {
   readonly execute: StudioModuleAdminViewExecutor;
@@ -27,6 +24,8 @@ const STUDIO_MODULE_ADMIN_VIEW_REGISTRY = new Map<string, StudioModuleAdminViewC
   ]),
 );
 
-export function getStudioModuleAdminView(moduleId: string): StudioModuleAdminViewContribution | null {
+export function getStudioModuleAdminView(
+  moduleId: string,
+): StudioModuleAdminViewContribution | null {
   return STUDIO_MODULE_ADMIN_VIEW_REGISTRY.get(moduleId) ?? null;
 }

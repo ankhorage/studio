@@ -1436,7 +1436,7 @@
             <li>
               <button class="nav-button" type="button" data-target="src/moduleAdminApi.ts">
                 src/moduleAdminApi.ts
-                <small>17 functions</small>
+                <small>19 functions</small>
               </button>
             </li>
             <li>
@@ -1751,6 +1751,26 @@
               >
                 src/ui/admin/AuthAdminSession.tsx
                 <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/ui/admin/ModuleAdminViewHost.tsx"
+              >
+                src/ui/admin/ModuleAdminViewHost.tsx
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/ui/admin/moduleAdminViewRegistry.ts"
+              >
+                src/ui/admin/moduleAdminViewRegistry.ts
+                <small>1 function</small>
               </button>
             </li>
             <li>
@@ -2229,7 +2249,7 @@
             <div class="summary">
               <div><strong>128</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>320</strong><span class="muted">modules</span></div>
+              <div><strong>324</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -4712,13 +4732,15 @@
             </article>
             <article
               class="item"
-              data-search="src/moduleAdminApi.ts src/moduleAdminContracts.ts createProjectModuleApiPath finalizePendingProjectModules getProjectModule installProjectModule listProjectModules parseStudioModuleState StudioModuleApiError uninstallProjectModule updateProjectModuleConfig"
+              data-search="src/moduleAdminApi.ts src/moduleAdminContracts.ts createProjectModuleAdminOperationApiPath createProjectModuleApiPath executeProjectModuleAdminOperation finalizePendingProjectModules getProjectModule installProjectModule listProjectModules parseStudioModuleState StudioModuleApiError uninstallProjectModule updateProjectModuleConfig"
             >
               <h3>src/moduleAdminApi.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <code>src/moduleAdminContracts.ts</code></p>
               <p>
-                <strong>Exports:</strong> <code>createProjectModuleApiPath</code>,
+                <strong>Exports:</strong> <code>createProjectModuleAdminOperationApiPath</code>,
+                <code>createProjectModuleApiPath</code>,
+                <code>executeProjectModuleAdminOperation</code>,
                 <code>finalizePendingProjectModules</code>, <code>getProjectModule</code>,
                 <code>installProjectModule</code>, <code>listProjectModules</code>,
                 <code>parseStudioModuleState</code>, <code>StudioModuleApiError</code>,
@@ -5627,6 +5649,47 @@
             </article>
             <article
               class="item"
+              data-search="src/ui/admin/ModuleAdminViewBoundary.tsx ModuleAdminViewBoundary"
+            >
+              <h3>src/ui/admin/ModuleAdminViewBoundary.tsx</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>ModuleAdminViewBoundary</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/ModuleAdminViewHost.tsx src/core/StudioContext.ts src/moduleAdminApi.ts src/ui/admin/ModuleAdminViewBoundary.tsx src/ui/admin/moduleAdminViewRegistry.ts ModuleAdminViewHost"
+            >
+              <h3>src/ui/admin/ModuleAdminViewHost.tsx</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
+                <code>src/moduleAdminApi.ts</code>,
+                <code>src/ui/admin/ModuleAdminViewBoundary.tsx</code>,
+                <code>src/ui/admin/moduleAdminViewRegistry.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <code>ModuleAdminViewHost</code></p>
+            </article>
+            <article class="item" data-search="src/ui/admin/moduleAdminViewRegistry.test.ts">
+              <h3>src/ui/admin/moduleAdminViewRegistry.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/ui/admin/moduleAdminViewRegistry.ts getStudioModuleAdminView StudioModuleAdminViewContribution"
+            >
+              <h3>src/ui/admin/moduleAdminViewRegistry.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>getStudioModuleAdminView</code>,
+                <code>StudioModuleAdminViewContribution</code>
+              </p>
+            </article>
+            <article
+              class="item"
               data-search="src/ui/admin/pages/adminAuthCredentialFlow.test.ts src/authSettings.ts src/ui/admin/pages/adminAuthCredentialFlow.ts"
             >
               <h3>src/ui/admin/pages/adminAuthCredentialFlow.test.ts</h3>
@@ -6129,7 +6192,7 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/ModuleDetailAdminPage.tsx src/core/StudioContext.ts src/moduleAdminApi.ts src/moduleAdminContracts.ts src/moduleAdminModel.ts src/ui/admin/adminPagePrimitives.tsx ModuleDetailAdminPage"
+              data-search="src/ui/admin/pages/ModuleDetailAdminPage.tsx src/core/StudioContext.ts src/moduleAdminApi.ts src/moduleAdminContracts.ts src/moduleAdminModel.ts src/ui/admin/adminPagePrimitives.tsx src/ui/admin/ModuleAdminViewHost.tsx src/ui/admin/moduleAdminViewRegistry.ts ModuleDetailAdminPage"
             >
               <h3>src/ui/admin/pages/ModuleDetailAdminPage.tsx</h3>
               <p class="muted">Referenced module</p>
@@ -6137,7 +6200,9 @@
                 <strong>Dependencies:</strong> <code>src/core/StudioContext.ts</code>,
                 <code>src/moduleAdminApi.ts</code>, <code>src/moduleAdminContracts.ts</code>,
                 <code>src/moduleAdminModel.ts</code>,
-                <code>src/ui/admin/adminPagePrimitives.tsx</code>
+                <code>src/ui/admin/adminPagePrimitives.tsx</code>,
+                <code>src/ui/admin/ModuleAdminViewHost.tsx</code>,
+                <code>src/ui/admin/moduleAdminViewRegistry.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>ModuleDetailAdminPage</code></p>
             </article>
@@ -13096,6 +13161,21 @@
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_AuthAdminSession_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthSessionModel_ts
+                module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_admin_ModuleAdminViewBoundary_tsx
+                module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_core_StudioContext_ts
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_moduleAdminApi_ts
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt;
+                module_src_ui_admin_ModuleAdminViewBoundary_tsx
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt;
+                module_src_ui_admin_moduleAdminViewRegistry_ts
+                module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_ui_admin_moduleAdminViewRegistry_test_ts
+                module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
@@ -13380,6 +13460,10 @@
                 module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
                 module_src_moduleAdminModel_ts module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
                 --&gt; module_src_ui_admin_adminPagePrimitives_tsx
+                module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
+                module_src_ui_admin_ModuleAdminViewHost_tsx
+                module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
+                module_src_ui_admin_moduleAdminViewRegistry_ts
                 module_src_ui_admin_pages_ModulesAdminPage_tsx[&quot;src/ui/admin/pages/ModulesAdminPage.tsx&quot;]
                 package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ModulesAdminPage_tsx
                 module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt;
@@ -14436,6 +14520,18 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_ModuleAdminViewBoundary_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_moduleAdminApi_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_ui_admin_ModuleAdminViewBoundary_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
+  module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_moduleAdminViewRegistry_test_ts
+  module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
@@ -14615,6 +14711,8 @@ graph TD
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_ModulesAdminPage_tsx[&quot;src/ui/admin/pages/ModulesAdminPage.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_ModulesAdminPage_tsx
   module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt; module_src_core_StudioContext_ts
@@ -14995,6 +15093,10 @@ graph TD
                 module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
                 module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+                module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+                module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+                module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+                module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
@@ -15657,6 +15759,12 @@ graph TD
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts
                 module_src_ui_admin_AuthAdminSession_tsx --&gt;
                 module_src_ui_admin_pages_adminAuthSessionModel_ts
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_core_StudioContext_ts
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_moduleAdminApi_ts
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt;
+                module_src_ui_admin_ModuleAdminViewBoundary_tsx
+                module_src_ui_admin_ModuleAdminViewHost_tsx --&gt;
+                module_src_ui_admin_moduleAdminViewRegistry_ts
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt;
                 module_src_authSettings_ts module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
                 --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
@@ -15839,6 +15947,10 @@ graph TD
                 module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
                 module_src_moduleAdminModel_ts module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
                 --&gt; module_src_ui_admin_adminPagePrimitives_tsx
+                module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
+                module_src_ui_admin_ModuleAdminViewHost_tsx
+                module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt;
+                module_src_ui_admin_moduleAdminViewRegistry_ts
                 module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt;
                 module_src_core_StudioContext_ts module_src_ui_admin_pages_ModulesAdminPage_tsx
                 --&gt; module_src_moduleAdminApi_ts module_src_ui_admin_pages_ModulesAdminPage_tsx
@@ -16180,6 +16292,10 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
   module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+  module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+  module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+  module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+  module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
@@ -16642,6 +16758,10 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_tsx --&gt; module_src_studioAdminRouteModel_ts
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --&gt; module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_core_StudioContext_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_moduleAdminApi_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_ui_admin_ModuleAdminViewBoundary_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_authSettings_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --&gt; module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts --&gt; module_src_authSettings_ts
@@ -16745,6 +16865,8 @@ graph LR
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_moduleAdminModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_ModuleAdminViewHost_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --&gt; module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt; module_src_core_StudioContext_ts
   module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt; module_src_moduleAdminApi_ts
   module_src_ui_admin_pages_ModulesAdminPage_tsx --&gt; module_src_moduleAdminContracts_ts
@@ -17064,6 +17186,10 @@ graph LR
                 module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
                 module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
                 module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+                module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+                module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+                module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+                module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
                 module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
                 module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
@@ -17736,6 +17862,10 @@ graph LR
   module_src_ui_admin_AnkhAdminShell_test_ts[&quot;src/ui/admin/AnkhAdminShell.test.ts&quot;]
   module_src_ui_admin_AnkhAdminShell_tsx[&quot;src/ui/admin/AnkhAdminShell.tsx&quot;]
   module_src_ui_admin_AuthAdminSession_tsx[&quot;src/ui/admin/AuthAdminSession.tsx&quot;]
+  module_src_ui_admin_ModuleAdminViewBoundary_tsx[&quot;src/ui/admin/ModuleAdminViewBoundary.tsx&quot;]
+  module_src_ui_admin_ModuleAdminViewHost_tsx[&quot;src/ui/admin/ModuleAdminViewHost.tsx&quot;]
+  module_src_ui_admin_moduleAdminViewRegistry_test_ts[&quot;src/ui/admin/moduleAdminViewRegistry.test.ts&quot;]
+  module_src_ui_admin_moduleAdminViewRegistry_ts[&quot;src/ui/admin/moduleAdminViewRegistry.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.test.ts&quot;]
   module_src_ui_admin_pages_adminAuthCredentialFlow_ts[&quot;src/ui/admin/pages/adminAuthCredentialFlow.ts&quot;]
   module_src_ui_admin_pages_adminAuthHealthFlow_test_ts[&quot;src/ui/admin/pages/adminAuthHealthFlow.test.ts&quot;]
@@ -25925,7 +26055,7 @@ sequenceDiagram
             <h2>src/moduleAdminApi.test.ts</h2>
             <article class="item" data-search="createModuleState src/moduleAdminApi.test.ts ">
               <h3>createModuleState</h3>
-              <p class="muted"><code>src/moduleAdminApi.test.ts:28:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.test.ts:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -25965,65 +26095,81 @@ sequenceDiagram
             </article>
             <article
               class="item"
+              data-search="executeProjectModuleAdminOperation src/moduleAdminApi.ts "
+            >
+              <h3>executeProjectModuleAdminOperation</h3>
+              <p class="muted"><code>src/moduleAdminApi.ts:64:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
               data-search="finalizePendingProjectModules src/moduleAdminApi.ts "
             >
               <h3>finalizePendingProjectModules</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:64:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:86:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseStudioModuleState src/moduleAdminApi.ts ">
               <h3>parseStudioModuleState</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:76:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:98:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseAdminContribution src/moduleAdminApi.ts ">
               <h3>parseAdminContribution</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:118:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:140:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="mutateProjectModule src/moduleAdminApi.ts ">
               <h3>mutateProjectModule</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:153:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:175:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="parseOperationResult src/moduleAdminApi.ts ">
               <h3>parseOperationResult</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:162:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:184:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="requestJson src/moduleAdminApi.ts ">
               <h3>requestJson</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:183:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:205:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createProjectModuleApiPath src/moduleAdminApi.ts ">
               <h3>createProjectModuleApiPath</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:202:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:224:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createProjectModuleAdminOperationApiPath src/moduleAdminApi.ts "
+            >
+              <h3>createProjectModuleAdminOperationApiPath</h3>
+              <p class="muted"><code>src/moduleAdminApi.ts:231:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="asRecord src/moduleAdminApi.ts ">
               <h3>asRecord</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:209:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:241:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isRecord src/moduleAdminApi.ts ">
               <h3>isRecord</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:213:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:245:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isStringArray src/moduleAdminApi.ts ">
               <h3>isStringArray</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:217:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:249:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="isAdminControl src/moduleAdminApi.ts ">
               <h3>isAdminControl</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:221:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:253:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="invalidResponse src/moduleAdminApi.ts ">
               <h3>invalidResponse</h3>
-              <p class="muted"><code>src/moduleAdminApi.ts:225:1</code></p>
+              <p class="muted"><code>src/moduleAdminApi.ts:257:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -27831,6 +27977,42 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-ui-admin-moduleadminviewhost-tsx"
+          class="view"
+          data-view="src/ui/admin/ModuleAdminViewHost.tsx"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/ModuleAdminViewHost.tsx</h2>
+            <article
+              class="item"
+              data-search="ModuleAdminViewHost src/ui/admin/ModuleAdminViewHost.tsx "
+            >
+              <h3>ModuleAdminViewHost</h3>
+              <p class="muted"><code>src/ui/admin/ModuleAdminViewHost.tsx:9:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-ui-admin-moduleadminviewregistry-ts"
+          class="view"
+          data-view="src/ui/admin/moduleAdminViewRegistry.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/ui/admin/moduleAdminViewRegistry.ts</h2>
+            <article
+              class="item"
+              data-search="getStudioModuleAdminView src/ui/admin/moduleAdminViewRegistry.ts "
+            >
+              <h3>getStudioModuleAdminView</h3>
+              <p class="muted"><code>src/ui/admin/moduleAdminViewRegistry.ts:27:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-ui-admin-pages-adminauthcredentialflow-test-ts"
           class="view"
           data-view="src/ui/admin/pages/adminAuthCredentialFlow.test.ts"
@@ -29222,7 +29404,7 @@ sequenceDiagram
               data-search="ModuleDetailAdminPage src/ui/admin/pages/ModuleDetailAdminPage.tsx "
             >
               <h3>ModuleDetailAdminPage</h3>
-              <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:22:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:24:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29230,7 +29412,7 @@ sequenceDiagram
               data-search="toMessage src/ui/admin/pages/ModuleDetailAdminPage.tsx "
             >
               <h3>toMessage</h3>
-              <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:235:1</code></p>
+              <p class="muted"><code>src/ui/admin/pages/ModuleDetailAdminPage.tsx:256:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

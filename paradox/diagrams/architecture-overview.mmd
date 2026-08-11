@@ -902,6 +902,18 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_AuthAdminSession_tsx
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthCredentialFlow_ts
   module_src_ui_admin_AuthAdminSession_tsx --> module_src_ui_admin_pages_adminAuthSessionModel_ts
+  module_src_ui_admin_ModuleAdminViewBoundary_tsx["src/ui/admin/ModuleAdminViewBoundary.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_ModuleAdminViewBoundary_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx["src/ui/admin/ModuleAdminViewHost.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_ModuleAdminViewHost_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --> module_src_moduleAdminApi_ts
+  module_src_ui_admin_ModuleAdminViewHost_tsx --> module_src_ui_admin_ModuleAdminViewBoundary_tsx
+  module_src_ui_admin_ModuleAdminViewHost_tsx --> module_src_ui_admin_moduleAdminViewRegistry_ts
+  module_src_ui_admin_moduleAdminViewRegistry_test_ts["src/ui/admin/moduleAdminViewRegistry.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_moduleAdminViewRegistry_test_ts
+  module_src_ui_admin_moduleAdminViewRegistry_ts["src/ui/admin/moduleAdminViewRegistry.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts["src/ui/admin/pages/adminAuthCredentialFlow.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts
   module_src_ui_admin_pages_adminAuthCredentialFlow_test_ts --> module_src_authSettings_ts
@@ -1081,6 +1093,8 @@ graph TD
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminContracts_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_moduleAdminModel_ts
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_ui_admin_ModuleAdminViewHost_tsx
+  module_src_ui_admin_pages_ModuleDetailAdminPage_tsx --> module_src_ui_admin_moduleAdminViewRegistry_ts
   module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ModulesAdminPage_tsx
   module_src_ui_admin_pages_ModulesAdminPage_tsx --> module_src_core_StudioContext_ts

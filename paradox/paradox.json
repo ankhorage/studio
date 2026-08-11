@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.18.1",
+      "value": "v0.19.0",
       "color": "cb3837"
     },
     {
@@ -1949,7 +1949,9 @@
       "isEntrypoint": false,
       "dependencies": ["src/moduleAdminContracts.ts"],
       "exports": [
+        "createProjectModuleAdminOperationApiPath",
         "createProjectModuleApiPath",
+        "executeProjectModuleAdminOperation",
         "finalizePendingProjectModules",
         "getProjectModule",
         "installProjectModule",
@@ -2764,6 +2766,35 @@
       "exports": ["AuthAdminSessionProvider", "AuthAdminSessionValue", "useAuthAdminSession"]
     },
     {
+      "path": "src/ui/admin/ModuleAdminViewBoundary.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ModuleAdminViewBoundary"]
+    },
+    {
+      "path": "src/ui/admin/ModuleAdminViewHost.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/moduleAdminApi.ts",
+        "src/ui/admin/ModuleAdminViewBoundary.tsx",
+        "src/ui/admin/moduleAdminViewRegistry.ts"
+      ],
+      "exports": ["ModuleAdminViewHost"]
+    },
+    {
+      "path": "src/ui/admin/moduleAdminViewRegistry.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/moduleAdminViewRegistry.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["getStudioModuleAdminView", "StudioModuleAdminViewContribution"]
+    },
+    {
       "path": "src/ui/admin/pages/adminAuthCredentialFlow.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/authSettings.ts", "src/ui/admin/pages/adminAuthCredentialFlow.ts"],
@@ -3133,7 +3164,9 @@
         "src/moduleAdminApi.ts",
         "src/moduleAdminContracts.ts",
         "src/moduleAdminModel.ts",
-        "src/ui/admin/adminPagePrimitives.tsx"
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/ModuleAdminViewHost.tsx",
+        "src/ui/admin/moduleAdminViewRegistry.ts"
       ],
       "exports": ["ModuleDetailAdminPage"]
     },
@@ -15699,7 +15732,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.test.ts",
-        "line": 28,
+        "line": 43,
         "column": 1
       }
     },
@@ -15749,7 +15782,7 @@
       }
     },
     {
-      "name": "finalizePendingProjectModules",
+      "name": "executeProjectModuleAdminOperation",
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
@@ -15758,11 +15791,20 @@
       }
     },
     {
+      "name": "finalizePendingProjectModules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/moduleAdminApi.ts",
+        "line": 86,
+        "column": 1
+      }
+    },
+    {
       "name": "parseStudioModuleState",
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 76,
+        "line": 98,
         "column": 1
       }
     },
@@ -15771,7 +15813,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 118,
+        "line": 140,
         "column": 1
       }
     },
@@ -15780,7 +15822,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 153,
+        "line": 175,
         "column": 1
       }
     },
@@ -15789,7 +15831,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 162,
+        "line": 184,
         "column": 1
       }
     },
@@ -15798,7 +15840,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 183,
+        "line": 205,
         "column": 1
       }
     },
@@ -15807,7 +15849,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 202,
+        "line": 224,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectModuleAdminOperationApiPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/moduleAdminApi.ts",
+        "line": 231,
         "column": 1
       }
     },
@@ -15816,7 +15867,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 209,
+        "line": 241,
         "column": 1
       }
     },
@@ -15825,7 +15876,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 213,
+        "line": 245,
         "column": 1
       }
     },
@@ -15834,7 +15885,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 217,
+        "line": 249,
         "column": 1
       }
     },
@@ -15843,7 +15894,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 221,
+        "line": 253,
         "column": 1
       }
     },
@@ -15852,7 +15903,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/moduleAdminApi.ts",
-        "line": 225,
+        "line": 257,
         "column": 1
       }
     },
@@ -17738,6 +17789,24 @@
       }
     },
     {
+      "name": "ModuleAdminViewHost",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "getStudioModuleAdminView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/moduleAdminViewRegistry.ts",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
       "name": "createAuthSettings",
       "description": null,
       "sourceLocation": {
@@ -18921,7 +18990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "line": 22,
+        "line": 24,
         "column": 1
       }
     },
@@ -18930,7 +18999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
-        "line": 235,
+        "line": 256,
         "column": 1
       }
     },
@@ -22179,6 +22248,26 @@
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
       },
       {
+        "fromPath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toPath": "src/moduleAdminApi.ts",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toPath": "src/ui/admin/ModuleAdminViewBoundary.tsx",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toPath": "src/ui/admin/moduleAdminViewRegistry.ts",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
         "fromPath": "src/ui/canvas/canvasDndInteraction.test.ts",
         "toPath": "src/canvasDropZones.ts",
         "sourcePath": "src/ui/canvas/canvasDndInteraction.test.ts"
@@ -22796,6 +22885,16 @@
       {
         "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
+        "toPath": "src/ui/admin/moduleAdminViewRegistry.ts",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
       {
@@ -26860,6 +26959,12 @@
       },
       {
         "fromSymbol": "src/moduleAdminApi.test.ts",
+        "toSymbol": "createProjectModuleAdminOperationApiPath",
+        "callExpression": "createProjectModuleAdminOperationApiPath",
+        "sourcePath": "src/moduleAdminApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/moduleAdminApi.test.ts",
         "toSymbol": "parseStudioModuleState",
         "callExpression": "parseStudioModuleState",
         "sourcePath": "src/moduleAdminApi.test.ts"
@@ -26928,6 +27033,30 @@
         "fromSymbol": "updateProjectModuleConfig",
         "toSymbol": "parseOperationResult",
         "callExpression": "parseOperationResult",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectModuleAdminOperation",
+        "toSymbol": "requestJson",
+        "callExpression": "requestJson",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectModuleAdminOperation",
+        "toSymbol": "createProjectModuleAdminOperationApiPath",
+        "callExpression": "createProjectModuleAdminOperationApiPath",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectModuleAdminOperation",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectModuleAdminOperation",
+        "toSymbol": "invalidResponse",
+        "callExpression": "invalidResponse",
         "sourcePath": "src/moduleAdminApi.ts"
       },
       {
@@ -27048,6 +27177,12 @@
         "fromSymbol": "requestJson",
         "toSymbol": "asRecord",
         "callExpression": "asRecord",
+        "sourcePath": "src/moduleAdminApi.ts"
+      },
+      {
+        "fromSymbol": "createProjectModuleAdminOperationApiPath",
+        "toSymbol": "createProjectModuleApiPath",
+        "callExpression": "createProjectModuleApiPath",
         "sourcePath": "src/moduleAdminApi.ts"
       },
       {
@@ -40401,6 +40536,36 @@
         "sourcePath": "src/ui/admin/AuthAdminSession.tsx"
       },
       {
+        "fromSymbol": "ModuleAdminViewHost",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toSymbol": "executeProjectModuleAdminOperation",
+        "callExpression": "executeProjectModuleAdminOperation",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/ModuleAdminViewHost.tsx",
+        "toSymbol": "refetchManifest",
+        "callExpression": "refetchManifest",
+        "sourcePath": "src/ui/admin/ModuleAdminViewHost.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/moduleAdminViewRegistry.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/moduleAdminViewRegistry.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/moduleAdminViewRegistry.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/moduleAdminViewRegistry.test.ts"
+      },
+      {
         "fromSymbol": "src/ui/canvas/canvasDndInteraction.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -43230,6 +43395,12 @@
         "fromSymbol": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "toSymbol": "updateProjectModuleConfig",
         "callExpression": "updateProjectModuleConfig",
+        "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ModuleDetailAdminPage",
+        "toSymbol": "getStudioModuleAdminView",
+        "callExpression": "getStudioModuleAdminView",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
       },
       {

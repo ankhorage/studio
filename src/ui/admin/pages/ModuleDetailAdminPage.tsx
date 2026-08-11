@@ -184,7 +184,10 @@ export function ModuleDetailAdminPage({ moduleId }: { readonly moduleId: string 
       </Card>
 
       {adminView && !module.installed ? (
-        <Card title={module.admin?.title ?? 'Administration'} description={module.admin?.description}>
+        <Card
+          title={module.admin?.title ?? 'Administration'}
+          description={module.admin?.description}
+        >
           <Text color="neutral" emphasis="muted">
             Install the module before using its package-owned administration view.
           </Text>
