@@ -24,6 +24,8 @@ describe('Studio runtime surface', () => {
     expect(registrySource).not.toContain('ZORA_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('DEFAULT_COMPONENT_REGISTRY');
     expect(registrySource).not.toContain('SURFACE_COMPONENT_REGISTRY');
+    expect(runtimeIndexSource).not.toContain('previewRegistry');
+    expect(runtimeIndexSource).not.toContain('previewRuntimeConfig');
   });
 
   it('keeps Expo Router and Zora action integration in the Studio runtime surface', () => {

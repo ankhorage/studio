@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.15.0",
+      "value": "v0.16.0",
       "color": "cb3837"
     },
     {
@@ -1816,33 +1816,6 @@
       ]
     },
     {
-      "path": "src/manifestNavigatorPreviewModel.public.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/manifestNavigatorPreviewModel.ts"],
-      "exports": []
-    },
-    {
-      "path": "src/manifestNavigatorPreviewModel.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/manifestNavigatorPreviewModel.ts"],
-      "exports": []
-    },
-    {
-      "path": "src/manifestNavigatorPreviewModel.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/routeUtils.ts"],
-      "exports": [
-        "buildManifestNavigatorPreviewModel",
-        "ManifestNavigatorPreviewModel",
-        "PreviewNavigationDiagnostic",
-        "PreviewNavigationRoute",
-        "resolveLeafScreenIdForChromeRouteName",
-        "resolveLeafScreenIdForRoute",
-        "StudioNavigationRouteMap",
-        "StudioNavigationRouteMapEntry"
-      ]
-    },
-    {
       "path": "src/manifestState.public.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/index.ts", "src/manifestState.ts"],
@@ -2313,8 +2286,6 @@
         "createStationarySelectionCoordinator",
         "createStudioActionSuppressionConfig",
         "createStudioInteractionPolicyResolver",
-        "createStudioPreviewComponentRegistry",
-        "createStudioPreviewRuntimeConfig",
         "createStudioStationarySelectionWrapNode",
         "executeRuntimeAction",
         "InteractionPolicy",
@@ -2328,13 +2299,10 @@
         "StationaryTapSelector",
         "STUDIO_APP_EXTENSION_COMPONENT_REGISTRY",
         "STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT",
-        "STUDIO_PREVIEW_COMPONENT_REGISTRY",
         "StudioCanvasInteractionAdapter",
         "StudioInteractionPolicyResolverArgs",
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput",
-        "StudioPreviewRegistryOptions",
-        "StudioPreviewRuntimeConfigOptions",
         "ThirdPartyComponentSupport",
         "TransactionState",
         "useRuntimeAction",
@@ -2377,7 +2345,7 @@
     {
       "path": "src/runtime/interactionPolicy.test.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/runtime/interactionPolicyCore.ts"],
+      "dependencies": ["src/runtime/actionSuppression.ts", "src/runtime/interactionPolicyCore.ts"],
       "exports": []
     },
     {
@@ -2415,27 +2383,6 @@
         "StudioLocalizationPreview",
         "StudioLocalizationPreviewInput"
       ]
-    },
-    {
-      "path": "src/runtime/previewRegistry.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/runtime/appExtensionRegistry.ts"],
-      "exports": [
-        "createStudioPreviewComponentRegistry",
-        "STUDIO_PREVIEW_COMPONENT_REGISTRY",
-        "StudioPreviewRegistryOptions"
-      ]
-    },
-    {
-      "path": "src/runtime/previewRuntimeConfig.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/runtime/actionSuppression.ts",
-        "src/runtime/interactionPolicy.ts",
-        "src/runtime/interactionPolicyCore.ts",
-        "src/runtime/previewRegistry.ts"
-      ],
-      "exports": ["createStudioPreviewRuntimeConfig", "StudioPreviewRuntimeConfigOptions"]
     },
     {
       "path": "src/runtime/registry.tsx",
@@ -3290,7 +3237,9 @@
       "exports": [
         "resolveStudioAppBarContextActions",
         "ResolveStudioAppBarContextActionsArgs",
-        "StudioAppBarContextAction"
+        "resolveStudioAppBarModeAction",
+        "StudioAppBarContextAction",
+        "StudioAppBarModeAction"
       ]
     },
     {
@@ -10830,7 +10779,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 174,
+        "line": 183,
         "column": 1
       }
     },
@@ -10839,7 +10788,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 418,
+        "line": 427,
         "column": 9
       }
     },
@@ -10848,7 +10797,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 732,
+        "line": 748,
         "column": 1
       }
     },
@@ -10857,7 +10806,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 903,
+        "line": 992,
         "column": 1
       }
     },
@@ -10866,7 +10815,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1131,
+        "line": 1220,
         "column": 1
       }
     },
@@ -10875,7 +10824,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1158,
+        "line": 1247,
         "column": 1
       }
     },
@@ -10884,7 +10833,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1177,
+        "line": 1266,
         "column": 1
       }
     },
@@ -10893,7 +10842,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1197,
+        "line": 1286,
         "column": 1
       }
     },
@@ -10902,7 +10851,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1216,
+        "line": 1305,
         "column": 1
       }
     },
@@ -10911,7 +10860,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1237,
+        "line": 1326,
         "column": 1
       }
     },
@@ -10920,7 +10869,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1241,
+        "line": 1330,
         "column": 1
       }
     },
@@ -10929,7 +10878,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1261,
+        "line": 1350,
         "column": 1
       }
     },
@@ -10938,7 +10887,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1282,
+        "line": 1371,
         "column": 1
       }
     },
@@ -10947,7 +10896,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1304,
+        "line": 1393,
         "column": 1
       }
     },
@@ -10956,7 +10905,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1343,
+        "line": 1432,
         "column": 1
       }
     },
@@ -10965,7 +10914,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1357,
+        "line": 1446,
         "column": 1
       }
     },
@@ -10974,7 +10923,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1386,
+        "line": 1475,
         "column": 1
       }
     },
@@ -10983,7 +10932,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1393,
+        "line": 1482,
         "column": 1
       }
     },
@@ -10992,7 +10941,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1400,
+        "line": 1489,
         "column": 1
       }
     },
@@ -11001,7 +10950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1409,
+        "line": 1498,
         "column": 1
       }
     },
@@ -11010,7 +10959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1434,
+        "line": 1523,
         "column": 1
       }
     },
@@ -11019,7 +10968,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1441,
+        "line": 1530,
         "column": 1
       }
     },
@@ -11028,7 +10977,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1480,
+        "line": 1569,
         "column": 1
       }
     },
@@ -11037,7 +10986,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1514,
+        "line": 1603,
         "column": 1
       }
     },
@@ -11046,7 +10995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1543,
+        "line": 1632,
         "column": 1
       }
     },
@@ -11055,7 +11004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1821,
+        "line": 1910,
         "column": 1
       }
     },
@@ -11064,7 +11013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1844,
+        "line": 1933,
         "column": 1
       }
     },
@@ -11073,7 +11022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1861,
+        "line": 1950,
         "column": 1
       }
     },
@@ -11082,7 +11031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1877,
+        "line": 1966,
         "column": 1
       }
     },
@@ -11091,7 +11040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1899,
+        "line": 1988,
         "column": 1
       }
     },
@@ -11100,7 +11049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1924,
+        "line": 2013,
         "column": 1
       }
     },
@@ -11109,7 +11058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1964,
+        "line": 2053,
         "column": 1
       }
     },
@@ -11118,7 +11067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1978,
+        "line": 2067,
         "column": 1
       }
     },
@@ -11127,7 +11076,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1987,
+        "line": 2076,
         "column": 1
       }
     },
@@ -11136,7 +11085,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2003,
+        "line": 2092,
         "column": 1
       }
     },
@@ -11145,7 +11094,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2010,
+        "line": 2099,
         "column": 1
       }
     },
@@ -11154,7 +11103,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2016,
+        "line": 2105,
         "column": 1
       }
     },
@@ -11163,7 +11112,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2029,
+        "line": 2118,
         "column": 1
       }
     },
@@ -11172,7 +11121,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2046,
+        "line": 2135,
         "column": 1
       }
     },
@@ -11181,7 +11130,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2063,
+        "line": 2152,
         "column": 1
       }
     },
@@ -11190,7 +11139,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2069,
+        "line": 2158,
         "column": 1
       }
     },
@@ -11199,7 +11148,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2075,
+        "line": 2164,
         "column": 1
       }
     },
@@ -11208,7 +11157,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2091,
+        "line": 2180,
         "column": 1
       }
     },
@@ -11217,7 +11166,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2641,
+        "line": 2730,
         "column": 1
       }
     },
@@ -11226,7 +11175,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2656,
+        "line": 2745,
         "column": 1
       }
     },
@@ -11235,7 +11184,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2660,
+        "line": 2749,
         "column": 1
       }
     },
@@ -11244,7 +11193,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2669,
+        "line": 2758,
         "column": 1
       }
     },
@@ -11253,7 +11202,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2680,
+        "line": 2769,
         "column": 1
       }
     },
@@ -12612,7 +12561,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 68,
+        "line": 69,
         "column": 1
       }
     },
@@ -12621,7 +12570,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 72,
+        "line": 73,
         "column": 1
       }
     },
@@ -12630,7 +12579,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 79,
+        "line": 80,
         "column": 1
       }
     },
@@ -14867,141 +14816,6 @@
       }
     },
     {
-      "name": "screen",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.test.ts",
-        "line": 25,
-        "column": 1
-      }
-    },
-    {
-      "name": "manifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.test.ts",
-        "line": 29,
-        "column": 1
-      }
-    },
-    {
-      "name": "normalizeAuthFlowPathToRouteName",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 48,
-        "column": 1
-      }
-    },
-    {
-      "name": "collectAuthFlowRouteNames",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 53,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveRouteLabelString",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 76,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolvePrimaryNavigator",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 81,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveVisibleChromeRoutes",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 86,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveInitialVisibleRouteName",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 104,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveActiveChromeRouteName",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 119,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveLeafScreenIdForRoute",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 138,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveLeafScreenIdForChromeRouteName",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 152,
-        "column": 1
-      }
-    },
-    {
-      "name": "normalizeExpoIconProvider",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 185,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolvePreviewIconDiagnostics",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 191,
-        "column": 1
-      }
-    },
-    {
-      "name": "buildStudioRouteMap",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 221,
-        "column": 1
-      }
-    },
-    {
-      "name": "buildManifestNavigatorPreviewModel",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/manifestNavigatorPreviewModel.ts",
-        "line": 247,
-        "column": 1
-      }
-    },
-    {
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
@@ -16492,24 +16306,6 @@
       "sourceLocation": {
         "filePath": "src/runtime/localizationPreview.ts",
         "line": 13,
-        "column": 14
-      }
-    },
-    {
-      "name": "createStudioPreviewComponentRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/previewRegistry.ts",
-        "line": 10,
-        "column": 14
-      }
-    },
-    {
-      "name": "createStudioPreviewRuntimeConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/runtime/previewRuntimeConfig.ts",
-        "line": 15,
         "column": 14
       }
     },
@@ -19259,11 +19055,20 @@
       }
     },
     {
+      "name": "resolveStudioAppBarModeAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/studioAppBarModel.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveStudioAppBarContextActions",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/studioAppBarModel.ts",
-        "line": 14,
+        "line": 38,
         "column": 1
       }
     },
@@ -19290,7 +19095,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 32,
+        "line": 35,
         "column": 1
       }
     },
@@ -19299,7 +19104,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 41,
+        "line": 44,
         "column": 1
       }
     },
@@ -19966,21 +19771,6 @@
         "fromPath": "src/localizationPanelModel.test.ts",
         "toPath": "src/localizationPanelModel.ts",
         "sourcePath": "src/localizationPanelModel.test.ts"
-      },
-      {
-        "fromPath": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toPath": "src/manifestNavigatorPreviewModel.ts",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromPath": "src/manifestNavigatorPreviewModel.test.ts",
-        "toPath": "src/manifestNavigatorPreviewModel.ts",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromPath": "src/manifestNavigatorPreviewModel.ts",
-        "toPath": "src/routeUtils.ts",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
       },
       {
         "fromPath": "src/manifestState.public.test.ts",
@@ -20824,16 +20614,6 @@
       },
       {
         "fromPath": "src/runtime/index.ts",
-        "toPath": "src/runtime/previewRegistry.ts",
-        "sourcePath": "src/runtime/index.ts"
-      },
-      {
-        "fromPath": "src/runtime/index.ts",
-        "toPath": "src/runtime/previewRuntimeConfig.ts",
-        "sourcePath": "src/runtime/index.ts"
-      },
-      {
-        "fromPath": "src/runtime/index.ts",
         "toPath": "src/runtime/registry.tsx",
         "sourcePath": "src/runtime/index.ts"
       },
@@ -20869,6 +20649,11 @@
       },
       {
         "fromPath": "src/runtime/interactionPolicy.test.ts",
+        "toPath": "src/runtime/actionSuppression.ts",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromPath": "src/runtime/interactionPolicy.test.ts",
         "toPath": "src/runtime/interactionPolicyCore.ts",
         "sourcePath": "src/runtime/interactionPolicy.test.ts"
       },
@@ -20876,31 +20661,6 @@
         "fromPath": "src/runtime/interactionPolicy.ts",
         "toPath": "src/runtime/interactionPolicyCore.ts",
         "sourcePath": "src/runtime/interactionPolicy.ts"
-      },
-      {
-        "fromPath": "src/runtime/previewRegistry.ts",
-        "toPath": "src/runtime/appExtensionRegistry.ts",
-        "sourcePath": "src/runtime/previewRegistry.ts"
-      },
-      {
-        "fromPath": "src/runtime/previewRuntimeConfig.ts",
-        "toPath": "src/runtime/actionSuppression.ts",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
-      },
-      {
-        "fromPath": "src/runtime/previewRuntimeConfig.ts",
-        "toPath": "src/runtime/interactionPolicy.ts",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
-      },
-      {
-        "fromPath": "src/runtime/previewRuntimeConfig.ts",
-        "toPath": "src/runtime/interactionPolicyCore.ts",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
-      },
-      {
-        "fromPath": "src/runtime/previewRuntimeConfig.ts",
-        "toPath": "src/runtime/previewRegistry.ts",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
         "fromPath": "src/runtime/registry.tsx",
@@ -25710,192 +25470,6 @@
         "sourcePath": "src/localizationPanelModel.ts"
       },
       {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toSymbol": "resolveLeafScreenIdForRoute",
-        "callExpression": "resolveLeafScreenIdForRoute",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.public.test.ts",
-        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
-        "callExpression": "resolveLeafScreenIdForChromeRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.public.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "it",
-        "callExpression": "it",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "buildManifestNavigatorPreviewModel",
-        "callExpression": "buildManifestNavigatorPreviewModel",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "manifest",
-        "callExpression": "manifest",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "screen",
-        "callExpression": "screen",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "resolveLeafScreenIdForRoute",
-        "callExpression": "resolveLeafScreenIdForRoute",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.test.ts",
-        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
-        "callExpression": "resolveLeafScreenIdForChromeRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.test.ts"
-      },
-      {
-        "fromSymbol": "collectAuthFlowRouteNames",
-        "toSymbol": "resolveAuthFlow",
-        "callExpression": "resolveAuthFlow",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "collectAuthFlowRouteNames",
-        "toSymbol": "normalizeAuthFlowPathToRouteName",
-        "callExpression": "normalizeAuthFlowPathToRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolvePrimaryNavigator",
-        "toSymbol": "getPrimaryNavigatorPath",
-        "callExpression": "getPrimaryNavigatorPath",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolvePrimaryNavigator",
-        "toSymbol": "findNavigatorAtPath",
-        "callExpression": "findNavigatorAtPath",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolveVisibleChromeRoutes",
-        "toSymbol": "collectAuthFlowRouteNames",
-        "callExpression": "collectAuthFlowRouteNames",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "src/manifestNavigatorPreviewModel.ts",
-        "toSymbol": "resolveRouteLabelString",
-        "callExpression": "resolveRouteLabelString",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolveActiveChromeRouteName",
-        "toSymbol": "collectScreenRouteEntries",
-        "callExpression": "collectScreenRouteEntries",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolveActiveChromeRouteName",
-        "toSymbol": "resolveInitialVisibleRouteName",
-        "callExpression": "resolveInitialVisibleRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolveLeafScreenIdForRoute",
-        "toSymbol": "resolveLeafScreenIdForRoute",
-        "callExpression": "resolveLeafScreenIdForRoute",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolveLeafScreenIdForChromeRouteName",
-        "toSymbol": "resolveLeafScreenIdForRoute",
-        "callExpression": "resolveLeafScreenIdForRoute",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "resolvePreviewIconDiagnostics",
-        "toSymbol": "normalizeExpoIconProvider",
-        "callExpression": "normalizeExpoIconProvider",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildStudioRouteMap",
-        "toSymbol": "resolveRouteLabelString",
-        "callExpression": "resolveRouteLabelString",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "resolvePrimaryNavigator",
-        "callExpression": "resolvePrimaryNavigator",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "resolveVisibleChromeRoutes",
-        "callExpression": "resolveVisibleChromeRoutes",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "resolveActiveChromeRouteName",
-        "callExpression": "resolveActiveChromeRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "resolveLeafScreenIdForChromeRouteName",
-        "callExpression": "resolveLeafScreenIdForChromeRouteName",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "buildStudioRouteMap",
-        "callExpression": "buildStudioRouteMap",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
-        "fromSymbol": "buildManifestNavigatorPreviewModel",
-        "toSymbol": "resolvePreviewIconDiagnostics",
-        "callExpression": "resolvePreviewIconDiagnostics",
-        "sourcePath": "src/manifestNavigatorPreviewModel.ts"
-      },
-      {
         "fromSymbol": "createManifest",
         "toSymbol": "createDefaultThemeConfig",
         "callExpression": "createDefaultThemeConfig",
@@ -30565,6 +30139,12 @@
       },
       {
         "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "expectAppBarActionsHorizontal",
+        "callExpression": "expectAppBarActionsHorizontal",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "waitForRuntimeNodeInteractionReady",
         "callExpression": "waitForRuntimeNodeInteractionReady",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -30603,12 +30183,6 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "formatStudioScreenState",
         "callExpression": "formatStudioScreenState",
-        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "verifyNestedNutritionSelection",
-        "toSymbol": "expectAppBarActionsHorizontal",
-        "callExpression": "expectAppBarActionsHorizontal",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -30663,6 +30237,12 @@
         "fromSymbol": "verifyNestedNutritionSelection",
         "toSymbol": "waitForStudioSmokeState",
         "callExpression": "waitForStudioSmokeState",
+        "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "verifyNestedNutritionSelection",
+        "toSymbol": "readRuntimeNodeCenter",
+        "callExpression": "page.readRuntimeNodeCenter",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -33252,6 +32832,30 @@
         "sourcePath": "src/runtime/interactionPolicy.test.ts"
       },
       {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "shouldSuppressStudioRuntimeActions",
+        "callExpression": "shouldSuppressStudioRuntimeActions",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "createStudioActionSuppressionConfig",
+        "callExpression": "createStudioActionSuppressionConfig",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "editResolver",
+        "callExpression": "editResolver",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
+        "fromSymbol": "src/runtime/interactionPolicy.test.ts",
+        "toSymbol": "previewResolver",
+        "callExpression": "previewResolver",
+        "sourcePath": "src/runtime/interactionPolicy.test.ts"
+      },
+      {
         "fromSymbol": "createStudioInteractionPolicyResolver",
         "toSymbol": "createInteractionPolicyResolver",
         "callExpression": "createInteractionPolicyResolver",
@@ -33298,36 +32902,6 @@
         "toSymbol": "existingResolver",
         "callExpression": "existingResolver",
         "sourcePath": "src/runtime/interactionPolicyCore.ts"
-      },
-      {
-        "fromSymbol": "createStudioPreviewComponentRegistry",
-        "toSymbol": "createComponentRegistry",
-        "callExpression": "createComponentRegistry",
-        "sourcePath": "src/runtime/previewRegistry.ts"
-      },
-      {
-        "fromSymbol": "src/runtime/previewRegistry.ts",
-        "toSymbol": "createStudioPreviewComponentRegistry",
-        "callExpression": "createStudioPreviewComponentRegistry",
-        "sourcePath": "src/runtime/previewRegistry.ts"
-      },
-      {
-        "fromSymbol": "createStudioPreviewRuntimeConfig",
-        "toSymbol": "shouldSuppressStudioRuntimeActions",
-        "callExpression": "shouldSuppressStudioRuntimeActions",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
-      },
-      {
-        "fromSymbol": "createStudioPreviewRuntimeConfig",
-        "toSymbol": "createStudioPreviewComponentRegistry",
-        "callExpression": "createStudioPreviewComponentRegistry",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
-      },
-      {
-        "fromSymbol": "createStudioPreviewRuntimeConfig",
-        "toSymbol": "createStudioInteractionPolicyResolver",
-        "callExpression": "createStudioInteractionPolicyResolver",
-        "sourcePath": "src/runtime/previewRuntimeConfig.ts"
       },
       {
         "fromSymbol": "executeRuntimeAction",
@@ -34333,6 +33907,12 @@
       },
       {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.test.ts",
+        "toSymbol": "resolveStudioAppBarModeAction",
+        "callExpression": "resolveStudioAppBarModeAction",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.test.ts",
         "toSymbol": "resolveStudioAppBarContextActions",
         "callExpression": "resolveStudioAppBarContextActions",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.test.ts"
@@ -34357,6 +33937,30 @@
       },
       {
         "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "isStudioAdminPath",
+        "callExpression": "isStudioAdminPath",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setInsertVisible",
+        "callExpression": "setInsertVisible",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setDeleteCandidateId",
+        "callExpression": "setDeleteCandidateId",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
+        "toSymbol": "setActivePanelId",
+        "callExpression": "studio.setActivePanelId",
+        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
+      },
+      {
+        "fromSymbol": "useStudioAppBarAugmentation",
         "toSymbol": "useCallback",
         "callExpression": "useCallback",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
@@ -34377,12 +33981,6 @@
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
         "toSymbol": "setLastNonAdminLocation",
         "callExpression": "studio.setLastNonAdminLocation",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
-        "toSymbol": "setActivePanelId",
-        "callExpression": "studio.setActivePanelId",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
@@ -34434,27 +34032,15 @@
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
-        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
-        "toSymbol": "setInsertVisible",
-        "callExpression": "setInsertVisible",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
-        "toSymbol": "setDeleteCandidateId",
-        "callExpression": "setDeleteCandidateId",
+        "fromSymbol": "useStudioAppBarAugmentation",
+        "toSymbol": "resolveStudioAppBarModeAction",
+        "callExpression": "resolveStudioAppBarModeAction",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {
         "fromSymbol": "src/ui/useStudioAppBarAugmentation.ts",
         "toSymbol": "deleteNode",
         "callExpression": "studio.deleteNode",
-        "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
-      },
-      {
-        "fromSymbol": "useStudioAppBarAugmentation",
-        "toSymbol": "isStudioAdminPath",
-        "callExpression": "isStudioAdminPath",
         "sourcePath": "src/ui/useStudioAppBarAugmentation.ts"
       },
       {

@@ -41,10 +41,13 @@ route. The canonical Studio manifest invariant requires each screen registry key
 unique `ScreenSpec.id`; malformed mismatches or duplicate stable IDs are diagnosed and never used
 to choose an arbitrary detail screen. ADM 8 does not provide route-key or path renaming.
 
-The normal app bar exposes one Administration action while Studio is active. Inside `/ankh`, the
-admin shell provides a desktop sidebar and a compact drawer. `Back to app` returns to the latest
-non-admin app location remembered by the current Studio session; navigation within `/ankh` does not
-overwrite that location.
+The normal app bar exposes Administration and Preview actions while Studio is active on an app
+route. Preview becomes an emphasized Edit action while active, and contextual Properties,
+Bindings, Insert, Delete, parent-selection, and dialog affordances are withheld until Edit resumes.
+Inside `/ankh`, the admin shell provides a desktop sidebar and a compact drawer; administration is
+never presented as app Preview content. `Back to app` returns to the latest non-admin app location
+remembered by the current Studio session, and navigation within `/ankh` does not overwrite that
+location.
 
 Auth and Secrets render as page content inside the admin shell. Auth configuration writes flow
 through `StudioProvider` as the single canonical manifest writer, while OAuth credential payloads

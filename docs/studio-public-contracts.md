@@ -33,6 +33,12 @@ The obsolete `addNodeToTree`, `moveNodeInTree`, directional `moveStudioManifestN
 `@ankhorage/studio/dnd/primitives`, and `@ankhorage/studio/dnd/state` exports are also removed;
 app-facing canvas code imports the maintained cross-platform adapter directly.
 
+The obsolete `@ankhorage/studio/manifestNavigatorPreviewModel`,
+`@ankhorage/studio/runtime/previewRegistry`, and
+`@ankhorage/studio/runtime/previewRuntimeConfig` exports are removed as well. Generated apps use
+their canonical manifest navigator and Runtime registry in both Edit and Preview; Studio contributes
+only mode policy and its declared app extensions.
+
 ## Deliberately not moved here
 
 This slice does not move product UI or app-host implementation code. In particular, this package

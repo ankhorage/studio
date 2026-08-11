@@ -55,6 +55,7 @@ export function getRootLayoutImportRequirements(
           {
             source: '@ankhorage/studio/runtime',
             namedImports: [
+              { imported: 'createStudioActionSuppressionConfig' },
               { imported: 'createStudioInteractionPolicyResolver' },
               { imported: 'createStudioStationarySelectionWrapNode' },
               { imported: 'StationaryTapSelector' },
@@ -642,7 +643,7 @@ function StudioShell({
    );
    const studioRuntimeConfig = useMemo(
      () => ({
-       disableActions: !previewMode,
+       ...createStudioActionSuppressionConfig(previewMode),
        wrapNode: studioWrapNode,
        resolveNodeProps: studioResolveNodeProps,
      }),

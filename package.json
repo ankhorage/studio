@@ -56,14 +56,6 @@
       "types": "./dist/runtime/localizationPreview.d.ts",
       "import": "./dist/runtime/localizationPreview.js"
     },
-    "./runtime/previewRegistry": {
-      "types": "./dist/runtime/previewRegistry.d.ts",
-      "import": "./dist/runtime/previewRegistry.js"
-    },
-    "./runtime/previewRuntimeConfig": {
-      "types": "./dist/runtime/previewRuntimeConfig.d.ts",
-      "import": "./dist/runtime/previewRuntimeConfig.js"
-    },
     "./runtime/registry": {
       "types": "./dist/runtime/registry.d.ts",
       "import": "./dist/runtime/registry.js"
@@ -119,10 +111,6 @@
     "./localizationPanelModel": {
       "types": "./dist/localizationPanelModel.d.ts",
       "import": "./dist/localizationPanelModel.js"
-    },
-    "./manifestNavigatorPreviewModel": {
-      "types": "./dist/manifestNavigatorPreviewModel.d.ts",
-      "import": "./dist/manifestNavigatorPreviewModel.js"
     },
     "./manifestState": {
       "types": "./dist/manifestState.d.ts",

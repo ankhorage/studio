@@ -158,6 +158,15 @@ function createAdminSmokeManifest(): AppManifest {
           ...catalogScreen.root,
           children: [
             ...(catalogScreen.root.children ?? []),
+            {
+              id: 'nutrition-preview-navigation-action',
+              type: 'Button',
+              props: {
+                children: 'Open scanner in Preview',
+                onPress: { type: 'navigate', payload: { route: '/scan' } },
+                testID: 'nutrition-preview-navigation-action',
+              },
+            },
             { id: 'nutrition-studio-smoke-probe', type: 'SmokeStudioProbe', props: {} },
           ],
         },
@@ -658,8 +667,15 @@ adminWebSmokeTest(
               );
             }
             expect(bodyText).toContain('Generated runtime row 16');
-            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=3');
-            await verifyDesktopSelectionAndUnsupportedGeometry(page, 1, 3);
+            expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=5');
+            await verifyDesktopSelectionAndUnsupportedGeometry(page, 2, 5);
+          }
+          if (route.startsWith('/ankh')) {
+            expect(
+              await page.evaluate<boolean>(
+                `document.querySelector('[aria-label="Preview"], [aria-label="Edit"]') === null`,
+              ),
+            ).toBe(true);
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
@@ -737,6 +753,9 @@ async function verifyNestedNutritionSelection(
   const searchInputNodeId = 'food_drink-nutrition-catalog-scan-products-search-input';
   const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
   const productsScreenRootId = 'food_drink-nutrition-catalog-scan-products-screen';
+  const scanScreenId = 'food_drink-nutrition-catalog-scan-scan';
+  const scanScreenRootId = 'food_drink-nutrition-catalog-scan-scan-screen';
+  const previewNavigationNodeId = 'nutrition-preview-navigation-action';
   const rootScreenState = {
     pathname: '/',
     activeScreenId: catalogScreenId,
@@ -756,8 +775,9 @@ async function verifyNestedNutritionSelection(
   await page.waitForStudioScreenState(productsScreenState, HTTP_TIMEOUT_MS, expoOutput);
   await waitForBodyText(page, (text) => text.includes('Catalog products'), HTTP_TIMEOUT_MS);
   expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
-  const initialAppBarGeometry = await page.readAppBarActionGeometry(['Administration']);
-  expect(initialAppBarGeometry.actions.length).toBe(1);
+  const initialAppBarLabels = ['Administration', 'Preview'];
+  const initialAppBarGeometry = await page.readAppBarActionGeometry(initialAppBarLabels);
+  expectAppBarActionsHorizontal(initialAppBarGeometry, initialAppBarLabels);
 
   const interactionBeforeClick = await waitForRuntimeNodeInteractionReady(
     page,
@@ -790,7 +810,13 @@ async function verifyNestedNutritionSelection(
     `mode=edit;selection=${searchInputNodeId};changes=1`,
   );
   expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(productsScreenState));
-  const appBarLabels = ['Administration', 'Properties', 'Select parent', 'Clear selection'];
+  const appBarLabels = [
+    'Administration',
+    'Preview',
+    'Properties',
+    'Select parent',
+    'Clear selection',
+  ];
   const selectedAppBarGeometry = await page.readAppBarActionGeometry(appBarLabels);
   expectAppBarActionsHorizontal(selectedAppBarGeometry, appBarLabels);
   expect(
@@ -839,6 +865,69 @@ async function verifyNestedNutritionSelection(
       `document.querySelectorAll('[data-testid^="studio-selected-indicator-"]').length`,
     ),
   ).toBe(0);
+
+  const previewNavigationTarget = await page.readRuntimeNodeCenter(previewNavigationNodeId);
+  await page.mouseClick(previewNavigationTarget.x, previewNavigationTarget.y);
+  await waitForStudioSmokeState(
+    page,
+    `mode=edit;selection=${previewNavigationNodeId};changes=4`,
+    15_000,
+  );
+  await Bun.sleep(250);
+  expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(productsScreenState));
+
+  await page.clickAppBarAction('Preview');
+  await waitForStudioSmokeState(
+    page,
+    `mode=preview;selection=${previewNavigationNodeId};changes=4`,
+    15_000,
+  );
+  expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(productsScreenState));
+  expect(await page.readSelectionRootId()).toBe(
+    `studio-stationary-selection-root:preview:${previewNavigationNodeId}:2`,
+  );
+  expectAppBarActionsHorizontal(await page.readAppBarActionGeometry(['Administration', 'Edit']), [
+    'Administration',
+    'Edit',
+  ]);
+  for (const label of ['Properties', 'Bindings', 'Insert', 'Delete', 'Select parent']) {
+    expect(
+      await page.evaluate<boolean>(
+        `document.querySelector('[aria-label=${JSON.stringify(label)}]') === null`,
+      ),
+    ).toBe(true);
+  }
+
+  const previewInputTarget = await page.readRuntimeNodeCenter(searchInputNodeId);
+  await page.mouseClick(previewInputTarget.x, previewInputTarget.y);
+  await page.insertText('preview-enabled');
+  const previewInput = await page.readRuntimeNodeInteractionSnapshot(searchInputNodeId);
+  expect(previewInput.inputFocused).toBe(true);
+  expect(previewInput.inputReadOnly).toBe(false);
+  expect(previewInput.inputDisabled).toBe(false);
+  expect(previewInput.inputValue).toContain('preview-enabled');
+
+  const previewActionTarget = await page.readRuntimeNodeCenter(previewNavigationNodeId);
+  await page.mouseClick(previewActionTarget.x, previewActionTarget.y);
+  const scanScreenState = {
+    pathname: '/scan',
+    activeScreenId: scanScreenId,
+    rootNodeId: scanScreenRootId,
+  } satisfies StudioScreenStateExpectation;
+  await page.waitForStudioScreenState(scanScreenState, HTTP_TIMEOUT_MS, expoOutput);
+  expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:preview:none:2');
+  expectAppBarActionsHorizontal(await page.readAppBarActionGeometry(['Administration', 'Edit']), [
+    'Administration',
+    'Edit',
+  ]);
+
+  await page.clickAppBarAction('Edit');
+  expect(await page.readStudioScreenState()).toBe(formatStudioScreenState(scanScreenState));
+  expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:2');
+  expectAppBarActionsHorizontal(
+    await page.readAppBarActionGeometry(['Administration', 'Preview']),
+    ['Administration', 'Preview'],
+  );
 }
 
 interface BrowserRect {
