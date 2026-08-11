@@ -1,5 +1,13 @@
 # @ankhorage/studio
 
+## 0.15.0
+
+### Minor Changes
+
+- ef09b66: Restore contextual Insert and Delete authoring, add placement-backed canvas drag and drop through
+  the cross-platform adapter with deterministic session cleanup, and remove obsolete DnD wrappers
+  and directional tree mutation APIs.
+
 ## 0.14.0
 
 ### Minor Changes
