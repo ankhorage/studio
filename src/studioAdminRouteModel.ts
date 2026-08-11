@@ -40,6 +40,14 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     description: 'Project administration overview and status.',
   },
   {
+    id: 'screens',
+    path: '/ankh/screens',
+    label: 'Screens',
+    icon: 'phone-portrait-outline',
+    order: 10,
+    description: 'Screens and primary app navigation.',
+  },
+  {
     id: 'apis',
     path: '/ankh/apis',
     label: 'APIs',

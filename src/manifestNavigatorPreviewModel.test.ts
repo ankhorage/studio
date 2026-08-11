@@ -80,7 +80,7 @@ describe('manifest navigator preview model', () => {
             },
             { name: 'settings', screenId: 'settings' },
             { name: 'sign-in', screenId: 'sign-in' },
-            { name: 'hidden', screenId: 'hidden', hideInTabBar: true },
+            { name: 'hidden', screenId: 'hidden', showInPrimaryNavigation: false },
           ],
         },
       }),

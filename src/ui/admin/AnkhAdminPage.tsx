@@ -12,6 +12,7 @@ import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
 import { BindingsAdminPage } from './pages/BindingsAdminPage';
 import { OverviewAdminPage } from './pages/OverviewAdminPage';
 import { PropertiesAdminPage } from './pages/PropertiesAdminPage';
+import { ScreensAdminPage } from './pages/ScreensAdminPage';
 import { SecretsAdminPage } from './pages/SecretsAdminPage';
 import { ThemeAdminPage } from './pages/ThemeAdminPage';
 
@@ -30,6 +31,7 @@ type AuthAdminRouteId = AuthAdminPageProps['routeId'];
 
 const ADMIN_PAGE_RENDERERS = {
   overview: () => <OverviewAdminPage />,
+  screens: () => <ScreensAdminPage />,
   apis: ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
   'api-data-sources': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
   'api-operations': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,

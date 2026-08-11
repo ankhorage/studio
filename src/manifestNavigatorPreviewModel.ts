@@ -91,7 +91,7 @@ function resolveVisibleChromeRoutes(args: {
   const authRouteNames = collectAuthFlowRouteNames(manifest);
 
   return navigator.routes
-    .filter((route) => route.hideInTabBar !== true)
+    .filter((route) => route.showInPrimaryNavigation !== false)
     .filter((route) => !authRouteNames.has(route.name))
     .map((route) => ({
       name: route.name,

@@ -415,6 +415,9 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_signOut_ts
   module_src_host_layout_templates_index_ts["src/host/layout/templates/index.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_index_ts
+  module_src_host_layout_templates_navigation_test_ts["src/host/layout/templates/navigation.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_navigation_test_ts
+  module_src_host_layout_templates_navigation_test_ts --> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_navigation_ts["src/host/layout/templates/navigation.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_navigation_ts
   module_src_host_layout_templates_navigation_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
@@ -879,6 +882,7 @@ graph TD
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_BindingsAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_OverviewAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_PropertiesAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ScreensAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_SecretsAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeAdminPage_tsx
   module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
@@ -1076,6 +1080,20 @@ graph TD
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_manifestState_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_propertiesAuthoringModel_ts
   module_src_ui_admin_pages_PropertiesAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_screens_screensAdminActions_test_ts["src/ui/admin/pages/screens/screensAdminActions.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_screens_screensAdminActions_test_ts
+  module_src_ui_admin_pages_screens_screensAdminActions_test_ts --> module_src_ui_admin_pages_screens_screensAdminActions_ts
+  module_src_ui_admin_pages_screens_screensAdminActions_ts["src/ui/admin/pages/screens/screensAdminActions.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_screens_screensAdminActions_ts
+  module_src_ui_admin_pages_screens_screensAdminActions_ts --> module_src_index_ts
+  module_src_ui_admin_pages_ScreensAdminPage_test_ts["src/ui/admin/pages/ScreensAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ScreensAdminPage_test_ts
+  module_src_ui_admin_pages_ScreensAdminPage_tsx["src/ui/admin/pages/ScreensAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ScreensAdminPage_tsx
+  module_src_ui_admin_pages_ScreensAdminPage_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_ScreensAdminPage_tsx --> module_src_manifestState_ts
+  module_src_ui_admin_pages_ScreensAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ScreensAdminPage_tsx --> module_src_ui_admin_pages_screens_screensAdminActions_ts
   module_src_ui_admin_pages_SecretsAdminPage_test_ts["src/ui/admin/pages/SecretsAdminPage.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_SecretsAdminPage_test_ts
   module_src_ui_admin_pages_SecretsAdminPage_tsx["src/ui/admin/pages/SecretsAdminPage.tsx"]

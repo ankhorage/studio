@@ -6,6 +6,7 @@ first-class Expo Router section, not a set of route anchors backed by the normal
 Canonical routes:
 
 - `/ankh`
+- `/ankh/screens`
 - `/ankh/apis`
 - `/ankh/apis/data-sources`
 - `/ankh/apis/operations`
@@ -21,6 +22,12 @@ Canonical routes:
 labels, icons, hierarchy, active matching, contextual availability, and Properties path
 construction/decoding. Generated pages and navigation should consume this registry instead of
 assembling admin paths directly.
+
+Screens administration at `/ankh/screens` consumes the package-neutral manifest screen/navigation
+model. It represents unrouted and multiply referenced screens honestly, shows navigator
+diagnostics, and sends create/delete, visibility, initial-route, sibling-order, and navigator-type
+actions through `StudioProvider`'s canonical draft/autosave path. Hidden routes remain routable;
+the overview never substitutes a second navigation model or a component-tree/Layers interface.
 
 The normal app bar exposes one Administration action while Studio is active. Inside `/ankh`, the
 admin shell provides a desktop sidebar and a compact drawer. `Back to app` returns to the latest

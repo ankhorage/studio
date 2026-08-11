@@ -7,7 +7,6 @@ import type {
   DataSourceRegistry,
   GeneratedApiDefinition,
   NavigatorType,
-  RouteDefinition,
   ThemeConfig,
   ThemeModeConfig,
   UiNode,
@@ -125,6 +124,7 @@ export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers' | 'modules' | 'localization';
 export type StudioAdminRouteId =
   | 'overview'
+  | 'screens'
   | 'apis'
   | 'api-data-sources'
   | 'api-operations'
@@ -138,6 +138,7 @@ export type StudioAdminRouteId =
   | 'properties';
 export type StudioAdminStaticRoutePath =
   | '/ankh'
+  | '/ankh/screens'
   | '/ankh/apis'
   | '/ankh/apis/data-sources'
   | '/ankh/apis/operations'
@@ -361,6 +362,12 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   deleteScreen: (id: StudioScreenId) => void;
   setNavigatorType: (type: NavigatorType) => void;
   setNavigatorInitialRoute: (routeName: string) => void;
+  setRoutePrimaryNavigationVisibility: (
+    parentPath: string[],
+    routeName: string,
+    showInPrimaryNavigation: boolean,
+  ) => void;
+  moveRoute: (parentPath: string[], routeName: string, toIndex: number) => void;
   addTheme: () => void;
   updateTheme: (id: string, updates: ThemeUpdates) => void;
   deleteTheme: (id: string) => void;
@@ -370,7 +377,6 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   updateModuleConfig: (moduleId: StudioModuleId, config: Record<string, unknown>) => void;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
-  reorderScreens: (newRoutes: RouteDefinition[]) => void;
   setActiveScreenId: (id: StudioScreenId) => void;
   findNode: (root: UiNode, id: StudioNodeId) => UiNode | null;
   setStudioMode: (mode: StudioMode) => void;

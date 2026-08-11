@@ -113,6 +113,23 @@ test('rejects malformed optional manifest domains', () => {
   );
 });
 
+test('validates canonical primary-navigation visibility', () => {
+  const manifest = createManifest();
+  manifest.navigator.routes = [
+    { name: 'home', screenId: 'home' },
+    { name: 'details', screenId: 'details', showInPrimaryNavigation: false },
+  ];
+  manifest.screens = {
+    home: { id: 'home', name: 'Home', root: { id: 'home-root', type: 'Screen' } },
+    details: { id: 'details', name: 'Details', root: { id: 'details-root', type: 'Screen' } },
+  };
+
+  expect(isAppManifest(manifest)).toBe(true);
+  expect(
+    isAppManifest(withPath('navigator.routes', [{ name: 'home', showInPrimaryNavigation: 0 }])),
+  ).toBe(false);
+});
+
 function createManifest(): AppManifest {
   return {
     metadata: {

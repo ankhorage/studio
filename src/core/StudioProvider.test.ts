@@ -20,6 +20,11 @@ test('uses canonical manifestState mutations for provider authoring state', () =
   expect(source).toContain('insertStudioManifestNodeAtPlacement');
   expect(source).toContain('moveStudioManifestNodeToPlacement');
   expect(source).toContain('deleteStudioManifestNode');
+  expect(source).toContain('addStudioManifestScreen');
+  expect(source).toContain('deleteStudioManifestScreen');
+  expect(source).toContain('moveStudioManifestRoute');
+  expect(source).toContain('setStudioManifestRoutePrimaryNavigationVisibility');
+  expect(source).not.toContain('reorderScreens:');
   expect(source).toContain('createNodeFromCatalogEntry');
 });
 

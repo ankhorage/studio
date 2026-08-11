@@ -8,14 +8,18 @@ import {
   createStudioManifestFingerprint,
   deleteStudioManifestNode,
   deleteStudioManifestScreen,
+  deriveStudioScreenNavigationModel,
+  findRoutesAtParentPath,
   insertStudioManifestNodeAtPlacement,
   moveStudioManifestNodeToPlacement,
+  moveStudioManifestRoute,
   resolveActiveRootNode,
   resolveInitialActiveScreenId,
   resolveInitialScreenId,
   resolveSafeSelectedNodeId,
   setStudioManifestNavigatorInitialRoute,
   setStudioManifestNavigatorType,
+  setStudioManifestRoutePrimaryNavigationVisibility,
   updateStudioManifestModuleConfig,
   updateStudioManifestNode,
   updateStudioManifestOAuthProviders,
@@ -332,6 +336,240 @@ describe('manifestState', () => {
     const deleted = deleteStudioManifestScreen(added.manifest, 'screen-home', 'screen-home');
     expect(deleted.activeScreenId).toBe('screen-about');
     expect(deleted.manifest.screens['screen-home']).toBeUndefined();
+  });
+
+  test('derives nested route references, primary membership, paths, and unrouted screens', () => {
+    const manifest = createManifest();
+    manifest.screens['screen-unrouted'] = {
+      id: 'screen-unrouted',
+      name: 'Unrouted',
+      root: { id: 'root-unrouted', type: 'Screen', children: [] },
+    };
+    manifest.navigator = {
+      type: 'stack',
+      initialRouteName: '(app)',
+      routes: [
+        {
+          name: '(app)',
+          navigator: {
+            type: 'drawer',
+            initialRouteName: 'home',
+            routes: [
+              {
+                name: 'home',
+                screenId: 'screen-home',
+                showInPrimaryNavigation: false,
+              },
+              {
+                name: 'account',
+                navigator: {
+                  type: 'stack',
+                  routes: [{ name: '[id]', path: 'profile/:id', screenId: 'screen-about' }],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+
+    const model = deriveStudioScreenNavigationModel(manifest);
+    const home = model.screens.find((entry) => entry.screenId === 'screen-home');
+    const about = model.screens.find((entry) => entry.screenId === 'screen-about');
+    const unrouted = model.screens.find((entry) => entry.screenId === 'screen-unrouted');
+
+    expect(model.primaryNavigatorPath).toEqual(['(app)']);
+    expect(model.primaryNavigator.type).toBe('drawer');
+    expect(home?.routeReferences[0]).toMatchObject({
+      parentPath: ['(app)'],
+      routePath: ['(app)', 'home'],
+      pathnamePattern: '/home',
+      isPrimaryNavigatorMember: true,
+      showInPrimaryNavigation: false,
+      isPrimaryInitialRoute: true,
+      siblingIndex: 0,
+    });
+    expect(about?.routeReferences[0]).toMatchObject({
+      parentPath: ['(app)', 'account'],
+      routePath: ['(app)', 'account', '[id]'],
+      pathnamePattern: '/account/profile/:id',
+      isPrimaryNavigatorMember: false,
+      siblingIndex: 0,
+    });
+    expect(unrouted?.routeReferences).toEqual([]);
+    expect(model.diagnostics).toEqual([]);
+  });
+
+  test('reports malformed navigator and route references deterministically', () => {
+    const manifest = createManifest();
+    manifest.navigator = {
+      type: 'tabs',
+      initialRouteName: 'missing',
+      routes: [
+        { name: 'duplicate', screenId: 'screen-home' },
+        { name: 'duplicate', screenId: 'screen-home' },
+        { name: 'orphan', screenId: 'screen-missing' },
+        { name: 'empty' },
+      ],
+    };
+
+    expect(deriveStudioScreenNavigationModel(manifest).diagnostics.map(({ code }) => code)).toEqual(
+      [
+        'invalid-initial-route',
+        'duplicate-sibling-route-name',
+        'missing-screen-reference',
+        'missing-route-target',
+        'ambiguous-screen-route-reference',
+      ],
+    );
+  });
+
+  test('creates screens in the primary navigator rather than the active nested stack', () => {
+    const manifest = createManifest();
+    manifest.navigator = {
+      type: 'stack',
+      routes: [
+        {
+          name: '(app)',
+          navigator: {
+            type: 'tabs',
+            routes: [
+              { name: 'home', screenId: 'screen-home' },
+              {
+                name: 'account',
+                navigator: {
+                  type: 'stack',
+                  routes: [{ name: 'about', screenId: 'screen-about' }],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    };
+    let id = 0;
+    const added = addStudioManifestScreen({
+      manifest,
+      name: 'Settings',
+      activeScreenId: 'screen-about',
+      createId: (prefix = 'id') => `${prefix.toLowerCase()}-${++id}`,
+    });
+
+    expect(
+      findRoutesAtParentPath(added.manifest.navigator.routes, ['(app)'])?.at(-1),
+    ).toMatchObject({ name: 'settings', screenId: 'screen-1' });
+    expect(
+      findRoutesAtParentPath(added.manifest.navigator.routes, ['(app)', 'account']),
+    ).toHaveLength(1);
+  });
+
+  test('creates a route whose canonical path does not collide with an explicit route path', () => {
+    const manifest = createManifest();
+    const [, about] = manifest.navigator.routes;
+    if (about) about.path = '/settings';
+    let id = 0;
+    const added = addStudioManifestScreen({
+      manifest,
+      name: 'Settings',
+      activeScreenId: 'screen-home',
+      createId: (prefix = 'id') => `${prefix.toLowerCase()}-${++id}`,
+    });
+
+    expect(added.manifest.navigator.routes.at(-1)?.name).toBe('settings-2');
+  });
+
+  test('deletes every route reference and subtree binding atomically', () => {
+    const manifest = createManifest();
+    manifest.navigator.routes.push({
+      name: 'nested',
+      navigator: { type: 'stack', routes: [{ name: 'home-copy', screenId: 'screen-home' }] },
+    });
+    manifest.dataBindings = {
+      'root-home': { componentId: 'root-home', sourceId: 'source-1', path: '$' },
+      'text-1': { componentId: 'text-1', sourceId: 'source-1', path: '$.title' },
+      'root-about': { componentId: 'root-about', sourceId: 'source-1', path: '$' },
+    } as never;
+
+    const missing = deleteStudioManifestScreen(manifest, 'screen-missing', 'screen-home');
+    expect(missing.manifest).toBe(manifest);
+
+    const deleted = deleteStudioManifestScreen(manifest, 'screen-home', 'screen-home');
+    expect(JSON.stringify(deleted.manifest.navigator)).not.toContain('screen-home');
+    expect(deleted.manifest.navigator.initialRouteName).toBe('about');
+    expect(deleted.manifest.dataBindings?.['root-home']).toBeUndefined();
+    expect(deleted.manifest.dataBindings?.['text-1']).toBeUndefined();
+    expect(deleted.manifest.dataBindings?.['root-about']).toBeDefined();
+    expect(deleted.activeScreenId).toBe('screen-about');
+  });
+
+  test('refuses to delete the final screen', () => {
+    const manifest = createManifest();
+    delete manifest.screens['screen-about'];
+    manifest.navigator.routes = [{ name: 'home', screenId: 'screen-home' }];
+
+    expect(deleteStudioManifestScreen(manifest, 'screen-home', 'screen-home')).toEqual({
+      manifest,
+      activeScreenId: 'screen-home',
+    });
+  });
+
+  test('updates visibility and sibling order without recreating routes or changing initial state', () => {
+    const manifest = createManifest();
+    const [homeRoute] = manifest.navigator.routes;
+    const hidden = setStudioManifestRoutePrimaryNavigationVisibility({
+      manifest,
+      parentPath: [],
+      routeName: 'home',
+      showInPrimaryNavigation: false,
+    });
+    expect(hidden.navigator.routes[0]).toBeDefined();
+    expect(hidden.navigator.routes[0]?.showInPrimaryNavigation).toBe(false);
+    expect(hidden.navigator.initialRouteName).toBe('home');
+
+    const moved = moveStudioManifestRoute({
+      manifest: hidden,
+      parentPath: [],
+      routeName: 'home',
+      toIndex: 1,
+    });
+    expect(moved.navigator.routes.map((route) => route.name)).toEqual(['about', 'home']);
+    expect(moved.navigator.routes[1]).toMatchObject(homeRoute ?? {});
+    expect(moved.navigator.routes[1]?.showInPrimaryNavigation).toBe(false);
+    expect(moved.navigator.initialRouteName).toBe('home');
+
+    const restoredOrder = moveStudioManifestRoute({
+      manifest: moved,
+      parentPath: [],
+      routeName: 'home',
+      toIndex: 0,
+    });
+    expect(restoredOrder.navigator.routes.map((route) => route.name)).toEqual(['home', 'about']);
+
+    const drawer = setStudioManifestNavigatorType(restoredOrder, 'drawer');
+    expect(drawer.navigator.routes).toBe(restoredOrder.navigator.routes);
+    expect(drawer.navigator.routes[0]?.showInPrimaryNavigation).toBe(false);
+    expect(drawer.navigator.initialRouteName).toBe('home');
+    expect(setStudioManifestNavigatorType(drawer, 'grid' as never)).toBe(drawer);
+
+    const hiddenInitial = setStudioManifestNavigatorInitialRoute(drawer, 'home');
+    expect(hiddenInitial).toBe(drawer);
+    expect(setStudioManifestNavigatorInitialRoute(drawer, 'missing')).toBe(drawer);
+
+    const visible = setStudioManifestRoutePrimaryNavigationVisibility({
+      manifest: drawer,
+      parentPath: [],
+      routeName: 'home',
+      showInPrimaryNavigation: true,
+    });
+    expect('showInPrimaryNavigation' in (visible.navigator.routes[0] ?? {})).toBe(false);
+    expect(
+      moveStudioManifestRoute({
+        manifest: visible,
+        parentPath: [],
+        routeName: 'home',
+        toIndex: 3,
+      }),
+    ).toBe(visible);
   });
 
   test('updates navigator, theme, module config, and OAuth providers', () => {

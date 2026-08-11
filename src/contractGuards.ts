@@ -159,7 +159,8 @@ function isRouteDefinition(value: unknown): value is RouteDefinition {
     (value.path === undefined || typeof value.path === 'string') &&
     (value.label === undefined || typeof value.label === 'string') &&
     (value.icon === undefined || isIconSpec(value.icon)) &&
-    (value.hideInTabBar === undefined || typeof value.hideInTabBar === 'boolean') &&
+    (value.showInPrimaryNavigation === undefined ||
+      typeof value.showInPrimaryNavigation === 'boolean') &&
     (value.guards === undefined ||
       (Array.isArray(value.guards) && value.guards.every((guard) => typeof guard === 'string'))) &&
     (value.screenId === undefined || typeof value.screenId === 'string') &&

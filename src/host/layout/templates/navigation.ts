@@ -73,7 +73,7 @@ function buildTabsNavigatorJsx(args: {
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
   const { navigator, manifest, includeStudio } = args;
-  const hasHiddenRoutes = navigator.routes.some((route) => route.hideInTabBar === true);
+  const hasHiddenRoutes = navigator.routes.some((route) => route.showInPrimaryNavigation === false);
   const headerShown = getNavigatorHeaderShownTsx(includeStudio);
 
   if (!hasHiddenRoutes) {
@@ -142,7 +142,7 @@ function buildDrawerNavigatorJsx(args: {
   includeStudio: boolean;
 }): BuiltNavigatorJsx {
   const { navigator, manifest, includeStudio } = args;
-  const hasHiddenRoutes = navigator.routes.some((route) => route.hideInTabBar === true);
+  const hasHiddenRoutes = navigator.routes.some((route) => route.showInPrimaryNavigation === false);
   const headerShown = getNavigatorHeaderShownTsx(includeStudio);
 
   if (!hasHiddenRoutes) {
@@ -262,8 +262,7 @@ function buildTabsScreenFallbackJsx(
   index: number,
 ): { declaration: string; jsx: string } {
   const label = resolveRouteLabel(route, manifest);
-  const hideHrefOption = route.hideInTabBar ? 'href: null,' : '';
-  const hideTabBarOption = route.hideInTabBar ? "tabBarStyle: { display: 'none' }," : '';
+  const hideHrefOption = route.showInPrimaryNavigation === false ? 'href: null,' : '';
   const optionsConstName = buildScreenOptionsConstName(route, index);
   const iconFunctionName = buildScreenIconFunctionName(route, index);
   const optionLines = [
@@ -271,7 +270,6 @@ function buildTabsScreenFallbackJsx(
     `tabBarLabel: '${label}',`,
     route.icon ? `tabBarIcon: ${iconFunctionName},` : '',
     hideHrefOption,
-    hideTabBarOption,
   ]
     .filter(Boolean)
     .map((line) => `  ${line}`)
@@ -318,10 +316,8 @@ function buildDrawerScreenFallbackJsx(
   index: number,
 ): { declaration: string; jsx: string } {
   const label = resolveRouteLabel(route, manifest);
-  const hideDrawerOption = route.hideInTabBar ? "drawerItemStyle: { display: 'none' }," : '';
-  const disableHiddenRouteOption = route.hideInTabBar
-    ? 'swipeEnabled: false, headerShown: false,'
-    : '';
+  const hideDrawerOption =
+    route.showInPrimaryNavigation === false ? "drawerItemStyle: { display: 'none' }," : '';
   const optionsConstName = buildScreenOptionsConstName(route, index);
   const iconFunctionName = buildScreenIconFunctionName(route, index);
   const optionLines = [
@@ -329,7 +325,6 @@ function buildDrawerScreenFallbackJsx(
     `drawerLabel: '${label}',`,
     route.icon ? `drawerIcon: ${iconFunctionName},` : '',
     hideDrawerOption,
-    disableHiddenRouteOption,
   ]
     .filter(Boolean)
     .map((line) => `  ${line}`)

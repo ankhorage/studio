@@ -21,6 +21,7 @@ describe('studioAdminRouteModel', () => {
   test('defines every canonical admin route once', () => {
     expect(STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => route.id)).toEqual([
       'overview',
+      'screens',
       'apis',
       'api-data-sources',
       'api-operations',
@@ -37,6 +38,9 @@ describe('studioAdminRouteModel', () => {
 
   test('resolves admin route ids and concrete paths', () => {
     expect(resolveStudioAdminRouteId('/ankh')).toBe('overview');
+    expect(resolveStudioAdminRouteId('/ankh/screens')).toBe('screens');
+    expect(resolveStudioAdminRoutePath('/ankh/screens')).toBe('/ankh/screens');
+    expect(createStudioAdminRoutePath({ routeId: 'screens' })).toBe('/ankh/screens');
     expect(resolveStudioAdminRouteId('/ankh/apis')).toBe('apis');
     expect(resolveStudioAdminRouteId('/ankh/apis/data-sources')).toBe('api-data-sources');
     expect(resolveStudioAdminRouteId('/ankh/apis/operations')).toBe('api-operations');
@@ -120,7 +124,7 @@ describe('studioAdminRouteModel', () => {
     const routes: string[] = [];
     expect(
       openStudioAdminRoute({
-        next: 'secrets',
+        next: 'screens',
         setActivePanelId: (panelId) => panelIds.push(panelId),
         pushRoute: (routePath) => routes.push(routePath),
       }),
@@ -136,7 +140,7 @@ describe('studioAdminRouteModel', () => {
     ).toBe(false);
 
     expect(panelIds).toEqual([null]);
-    expect(routes).toEqual(['/ankh/secrets']);
+    expect(routes).toEqual(['/ankh/screens']);
   });
 
   test('preserves search and hash when the runtime location matches the pathname', () => {

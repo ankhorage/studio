@@ -7,7 +7,6 @@
 ```ts
 import {
   collectScreenRouteEntries,
-  reorderLeafRoutesWithinParent,
   resolveScreenIdForPathname,
 } from '@ankhorage/studio/routeUtils';
 
@@ -21,7 +20,6 @@ import { resolveInitialScreenId } from '@ankhorage/studio/manifestState';
 - navigator lookup/update helpers
 - unique route-name helpers
 - route cleanup helpers
-- leaf-route reordering within a selected parent path
 - recursive pathname-to-screen resolution across Stack, Tabs, Drawer, and route-group nesting
 
 ## Active screen resolution
@@ -46,7 +44,3 @@ change reconciles selection, so node IDs that do not belong to the new root are 
 ## Host-owned concerns
 
 Hosts still own React panels, drag/drop gestures, visual ordering controls, and persistence side effects.
-
-## Leaf route reorder
-
-`reorderLeafRoutesWithinParent(routes, parentPath, orderedRouteNames)` only reorders routes whose names are listed in `orderedRouteNames` within the selected parent path. Routes not listed in the order remain in place.

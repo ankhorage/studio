@@ -537,8 +537,12 @@ function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): Navigator
     return normalizedNavigator;
   }
 
-  const visibleRoutes = normalizedNavigator.routes.filter((route) => route.hideInTabBar !== true);
-  const hiddenRoutes = normalizedNavigator.routes.filter((route) => route.hideInTabBar === true);
+  const visibleRoutes = normalizedNavigator.routes.filter(
+    (route) => route.showInPrimaryNavigation !== false,
+  );
+  const hiddenRoutes = normalizedNavigator.routes.filter(
+    (route) => route.showInPrimaryNavigation === false,
+  );
   if (hiddenRoutes.length === 0) {
     return normalizedNavigator;
   }

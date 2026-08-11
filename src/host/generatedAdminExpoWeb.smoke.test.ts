@@ -143,7 +143,7 @@ function createAdminSmokeManifest(): AppManifest {
           name: 'dashboard',
           label: 'Dashboard',
           screenId: 'dashboard',
-          hideInTabBar: true,
+          showInPrimaryNavigation: false,
         },
       ],
     },
@@ -629,7 +629,13 @@ adminWebSmokeTest(
       try {
         await page.blockHotReloadConnections();
         await verifyNestedNutritionSelection(page, appUrl, expoOutput);
-        for (const route of ['/dashboard', '/ankh', '/ankh/theme', '/ankh/auth/providers']) {
+        for (const route of [
+          '/dashboard',
+          '/ankh',
+          '/ankh/screens',
+          '/ankh/theme',
+          '/ankh/auth/providers',
+        ]) {
           await page.navigateStudio(route);
           await Bun.sleep(ROUTE_SETTLE_MS);
           const bodyText =
