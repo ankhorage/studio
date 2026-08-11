@@ -47,9 +47,6 @@ graph LR
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
   module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
-  module_src_dnd_index_ts["src/dnd/index.ts"]
-  module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
-  module_src_dnd_state_ts["src/dnd/state.ts"]
   module_src_externalApiApi_ts["src/externalApiApi.ts"]
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   module_src_externalApiAuthoring_ts["src/externalApiAuthoring.ts"]
@@ -301,7 +298,13 @@ graph LR
   module_src_ui_admin_pages_ThemeAdminPage_test_ts["src/ui/admin/pages/ThemeAdminPage.test.ts"]
   module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
+  module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
+  module_src_ui_canvas_canvasDndInteraction_ts["src/ui/canvas/canvasDndInteraction.ts"]
+  module_src_ui_canvas_StudioCanvasDndOverlay_test_ts["src/ui/canvas/StudioCanvasDndOverlay.test.ts"]
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx["src/ui/canvas/StudioCanvasDndOverlay.tsx"]
   module_src_ui_studioAppBarModel_ts["src/ui/studioAppBarModel.ts"]
+  module_src_ui_StudioDeleteDialog_tsx["src/ui/StudioDeleteDialog.tsx"]
+  module_src_ui_StudioInsertDialog_tsx["src/ui/StudioInsertDialog.tsx"]
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   module_src_upsertExternalApiDataSource_ts["src/upsertExternalApiDataSource.ts"]
@@ -314,9 +317,6 @@ graph LR
   export_ActionDefinition["ActionDefinition"]
   module_src_index_ts --> export_ActionDefinition
   export_ActionDefinition -.-> export_StudioActionPayloadSchema
-  export_addNodeToTree["addNodeToTree"]
-  module_src_index_ts --> export_addNodeToTree
-  export_addNodeToTree -.-> export_StudioComponentMetaRegistry
   export_appendStudioEventBinding["appendStudioEventBinding"]
   module_src_bindingMutationModel_ts --> export_appendStudioEventBinding
   export_assessStudioBindingCompatibility["assessStudioBindingCompatibility"]
@@ -413,8 +413,6 @@ graph LR
   module_src_index_ts --> export_InsertRecipeNode
   export_ModuleDefinition["ModuleDefinition"]
   module_src_index_ts --> export_ModuleDefinition
-  export_moveNodeInTree["moveNodeInTree"]
-  module_src_index_ts --> export_moveNodeInTree
   export_moveNodeToPlacement["moveNodeToPlacement"]
   module_src_index_ts --> export_moveNodeToPlacement
   export_moveNodeToPlacement -.-> export_MoveNodeToPlacementArgs
@@ -494,6 +492,10 @@ graph LR
   export_resolveInsertPlacement -.-> export_PlacementKind
   export_resolveInsertPlacement -.-> export_PlacementResolutionResult
   export_resolveInsertPlacement -.-> export_StudioComponentMetaRegistry
+  export_resolveMoveNodePlacement["resolveMoveNodePlacement"]
+  module_src_index_ts --> export_resolveMoveNodePlacement
+  export_resolveMoveNodePlacement -.-> export_MoveNodeToPlacementArgs
+  export_resolveMoveNodePlacement -.-> export_PlacementResolutionResult
   export_resolveStudioBindableEvents["resolveStudioBindableEvents"]
   module_src_bindingMetadataModel_ts --> export_resolveStudioBindableEvents
   export_resolveStudioBindableEvents -.-> export_StudioBindableEventOption
@@ -568,6 +570,7 @@ graph LR
   export_StudioContextValue -.-> export_InsertCatalogEntry
   export_StudioContextValue -.-> export_NodePlacement
   export_StudioContextValue -.-> export_StudioAdminRouteId
+  export_StudioContextValue -.-> export_StudioComponentMetaRegistry
   export_StudioContextValue -.-> export_StudioLocale
   export_StudioContextValue -.-> export_StudioManifest
   export_StudioContextValue -.-> export_StudioMode

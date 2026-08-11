@@ -179,12 +179,6 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --> module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
-  module_src_dnd_index_ts["src/dnd/index.ts"]
-  package__ankhorage_studio -.-> module_src_dnd_index_ts
-  module_src_dnd_primitives_ts["src/dnd/primitives.ts"]
-  package__ankhorage_studio -.-> module_src_dnd_primitives_ts
-  module_src_dnd_state_ts["src/dnd/state.ts"]
-  package__ankhorage_studio -.-> module_src_dnd_state_ts
   module_src_externalApiApi_ts["src/externalApiApi.ts"]
   package__ankhorage_studio -.-> module_src_externalApiApi_ts
   module_src_externalApiApi_ts --> module_src_core_constants_ts
@@ -811,11 +805,13 @@ graph TD
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_test_ts
   module_src_runtime_stationarySelection_ts["src/runtime/stationarySelection.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelection_ts
+  module_src_runtime_stationarySelection_ts --> module_src_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_indicatorSettleCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionCoordinator_ts
   module_src_runtime_stationarySelection_ts --> module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_stationarySelection_ts --> module_src_ui_canvas_StudioCanvasDndOverlay_tsx
   module_src_runtime_stationarySelectionCoordinator_test_ts["src/runtime/stationarySelectionCoordinator.test.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelectionCoordinator_test_ts
   module_src_runtime_stationarySelectionCoordinator_test_ts --> module_src_runtime_stationarySelectionCoordinator_ts
@@ -1100,17 +1096,46 @@ graph TD
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_canvas_canvasDndInteraction_test_ts
+  module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_ui_canvas_canvasDndInteraction_ts
+  module_src_ui_canvas_canvasDndInteraction_ts["src/ui/canvas/canvasDndInteraction.ts"]
+  package__ankhorage_studio -.-> module_src_ui_canvas_canvasDndInteraction_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_canvasDragModel_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_canvasDndInteraction_ts --> module_src_index_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_test_ts["src/ui/canvas/StudioCanvasDndOverlay.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_canvas_StudioCanvasDndOverlay_test_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx["src/ui/canvas/StudioCanvasDndOverlay.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_canvas_StudioCanvasDndOverlay_tsx
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_canvasDragModel_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_canvasDropZones_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_index_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_insertModalModel_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_runtime_runtimeNodeMeasurement_ts
+  module_src_ui_canvas_StudioCanvasDndOverlay_tsx --> module_src_ui_canvas_canvasDndInteraction_ts
   module_src_ui_studioAppBarModel_ts["src/ui/studioAppBarModel.ts"]
   package__ankhorage_studio -.-> module_src_ui_studioAppBarModel_ts
+  module_src_ui_StudioDeleteDialog_tsx["src/ui/StudioDeleteDialog.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_StudioDeleteDialog_tsx
+  module_src_ui_StudioInsertDialog_tsx["src/ui/StudioInsertDialog.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_StudioInsertDialog_tsx
+  module_src_ui_StudioInsertDialog_tsx --> module_src_index_ts
+  module_src_ui_StudioInsertDialog_tsx --> module_src_insertModalModel_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts["src/ui/useStudioAppBarAugmentation.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_test_ts
   module_src_ui_useStudioAppBarAugmentation_test_ts --> module_src_ui_studioAppBarModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts["src/ui/useStudioAppBarAugmentation.ts"]
   package__ankhorage_studio -.-> module_src_ui_useStudioAppBarAugmentation_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_core_StudioContext_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_index_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_insertModalModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioAdminRouteModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_studioSelectionModel_ts
   module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_studioAppBarModel_ts
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioDeleteDialog_tsx
+  module_src_ui_useStudioAppBarAugmentation_ts --> module_src_ui_StudioInsertDialog_tsx
   module_src_upsertExternalApiDataSource_ts["src/upsertExternalApiDataSource.ts"]
   package__ankhorage_studio -.-> module_src_upsertExternalApiDataSource_ts
   module_src_utils_treeUtils_ts["src/utils/treeUtils.ts"]
