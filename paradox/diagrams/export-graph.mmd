@@ -20,6 +20,16 @@ graph LR
   module_src_authFlowContract_test_ts["src/authFlowContract.test.ts"]
   module_src_authSettings_test_ts["src/authSettings.test.ts"]
   module_src_authSettings_ts["src/authSettings.ts"]
+  module_src_bindingAuthoringContracts_ts["src/bindingAuthoringContracts.ts"]
+  module_src_bindingAuthoringModel_test_ts["src/bindingAuthoringModel.test.ts"]
+  module_src_bindingAuthoringModel_ts["src/bindingAuthoringModel.ts"]
+  module_src_bindingDiagnosticsModel_ts["src/bindingDiagnosticsModel.ts"]
+  module_src_bindingManifestPersistence_test_ts["src/bindingManifestPersistence.test.ts"]
+  module_src_bindingMetadataModel_ts["src/bindingMetadataModel.ts"]
+  module_src_bindingMutationAcceptance_test_ts["src/bindingMutationAcceptance.test.ts"]
+  module_src_bindingMutationModel_ts["src/bindingMutationModel.ts"]
+  module_src_bindingOperationModel_ts["src/bindingOperationModel.ts"]
+  module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
   module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
   module_src_canvasDragModel_test_ts["src/canvasDragModel.test.ts"]
   module_src_canvasDragModel_ts["src/canvasDragModel.ts"]
@@ -261,6 +271,14 @@ graph LR
   module_src_ui_admin_pages_ApisAdminPage_tsx["src/ui/admin/pages/ApisAdminPage.tsx"]
   module_src_ui_admin_pages_AuthAdminPage_test_ts["src/ui/admin/pages/AuthAdminPage.test.ts"]
   module_src_ui_admin_pages_AuthAdminPage_tsx["src/ui/admin/pages/AuthAdminPage.tsx"]
+  module_src_ui_admin_pages_bindings_bindingAdminStyles_ts["src/ui/admin/pages/bindings/bindingAdminStyles.ts"]
+  module_src_ui_admin_pages_bindings_BindingDiagnosticsCard_tsx["src/ui/admin/pages/bindings/BindingDiagnosticsCard.tsx"]
+  module_src_ui_admin_pages_bindings_bindingEditorModel_ts["src/ui/admin/pages/bindings/bindingEditorModel.ts"]
+  module_src_ui_admin_pages_bindings_EventBindingComposer_tsx["src/ui/admin/pages/bindings/EventBindingComposer.tsx"]
+  module_src_ui_admin_pages_bindings_EventBindingsCard_tsx["src/ui/admin/pages/bindings/EventBindingsCard.tsx"]
+  module_src_ui_admin_pages_bindings_PropertyBindingEditor_tsx["src/ui/admin/pages/bindings/PropertyBindingEditor.tsx"]
+  module_src_ui_admin_pages_bindings_PropertyBindingsCard_tsx["src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"]
+  module_src_ui_admin_pages_BindingsAdminPage_tsx["src/ui/admin/pages/BindingsAdminPage.tsx"]
   module_src_ui_admin_pages_DataSourceCatalogCard_tsx["src/ui/admin/pages/DataSourceCatalogCard.tsx"]
   module_src_ui_admin_pages_DataSourceOperationsCard_tsx["src/ui/admin/pages/DataSourceOperationsCard.tsx"]
   module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx["src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"]
@@ -299,6 +317,11 @@ graph LR
   export_addNodeToTree["addNodeToTree"]
   module_src_index_ts --> export_addNodeToTree
   export_addNodeToTree -.-> export_StudioComponentMetaRegistry
+  export_appendStudioEventBinding["appendStudioEventBinding"]
+  module_src_bindingMutationModel_ts --> export_appendStudioEventBinding
+  export_assessStudioBindingCompatibility["assessStudioBindingCompatibility"]
+  module_src_bindingSchemaModel_ts --> export_assessStudioBindingCompatibility
+  export_assessStudioBindingCompatibility -.-> export_StudioBindingCompatibility
   export_buildInsertCatalogEntries["buildInsertCatalogEntries"]
   module_src_index_ts --> export_buildInsertCatalogEntries
   export_buildInsertCatalogEntries -.-> export_InsertCatalogEntry
@@ -310,18 +333,34 @@ graph LR
   export_cloneWithNewIds["cloneWithNewIds"]
   module_src_index_ts --> export_cloneWithNewIds
   export_cloneWithNewIds -.-> export_StudioIdGenerator
+  export_collectStudioBindingOperationOptions["collectStudioBindingOperationOptions"]
+  module_src_bindingOperationModel_ts --> export_collectStudioBindingOperationOptions
+  export_collectStudioBindingOperationOptions -.-> export_StudioBindingOperationOption
+  export_collectStudioResponsePaths["collectStudioResponsePaths"]
+  module_src_bindingSchemaModel_ts --> export_collectStudioResponsePaths
+  export_collectStudioResponsePaths -.-> export_StudioBindingResponsePathOption
   export_createNodeFromCatalogEntry["createNodeFromCatalogEntry"]
   module_src_index_ts --> export_createNodeFromCatalogEntry
   export_createNodeFromCatalogEntry -.-> export_InsertCatalogEntry
   export_createNodeFromCatalogEntry -.-> export_StudioComponentMetaRegistry
   export_createNodeFromCatalogEntry -.-> export_StudioIdGenerator
+  export_createStudioActionInputFields["createStudioActionInputFields"]
+  module_src_bindingOperationModel_ts --> export_createStudioActionInputFields
+  export_createStudioActionInputFields -.-> export_StudioBindingInputFieldOption
   export_createStudioInstancePropertyPatch["createStudioInstancePropertyPatch"]
   module_src_propertiesAuthoringModel_ts --> export_createStudioInstancePropertyPatch
   export_createStudioInstancePropertyPatch -.-> export_StudioInstancePropertyValue
   export_deriveProjectId["deriveProjectId"]
   module_src_projectIdentity_ts --> export_deriveProjectId
+  export_diagnoseStudioComponentBindings["diagnoseStudioComponentBindings"]
+  module_src_bindingDiagnosticsModel_ts --> export_diagnoseStudioComponentBindings
+  export_diagnoseStudioComponentBindings -.-> export_StudioBindingDiagnostic
+  export_diagnoseStudioComponentBindings -.-> export_StudioBindingOperationOption
   export_findNodeById["findNodeById"]
   module_src_index_ts --> export_findNodeById
+  export_findStudioBindingOperationOption["findStudioBindingOperationOption"]
+  module_src_bindingOperationModel_ts --> export_findStudioBindingOperationOption
+  export_findStudioBindingOperationOption -.-> export_StudioBindingOperationOption
   export_generateStudioId["generateStudioId"]
   module_src_index_ts --> export_generateStudioId
   export_getInsertCatalogCategoryLabel["getInsertCatalogCategoryLabel"]
@@ -438,6 +477,10 @@ graph LR
   module_src_projectWorkspaceContracts_ts --> export_ProjectSortKey
   export_removeNodeFromTree["removeNodeFromTree"]
   module_src_index_ts --> export_removeNodeFromTree
+  export_removeStudioEventBinding["removeStudioEventBinding"]
+  module_src_bindingMutationModel_ts --> export_removeStudioEventBinding
+  export_removeStudioPropBinding["removeStudioPropBinding"]
+  module_src_bindingMutationModel_ts --> export_removeStudioPropBinding
   export_resolveDefaultInsertPlacement["resolveDefaultInsertPlacement"]
   module_src_index_ts --> export_resolveDefaultInsertPlacement
   export_resolveDefaultInsertPlacement -.-> export_PlacementResolutionResult
@@ -451,6 +494,12 @@ graph LR
   export_resolveInsertPlacement -.-> export_PlacementKind
   export_resolveInsertPlacement -.-> export_PlacementResolutionResult
   export_resolveInsertPlacement -.-> export_StudioComponentMetaRegistry
+  export_resolveStudioBindableEvents["resolveStudioBindableEvents"]
+  module_src_bindingMetadataModel_ts --> export_resolveStudioBindableEvents
+  export_resolveStudioBindableEvents -.-> export_StudioBindableEventOption
+  export_resolveStudioBindableProps["resolveStudioBindableProps"]
+  module_src_bindingMetadataModel_ts --> export_resolveStudioBindableProps
+  export_resolveStudioBindableProps -.-> export_StudioBindablePropOption
   export_resolveStudioInstancePropertyFields["resolveStudioInstancePropertyFields"]
   module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyFields
   export_resolveStudioInstancePropertyFields -.-> export_StudioAuthoringComponentMeta
@@ -459,6 +508,8 @@ graph LR
   module_src_propertiesAuthoringModel_ts --> export_resolveStudioInstancePropertyGroups
   export_resolveStudioInstancePropertyGroups -.-> export_StudioAuthoringComponentMeta
   export_resolveStudioInstancePropertyGroups -.-> export_StudioInstancePropertyGroup
+  export_resolveStudioSchemaValueMeta["resolveStudioSchemaValueMeta"]
+  module_src_bindingSchemaModel_ts --> export_resolveStudioSchemaValueMeta
   export_STUDIO_INSERT_RECIPES["STUDIO_INSERT_RECIPES"]
   module_src_index_ts --> export_STUDIO_INSERT_RECIPES
   export_STUDIO_PACKAGE_BOUNDARY["STUDIO_PACKAGE_BOUNDARY"]
@@ -487,6 +538,22 @@ graph LR
   module_src_propertiesAuthoringModel_ts --> export_StudioAuthoringMetaRegistry
   export_StudioAuthoringPropSchema["StudioAuthoringPropSchema"]
   module_src_propertiesAuthoringModel_ts --> export_StudioAuthoringPropSchema
+  export_StudioBindableEventOption["StudioBindableEventOption"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindableEventOption
+  export_StudioBindablePropOption["StudioBindablePropOption"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindablePropOption
+  export_StudioBindingCompatibility["StudioBindingCompatibility"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindingCompatibility
+  export_StudioBindingDiagnostic["StudioBindingDiagnostic"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindingDiagnostic
+  export_StudioBindingInputFieldOption["StudioBindingInputFieldOption"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindingInputFieldOption
+  export_StudioBindingOperationOption["StudioBindingOperationOption"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindingOperationOption
+  export_StudioBindingOperationOption -.-> export_StudioBindingInputFieldOption
+  export_StudioBindingOperationOption -.-> export_StudioBindingResponsePathOption
+  export_StudioBindingResponsePathOption["StudioBindingResponsePathOption"]
+  module_src_bindingAuthoringContracts_ts --> export_StudioBindingResponsePathOption
   export_StudioCommand["StudioCommand"]
   module_src_index_ts --> export_StudioCommand
   export_StudioComponentBlueprint["StudioComponentBlueprint"]
@@ -574,6 +641,8 @@ graph LR
   module_src_index_ts --> export_TPL_SCREEN_EMPTY
   export_updateNodeInTree["updateNodeInTree"]
   module_src_index_ts --> export_updateNodeInTree
+  export_upsertStudioPropBinding["upsertStudioPropBinding"]
+  module_src_bindingMutationModel_ts --> export_upsertStudioPropBinding
   export_validateInsertRecipe["validateInsertRecipe"]
   module_src_index_ts --> export_validateInsertRecipe
   export_validateInsertRecipe -.-> export_InsertRecipe

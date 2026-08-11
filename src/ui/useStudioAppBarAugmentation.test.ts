@@ -14,6 +14,7 @@ test('uses the URL as the admin route source of truth', () => {
   expect(source).toContain('usePathname()');
   expect(source).toContain('useRouter()');
   expect(source).toContain("router.push('/ankh')");
+  expect(source).toContain('createStudioBindingsRoutePath');
   expect(source).toContain('resolveStudioLastNonAdminLocation');
   expect(source).toContain('studio.setLastNonAdminLocation(appLocation)');
   expect(source).toContain('Administration');
@@ -45,6 +46,7 @@ test('resolves contextual app bar actions for selected nodes', () => {
 
   expect(actions).toEqual([
     { id: 'properties', label: 'Properties' },
+    { id: 'bindings', label: 'Bindings' },
     { id: 'selectParent', label: 'Select parent' },
     { id: 'clearSelection', label: 'Clear selection' },
   ]);
@@ -58,6 +60,7 @@ test('omits parent selection when no parent is available', () => {
 
   expect(actions).toEqual([
     { id: 'properties', label: 'Properties' },
+    { id: 'bindings', label: 'Bindings' },
     { id: 'clearSelection', label: 'Clear selection' },
   ]);
 });

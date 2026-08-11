@@ -1,5 +1,5 @@
 export interface StudioAppBarContextAction {
-  readonly id: 'properties' | 'selectParent' | 'clearSelection';
+  readonly id: 'properties' | 'bindings' | 'selectParent' | 'clearSelection';
   readonly label: string;
 }
 
@@ -15,7 +15,10 @@ export function resolveStudioAppBarContextActions(
     return [];
   }
 
-  const actions: StudioAppBarContextAction[] = [{ id: 'properties', label: 'Properties' }];
+  const actions: StudioAppBarContextAction[] = [
+    { id: 'properties', label: 'Properties' },
+    { id: 'bindings', label: 'Bindings' },
+  ];
 
   if (args.parentNodeId) {
     actions.push({ id: 'selectParent', label: 'Select parent' });

@@ -140,6 +140,10 @@
       "types": "./dist/manifestState.d.ts",
       "import": "./dist/manifestState.js"
     },
+    "./bindingAuthoringModel": {
+      "types": "./dist/bindingAuthoringModel.d.ts",
+      "import": "./dist/bindingAuthoringModel.js"
+    },
     "./propertiesAuthoringModel": {
       "types": "./dist/propertiesAuthoringModel.d.ts",
       "import": "./dist/propertiesAuthoringModel.js"

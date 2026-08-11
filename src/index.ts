@@ -15,6 +15,7 @@ import type {
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
 
+export * from './bindingAuthoringModel';
 export type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -97,6 +98,9 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioInstancePropertyField',
   'resolveStudioInstancePropertyGroups',
   'createStudioInstancePropertyPatch',
+  'resolveStudioBindableProps',
+  'resolveStudioBindableEvents',
+  'collectStudioBindingOperationOptions',
   'ProjectAuthHealth',
   'ProjectSecretUsageSummary',
   'StudioAdminRouteId',
@@ -130,6 +134,7 @@ export type StudioAdminRouteId =
   | 'auth-profile'
   | 'secrets'
   | 'theme'
+  | 'bindings'
   | 'properties';
 export type StudioAdminStaticRoutePath =
   | '/ankh'
@@ -142,7 +147,8 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/auth/profile'
   | '/ankh/secrets'
   | '/ankh/theme';
-export type StudioAdminRoutePath = StudioAdminStaticRoutePath | `/ankh/properties/${string}`;
+export type StudioAdminRoutePath =
+  StudioAdminStaticRoutePath | `/ankh/bindings/${string}` | `/ankh/properties/${string}`;
 
 export type StudioManifest = AppManifest & {
   infra: AppManifest['infra'] & {

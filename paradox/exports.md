@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:378:14`
+Source: `src/index.ts:384:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:284:1`
+Source: `src/index.ts:290:1`
 
 ### Members
 
@@ -26,7 +26,7 @@ Source: `src/index.ts:284:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:600:14`
+Source: `src/index.ts:606:14`
 
 ### Signatures
 
@@ -34,11 +34,39 @@ Source: `src/index.ts:600:14`
   - args: `{ root: UiNode; targetId: string; newNode: UiNode; componentMeta: StudioComponentMetaRegistry; mode?: "append" | "prepend"; }`
   - returns: `UiNode`
 
+## appendStudioEventBinding
+
+Kind: `function`
+Module: `src/bindingMutationModel.ts`
+Source: `src/bindingMutationModel.ts:34:1`
+
+### Signatures
+
+- `(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, binding: EventBinding) => Readonly<Record<string, ComponentDataBinding>>`
+  - binding: `EventBinding`
+  - eventName: `string`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, ComponentDataBinding>>`
+  - returns: `Readonly<Record<string, ComponentDataBinding>>`
+
+## assessStudioBindingCompatibility
+
+Kind: `function`
+Module: `src/bindingSchemaModel.ts`
+Source: `src/bindingSchemaModel.ts:43:1`
+
+### Signatures
+
+- `(expected: UiBindableValueMeta, actual: UiBindableValueMeta) => StudioBindingCompatibility`
+  - actual: `UiBindableValueMeta`
+  - expected: `UiBindableValueMeta`
+  - returns: `StudioBindingCompatibility`
+
 ## buildInsertCatalogEntries
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1312:1`
+Source: `src/index.ts:1318:1`
 
 ### Signatures
 
@@ -50,7 +78,7 @@ Source: `src/index.ts:1312:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:759:1`
+Source: `src/index.ts:765:1`
 
 ### Signatures
 
@@ -62,7 +90,7 @@ Source: `src/index.ts:759:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:525:14`
+Source: `src/index.ts:531:14`
 
 ### Signatures
 
@@ -71,11 +99,36 @@ Source: `src/index.ts:525:14`
   - node: `UiNode`
   - returns: `UiNode`
 
+## collectStudioBindingOperationOptions
+
+Kind: `function`
+Module: `src/bindingOperationModel.ts`
+Source: `src/bindingOperationModel.ts:16:1`
+
+### Signatures
+
+- `(dataSources: Readonly<Record<string, DataSourceConfig>>) => readonly StudioBindingOperationOption[]`
+  - dataSources: `Readonly<Record<string, DataSourceConfig>>`
+  - returns: `readonly StudioBindingOperationOption[]`
+
+## collectStudioResponsePaths
+
+Kind: `function`
+Module: `src/bindingSchemaModel.ts`
+Source: `src/bindingSchemaModel.ts:33:1`
+
+### Signatures
+
+- `(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined) => readonly StudioBindingResponsePathOption[]`
+  - schema: `DataSchema | undefined`
+  - schemas: `Readonly<Record<string, DataSchema>> | undefined`
+  - returns: `readonly StudioBindingResponsePathOption[]`
+
 ## createNodeFromCatalogEntry
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1231:1`
+Source: `src/index.ts:1237:1`
 
 ### Signatures
 
@@ -84,6 +137,18 @@ Source: `src/index.ts:1231:1`
   - createId: `StudioIdGenerator` (optional)
   - entry: `InsertCatalogEntry`
   - returns: `UiNode`
+
+## createStudioActionInputFields
+
+Kind: `function`
+Module: `src/bindingOperationModel.ts`
+Source: `src/bindingOperationModel.ts:95:1`
+
+### Signatures
+
+- `(payloadSchema: Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined) => readonly StudioBindingInputFieldOption[]`
+  - payloadSchema: `Readonly<Record<string, { readonly label: string; readonly type: string; readonly required?: boolean; }>> | undefined`
+  - returns: `readonly StudioBindingInputFieldOption[]`
 
 ## createStudioInstancePropertyPatch
 
@@ -111,11 +176,23 @@ Source: `src/projectIdentity.ts:11:1`
   - projectName: `string`
   - returns: `string`
 
+## diagnoseStudioComponentBindings
+
+Kind: `function`
+Module: `src/bindingDiagnosticsModel.ts`
+Source: `src/bindingDiagnosticsModel.ts:20:1`
+
+### Signatures
+
+- `(args: { readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }) => readonly StudioBindingDiagnostic[]`
+  - args: `{ readonly node: UiNode; readonly registry: ComponentDataBindingRegistry; readonly componentMeta: UiComponentMetaRegistry; readonly operations: readonly StudioBindingOperationOption[]; readonly actionTypes: readonly string[]; }`
+  - returns: `readonly StudioBindingDiagnostic[]`
+
 ## findNodeById
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:542:14`
+Source: `src/index.ts:548:14`
 
 ### Signatures
 
@@ -124,11 +201,24 @@ Source: `src/index.ts:542:14`
   - root: `UiNode`
   - returns: `UiNode | null`
 
+## findStudioBindingOperationOption
+
+Kind: `function`
+Module: `src/bindingOperationModel.ts`
+Source: `src/bindingOperationModel.ts:24:1`
+
+### Signatures
+
+- `(options: readonly StudioBindingOperationOption[], ref: BindingOperationRef) => StudioBindingOperationOption | undefined`
+  - options: `readonly StudioBindingOperationOption[]`
+  - ref: `BindingOperationRef`
+  - returns: `StudioBindingOperationOption | undefined`
+
 ## generateStudioId
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:518:14`
+Source: `src/index.ts:524:14`
 
 ### Signatures
 
@@ -140,7 +230,7 @@ Source: `src/index.ts:518:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1157:1`
+Source: `src/index.ts:1163:1`
 
 ### Signatures
 
@@ -152,7 +242,7 @@ Source: `src/index.ts:1157:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:262:1`
+Source: `src/index.ts:268:1`
 
 ### Members
 
@@ -173,7 +263,7 @@ Source: `src/index.ts:262:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:244:1`
+Source: `src/index.ts:250:1`
 
 ### Members
 
@@ -187,19 +277,19 @@ Source: `src/index.ts:244:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:221:1`
+Source: `src/index.ts:227:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:272:1`
+Source: `src/index.ts:278:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:250:1`
+Source: `src/index.ts:256:1`
 
 ### Members
 
@@ -219,19 +309,19 @@ Source: `src/index.ts:250:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:218:1`
+Source: `src/index.ts:224:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:219:1`
+Source: `src/index.ts:225:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:267:1`
+Source: `src/index.ts:273:1`
 
 ### Members
 
@@ -252,7 +342,7 @@ Source: `src/index.ts:267:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:989:1`
+Source: `src/index.ts:995:1`
 
 ### Signatures
 
@@ -264,7 +354,7 @@ Source: `src/index.ts:989:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:932:1`
+Source: `src/index.ts:938:1`
 
 ### Members
 
@@ -279,7 +369,7 @@ Source: `src/index.ts:932:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:939:1`
+Source: `src/index.ts:945:1`
 
 ### Members
 
@@ -292,7 +382,7 @@ Source: `src/index.ts:939:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:229:1`
+Source: `src/index.ts:235:1`
 
 ### Members
 
@@ -308,7 +398,7 @@ Source: `src/index.ts:229:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:237:1`
+Source: `src/index.ts:243:1`
 
 ### Members
 
@@ -323,7 +413,7 @@ Source: `src/index.ts:237:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:224:1`
+Source: `src/index.ts:230:1`
 
 ### Members
 
@@ -336,7 +426,7 @@ Source: `src/index.ts:224:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:292:1`
+Source: `src/index.ts:298:1`
 
 ### Members
 
@@ -351,7 +441,7 @@ Source: `src/index.ts:292:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:633:14`
+Source: `src/index.ts:639:14`
 
 ### Signatures
 
@@ -365,7 +455,7 @@ Source: `src/index.ts:633:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1057:1`
+Source: `src/index.ts:1063:1`
 
 ### Signatures
 
@@ -377,7 +467,7 @@ Source: `src/index.ts:1057:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1016:1`
+Source: `src/index.ts:1022:1`
 
 ### Members
 
@@ -392,7 +482,7 @@ Source: `src/index.ts:1016:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1023:1`
+Source: `src/index.ts:1029:1`
 
 ### Members
 
@@ -405,7 +495,7 @@ Source: `src/index.ts:1023:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:180:1`
+Source: `src/index.ts:186:1`
 
 ### Members
 
@@ -420,13 +510,13 @@ Source: `src/index.ts:180:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:187:1`
+Source: `src/index.ts:193:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:199:1`
+Source: `src/index.ts:205:1`
 
 ### Members
 
@@ -439,19 +529,19 @@ Source: `src/index.ts:199:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:178:1`
+Source: `src/index.ts:184:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:211:1`
+Source: `src/index.ts:217:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:204:1`
+Source: `src/index.ts:210:1`
 
 ## ProjectAuthDiagnostic
 
@@ -599,7 +689,7 @@ Source: `src/projectWorkspaceContracts.ts:16:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:582:14`
+Source: `src/index.ts:588:14`
 
 ### Signatures
 
@@ -608,11 +698,40 @@ Source: `src/index.ts:582:14`
   - root: `UiNode`
   - returns: `UiNode | null`
 
+## removeStudioEventBinding
+
+Kind: `function`
+Module: `src/bindingMutationModel.ts`
+Source: `src/bindingMutationModel.ts:50:1`
+
+### Signatures
+
+- `(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, eventName: string, bindingIndex: number) => Readonly<Record<string, ComponentDataBinding>>`
+  - bindingIndex: `number`
+  - eventName: `string`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, ComponentDataBinding>>`
+  - returns: `Readonly<Record<string, ComponentDataBinding>>`
+
+## removeStudioPropBinding
+
+Kind: `function`
+Module: `src/bindingMutationModel.ts`
+Source: `src/bindingMutationModel.ts:22:1`
+
+### Signatures
+
+- `(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string) => Readonly<Record<string, ComponentDataBinding>>`
+  - node: `UiNode`
+  - propName: `string`
+  - registry: `Readonly<Record<string, ComponentDataBinding>>`
+  - returns: `Readonly<Record<string, ComponentDataBinding>>`
+
 ## resolveDefaultInsertPlacement
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:887:1`
+Source: `src/index.ts:893:1`
 
 ### Signatures
 
@@ -624,7 +743,7 @@ Source: `src/index.ts:887:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1354:1`
+Source: `src/index.ts:1360:1`
 
 ### Signatures
 
@@ -636,13 +755,39 @@ Source: `src/index.ts:1354:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:826:1`
+Source: `src/index.ts:832:1`
 
 ### Signatures
 
 - `(args: { root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }) => PlacementResolutionResult`
   - args: `{ root: UiNode; targetNodeId: string; childType: string; componentMeta: StudioComponentMetaRegistry; kind: PlacementKind; }`
   - returns: `PlacementResolutionResult`
+
+## resolveStudioBindableEvents
+
+Kind: `function`
+Module: `src/bindingMetadataModel.ts`
+Source: `src/bindingMetadataModel.ts:21:1`
+
+### Signatures
+
+- `(node: UiNode, registry: Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - returns: `readonly StudioBindableEventOption[]`
+
+## resolveStudioBindableProps
+
+Kind: `function`
+Module: `src/bindingMetadataModel.ts`
+Source: `src/bindingMetadataModel.ts:8:1`
+
+### Signatures
+
+- `(node: UiNode, registry: Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
+  - node: `UiNode`
+  - registry: `Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@4.0.2/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - returns: `readonly StudioBindablePropOption[]`
 
 ## resolveStudioInstancePropertyFields
 
@@ -670,11 +815,25 @@ Source: `src/propertiesAuthoringModel.ts:74:1`
   - registry: `Readonly<Record<string, StudioAuthoringComponentMeta | undefined>>`
   - returns: `readonly StudioInstancePropertyGroup[]`
 
+## resolveStudioSchemaValueMeta
+
+Kind: `function`
+Module: `src/bindingSchemaModel.ts`
+Source: `src/bindingSchemaModel.ts:14:1`
+
+### Signatures
+
+- `(schema: DataSchema | undefined, schemas: Readonly<Record<string, DataSchema>> | undefined, seen?: ReadonlySet<string>) => UiBindableValueMeta`
+  - schema: `DataSchema | undefined`
+  - schemas: `Readonly<Record<string, DataSchema>> | undefined`
+  - seen: `ReadonlySet<string>` (optional)
+  - returns: `UiBindableValueMeta`
+
 ## STUDIO_INSERT_RECIPES
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1124:14`
+Source: `src/index.ts:1130:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -686,25 +845,25 @@ Source: `src/index.ts:1124:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:59:14`
+Source: `src/index.ts:60:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:51:14`
+Source: `src/index.ts:52:14`
 
 ## STUDIO_PUBLIC_CONTRACTS
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:87:14`
+Source: `src/index.ts:88:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:276:1`
+Source: `src/index.ts:282:1`
 
 ### Members
 
@@ -718,31 +877,31 @@ Source: `src/index.ts:276:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:274:1`
+Source: `src/index.ts:280:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:282:1`
+Source: `src/index.ts:288:1`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:122:1`
+Source: `src/index.ts:126:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:145:1`
+Source: `src/index.ts:150:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:134:1`
+Source: `src/index.ts:139:1`
 
 ## StudioAuthoringComponentMeta
 
@@ -780,17 +939,111 @@ Source: `src/propertiesAuthoringModel.ts:3:1`
 | label     | property | `string \| undefined`                          | no       |             |
 | type      | property | `string`                                       | yes      |             |
 
+## StudioBindableEventOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:16:1`
+
+### Members
+
+| Name  | Kind     | Type                  | Required | Description |
+| ----- | -------- | --------------------- | -------- | ----------- |
+| label | property | `string`              | yes      |             |
+| meta  | property | `UiBindableEventMeta` | yes      |             |
+| name  | property | `string`              | yes      |             |
+
+## StudioBindablePropOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:10:1`
+
+### Members
+
+| Name  | Kind     | Type                 | Required | Description |
+| ----- | -------- | -------------------- | -------- | ----------- |
+| label | property | `string`             | yes      |             |
+| meta  | property | `UiBindablePropMeta` | yes      |             |
+| name  | property | `string`             | yes      |             |
+
+## StudioBindingCompatibility
+
+Kind: `unknown`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:8:1`
+
+## StudioBindingDiagnostic
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:43:1`
+
+### Members
+
+| Name     | Kind     | Type                                                                                                                                                                                                      | Required | Description |
+| -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| code     | property | `"incompatible-input" \| "incompatible-response" \| "missing-action" \| "missing-binding-meta" \| "missing-input" \| "missing-operation" \| "missing-response-path" \| "unknown-event" \| "unknown-prop"` | yes      |             |
+| message  | property | `string`                                                                                                                                                                                                  | yes      |             |
+| path     | property | `string \| undefined`                                                                                                                                                                                     | no       |             |
+| severity | property | `"warning" \| "error"`                                                                                                                                                                                    | yes      |             |
+
+## StudioBindingInputFieldOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:22:1`
+
+### Members
+
+| Name     | Kind     | Type                  | Required | Description |
+| -------- | -------- | --------------------- | -------- | ----------- |
+| label    | property | `string`              | yes      |             |
+| name     | property | `string`              | yes      |             |
+| required | property | `boolean`             | yes      |             |
+| value    | property | `UiBindableValueMeta` | yes      |             |
+
+## StudioBindingOperationOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:35:1`
+
+### Members
+
+| Name          | Kind     | Type                                         | Required | Description |
+| ------------- | -------- | -------------------------------------------- | -------- | ----------- |
+| inputFields   | property | `readonly StudioBindingInputFieldOption[]`   | yes      |             |
+| label         | property | `string`                                     | yes      |             |
+| operation     | property | `BindingOperationRef`                        | yes      |             |
+| responsePaths | property | `readonly StudioBindingResponsePathOption[]` | yes      |             |
+| sourceLabel   | property | `string`                                     | yes      |             |
+
+## StudioBindingResponsePathOption
+
+Kind: `type`
+Module: `src/bindingAuthoringContracts.ts`
+Source: `src/bindingAuthoringContracts.ts:29:1`
+
+### Members
+
+| Name  | Kind     | Type                  | Required | Description |
+| ----- | -------- | --------------------- | -------- | ----------- |
+| label | property | `string`              | yes      |             |
+| path  | property | `string`              | yes      |             |
+| value | property | `UiBindableValueMeta` | yes      |             |
+
 ## StudioCommand
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:317:1`
+Source: `src/index.ts:323:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:301:1`
+Source: `src/index.ts:307:1`
 
 ### Members
 
@@ -803,7 +1056,7 @@ Source: `src/index.ts:301:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:306:1`
+Source: `src/index.ts:312:1`
 
 ### Members
 
@@ -818,13 +1071,13 @@ Source: `src/index.ts:306:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:313:1`
+Source: `src/index.ts:319:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:333:1`
+Source: `src/index.ts:339:1`
 
 ### Members
 
@@ -888,13 +1141,13 @@ Source: `src/index.ts:333:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:326:1`
+Source: `src/index.ts:332:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:315:1`
+Source: `src/index.ts:321:1`
 
 ## StudioInstancePropertyEditorKind
 
@@ -945,37 +1198,37 @@ Source: `src/propertiesAuthoringModel.ts:43:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:117:1`
+Source: `src/index.ts:121:1`
 
 ## StudioManifest
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:147:1`
+Source: `src/index.ts:153:1`
 
 ## StudioMode
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:119:1`
+Source: `src/index.ts:123:1`
 
 ## StudioModuleId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:116:1`
+Source: `src/index.ts:120:1`
 
 ## StudioNodeId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:114:1`
+Source: `src/index.ts:118:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:53:1`
+Source: `src/index.ts:54:1`
 
 ### Members
 
@@ -989,13 +1242,13 @@ Source: `src/index.ts:53:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:121:1`
+Source: `src/index.ts:125:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:112:1`
+Source: `src/index.ts:116:1`
 
 ## StudioProjectSummary
 
@@ -1022,25 +1275,25 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:110:1`
+Source: `src/index.ts:114:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:120:1`
+Source: `src/index.ts:124:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:115:1`
+Source: `src/index.ts:119:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:158:1`
+Source: `src/index.ts:164:1`
 
 ### Members
 
@@ -1056,13 +1309,13 @@ Source: `src/index.ts:158:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:113:1`
+Source: `src/index.ts:117:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:166:1`
+Source: `src/index.ts:172:1`
 
 ### Members
 
@@ -1134,19 +1387,19 @@ Source: `src/templateCatalogContracts.ts:25:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:153:1`
+Source: `src/index.ts:159:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:470:14`
+Source: `src/index.ts:476:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:554:14`
+Source: `src/index.ts:560:14`
 
 ### Signatures
 
@@ -1156,11 +1409,26 @@ Source: `src/index.ts:554:14`
   - root: `UiNode`
   - returns: `UiNode`
 
+## upsertStudioPropBinding
+
+Kind: `function`
+Module: `src/bindingMutationModel.ts`
+Source: `src/bindingMutationModel.ts:9:1`
+
+### Signatures
+
+- `(registry: Readonly<Record<string, ComponentDataBinding>>, node: UiNode, propName: string, binding: PropBinding) => Readonly<Record<string, ComponentDataBinding>>`
+  - binding: `PropBinding`
+  - node: `UiNode`
+  - propName: `string`
+  - registry: `Readonly<Record<string, ComponentDataBinding>>`
+  - returns: `Readonly<Record<string, ComponentDataBinding>>`
+
 ## validateInsertRecipe
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1174:1`
+Source: `src/index.ts:1180:1`
 
 ### Signatures
 
@@ -1173,7 +1441,7 @@ Source: `src/index.ts:1174:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:771:1`
+Source: `src/index.ts:777:1`
 
 ### Signatures
 

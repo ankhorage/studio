@@ -3,9 +3,13 @@ import React from 'react';
 
 import { useStudio } from '../../core/StudioContext';
 import type { StudioAdminRouteId, StudioContextValue } from '../../index';
-import { resolveStudioPropertiesNodeId } from '../../studioAdminRouteModel';
+import {
+  resolveStudioBindingsNodeId,
+  resolveStudioPropertiesNodeId,
+} from '../../studioAdminRouteModel';
 import { ApisAdminPage, type ApisAdminRouteId } from './pages/ApisAdminPage';
 import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
+import { BindingsAdminPage } from './pages/BindingsAdminPage';
 import { OverviewAdminPage } from './pages/OverviewAdminPage';
 import { PropertiesAdminPage } from './pages/PropertiesAdminPage';
 import { SecretsAdminPage } from './pages/SecretsAdminPage';
@@ -59,6 +63,7 @@ const ADMIN_PAGE_RENDERERS = {
   ),
   secrets: ({ studio }) => <SecretsAdminPage projectId={studio.projectId} />,
   theme: () => <ThemeAdminPage />,
+  bindings: ({ pathname }) => <BindingsAdminPage nodeId={resolveStudioBindingsNodeId(pathname)} />,
   properties: ({ pathname }) => (
     <PropertiesAdminPage nodeId={resolveStudioPropertiesNodeId(pathname)} />
   ),

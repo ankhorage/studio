@@ -3,12 +3,14 @@ import { describe, expect, test } from 'bun:test';
 import {
   createStudioAdminRoutePath,
   createStudioAdminRouteRenderState,
+  createStudioBindingsRoutePath,
   createStudioPropertiesRoutePath,
   isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   openStudioAdminRoute,
   resolveStudioAdminRouteId,
   resolveStudioAdminRoutePath,
+  resolveStudioBindingsNodeId,
   resolveStudioLastNonAdminLocation,
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
@@ -28,6 +30,7 @@ describe('studioAdminRouteModel', () => {
       'auth-profile',
       'secrets',
       'theme',
+      'bindings',
       'properties',
     ]);
   });
@@ -43,12 +46,23 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/auth/profile')).toBe('auth-profile');
     expect(resolveStudioAdminRouteId('/ankh/secrets')).toBe('secrets');
     expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');
+    expect(resolveStudioAdminRouteId('/ankh/bindings/node-1')).toBe('bindings');
     expect(resolveStudioAdminRouteId('/ankh/properties/node-1')).toBe('properties');
+    expect(resolveStudioAdminRoutePath('/ankh/bindings/node-1')).toBe('/ankh/bindings/node-1');
     expect(resolveStudioAdminRoutePath('/ankh/properties/node-1')).toBe('/ankh/properties/node-1');
     expect(resolveStudioAdminRouteId('/app')).toBeNull();
   });
 
-  test('resolves properties node ids and creates properties paths', () => {
+  test('resolves contextual node ids and creates contextual paths', () => {
+    expect(resolveStudioBindingsNodeId('/ankh/bindings/node-1')).toBe('node-1');
+    expect(resolveStudioBindingsNodeId('/ankh/bindings/node%201')).toBe('node 1');
+    expect(resolveStudioBindingsNodeId('/ankh/apis')).toBeNull();
+    expect(createStudioBindingsRoutePath('node 1')).toBe('/ankh/bindings/node%201');
+    expect(createStudioAdminRoutePath({ routeId: 'bindings', selectedNodeId: 'node 1' })).toBe(
+      '/ankh/bindings/node%201',
+    );
+    expect(createStudioAdminRoutePath({ routeId: 'bindings', selectedNodeId: null })).toBeNull();
+
     expect(resolveStudioPropertiesNodeId('/ankh/properties/node-1')).toBe('node-1');
     expect(resolveStudioPropertiesNodeId('/ankh/properties/node%201')).toBe('node 1');
     expect(resolveStudioPropertiesNodeId('/ankh/apis')).toBeNull();
@@ -69,10 +83,17 @@ describe('studioAdminRouteModel', () => {
       routeAdminId: 'auth-providers',
       resolvedAdminRouteId: 'auth-providers',
       routeAdminPath: '/ankh/auth/providers',
+      bindingsNodeId: null,
       propertiesNodeId: null,
       shouldRenderAppContent: false,
       shouldRenderAdminShell: true,
     });
+    expect(
+      createStudioAdminRouteRenderState({
+        pathname: '/ankh/bindings/button-1',
+        activeAdminRouteId: 'overview',
+      }).bindingsNodeId,
+    ).toBe('button-1');
   });
 
   test('tracks hierarchy and contextual availability', () => {
@@ -88,6 +109,8 @@ describe('studioAdminRouteModel', () => {
         candidateRouteId: 'apis',
       }),
     ).toBe(false);
+    expect(isStudioAdminRouteAvailable('bindings', { selectedNodeId: null })).toBe(false);
+    expect(isStudioAdminRouteAvailable('bindings', { selectedNodeId: 'node-1' })).toBe(true);
     expect(isStudioAdminRouteAvailable('properties', { selectedNodeId: null })).toBe(false);
     expect(isStudioAdminRouteAvailable('properties', { selectedNodeId: 'node-1' })).toBe(true);
   });
@@ -105,7 +128,7 @@ describe('studioAdminRouteModel', () => {
 
     expect(
       openStudioAdminRoute({
-        next: 'properties',
+        next: 'bindings',
         selectedNodeId: null,
         setActivePanelId: (panelId) => panelIds.push(panelId),
         pushRoute: (routePath) => routes.push(routePath),
