@@ -1,0 +1,38 @@
+name: ADM12 focused test fix
+
+on:
+  push:
+    branches:
+      - issue-127/canonical-theme-mode
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue-127/canonical-theme-mode
+      - name: Update exact generator expectation and remove helper
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/host/layout/layoutGenerator.test.ts')
+          text = path.read_text()
+          old = "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, ZORA_COMPONENT_META, useZoraTheme, AppBar } from '@ankhorage/zora';"
+          new = "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, ZORA_COMPONENT_META, useZoraTheme, AppBar, ThemeModeToggle } from '@ankhorage/zora';"
+          if text.count(old) != 1:
+              raise SystemExit(f'expected one old ZORA import assertion, found {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          rm .github/workflows/adm12-test-fix.yml
+      - name: Commit focused fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/host/layout/layoutGenerator.test.ts .github/workflows/adm12-test-fix.yml
+          git commit -m "Expect generated theme mode toggle import"
+          git push origin HEAD:issue-127/canonical-theme-mode
