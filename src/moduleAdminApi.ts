@@ -61,6 +61,28 @@ export async function updateProjectModuleConfig(input: {
   return parseOperationResult(value);
 }
 
+export async function executeProjectModuleAdminOperation(input: {
+  readonly projectId: string;
+  readonly moduleId: string;
+  readonly operation: string;
+  readonly input?: unknown;
+  readonly componentMeta?: unknown;
+}): Promise<unknown> {
+  const value = await requestJson(createProjectModuleAdminOperationApiPath(input), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...(input.input === undefined ? {} : { input: input.input }),
+      ...(input.componentMeta === undefined ? {} : { componentMeta: input.componentMeta }),
+    }),
+  });
+  const record = asRecord(value);
+  if (record?.success !== true) {
+    throw invalidResponse('Module admin operation response was invalid.');
+  }
+  return record.result;
+}
+
 export async function finalizePendingProjectModules(projectId: string): Promise<number> {
   const value = await requestJson(
     `/projects/${encodeURIComponent(projectId)}/modules/finalize-pending`,
@@ -204,6 +226,16 @@ export function createProjectModuleApiPath(input: {
   readonly moduleId: string;
 }): string {
   return `/projects/${encodeURIComponent(input.projectId)}/modules/${encodeURIComponent(input.moduleId)}`;
+}
+
+export function createProjectModuleAdminOperationApiPath(input: {
+  readonly projectId: string;
+  readonly moduleId: string;
+  readonly operation: string;
+}): string {
+  const operation = input.operation.trim();
+  if (!operation) throw new Error('Module admin operation must not be empty.');
+  return `${createProjectModuleApiPath(input)}/admin/${encodeURIComponent(operation)}`;
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
