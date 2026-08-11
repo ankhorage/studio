@@ -76,6 +76,14 @@ Tabs, and Drawer screens remain valid while their node exists. Moving to a diffe
 deleting the selected node clears stale selection; opening an admin route retains the last valid app
 screen context without creating a second navigation model.
 
+The app AppBar switches the existing `StudioProvider` session between Edit and Preview without
+replacing the generated route tree, Runtime renderer, manifest, or component registry. Both modes
+continue to use the generated app's `ZORA_COMPONENT_REGISTRY` plus app extensions. Edit separately
+supplies `interactionPolicy="passive"` and `disableActions=true`; Preview supplies
+`interactionPolicy="enabled"` and `disableActions=false`. Consequently, Preview navigation changes
+the canonical Expo Router location, and returning to Edit stays on the reached app route while it
+remains valid.
+
 Path-derived context is authoritative while `activePathname` is supplied. Explicitly requested
 screen context remains available for hosts without pathname synchronization and becomes the
 preserved app context while generated shells are on `/ankh/*`. If Studio is opened directly on an

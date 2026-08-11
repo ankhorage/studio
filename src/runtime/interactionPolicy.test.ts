@@ -4,6 +4,10 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'bun:test';
 
 import {
+  createStudioActionSuppressionConfig,
+  shouldSuppressStudioRuntimeActions,
+} from './actionSuppression';
+import {
   composeInteractionPolicyResolver,
   createInteractionPolicyResolver,
   isComponentSupported,
@@ -226,17 +230,31 @@ describe('interactionPolicy production adapter', () => {
   });
 });
 
-describe('preview Runtime config production wiring', () => {
-  const sourcePath = join(import.meta.dir, 'previewRuntimeConfig.ts');
-  const source = readFileSync(sourcePath, 'utf8');
+describe('Runtime action suppression', () => {
+  it('suppresses actions only in Edit mode', () => {
+    expect(shouldSuppressStudioRuntimeActions(false)).toBe(true);
+    expect(createStudioActionSuppressionConfig(false)).toEqual({ disableActions: true });
+    expect(shouldSuppressStudioRuntimeActions(true)).toBe(false);
+    expect(createStudioActionSuppressionConfig(true)).toEqual({ disableActions: false });
+  });
 
-  it('threads support and inherited resolver options independently from registry membership', () => {
-    expect(source).toContain('readonly components?: ComponentRegistry;');
-    expect(source).toContain('readonly interactionPolicySupport?: ThirdPartyComponentSupport;');
-    expect(source).toContain(
-      "readonly resolveNodeProps?: RuntimeRendererConfig['resolveNodeProps'];",
-    );
-    expect(source).toContain('thirdPartySupport: options.interactionPolicySupport');
-    expect(source).toContain('existingResolver: options.resolveNodeProps');
+  it('remains independent from component interaction policy', () => {
+    const editResolver = createInteractionPolicyResolver({
+      previewMode: false,
+      isSupportedNodeType: () => true,
+    });
+    const previewResolver = createInteractionPolicyResolver({
+      previewMode: true,
+      isSupportedNodeType: () => true,
+    });
+
+    expect({
+      runtime: createStudioActionSuppressionConfig(false),
+      component: editResolver({ node: { type: 'Button' }, props: {} }).interactionPolicy,
+    }).toEqual({ runtime: { disableActions: true }, component: 'passive' });
+    expect({
+      runtime: createStudioActionSuppressionConfig(true),
+      component: previewResolver({ node: { type: 'Button' }, props: {} }).interactionPolicy,
+    }).toEqual({ runtime: { disableActions: false }, component: 'enabled' });
   });
 });

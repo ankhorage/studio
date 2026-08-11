@@ -3,8 +3,6 @@ export * from './appExtensionRegistry.js';
 export * from './interactionPolicy.js';
 export * from './interactionPolicyCore.js';
 export * from './localizationPreview.js';
-export * from './previewRegistry.js';
-export * from './previewRuntimeConfig.js';
 export * from './registry.js';
 export * from './runtimeActions.js';
 export * from './stationarySelection.js';

@@ -156,7 +156,7 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).toContain('StationaryTapSelector');
   expect(generated).toContain('createStudioStationarySelectionWrapNode');
   expect(generated).toContain('createStudioInteractionPolicyResolver');
-  expect(generated).toContain('disableActions: !previewMode');
+  expect(generated).toContain('createStudioActionSuppressionConfig(previewMode)');
   expect(generated).toContain('resolveNodeProps: studioResolveNodeProps');
   expect(generated).toContain('wrapNode: studioWrapNode');
   expect(generated).toContain('selectedNodeId');
@@ -234,7 +234,7 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(rootLayoutIndex).toBeGreaterThanOrEqual(0);
   expect(studioShellIndex).toBeGreaterThan(rootLayoutIndex);
   expect(rootLayoutSource).not.toContain('useStudio()');
-  expect(rootLayoutSource).not.toContain('disableActions: !previewMode');
+  expect(rootLayoutSource).not.toContain('createStudioActionSuppressionConfig(previewMode)');
   expect(rootLayoutSource).not.toContain('wrapNode: wrapStudioRuntimeNode');
   expect(studioShellSource).toContain('const studioRuntimeConfig = useMemo(');
   expect(studioShellSource).toContain('const studioWrapNode = useMemo(');
@@ -242,8 +242,12 @@ test('scopes Studio runtime selection config below StudioProvider', () => {
   expect(studioShellSource).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(studioShellSource).toContain('const studioResolveNodeProps = useMemo(');
   expect(studioShellSource).toContain('createStudioInteractionPolicyResolver');
-  expect(studioShellSource).toContain('disableActions: !previewMode');
+  expect(studioShellSource).toContain('createStudioActionSuppressionConfig(previewMode)');
   expect(studioShellSource).toContain('wrapNode: studioWrapNode');
+  expect(studioShellSource).not.toContain('registry: create');
+  expect(
+    generated.match(/const runtimeComponentRegistry = createComponentRegistry\(/gu),
+  ).toHaveLength(1);
   expect(studioShellSource).toContain(
     '<RuntimeRendererConfigProvider value={studioRuntimeConfig}>',
   );
@@ -278,5 +282,5 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('selectionStyle');
   expect(generated).not.toContain('Pressable');
   expect(generated).not.toContain('GestureResponderEvent');
-  expect(generated).not.toContain('disableActions: !previewMode');
+  expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
 });

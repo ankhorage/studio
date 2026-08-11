@@ -177,9 +177,6 @@ graph LR
   module_src_localizationConfig_ts["src/localizationConfig.ts"]
   module_src_localizationPanelModel_test_ts["src/localizationPanelModel.test.ts"]
   module_src_localizationPanelModel_ts["src/localizationPanelModel.ts"]
-  module_src_manifestNavigatorPreviewModel_public_test_ts["src/manifestNavigatorPreviewModel.public.test.ts"]
-  module_src_manifestNavigatorPreviewModel_test_ts["src/manifestNavigatorPreviewModel.test.ts"]
-  module_src_manifestNavigatorPreviewModel_ts["src/manifestNavigatorPreviewModel.ts"]
   module_src_manifestState_public_test_ts["src/manifestState.public.test.ts"]
   module_src_manifestState_routes_test_ts["src/manifestState.routes.test.ts"]
   module_src_manifestState_test_ts["src/manifestState.test.ts"]
@@ -218,8 +215,6 @@ graph LR
   module_src_runtime_interactionPolicy_ts["src/runtime/interactionPolicy.ts"]
   module_src_runtime_interactionPolicyCore_ts["src/runtime/interactionPolicyCore.ts"]
   module_src_runtime_localizationPreview_ts["src/runtime/localizationPreview.ts"]
-  module_src_runtime_previewRegistry_ts["src/runtime/previewRegistry.ts"]
-  module_src_runtime_previewRuntimeConfig_ts["src/runtime/previewRuntimeConfig.ts"]
   module_src_runtime_registry_tsx["src/runtime/registry.tsx"]
   module_src_runtime_runtimeActions_ts["src/runtime/runtimeActions.ts"]
   module_src_runtime_runtimeNodeMeasurement_test_ts["src/runtime/runtimeNodeMeasurement.test.ts"]
@@ -625,9 +620,6 @@ graph LR
   module_src_localizationConfig_public_test_ts --> module_src_localizationConfig_ts
   module_src_localizationConfig_test_ts --> module_src_localizationConfig_ts
   module_src_localizationPanelModel_test_ts --> module_src_localizationPanelModel_ts
-  module_src_manifestNavigatorPreviewModel_public_test_ts --> module_src_manifestNavigatorPreviewModel_ts
-  module_src_manifestNavigatorPreviewModel_test_ts --> module_src_manifestNavigatorPreviewModel_ts
-  module_src_manifestNavigatorPreviewModel_ts --> module_src_routeUtils_ts
   module_src_manifestState_public_test_ts --> module_src_index_ts
   module_src_manifestState_public_test_ts --> module_src_manifestState_ts
   module_src_manifestState_routes_test_ts --> module_src_index_ts
@@ -659,13 +651,9 @@ graph LR
   module_src_routeUtils_ts --> module_src_manifestState_ts
   module_src_runtime_indicatorRefreshCoordinator_test_ts --> module_src_runtime_indicatorRefreshCoordinator_ts
   module_src_runtime_indicatorSettleCoordinator_test_ts --> module_src_runtime_indicatorSettleCoordinator_ts
+  module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_actionSuppression_ts
   module_src_runtime_interactionPolicy_test_ts --> module_src_runtime_interactionPolicyCore_ts
   module_src_runtime_interactionPolicy_ts --> module_src_runtime_interactionPolicyCore_ts
-  module_src_runtime_previewRegistry_ts --> module_src_runtime_appExtensionRegistry_ts
-  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_actionSuppression_ts
-  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicy_ts
-  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_interactionPolicyCore_ts
-  module_src_runtime_previewRuntimeConfig_ts --> module_src_runtime_previewRegistry_ts
   module_src_runtime_runtimeNodeMeasurement_test_ts --> module_src_runtime_runtimeNodeMeasurement_ts
   module_src_runtime_stationarySelection_public_test_ts --> module_src_runtime_index_ts
   module_src_runtime_stationarySelection_ts --> module_src_canvasDragModel_ts

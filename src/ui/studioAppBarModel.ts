@@ -9,12 +9,36 @@ export interface ResolveStudioAppBarContextActionsArgs {
   readonly canInsert: boolean;
   readonly canInsertInside: boolean;
   readonly canDelete: boolean;
+  readonly previewMode?: boolean;
+}
+
+export interface StudioAppBarModeAction {
+  readonly label: 'Edit' | 'Preview';
+  readonly icon: { readonly name: 'create-outline' | 'eye-outline' };
+  readonly color: 'neutral' | 'primary';
+  readonly variant: 'ghost' | 'solid';
+}
+
+export function resolveStudioAppBarModeAction(previewMode: boolean): StudioAppBarModeAction {
+  return previewMode
+    ? {
+        label: 'Edit',
+        icon: { name: 'create-outline' },
+        color: 'primary',
+        variant: 'solid',
+      }
+    : {
+        label: 'Preview',
+        icon: { name: 'eye-outline' },
+        color: 'neutral',
+        variant: 'ghost',
+      };
 }
 
 export function resolveStudioAppBarContextActions(
   args: ResolveStudioAppBarContextActionsArgs,
 ): StudioAppBarContextAction[] {
-  if (!args.selectedNodeId) {
+  if (args.previewMode || !args.selectedNodeId) {
     return [];
   }
 

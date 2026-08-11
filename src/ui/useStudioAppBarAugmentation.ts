@@ -18,7 +18,10 @@ import {
   resolveStudioNavigableLocation,
 } from '../studioAdminRouteModel';
 import { createStudioSelectionContext } from '../studioSelectionModel';
-import { resolveStudioAppBarContextActions } from './studioAppBarModel';
+import {
+  resolveStudioAppBarContextActions,
+  resolveStudioAppBarModeAction,
+} from './studioAppBarModel';
 import { StudioDeleteDialog } from './StudioDeleteDialog';
 import { StudioInsertDialog } from './StudioInsertDialog';
 
@@ -44,6 +47,14 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const router = useRouter();
   const [insertVisible, setInsertVisible] = React.useState(false);
   const [deleteCandidateId, setDeleteCandidateId] = React.useState<StudioNodeId | null>(null);
+  const isAdminPath = isStudioAdminPath(pathname);
+
+  React.useEffect(() => {
+    if (!studio.previewMode) return;
+    setInsertVisible(false);
+    setDeleteCandidateId(null);
+    studio.setActivePanelId(null);
+  }, [studio.previewMode, studio.setActivePanelId]);
 
   const openAdministration = useCallback(() => {
     const appLocation = resolveStudioLastNonAdminLocation({
@@ -116,7 +127,9 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
     canInsert,
     canInsertInside,
     canDelete,
+    previewMode: studio.previewMode,
   });
+  const modeAction = resolveStudioAppBarModeAction(studio.previewMode);
 
   const openInsert = useCallback(() => setInsertVisible(true), []);
   const openDelete = useCallback(() => {
@@ -139,7 +152,7 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
     [clearSelection, openBindings, openDelete, openInsert, openProperties, selectParent],
   );
 
-  const actions = isStudioAdminPath(pathname)
+  const actions = isAdminPath
     ? null
     : [
         React.createElement(IconButton, {
@@ -149,6 +162,14 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
           variant: 'ghost',
           color: 'neutral',
           onPress: openAdministration,
+        }),
+        React.createElement(IconButton, {
+          key: 'preview-mode',
+          icon: modeAction.icon,
+          label: modeAction.label,
+          variant: modeAction.variant,
+          color: modeAction.color,
+          onPress: studio.togglePreviewMode,
         }),
         ...contextActions.map((action) => {
           return React.createElement(IconButton, {
@@ -164,34 +185,35 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
 
   return {
     actions,
-    overlays: isStudioAdminPath(pathname)
-      ? null
-      : React.createElement(
-          React.Fragment,
-          null,
-          React.createElement(StudioInsertDialog, {
-            componentMeta: studio.componentMeta,
-            entries: resolvedInsertEntries,
-            findNode: (id: string) =>
-              studio.rootNode ? studio.findNode(studio.rootNode, id) : null,
-            onDismiss: () => setInsertVisible(false),
-            onInsert: (entry) => {
-              const inserted = studio.insertFromCatalogEntry(entry);
-              if (inserted) setInsertVisible(false);
-              return inserted;
-            },
-            rootNode: studio.rootNode,
-            visible: insertVisible,
-          }),
-          React.createElement(StudioDeleteDialog, {
-            label: resolveNodeLabel({
-              node: deleteCandidate ?? selectedNode,
+    overlays:
+      isAdminPath || studio.previewMode
+        ? null
+        : React.createElement(
+            React.Fragment,
+            null,
+            React.createElement(StudioInsertDialog, {
               componentMeta: studio.componentMeta,
+              entries: resolvedInsertEntries,
+              findNode: (id: string) =>
+                studio.rootNode ? studio.findNode(studio.rootNode, id) : null,
+              onDismiss: () => setInsertVisible(false),
+              onInsert: (entry) => {
+                const inserted = studio.insertFromCatalogEntry(entry);
+                if (inserted) setInsertVisible(false);
+                return inserted;
+              },
+              rootNode: studio.rootNode,
+              visible: insertVisible,
             }),
-            onCancel: () => setDeleteCandidateId(null),
-            onConfirm: confirmDelete,
-            visible: deleteCandidate !== null,
-          }),
-        ),
+            React.createElement(StudioDeleteDialog, {
+              label: resolveNodeLabel({
+                node: deleteCandidate ?? selectedNode,
+                componentMeta: studio.componentMeta,
+              }),
+              onCancel: () => setDeleteCandidateId(null),
+              onConfirm: confirmDelete,
+              visible: deleteCandidate !== null,
+            }),
+          ),
   } satisfies StudioAppBarAugmentation;
 }
