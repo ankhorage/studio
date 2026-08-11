@@ -580,11 +580,16 @@ function StudioShell({
   shouldMountAppHeader: boolean;
 }) {
   const {
+    activeCanvasDragNodeId,
     activeScreenId,
+    componentMeta,
     manifest: studioManifest,
+    moveNodeToPlacement,
     previewMode,
+    rootNode,
     selectedNodeId,
     selectNode,
+    setActiveCanvasDragNodeId,
     setLastNonAdminLocation,
   } = useStudio();
   useEffect(() => {
@@ -640,6 +645,13 @@ function StudioShell({
    );
   const studioOutput = (
     <StationaryTapSelector
+      canvasInteraction={{
+        activeDragNodeId: activeCanvasDragNodeId,
+        componentMeta,
+        moveNodeToPlacement,
+        rootNode,
+        setActiveDragNodeId: setActiveCanvasDragNodeId,
+      }}
       isEditMode={!previewMode}
       selectedNodeId={selectedNodeId}
       selectNode={selectNode}

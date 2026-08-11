@@ -4,6 +4,8 @@ import {
   createStudioCanvasDragPayload,
   isStudioCanvasDragPayload,
   isValidCanvasDropZone,
+  resolveCanvasDragPreviewText,
+  resolveCanvasDropZoneRect,
   resolveCanvasDropZoneSlots,
 } from './canvasDragModel';
 import type { CanvasDropZoneResolution } from './canvasDropZones';
@@ -53,5 +55,38 @@ describe('canvasDragModel', () => {
     expect(slots.beforeDropZone).toBeNull();
     expect(slots.insideDropZone).toBe(VALID_INSIDE_ZONE);
     expect(slots.afterDropZone).toBe(VALID_AFTER_ZONE);
+  });
+
+  test('derives before, inside, and after geometry from measured Runtime bounds', () => {
+    const targetRect = { x: 20, y: 40, width: 200, height: 120 };
+    const draggedRect = { x: 0, y: 0, width: 100, height: 48 };
+
+    expect(resolveCanvasDropZoneRect({ kind: 'before', targetRect, draggedRect })).toEqual({
+      x: 20,
+      y: 16,
+      width: 200,
+      height: 48,
+    });
+    expect(resolveCanvasDropZoneRect({ kind: 'inside', targetRect, draggedRect })).toEqual({
+      x: 44,
+      y: 64,
+      width: 152,
+      height: 72,
+    });
+    expect(resolveCanvasDropZoneRect({ kind: 'after', targetRect, draggedRect })).toEqual({
+      x: 20,
+      y: 136,
+      width: 200,
+      height: 48,
+    });
+  });
+
+  test('uses authored text for the measured-bounds drag preview', () => {
+    expect(resolveCanvasDragPreviewText({ children: '  Welcome  ', title: 'Fallback' })).toBe(
+      'Welcome',
+    );
+    expect(resolveCanvasDragPreviewText({ children: 12, label: 'Card' })).toBe('Card');
+    expect(resolveCanvasDragPreviewText({ children: 12 })).toBeNull();
+    expect(resolveCanvasDragPreviewText(undefined)).toBeNull();
   });
 });

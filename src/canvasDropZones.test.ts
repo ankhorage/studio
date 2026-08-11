@@ -74,4 +74,35 @@ describe('canvasDropZones', () => {
       expect.objectContaining({ kind: 'after', status: 'invalid' }),
     ]);
   });
+
+  test('preserves canonical descendant and no-op movement failures', () => {
+    const descendantComponentMeta: StudioComponentMetaRegistry = {
+      ...componentMeta,
+      Container: { category: 'layout', allowedChildren: ['Container', 'Text'] },
+      Text: { category: 'content', allowedChildren: ['Container'] },
+    };
+    const descendantZones = resolveCanvasDropZones({
+      root: buildRoot(),
+      targetNodeId: 'text',
+      draggedNode: { id: 'container', type: 'Container' },
+      componentMeta: descendantComponentMeta,
+    });
+    const descendantInsideZone = descendantZones.find((zone) => zone.kind === 'inside');
+    expect(descendantInsideZone?.status).toBe('invalid');
+    if (descendantInsideZone?.status === 'invalid') {
+      expect(descendantInsideZone.reason.code).toBe('cannot-move-into-descendant');
+    }
+
+    const noOpZones = resolveCanvasDropZones({
+      root: buildRoot(),
+      targetNodeId: 'source-container',
+      draggedNode: { id: 'container', type: 'Container' },
+      componentMeta,
+    });
+    const noOpBeforeZone = noOpZones.find((zone) => zone.kind === 'before');
+    expect(noOpBeforeZone?.status).toBe('invalid');
+    if (noOpBeforeZone?.status === 'invalid') {
+      expect(noOpBeforeZone.reason.code).toBe('no-op');
+    }
+  });
 });

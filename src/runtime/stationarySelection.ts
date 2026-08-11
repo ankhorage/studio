@@ -1,3 +1,4 @@
+import type { UiNode } from '@ankhorage/contracts';
 import { useZoraTheme, ZORA_COMPONENT_REGISTRY } from '@ankhorage/zora';
 import React from 'react';
 import {
@@ -9,6 +10,8 @@ import {
 } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
+import type { NodePlacement, StudioComponentMetaRegistry } from '../index.js';
+import { StudioCanvasDndOverlay } from '../ui/canvas/StudioCanvasDndOverlay.js';
 import {
   createIndicatorRefreshCoordinator,
   type IndicatorRefreshCoordinator,
@@ -275,13 +278,22 @@ function StudioNodeTouchRecorder(props: {
     (view: ViewRef | null) => {
       unregisterMeasurementRef.current?.();
       unregisterMeasurementRef.current = null;
-      if (Platform.OS === 'web' && view && ctx && props.nodeId) {
-        unregisterMeasurementRef.current = ctx.registerRuntimeNode(props.nodeId, {
-          getResizeTargets: () => getWebDescendantResizeTargets(view),
-          measure: () => measureRuntimeNodeWebView(view),
-          showUnsupportedIndicator: props.showUnsupportedIndicator,
-          source: 'web-recorder',
-        });
+      if (view && ctx && props.nodeId) {
+        unregisterMeasurementRef.current = ctx.registerRuntimeNode(
+          props.nodeId,
+          Platform.OS === 'web'
+            ? {
+                getResizeTargets: () => getWebDescendantResizeTargets(view),
+                measure: () => measureRuntimeNodeWebView(view),
+                showUnsupportedIndicator: props.showUnsupportedIndicator,
+                source: 'runtime-recorder',
+              }
+            : {
+                measure: () => measureNativeRuntimeNodeView(view),
+                showUnsupportedIndicator: props.showUnsupportedIndicator,
+                source: 'runtime-recorder',
+              },
+        );
       }
     },
     [ctx, props.nodeId, props.showUnsupportedIndicator],
@@ -386,10 +398,19 @@ export function createStudioStationarySelectionWrapNode(options?: {
   };
 }
 
+export interface StudioCanvasInteractionAdapter {
+  readonly activeDragNodeId: string | null;
+  readonly componentMeta: StudioComponentMetaRegistry;
+  readonly moveNodeToPlacement: (nodeId: string, placement: NodePlacement) => boolean;
+  readonly rootNode: UiNode | null;
+  readonly setActiveDragNodeId: (nodeId: string | null) => void;
+}
+
 function StationaryTapSelector(props: {
   readonly isEditMode: boolean;
   readonly selectedNodeId: string | null;
   readonly selectNode: (id: string | null) => void;
+  readonly canvasInteraction?: StudioCanvasInteractionAdapter;
   readonly children: React.ReactNode;
 }): React.JSX.Element {
   const { theme } = useZoraTheme();
@@ -410,7 +431,8 @@ function StationaryTapSelector(props: {
 
   const isEditModeRef = React.useRef(props.isEditMode);
   const selectedNodeIdRef = React.useRef(props.selectedNodeId);
-  const selectedIndicatorNodeIdRef = React.useRef<string | null>(null);
+  const measurementSelectedNodeIdRef = React.useRef<string | null>(null);
+  const activeDragNodeIdRef = React.useRef<string | null>(null);
   const selectNodeRef = React.useRef(props.selectNode);
   const selectionCommitCountRef = React.useRef(0);
   const generationRef = React.useRef(0);
@@ -431,7 +453,12 @@ function StationaryTapSelector(props: {
     props.selectedNodeId,
   );
   const selectedIndicatorNodeId = shouldRenderSelectedChrome ? props.selectedNodeId : null;
-  selectedIndicatorNodeIdRef.current = selectedIndicatorNodeId;
+  const measurementSelectedNodeId = props.isEditMode ? props.selectedNodeId : null;
+  const activeDragNodeId = props.isEditMode
+    ? (props.canvasInteraction?.activeDragNodeId ?? null)
+    : null;
+  measurementSelectedNodeIdRef.current = measurementSelectedNodeId;
+  activeDragNodeIdRef.current = activeDragNodeId;
   selectNodeRef.current = props.selectNode;
 
   inputStateRef.current ??= createStationarySelectionInputState({
@@ -462,7 +489,8 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         isEditModeRef.current,
-        selectedIndicatorNodeIdRef.current,
+        measurementSelectedNodeIdRef.current,
+        activeDragNodeIdRef.current,
       )
     ) {
       return;
@@ -492,7 +520,8 @@ function StationaryTapSelector(props: {
     const activeMeasurements = getActiveRuntimeNodeMeasurements(
       runtimeNodesRef.current,
       isEditModeRef.current,
-      selectedIndicatorNodeIdRef.current,
+      measurementSelectedNodeIdRef.current,
+      activeDragNodeIdRef.current,
     );
     const rootTarget = getWebResizeTarget(rootViewRef.current);
     resizeTargetCoordinatorRef.current?.sync(
@@ -510,7 +539,8 @@ function StationaryTapSelector(props: {
         isEditMode: isEditModeRef.current,
         measurements,
         nodeId,
-        selectedNodeId: selectedIndicatorNodeIdRef.current,
+        selectedNodeId: measurementSelectedNodeIdRef.current,
+        activeDragNodeId: activeDragNodeIdRef.current,
       });
       if (nodeIsActive) {
         syncActiveResizeTargets();
@@ -526,7 +556,8 @@ function StationaryTapSelector(props: {
           isEditMode: isEditModeRef.current,
           measurements: registeredMeasurements,
           nodeId,
-          selectedNodeId: selectedIndicatorNodeIdRef.current,
+          selectedNodeId: measurementSelectedNodeIdRef.current,
+          activeDragNodeId: activeDragNodeIdRef.current,
         });
         if (!registeredMeasurements.delete(measurement)) {
           return;
@@ -540,7 +571,8 @@ function StationaryTapSelector(props: {
             !hasActiveRuntimeNodeMeasurements(
               runtimeNodesRef.current,
               isEditModeRef.current,
-              selectedIndicatorNodeIdRef.current,
+              measurementSelectedNodeIdRef.current,
+              activeDragNodeIdRef.current,
             )
           ) {
             settleCoordinatorRef.current?.cancel();
@@ -573,7 +605,8 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         isEditModeRef.current,
-        selectedIndicatorNodeIdRef.current,
+        measurementSelectedNodeIdRef.current,
+        activeDragNodeIdRef.current,
       )
     ) {
       latestIndicatorRectsRef.current = [];
@@ -588,9 +621,11 @@ function StationaryTapSelector(props: {
 
     const nextRects = await measureRuntimeNodeIndicators({
       isEditMode: isEditModeRef.current,
+      activeDragNodeId: activeDragNodeIdRef.current,
+      canvasRootNodeId: props.canvasInteraction?.rootNode?.id,
       rootRect,
       runtimeNodes: runtimeNodesRef.current,
-      selectedNodeId: selectedIndicatorNodeIdRef.current,
+      selectedNodeId: measurementSelectedNodeIdRef.current,
     });
 
     if (!mountedRef.current || geometryRevision !== geometryRevisionRef.current) {
@@ -602,7 +637,7 @@ function StationaryTapSelector(props: {
       areIndicatorRectsEqual(current, nextRects) ? current : nextRects,
     );
     return nextRects;
-  }, []);
+  }, [props.canvasInteraction?.rootNode?.id]);
   refreshIndicatorRectsRef.current = refreshIndicatorRects;
 
   React.useEffect(() => {
@@ -610,14 +645,27 @@ function StationaryTapSelector(props: {
       !hasActiveRuntimeNodeMeasurements(
         runtimeNodesRef.current,
         props.isEditMode,
-        selectedIndicatorNodeId,
+        measurementSelectedNodeId,
+        activeDragNodeId,
       )
     ) {
       settleCoordinatorRef.current?.cancel();
     }
     syncActiveResizeTargets();
     requestIndicatorRefresh();
-  }, [props.isEditMode, selectedIndicatorNodeId, requestIndicatorRefresh, syncActiveResizeTargets]);
+  }, [
+    activeDragNodeId,
+    measurementSelectedNodeId,
+    props.isEditMode,
+    requestIndicatorRefresh,
+    syncActiveResizeTargets,
+  ]);
+
+  React.useEffect(() => {
+    if (!props.isEditMode && props.canvasInteraction?.activeDragNodeId) {
+      props.canvasInteraction.setActiveDragNodeId(null);
+    }
+  }, [props.canvasInteraction, props.isEditMode]);
 
   React.useEffect(() => {
     mountedRef.current = true;
@@ -729,6 +777,18 @@ function StationaryTapSelector(props: {
           style: { flex: 1, position: 'relative' },
         },
         props.children,
+        props.isEditMode && props.canvasInteraction
+          ? React.createElement(StudioCanvasDndOverlay, {
+              key: 'studio-canvas-dnd-overlay',
+              activeDragNodeId: props.canvasInteraction.activeDragNodeId,
+              componentMeta: props.canvasInteraction.componentMeta,
+              indicatorRects,
+              moveNodeToPlacement: props.canvasInteraction.moveNodeToPlacement,
+              rootNode: props.canvasInteraction.rootNode,
+              selectedNodeId: props.selectedNodeId,
+              setActiveDragNodeId: props.canvasInteraction.setActiveDragNodeId,
+            })
+          : null,
         ...(props.isEditMode
           ? indicatorRects.filter((rect) => rect.showUnsupportedIndicator)
           : []

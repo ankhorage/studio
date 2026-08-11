@@ -66,9 +66,7 @@ export function StudioInsertDialog(props: StudioInsertDialogProps): React.JSX.El
                     componentMeta: props.componentMeta,
                   });
                   const description =
-                    entry.status === 'disabled'
-                      ? entry.disabledReason?.detail
-                      : entry.description;
+                    entry.status === 'disabled' ? entry.disabledReason?.detail : entry.description;
 
                   return entry.status === 'enabled' ? (
                     <ListRow

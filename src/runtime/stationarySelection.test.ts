@@ -115,12 +115,22 @@ describe('stationarySelection RN integration', () => {
     expect(recorderSource).not.toContain('borderColor');
   });
 
-  it('measures supported Runtime nodes for web selected-state chrome', () => {
-    expect(source).toContain('ctx.registerRuntimeNode(props.nodeId');
-    expect(source).toContain("if (Platform.OS === 'web' && view && ctx && props.nodeId)");
+  it('measures every Runtime node with public geometry for selection and canvas drag zones', () => {
+    expect(source).toContain('ctx.registerRuntimeNode(');
+    expect(source).toContain('props.nodeId,');
+    expect(source).toContain('if (view && ctx && props.nodeId)');
     expect(source).toContain('measureRuntimeNodeWebView(view)');
+    expect(source).toContain('measureNativeRuntimeNodeView(view)');
+    expect(source).toContain("source: 'runtime-recorder'");
     expect(source).toContain('measureRuntimeNodeIndicators({');
-    expect(source).toContain('selectedIndicatorNodeIdRef.current');
+    expect(source).toContain('activeDragNodeId: activeDragNodeIdRef.current');
+    expect(source).toContain('canvasRootNodeId: props.canvasInteraction?.rootNode?.id');
+  });
+
+  it('mounts direct adapter-backed canvas interaction only in Edit mode', () => {
+    expect(source).toContain('StudioCanvasDndOverlay');
+    expect(source).toContain('props.isEditMode && props.canvasInteraction');
+    expect(source).toContain('setActiveDragNodeId(null)');
   });
 
   it('measures roots only on web without adding them to the stationary interaction path', () => {

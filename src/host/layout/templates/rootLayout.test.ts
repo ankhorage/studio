@@ -161,6 +161,10 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).toContain('wrapNode: studioWrapNode');
   expect(generated).toContain('selectedNodeId');
   expect(generated).toContain('selectNode');
+  expect(generated).toContain('canvasInteraction={{');
+  expect(generated).toContain('activeDragNodeId: activeCanvasDragNodeId');
+  expect(generated).toContain('moveNodeToPlacement');
+  expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
   expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
   expect(generated).not.toContain('<Pressable');
