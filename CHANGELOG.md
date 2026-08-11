@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.19.0
+
+### Minor Changes
+
+- 788f20f: Add a generic package-owned module administration runtime host with opaque operation dispatch and injected lifecycle and authoring context capabilities.
+
 ## 0.18.1
 
 ### Patch Changes
