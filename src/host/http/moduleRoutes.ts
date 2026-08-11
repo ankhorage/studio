@@ -112,15 +112,11 @@ export function registerProjectModuleRoutes(
 
       const body = isRecord(req.body) ? req.body : {};
       try {
-        return await orchestrator.executeModuleAdminOperation(
-          req.params.id,
-          req.params.moduleId,
-          {
-            operation: req.params.operation,
-            ...(body.input === undefined ? {} : { input: body.input }),
-            ...(body.componentMeta === undefined ? {} : { componentMeta: body.componentMeta }),
-          },
-        );
+        return await orchestrator.executeModuleAdminOperation(req.params.id, req.params.moduleId, {
+          operation: req.params.operation,
+          ...(body.input === undefined ? {} : { input: body.input }),
+          ...(body.componentMeta === undefined ? {} : { componentMeta: body.componentMeta }),
+        });
       } catch (error: unknown) {
         return reply.status(400).send({ error: toMessage(error) });
       }

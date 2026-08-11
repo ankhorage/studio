@@ -167,7 +167,9 @@ describe('canonical module HTTP adapter', () => {
   });
 });
 
-function createAdminOnlyManager(calls: unknown[][]): Pick<
+function createAdminOnlyManager(
+  calls: unknown[][],
+): Pick<
   ModuleManager,
   | 'applyPendingOperations'
   | 'executeModuleAdminOperation'

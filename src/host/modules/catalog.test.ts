@@ -47,7 +47,9 @@ describe('generic host module registry', () => {
 
     expect(runtime?.kind).toBe('module-admin-runtime');
     expect(resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime' })).toBeNull();
-    expect(resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime', load: () => null })).toBeNull();
+    expect(
+      resolveHostModuleAdminRuntime({ kind: 'module-admin-runtime', load: () => null }),
+    ).toBeNull();
   });
 
   test('keeps module domain and Orchestrator ledger implementation out of generic Studio code', async () => {

@@ -2,8 +2,8 @@ import { describe, expect, test } from 'bun:test';
 
 import {
   executeHostModuleAdminRuntime,
-  resolveHostModuleAdminRuntime,
   type HostModuleAdminRuntimeContext,
+  resolveHostModuleAdminRuntime,
 } from './adminRuntime';
 
 describe('generic module admin runtime contract', () => {

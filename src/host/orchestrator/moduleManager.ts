@@ -6,10 +6,10 @@ import { findNodeInManifest, updateStudioManifestNode } from '../../manifestStat
 import type { StudioModuleState } from '../../moduleAdminContracts';
 import {
   executeHostModuleAdminRuntime,
-  resolveHostModuleAdminRuntime,
   type HostModuleAdminExecutionRequest,
   type HostModuleAdminRuntimeContext,
   type HostModuleManifestFieldMutation,
+  resolveHostModuleAdminRuntime,
 } from '../modules/adminRuntime';
 import {
   getHostModule,

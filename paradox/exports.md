@@ -14,13 +14,13 @@ Source: `src/index.ts:309:1`
 
 ### Members
 
-| Name            | Kind     | Type                                     | Required | Description |
-| --------------- | -------- | ---------------------------------------- | -------- | ----------- |
-| description     | property | `string`                                 | yes      |             |
-| label           | property | `string`                                 | yes      |             |
-| payloadSchema   | property | `StudioActionPayloadSchema \| undefined` | no       |             |
-| requiresPayload | property | `boolean`                                | yes      |             |
-| type            | property | `ActionType`                             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| description | property | `string` | yes |  |
+| label | property | `string` | yes |  |
+| payloadSchema | property | `StudioActionPayloadSchema \| undefined` | no |  |
+| requiresPayload | property | `boolean` | yes |  |
+| type | property | `ActionType` | yes |  |
 
 ## appendStudioEventBinding
 
@@ -234,18 +234,18 @@ Source: `src/index.ts:287:1`
 
 ### Members
 
-| Name           | Kind     | Type                                       | Required | Description |
-| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
-| category       | property | `string`                                   | yes      |             |
-| componentType  | property | `string`                                   | yes      |             |
-| description    | property | `string \| undefined`                      | no       |             |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
-| id             | property | `string`                                   | yes      |             |
-| kind           | property | `"component"`                              | yes      |             |
-| label          | property | `string`                                   | yes      |             |
-| placement      | property | `NodePlacement \| undefined`               | no       |             |
-| rootType       | property | `string`                                   | yes      |             |
-| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| componentType | property | `string` | yes |  |
+| description | property | `string \| undefined` | no |  |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| kind | property | `"component"` | yes |  |
+| label | property | `string` | yes |  |
+| placement | property | `NodePlacement \| undefined` | no |  |
+| rootType | property | `string` | yes |  |
+| status | property | `InsertCatalogEntryStatus` | yes |  |
 
 ## InsertCatalogDisabledReason
 
@@ -255,11 +255,11 @@ Source: `src/index.ts:269:1`
 
 ### Members
 
-| Name   | Kind     | Type                              | Required | Description |
-| ------ | -------- | --------------------------------- | -------- | ----------- |
-| code   | property | `InsertCatalogDisabledReasonCode` | yes      |             |
-| detail | property | `string`                          | yes      |             |
-| issue  | property | `InsertRecipeIssue \| undefined`  | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `InsertCatalogDisabledReasonCode` | yes |  |
+| detail | property | `string` | yes |  |
+| issue | property | `InsertRecipeIssue \| undefined` | no |  |
 
 ## InsertCatalogDisabledReasonCode
 
@@ -281,17 +281,17 @@ Source: `src/index.ts:275:1`
 
 ### Members
 
-| Name           | Kind     | Type                                       | Required | Description |
-| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
-| category       | property | `string`                                   | yes      |             |
-| description    | property | `string \| undefined`                      | no       |             |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
-| id             | property | `string`                                   | yes      |             |
-| kind           | property | `InsertCatalogEntryKind`                   | yes      |             |
-| label          | property | `string`                                   | yes      |             |
-| placement      | property | `NodePlacement \| undefined`               | no       |             |
-| rootType       | property | `string`                                   | yes      |             |
-| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| description | property | `string \| undefined` | no |  |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| kind | property | `InsertCatalogEntryKind` | yes |  |
+| label | property | `string` | yes |  |
+| placement | property | `NodePlacement \| undefined` | no |  |
+| rootType | property | `string` | yes |  |
+| status | property | `InsertCatalogEntryStatus` | yes |  |
 
 ## InsertCatalogEntryKind
 
@@ -313,18 +313,18 @@ Source: `src/index.ts:292:1`
 
 ### Members
 
-| Name           | Kind     | Type                                       | Required | Description |
-| -------------- | -------- | ------------------------------------------ | -------- | ----------- |
-| category       | property | `string`                                   | yes      |             |
-| description    | property | `string \| undefined`                      | no       |             |
-| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no       |             |
-| id             | property | `string`                                   | yes      |             |
-| kind           | property | `"recipe"`                                 | yes      |             |
-| label          | property | `string`                                   | yes      |             |
-| placement      | property | `NodePlacement \| undefined`               | no       |             |
-| recipe         | property | `InsertRecipe`                             | yes      |             |
-| rootType       | property | `string`                                   | yes      |             |
-| status         | property | `InsertCatalogEntryStatus`                 | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| description | property | `string \| undefined` | no |  |
+| disabledReason | property | `InsertCatalogDisabledReason \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| kind | property | `"recipe"` | yes |  |
+| label | property | `string` | yes |  |
+| placement | property | `NodePlacement \| undefined` | no |  |
+| recipe | property | `InsertRecipe` | yes |  |
+| rootType | property | `string` | yes |  |
+| status | property | `InsertCatalogEntryStatus` | yes |  |
 
 ## insertNodeAtPlacement
 
@@ -346,12 +346,12 @@ Source: `src/index.ts:918:1`
 
 ### Members
 
-| Name          | Kind     | Type                          | Required | Description |
-| ------------- | -------- | ----------------------------- | -------- | ----------- |
-| componentMeta | property | `StudioComponentMetaRegistry` | yes      |             |
-| makeNode      | property | `() => UiNode`                | yes      |             |
-| placement     | property | `NodePlacement`               | yes      |             |
-| root          | property | `UiNode`                      | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| componentMeta | property | `StudioComponentMetaRegistry` | yes |  |
+| makeNode | property | `() => UiNode` | yes |  |
+| placement | property | `NodePlacement` | yes |  |
+| root | property | `UiNode` | yes |  |
 
 ## InsertNodeAtPlacementResult
 
@@ -361,10 +361,10 @@ Source: `src/index.ts:925:1`
 
 ### Members
 
-| Name           | Kind     | Type     | Required | Description |
-| -------------- | -------- | -------- | -------- | ----------- |
-| insertedNodeId | property | `string` | yes      |             |
-| root           | property | `UiNode` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| insertedNodeId | property | `string` | yes |  |
+| root | property | `UiNode` | yes |  |
 
 ## InsertRecipe
 
@@ -374,13 +374,13 @@ Source: `src/index.ts:254:1`
 
 ### Members
 
-| Name        | Kind     | Type                  | Required | Description |
-| ----------- | -------- | --------------------- | -------- | ----------- |
-| category    | property | `string`              | yes      |             |
-| description | property | `string \| undefined` | no       |             |
-| id          | property | `string`              | yes      |             |
-| label       | property | `string`              | yes      |             |
-| root        | property | `InsertRecipeNode`    | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| description | property | `string \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| label | property | `string` | yes |  |
+| root | property | `InsertRecipeNode` | yes |  |
 
 ## InsertRecipeIssue
 
@@ -390,12 +390,12 @@ Source: `src/index.ts:262:1`
 
 ### Members
 
-| Name      | Kind     | Type                                    | Required | Description |
-| --------- | -------- | --------------------------------------- | -------- | ----------- |
-| childType | property | `string \| undefined`                   | no       |             |
-| code      | property | `"child-not-allowed" \| "missing-meta"` | yes      |             |
-| nodeType  | property | `string`                                | yes      |             |
-| path      | property | `string[]`                              | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| childType | property | `string \| undefined` | no |  |
+| code | property | `"child-not-allowed" \| "missing-meta"` | yes |  |
+| nodeType | property | `string` | yes |  |
+| path | property | `string[]` | yes |  |
 
 ## InsertRecipeNode
 
@@ -405,10 +405,10 @@ Source: `src/index.ts:249:1`
 
 ### Members
 
-| Name     | Kind     | Type                              | Required | Description |
-| -------- | -------- | --------------------------------- | -------- | ----------- |
-| children | property | `InsertRecipeNode[] \| undefined` | no       |             |
-| type     | property | `string`                          | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| children | property | `InsertRecipeNode[] \| undefined` | no |  |
+| type | property | `string` | yes |  |
 
 ## moveNodeToPlacement
 
@@ -430,12 +430,12 @@ Source: `src/index.ts:1002:1`
 
 ### Members
 
-| Name          | Kind     | Type                          | Required | Description |
-| ------------- | -------- | ----------------------------- | -------- | ----------- |
-| componentMeta | property | `StudioComponentMetaRegistry` | yes      |             |
-| nodeId        | property | `string`                      | yes      |             |
-| placement     | property | `NodePlacement`               | yes      |             |
-| root          | property | `UiNode`                      | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| componentMeta | property | `StudioComponentMetaRegistry` | yes |  |
+| nodeId | property | `string` | yes |  |
+| placement | property | `NodePlacement` | yes |  |
+| root | property | `UiNode` | yes |  |
 
 ## MoveNodeToPlacementResult
 
@@ -445,10 +445,10 @@ Source: `src/index.ts:1009:1`
 
 ### Members
 
-| Name        | Kind     | Type     | Required | Description |
-| ----------- | -------- | -------- | -------- | ----------- |
-| movedNodeId | property | `string` | yes      |             |
-| root        | property | `UiNode` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| movedNodeId | property | `string` | yes |  |
+| root | property | `UiNode` | yes |  |
 
 ## NodePlacement
 
@@ -458,12 +458,12 @@ Source: `src/index.ts:204:1`
 
 ### Members
 
-| Name        | Kind     | Type                  | Required | Description |
-| ----------- | -------- | --------------------- | -------- | ----------- |
-| index       | property | `number`              | yes      |             |
-| kind        | property | `PlacementKind`       | yes      |             |
-| parentId    | property | `string`              | yes      |             |
-| referenceId | property | `string \| undefined` | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| index | property | `number` | yes |  |
+| kind | property | `PlacementKind` | yes |  |
+| parentId | property | `string` | yes |  |
+| referenceId | property | `string \| undefined` | no |  |
 
 ## PlacementFailureCode
 
@@ -479,10 +479,10 @@ Source: `src/index.ts:224:1`
 
 ### Members
 
-| Name    | Kind     | Type                   | Required | Description |
-| ------- | -------- | ---------------------- | -------- | ----------- |
-| code    | property | `PlacementFailureCode` | yes      |             |
-| message | property | `string`               | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `PlacementFailureCode` | yes |  |
+| message | property | `string` | yes |  |
 
 ## PlacementKind
 
@@ -510,14 +510,14 @@ Source: `src/projectAuthHealth.ts:11:1`
 
 ### Members
 
-| Name           | Kind     | Type                            | Required | Description |
-| -------------- | -------- | ------------------------------- | -------- | ----------- |
-| code           | property | `string`                        | yes      |             |
-| credentialsRef | property | `string \| undefined`           | no       |             |
-| message        | property | `string`                        | yes      |             |
-| path           | property | `string \| undefined`           | no       |             |
-| providerId     | property | `string \| undefined`           | no       |             |
-| severity       | property | `ProjectAuthDiagnosticSeverity` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `string` | yes |  |
+| credentialsRef | property | `string \| undefined` | no |  |
+| message | property | `string` | yes |  |
+| path | property | `string \| undefined` | no |  |
+| providerId | property | `string \| undefined` | no |  |
+| severity | property | `ProjectAuthDiagnosticSeverity` | yes |  |
 
 ## ProjectAuthDiagnosticSeverity
 
@@ -533,12 +533,12 @@ Source: `src/projectAuthHealth.ts:34:1`
 
 ### Members
 
-| Name         | Kind     | Type                                                                            | Required | Description |
-| ------------ | -------- | ------------------------------------------------------------------------------- | -------- | ----------- |
-| callbackUrls | property | `{ readonly appCallbackRoute: string; readonly providerRedirectUrl?: string; }` | yes      |             |
-| diagnostics  | property | `readonly ProjectAuthDiagnostic[]`                                              | yes      |             |
-| providers    | property | `readonly ProjectOAuthProviderHealth[]`                                         | yes      |             |
-| status       | property | `ProjectAuthHealthStatus`                                                       | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| callbackUrls | property | `{ readonly appCallbackRoute: string; readonly providerRedirectUrl?: string; }` | yes |  |
+| diagnostics | property | `readonly ProjectAuthDiagnostic[]` | yes |  |
+| providers | property | `readonly ProjectOAuthProviderHealth[]` | yes |  |
+| status | property | `ProjectAuthHealthStatus` | yes |  |
 
 ## ProjectAuthHealthStatus
 
@@ -566,10 +566,10 @@ Source: `src/projectWorkspaceContracts.ts:25:1`
 
 ### Members
 
-| Name    | Kind     | Type                            | Required | Description |
-| ------- | -------- | ------------------------------- | -------- | ----------- |
-| code    | property | `ProjectCreationValidationCode` | yes      |             |
-| message | property | `string`                        | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `ProjectCreationValidationCode` | yes |  |
+| message | property | `string` | yes |  |
 
 ## ProjectCreationValidationResult
 
@@ -585,16 +585,16 @@ Source: `src/projectAuthHealth.ts:23:1`
 
 ### Members
 
-| Name             | Kind     | Type                               | Required | Description |
-| ---------------- | -------- | ---------------------------------- | -------- | ----------- |
-| configuredFields | property | `readonly string[]`                | yes      |             |
-| credentialsRef   | property | `string \| undefined`              | no       |             |
-| enabled          | property | `boolean`                          | yes      |             |
-| label            | property | `string`                           | yes      |             |
-| missingFields    | property | `readonly string[]`                | yes      |             |
-| providerId       | property | `string`                           | yes      |             |
-| requiredFields   | property | `readonly string[]`                | yes      |             |
-| status           | property | `ProjectOAuthProviderHealthStatus` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| configuredFields | property | `readonly string[]` | yes |  |
+| credentialsRef | property | `string \| undefined` | no |  |
+| enabled | property | `boolean` | yes |  |
+| label | property | `string` | yes |  |
+| missingFields | property | `readonly string[]` | yes |  |
+| providerId | property | `string` | yes |  |
+| requiredFields | property | `readonly string[]` | yes |  |
+| status | property | `ProjectOAuthProviderHealthStatus` | yes |  |
 
 ## ProjectOAuthProviderHealthStatus
 
@@ -610,14 +610,14 @@ Source: `src/projectSecretUsage.ts:5:1`
 
 ### Members
 
-| Name              | Kind     | Type                         | Required | Description |
-| ----------------- | -------- | ---------------------------- | -------- | ----------- |
-| breaksWhenMissing | property | `boolean`                    | yes      |             |
-| category          | property | `ProjectSecretUsageCategory` | yes      |             |
-| label             | property | `string`                     | yes      |             |
-| ownerId           | property | `string \| undefined`        | no       |             |
-| path              | property | `string`                     | yes      |             |
-| ref               | property | `string`                     | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| breaksWhenMissing | property | `boolean` | yes |  |
+| category | property | `ProjectSecretUsageCategory` | yes |  |
+| label | property | `string` | yes |  |
+| ownerId | property | `string \| undefined` | no |  |
+| path | property | `string` | yes |  |
+| ref | property | `string` | yes |  |
 
 ## ProjectSecretUsageCategory
 
@@ -633,10 +633,10 @@ Source: `src/projectSecretUsage.ts:14:1`
 
 ### Members
 
-| Name   | Kind     | Type                            | Required | Description |
-| ------ | -------- | ------------------------------- | -------- | ----------- |
-| ref    | property | `string`                        | yes      |             |
-| usages | property | `readonly ProjectSecretUsage[]` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| ref | property | `string` | yes |  |
+| usages | property | `readonly ProjectSecretUsage[]` | yes |  |
 
 ## ProjectSortKey
 
@@ -742,9 +742,9 @@ Source: `src/bindingMetadataModel.ts:21:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
   - returns: `readonly StudioBindableEventOption[]`
 
 ## resolveStudioBindableProps
@@ -755,9 +755,9 @@ Source: `src/bindingMetadataModel.ts:8:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("/Users/a_rtiphishl_e/git/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("/home/runner/work/studio/studio/node_modules/.bun/@ankhorage+contracts@6.0.0/node_modules/@ankhorage/contracts/dist/ui").UiComponentMeta>>`
   - returns: `readonly StudioBindablePropOption[]`
 
 ## resolveStudioInstancePropertyFields
@@ -806,11 +806,11 @@ Kind: `value`
 Module: `src/index.ts`
 Source: `src/index.ts:1149:14`
 
-| id             | label          | description                              | category |
-| -------------- | -------------- | ---------------------------------------- | -------- |
-| screen-section | Screen section | A screen section with a starter heading. | recipe   |
-| panel-stack    | Panel stack    | Panel with a stack starter.              | recipe   |
-| card-heading   | Card heading   | Card with a headline.                    | recipe   |
+| id | label | description | category |
+| --- | --- | --- | --- |
+| screen-section | Screen section | A screen section with a starter heading. | recipe |
+| panel-stack | Panel stack | Panel with a stack starter. | recipe |
+| card-heading | Card heading | Card with a headline. | recipe |
 
 ## STUDIO_PACKAGE_BOUNDARY
 
@@ -838,11 +838,11 @@ Source: `src/index.ts:301:1`
 
 ### Members
 
-| Name     | Kind     | Type                           | Required | Description |
-| -------- | -------- | ------------------------------ | -------- | ----------- |
-| label    | property | `string`                       | yes      |             |
-| required | property | `boolean \| undefined`         | no       |             |
-| type     | property | `StudioActionPayloadPrimitive` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| label | property | `string` | yes |  |
+| required | property | `boolean \| undefined` | no |  |
+| type | property | `StudioActionPayloadPrimitive` | yes |  |
 
 ## StudioActionPayloadPrimitive
 
@@ -882,10 +882,10 @@ Source: `src/propertiesAuthoringModel.ts:14:1`
 
 ### Members
 
-| Name  | Kind     | Type                                                  | Required | Description |
-| ----- | -------- | ----------------------------------------------------- | -------- | ----------- |
-| name  | property | `string`                                              | yes      |             |
-| props | property | `Readonly<Record<string, StudioAuthoringPropSchema>>` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| name | property | `string` | yes |  |
+| props | property | `Readonly<Record<string, StudioAuthoringPropSchema>>` | yes |  |
 
 ## StudioAuthoringMetaRegistry
 
@@ -901,14 +901,14 @@ Source: `src/propertiesAuthoringModel.ts:3:1`
 
 ### Members
 
-| Name      | Kind     | Type                                           | Required | Description |
-| --------- | -------- | ---------------------------------------------- | -------- | ----------- |
-| authoring | property | `{ readonly authority: string; } \| undefined` | no       |             |
-| category  | property | `string`                                       | yes      |             |
-| default   | property | `unknown`                                      | no       |             |
-| enum      | property | `readonly (string \| number)[] \| undefined`   | no       |             |
-| label     | property | `string \| undefined`                          | no       |             |
-| type      | property | `string`                                       | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| authoring | property | `{ readonly authority: string; } \| undefined` | no |  |
+| category | property | `string` | yes |  |
+| default | property | `unknown` | no |  |
+| enum | property | `readonly (string \| number)[] \| undefined` | no |  |
+| label | property | `string \| undefined` | no |  |
+| type | property | `string` | yes |  |
 
 ## StudioBindableEventOption
 
@@ -918,11 +918,11 @@ Source: `src/bindingAuthoringContracts.ts:16:1`
 
 ### Members
 
-| Name  | Kind     | Type                  | Required | Description |
-| ----- | -------- | --------------------- | -------- | ----------- |
-| label | property | `string`              | yes      |             |
-| meta  | property | `UiBindableEventMeta` | yes      |             |
-| name  | property | `string`              | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| label | property | `string` | yes |  |
+| meta | property | `UiBindableEventMeta` | yes |  |
+| name | property | `string` | yes |  |
 
 ## StudioBindablePropOption
 
@@ -932,11 +932,11 @@ Source: `src/bindingAuthoringContracts.ts:10:1`
 
 ### Members
 
-| Name  | Kind     | Type                 | Required | Description |
-| ----- | -------- | -------------------- | -------- | ----------- |
-| label | property | `string`             | yes      |             |
-| meta  | property | `UiBindablePropMeta` | yes      |             |
-| name  | property | `string`             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| label | property | `string` | yes |  |
+| meta | property | `UiBindablePropMeta` | yes |  |
+| name | property | `string` | yes |  |
 
 ## StudioBindingCompatibility
 
@@ -952,12 +952,12 @@ Source: `src/bindingAuthoringContracts.ts:43:1`
 
 ### Members
 
-| Name     | Kind     | Type                                                                                                                                                                                                      | Required | Description |
-| -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| code     | property | `"incompatible-input" \| "incompatible-response" \| "missing-action" \| "missing-binding-meta" \| "missing-input" \| "missing-operation" \| "missing-response-path" \| "unknown-event" \| "unknown-prop"` | yes      |             |
-| message  | property | `string`                                                                                                                                                                                                  | yes      |             |
-| path     | property | `string \| undefined`                                                                                                                                                                                     | no       |             |
-| severity | property | `"warning" \| "error"`                                                                                                                                                                                    | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | property | `"incompatible-input" \| "incompatible-response" \| "missing-action" \| "missing-binding-meta" \| "missing-input" \| "missing-operation" \| "missing-response-path" \| "unknown-event" \| "unknown-prop"` | yes |  |
+| message | property | `string` | yes |  |
+| path | property | `string \| undefined` | no |  |
+| severity | property | `"warning" \| "error"` | yes |  |
 
 ## StudioBindingInputFieldOption
 
@@ -967,12 +967,12 @@ Source: `src/bindingAuthoringContracts.ts:22:1`
 
 ### Members
 
-| Name     | Kind     | Type                  | Required | Description |
-| -------- | -------- | --------------------- | -------- | ----------- |
-| label    | property | `string`              | yes      |             |
-| name     | property | `string`              | yes      |             |
-| required | property | `boolean`             | yes      |             |
-| value    | property | `UiBindableValueMeta` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| label | property | `string` | yes |  |
+| name | property | `string` | yes |  |
+| required | property | `boolean` | yes |  |
+| value | property | `UiBindableValueMeta` | yes |  |
 
 ## StudioBindingOperationOption
 
@@ -982,13 +982,13 @@ Source: `src/bindingAuthoringContracts.ts:35:1`
 
 ### Members
 
-| Name          | Kind     | Type                                         | Required | Description |
-| ------------- | -------- | -------------------------------------------- | -------- | ----------- |
-| inputFields   | property | `readonly StudioBindingInputFieldOption[]`   | yes      |             |
-| label         | property | `string`                                     | yes      |             |
-| operation     | property | `BindingOperationRef`                        | yes      |             |
-| responsePaths | property | `readonly StudioBindingResponsePathOption[]` | yes      |             |
-| sourceLabel   | property | `string`                                     | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| inputFields | property | `readonly StudioBindingInputFieldOption[]` | yes |  |
+| label | property | `string` | yes |  |
+| operation | property | `BindingOperationRef` | yes |  |
+| responsePaths | property | `readonly StudioBindingResponsePathOption[]` | yes |  |
+| sourceLabel | property | `string` | yes |  |
 
 ## StudioBindingResponsePathOption
 
@@ -998,11 +998,11 @@ Source: `src/bindingAuthoringContracts.ts:29:1`
 
 ### Members
 
-| Name  | Kind     | Type                  | Required | Description |
-| ----- | -------- | --------------------- | -------- | ----------- |
-| label | property | `string`              | yes      |             |
-| path  | property | `string`              | yes      |             |
-| value | property | `UiBindableValueMeta` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| label | property | `string` | yes |  |
+| path | property | `string` | yes |  |
+| value | property | `UiBindableValueMeta` | yes |  |
 
 ## StudioCommand
 
@@ -1018,10 +1018,10 @@ Source: `src/index.ts:317:1`
 
 ### Members
 
-| Name         | Kind     | Type                                   | Required | Description |
-| ------------ | -------- | -------------------------------------- | -------- | ----------- |
-| defaultProps | property | `Record<string, unknown> \| undefined` | no       |             |
-| label        | property | `string \| undefined`                  | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| defaultProps | property | `Record<string, unknown> \| undefined` | no |  |
+| label | property | `string \| undefined` | no |  |
 
 ## StudioComponentMeta
 
@@ -1031,12 +1031,12 @@ Source: `src/index.ts:322:1`
 
 ### Members
 
-| Name               | Kind     | Type                                    | Required | Description |
-| ------------------ | -------- | --------------------------------------- | -------- | ----------- |
-| allowedChildren    | property | `readonly string[]`                     | yes      |             |
-| blueprint          | property | `StudioComponentBlueprint \| undefined` | no       |             |
-| category           | property | `string`                                | yes      |             |
-| directManifestNode | property | `boolean \| undefined`                  | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| allowedChildren | property | `readonly string[]` | yes |  |
+| blueprint | property | `StudioComponentBlueprint \| undefined` | no |  |
+| category | property | `string` | yes |  |
+| directManifestNode | property | `boolean \| undefined` | no |  |
 
 ## StudioComponentMetaRegistry
 
@@ -1052,57 +1052,57 @@ Source: `src/index.ts:349:1`
 
 ### Members
 
-| Name                                | Kind     | Type                                                                                           | Required | Description |
-| ----------------------------------- | -------- | ---------------------------------------------------------------------------------------------- | -------- | ----------- |
-| activeAdminRouteId                  | property | `StudioAdminRouteId`                                                                           | yes      |             |
-| activeCanvasDragNodeId              | property | `string \| null`                                                                               | yes      |             |
-| activePanelId                       | property | `"layers" \| null`                                                                             | yes      |             |
-| activeScreenId                      | property | `string \| null`                                                                               | yes      |             |
-| addScreen                           | property | `(name: string) => void`                                                                       | yes      |             |
-| addTheme                            | property | `() => void`                                                                                   | yes      |             |
-| componentMeta                       | property | `StudioComponentMetaRegistry`                                                                  | yes      |             |
-| deleteGeneratedApi                  | property | `(id: string) => void`                                                                         | yes      |             |
-| deleteNode                          | property | `(id: StudioNodeId) => void`                                                                   | yes      |             |
-| deleteScreen                        | property | `(id: StudioScreenId) => void`                                                                 | yes      |             |
-| deleteTheme                         | property | `(id: string) => void`                                                                         | yes      |             |
-| error                               | property | `string \| null`                                                                               | yes      |             |
-| findNode                            | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                                           | yes      |             |
-| flushManifest                       | property | `() => Promise<void>`                                                                          | yes      |             |
-| insertFromCatalogEntry              | property | `(entry: InsertCatalogEntry) => boolean`                                                       | yes      |             |
-| isLoading                           | property | `boolean`                                                                                      | yes      |             |
-| lastNonAdminLocation                | property | `string`                                                                                       | yes      |             |
-| manifest                            | property | `AppManifest \| null`                                                                          | yes      |             |
-| moveNodeToPlacement                 | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`                                  | yes      |             |
-| moveRoute                           | property | `(parentPath: string[], routeName: string, toIndex: number) => void`                           | yes      |             |
-| mutateAuthSettings                  | property | `(mutation: StudioAuthSettingsMutation) => StudioAuthSettings \| null`                         | yes      |             |
-| previewMode                         | property | `boolean`                                                                                      | yes      |             |
-| projectId                           | property | `string`                                                                                       | yes      |             |
-| refetchManifest                     | property | `() => Promise<void>`                                                                          | yes      |             |
-| rootNode                            | property | `UiNode \| null`                                                                               | yes      |             |
-| saveStatus                          | property | `StudioSaveStatus`                                                                             | yes      |             |
-| selectedNodeId                      | property | `string \| null`                                                                               | yes      |             |
-| selectNode                          | property | `(id: StudioNodeId \| null) => void`                                                           | yes      |             |
-| sessionId                           | property | `string \| undefined`                                                                          | no       |             |
-| setActiveAdminRouteId               | property | `(routeId: StudioAdminRouteId) => void`                                                        | yes      |             |
-| setActiveCanvasDragNodeId           | property | `(nodeId: StudioNodeId \| null) => void`                                                       | yes      |             |
-| setActivePanelId                    | property | `(panelId: StudioPanelId \| null) => void`                                                     | yes      |             |
-| setActiveScreenId                   | property | `(id: StudioScreenId) => void`                                                                 | yes      |             |
-| setActiveThemeId                    | property | `(id: string) => void`                                                                         | yes      |             |
-| setActiveThemeMode                  | property | `(mode: StudioMode) => void`                                                                   | yes      |             |
-| setLastNonAdminLocation             | property | `(location: string) => void`                                                                   | yes      |             |
-| setNavigatorInitialRoute            | property | `(routeName: string) => void`                                                                  | yes      |             |
-| setNavigatorType                    | property | `(type: NavigatorType) => void`                                                                | yes      |             |
-| setRoutePrimaryNavigationVisibility | property | `(parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => void`          | yes      |             |
-| setStudioMode                       | property | `(mode: StudioMode) => void`                                                                   | yes      |             |
-| studioMode                          | property | `StudioMode`                                                                                   | yes      |             |
-| togglePreviewMode                   | property | `() => void`                                                                                   | yes      |             |
-| updateAuthSettings                  | property | `(settings: StudioAuthSettings) => void`                                                       | yes      |             |
-| updateDataBindings                  | property | `(dataBindings: ComponentDataBindingRegistry) => void`                                         | yes      |             |
-| updateDataSources                   | property | `(dataSources: DataSourceRegistry) => void`                                                    | yes      |             |
-| updateNode                          | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`                               | yes      |             |
-| updateOAuthProviders                | property | `(providers: AuthOAuthProviderConfig[]) => void`                                               | yes      |             |
-| updateTheme                         | property | `(id: string, updates: ThemeUpdates) => void`                                                  | yes      |             |
-| upsertGeneratedApi                  | property | `(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| activeAdminRouteId | property | `StudioAdminRouteId` | yes |  |
+| activeCanvasDragNodeId | property | `string \| null` | yes |  |
+| activePanelId | property | `"layers" \| null` | yes |  |
+| activeScreenId | property | `string \| null` | yes |  |
+| addScreen | property | `(name: string) => void` | yes |  |
+| addTheme | property | `() => void` | yes |  |
+| componentMeta | property | `StudioComponentMetaRegistry` | yes |  |
+| deleteGeneratedApi | property | `(id: string) => void` | yes |  |
+| deleteNode | property | `(id: StudioNodeId) => void` | yes |  |
+| deleteScreen | property | `(id: StudioScreenId) => void` | yes |  |
+| deleteTheme | property | `(id: string) => void` | yes |  |
+| error | property | `string \| null` | yes |  |
+| findNode | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null` | yes |  |
+| flushManifest | property | `() => Promise<void>` | yes |  |
+| insertFromCatalogEntry | property | `(entry: InsertCatalogEntry) => boolean` | yes |  |
+| isLoading | property | `boolean` | yes |  |
+| lastNonAdminLocation | property | `string` | yes |  |
+| manifest | property | `AppManifest \| null` | yes |  |
+| moveNodeToPlacement | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean` | yes |  |
+| moveRoute | property | `(parentPath: string[], routeName: string, toIndex: number) => void` | yes |  |
+| mutateAuthSettings | property | `(mutation: StudioAuthSettingsMutation) => StudioAuthSettings \| null` | yes |  |
+| previewMode | property | `boolean` | yes |  |
+| projectId | property | `string` | yes |  |
+| refetchManifest | property | `() => Promise<void>` | yes |  |
+| rootNode | property | `UiNode \| null` | yes |  |
+| saveStatus | property | `StudioSaveStatus` | yes |  |
+| selectedNodeId | property | `string \| null` | yes |  |
+| selectNode | property | `(id: StudioNodeId \| null) => void` | yes |  |
+| sessionId | property | `string \| undefined` | no |  |
+| setActiveAdminRouteId | property | `(routeId: StudioAdminRouteId) => void` | yes |  |
+| setActiveCanvasDragNodeId | property | `(nodeId: StudioNodeId \| null) => void` | yes |  |
+| setActivePanelId | property | `(panelId: StudioPanelId \| null) => void` | yes |  |
+| setActiveScreenId | property | `(id: StudioScreenId) => void` | yes |  |
+| setActiveThemeId | property | `(id: string) => void` | yes |  |
+| setActiveThemeMode | property | `(mode: StudioMode) => void` | yes |  |
+| setLastNonAdminLocation | property | `(location: string) => void` | yes |  |
+| setNavigatorInitialRoute | property | `(routeName: string) => void` | yes |  |
+| setNavigatorType | property | `(type: NavigatorType) => void` | yes |  |
+| setRoutePrimaryNavigationVisibility | property | `(parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => void` | yes |  |
+| setStudioMode | property | `(mode: StudioMode) => void` | yes |  |
+| studioMode | property | `StudioMode` | yes |  |
+| togglePreviewMode | property | `() => void` | yes |  |
+| updateAuthSettings | property | `(settings: StudioAuthSettings) => void` | yes |  |
+| updateDataBindings | property | `(dataBindings: ComponentDataBindingRegistry) => void` | yes |  |
+| updateDataSources | property | `(dataSources: DataSourceRegistry) => void` | yes |  |
+| updateNode | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void` | yes |  |
+| updateOAuthProviders | property | `(providers: AuthOAuthProviderConfig[]) => void` | yes |  |
+| updateTheme | property | `(id: string, updates: ThemeUpdates) => void` | yes |  |
+| upsertGeneratedApi | property | `(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]` | yes |  |
 
 ## StudioEvent
 
@@ -1130,17 +1130,17 @@ Source: `src/propertiesAuthoringModel.ts:26:1`
 
 ### Members
 
-| Name         | Kind     | Type                               | Required | Description |
-| ------------ | -------- | ---------------------------------- | -------- | ----------- |
-| category     | property | `string`                           | yes      |             |
-| defaultValue | property | `unknown`                          | yes      |             |
-| editor       | property | `StudioInstancePropertyEditorKind` | yes      |             |
-| isExplicit   | property | `boolean`                          | yes      |             |
-| label        | property | `string`                           | yes      |             |
-| name         | property | `string`                           | yes      |             |
-| options      | property | `readonly (string \| number)[]`    | yes      |             |
-| schemaType   | property | `string`                           | yes      |             |
-| value        | property | `unknown`                          | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| defaultValue | property | `unknown` | yes |  |
+| editor | property | `StudioInstancePropertyEditorKind` | yes |  |
+| isExplicit | property | `boolean` | yes |  |
+| label | property | `string` | yes |  |
+| name | property | `string` | yes |  |
+| options | property | `readonly (string \| number)[]` | yes |  |
+| schemaType | property | `string` | yes |  |
+| value | property | `unknown` | yes |  |
 
 ## StudioInstancePropertyGroup
 
@@ -1150,10 +1150,10 @@ Source: `src/propertiesAuthoringModel.ts:38:1`
 
 ### Members
 
-| Name     | Kind     | Type                                     | Required | Description |
-| -------- | -------- | ---------------------------------------- | -------- | ----------- |
-| category | property | `string`                                 | yes      |             |
-| fields   | property | `readonly StudioInstancePropertyField[]` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| category | property | `string` | yes |  |
+| fields | property | `readonly StudioInstancePropertyField[]` | yes |  |
 
 ## StudioInstancePropertyValue
 
@@ -1181,12 +1181,12 @@ Source: `src/moduleAdminContracts.ts:11:1`
 
 ### Members
 
-| Name        | Kind     | Type                                | Required | Description |
-| ----------- | -------- | ----------------------------------- | -------- | ----------- |
-| description | property | `string`                            | yes      |             |
-| fields      | property | `readonly StudioModuleAdminField[]` | yes      |             |
-| kind        | property | `"config-schema"`                   | yes      |             |
-| title       | property | `string`                            | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| description | property | `string` | yes |  |
+| fields | property | `readonly StudioModuleAdminField[]` | yes |  |
+| kind | property | `"config-schema"` | yes |  |
+| title | property | `string` | yes |  |
 
 ## StudioModuleAdminControl
 
@@ -1202,12 +1202,12 @@ Source: `src/moduleAdminContracts.ts:4:1`
 
 ### Members
 
-| Name     | Kind     | Type      | Required | Description |
-| -------- | -------- | --------- | -------- | ----------- |
-| control  | property | `string`  | yes      |             |
-| key      | property | `string`  | yes      |             |
-| label    | property | `string`  | yes      |             |
-| required | property | `boolean` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| control | property | `string` | yes |  |
+| key | property | `string` | yes |  |
+| label | property | `string` | yes |  |
+| required | property | `boolean` | yes |  |
 
 ## StudioModuleId
 
@@ -1223,14 +1223,14 @@ Source: `src/moduleAdminContracts.ts:35:1`
 
 ### Members
 
-| Name         | Kind     | Type                             | Required | Description |
-| ------------ | -------- | -------------------------------- | -------- | ----------- |
-| installed    | property | `readonly string[] \| undefined` | no       |             |
-| module       | property | `StudioModuleState \| null`      | yes      |             |
-| needsReload  | property | `boolean`                        | yes      |             |
-| pending      | property | `boolean \| undefined`           | no       |             |
-| reconfigured | property | `string \| undefined`            | no       |             |
-| success      | property | `true`                           | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| installed | property | `readonly string[] \| undefined` | no |  |
+| module | property | `StudioModuleState \| null` | yes |  |
+| needsReload | property | `boolean` | yes |  |
+| pending | property | `boolean \| undefined` | no |  |
+| reconfigured | property | `string \| undefined` | no |  |
+| success | property | `true` | yes |  |
 
 ## StudioModuleState
 
@@ -1240,22 +1240,22 @@ Source: `src/moduleAdminContracts.ts:18:1`
 
 ### Members
 
-| Name                | Kind     | Type                                    | Required | Description |
-| ------------------- | -------- | --------------------------------------- | -------- | ----------- |
-| admin               | property | `StudioModuleAdminContribution \| null` | yes      |             |
-| adminError          | property | `string \| undefined`                   | no       |             |
-| available           | property | `boolean`                               | yes      |             |
-| config              | property | `unknown`                               | yes      |             |
-| dependencies        | property | `readonly string[]`                     | yes      |             |
-| dependents          | property | `readonly string[]`                     | yes      |             |
-| description         | property | `string`                                | yes      |             |
-| id                  | property | `string`                                | yes      |             |
-| installed           | property | `boolean`                               | yes      |             |
-| installedAt         | property | `string \| undefined`                   | no       |             |
-| installedVersion    | property | `string \| undefined`                   | no       |             |
-| name                | property | `string`                                | yes      |             |
-| pendingRemoval      | property | `boolean`                               | yes      |             |
-| registrationVersion | property | `string \| undefined`                   | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| admin | property | `StudioModuleAdminContribution \| null` | yes |  |
+| adminError | property | `string \| undefined` | no |  |
+| available | property | `boolean` | yes |  |
+| config | property | `unknown` | yes |  |
+| dependencies | property | `readonly string[]` | yes |  |
+| dependents | property | `readonly string[]` | yes |  |
+| description | property | `string` | yes |  |
+| id | property | `string` | yes |  |
+| installed | property | `boolean` | yes |  |
+| installedAt | property | `string \| undefined` | no |  |
+| installedVersion | property | `string \| undefined` | no |  |
+| name | property | `string` | yes |  |
+| pendingRemoval | property | `boolean` | yes |  |
+| registrationVersion | property | `string \| undefined` | no |  |
 
 ## StudioNodeId
 
@@ -1271,11 +1271,11 @@ Source: `src/index.ts:61:1`
 
 ### Members
 
-| Name       | Kind     | Type                | Required | Description |
-| ---------- | -------- | ------------------- | -------- | ----------- |
-| consumes   | property | `readonly string[]` | yes      |             |
-| doesNotOwn | property | `readonly string[]` | yes      |             |
-| owns       | property | `readonly string[]` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| consumes | property | `readonly string[]` | yes |  |
+| doesNotOwn | property | `readonly string[]` | yes |  |
+| owns | property | `readonly string[]` | yes |  |
 
 ## StudioPanelId
 
@@ -1297,18 +1297,18 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 ### Members
 
-| Name            | Kind     | Type                                                                                                                                                                                                                                                                                                                                                                                                                                          | Required | Description |
-| --------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| activeTheme     | property | `ThemeConfig`                                                                                                                                                                                                                                                                                                                                                                                                                                 | yes      |             |
-| activeThemeMode | property | `"dark" \| "light" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                              | no       |             |
-| category        | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes      |             |
-| created         | property | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | no       |             |
-| id              | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| isAnkhApp       | property | `boolean`                                                                                                                                                                                                                                                                                                                                                                                                                                     | yes      |             |
-| name            | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| path            | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| updated         | property | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | no       |             |
-| version         | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| activeTheme | property | `ThemeConfig` | yes |  |
+| activeThemeMode | property | `"dark" \| "light" \| undefined` | no |  |
+| category | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes |  |
+| created | property | `string \| undefined` | no |  |
+| id | property | `string` | yes |  |
+| isAnkhApp | property | `boolean` | yes |  |
+| name | property | `string` | yes |  |
+| path | property | `string` | yes |  |
+| updated | property | `string \| undefined` | no |  |
+| version | property | `string` | yes |  |
 
 ## StudioPublicContract
 
@@ -1336,13 +1336,13 @@ Source: `src/index.ts:183:1`
 
 ### Members
 
-| Name                   | Kind     | Type                 | Required | Description |
-| ---------------------- | -------- | -------------------- | -------- | ----------- |
-| activeAdminRouteId     | property | `StudioAdminRouteId` | yes      |             |
-| activeCanvasDragNodeId | property | `string \| null`     | yes      |             |
-| activePanelId          | property | `"layers" \| null`   | yes      |             |
-| activeScreenId         | property | `string \| null`     | yes      |             |
-| selectedNodeId         | property | `string \| null`     | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| activeAdminRouteId | property | `StudioAdminRouteId` | yes |  |
+| activeCanvasDragNodeId | property | `string \| null` | yes |  |
+| activePanelId | property | `"layers" \| null` | yes |  |
+| activeScreenId | property | `string \| null` | yes |  |
+| selectedNodeId | property | `string \| null` | yes |  |
 
 ## StudioSessionId
 
@@ -1358,16 +1358,16 @@ Source: `src/index.ts:191:1`
 
 ### Members
 
-| Name                 | Kind     | Type                  | Required | Description |
-| -------------------- | -------- | --------------------- | -------- | ----------- |
-| error                | property | `string \| null`      | yes      |             |
-| isLoading            | property | `boolean`             | yes      |             |
-| lastNonAdminLocation | property | `string`              | yes      |             |
-| previewMode          | property | `boolean`             | yes      |             |
-| projectId            | property | `string`              | yes      |             |
-| saveStatus           | property | `StudioSaveStatus`    | yes      |             |
-| sessionId            | property | `string \| undefined` | no       |             |
-| studioMode           | property | `StudioMode`          | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| error | property | `string \| null` | yes |  |
+| isLoading | property | `boolean` | yes |  |
+| lastNonAdminLocation | property | `string` | yes |  |
+| previewMode | property | `boolean` | yes |  |
+| projectId | property | `string` | yes |  |
+| saveStatus | property | `StudioSaveStatus` | yes |  |
+| sessionId | property | `string \| undefined` | no |  |
+| studioMode | property | `StudioMode` | yes |  |
 
 ## TemplateCatalog
 
@@ -1377,9 +1377,9 @@ Source: `src/templateCatalogContracts.ts:21:1`
 
 ### Members
 
-| Name       | Kind     | Type                        | Required | Description |
-| ---------- | -------- | --------------------------- | -------- | ----------- |
-| categories | property | `TemplateCatalogCategory[]` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| categories | property | `TemplateCatalogCategory[]` | yes |  |
 
 ## TemplateCatalogCategory
 
@@ -1389,16 +1389,16 @@ Source: `src/templateCatalogContracts.ts:10:1`
 
 ### Members
 
-| Name          | Kind     | Type                                                                                                                                                                                                                                                                                                                                                                                                                                          | Required | Description |
-| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| focusAreas    | property | `readonly string[]`                                                                                                                                                                                                                                                                                                                                                                                                                           | yes      |             |
-| harmony       | property | `"monochromatic" \| "analogous" \| "complementary" \| "triadic" \| "tetradic" \| "splitComplementary"`                                                                                                                                                                                                                                                                                                                                        | yes      |             |
-| id            | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes      |             |
-| label         | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| primaryColor  | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| summary       | property | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| templateCount | property | `number`                                                                                                                                                                                                                                                                                                                                                                                                                                      | yes      |             |
-| templates     | property | `TemplateCatalogTemplate[]`                                                                                                                                                                                                                                                                                                                                                                                                                   | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| focusAreas | property | `readonly string[]` | yes |  |
+| harmony | property | `"monochromatic" \| "analogous" \| "complementary" \| "triadic" \| "tetradic" \| "splitComplementary"` | yes |  |
+| id | property | `"books_reading" \| "business_productivity" \| "developer_tools" \| "education_learning" \| "entertainment_media" \| "finance_money" \| "food_drink" \| "games" \| "graphics_design" \| "health_fitness" \| "kids_family" \| "lifestyle" \| "medical" \| "music_audio" \| "navigation_travel" \| "news_magazines" \| "photo_video" \| "reference" \| "shopping_commerce" \| "social_community" \| "sports" \| "utilities_tools" \| "weather"` | yes |  |
+| label | property | `string` | yes |  |
+| primaryColor | property | `string` | yes |  |
+| summary | property | `string` | yes |  |
+| templateCount | property | `number` | yes |  |
+| templates | property | `TemplateCatalogTemplate[]` | yes |  |
 
 ## TemplateCatalogTemplate
 
@@ -1408,12 +1408,12 @@ Source: `src/templateCatalogContracts.ts:3:1`
 
 ### Members
 
-| Name        | Kind     | Type     | Required | Description |
-| ----------- | -------- | -------- | -------- | ----------- |
-| description | property | `string` | yes      |             |
-| id          | property | `string` | yes      |             |
-| name        | property | `string` | yes      |             |
-| templateId  | property | `string` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| description | property | `string` | yes |  |
+| id | property | `string` | yes |  |
+| name | property | `string` | yes |  |
+| templateId | property | `string` | yes |  |
 
 ## TemplateEntry
 

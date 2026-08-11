@@ -62,9 +62,7 @@ export async function executeHostModuleAdminRuntime(args: {
 
 function isHostModuleAdminRuntime(value: unknown): value is HostModuleAdminRuntime {
   return (
-    isRecord(value) &&
-    value.kind === 'module-admin-runtime' &&
-    typeof value.execute === 'function'
+    isRecord(value) && value.kind === 'module-admin-runtime' && typeof value.execute === 'function'
   );
 }
 
