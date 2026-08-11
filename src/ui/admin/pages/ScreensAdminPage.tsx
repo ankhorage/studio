@@ -140,9 +140,9 @@ export function ScreensAdminPage() {
           title="Screens"
           description={`${model.screens.length} canonical screen${model.screens.length === 1 ? '' : 's'}. Route existence and primary-navigation visibility are separate.`}
         >
-          {model.screens.map((entry) => (
+          {model.screens.map((entry, index) => (
             <ScreenOverviewRow
-              key={entry.screenId}
+              key={`${entry.screenId}:${index}`}
               entry={entry}
               screenCount={model.screens.length}
               manifest={manifest}

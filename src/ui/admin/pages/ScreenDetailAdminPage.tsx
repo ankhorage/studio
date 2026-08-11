@@ -58,7 +58,25 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
     );
   }
 
-  const entry = model.screens.find((candidate) => candidate.screenId === screenId);
+  const matchingEntries = model.screens.filter((candidate) => candidate.screenId === screenId);
+  if (matchingEntries.length > 1) {
+    return (
+      <AdminScroll>
+        <AdminHeader
+          title="Screen identity is ambiguous"
+          description="Multiple screen registry entries use this stable ScreenSpec.id. Studio will not select one arbitrarily."
+        />
+        <Card compact title="Ambiguous stable screen ID">
+          <Text>{screenId}</Text>
+        </Card>
+        <Button variant="outline" onPress={openScreens}>
+          Back to Screens
+        </Button>
+      </AdminScroll>
+    );
+  }
+
+  const [entry] = matchingEntries;
   if (!entry) {
     return (
       <AdminScroll>

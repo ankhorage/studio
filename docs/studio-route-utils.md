@@ -28,7 +28,9 @@ import { resolveInitialScreenId } from '@ankhorage/studio/manifestState';
 canonical manifest route tree. It supports nested index routes, explicit child routes, Expo-style
 dynamic and catch-all segments, route groups, static-route precedence over dynamic siblings, query
 strings, hashes, and trailing slashes. When a screen registry is supplied, routes whose screen ID is
-absent are ignored.
+absent are ignored and the canonical registry-key-equals-`ScreenSpec.id` invariant is required.
+Malformed registries return `null`, so pathname resolution cannot turn a registry key into an
+accidental Studio screen identity.
 
 The root pathname fallback uses `resolveInitialScreenId(navigator, screens?)`, the same pure helper
 used by Studio's initial active-screen resolution. It respects `initialRouteName` at every Stack,

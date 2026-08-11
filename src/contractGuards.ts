@@ -348,7 +348,12 @@ function isAppSettings(value: unknown): value is AppSettings {
 }
 
 function isScreenRegistry(value: unknown): value is Record<string, ScreenSpec> {
-  return isRecord(value) && Object.values(value).every(isScreenSpec);
+  return (
+    isRecord(value) &&
+    Object.entries(value).every(
+      ([registryKey, screen]) => isScreenSpec(screen) && registryKey === screen.id,
+    )
+  );
 }
 
 function isIconSpec(value: unknown): boolean {

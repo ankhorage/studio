@@ -10,6 +10,7 @@ import {
   deleteStudioManifestScreen,
   deriveStudioScreenNavigationModel,
   findRoutesAtParentPath,
+  hasCanonicalStudioScreenRegistryIdentity,
   insertStudioManifestNodeAtPlacement,
   moveStudioManifestNodeToPlacement,
   moveStudioManifestRoute,
@@ -423,6 +424,79 @@ describe('manifestState', () => {
     ];
     model = deriveStudioScreenNavigationModel(manifest);
     expect(resolveStudioScreenAppPath(model, 'screen-home')).toBeNull();
+  });
+
+  test('uses ScreenSpec.id as Studio identity while diagnosing mismatched registry keys', () => {
+    const manifest = createManifest();
+    const home = manifest.screens['screen-home'];
+    const about = manifest.screens['screen-about'];
+    if (!home || !about) throw new Error('Expected canonical fixture screens.');
+
+    manifest.screens = {
+      'registry-home': { ...home, id: 'stable-home' },
+      'registry-about': { ...about, id: 'stable-about' },
+    };
+    manifest.navigator.routes = [
+      { name: 'home', screenId: 'registry-home' },
+      { name: 'about', screenId: 'registry-about' },
+    ];
+
+    const model = deriveStudioScreenNavigationModel(manifest);
+
+    expect(model.screens.map(({ screenId }) => screenId)).toEqual(['stable-home', 'stable-about']);
+    expect(model.screens[0]?.routeReferences[0]).toMatchObject({
+      pathnamePattern: '/home',
+      route: { screenId: 'registry-home' },
+    });
+    expect(resolveStudioScreenAppPath(model, 'stable-home')).toBe('/home');
+    expect(resolveStudioScreenAppPath(model, 'registry-home')).toBeNull();
+    expect(model.diagnostics.map(({ code, screenId }) => ({ code, screenId }))).toEqual([
+      { code: 'screen-registry-key-mismatch', screenId: 'stable-home' },
+      { code: 'screen-registry-key-mismatch', screenId: 'stable-about' },
+    ]);
+    expect(hasCanonicalStudioScreenRegistryIdentity(manifest.screens)).toBe(false);
+    expect(resolveInitialActiveScreenId(manifest)).toBeNull();
+    expect(resolveActiveRootNode(manifest, 'stable-home')).toBeNull();
+
+    const added = addStudioManifestScreen({
+      manifest,
+      name: 'Rejected',
+      activeScreenId: 'stable-home',
+      createId: () => 'stable-new',
+    });
+    const deleted = deleteStudioManifestScreen(manifest, 'stable-home', 'stable-home');
+    expect(added).toEqual({ manifest, activeScreenId: 'stable-home' });
+    expect(added.manifest).toBe(manifest);
+    expect(deleted).toEqual({ manifest, activeScreenId: 'stable-home' });
+    expect(deleted.manifest).toBe(manifest);
+  });
+
+  test('does not resolve an arbitrary screen when stable ScreenSpec ids are duplicated', () => {
+    const manifest = createManifest();
+    const home = manifest.screens['screen-home'];
+    const about = manifest.screens['screen-about'];
+    if (!home || !about) throw new Error('Expected canonical fixture screens.');
+
+    manifest.screens = {
+      'registry-home': { ...home, id: 'duplicate-id' },
+      'registry-about': { ...about, id: 'duplicate-id' },
+    };
+    manifest.navigator.routes = [
+      { name: 'home', screenId: 'registry-home' },
+      { name: 'about', screenId: 'registry-about' },
+    ];
+
+    const model = deriveStudioScreenNavigationModel(manifest);
+    expect(model.screens.map(({ screenId }) => screenId)).toEqual(['duplicate-id', 'duplicate-id']);
+    expect(model.diagnostics.filter(({ code }) => code === 'duplicate-screen-id')).toEqual([
+      {
+        code: 'duplicate-screen-id',
+        message: 'Stable ScreenSpec.id "duplicate-id" is used by multiple screen registry entries.',
+        parentPath: [],
+        screenId: 'duplicate-id',
+      },
+    ]);
+    expect(resolveStudioScreenAppPath(model, 'duplicate-id')).toBeNull();
   });
 
   test('reports malformed navigator and route references deterministically', () => {

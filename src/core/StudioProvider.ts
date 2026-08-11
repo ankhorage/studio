@@ -36,6 +36,7 @@ import {
   addStudioManifestScreen,
   deleteStudioManifestNode,
   deleteStudioManifestScreen,
+  hasCanonicalStudioScreenRegistryIdentity,
   insertStudioManifestNodeAtPlacement,
   moveStudioManifestNodeToPlacement,
   moveStudioManifestRoute,
@@ -306,7 +307,7 @@ export const StudioProvider = ({
   const deleteScreen = useCallback(
     (screenId: StudioScreenId) => {
       const { current } = manifestRef;
-      if (!current) return;
+      if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
       const deletedRoot = current.screens[screenId]?.root;
       const result = deleteStudioManifestScreen(current, screenId, activeScreenId);
       if (result.manifest === current || !deletedRoot) return;
@@ -360,7 +361,14 @@ export const StudioProvider = ({
   );
 
   const setActiveScreenId = useCallback((screenId: StudioScreenId) => {
-    if (!manifestRef.current?.screens[screenId]) return;
+    const { current } = manifestRef;
+    if (
+      !current ||
+      !hasCanonicalStudioScreenRegistryIdentity(current.screens) ||
+      current.screens[screenId]?.id !== screenId
+    ) {
+      return;
+    }
     setRequestedActiveScreenId(screenId);
   }, []);
 

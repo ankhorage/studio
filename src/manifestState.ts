@@ -43,11 +43,13 @@ export interface StudioManifestScreenMutationResult {
 export type StudioScreenNavigationDiagnosticCode =
   | 'ambiguous-route-target'
   | 'ambiguous-screen-route-reference'
+  | 'duplicate-screen-id'
   | 'duplicate-sibling-route-name'
   | 'empty-navigator'
   | 'invalid-initial-route'
   | 'missing-route-target'
-  | 'missing-screen-reference';
+  | 'missing-screen-reference'
+  | 'screen-registry-key-mismatch';
 
 export interface StudioScreenNavigationDiagnostic {
   code: StudioScreenNavigationDiagnosticCode;
@@ -215,6 +217,29 @@ export function groupScreenRouteEntries(entries: ScreenRouteEntry[]): ScreenRout
 }
 
 /**
+ * Verifies the Studio manifest invariant that route registry keys and stable
+ * ScreenSpec identities are the same unique value.
+ */
+export function hasCanonicalStudioScreenRegistryIdentity(
+  screens: StudioManifest['screens'],
+): boolean {
+  const screenIds = new Set<string>();
+  for (const [registryKey, screen] of Object.entries(screens)) {
+    if (registryKey !== screen.id || screenIds.has(screen.id)) return false;
+    screenIds.add(screen.id);
+  }
+  return true;
+}
+
+function resolveCanonicalStudioScreen(
+  manifest: StudioManifest,
+  screenId: string,
+): ScreenSpec | undefined {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return undefined;
+  return manifest.screens[screenId];
+}
+
+/**
  * Derives the complete package-neutral screen/navigation authoring model from
  * the manifest without flattening its navigator tree.
  */
@@ -225,7 +250,7 @@ export function deriveStudioScreenNavigationModel(
   const primaryNavigator =
     findNavigatorAtPath(manifest.navigator, primaryNavigatorPath) ?? manifest.navigator;
   const diagnostics: StudioScreenNavigationDiagnostic[] = [];
-  const referencesByScreenId = new Map<string, StudioScreenRouteReference[]>();
+  const referencesByRegistryKey = new Map<string, StudioScreenRouteReference[]>();
 
   collectNavigationModelReferences({
     navigator: manifest.navigator,
@@ -235,11 +260,35 @@ export function deriveStudioScreenNavigationModel(
     routePathPrefix: [],
     runtimePathPrefix: [],
     diagnostics,
-    referencesByScreenId,
+    referencesByRegistryKey,
   });
 
-  const screens = Object.entries(manifest.screens).map(([screenId, screen]) => {
-    const routeReferences = referencesByScreenId.get(screenId) ?? [];
+  const screenIdCounts = new Map<string, number>();
+  for (const screen of Object.values(manifest.screens)) {
+    screenIdCounts.set(screen.id, (screenIdCounts.get(screen.id) ?? 0) + 1);
+  }
+  const reportedDuplicateScreenIds = new Set<string>();
+
+  const screens = Object.entries(manifest.screens).map(([registryKey, screen]) => {
+    const screenId = screen.id;
+    const routeReferences = referencesByRegistryKey.get(registryKey) ?? [];
+    if (registryKey !== screenId) {
+      diagnostics.push({
+        code: 'screen-registry-key-mismatch',
+        message: `Screen registry key "${registryKey}" does not match stable ScreenSpec.id "${screenId}".`,
+        parentPath: [],
+        screenId,
+      });
+    }
+    if ((screenIdCounts.get(screenId) ?? 0) > 1 && !reportedDuplicateScreenIds.has(screenId)) {
+      reportedDuplicateScreenIds.add(screenId);
+      diagnostics.push({
+        code: 'duplicate-screen-id',
+        message: `Stable ScreenSpec.id "${screenId}" is used by multiple screen registry entries.`,
+        parentPath: [],
+        screenId,
+      });
+    }
     if (routeReferences.length > 1) {
       diagnostics.push({
         code: 'ambiguous-screen-route-reference',
@@ -268,7 +317,9 @@ export function resolveStudioScreenAppPath(
   model: StudioScreenNavigationModel,
   screenId: string,
 ): string | null {
-  const entry = model.screens.find((candidate) => candidate.screenId === screenId);
+  const matchingEntries = model.screens.filter((candidate) => candidate.screenId === screenId);
+  if (matchingEntries.length !== 1) return null;
+  const [entry] = matchingEntries;
   if (!entry) return null;
   if (entry.routeReferences.length !== 1) return null;
   const [reference] = entry.routeReferences;
@@ -295,7 +346,7 @@ function collectNavigationModelReferences(args: {
   routePathPrefix: string[];
   runtimePathPrefix: string[];
   diagnostics: StudioScreenNavigationDiagnostic[];
-  referencesByScreenId: Map<string, StudioScreenRouteReference[]>;
+  referencesByRegistryKey: Map<string, StudioScreenRouteReference[]>;
 }): void {
   const {
     navigator,
@@ -305,7 +356,7 @@ function collectNavigationModelReferences(args: {
     routePathPrefix,
     runtimePathPrefix,
     diagnostics,
-    referencesByScreenId,
+    referencesByRegistryKey,
   } = args;
   const siblingNameCounts = new Map<string, number>();
   for (const route of navigator.routes) {
@@ -389,9 +440,9 @@ function collectNavigationModelReferences(args: {
           isPrimaryInitialRoute:
             isPrimaryNavigatorMember && navigator.initialRouteName === route.name,
         };
-        const currentReferences = referencesByScreenId.get(route.screenId) ?? [];
+        const currentReferences = referencesByRegistryKey.get(route.screenId) ?? [];
         currentReferences.push(reference);
-        referencesByScreenId.set(route.screenId, currentReferences);
+        referencesByRegistryKey.set(route.screenId, currentReferences);
       }
     }
 
@@ -404,7 +455,7 @@ function collectNavigationModelReferences(args: {
         routePathPrefix: routePath,
         runtimePathPrefix: runtimePath,
         diagnostics,
-        referencesByScreenId,
+        referencesByRegistryKey,
       });
     }
   }
@@ -438,6 +489,7 @@ export function resolveInitialScreenId(
   navigator: NavigatorSpec,
   screens?: AppManifest['screens'],
 ): string | null {
+  if (screens && !hasCanonicalStudioScreenRegistryIdentity(screens)) return null;
   const initialRoute = navigator.initialRouteName
     ? navigator.routes.find((route) => route.name === navigator.initialRouteName)
     : undefined;
@@ -452,7 +504,7 @@ export function resolveInitialScreenId(
     }
 
     if (route.screenId && (!screens || screens[route.screenId])) {
-      return route.screenId;
+      return screens ? (screens[route.screenId]?.id ?? null) : route.screenId;
     }
   }
 
@@ -460,10 +512,10 @@ export function resolveInitialScreenId(
 }
 
 export function resolveInitialActiveScreenId(manifest: StudioManifest | null): string | null {
-  if (!manifest) return null;
+  if (!manifest || !hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
 
   const firstRoutedScreenId = resolveInitialScreenId(manifest.navigator, manifest.screens);
-  const [firstScreenId] = Object.keys(manifest.screens);
+  const [firstScreenId] = Object.values(manifest.screens).map((screen) => screen.id);
   return firstRoutedScreenId ?? firstScreenId ?? null;
 }
 
@@ -472,7 +524,7 @@ export function resolveActiveRootNode(
   activeScreenId: string | null,
 ): UiNode | null {
   if (!manifest || !activeScreenId) return null;
-  return manifest.screens[activeScreenId]?.root ?? null;
+  return resolveCanonicalStudioScreen(manifest, activeScreenId)?.root ?? null;
 }
 
 export function findNodeInManifest(root: UiNode, id: string): UiNode | null {
@@ -495,9 +547,10 @@ export function resolveSafeSelectedNodeId(
 }
 
 export function findScreenIdForNode(manifest: StudioManifest, nodeId: string): string | null {
-  for (const [screenId, screen] of Object.entries(manifest.screens)) {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return null;
+  for (const screen of Object.values(manifest.screens)) {
     if (findNodeInManifest(screen.root, nodeId)) {
-      return screenId;
+      return screen.id;
     }
   }
 
@@ -511,7 +564,7 @@ export function updateStudioManifestNode(
   newProps: Record<string, unknown>,
 ): StudioManifest {
   if (!activeScreenId) return manifest;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return manifest;
 
   const newRoot = updateNodeInManifestTree(screen.root, nodeId, newProps);
@@ -535,7 +588,7 @@ export function deleteStudioManifestNode(
   nodeId: string,
 ): StudioManifest {
   if (!activeScreenId) return manifest;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen || screen.root.id === nodeId) return manifest;
 
   const deletedNode = findNodeInManifest(screen.root, nodeId);
@@ -575,7 +628,7 @@ export function insertStudioManifestNodeAtPlacement(args: {
 }): StudioManifestNodeInsertResult | null {
   const { manifest, activeScreenId, placement, newNode, componentMeta } = args;
   if (!activeScreenId) return null;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return null;
   const insertion = insertNodeAtPlacement({
     root: screen.root,
@@ -609,7 +662,7 @@ export function moveStudioManifestNodeToPlacement(args: {
 }): StudioManifestNodeMoveResult | null {
   const { manifest, activeScreenId, nodeId, placement, componentMeta } = args;
   if (!activeScreenId) return null;
-  const screen = manifest.screens[activeScreenId];
+  const screen = resolveCanonicalStudioScreen(manifest, activeScreenId);
   if (!screen) return null;
 
   const movement = moveNodeToPlacement({
@@ -1038,6 +1091,9 @@ export function addStudioManifestScreen(args: {
   screenTemplate?: UiNode;
 }): StudioManifestScreenMutationResult {
   const { manifest, activeScreenId, createId = generateManifestStateId } = args;
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) {
+    return { manifest, activeScreenId };
+  }
   const trimmedName = args.name.trim();
   if (!trimmedName) return { manifest, activeScreenId };
 
@@ -1046,8 +1102,9 @@ export function addStudioManifestScreen(args: {
   const siblingRoutes = findRoutesAtParentPath(manifest.navigator.routes, parentPath);
   if (!siblingRoutes) return { manifest, activeScreenId };
 
+  const existingScreenIds = new Set(Object.values(manifest.screens).map((screen) => screen.id));
   let screenId = createId('Screen');
-  while (manifest.screens[screenId]) {
+  while (manifest.screens[screenId] || existingScreenIds.has(screenId)) {
     screenId = createId('Screen');
   }
 
@@ -1091,6 +1148,9 @@ export function deleteStudioManifestScreen(
   screenId: string,
   activeScreenId: string | null,
 ): StudioManifestScreenMutationResult {
+  if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) {
+    return { manifest, activeScreenId };
+  }
   if (Object.keys(manifest.screens).length <= 1) return { manifest, activeScreenId };
   const deletedScreen = manifest.screens[screenId];
   if (!deletedScreen) return { manifest, activeScreenId };

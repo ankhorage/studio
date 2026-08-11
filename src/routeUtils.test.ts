@@ -197,4 +197,21 @@ describe('routeUtils', () => {
     expect(resolveScreenIdForPathname(navigator, '/', screens)).toBe('screen-home');
     expect(resolveScreenIdForPathname(navigator, '/profile', screens)).toBeNull();
   });
+
+  test('rejects pathname identity resolution for a mismatched screen registry', () => {
+    const navigator = {
+      type: 'stack',
+      routes: [{ name: 'home', screenId: 'registry-home' }],
+    } satisfies NavigatorSpec;
+    const screens = {
+      'registry-home': {
+        id: 'stable-home',
+        name: 'Home',
+        root: { id: 'home-root', type: 'Screen' },
+      },
+    } satisfies AppManifest['screens'];
+
+    expect(resolveScreenIdForPathname(navigator, '/home', screens)).toBeNull();
+    expect(resolveScreenIdForPathname(navigator, '/', screens)).toBeNull();
+  });
 });

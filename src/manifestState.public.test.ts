@@ -15,6 +15,7 @@ import {
   generateManifestStateId,
   getPrimaryNavigatorPath,
   groupScreenRouteEntries,
+  hasCanonicalStudioScreenRegistryIdentity,
   insertRouteAtParentPath,
   isRouteGroupSegment,
   makeUniqueRouteNameForParent,
@@ -179,6 +180,7 @@ describe('manifestState public surface', () => {
     });
 
     expect(findNodeInManifest(rootNode, 'text-1')?.id).toBe('text-1');
+    expect(hasCanonicalStudioScreenRegistryIdentity(manifest.screens)).toBe(true);
     expect(withBindings.dataBindings).toBe(dataBindings);
     expect(withSources.dataSources).toBe(dataSources);
     expect(darkTheme.activeThemeMode).toBe('dark');

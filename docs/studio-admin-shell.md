@@ -37,7 +37,9 @@ every resolved route reference, including pathname/pattern, navigator parent, si
 primary-navigation visibility, and initial-route state. Missing or deleted IDs render an explicit
 state. Studio offers an app-screen action only for one concrete, parameter-free route reference;
 unrouted, dynamic, and multiply referenced screens are reported honestly rather than choosing a
-route. ADM 8 does not provide route-key or path renaming.
+route. The canonical Studio manifest invariant requires each screen registry key to equal its
+unique `ScreenSpec.id`; malformed mismatches or duplicate stable IDs are diagnosed and never used
+to choose an arbitrary detail screen. ADM 8 does not provide route-key or path renaming.
 
 The normal app bar exposes one Administration action while Studio is active. Inside `/ankh`, the
 admin shell provides a desktop sidebar and a compact drawer. `Back to app` returns to the latest

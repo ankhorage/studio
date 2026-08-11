@@ -10,6 +10,8 @@ const manifest = {
   },
   screens: {
     'home-screen': {
+      id: 'home-screen',
+      name: 'Home',
       root: {
         id: 'root',
         type: 'Screen',

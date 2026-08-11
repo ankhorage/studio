@@ -2,6 +2,7 @@ import type { AppManifest, NavigatorSpec } from '@ankhorage/contracts';
 
 import {
   collectScreenRouteEntries,
+  hasCanonicalStudioScreenRegistryIdentity,
   isRouteGroupSegment,
   resolveInitialScreenId,
 } from './manifestState';
@@ -44,15 +45,17 @@ export function resolveScreenIdForPathname(
   pathname: string,
   screens?: AppManifest['screens'],
 ): string | null {
+  if (screens && !hasCanonicalStudioScreenRegistryIdentity(screens)) return null;
   const pathnameSegments = normalizePathnameSegments(pathname);
   let bestMatch: ScreenRouteMatch | null = null;
 
   for (const entry of collectScreenRouteEntries(navigator.routes)) {
-    if (screens && !screens[entry.screenId]) continue;
+    const screen = screens?.[entry.screenId];
+    if (screens && !screen) continue;
     const patternSegments = normalizeRoutePatternSegments(entry.routePath);
     const score = scoreRoutePatternMatch(patternSegments, pathnameSegments);
     if (score === null || (bestMatch && score <= bestMatch.score)) continue;
-    bestMatch = { screenId: entry.screenId, score };
+    bestMatch = { screenId: screen?.id ?? entry.screenId, score };
   }
 
   if (bestMatch) return bestMatch.screenId;

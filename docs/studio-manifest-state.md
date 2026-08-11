@@ -41,7 +41,13 @@ in that subtree are removed in the same immutable manifest mutation.
 `deriveStudioScreenNavigationModel` is the single authoring projection over `screens` and the
 canonical nested navigator tree. It includes unrouted screens and reports missing screen
 references, ambiguous screen references, duplicate sibling route names, invalid initial routes,
-empty navigators, and malformed route targets without flattening the manifest.
+empty navigators, malformed route targets, mismatched screen registry keys, and duplicate stable
+screen IDs without flattening the manifest. Studio's canonical manifest invariant requires every
+`screens` registry key to equal that screen's unique `ScreenSpec.id`; the Studio manifest guard
+rejects inputs that violate it. The package-neutral projection still diagnoses malformed typed
+inputs deterministically, exposes only `ScreenSpec.id` as Studio identity, and resolves route
+references internally through their canonical registry keys. Screen-specific reads and mutations
+reject a malformed registry instead of selecting a screen by either identity accidentally.
 
 `resolveStudioScreenAppPath` returns a pathname only when one parameter-free, globally unambiguous
 canonical route reference resolves to a screen. It returns `null` for unrouted, multiply
@@ -66,6 +72,7 @@ Use the manifest-state subpath when consuming these helpers:
 import {
   addStudioManifestScreen,
   deriveStudioScreenNavigationModel,
+  hasCanonicalStudioScreenRegistryIdentity,
   moveStudioManifestRoute,
   resolveInitialScreenId,
   resolveStudioScreenAppPath,
