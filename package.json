@@ -209,7 +209,7 @@
     "@ankhorage/infra": "^3.0.0",
     "@ankhorage/orchestrator": "^0.3.0",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",
-    "@ankhorage/orchestrator-module-expo-localization": "^0.5.1",
+    "@ankhorage/orchestrator-module-expo-localization": "^0.5.2",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
     "@ankhorage/runtime": "^1.0.0",
     "@ankhorage/supabase-auth": "^1.1.2",

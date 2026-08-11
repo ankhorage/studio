@@ -12,7 +12,7 @@
         "@ankhorage/infra": "^3.0.0",
         "@ankhorage/orchestrator": "^0.3.0",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",
-        "@ankhorage/orchestrator-module-expo-localization": "^0.5.1",
+        "@ankhorage/orchestrator-module-expo-localization": "^0.5.2",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
         "@ankhorage/runtime": "^1.0.0",
         "@ankhorage/supabase-auth": "^1.1.2",
@@ -103,7 +103,7 @@
 
     "@ankhorage/orchestrator-module-expo-google-fonts": ["@ankhorage/orchestrator-module-expo-google-fonts@0.2.0", "", { "dependencies": { "@ankhorage/orchestrator": "^0.3.0" } }, "sha512-xOUP68vfngwbtoGHhjkZe6xmt1uiEHpPNwxLNKBVW0jhS+rZbUKdWJFnl04smZdhPeqj2/lm3kKAw2rc4cjfZw=="],
 
-    "@ankhorage/orchestrator-module-expo-localization": ["@ankhorage/orchestrator-module-expo-localization@0.5.1", "", { "dependencies": { "@ankhorage/orchestrator": "^0.3.1" }, "peerDependencies": { "@ankhorage/zora": "^2.9.3", "react": ">=18.2.0" }, "optionalPeers": ["@ankhorage/zora", "react"] }, "sha512-IH0o/F4wxN29Mtnme/GYcHBVAplnUoVSefNtqSSuL342n19NouO7djQ10az2zm5HgqrycgBUuj/9PobORYQ3UA=="],
+    "@ankhorage/orchestrator-module-expo-localization": ["@ankhorage/orchestrator-module-expo-localization@0.5.2", "", { "dependencies": { "@ankhorage/orchestrator": "^0.3.1" }, "peerDependencies": { "@ankhorage/zora": "^2.9.3", "react": ">=18.2.0" }, "optionalPeers": ["@ankhorage/zora", "react"] }, "sha512-PyXWXT6BYKo5OUVTgVls8T3PQZI8UZeyHxq2fX+lFNNKS7H3/XyLQno5JT3yoeDvbxBItKAyDYWRxs18xFX5eg=="],
 
     "@ankhorage/paradox": ["@ankhorage/paradox@0.1.20", "", { "dependencies": { "ts-morph": "^24.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-5GW4vomRp6zEvMvNlygPny0Vz/nzeytKOkCMgCK6cd5ILb7pMlncV6qqD8+JmSjjGgVXmIDH8jimEAmb9DKwIg=="],
 
