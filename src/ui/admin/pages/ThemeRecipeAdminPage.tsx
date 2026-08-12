@@ -5,10 +5,7 @@ import { View } from 'react-native';
 
 import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
 import { ThemeRecipeFieldEditor } from './ThemeRecipeFieldEditor';
-import {
-  type ThemeRecipeAuthoringKind,
-  updateThemeRecipeField,
-} from './themeRecipeAuthoringModel';
+import { type ThemeRecipeAuthoringKind, updateThemeRecipeField } from './themeRecipeAuthoringModel';
 import { resolveThemeRecipeTokenOptions } from './themeRecipeTokenOptions';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 

@@ -10,8 +10,14 @@ export function ThemeRecipeCatalog() {
   const router = useRouter();
   return (
     <View style={styles.catalog}>
-      <RecipeGroup kind="component" onOpen={(name) => router.push(createStudioThemeRecipeRoutePath('component', name))} />
-      <RecipeGroup kind="pattern" onOpen={(name) => router.push(createStudioThemeRecipeRoutePath('pattern', name))} />
+      <RecipeGroup
+        kind="component"
+        onOpen={(name) => router.push(createStudioThemeRecipeRoutePath('component', name))}
+      />
+      <RecipeGroup
+        kind="pattern"
+        onOpen={(name) => router.push(createStudioThemeRecipeRoutePath('pattern', name))}
+      />
     </View>
   );
 }
@@ -20,7 +26,9 @@ function RecipeGroup(props: {
   readonly kind: ZoraThemeRecipeKind;
   readonly onOpen: (name: string) => void;
 }) {
-  const entries = Object.entries(ZORA_THEME_RECIPE_META).filter(([, meta]) => meta.kind === props.kind);
+  const entries = Object.entries(ZORA_THEME_RECIPE_META).filter(
+    ([, meta]) => meta.kind === props.kind,
+  );
   return (
     <Card title={props.kind === 'component' ? 'Components' : 'Patterns'}>
       <View style={styles.list}>

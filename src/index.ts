@@ -155,6 +155,8 @@ export type StudioAdminRouteId =
   | 'theme-spacing'
   | 'theme-radii'
   | 'theme-shadows'
+  | 'theme-component'
+  | 'theme-pattern'
   | 'bindings'
   | 'properties';
 export type StudioAdminStaticRoutePath =
@@ -179,6 +181,8 @@ export type StudioAdminRoutePath =
   | StudioAdminStaticRoutePath
   | `/ankh/screens/${string}`
   | `/ankh/modules/${string}`
+  | `/ankh/theme/components/${string}`
+  | `/ankh/theme/patterns/${string}`
   | `/ankh/bindings/${string}`
   | `/ankh/properties/${string}`;
 

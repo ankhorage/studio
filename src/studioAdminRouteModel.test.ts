@@ -7,6 +7,7 @@ import {
   createStudioModuleRoutePath,
   createStudioPropertiesRoutePath,
   createStudioScreenRoutePath,
+  createStudioThemeRecipeRoutePath,
   isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   openStudioAdminRoute,
@@ -18,6 +19,7 @@ import {
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
   resolveStudioScreenId,
+  resolveStudioThemeRecipeName,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from './studioAdminRouteModel';
 
@@ -43,6 +45,8 @@ describe('studioAdminRouteModel', () => {
       'theme-spacing',
       'theme-radii',
       'theme-shadows',
+      'theme-component',
+      'theme-pattern',
       'bindings',
       'properties',
     ]);
@@ -69,6 +73,22 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/theme/spacing')).toBe('theme-spacing');
     expect(resolveStudioAdminRouteId('/ankh/theme/radii')).toBe('theme-radii');
     expect(resolveStudioAdminRouteId('/ankh/theme/shadows')).toBe('theme-shadows');
+    const componentRecipe = createStudioThemeRecipeRoutePath('component', 'Button / primary');
+    const patternRecipe = createStudioThemeRecipeRoutePath('pattern', 'Panel');
+    expect(componentRecipe).toBe('/ankh/theme/components/Button%20%2F%20primary');
+    expect(patternRecipe).toBe('/ankh/theme/patterns/Panel');
+    expect(resolveStudioThemeRecipeName(componentRecipe)).toBe('Button / primary');
+    expect(resolveStudioThemeRecipeName(patternRecipe)).toBe('Panel');
+    expect(resolveStudioAdminRouteId(componentRecipe)).toBe('theme-component');
+    expect(resolveStudioAdminRouteId(patternRecipe)).toBe('theme-pattern');
+    expect(resolveStudioAdminRoutePath(componentRecipe)).toBe(componentRecipe);
+    expect(resolveStudioAdminRoutePath(patternRecipe)).toBe(patternRecipe);
+    expect(
+      createStudioAdminRoutePath({
+        routeId: 'theme-component',
+        themeRecipeName: 'Button / primary',
+      }),
+    ).toBe(componentRecipe);
     expect(
       isStudioAdminRouteActive({ currentRouteId: 'theme-spacing', candidateRouteId: 'theme' }),
     ).toBe(true);

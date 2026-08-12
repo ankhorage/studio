@@ -11,6 +11,8 @@ export interface StudioAdminRouteDefinition {
     | StudioAdminStaticRoutePath
     | '/ankh/screens/:screenId'
     | '/ankh/modules/:moduleId'
+    | '/ankh/theme/components/:recipeName'
+    | '/ankh/theme/patterns/:recipeName'
     | '/ankh/bindings/:nodeId'
     | '/ankh/properties/:nodeId';
   readonly label: string;
@@ -19,6 +21,7 @@ export interface StudioAdminRouteDefinition {
   readonly parentId?: StudioAdminRouteId;
   readonly description?: string;
   readonly contextual?: boolean;
+  readonly showInNavigation?: boolean;
 }
 
 export interface StudioAdminRouteRenderState {
@@ -207,6 +210,28 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     description: 'Global shadow tokens.',
   },
   {
+    id: 'theme-component',
+    path: '/ankh/theme/components/:recipeName',
+    label: 'Component recipe',
+    icon: 'cube-outline',
+    order: 46,
+    parentId: 'theme',
+    contextual: true,
+    showInNavigation: false,
+    description: 'Metadata-driven ZORA component Theme recipe.',
+  },
+  {
+    id: 'theme-pattern',
+    path: '/ankh/theme/patterns/:recipeName',
+    label: 'Pattern recipe',
+    icon: 'grid-outline',
+    order: 47,
+    parentId: 'theme',
+    contextual: true,
+    showInNavigation: false,
+    description: 'Metadata-driven ZORA pattern Theme recipe.',
+  },
+  {
     id: 'bindings',
     path: '/ankh/bindings/:nodeId',
     label: 'Bindings',
@@ -230,6 +255,8 @@ const BINDINGS_ROUTE_PREFIX = '/ankh/bindings/';
 const PROPERTIES_ROUTE_PREFIX = '/ankh/properties/';
 const SCREEN_ROUTE_PREFIX = '/ankh/screens/';
 const MODULE_ROUTE_PREFIX = '/ankh/modules/';
+const THEME_COMPONENT_ROUTE_PREFIX = '/ankh/theme/components/';
+const THEME_PATTERN_ROUTE_PREFIX = '/ankh/theme/patterns/';
 
 export function getStudioAdminRouteDefinition(
   routeId: StudioAdminRouteId,
@@ -251,6 +278,14 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
     return resolveStudioScreenId(pathname) ? 'screen-detail' : null;
   }
 
+  if (pathname.startsWith(THEME_COMPONENT_ROUTE_PREFIX)) {
+    return resolveStudioThemeRecipeName(pathname) ? 'theme-component' : null;
+  }
+
+  if (pathname.startsWith(THEME_PATTERN_ROUTE_PREFIX)) {
+    return resolveStudioThemeRecipeName(pathname) ? 'theme-pattern' : null;
+  }
+
   if (pathname.startsWith(BINDINGS_ROUTE_PREFIX)) {
     return resolveStudioBindingsNodeId(pathname) ? 'bindings' : null;
   }
@@ -265,6 +300,8 @@ export function resolveStudioAdminRouteId(pathname: string): StudioAdminRouteId 
       candidate.path !== '/ankh/properties/:nodeId' &&
       candidate.path !== '/ankh/screens/:screenId' &&
       candidate.path !== '/ankh/modules/:moduleId' &&
+      candidate.path !== '/ankh/theme/components/:recipeName' &&
+      candidate.path !== '/ankh/theme/patterns/:recipeName' &&
       candidate.path === pathname,
   );
 
@@ -281,6 +318,14 @@ export function resolveStudioAdminRoutePath(pathname: string): StudioAdminRouteP
   if (routeId === 'module-detail') {
     const moduleId = resolveStudioModuleId(pathname);
     return moduleId ? createStudioModuleRoutePath(moduleId) : null;
+  }
+  if (routeId === 'theme-component' || routeId === 'theme-pattern') {
+    const recipeName = resolveStudioThemeRecipeName(pathname);
+    if (!recipeName) return null;
+    return createStudioThemeRecipeRoutePath(
+      routeId === 'theme-component' ? 'component' : 'pattern',
+      recipeName,
+    );
   }
   if (routeId === 'bindings') {
     const nodeId = resolveStudioBindingsNodeId(pathname);
@@ -314,6 +359,26 @@ export function createStudioModuleRoutePath(moduleId: string): `/ankh/modules/${
   return `/ankh/modules/${encodeURIComponent(moduleId)}`;
 }
 
+export function resolveStudioThemeRecipeName(pathname: string): string | null {
+  if (pathname.startsWith(THEME_COMPONENT_ROUTE_PREFIX)) {
+    return resolveStudioDetailId(pathname, THEME_COMPONENT_ROUTE_PREFIX);
+  }
+  if (pathname.startsWith(THEME_PATTERN_ROUTE_PREFIX)) {
+    return resolveStudioDetailId(pathname, THEME_PATTERN_ROUTE_PREFIX);
+  }
+  return null;
+}
+
+export function createStudioThemeRecipeRoutePath(
+  kind: 'component' | 'pattern',
+  recipeName: string,
+): `/ankh/theme/components/${string}` | `/ankh/theme/patterns/${string}` {
+  const encoded = encodeURIComponent(recipeName);
+  return kind === 'component'
+    ? `/ankh/theme/components/${encoded}`
+    : `/ankh/theme/patterns/${encoded}`;
+}
+
 export function createStudioBindingsRoutePath(nodeId: string): `/ankh/bindings/${string}` {
   return `/ankh/bindings/${encodeURIComponent(nodeId)}`;
 }
@@ -331,9 +396,18 @@ export function createStudioAdminRoutePath(args: {
   selectedNodeId?: string | null;
   screenId?: string | null;
   moduleId?: string | null;
+  themeRecipeName?: string | null;
 }): StudioAdminRoutePath | null {
   if (args.routeId === 'screen-detail') {
     return args.screenId ? createStudioScreenRoutePath(args.screenId) : null;
+  }
+  if (args.routeId === 'theme-component' || args.routeId === 'theme-pattern') {
+    return args.themeRecipeName
+      ? createStudioThemeRecipeRoutePath(
+          args.routeId === 'theme-component' ? 'component' : 'pattern',
+          args.themeRecipeName,
+        )
+      : null;
   }
   if (args.routeId === 'bindings') {
     return args.selectedNodeId ? createStudioBindingsRoutePath(args.selectedNodeId) : null;
@@ -412,6 +486,7 @@ export function openStudioAdminRoute(args: {
   selectedNodeId?: string | null;
   screenId?: string | null;
   moduleId?: string | null;
+  themeRecipeName?: string | null;
   setActivePanelId: (panelId: StudioPanelId | null) => void;
   pushRoute: (routePath: StudioAdminRoutePath) => void;
 }): boolean {
@@ -420,6 +495,7 @@ export function openStudioAdminRoute(args: {
     selectedNodeId: args.selectedNodeId ?? null,
     screenId: args.screenId ?? null,
     moduleId: args.moduleId ?? null,
+    themeRecipeName: args.themeRecipeName ?? null,
   });
   if (!routePath) return false;
 

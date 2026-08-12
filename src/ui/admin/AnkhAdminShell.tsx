@@ -126,42 +126,44 @@ function AdminNavigation(props: {
       <Text color="neutral" emphasis="muted" variant="caption">
         Administration
       </Text>
-      {STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => {
-        const available = isStudioAdminRouteAvailable(route.id, {
-          selectedNodeId: props.selectedNodeId,
-          screenId: props.screenId,
-          moduleId: props.moduleId,
-        });
-        const active = isStudioAdminRouteActive({
-          currentRouteId: props.activeRouteId,
-          candidateRouteId: route.id,
-        });
-        const exact = props.activeRouteId === route.id;
+      {STUDIO_ADMIN_ROUTE_REGISTRY.filter((route) => route.showInNavigation !== false).map(
+        (route) => {
+          const available = isStudioAdminRouteAvailable(route.id, {
+            selectedNodeId: props.selectedNodeId,
+            screenId: props.screenId,
+            moduleId: props.moduleId,
+          });
+          const active = isStudioAdminRouteActive({
+            currentRouteId: props.activeRouteId,
+            candidateRouteId: route.id,
+          });
+          const exact = props.activeRouteId === route.id;
 
-        return (
-          <Pressable
-            key={route.id}
-            accessibilityLabel={`${route.label} administration`}
-            accessibilityRole="button"
-            disabled={!available}
-            onPress={() => props.onRoutePress(route.id)}
-            style={[
-              styles.navigationItem,
-              route.parentId ? styles.navigationChildItem : null,
-              {
-                backgroundColor: active ? theme.colors.surface : 'transparent',
-                borderColor: exact ? theme.colors.primary : theme.colors.border,
-                opacity: available ? 1 : 0.45,
-              },
-            ]}
-            testID={`ankh-admin-nav-${route.id}`}
-          >
-            <Text color={active ? 'primary' : 'neutral'} weight={active ? 'semiBold' : 'regular'}>
-              {route.label}
-            </Text>
-          </Pressable>
-        );
-      })}
+          return (
+            <Pressable
+              key={route.id}
+              accessibilityLabel={`${route.label} administration`}
+              accessibilityRole="button"
+              disabled={!available}
+              onPress={() => props.onRoutePress(route.id)}
+              style={[
+                styles.navigationItem,
+                route.parentId ? styles.navigationChildItem : null,
+                {
+                  backgroundColor: active ? theme.colors.surface : 'transparent',
+                  borderColor: exact ? theme.colors.primary : theme.colors.border,
+                  opacity: available ? 1 : 0.45,
+                },
+              ]}
+              testID={`ankh-admin-nav-${route.id}`}
+            >
+              <Text color={active ? 'primary' : 'neutral'} weight={active ? 'semiBold' : 'regular'}>
+                {route.label}
+              </Text>
+            </Pressable>
+          );
+        },
+      )}
     </ScrollView>
   );
 }
