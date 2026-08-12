@@ -22,7 +22,11 @@ const imageAsset: MediaAsset = {
 const baseManifest: AppManifest = {
   version: 1,
   app: { id: 'media-test', name: 'Media Test' },
-  navigator: { type: 'stack', initialRoute: 'Home', routes: [{ name: 'Home', screenId: 'home' }] },
+  navigator: {
+    type: 'stack',
+    initialRouteName: 'Home',
+    routes: [{ name: 'Home', screenId: 'home' }],
+  },
   screens: {
     home: {
       id: 'home',
@@ -38,6 +42,17 @@ const baseManifest: AppManifest = {
           },
         ],
       },
+    },
+  },
+};
+
+const unusedManifest: AppManifest = {
+  ...baseManifest,
+  screens: {
+    home: {
+      id: 'home',
+      name: 'Home',
+      root: { id: 'root', type: 'Screen' },
     },
   },
 };
@@ -62,7 +77,12 @@ describe('Studio media authoring model', () => {
 
   test('accepts stable HTTP URLs and rejects transient or credential-bearing URLs', () => {
     expect(
-      createStudioUrlMediaAsset({ id: 'hero', name: 'Hero', kind: 'image', url: 'https://example.com/a.png' }),
+      createStudioUrlMediaAsset({
+        id: 'hero',
+        name: 'Hero',
+        kind: 'image',
+        url: 'https://example.com/a.png',
+      }),
     ).toMatchObject({ ok: true, asset: { source: { kind: 'url' } } });
     for (const url of [
       'blob:https://example.com/preview',
@@ -91,10 +111,7 @@ describe('Studio media authoring model', () => {
   });
 
   test('removes unused media and drops the empty media registry', () => {
-    const manifest = upsertStudioMediaAsset(
-      { ...baseManifest, screens: { home: { ...baseManifest.screens.home, root: { id: 'root', type: 'Screen' } } } },
-      imageAsset,
-    );
+    const manifest = upsertStudioMediaAsset(unusedManifest, imageAsset);
     const result = removeStudioMediaAsset(manifest, 'hero');
     expect(result.ok).toBe(true);
     if (!result.ok) return;
