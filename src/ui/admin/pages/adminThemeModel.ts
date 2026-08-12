@@ -38,8 +38,7 @@ export function resolveZoraThemeSourceModeConfig(args: {
 
 export function resolveZoraSurfaceThemeConfig(theme: ThemeConfig): ThemeConfig {
   return {
-    id: theme.id,
-    name: theme.name,
+    ...theme,
     light: { ...theme.light },
     dark: { ...theme.dark },
   };

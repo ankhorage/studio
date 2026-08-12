@@ -133,7 +133,14 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/ankh/secrets.tsx');
     expect(paths).toContain('src/app/ankh/bindings/[nodeId].tsx');
     expect(paths).toContain('src/app/ankh/properties/[nodeId].tsx');
-    expect(paths).toContain('src/app/ankh/theme.tsx');
+    expect(paths).toContain('src/app/ankh/theme/index.tsx');
+    expect(paths).toContain('src/app/ankh/theme/colors.tsx');
+    expect(paths).toContain('src/app/ankh/theme/typography.tsx');
+    expect(paths).toContain('src/app/ankh/theme/spacing.tsx');
+    expect(paths).toContain('src/app/ankh/theme/radii.tsx');
+    expect(paths).toContain('src/app/ankh/theme/shadows.tsx');
+    expect(paths).toContain('src/app/ankh/theme/components/[recipeName].tsx');
+    expect(paths).toContain('src/app/ankh/theme/patterns/[recipeName].tsx');
 
     const adminSources = files
       .filter((file) => file.path.startsWith('src/app/ankh/') && file.path.endsWith('.tsx'))

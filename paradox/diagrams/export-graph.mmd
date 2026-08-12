@@ -308,6 +308,25 @@ graph LR
   module_src_ui_admin_pages_SecretsAdminPage_tsx["src/ui/admin/pages/SecretsAdminPage.tsx"]
   module_src_ui_admin_pages_ThemeAdminPage_test_ts["src/ui/admin/pages/ThemeAdminPage.test.ts"]
   module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx["src/ui/admin/pages/ThemeColorsAdminPage.tsx"]
+  module_src_ui_admin_pages_ThemeModeEditorSelector_tsx["src/ui/admin/pages/ThemeModeEditorSelector.tsx"]
+  module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx["src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"]
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_test_ts["src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"]
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx["src/ui/admin/pages/ThemeRecipeAdminPage.tsx"]
+  module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts["src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"]
+  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts["src/ui/admin/pages/themeRecipeAuthoringModel.ts"]
+  module_src_ui_admin_pages_ThemeRecipeCatalog_tsx["src/ui/admin/pages/ThemeRecipeCatalog.tsx"]
+  module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx["src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"]
+  module_src_ui_admin_pages_themeRecipeTokenOptions_test_ts["src/ui/admin/pages/themeRecipeTokenOptions.test.ts"]
+  module_src_ui_admin_pages_themeRecipeTokenOptions_ts["src/ui/admin/pages/themeRecipeTokenOptions.ts"]
+  module_src_ui_admin_pages_ThemeTokenAction_tsx["src/ui/admin/pages/ThemeTokenAction.tsx"]
+  module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts["src/ui/admin/pages/themeTokenAuthoringModel.test.ts"]
+  module_src_ui_admin_pages_themeTokenAuthoringModel_ts["src/ui/admin/pages/themeTokenAuthoringModel.ts"]
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx["src/ui/admin/pages/ThemeTypographyAdminPage.tsx"]
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx["src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"]
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx["src/ui/admin/pages/ThemeTypographySizeEditor.tsx"]
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx["src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"]
+  module_src_ui_admin_pages_useActiveThemeAdmin_ts["src/ui/admin/pages/useActiveThemeAdmin.ts"]
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
   module_src_ui_canvas_canvasDndInteraction_ts["src/ui/canvas/canvasDndInteraction.ts"]
@@ -580,7 +599,6 @@ graph LR
   export_StudioContextValue -.-> export_NodePlacement
   export_StudioContextValue -.-> export_StudioAdminRouteId
   export_StudioContextValue -.-> export_StudioComponentMetaRegistry
-  export_StudioContextValue -.-> export_StudioMode
   export_StudioContextValue -.-> export_StudioNodeId
   export_StudioContextValue -.-> export_StudioPanelId
   export_StudioContextValue -.-> export_StudioSaveStatus
@@ -602,8 +620,6 @@ graph LR
   module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
   export_StudioManifest["StudioManifest"]
   module_src_index_ts --> export_StudioManifest
-  export_StudioMode["StudioMode"]
-  module_src_index_ts --> export_StudioMode
   export_StudioModuleAdminContribution["StudioModuleAdminContribution"]
   module_src_moduleAdminContracts_ts --> export_StudioModuleAdminContribution
   export_StudioModuleAdminContribution -.-> export_StudioModuleAdminField
@@ -642,7 +658,6 @@ graph LR
   module_src_index_ts --> export_StudioSessionId
   export_StudioSessionState["StudioSessionState"]
   module_src_index_ts --> export_StudioSessionState
-  export_StudioSessionState -.-> export_StudioMode
   export_StudioSessionState -.-> export_StudioSaveStatus
   export_TemplateCatalog["TemplateCatalog"]
   module_src_templateCatalogContracts_ts --> export_TemplateCatalog

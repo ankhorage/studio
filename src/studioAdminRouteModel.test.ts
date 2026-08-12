@@ -7,6 +7,7 @@ import {
   createStudioModuleRoutePath,
   createStudioPropertiesRoutePath,
   createStudioScreenRoutePath,
+  createStudioThemeRecipeRoutePath,
   isStudioAdminRouteActive,
   isStudioAdminRouteAvailable,
   openStudioAdminRoute,
@@ -18,6 +19,7 @@ import {
   resolveStudioNavigableLocation,
   resolveStudioPropertiesNodeId,
   resolveStudioScreenId,
+  resolveStudioThemeRecipeName,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from './studioAdminRouteModel';
 
@@ -38,6 +40,13 @@ describe('studioAdminRouteModel', () => {
       'auth-profile',
       'secrets',
       'theme',
+      'theme-colors',
+      'theme-typography',
+      'theme-spacing',
+      'theme-radii',
+      'theme-shadows',
+      'theme-component',
+      'theme-pattern',
       'bindings',
       'properties',
     ]);
@@ -59,6 +68,30 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/auth/profile')).toBe('auth-profile');
     expect(resolveStudioAdminRouteId('/ankh/secrets')).toBe('secrets');
     expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');
+    expect(resolveStudioAdminRouteId('/ankh/theme/colors')).toBe('theme-colors');
+    expect(resolveStudioAdminRouteId('/ankh/theme/typography')).toBe('theme-typography');
+    expect(resolveStudioAdminRouteId('/ankh/theme/spacing')).toBe('theme-spacing');
+    expect(resolveStudioAdminRouteId('/ankh/theme/radii')).toBe('theme-radii');
+    expect(resolveStudioAdminRouteId('/ankh/theme/shadows')).toBe('theme-shadows');
+    const componentRecipe = createStudioThemeRecipeRoutePath('component', 'Button / primary');
+    const patternRecipe = createStudioThemeRecipeRoutePath('pattern', 'Panel');
+    expect(componentRecipe).toBe('/ankh/theme/components/Button%20%2F%20primary');
+    expect(patternRecipe).toBe('/ankh/theme/patterns/Panel');
+    expect(resolveStudioThemeRecipeName(componentRecipe)).toBe('Button / primary');
+    expect(resolveStudioThemeRecipeName(patternRecipe)).toBe('Panel');
+    expect(resolveStudioAdminRouteId(componentRecipe)).toBe('theme-component');
+    expect(resolveStudioAdminRouteId(patternRecipe)).toBe('theme-pattern');
+    expect(resolveStudioAdminRoutePath(componentRecipe)).toBe(componentRecipe);
+    expect(resolveStudioAdminRoutePath(patternRecipe)).toBe(patternRecipe);
+    expect(
+      createStudioAdminRoutePath({
+        routeId: 'theme-component',
+        themeRecipeName: 'Button / primary',
+      }),
+    ).toBe(componentRecipe);
+    expect(
+      isStudioAdminRouteActive({ currentRouteId: 'theme-spacing', candidateRouteId: 'theme' }),
+    ).toBe(true);
     expect(resolveStudioAdminRouteId('/ankh/bindings/node-1')).toBe('bindings');
     expect(resolveStudioAdminRouteId('/ankh/properties/node-1')).toBe('properties');
     expect(resolveStudioAdminRoutePath('/ankh/bindings/node-1')).toBe('/ankh/bindings/node-1');

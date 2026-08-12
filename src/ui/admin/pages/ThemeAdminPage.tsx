@@ -1,77 +1,42 @@
-import type { ThemeModeConfig } from '@ankhorage/contracts';
-import { Card, Text, useZoraTheme } from '@ankhorage/zora';
+import { Card, Text } from '@ankhorage/zora';
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
 
-import { useStudio } from '../../../core/StudioContext';
-import type { ThemeUpdates } from '../../../index';
-import { AdminHeader, AdminScroll, Field, Input } from '../adminPagePrimitives';
-import { formatHarmonyLabel, SUPPORTED_COLOR_HARMONIES } from './adminThemeHarmony';
-import { createThemeModeUpdates, resolveActiveThemeModeSelection } from './adminThemeModel';
+import { AdminHeader, AdminScroll, Field, Input, KeyValue } from '../adminPagePrimitives';
+import { ThemeModeEditorSelector } from './ThemeModeEditorSelector';
+import { ThemeRecipeCatalog } from './ThemeRecipeCatalog';
+import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 export function ThemeAdminPage() {
-  const studio = useStudio();
-  const { mode: surfaceMode } = useZoraTheme();
-  const selection = studio.manifest
-    ? resolveActiveThemeModeSelection({
-        themes: studio.manifest.themes,
-        activeThemeId: studio.manifest.activeThemeId,
-        surfaceMode,
-      })
-    : null;
-  const updateActiveTheme = (updates: ThemeUpdates) => {
-    if (!selection) return;
-    studio.updateTheme(selection.theme.id, updates);
-  };
-  const updateActiveMode = (updates: Partial<ThemeModeConfig>) => {
-    if (!selection) return;
-    updateActiveTheme(createThemeModeUpdates(selection.mode, updates));
-  };
+  const { selection, updateTheme } = useActiveThemeAdmin();
 
   return (
     <AdminScroll>
       <AdminHeader
         title="Theme"
-        description="Edit the canonical active theme for the currently active theme mode."
+        description="Author the canonical project theme used by the real app and Studio preview."
       />
       {selection ? (
-        <Card title={selection.theme.name}>
-          <Field label="Theme name">
-            <Input
-              value={selection.theme.name}
-              onChangeText={(name) => updateActiveTheme({ name })}
+        <>
+          <ThemeModeEditorSelector />
+          <Card title={selection.theme.name}>
+            <Field label="Theme name">
+              <Input value={selection.theme.name} onChangeText={(name) => updateTheme({ name })} />
+            </Field>
+            <KeyValue label="Editing runtime mode" value={selection.mode} />
+            <KeyValue
+              label="Global token families"
+              value="Typography · Spacing · Radii · Shadows"
             />
-          </Field>
-          <Field label="Primary color">
-            <Input
-              value={selection.modeConfig.primaryColor}
-              autoCapitalize="none"
-              onChangeText={(primaryColor) => updateActiveMode({ primaryColor })}
-            />
-          </Field>
-          <Field label="Harmony">
-            <View style={styles.choiceRow}>
-              {SUPPORTED_COLOR_HARMONIES.map((harmony) => (
-                <Pressable
-                  key={harmony}
-                  onPress={() => updateActiveMode({ harmony })}
-                  style={[
-                    styles.choice,
-                    selection.modeConfig.harmony === harmony ? styles.choiceSelected : null,
-                  ]}
-                >
-                  <Text
-                    color={selection.modeConfig.harmony === harmony ? 'primary' : 'neutral'}
-                    variant="bodySmall"
-                    weight="semiBold"
-                  >
-                    {formatHarmonyLabel(harmony)}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-          </Field>
-        </Card>
+            <KeyValue label="Mode-specific source" value="Colors · Harmony" />
+          </Card>
+          <ThemeRecipeCatalog />
+          <Card title="Inheritance">
+            <Text color="neutral" emphasis="muted">
+              Omitted values inherit Surface and ZORA owner defaults. Theme changes do not rewrite
+              component instances.
+            </Text>
+          </Card>
+        </>
       ) : (
         <Card title="Theme unavailable">
           <Text color="neutral" emphasis="muted">
@@ -82,21 +47,3 @@ export function ThemeAdminPage() {
     </AdminScroll>
   );
 }
-
-const styles = StyleSheet.create({
-  choiceRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  choice: {
-    borderWidth: 1,
-    borderRadius: 999,
-    borderColor: 'transparent',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  choiceSelected: {
-    borderColor: '#4f46e5',
-  },
-});

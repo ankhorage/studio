@@ -93,6 +93,7 @@ test('initializes the Studio provider with the runtime manifest', () => {
     '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
   );
   expect(generated).toContain('function GeneratedZoraThemeConfigSync');
+  expect(generated).toContain('...theme,');
   expect(generated).toContain('const setThemeConfigRef = useRef(setThemeConfig);');
   expect(generated).toContain(
     'const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig)',
