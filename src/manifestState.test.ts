@@ -694,3 +694,28 @@ describe('manifestState', () => {
     expect(oauth.infra.auth?.oauth?.providers).toHaveLength(1);
   });
 });
+
+test('updates canonical global tokens and recipe overrides without dropping mode source', () => {
+  const manifest = createManifest();
+  const updated = updateStudioManifestTheme(manifest, 'theme-1', {
+    tokens: {
+      spacing: { compact: 6 },
+      radii: { card: 12 },
+      shadows: { raised: 8 },
+    },
+    recipes: {
+      components: { Button: { size: 'l' } },
+      patterns: { Panel: { padding: 'compact' } },
+    },
+  });
+
+  expect(updated.themes[0]).toMatchObject({
+    light: manifest.themes[0]?.light,
+    dark: manifest.themes[0]?.dark,
+    tokens: { spacing: { compact: 6 }, radii: { card: 12 }, shadows: { raised: 8 } },
+    recipes: {
+      components: { Button: { size: 'l' } },
+      patterns: { Panel: { padding: 'compact' } },
+    },
+  });
+});

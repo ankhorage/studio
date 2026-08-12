@@ -736,11 +736,12 @@ export function updateStudioManifestTheme(
     themes: manifest.themes.map((theme) => {
       if (theme.id !== themeId) return theme;
 
+      const { light, dark, ...sharedUpdates } = updates;
       return {
         ...theme,
-        ...(updates.name ? { name: updates.name } : {}),
-        ...(updates.light ? { light: { ...theme.light, ...updates.light } } : {}),
-        ...(updates.dark ? { dark: { ...theme.dark, ...updates.dark } } : {}),
+        ...sharedUpdates,
+        ...(light ? { light: { ...theme.light, ...light } } : {}),
+        ...(dark ? { dark: { ...theme.dark, ...dark } } : {}),
       };
     }),
   };

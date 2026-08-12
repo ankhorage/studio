@@ -502,8 +502,7 @@ function resolveZoraProviderTheme(
 
 function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
   return {
-    id: theme.id,
-    name: theme.name,
+    ...theme,
     light: { ...theme.light },
     dark: { ...theme.dark },
   };
