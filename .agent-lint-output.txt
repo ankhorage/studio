@@ -1,0 +1,9 @@
+$ ankhorage-eslint . --max-warnings=0
+
+/home/runner/work/studio/studio/src/host/orchestrator/projectStoreSummary.test.ts
+  84:9   error  Unsafe assignment of an `any` value               @typescript-eslint/no-unsafe-assignment
+  86:20  error  Unsafe member access .metadata on an `any` value  @typescript-eslint/no-unsafe-member-access
+
+✖ 2 problems (2 errors, 0 warnings)
+
+error: script "lint" exited with code 1
