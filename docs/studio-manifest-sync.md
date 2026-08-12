@@ -1,6 +1,6 @@
 # Studio manifest sync helpers
 
-`@ankhorage/manifestSync` owns package-neutral manifest signature helpers used by Studio hosts to decide whether draft manifests or generated runtime output need persistence.
+`@ankhorage/studio/manifestSync` owns package-neutral manifest signature helpers used by Studio hosts to decide whether draft manifests or generated runtime output need persistence.
 
 ## Import
 
@@ -8,7 +8,7 @@
 import {
   createStudioManifestSignature,
   createStudioRuntimeSyncSignature,
-} from '@ankhorage/manifestSync';
+} from '@ankhorage/studio/manifestSync';
 ```
 
 ## Owned here

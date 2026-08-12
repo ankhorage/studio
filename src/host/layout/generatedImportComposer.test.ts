@@ -21,7 +21,7 @@ test('merges multiple declarations supplied in one generated import fragment', (
   createComponentRegistry,
   RuntimeRendererConfigProvider,
 } from '@ankhorage/runtime';
-import { useRuntimeAction } from '@ankhorage/runtime/sync';`,
+import { useRuntimeAction } from '@ankhorage/studio/runtime';`,
     "import { createRuntimeDataSourceOperationExecutor } from '@ankhorage/runtime';",
   ]);
 
@@ -29,7 +29,7 @@ import { useRuntimeAction } from '@ankhorage/runtime/sync';`,
   expect(generated).toContain('createComponentRegistry');
   expect(generated).toContain('createRuntimeDataSourceOperationExecutor');
   expect(generated).toContain('RuntimeRendererConfigProvider');
-  expect(generated).toContain("import { useRuntimeAction } from '@ankhorage/runtime/sync';");
+  expect(generated).toContain("import { useRuntimeAction } from '@ankhorage/studio/runtime';");
 });
 
 test('rejects conflicting generated local bindings', () => {

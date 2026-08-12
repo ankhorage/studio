@@ -34,7 +34,7 @@ chrome in this PR. That follow-up is tracked in
 [issue #177](https://github.com/ankhorage/studio/issues/177).
 
 Unsupported native extension components retain the established authored-root contract. Attach
-`useStudioUnsupportedNodeMeasurement()` from `@ankhorage/runtime/sync` to the extension's
+`useStudioUnsupportedNodeMeasurement()` from `@ankhorage/studio/runtime` to the extension's
 existing measurable root:
 
 ```tsx

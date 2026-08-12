@@ -27,7 +27,6 @@ import { sanitizeExternalApiOperationTestResult } from './sanitizeExternalApiOpe
 
 interface ExternalApiProjectStore {
   getProjectManifest(projectId: string): Promise<AppManifest>;
-  getProjectManifest(projectId: string): Promise<AppManifest>;
   persistProjectManifest(args: { projectId: string; manifest: AppManifest }): Promise<unknown>;
 }
 

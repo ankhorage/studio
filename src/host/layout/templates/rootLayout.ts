@@ -53,7 +53,7 @@ export function getRootLayoutImportRequirements(
     ...(includeStudio
       ? [
           {
-            source: '@ankhorage/runtime/sync',
+            source: '@ankhorage/studio/runtime',
             namedImports: [
               { imported: 'createStudioActionSuppressionConfig' },
               { imported: 'createStudioInteractionPolicyResolver' },

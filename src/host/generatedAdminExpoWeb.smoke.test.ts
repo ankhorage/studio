@@ -1668,7 +1668,7 @@ async function writeSmokeRuntimeExtensions(projectRoot: string): Promise<void> {
   await writeFile(
     path.join(generatedRoot, 'SmokeStudioComponents.tsx'),
     `import { useStudio } from '@ankhorage/studio';
-import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/runtime/sync';
+import { useStudioUnsupportedNodeMeasurement } from '@ankhorage/studio/runtime';
 import { Box, Text } from '@ankhorage/zora';
 import { usePathname, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';

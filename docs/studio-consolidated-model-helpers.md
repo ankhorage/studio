@@ -4,7 +4,7 @@ This release groups several remaining package-neutral Studio helper models into 
 
 ## Runtime diagnostics
 
-`@ankhorage/runtime/syncDiagnosticsModel` owns formatting, equality checks, and notice-color resolution for runtime diagnostics.
+`@ankhorage/studio/runtimeDiagnosticsModel` owns formatting, equality checks, and notice-color resolution for runtime diagnostics.
 
 ## Admin route model
 

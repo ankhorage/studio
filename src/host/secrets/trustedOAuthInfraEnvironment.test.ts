@@ -176,7 +176,6 @@ test('does not serialize trusted OAuth secrets into project manifest', async () 
 function createProjectManager(manifest: AppManifest) {
   return {
     getProjectManifest: () => Promise.resolve(manifest),
-    getProjectManifest: () => Promise.resolve(manifest),
   };
 }
 
