@@ -31,7 +31,7 @@ class TrustedOAuthSecretStoreUnavailableError extends Error {
 
 export async function resolveTrustedOAuthInfraEnvironmentForUp(args: {
   readonly projectId: string;
-  readonly projectManager: Pick<ProjectManager, 'getStudioManifest' | 'getProjectManifest'>;
+  readonly projectManager: Pick<ProjectManager, 'getProjectManifest'>;
   readonly workspaceRoot: string;
   readonly secretResolver?: TrustedOAuthSecretResolver;
 }): Promise<TrustedOAuthInfraEnvironmentForUpResult> {
@@ -54,7 +54,7 @@ export async function resolveTrustedOAuthInfraEnvironmentForUp(args: {
 
 export async function resolveTrustedOAuthInfraEnvironment(args: {
   readonly projectId: string;
-  readonly projectManager: Pick<ProjectManager, 'getStudioManifest' | 'getProjectManifest'>;
+  readonly projectManager: Pick<ProjectManager, 'getProjectManifest'>;
   readonly workspaceRoot: string;
   readonly secretResolver?: TrustedOAuthSecretResolver;
 }): Promise<Record<string, string | undefined>> {
@@ -116,10 +116,10 @@ export async function resolveTrustedOAuthInfraEnvironment(args: {
 
 async function readCurrentManifest(
   projectId: string,
-  projectManager: Pick<ProjectManager, 'getStudioManifest' | 'getProjectManifest'>,
+  projectManager: Pick<ProjectManager, 'getProjectManifest'>,
 ): Promise<AppManifest> {
   try {
-    return await projectManager.getStudioManifest(projectId);
+    return await projectManager.getProjectManifest(projectId);
   } catch {
     return projectManager.getProjectManifest(projectId);
   }

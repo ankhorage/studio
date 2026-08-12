@@ -33,7 +33,6 @@ export class ProjectManager {
   private readonly scaffolder: ProjectScaffolder;
   private readonly appFiles: GeneratedAppFileGenerator;
   private readonly dependencies: ProjectManagerDependencies;
-
   private readonly appsRoot: string;
 
   constructor(
@@ -50,10 +49,6 @@ export class ProjectManager {
       ...dependencies,
     };
   }
-
-  // =========================================================================
-  //  PROJECT LIFECYCLE (PUBLIC API)
-  // =========================================================================
 
   async listProjects(): Promise<ProjectSummary[]> {
     return this.store.listProjects();
@@ -74,28 +69,9 @@ export class ProjectManager {
       });
 
       if (!infraStatus.skipped && infraStatus.hasDeployment && infraStatus.target) {
-        // Regenerate once to ensure teardown scripts exist before invoking destroy lifecycle.
-        await syncProjectInfrastructure({
-          projectId,
-          projectPath,
-          manifest,
-        });
-
-        try {
-          await this.dependencies.runProjectInfraScript({
-            rootPath: this.rootPath,
-            projectId,
-            target: infraStatus.target,
-            script: 'destroy',
-          });
-          infraDestroyed = true;
-        } catch (error) {
-          const message = error instanceof Error ? error.message : String(error);
-          throw new Error(`Infrastructure teardown failed for project '${projectId}': ${message}`, {
-            cause: error,
-          });
-        }
-
+        await syncProjectInfrastructure({ projectId, projectPath, manifest });
+        await this.destroyProjectInfrastructure(projectId, projectPath, infraStatus.target);
+        infraDestroyed = true;
         imageCleanup = await this.dependencies.cleanupProjectGeneratedAppImage({
           projectId,
           projectPath,
@@ -106,14 +82,7 @@ export class ProjectManager {
     }
 
     await this.store.deleteProject(projectId);
-
-    return {
-      success: true,
-      infraDestroyed,
-      projectFilesDeleted: true,
-      imageCleanup,
-      warnings,
-    };
+    return { success: true, infraDestroyed, projectFilesDeleted: true, imageCleanup, warnings };
   }
 
   async createProject(
@@ -131,7 +100,6 @@ export class ProjectManager {
 
     const slug = validation.projectId;
     const projectPath = getProjectPath(this.rootPath, slug);
-
     if (await exists(projectPath)) {
       throw new ProjectCreationValidationError({
         code: 'project-id-exists',
@@ -142,8 +110,6 @@ export class ProjectManager {
     const templateData = this.scaffolder.getTemplate(templateSelection);
     const scaffoldManifest = applySystemTemplates(templateData);
     const zoraExtensions = resolveZoraExtensionsForTemplateSelection(templateSelection);
-
-    // 1) scaffold base project
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
@@ -154,11 +120,6 @@ export class ProjectManager {
       zoraExtensions,
     });
 
-    // 2) layout generation from template + mutations
-    // IMPORTANT: ProjectManager no longer resolves module layout mutations itself.
-    // The orchestrator should pass mutations when calling rebuild/sync.
-    // For creation we default to "no mutations"; your template-driven module installs
-    // will run via orchestrator anyway.
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
       templateData,
@@ -167,22 +128,9 @@ export class ProjectManager {
       templateSelection.category,
     );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
-
-    // 3) generate router files based on manifest (no module layout mutations at creation)
     await this.writeGeneratedFiles(projectPath, manifest, [], { includeStudio, runtimePlan });
-
-    // 4) generate infrastructure artifacts from infra manifest
-    await syncProjectInfrastructure({
-      projectId: slug,
-      projectPath,
-      manifest,
-    });
-
-    // 5) hook for orchestrator (e.g. registry generation)
-    if (onProjectCreated) {
-      await onProjectCreated(slug);
-    }
-
+    await syncProjectInfrastructure({ projectId: slug, projectPath, manifest });
+    if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
   }
 
@@ -191,38 +139,18 @@ export class ProjectManager {
     return { success: true };
   }
 
-  // =========================================================================
-  //  MANIFEST (PUBLIC API)
-  // =========================================================================
-
   async getProjectManifest(projectId: string): Promise<AppManifest> {
     return this.store.readManifest(projectId);
   }
 
-  async getStudioManifest(projectId: string): Promise<AppManifest> {
-    return this.store.readStudioManifest(projectId);
+  async persistProjectManifest(args: {
+    projectId: string;
+    manifest: AppManifest;
+  }): Promise<AppManifest> {
+    const normalizedManifest = applySystemTemplates(args.manifest);
+    return this.store.writeManifest(args.projectId, normalizedManifest);
   }
 
-  async updateStudioManifestIfExists(
-    projectId: string,
-    updater: (manifest: AppManifest) => AppManifest,
-  ): Promise<{ updated: boolean }> {
-    const hasDraft = await this.store.hasStudioManifest(projectId);
-    if (!hasDraft) {
-      return { updated: false };
-    }
-
-    const current = await this.store.readStudioManifest(projectId);
-    const next = updater(current);
-    await this.store.writeStudioManifest(projectId, next);
-    return { updated: true };
-  }
-
-  /**
-   * Save manifest and (optionally) regenerate router files immediately.
-   *
-   * We take `mutations` as input to keep module boundaries clean.
-   */
   async saveProjectManifest(args: {
     projectId: string;
     manifest: AppManifest;
@@ -230,97 +158,64 @@ export class ProjectManager {
     regenerateRouterFiles?: boolean;
   }) {
     const { projectId, manifest, mutations, regenerateRouterFiles = true } = args;
-
+    const updated = await this.persistProjectManifest({ projectId, manifest });
     const projectPath = getProjectPath(this.rootPath, projectId);
-    const normalizedManifest = applySystemTemplates(manifest);
-    const updated = await this.store.writeManifest(projectId, normalizedManifest);
-    await this.store.deleteStudioManifest(projectId);
     const runtimePlan = resolveExpoRuntimePlan(updated);
 
     if (regenerateRouterFiles) {
-      const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath);
-      await this.syncProjectScaffold(
-        projectPath,
-        projectId,
-        updated,
-        resolvedIncludeStudio,
-        runtimePlan,
-      );
+      const includeStudio = await this.shouldIncludeStudio(projectPath);
+      await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);
       await this.writeGeneratedFiles(projectPath, updated, mutations, {
-        includeStudio: resolvedIncludeStudio,
+        includeStudio,
         runtimePlan,
       });
     }
 
-    await syncProjectInfrastructure({
-      projectId,
-      projectPath,
-      manifest: updated,
-    });
-
+    await syncProjectInfrastructure({ projectId, projectPath, manifest: updated });
     return { success: true };
   }
 
-  async saveStudioManifest(args: { projectId: string; manifest: AppManifest }) {
-    const { projectId, manifest } = args;
-    const normalizedManifest = applySystemTemplates(manifest);
-    await this.store.writeStudioManifest(projectId, normalizedManifest);
-    return { success: true };
-  }
-
-  async syncStudioRuntime(args: {
+  async syncProjectRuntime(args: {
     projectId: string;
-    manifest: AppManifest;
     mutations: LayoutMutation[];
+    includeStudio?: boolean;
   }) {
-    const { projectId, manifest, mutations } = args;
-    const normalizedManifest = applySystemTemplates(manifest);
+    const { projectId, mutations, includeStudio } = args;
     const projectPath = getProjectPath(this.rootPath, projectId);
-    const includeStudio = await this.shouldIncludeStudio(projectPath);
-    const runtimePlan = resolveExpoRuntimePlan(normalizedManifest);
+    const manifest = await this.getProjectManifest(projectId);
+    const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);
+    const runtimePlan = resolveExpoRuntimePlan(manifest);
 
-    await this.store.writeStudioManifest(projectId, normalizedManifest);
     await this.syncProjectScaffold(
       projectPath,
       projectId,
-      normalizedManifest,
-      includeStudio,
+      manifest,
+      resolvedIncludeStudio,
       runtimePlan,
     );
-    await this.writeGeneratedFiles(projectPath, normalizedManifest, mutations, {
-      includeStudio,
+    await this.writeGeneratedFiles(projectPath, manifest, mutations, {
+      includeStudio: resolvedIncludeStudio,
       runtimePlan,
     });
-    await syncProjectInfrastructure({
-      projectId,
-      projectPath,
-      manifest: normalizedManifest,
-    });
-
+    await syncProjectInfrastructure({ projectId, projectPath, manifest });
     return { success: true };
   }
 
-  /**
-   * Rebuild only the root layout file from manifest + mutations.
-   */
   async rebuildRootLayout(args: { projectId: string; mutations: LayoutMutation[] }) {
     const { projectId, mutations } = args;
-
     const manifest = await this.getProjectManifest(projectId);
     const projectPath = getProjectPath(this.rootPath, projectId);
     const runtimePlan = resolveExpoRuntimePlan(manifest);
-
     const rootOnly = this.appFiles
       .generateFiles(projectPath, manifest, mutations, {
         includeStudio: await this.shouldIncludeStudio(projectPath),
         runtimePlan,
       })
-      .filter((f: { path: string }) => f.path === 'src/app/_layout.tsx');
+      .filter((file: { path: string }) => file.path === 'src/app/_layout.tsx');
 
-    for (const f of rootOnly) {
-      await this.writeText(path.join(projectPath, f.path), f.content);
+    for (const file of rootOnly) {
+      await this.writeText(path.join(projectPath, file.path), file.content);
     }
-
     return { success: true };
   }
 
@@ -329,68 +224,40 @@ export class ProjectManager {
     mutations: LayoutMutation[];
     includeStudio?: boolean;
   }) {
-    const { projectId, mutations, includeStudio } = args;
-
-    const projectPath = getProjectPath(this.rootPath, projectId);
-    const hasStudioManifest = await this.store.hasStudioManifest(projectId);
-    const manifest = hasStudioManifest
-      ? await this.store.readStudioManifest(projectId)
-      : await this.getProjectManifest(projectId);
-    const normalizedManifest = applySystemTemplates(manifest);
-    const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);
-    const runtimePlan = resolveExpoRuntimePlan(normalizedManifest);
-
-    if (hasStudioManifest || normalizedManifest !== manifest) {
-      await this.store.writeManifest(projectId, normalizedManifest);
-      await this.store.deleteStudioManifest(projectId);
-    }
-
-    await this.syncProjectScaffold(
-      projectPath,
-      projectId,
-      normalizedManifest,
-      resolvedIncludeStudio,
-      runtimePlan,
-    );
-
-    await this.writeGeneratedFiles(projectPath, normalizedManifest, mutations, {
-      includeStudio: resolvedIncludeStudio,
-      runtimePlan,
-    });
-    await syncProjectInfrastructure({
-      projectId,
-      projectPath,
-      manifest: normalizedManifest,
-    });
-
-    return { success: true };
+    return this.syncProjectRuntime(args);
   }
 
   async regenerateInfrastructure(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-
-    return syncProjectInfrastructure({
-      projectId,
-      projectPath,
-      manifest,
-    });
+    return syncProjectInfrastructure({ projectId, projectPath, manifest });
   }
 
   async getInfrastructureStatus(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-
-    return getProjectInfrastructureStatus({
-      projectId,
-      projectPath,
-      manifest,
-    });
+    return getProjectInfrastructureStatus({ projectId, projectPath, manifest });
   }
 
-  // =========================================================================
-  //  INTERNAL
-  // =========================================================================
+  private async destroyProjectInfrastructure(
+    projectId: string,
+    projectPath: string,
+    target: string,
+  ): Promise<void> {
+    try {
+      await this.dependencies.runProjectInfraScript({
+        rootPath: this.rootPath,
+        projectId,
+        target,
+        script: 'destroy',
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Infrastructure teardown failed for project '${projectId}': ${message}`, {
+        cause: error,
+      });
+    }
+  }
 
   private async writeGeneratedFiles(
     projectPath: string,
@@ -403,15 +270,10 @@ export class ProjectManager {
       runtimePlan: options.runtimePlan,
     });
     const generatedPaths = generated.map((file) => file.path);
-
-    for (const f of generated) {
-      await this.writeText(path.join(projectPath, f.path), f.content);
+    for (const file of generated) {
+      await this.writeText(path.join(projectPath, file.path), file.content);
     }
-
-    await syncGeneratedRouteFiles({
-      projectPath,
-      generatedPaths,
-    });
+    await syncGeneratedRouteFiles({ projectPath, generatedPaths });
   }
 
   private async writeText(absPath: string, content: string) {
@@ -420,10 +282,7 @@ export class ProjectManager {
   }
 
   private async shouldIncludeStudio(projectPath: string, requested?: boolean) {
-    if (requested === false) {
-      return false;
-    }
-
+    if (requested === false) return false;
     return requested ?? (await exists(path.join(projectPath, 'src/studio')));
   }
 
@@ -445,9 +304,9 @@ export class ProjectManager {
   }
 }
 
-async function exists(p: string) {
+async function exists(filePath: string): Promise<boolean> {
   try {
-    await fs.access(p);
+    await fs.access(filePath);
     return true;
   } catch {
     return false;
@@ -459,16 +318,12 @@ function resolveGeneratedAuthProvider(manifest: AppManifest): GeneratedAuthProvi
   if (auth?.scope === 'global' && auth.provider === 'supabase') {
     return 'supabase';
   }
-
   return null;
 }
 
 function resolveGeneratedStorageProvider(manifest: AppManifest): GeneratedStorageProvider {
   const { auth, database, storage } = manifest.infra;
-  if (storage?.provider !== 'auto') {
-    return null;
-  }
-
+  if (storage?.provider !== 'auto') return null;
   const usesSupabase = auth?.provider === 'supabase' || database?.provider === 'supabase';
   return usesSupabase ? 'supabase' : null;
 }

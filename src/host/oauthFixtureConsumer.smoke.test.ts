@@ -81,7 +81,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       provider.credentialsRef = `${SECRET_SENTINEL}/${provider.id}`;
     }
 
-    await projectManager.saveStudioManifest({ projectId: created.id, manifest });
+    await projectManager.persistProjectManifest({ projectId: created.id, manifest });
     await moduleManager.syncProject({ projectId: created.id, includeStudio: false });
 
     const persistedManifest = await projectManager.getProjectManifest(created.id);

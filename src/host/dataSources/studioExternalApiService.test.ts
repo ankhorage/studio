@@ -35,11 +35,10 @@ function createProjectStore(initial = createManifest()) {
   return {
     manager: {
       getProjectManifest: () => Promise.resolve(manifest),
-      getStudioManifest: () => Promise.resolve(manifest),
-      saveStudioManifest: (args: { readonly manifest: StudioManifest }) => {
+      persistProjectManifest: (args: { readonly manifest: StudioManifest }) => {
         const { manifest: nextManifest } = args;
         manifest = nextManifest;
-        return Promise.resolve({ success: true });
+        return Promise.resolve(nextManifest);
       },
     },
     read: () => manifest,

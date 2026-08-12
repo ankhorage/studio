@@ -1587,7 +1587,7 @@ async function createGeneratedAdminProject(workspaceRoot: string): Promise<strin
     { includeStudio: true },
   );
 
-  await projectManager.saveStudioManifest({
+  await projectManager.persistProjectManifest({
     projectId: created.id,
     manifest: createAdminSmokeManifest(),
   });
@@ -2025,7 +2025,7 @@ async function startSmokeStudioApi(args: {
 }): Promise<SmokeStudioApiServer> {
   const { projectId } = args;
   let { manifest } = args;
-  const manifestPath = `/api/projects/${encodeURIComponent(projectId)}/studio/manifest`;
+  const manifestPath = `/api/projects/${encodeURIComponent(projectId)}/manifest`;
   const modulesPath = `/api/projects/${encodeURIComponent(projectId)}/modules`;
   const server = createHttpServer((request, response) => {
     void handleSmokeStudioApiRequest({

@@ -1,25 +1,12 @@
-export async function syncStudioRuntime(projectId: string, apiBase?: string): Promise<void> {
+export async function syncProjectRuntime(projectId: string, apiBase?: string): Promise<void> {
   const resolvedApiBase = apiBase ?? (await import('./core/constants')).API_BASE;
   const encodedProjectId = encodeURIComponent(projectId);
-  const manifestResponse = await fetch(
-    `${resolvedApiBase}/projects/${encodedProjectId}/studio/manifest`,
-  );
-  const manifest = await readJson(manifestResponse, 'Studio manifest');
-  if (!manifestResponse.ok) {
-    throw new Error(readErrorMessage(manifest, 'Unable to load the Studio manifest.'));
-  }
-
-  const runtimeResponse = await fetch(
-    `${resolvedApiBase}/projects/${encodedProjectId}/studio/runtime`,
-    {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(manifest),
-    },
-  );
-  const runtimeResult = await readJson(runtimeResponse, 'Studio runtime sync');
-  if (!runtimeResponse.ok) {
-    throw new Error(readErrorMessage(runtimeResult, 'Unable to apply the Studio runtime.'));
+  const response = await fetch(`${resolvedApiBase}/projects/${encodedProjectId}/runtime/sync`, {
+    method: 'POST',
+  });
+  const result = await readJson(response, 'Project runtime sync');
+  if (!response.ok) {
+    throw new Error(readErrorMessage(result, 'Unable to sync the project runtime.'));
   }
 }
 

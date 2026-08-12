@@ -1,6 +1,6 @@
 import { afterEach, expect, mock, test } from 'bun:test';
 
-import { syncStudioRuntime } from './studioRuntimeApi';
+import { syncProjectRuntime } from './studioRuntimeApi';
 
 const originalFetch = globalThis.fetch;
 
@@ -8,46 +8,30 @@ afterEach(() => {
   globalThis.fetch = originalFetch;
 });
 
-test('syncStudioRuntime loads the persisted draft and applies it to the generated runtime', async () => {
+test('syncProjectRuntime asks the host to sync from canonical persisted state', async () => {
   const requests: { url: string; init?: RequestInit }[] = [];
-  const manifest = { metadata: { name: 'Scanner' }, infra: {}, navigator: {}, screens: {} };
 
   globalThis.fetch = mock((input: string | URL | Request, init?: RequestInit) => {
-    const url = requestUrl(input);
-    requests.push({ url, init });
-    if (url.endsWith('/projects/scanner/studio/manifest')) {
-      return Promise.resolve(Response.json(manifest));
-    }
-    if (url.endsWith('/projects/scanner/studio/runtime')) {
-      return Promise.resolve(Response.json({ success: true }));
-    }
-    return Promise.resolve(Response.json({ error: 'Unexpected request' }, { status: 404 }));
+    requests.push({ url: requestUrl(input), init });
+    return Promise.resolve(Response.json({ success: true }));
   }) as unknown as typeof fetch;
 
-  await syncStudioRuntime('scanner', 'http://studio.test/api');
+  await syncProjectRuntime('scanner', 'http://studio.test/api');
 
-  expect(requests).toHaveLength(2);
-  expect(requests[0]?.url).toEndWith('/projects/scanner/studio/manifest');
-  expect(requests[1]?.url).toEndWith('/projects/scanner/studio/runtime');
-  expect(requests[1]?.init?.method).toBe('PUT');
-  expect(requests[1]?.init?.headers).toEqual({ 'Content-Type': 'application/json' });
-  expect(requests[1]?.init?.body).toBe(JSON.stringify(manifest));
+  expect(requests).toHaveLength(1);
+  expect(requests[0]?.url).toEndWith('/projects/scanner/runtime/sync');
+  expect(requests[0]?.init?.method).toBe('POST');
+  expect(requests[0]?.init?.body).toBeUndefined();
 });
 
-test('syncStudioRuntime surfaces host runtime errors', async () => {
-  globalThis.fetch = mock((input: string | URL | Request) => {
-    const url = requestUrl(input);
-    if (url.endsWith('/studio/manifest')) {
-      return Promise.resolve(
-        Response.json({ metadata: {}, infra: {}, navigator: {}, screens: {} }),
-      );
-    }
-    return Promise.resolve(
+test('syncProjectRuntime surfaces host runtime errors', async () => {
+  globalThis.fetch = mock(() =>
+    Promise.resolve(
       Response.json({ error: 'OAuth is enabled but no provider is enabled.' }, { status: 500 }),
-    );
-  }) as unknown as typeof fetch;
+    ),
+  ) as unknown as typeof fetch;
 
-  const error = await captureError(() => syncStudioRuntime('scanner', 'http://studio.test/api'));
+  const error = await captureError(() => syncProjectRuntime('scanner', 'http://studio.test/api'));
   expect(error.message).toBe('OAuth is enabled but no provider is enabled.');
 });
 

@@ -15,6 +15,16 @@ export class ProjectManifestNotFoundError extends Error {
   }
 }
 
+export class ObsoleteStudioManifestError extends Error {
+  constructor(projectId: string, filePath: string) {
+    super(
+      `Project '${projectId}' contains obsolete parallel Studio state at '${filePath}'. ` +
+        'Remove that file explicitly before continuing; ankh.config.json is now the sole manifest truth.',
+    );
+    this.name = 'ObsoleteStudioManifestError';
+  }
+}
+
 export class ProjectStore {
   constructor(private readonly rootPath: string) {}
 
@@ -26,7 +36,7 @@ export class ProjectStore {
     return path.join(this.getProjectPath(projectId), 'ankh.config.json');
   }
 
-  private getStudioManifestPath(projectId: string) {
+  private getObsoleteStudioManifestPath(projectId: string) {
     return path.join(this.getProjectPath(projectId), '.ankh', 'studio.manifest.json');
   }
 
@@ -39,54 +49,9 @@ export class ProjectStore {
         .map((entry) => entry.name);
 
       const results = await Promise.all(
-        dirs.map(async (id): Promise<ProjectSummary | null> => {
-          try {
-            const projectPath = getProjectPath(this.rootPath, id);
-            const pkgJsonPath = path.join(projectPath, 'package.json');
-            const ankhConfigPath = path.join(projectPath, 'ankh.config.json');
-
-            const hasPkg = await exists(pkgJsonPath);
-            if (!hasPkg) return null;
-
-            if (!(await exists(ankhConfigPath))) {
-              return null;
-            }
-
-            try {
-              const manifest = parseProjectSummaryManifest(
-                JSON.parse(await fs.readFile(ankhConfigPath, 'utf8')),
-              );
-              const activeTheme = resolveActiveTheme(manifest);
-
-              return {
-                id,
-                name: manifest.metadata.name,
-                path: projectPath,
-                version: manifest.metadata.version,
-                isAnkhApp: true,
-                category: manifest.metadata.category,
-                created: manifest.metadata.created,
-                updated: manifest.metadata.updated,
-                activeTheme,
-                activeThemeMode: manifest.activeThemeMode,
-              };
-            } catch {
-              return null;
-            }
-          } catch {
-            // If getProjectPath throws or any other unexpected error occurs for a single project,
-            // treat it as an unlistable project and skip it. This preserves robustness:
-            // problematic projects are ignored while valid ones are still listed.
-            //
-            // The outer try/catch still provides a catch-all that returns [] if a
-            // top-level failure occurs (e.g. reading the apps directory itself fails).
-            return null;
-          }
-        }),
+        dirs.map(async (id): Promise<ProjectSummary | null> => this.readProjectSummary(id)),
       );
-
-      // Filter out nulls (skipped projects)
-      return results.filter((p): p is ProjectSummary => p !== null);
+      return results.filter((project): project is ProjectSummary => project !== null);
     } catch {
       return [];
     }
@@ -106,6 +71,7 @@ export class ProjectStore {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
+    await this.assertNoObsoleteStudioManifest(projectId);
     if (await exists(manifestPath)) {
       return parseReadableAppManifest(JSON.parse(await fs.readFile(manifestPath, 'utf8')));
     }
@@ -113,68 +79,70 @@ export class ProjectStore {
     throw new ProjectManifestNotFoundError(projectId);
   }
 
-  async readStudioManifest(projectId: string): Promise<AppManifest> {
-    const studioManifestPath = this.getStudioManifestPath(projectId);
-    if (await exists(studioManifestPath)) {
-      return parseReadableAppManifest(JSON.parse(await fs.readFile(studioManifestPath, 'utf8')));
-    }
-
-    return this.readManifest(projectId);
-  }
-
-  async hasStudioManifest(projectId: string) {
-    return exists(this.getStudioManifestPath(projectId));
-  }
-
-  async writeManifest(projectId: string, manifest: AppManifest) {
+  async writeManifest(projectId: string, manifest: AppManifest): Promise<AppManifest> {
     const projectPath = this.getProjectPath(projectId);
-    const manifestPath = this.getManifestPath(projectId);
-
     if (!(await exists(projectPath))) {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
-    const updated: AppManifest = {
-      ...manifest,
-      metadata: {
-        ...manifest.metadata,
-        slug: projectId,
-        updated: new Date().toISOString(),
-      },
-    };
-
-    await writeJsonAtomic(manifestPath, updated);
+    await this.assertNoObsoleteStudioManifest(projectId);
+    const updated = normalizeManifestForProject(projectId, manifest);
+    await writeJsonAtomic(this.getManifestPath(projectId), updated);
     return updated;
   }
 
-  async writeStudioManifest(projectId: string, manifest: AppManifest) {
-    const projectPath = this.getProjectPath(projectId);
-    const studioManifestPath = this.getStudioManifestPath(projectId);
-
-    if (!(await exists(projectPath))) {
-      throw new Error(`Project '${projectId}' not found.`);
-    }
-
-    const updated: AppManifest = {
-      ...manifest,
-      metadata: {
-        ...manifest.metadata,
-        slug: projectId,
-        updated: new Date().toISOString(),
-      },
-    };
-
-    await fs.mkdir(path.dirname(studioManifestPath), { recursive: true });
-    await writeJsonAtomic(studioManifestPath, updated);
-    return updated;
+  async mutateManifest(
+    projectId: string,
+    updater: (manifest: AppManifest) => AppManifest,
+  ): Promise<AppManifest> {
+    const current = await this.readManifest(projectId);
+    return this.writeManifest(projectId, updater(current));
   }
 
-  async deleteStudioManifest(projectId: string) {
-    const studioManifestPath = this.getStudioManifestPath(projectId);
-    if (await exists(studioManifestPath)) {
-      await fs.rm(studioManifestPath, { force: true });
+  private async readProjectSummary(id: string): Promise<ProjectSummary | null> {
+    try {
+      const projectPath = getProjectPath(this.rootPath, id);
+      if (!(await exists(path.join(projectPath, 'package.json')))) return null;
+      const manifestPath = path.join(projectPath, 'ankh.config.json');
+      if (!(await exists(manifestPath))) return null;
+      const manifest = parseProjectSummaryManifest(
+        JSON.parse(await fs.readFile(manifestPath, 'utf8')),
+      );
+      const activeTheme = resolveActiveTheme(manifest);
+      return {
+        id,
+        name: manifest.metadata.name,
+        path: projectPath,
+        version: manifest.metadata.version,
+        isAnkhApp: true,
+        category: manifest.metadata.category,
+        created: manifest.metadata.created,
+        updated: manifest.metadata.updated,
+        activeTheme,
+        activeThemeMode: manifest.activeThemeMode,
+      };
+    } catch {
+      return null;
     }
   }
+
+  private async assertNoObsoleteStudioManifest(projectId: string): Promise<void> {
+    const obsoletePath = this.getObsoleteStudioManifestPath(projectId);
+    if (await exists(obsoletePath)) {
+      throw new ObsoleteStudioManifestError(projectId, obsoletePath);
+    }
+  }
+}
+
+function normalizeManifestForProject(projectId: string, manifest: AppManifest): AppManifest {
+  return {
+    ...manifest,
+    metadata: {
+      ...manifest.metadata,
+      slug: projectId,
+      updated: new Date().toISOString(),
+    },
+  };
 }
 
 function parseProjectSummaryManifest(value: unknown): AppManifest {
@@ -202,23 +170,18 @@ function resolveActiveTheme(manifest: AppManifest): ThemeConfig {
   return activeTheme;
 }
 
-async function exists(p: string) {
+async function exists(filePath: string): Promise<boolean> {
   try {
-    await fs.access(p);
+    await fs.access(filePath);
     return true;
   } catch {
     return false;
   }
 }
 
-async function writeJsonAtomic(filePath: string, value: unknown) {
+async function writeJsonAtomic(filePath: string, value: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(
-    temporaryPath,
-    `${JSON.stringify(value, null, 2)}
-`,
-    'utf8',
-  );
+  await fs.writeFile(temporaryPath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   await fs.rename(temporaryPath, filePath);
 }

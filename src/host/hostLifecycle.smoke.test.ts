@@ -46,12 +46,12 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   expect(projects.some((project) => project.id === created.id && project.isAnkhApp)).toBe(true);
 
   await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
-  const manifest = await projectManager.getStudioManifest(created.id);
-  await projectManager.saveStudioManifest({
+  const manifest = await projectManager.getProjectManifest(created.id);
+  await projectManager.persistProjectManifest({
     projectId: created.id,
     manifest: { ...manifest, metadata: { ...manifest.metadata, name: 'Edited Smoke App' } },
   });
-  expect((await projectManager.getStudioManifest(created.id)).metadata.name).toBe(
+  expect((await projectManager.getProjectManifest(created.id)).metadata.name).toBe(
     'Edited Smoke App',
   );
 
