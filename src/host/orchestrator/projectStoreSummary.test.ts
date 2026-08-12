@@ -1,8 +1,8 @@
-import type { AppManifest } from '@ankhorage/contracts';
 import { access, mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import {
@@ -90,7 +90,10 @@ test('canonical writes persist only ankh.config.json', async () => {
 test('obsolete Studio manifest state is rejected without merging it', async () => {
   const workspaceRoot = await createProjectWorkspace('obsolete-studio-manifest');
   const projectRoot = path.join(workspaceRoot, 'apps', 'demo');
-  await writeFile(path.join(projectRoot, 'ankh.config.json'), JSON.stringify(createManifest('Canonical')));
+  await writeFile(
+    path.join(projectRoot, 'ankh.config.json'),
+    JSON.stringify(createManifest('Canonical')),
+  );
   await mkdir(path.join(projectRoot, '.ankh'), { recursive: true });
   await writeFile(
     path.join(projectRoot, '.ankh', 'studio.manifest.json'),
