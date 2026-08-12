@@ -106,27 +106,29 @@ jobs:
               "import { createStudioManifestSignature } from '../manifestSync';\nimport { removeStudioMediaAsset, upsertStudioMediaAsset } from '../mediaAuthoringModel';\n",
           )
           anchor = "  const updateTheme = useCallback(\n"
-          media_callbacks = """  const upsertMediaAsset = useCallback(
-            (asset: MediaAsset) => {
-              updateManifest((current) => upsertStudioMediaAsset(current, asset));
-            },
-            [updateManifest],
-          );
-
-          const removeMediaAsset = useCallback(
-            (mediaId: string): boolean => {
-              let removed = false;
-              updateManifest((current) => {
-                const result = removeStudioMediaAsset(current, mediaId);
-                removed = result.ok;
-                return result.ok ? result.manifest : current;
-              });
-              return removed;
-            },
-            [updateManifest],
-          );
-
-"""
+          media_callbacks = '\n'.join([
+              '  const upsertMediaAsset = useCallback(',
+              '    (asset: MediaAsset) => {',
+              '      updateManifest((current) => upsertStudioMediaAsset(current, asset));',
+              '    },',
+              '    [updateManifest],',
+              '  );',
+              '',
+              '  const removeMediaAsset = useCallback(',
+              '    (mediaId: string): boolean => {',
+              '      let removed = false;',
+              '      updateManifest((current) => {',
+              '        const result = removeStudioMediaAsset(current, mediaId);',
+              '        removed = result.ok;',
+              '        return result.ok ? result.manifest : current;',
+              '      });',
+              '      return removed;',
+              '    },',
+              '    [updateManifest],',
+              '  );',
+              '',
+              '',
+          ])
           if 'const upsertMediaAsset = useCallback' not in provider:
               provider = provider.replace(anchor, media_callbacks + anchor, 1)
           provider = provider.replace(
@@ -141,20 +143,20 @@ jobs:
 
           route_path = Path('src/studioAdminRouteModel.ts')
           route = route_path.read_text()
-          screen_detail_end = """  {
-            id: 'apis',
-"""
-          media_route = """  {
-            id: 'media',
-            path: '/ankh/media',
-            label: 'Media',
-            icon: 'images-outline',
-            order: 12,
-            description: 'Canonical app-authoring media pool.',
-          },
-          {
-            id: 'apis',
-"""
+          screen_detail_end = "  {\n    id: 'apis',\n"
+          media_route = '\n'.join([
+              '  {',
+              "    id: 'media',",
+              "    path: '/ankh/media',",
+              "    label: 'Media',",
+              "    icon: 'images-outline',",
+              '    order: 12,',
+              "    description: 'Canonical app-authoring media pool.',",
+              '  },',
+              '  {',
+              "    id: 'apis',",
+              '',
+          ])
           if "id: 'media'" not in route:
               route = route.replace(screen_detail_end, media_route, 1)
           route_path.write_text(route)
@@ -201,37 +203,41 @@ jobs:
 
           properties_test_path = Path('src/propertiesAuthoringModel.test.ts')
           properties_test = properties_test_path.read_text()
-          media_test = """
-            test('consumes released ZORA Image media metadata without Image-specific Studio logic', () => {
-              const node: UiNode = {
-                id: 'hero',
-                type: 'Image',
-                props: { source: { mediaId: 'hero-media' }, alt: 'Mountain sunrise' },
-              };
-              const fields = resolveStudioInstancePropertyFields(node, ZORA_COMPONENT_META);
-              expect(fields.find((field) => field.name === 'source')).toMatchObject({
-                schemaType: 'media',
-                editor: 'media',
-                mediaKinds: ['image'],
-                value: { mediaId: 'hero-media' },
-                isExplicit: true,
-              });
-              expect(createStudioInstancePropertyPatch(node, 'source', { mediaId: 'other-image' })).toEqual({
-                props: { alt: 'Mountain sunrise', source: { mediaId: 'other-image' } },
-              });
-            });
-"""
+          media_test = '\n'.join([
+              '',
+              "  test('consumes released ZORA Image media metadata without Image-specific Studio logic', () => {",
+              '    const node: UiNode = {',
+              "      id: 'hero',",
+              "      type: 'Image',",
+              "      props: { source: { mediaId: 'hero-media' }, alt: 'Mountain sunrise' },",
+              '    };',
+              '    const fields = resolveStudioInstancePropertyFields(node, ZORA_COMPONENT_META);',
+              "    expect(fields.find((field) => field.name === 'source')).toMatchObject({",
+              "      schemaType: 'media',",
+              "      editor: 'media',",
+              "      mediaKinds: ['image'],",
+              "      value: { mediaId: 'hero-media' },",
+              '      isExplicit: true,',
+              '    });',
+              "    expect(createStudioInstancePropertyPatch(node, 'source', { mediaId: 'other-image' })).toEqual({",
+              "      props: { alt: 'Mountain sunrise', source: { mediaId: 'other-image' } },",
+              '    });',
+              '  });',
+              '',
+          ])
           if 'consumes released ZORA Image media metadata' not in properties_test:
               properties_test = properties_test.replace('\n});\n', media_test + '\n});\n', 1)
           properties_test_path.write_text(properties_test)
 
           changeset = Path('.changeset/adm14-studio-media-pool.md')
-          changeset.write_text("""---
-          '@ankhorage/studio': minor
-          ---
-
-          Add the canonical manifest-backed Studio media pool, safe media usage/removal helpers, stable URL import, and generic media property authoring driven by component metadata.
-          """)
+          changeset.write_text('\n'.join([
+              '---',
+              "'@ankhorage/studio': minor",
+              '---',
+              '',
+              'Add the canonical manifest-backed Studio media pool, safe media usage/removal helpers, stable URL import, and generic media property authoring driven by component metadata.',
+              '',
+          ]))
           PY
 
       - name: Update dependencies
