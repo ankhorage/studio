@@ -1,0 +1,30 @@
+name: Agent typecheck diagnostic
+
+on:
+  push:
+    branches:
+      - agent/canonical-manifest-persistence
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/canonical-manifest-persistence
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck > .agent-typecheck-output.txt 2>&1 || true
+      - name: Commit diagnostic output
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .agent-typecheck-output.txt
+          git commit -m "chore: capture typecheck diagnostic"
+          git push
