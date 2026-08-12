@@ -16,7 +16,7 @@ const COPY: Record<NumericThemeTokenFamily, { title: string; description: string
 };
 
 export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThemeTokenFamily }) {
-  const { resolvedTheme } = useZoraTheme();
+  const { theme: resolvedTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
   const [newKey, setNewKey] = useState('');
   const [newValue, setNewValue] = useState('');
@@ -111,7 +111,9 @@ function Action(props: { readonly label: string; readonly onPress: () => void })
       onPress={props.onPress}
       style={[styles.action, { borderColor: theme.colors.border }]}
     >
-      <Text color="primary" weight="semiBold">{props.label}</Text>
+      <Text color="primary" weight="semiBold">
+        {props.label}
+      </Text>
     </Pressable>
   );
 }
