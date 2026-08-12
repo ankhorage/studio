@@ -19,7 +19,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.13
-      - name: Repair package imports and duplicate replacements
+      - name: Repair scoped canonical-manifest terminology
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -31,6 +31,15 @@ jobs:
                   text = path.read_text()
                   updated = text.replace('@ankhorage/runtime/sync', '@ankhorage/studio/runtime')
                   updated = updated.replace('@ankhorage/manifest', '@ankhorage/studio/manifest')
+                  updated = updated.replace('requestStudioManifest', 'requestProjectManifest')
+                  updated = updated.replace(
+                      'Studio manifest request returned non-JSON status',
+                      'Project manifest request returned non-JSON status',
+                  )
+                  updated = updated.replace(
+                      'Studio manifest persistence failed.',
+                      'Project manifest persistence failed.',
+                  )
                   updated = updated.replace(
                       "'getInfrastructureStatus' | 'getProjectManifest' | 'getProjectManifest'",
                       "'getInfrastructureStatus' | 'getProjectManifest'",
@@ -58,5 +67,5 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add -A
-          git commit -m "fix: scope canonical manifest migration"
+          git commit -m "style: finalize canonical manifest persistence"
           git push
