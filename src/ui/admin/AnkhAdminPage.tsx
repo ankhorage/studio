@@ -16,10 +16,13 @@ import { ModuleDetailAdminPage } from './pages/ModuleDetailAdminPage';
 import { ModulesAdminPage } from './pages/ModulesAdminPage';
 import { OverviewAdminPage } from './pages/OverviewAdminPage';
 import { PropertiesAdminPage } from './pages/PropertiesAdminPage';
-import { ScreensAdminPage } from './pages/ScreensAdminPage';
 import { ScreenDetailAdminPage } from './pages/ScreenDetailAdminPage';
+import { ScreensAdminPage } from './pages/ScreensAdminPage';
 import { SecretsAdminPage } from './pages/SecretsAdminPage';
 import { ThemeAdminPage } from './pages/ThemeAdminPage';
+import { ThemeColorsAdminPage } from './pages/ThemeColorsAdminPage';
+import { ThemeNumericTokensAdminPage } from './pages/ThemeNumericTokensAdminPage';
+import { ThemeTypographyAdminPage } from './pages/ThemeTypographyAdminPage';
 
 export interface AnkhAdminPageProps {
   readonly routeId: StudioAdminRouteId;
@@ -77,6 +80,11 @@ const ADMIN_PAGE_RENDERERS = {
   ),
   secrets: ({ studio }) => <SecretsAdminPage projectId={studio.projectId} />,
   theme: () => <ThemeAdminPage />,
+  'theme-colors': () => <ThemeColorsAdminPage />,
+  'theme-typography': () => <ThemeTypographyAdminPage />,
+  'theme-spacing': () => <ThemeNumericTokensAdminPage family="spacing" />,
+  'theme-radii': () => <ThemeNumericTokensAdminPage family="radii" />,
+  'theme-shadows': () => <ThemeNumericTokensAdminPage family="shadows" />,
   bindings: ({ pathname }) => <BindingsAdminPage nodeId={resolveStudioBindingsNodeId(pathname)} />,
   properties: ({ pathname }) => (
     <PropertiesAdminPage nodeId={resolveStudioPropertiesNodeId(pathname)} />
