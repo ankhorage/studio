@@ -25,5 +25,5 @@ export const AnkhStudio = ({ children }: AnkhStudioProps) => {
   if (studio.error) return React.createElement(React.Fragment, null, studio.error);
   if (studio.isLoading || !studio.manifest) return null;
 
-  return React.createElement(RuntimeRendererConfigProvider, { value: mediaConfig }, children);
+  return React.createElement(RuntimeRendererConfigProvider, { value: mediaConfig, children });
 };
