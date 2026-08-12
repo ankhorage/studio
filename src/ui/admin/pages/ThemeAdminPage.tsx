@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AdminHeader, AdminScroll, Field, Input, KeyValue } from '../adminPagePrimitives';
 import { ThemeModeEditorSelector } from './ThemeModeEditorSelector';
+import { ThemeRecipeCatalog } from './ThemeRecipeCatalog';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 export function ThemeAdminPage() {
@@ -28,6 +29,7 @@ export function ThemeAdminPage() {
             />
             <KeyValue label="Mode-specific source" value="Colors · Harmony" />
           </Card>
+          <ThemeRecipeCatalog />
           <Card title="Inheritance">
             <Text color="neutral" emphasis="muted">
               Omitted values inherit Surface and ZORA owner defaults. Theme changes do not rewrite
