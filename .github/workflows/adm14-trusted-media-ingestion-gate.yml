@@ -84,9 +84,6 @@ jobs:
             exit 1
           fi
 
-      - name: Verify changeset
-        run: bun run changeset:status --since=origin/main
-
       - name: Verify clean patches
         run: git diff --check
 
@@ -97,5 +94,10 @@ jobs:
           git add -A -- . ':!.github/workflows/*' ':!scripts/adm14-trusted-media-apply.py'
           if ! git diff --cached --quiet; then
             git commit -m 'Validate ADM-14 trusted media ingestion'
-            git push origin HEAD:agent/adm14-trusted-media-ingestion
           fi
+
+      - name: Verify changeset
+        run: bun run changeset:status --since=origin/main
+
+      - name: Push validated state
+        run: git push origin HEAD:agent/adm14-trusted-media-ingestion
