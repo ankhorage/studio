@@ -1,8 +1,12 @@
-import { MEDIA_ASSET_KINDS, type MediaAssetKind, type MediaStorageSource } from '@ankhorage/contracts';
+import {
+  MEDIA_ASSET_KINDS,
+  type MediaAssetKind,
+  type MediaStorageSource,
+} from '@ankhorage/contracts';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
-import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectMediaService } from '../media/projectMediaService';
+import type { ProjectManager } from '../orchestrator/projectManager';
 
 const MAX_MEDIA_BODY_BYTES = 100 * 1024 * 1024;
 
@@ -11,9 +15,13 @@ export function registerProjectMediaRoutes(
   args: { readonly projectManager: ProjectManager; readonly workspaceRoot: string },
 ) {
   if (!fastify.hasContentTypeParser('application/octet-stream')) {
-    fastify.addContentTypeParser('application/octet-stream', { parseAs: 'buffer' }, (_req, body, done) => {
-      done(null, body);
-    });
+    fastify.addContentTypeParser(
+      'application/octet-stream',
+      { parseAs: 'buffer' },
+      (_req, body, done) => {
+        done(null, body);
+      },
+    );
   }
   const service = new ProjectMediaService(args.projectManager, args.workspaceRoot);
   fastify.post(
@@ -21,7 +29,8 @@ export function registerProjectMediaRoutes(
     { bodyLimit: MAX_MEDIA_BODY_BYTES },
     async (req: FastifyRequest, reply: FastifyReply) => {
       const input = readIngestRequest(req);
-      if (!input) return reply.status(400).send({ error: 'Valid media metadata and bytes are required.' });
+      if (!input)
+        return reply.status(400).send({ error: 'Valid media metadata and bytes are required.' });
       try {
         const { id } = req.params as { id: string };
         return { asset: await service.ingest(id, input) };
@@ -45,7 +54,8 @@ export function registerProjectMediaRoutes(
 function readIngestRequest(req: FastifyRequest) {
   const query = req.query as Record<string, unknown>;
   const kind = typeof query.kind === 'string' ? query.kind : '';
-  if (!MEDIA_ASSET_KINDS.includes(kind as MediaAssetKind) || !Buffer.isBuffer(req.body)) return null;
+  if (!MEDIA_ASSET_KINDS.includes(kind as MediaAssetKind) || !Buffer.isBuffer(req.body))
+    return null;
   if (typeof query.assetId !== 'string' || typeof query.name !== 'string') return null;
   return {
     assetId: query.assetId,
@@ -63,7 +73,12 @@ function readIngestRequest(req: FastifyRequest) {
 function readStorageSource(value: unknown): MediaStorageSource | null {
   if (!value || typeof value !== 'object') return null;
   const source = value as Record<string, unknown>;
-  if (source.kind !== 'storage' || typeof source.bucket !== 'string' || typeof source.path !== 'string') return null;
+  if (
+    source.kind !== 'storage' ||
+    typeof source.bucket !== 'string' ||
+    typeof source.path !== 'string'
+  )
+    return null;
   return {
     kind: 'storage',
     bucket: source.bucket,

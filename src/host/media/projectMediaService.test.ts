@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'bun:test';
 import type { MediaStorageAdapter, StorageUploadInput } from '@ankhorage/contracts/storage';
+import { describe, expect, test } from 'bun:test';
 
 import { ProjectManager } from '../orchestrator/projectManager';
 import { createAuthoringMediaPath, ProjectMediaService } from './projectMediaService';
@@ -8,7 +8,10 @@ function createStorageAdapter(onUpload: (input: StorageUploadInput) => void): Me
   return {
     upload(input) {
       onUpload(input);
-      return Promise.resolve({ ok: true, data: { asset: { bucket: input.bucket, path: input.path } } });
+      return Promise.resolve({
+        ok: true,
+        data: { asset: { bucket: input.bucket, path: input.path } },
+      });
     },
     remove: () => Promise.resolve({ ok: true }),
     publicUrl: () => Promise.resolve({ ok: true, data: { publicUrl: 'https://example.test/a' } }),
@@ -16,7 +19,9 @@ function createStorageAdapter(onUpload: (input: StorageUploadInput) => void): Me
     resolve(input) {
       return Promise.resolve({
         ok: true,
-        data: { asset: { ...input, access: input.access ?? 'signed', url: 'https://signed.test/a' } },
+        data: {
+          asset: { ...input, access: input.access ?? 'signed', url: 'https://signed.test/a' },
+        },
       });
     },
   };

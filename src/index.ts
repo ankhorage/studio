@@ -22,9 +22,11 @@ export type {
 } from './moduleAdminContracts';
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
+import type { StudioMediaIngestResult, StudioMediaPickerSource } from './mediaPickerAuthoring';
 
 export * from './bindingAuthoringModel';
 export * from './mediaAuthoringModel';
+export * from './mediaPickerAuthoring';
 export type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -112,6 +114,7 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'listStudioMediaAssets',
   'createStudioMediaAssetReference',
   'removeStudioMediaAsset',
+  'StudioMediaPickerAdapter',
   'resolveStudioInstancePropertyGroups',
   'createStudioInstancePropertyPatch',
   'resolveStudioBindableProps',
@@ -376,6 +379,8 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
   upsertMediaAsset: (asset: MediaAsset) => void;
   removeMediaAsset: (mediaId: string) => boolean;
+  mediaPickerAvailable: boolean;
+  ingestMediaFromPicker: (source: StudioMediaPickerSource) => Promise<StudioMediaIngestResult>;
   updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
   updateDataSources: (dataSources: DataSourceRegistry) => void;
   upsertGeneratedApi: (

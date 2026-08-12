@@ -53,6 +53,14 @@ export function getRootLayoutImportRequirements(
     ...(includeStudio
       ? [
           {
+            source: '@ankhorage/expo-runtime/media-picker',
+            namedImports: [{ imported: 'createExpoMediaPickerAdapter' }],
+          },
+        ]
+      : []),
+    ...(includeStudio
+      ? [
+          {
             source: '@ankhorage/studio/runtime',
             namedImports: [
               { imported: 'createStudioActionSuppressionConfig' },
@@ -419,6 +427,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
+    includeStudio ? 'const studioMediaPicker = createExpoMediaPickerAdapter();' : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)
@@ -457,6 +466,7 @@ const shouldMountAppHeader =
         initialManifest={runtimeManifest}
         activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
         componentMeta={ZORA_COMPONENT_META}
+        mediaPicker={studioMediaPicker}
       >
         <StudioShell
           output={output}

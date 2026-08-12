@@ -1,4 +1,4 @@
-import { RuntimeRendererConfigProvider, type RuntimeRendererConfig } from '@ankhorage/runtime';
+import { type RuntimeRendererConfig, RuntimeRendererConfigProvider } from '@ankhorage/runtime';
 import React, { useMemo } from 'react';
 
 import { API_BASE } from '../core/constants';

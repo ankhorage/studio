@@ -1,10 +1,7 @@
 import type { MediaAsset, MediaAssetKind, MediaStorageSource } from '@ankhorage/contracts';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
-import {
-  resolveProjectMediaStorage,
-  type ProjectMediaStorageContext,
-} from './projectMediaStorage';
+import { type ProjectMediaStorageContext, resolveProjectMediaStorage } from './projectMediaStorage';
 
 export interface ProjectMediaIngestInput {
   readonly assetId: string;
@@ -89,7 +86,12 @@ export function createAuthoringMediaPath(assetId: string, fileName: string): str
 }
 
 function sanitizeSegment(value: string): string {
-  return value.trim().replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || 'media';
+  return (
+    value
+      .trim()
+      .replace(/[^A-Za-z0-9_-]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'media'
+  );
 }
 
 function sanitizeFileName(value: string): string {

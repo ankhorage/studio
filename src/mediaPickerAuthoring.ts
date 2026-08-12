@@ -19,11 +19,7 @@ export interface StudioMediaPickerSelection {
 }
 
 export type StudioMediaPickerFailureReason =
-  | 'cancelled'
-  | 'empty-selection'
-  | 'picker-failed'
-  | 'read-failed'
-  | 'unsupported-kind';
+  'cancelled' | 'empty-selection' | 'picker-failed' | 'read-failed' | 'unsupported-kind';
 
 export type StudioMediaPickerResult =
   | { readonly ok: true; readonly selection: StudioMediaPickerSelection }

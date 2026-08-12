@@ -24,7 +24,10 @@ export function MediaDeviceImportCard() {
       description="Selected local files are ingested through the trusted Studio host before entering the manifest."
     >
       <View style={styles.actions}>
-        <Button disabled={busy || !studio.mediaPickerAvailable} onPress={() => void importMedia('file')}>
+        <Button
+          disabled={busy || !studio.mediaPickerAvailable}
+          onPress={() => void importMedia('file')}
+        >
           Choose file
         </Button>
         <Button

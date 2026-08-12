@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.24.0",
+      "value": "v1.0.0",
       "color": "cb3837"
     },
     {
@@ -440,6 +440,12 @@
       "exports": ["API_BASE"]
     },
     {
+      "path": "src/core/mediaAuthoringHostClient.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/constants.ts", "src/mediaPickerAuthoring.ts"],
+      "exports": ["ingestStudioMediaSelection"]
+    },
+    {
       "path": "src/core/StudioContext.ts",
       "isEntrypoint": false,
       "dependencies": ["src/index.ts"],
@@ -514,6 +520,7 @@
       "dependencies": [
         "src/authSettings.ts",
         "src/core/constants.ts",
+        "src/core/mediaAuthoringHostClient.ts",
         "src/core/StudioContext.ts",
         "src/core/studioManifestDraftModel.ts",
         "src/core/studioManifestPersistenceModel.ts",
@@ -522,6 +529,7 @@
         "src/manifestState.ts",
         "src/manifestSync.ts",
         "src/mediaAuthoringModel.ts",
+        "src/mediaPickerAuthoring.ts",
         "src/routeUtils.ts",
         "src/studioSelectionModel.ts",
         "src/ui/admin/AuthAdminSession.tsx"
@@ -824,6 +832,15 @@
       "exports": ["registerProjectDataSourceRoutes"]
     },
     {
+      "path": "src/host/http/mediaRoutes.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/media/projectMediaService.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": ["registerProjectMediaRoutes"]
+    },
+    {
       "path": "src/host/http/moduleRoutes.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -859,6 +876,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/contractGuards.ts",
+        "src/host/http/mediaRoutes.ts",
         "src/host/http/moduleRoutes.ts",
         "src/host/http/security.ts",
         "src/host/orchestrator/infraSession.ts",
@@ -902,6 +920,7 @@
         "BunSupabaseVaultClient",
         "ConfigureOAuthProviderInput",
         "ConfigureOAuthProviderResult",
+        "createAuthoringMediaPath",
         "createBunSupabaseVaultClient",
         "createStudioHost",
         "CreateStudioHostOptions",
@@ -924,13 +943,18 @@
         "ProjectAuthHealthResult",
         "ProjectAuthHealthService",
         "ProjectManager",
+        "ProjectMediaIngestInput",
+        "ProjectMediaService",
+        "ProjectMediaStorageContext",
         "ProjectSecretService",
         "ProjectSecretServiceOptions",
         "ProjectStore",
         "ProjectSummary",
         "registerProjectAuthRoutes",
         "registerProjectDataSourceRoutes",
+        "registerProjectMediaRoutes",
         "registerProjectSecretRoutes",
+        "resolveProjectMediaStorage",
         "resolveProjectSecretDatabaseUrl",
         "resolveWorkspaceRoot",
         "startStudioHostServer",
@@ -1248,6 +1272,33 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["ManifestSystemTemplate"]
+    },
+    {
+      "path": "src/host/media/projectMediaService.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/media/projectMediaService.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/media/projectMediaService.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/media/projectMediaStorage.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": ["createAuthoringMediaPath", "ProjectMediaIngestInput", "ProjectMediaService"]
+    },
+    {
+      "path": "src/host/media/projectMediaStorage.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts"
+      ],
+      "exports": ["ProjectMediaStorageContext", "resolveProjectMediaStorage"]
     },
     {
       "path": "src/host/modules/adminRuntime.test.ts",
@@ -1643,7 +1694,7 @@
     {
       "path": "src/index.ts",
       "isEntrypoint": true,
-      "dependencies": ["src/authSettings.ts"],
+      "dependencies": ["src/authSettings.ts", "src/mediaPickerAuthoring.ts"],
       "exports": [
         "ACTION_REGISTRY",
         "ActionDefinition",
@@ -1752,6 +1803,13 @@
         "StudioInstancePropertyValue",
         "StudioManifest",
         "StudioMediaAssetRemovalResult",
+        "StudioMediaIngestResult",
+        "StudioMediaPickerAdapter",
+        "StudioMediaPickerFailureReason",
+        "StudioMediaPickerInput",
+        "StudioMediaPickerResult",
+        "StudioMediaPickerSelection",
+        "StudioMediaPickerSource",
         "StudioMediaUsage",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
@@ -1924,6 +1982,20 @@
         "StudioMediaUsage",
         "StudioUrlMediaAssetResult",
         "upsertStudioMediaAsset"
+      ]
+    },
+    {
+      "path": "src/mediaPickerAuthoring.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "StudioMediaIngestResult",
+        "StudioMediaPickerAdapter",
+        "StudioMediaPickerFailureReason",
+        "StudioMediaPickerInput",
+        "StudioMediaPickerResult",
+        "StudioMediaPickerSelection",
+        "StudioMediaPickerSource"
       ]
     },
     {
@@ -2275,6 +2347,13 @@
         "StudioInstancePropertyValue",
         "StudioManifest",
         "StudioMediaAssetRemovalResult",
+        "StudioMediaIngestResult",
+        "StudioMediaPickerAdapter",
+        "StudioMediaPickerFailureReason",
+        "StudioMediaPickerInput",
+        "StudioMediaPickerResult",
+        "StudioMediaPickerSelection",
+        "StudioMediaPickerSource",
         "StudioMediaUsage",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
@@ -2579,6 +2658,12 @@
         "StationarySelectionInputState",
         "StationaryTouchInput"
       ]
+    },
+    {
+      "path": "src/runtime/studioMediaResolver.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createStudioMediaAssetResolver"]
     },
     {
       "path": "src/runtime/useRuntimeAction.ts",
@@ -3173,9 +3258,16 @@
       "dependencies": [
         "src/core/StudioContext.ts",
         "src/mediaAuthoringModel.ts",
-        "src/ui/admin/adminPagePrimitives.tsx"
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/MediaDeviceImportCard.tsx"
       ],
       "exports": ["MediaAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/core/StudioContext.ts", "src/mediaPickerAuthoring.ts"],
+      "exports": ["MediaDeviceImportCard"]
     },
     {
       "path": "src/ui/admin/pages/MediaPropertyInput.tsx",
@@ -3478,7 +3570,11 @@
     {
       "path": "src/ui/AnkhStudio.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/core/StudioContext.ts"],
+      "dependencies": [
+        "src/core/constants.ts",
+        "src/core/StudioContext.ts",
+        "src/runtime/studioMediaResolver.ts"
+      ],
       "exports": ["AnkhStudio", "AnkhStudioProps"]
     },
     {
@@ -3613,7 +3709,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 413,
+        "line": 418,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3631,7 +3727,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 328,
+        "line": 331,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3773,7 +3869,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1355,
+        "line": 1360,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3805,7 +3901,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 731,
+        "line": 736,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3837,7 +3933,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 560,
+        "line": 565,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3983,7 +4079,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1274,
+        "line": 1279,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4269,7 +4365,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 577,
+        "line": 582,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4345,7 +4441,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 553,
+        "line": 558,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4377,7 +4473,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1200,
+        "line": 1205,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4409,7 +4505,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 306,
+        "line": 309,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4502,7 +4598,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 288,
+        "line": 291,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4542,7 +4638,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 265,
+        "line": 268,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4560,7 +4656,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 316,
+        "line": 319,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4578,7 +4674,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 294,
+        "line": 297,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4665,7 +4761,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 262,
+        "line": 265,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4683,7 +4779,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 263,
+        "line": 266,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4701,7 +4797,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 311,
+        "line": 314,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4795,7 +4891,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 993,
+        "line": 998,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4827,7 +4923,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 936,
+        "line": 941,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4874,7 +4970,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 943,
+        "line": 948,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4907,7 +5003,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 273,
+        "line": 276,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4961,7 +5057,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 281,
+        "line": 284,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5008,7 +5104,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 268,
+        "line": 271,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5048,7 +5144,7 @@
       "relatedSymbols": [],
       "signatures": [
         {
-          "label": "(manifest: AppManifest, mediaKinds?: readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined) => readonly MediaAsset[]",
+          "label": "(manifest: AppManifest, mediaKinds?: readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined) => readonly MediaAsset[]",
           "parameters": [
             {
               "name": "manifest",
@@ -5058,7 +5154,7 @@
             },
             {
               "name": "mediaKinds",
-              "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
+              "type": "readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined",
               "required": false,
               "description": null
             }
@@ -5079,7 +5175,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1129,
+        "line": 1134,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5111,7 +5207,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1020,
+        "line": 1025,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5158,7 +5254,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1027,
+        "line": 1032,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5191,7 +5287,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 223,
+        "line": 226,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5238,7 +5334,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 230,
+        "line": 233,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5256,7 +5352,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 243,
+        "line": 246,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5289,7 +5385,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 221,
+        "line": 224,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5307,7 +5403,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 255,
+        "line": 258,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5325,7 +5421,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 248,
+        "line": 251,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5833,7 +5929,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 617,
+        "line": 622,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6003,7 +6099,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 891,
+        "line": 896,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6035,7 +6131,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1397,
+        "line": 1402,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6067,7 +6163,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 830,
+        "line": 835,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6103,7 +6199,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1061,
+        "line": 1066,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6331,7 +6427,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1167,
+        "line": 1172,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6374,7 +6470,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 69,
+        "line": 71,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6392,7 +6488,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 61,
+        "line": 63,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6410,7 +6506,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 101,
+        "line": 103,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6428,7 +6524,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 320,
+        "line": 323,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6468,7 +6564,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 318,
+        "line": 321,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6486,7 +6582,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 326,
+        "line": 329,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6504,7 +6600,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 143,
+        "line": 146,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6522,7 +6618,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 187,
+        "line": 190,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6540,7 +6636,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 168,
+        "line": 171,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6654,7 +6750,7 @@
         {
           "name": "mediaKinds",
           "kind": "property",
-          "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
+          "type": "readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined",
           "required": false,
           "description": null
         },
@@ -6963,7 +7059,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 352,
+        "line": 355,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6981,7 +7077,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 336,
+        "line": 339,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7014,7 +7110,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 341,
+        "line": 344,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7061,7 +7157,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 348,
+        "line": 351,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7079,7 +7175,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 367,
+        "line": 370,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7088,6 +7184,8 @@
         "NodePlacement",
         "StudioAdminRouteId",
         "StudioComponentMetaRegistry",
+        "StudioMediaIngestResult",
+        "StudioMediaPickerSource",
         "StudioNodeId",
         "StudioPanelId",
         "StudioSaveStatus",
@@ -7195,6 +7293,13 @@
           "description": null
         },
         {
+          "name": "ingestMediaFromPicker",
+          "kind": "property",
+          "type": "(source: StudioMediaPickerSource) => Promise<StudioMediaIngestResult>",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "insertFromCatalogEntry",
           "kind": "property",
           "type": "(entry: InsertCatalogEntry) => boolean",
@@ -7219,6 +7324,13 @@
           "name": "manifest",
           "kind": "property",
           "type": "AppManifest | null",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "mediaPickerAvailable",
+          "kind": "property",
+          "type": "boolean",
           "required": true,
           "description": null
         },
@@ -7444,7 +7556,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 360,
+        "line": 363,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7462,7 +7574,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 350,
+        "line": 353,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7543,7 +7655,7 @@
         {
           "name": "mediaKinds",
           "kind": "property",
-          "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
+          "type": "readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined",
           "required": false,
           "description": null
         },
@@ -7638,7 +7750,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 196,
+        "line": 199,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7657,6 +7769,212 @@
       "sourceLocation": {
         "filePath": "src/mediaAuthoringModel.ts",
         "line": 16,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaIngestResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 32,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerAdapter",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 28,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaPickerInput", "StudioMediaPickerResult"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "pick",
+          "kind": "method",
+          "type": "(input: StudioMediaPickerInput) => Promise<StudioMediaPickerResult>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerFailureReason",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 21,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerInput",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 5,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaPickerSource"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "mediaKinds",
+          "kind": "property",
+          "type": "readonly (\"file\" | \"image\" | \"audio\" | \"video\" | \"font\")[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "source",
+          "kind": "property",
+          "type": "StudioMediaPickerSource",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 24,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerSelection",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "body",
+          "kind": "property",
+          "type": "Uint8Array",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "contentType",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "durationMs",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "height",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "kind",
+          "kind": "property",
+          "type": "\"file\" | \"image\" | \"audio\" | \"video\" | \"font\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "sizeBytes",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "width",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaPickerSource",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaPickerAuthoring.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaPickerAuthoring.ts",
+        "line": 3,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7826,7 +8144,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 139,
+        "line": 142,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8022,7 +8340,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 137,
+        "line": 140,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8040,7 +8358,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 63,
+        "line": 65,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8080,7 +8398,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 142,
+        "line": 145,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8098,7 +8416,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 135,
+        "line": 138,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8205,7 +8523,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 133,
+        "line": 136,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8223,7 +8541,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 141,
+        "line": 144,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8241,7 +8559,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 138,
+        "line": 141,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8259,7 +8577,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 203,
+        "line": 206,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8313,7 +8631,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 136,
+        "line": 139,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8331,7 +8649,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 211,
+        "line": 214,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8583,7 +8901,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 198,
+        "line": 201,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8601,7 +8919,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 505,
+        "line": 510,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8619,7 +8937,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 589,
+        "line": 594,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8751,7 +9069,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1217,
+        "line": 1222,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8789,7 +9107,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 743,
+        "line": 748,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -10040,6 +10358,33 @@
       }
     },
     {
+      "name": "ingestStudioMediaSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/mediaAuthoringHostClient.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "createIngestQuery",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/mediaAuthoringHostClient.ts",
+        "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "appendQuery",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/core/mediaAuthoringHostClient.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
       "name": "useStudio",
       "description": null,
       "sourceLocation": {
@@ -10143,7 +10488,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 77,
+        "line": 88,
         "column": 7
       }
     },
@@ -10152,7 +10497,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 80,
+        "line": 91,
         "column": 14
       }
     },
@@ -10161,7 +10506,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 491,
+        "line": 527,
         "column": 1
       }
     },
@@ -10170,7 +10515,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 604,
+        "line": 640,
         "column": 1
       }
     },
@@ -10179,7 +10524,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 611,
+        "line": 647,
         "column": 1
       }
     },
@@ -10188,7 +10533,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 621,
+        "line": 657,
         "column": 1
       }
     },
@@ -10197,7 +10542,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 629,
+        "line": 665,
         "column": 1
       }
     },
@@ -10206,7 +10551,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 636,
+        "line": 672,
         "column": 1
       }
     },
@@ -11777,6 +12122,60 @@
       }
     },
     {
+      "name": "registerProjectMediaRoutes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "readIngestRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStorageSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "readNumber",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "readErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/mediaRoutes.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
       "name": "createAdminOnlyManager",
       "description": null,
       "sourceLocation": {
@@ -11916,7 +12315,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 426,
+        "line": 381,
         "column": 1
       }
     },
@@ -11925,7 +12324,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 440,
+        "line": 395,
         "column": 1
       }
     },
@@ -12798,7 +13197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 69,
+        "line": 77,
         "column": 1
       }
     },
@@ -12807,7 +13206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 73,
+        "line": 81,
         "column": 1
       }
     },
@@ -12816,7 +13215,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/rootLayout.ts",
-        "line": 80,
+        "line": 88,
         "column": 1
       }
     },
@@ -12898,6 +13297,51 @@
       "sourceLocation": {
         "filePath": "src/host/manifestSystem/index.ts",
         "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStorageAdapter",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/media/projectMediaService.test.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthoringMediaPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/media/projectMediaService.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "sanitizeSegment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/media/projectMediaService.ts",
+        "line": 88,
+        "column": 1
+      }
+    },
+    {
+      "name": "sanitizeFileName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/media/projectMediaService.ts",
+        "line": 97,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectMediaStorage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/media/projectMediaStorage.ts",
+        "line": 13,
         "column": 1
       }
     },
@@ -13509,7 +13953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 98,
+        "line": 102,
         "column": 1
       }
     },
@@ -13518,7 +13962,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 106,
+        "line": 110,
         "column": 1
       }
     },
@@ -13527,7 +13971,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 148,
+        "line": 152,
         "column": 1
       }
     },
@@ -13536,7 +13980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 162,
+        "line": 166,
         "column": 1
       }
     },
@@ -13545,7 +13989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 175,
+        "line": 179,
         "column": 1
       }
     },
@@ -13554,7 +13998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 197,
+        "line": 201,
         "column": 1
       }
     },
@@ -13563,7 +14007,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 207,
+        "line": 211,
         "column": 1
       }
     },
@@ -13572,7 +14016,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 211,
+        "line": 215,
         "column": 1
       }
     },
@@ -13581,7 +14025,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 216,
+        "line": 220,
         "column": 1
       }
     },
@@ -13590,7 +14034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 230,
+        "line": 234,
         "column": 1
       }
     },
@@ -13599,7 +14043,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 266,
+        "line": 270,
         "column": 1
       }
     },
@@ -13608,7 +14052,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 274,
+        "line": 278,
         "column": 1
       }
     },
@@ -13617,7 +14061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 298,
+        "line": 302,
         "column": 1
       }
     },
@@ -13626,7 +14070,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 393,
+        "line": 401,
         "column": 1
       }
     },
@@ -13635,7 +14079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 417,
+        "line": 425,
         "column": 1
       }
     },
@@ -13644,7 +14088,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 422,
+        "line": 430,
         "column": 1
       }
     },
@@ -13653,7 +14097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 427,
+        "line": 435,
         "column": 1
       }
     },
@@ -14391,7 +14835,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 553,
+        "line": 558,
         "column": 14
       }
     },
@@ -14400,7 +14844,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 560,
+        "line": 565,
         "column": 14
       }
     },
@@ -14409,7 +14853,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 577,
+        "line": 582,
         "column": 14
       }
     },
@@ -14418,7 +14862,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 589,
+        "line": 594,
         "column": 14
       }
     },
@@ -14427,7 +14871,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 617,
+        "line": 622,
         "column": 14
       }
     },
@@ -14436,7 +14880,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 641,
+        "line": 646,
         "column": 1
       }
     },
@@ -14445,7 +14889,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 646,
+        "line": 651,
         "column": 9
       }
     },
@@ -14454,7 +14898,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 665,
+        "line": 670,
         "column": 1
       }
     },
@@ -14463,7 +14907,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 676,
+        "line": 681,
         "column": 1
       }
     },
@@ -14472,7 +14916,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 731,
+        "line": 736,
         "column": 1
       }
     },
@@ -14481,7 +14925,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 743,
+        "line": 748,
         "column": 1
       }
     },
@@ -14490,7 +14934,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 830,
+        "line": 835,
         "column": 1
       }
     },
@@ -14499,7 +14943,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 891,
+        "line": 896,
         "column": 1
       }
     },
@@ -14508,7 +14952,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 948,
+        "line": 953,
         "column": 1
       }
     },
@@ -14517,7 +14961,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 993,
+        "line": 998,
         "column": 1
       }
     },
@@ -14526,7 +14970,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1032,
+        "line": 1037,
         "column": 1
       }
     },
@@ -14535,7 +14979,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1061,
+        "line": 1066,
         "column": 1
       }
     },
@@ -14544,7 +14988,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1129,
+        "line": 1134,
         "column": 1
       }
     },
@@ -14553,7 +14997,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1200,
+        "line": 1205,
         "column": 1
       }
     },
@@ -14562,7 +15006,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1204,
+        "line": 1209,
         "column": 1
       }
     },
@@ -14571,7 +15015,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1209,
+        "line": 1214,
         "column": 1
       }
     },
@@ -14580,7 +15024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1217,
+        "line": 1222,
         "column": 1
       }
     },
@@ -14589,7 +15033,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1221,
+        "line": 1226,
         "column": 9
       }
     },
@@ -14598,7 +15042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1254,
+        "line": 1259,
         "column": 1
       }
     },
@@ -14607,7 +15051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1259,
+        "line": 1264,
         "column": 9
       }
     },
@@ -14616,7 +15060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1274,
+        "line": 1279,
         "column": 1
       }
     },
@@ -14625,7 +15069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1294,
+        "line": 1299,
         "column": 1
       }
     },
@@ -14634,7 +15078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1317,
+        "line": 1322,
         "column": 1
       }
     },
@@ -14643,7 +15087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1355,
+        "line": 1360,
         "column": 1
       }
     },
@@ -14652,7 +15096,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1381,
+        "line": 1386,
         "column": 1
       }
     },
@@ -14661,7 +15105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1397,
+        "line": 1402,
         "column": 1
       }
     },
@@ -14670,7 +15114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1446,
+        "line": 1451,
         "column": 1
       }
     },
@@ -17006,6 +17450,24 @@
       }
     },
     {
+      "name": "createStudioMediaAssetResolver",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/studioMediaResolver.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioMediaAsset",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/runtime/studioMediaResolver.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
       "name": "useRuntimeAction",
       "description": null,
       "sourceLocation": {
@@ -18720,7 +19182,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
-        "line": 20,
+        "line": 21,
         "column": 1
       }
     },
@@ -18729,7 +19191,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
-        "line": 42,
+        "line": 43,
         "column": 9
       }
     },
@@ -18738,7 +19200,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
-        "line": 105,
+        "line": 106,
         "column": 1
       }
     },
@@ -18747,8 +19209,26 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
-        "line": 141,
+        "line": 142,
         "column": 1
+      }
+    },
+    {
+      "name": "MediaDeviceImportCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "importMedia",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "line": 13,
+        "column": 9
       }
     },
     {
@@ -19710,7 +20190,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhStudio.ts",
-        "line": 11,
+        "line": 14,
         "column": 14
       }
     },
@@ -20531,6 +21011,11 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/mediaPickerAuthoring.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/index.ts"
       },
@@ -21040,6 +21525,16 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
+        "fromPath": "src/core/mediaAuthoringHostClient.ts",
+        "toPath": "src/mediaPickerAuthoring.ts",
+        "sourcePath": "src/core/mediaAuthoringHostClient.ts"
+      },
+      {
+        "fromPath": "src/core/mediaAuthoringHostClient.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/core/mediaAuthoringHostClient.ts"
+      },
+      {
         "fromPath": "src/core/StudioContext.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/core/StudioContext.ts"
@@ -21131,6 +21626,11 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/mediaPickerAuthoring.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/routeUtils.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
@@ -21147,6 +21647,11 @@
       {
         "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/core/constants.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/core/mediaAuthoringHostClient.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -21341,6 +21846,11 @@
       },
       {
         "fromPath": "src/host/index.ts",
+        "toPath": "src/host/http/mediaRoutes.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
         "toPath": "src/host/http/secretRoutes.ts",
         "sourcePath": "src/host/index.ts"
       },
@@ -21357,6 +21867,16 @@
       {
         "fromPath": "src/host/index.ts",
         "toPath": "src/host/http/serverWithSecrets.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/media/projectMediaService.ts",
+        "sourcePath": "src/host/index.ts"
+      },
+      {
+        "fromPath": "src/host/index.ts",
+        "toPath": "src/host/media/projectMediaStorage.ts",
         "sourcePath": "src/host/index.ts"
       },
       {
@@ -21601,7 +22121,17 @@
       },
       {
         "fromPath": "src/ui/AnkhStudio.ts",
+        "toPath": "src/core/constants.ts",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromPath": "src/ui/AnkhStudio.ts",
         "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromPath": "src/ui/AnkhStudio.ts",
+        "toPath": "src/runtime/studioMediaResolver.ts",
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
@@ -21880,6 +22410,16 @@
         "sourcePath": "src/host/http/dataSourceRoutes.ts"
       },
       {
+        "fromPath": "src/host/http/mediaRoutes.ts",
+        "toPath": "src/host/media/projectMediaService.ts",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromPath": "src/host/http/mediaRoutes.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
         "fromPath": "src/host/http/moduleRoutes.test.ts",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/host/http/moduleRoutes.test.ts"
@@ -21957,6 +22497,11 @@
       {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/utils/workspaceRoot.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/http/mediaRoutes.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -22103,6 +22648,36 @@
         "fromPath": "src/host/manifestSystem/index.ts",
         "toPath": "src/host/manifestSystem/types.ts",
         "sourcePath": "src/host/manifestSystem/index.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaService.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaService.test.ts",
+        "toPath": "src/host/media/projectMediaService.ts",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaService.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaService.ts",
+        "toPath": "src/host/media/projectMediaStorage.ts",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaStorage.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
+      },
+      {
+        "fromPath": "src/host/media/projectMediaStorage.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
       },
       {
         "fromPath": "src/host/modules/adminRuntime.test.ts",
@@ -23188,6 +23763,21 @@
         "fromPath": "src/ui/admin/pages/MediaAdminPage.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "toPath": "src/mediaPickerAuthoring.ts",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/MediaPropertyInput.tsx",
@@ -29339,6 +29929,18 @@
         "sourcePath": "src/core/constants.ts"
       },
       {
+        "fromSymbol": "ingestStudioMediaSelection",
+        "toSymbol": "createIngestQuery",
+        "callExpression": "createIngestQuery",
+        "sourcePath": "src/core/mediaAuthoringHostClient.ts"
+      },
+      {
+        "fromSymbol": "createIngestQuery",
+        "toSymbol": "appendQuery",
+        "callExpression": "appendQuery",
+        "sourcePath": "src/core/mediaAuthoringHostClient.ts"
+      },
+      {
         "fromSymbol": "src/core/StudioContext.ts",
         "toSymbol": "createContext",
         "callExpression": "createContext",
@@ -29708,6 +30310,30 @@
         "fromSymbol": "src/core/StudioProvider.ts",
         "toSymbol": "removeStudioMediaAsset",
         "callExpression": "removeStudioMediaAsset",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "pick",
+        "callExpression": "mediaPicker.pick",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "createStudioMediaAssetId",
+        "callExpression": "createStudioMediaAssetId",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "ingestStudioMediaSelection",
+        "callExpression": "ingestStudioMediaSelection",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "upsertMediaAsset",
+        "callExpression": "upsertMediaAsset",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -34271,6 +34897,12 @@
         "sourcePath": "src/runtime/stationarySelectionInputState.ts"
       },
       {
+        "fromSymbol": "src/runtime/studioMediaResolver.ts",
+        "toSymbol": "resolveStudioMediaAsset",
+        "callExpression": "resolveStudioMediaAsset",
+        "sourcePath": "src/runtime/studioMediaResolver.ts"
+      },
+      {
         "fromSymbol": "useRuntimeAction",
         "toSymbol": "useRouter",
         "callExpression": "useRouter",
@@ -34310,6 +34942,18 @@
         "fromSymbol": "AnkhStudio",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromSymbol": "AnkhStudio",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/AnkhStudio.ts"
+      },
+      {
+        "fromSymbol": "src/ui/AnkhStudio.ts",
+        "toSymbol": "createStudioMediaAssetResolver",
+        "callExpression": "createStudioMediaAssetResolver",
         "sourcePath": "src/ui/AnkhStudio.ts"
       },
       {
@@ -35429,6 +36073,54 @@
         "sourcePath": "src/host/http/dataSourceRoutes.ts"
       },
       {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "done",
+        "callExpression": "done",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "readIngestRequest",
+        "callExpression": "readIngestRequest",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "ingest",
+        "callExpression": "service.ingest",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "readErrorMessage",
+        "callExpression": "readErrorMessage",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "readStorageSource",
+        "callExpression": "readStorageSource",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/mediaRoutes.ts",
+        "toSymbol": "resolve",
+        "callExpression": "service.resolve",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "readIngestRequest",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
+        "fromSymbol": "readIngestRequest",
+        "toSymbol": "readNumber",
+        "callExpression": "readNumber",
+        "sourcePath": "src/host/http/mediaRoutes.ts"
+      },
+      {
         "fromSymbol": "src/host/http/moduleRoutes.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -35645,6 +36337,12 @@
         "sourcePath": "src/host/http/server.ts"
       },
       {
+        "fromSymbol": "createStudioHostServer",
+        "toSymbol": "registerProjectMediaRoutes",
+        "callExpression": "registerProjectMediaRoutes",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
         "fromSymbol": "src/host/http/server.ts",
         "toSymbol": "listProjects",
         "callExpression": "projectManager.listProjects",
@@ -35744,12 +36442,6 @@
         "fromSymbol": "src/host/http/server.ts",
         "toSymbol": "getProjectManifest",
         "callExpression": "projectManager.getProjectManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "readProjectInfrastructureEnvironment",
-        "callExpression": "readProjectInfrastructureEnvironment",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -36429,6 +37121,120 @@
         "toSymbol": "mergeScreenRequirements",
         "callExpression": "mergeScreenRequirements",
         "sourcePath": "src/host/manifestSystem/index.ts"
+      },
+      {
+        "fromSymbol": "upload",
+        "toSymbol": "onUpload",
+        "callExpression": "onUpload",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "createStorageAdapter",
+        "callExpression": "createStorageAdapter",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "ingest",
+        "callExpression": "service.ingest",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "resolve",
+        "callExpression": "service.resolve",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/media/projectMediaService.test.ts",
+        "toSymbol": "createAuthoringMediaPath",
+        "callExpression": "createAuthoringMediaPath",
+        "sourcePath": "src/host/media/projectMediaService.test.ts"
+      },
+      {
+        "fromSymbol": "ingest",
+        "toSymbol": "getStorage",
+        "callExpression": "this.getStorage",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "ingest",
+        "toSymbol": "createAuthoringMediaPath",
+        "callExpression": "createAuthoringMediaPath",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "resolve",
+        "toSymbol": "getStorage",
+        "callExpression": "this.getStorage",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "getStorage",
+        "toSymbol": "resolveStorage",
+        "callExpression": "this.resolveStorage",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "createAuthoringMediaPath",
+        "toSymbol": "sanitizeSegment",
+        "callExpression": "sanitizeSegment",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "createAuthoringMediaPath",
+        "toSymbol": "sanitizeFileName",
+        "callExpression": "sanitizeFileName",
+        "sourcePath": "src/host/media/projectMediaService.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectMediaStorage",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "args.projectManager.getProjectManifest",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectMediaStorage",
+        "toSymbol": "getInfrastructureStatus",
+        "callExpression": "args.projectManager.getInfrastructureStatus",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectMediaStorage",
+        "toSymbol": "readProjectInfrastructureEnvironment",
+        "callExpression": "readProjectInfrastructureEnvironment",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectMediaStorage",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectMediaStorage",
+        "toSymbol": "createContractsSupabaseStorageAdapter",
+        "callExpression": "createContractsSupabaseStorageAdapter",
+        "sourcePath": "src/host/media/projectMediaStorage.ts"
       },
       {
         "fromSymbol": "src/host/modules/adminRuntime.test.ts",
@@ -42449,6 +43255,42 @@
         "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
       },
       {
+        "fromSymbol": "MediaDeviceImportCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromSymbol": "MediaDeviceImportCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromSymbol": "importMedia",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromSymbol": "importMedia",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromSymbol": "importMedia",
+        "toSymbol": "ingestMediaFromPicker",
+        "callExpression": "studio.ingestMediaFromPicker",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/MediaDeviceImportCard.tsx",
+        "toSymbol": "importMedia",
+        "callExpression": "importMedia",
+        "sourcePath": "src/ui/admin/pages/MediaDeviceImportCard.tsx"
+      },
+      {
         "fromSymbol": "MediaPropertyInput",
         "toSymbol": "useRouter",
         "callExpression": "useRouter",
@@ -44967,6 +45809,16 @@
       },
       {
         "fromSymbol": "StudioContextValue",
+        "toType": "StudioMediaIngestResult",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
+        "toType": "StudioMediaPickerSource",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
         "toType": "StudioNodeId",
         "sourcePath": "src/index.ts"
       },
@@ -45379,6 +46231,26 @@
         "fromSymbol": "removeStudioMediaAsset",
         "toType": "StudioMediaAssetRemovalResult",
         "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "StudioMediaPickerInput",
+        "toType": "StudioMediaPickerSource",
+        "sourcePath": "src/mediaPickerAuthoring.ts"
+      },
+      {
+        "fromSymbol": "StudioMediaPickerSelection",
+        "toType": "Uint8Array",
+        "sourcePath": "src/mediaPickerAuthoring.ts"
+      },
+      {
+        "fromSymbol": "StudioMediaPickerAdapter",
+        "toType": "StudioMediaPickerInput",
+        "sourcePath": "src/mediaPickerAuthoring.ts"
+      },
+      {
+        "fromSymbol": "StudioMediaPickerAdapter",
+        "toType": "StudioMediaPickerResult",
+        "sourcePath": "src/mediaPickerAuthoring.ts"
       },
       {
         "fromSymbol": "resolveStudioInstancePropertyFields",

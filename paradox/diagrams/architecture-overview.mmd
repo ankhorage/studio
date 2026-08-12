@@ -139,6 +139,10 @@ graph TD
   package__ankhorage_studio -.-> module_src_contractGuards_ts
   module_src_core_constants_ts["src/core/constants.ts"]
   package__ankhorage_studio -.-> module_src_core_constants_ts
+  module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
+  package__ankhorage_studio -.-> module_src_core_mediaAuthoringHostClient_ts
+  module_src_core_mediaAuthoringHostClient_ts --> module_src_core_constants_ts
+  module_src_core_mediaAuthoringHostClient_ts --> module_src_mediaPickerAuthoring_ts
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
   package__ankhorage_studio -.-> module_src_core_StudioContext_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
@@ -169,6 +173,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_core_StudioProvider_ts
   module_src_core_StudioProvider_ts --> module_src_authSettings_ts
   module_src_core_StudioProvider_ts --> module_src_core_constants_ts
+  module_src_core_StudioProvider_ts --> module_src_core_mediaAuthoringHostClient_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestDraftModel_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
@@ -177,6 +182,7 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_manifestState_ts
   module_src_core_StudioProvider_ts --> module_src_manifestSync_ts
   module_src_core_StudioProvider_ts --> module_src_mediaAuthoringModel_ts
+  module_src_core_StudioProvider_ts --> module_src_mediaPickerAuthoring_ts
   module_src_core_StudioProvider_ts --> module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --> module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
@@ -312,6 +318,10 @@ graph TD
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_dataSources_studioExternalApiService_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_http_mediaRoutes_ts["src/host/http/mediaRoutes.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_mediaRoutes_ts
+  module_src_host_http_mediaRoutes_ts --> module_src_host_media_projectMediaService_ts
+  module_src_host_http_mediaRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
   package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_test_ts
   module_src_host_http_moduleRoutes_test_ts --> module_src_host_http_moduleRoutes_ts
@@ -329,6 +339,7 @@ graph TD
   module_src_host_http_server_ts["src/host/http/server.ts"]
   package__ankhorage_studio -.-> module_src_host_http_server_ts
   module_src_host_http_server_ts --> module_src_contractGuards_ts
+  module_src_host_http_server_ts --> module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_moduleRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_infraSession_ts
@@ -480,6 +491,18 @@ graph TD
   module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
   package__ankhorage_studio -.-> module_src_host_manifestSystem_types_ts
+  module_src_host_media_projectMediaService_test_ts["src/host/media/projectMediaService.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectMediaService_test_ts
+  module_src_host_media_projectMediaService_test_ts --> module_src_host_media_projectMediaService_ts
+  module_src_host_media_projectMediaService_test_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_media_projectMediaService_ts["src/host/media/projectMediaService.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectMediaService_ts
+  module_src_host_media_projectMediaService_ts --> module_src_host_media_projectMediaStorage_ts
+  module_src_host_media_projectMediaService_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_media_projectMediaStorage_ts["src/host/media/projectMediaStorage.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectMediaStorage_ts
+  module_src_host_media_projectMediaStorage_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_media_projectMediaStorage_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_modules_adminRuntime_test_ts["src/host/modules/adminRuntime.test.ts"]
   package__ankhorage_studio -.-> module_src_host_modules_adminRuntime_test_ts
   module_src_host_modules_adminRuntime_test_ts --> module_src_host_modules_adminRuntime_ts
@@ -648,6 +671,7 @@ graph TD
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts["src/index.ts"]
   module_src_index_ts --> module_src_authSettings_ts
+  module_src_index_ts --> module_src_mediaPickerAuthoring_ts
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_insertModalModel_public_test_ts
   module_src_insertModalModel_public_test_ts --> module_src_index_ts
@@ -686,6 +710,8 @@ graph TD
   module_src_mediaAuthoringModel_test_ts --> module_src_mediaAuthoringModel_ts
   module_src_mediaAuthoringModel_ts["src/mediaAuthoringModel.ts"]
   package__ankhorage_studio -.-> module_src_mediaAuthoringModel_ts
+  module_src_mediaPickerAuthoring_ts["src/mediaPickerAuthoring.ts"]
+  package__ankhorage_studio -.-> module_src_mediaPickerAuthoring_ts
   module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
   package__ankhorage_studio -.-> module_src_moduleAdmin_public_test_ts
   module_src_moduleAdmin_public_test_ts --> module_src_index_ts
@@ -827,6 +853,8 @@ graph TD
   module_src_runtime_stationarySelectionInputState_test_ts --> module_src_runtime_stationarySelectionInputState_ts
   module_src_runtime_stationarySelectionInputState_ts["src/runtime/stationarySelectionInputState.ts"]
   package__ankhorage_studio -.-> module_src_runtime_stationarySelectionInputState_ts
+  module_src_runtime_studioMediaResolver_ts["src/runtime/studioMediaResolver.ts"]
+  package__ankhorage_studio -.-> module_src_runtime_studioMediaResolver_ts
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   package__ankhorage_studio -.-> module_src_runtime_useRuntimeAction_ts
   module_src_runtime_useRuntimeAction_ts --> module_src_runtime_runtimeActions_ts
@@ -1085,6 +1113,11 @@ graph TD
   module_src_ui_admin_pages_MediaAdminPage_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_MediaAdminPage_tsx --> module_src_mediaAuthoringModel_ts
   module_src_ui_admin_pages_MediaAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_MediaAdminPage_tsx --> module_src_ui_admin_pages_MediaDeviceImportCard_tsx
+  module_src_ui_admin_pages_MediaDeviceImportCard_tsx["src/ui/admin/pages/MediaDeviceImportCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_MediaDeviceImportCard_tsx
+  module_src_ui_admin_pages_MediaDeviceImportCard_tsx --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_MediaDeviceImportCard_tsx --> module_src_mediaPickerAuthoring_ts
   module_src_ui_admin_pages_MediaPropertyInput_tsx["src/ui/admin/pages/MediaPropertyInput.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_MediaPropertyInput_tsx
   module_src_ui_admin_pages_MediaPropertyInput_tsx --> module_src_mediaAuthoringModel_ts
@@ -1236,7 +1269,9 @@ graph TD
   module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
+  module_src_ui_AnkhStudio_ts --> module_src_core_constants_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts
+  module_src_ui_AnkhStudio_ts --> module_src_runtime_studioMediaResolver_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts["src/ui/canvas/canvasDndInteraction.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_canvas_canvasDndInteraction_test_ts
   module_src_ui_canvas_canvasDndInteraction_test_ts --> module_src_canvasDropZones_ts
