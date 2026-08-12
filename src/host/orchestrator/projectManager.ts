@@ -183,30 +183,21 @@ export class ProjectManager {
     const { projectId, mutations, includeStudio } = args;
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-    const normalizedManifest = applySystemTemplates(manifest);
-    const canonicalManifest =
-      normalizedManifest === manifest
-        ? manifest
-        : await this.store.writeManifest(projectId, normalizedManifest);
     const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);
-    const runtimePlan = resolveExpoRuntimePlan(canonicalManifest);
+    const runtimePlan = resolveExpoRuntimePlan(manifest);
 
     await this.syncProjectScaffold(
       projectPath,
       projectId,
-      canonicalManifest,
+      manifest,
       resolvedIncludeStudio,
       runtimePlan,
     );
-    await this.writeGeneratedFiles(projectPath, canonicalManifest, mutations, {
+    await this.writeGeneratedFiles(projectPath, manifest, mutations, {
       includeStudio: resolvedIncludeStudio,
       runtimePlan,
     });
-    await syncProjectInfrastructure({
-      projectId,
-      projectPath,
-      manifest: canonicalManifest,
-    });
+    await syncProjectInfrastructure({ projectId, projectPath, manifest });
     return { success: true };
   }
 
