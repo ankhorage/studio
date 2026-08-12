@@ -4,6 +4,7 @@ import type {
   DataSourceDiagnostic,
   DataSourceRegistry,
   GeneratedApiDefinition,
+  MediaAsset,
   NavigatorType,
   UiNode,
 } from '@ankhorage/contracts';
@@ -45,6 +46,7 @@ import {
   setStudioManifestRoutePrimaryNavigationVisibility,
 } from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
+import { removeStudioMediaAsset, upsertStudioMediaAsset } from '../mediaAuthoringModel';
 import { resolveScreenIdForPathname } from '../routeUtils';
 import {
   resolveStudioSelectedNodeId,
@@ -152,6 +154,26 @@ export const StudioProvider = ({
   const updateNode = useCallback(
     (nodeId: StudioNodeId, props: Record<string, unknown>) => {
       updateManifest((current) => updateStudioManifestDraftNode(current, nodeId, props));
+    },
+    [updateManifest],
+  );
+
+  const upsertMediaAsset = useCallback(
+    (asset: MediaAsset) => {
+      updateManifest((current) => upsertStudioMediaAsset(current, asset));
+    },
+    [updateManifest],
+  );
+
+  const removeMediaAsset = useCallback(
+    (mediaId: string): boolean => {
+      let removed = false;
+      updateManifest((current) => {
+        const result = removeStudioMediaAsset(current, mediaId);
+        removed = result.ok;
+        return result.ok ? result.manifest : current;
+      });
+      return removed;
     },
     [updateManifest],
   );
@@ -389,6 +411,8 @@ export const StudioProvider = ({
       setLastNonAdminLocation,
       setActiveCanvasDragNodeId,
       updateNode,
+      upsertMediaAsset,
+      removeMediaAsset,
       updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
@@ -434,6 +458,8 @@ export const StudioProvider = ({
       selectedNodeId,
       updateManifest,
       updateNode,
+      upsertMediaAsset,
+      removeMediaAsset,
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,

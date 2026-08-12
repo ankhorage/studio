@@ -12,6 +12,7 @@ import {
   type StudioInstancePropertyValue,
 } from '../../../propertiesAuthoringModel';
 import { AdminHeader, AdminScroll, Field, Input, KeyValue } from '../adminPagePrimitives';
+import { MediaPropertyInput } from './MediaPropertyInput';
 
 export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null }) {
   const studio = useStudio();
@@ -80,6 +81,7 @@ function InstancePropertyEditor(props: {
   readonly onChange: (value: StudioInstancePropertyValue | undefined) => void;
 }) {
   const { field, onChange } = props;
+  const studio = useStudio();
 
   return (
     <Field label={field.label}>
@@ -91,6 +93,9 @@ function InstancePropertyEditor(props: {
         <BooleanPropertyInput field={field} onChange={onChange} />
       ) : null}
       {field.editor === 'choice' ? <ChoicePropertyInput field={field} onChange={onChange} /> : null}
+      {field.editor === 'media' && studio.manifest ? (
+        <MediaPropertyInput field={field} manifest={studio.manifest} onChange={onChange} />
+      ) : null}
       {field.editor === 'unsupported' ? (
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           This instance property requires a dedicated editor that is not available yet.
@@ -173,6 +178,7 @@ function ChoicePropertyInput(props: {
   readonly onChange: (value: string | number) => void;
 }) {
   const { field, onChange } = props;
+  const studio = useStudio();
 
   return (
     <View style={styles.choiceRow}>

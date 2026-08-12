@@ -31,7 +31,10 @@ export function MediaAdminPage() {
   if (!studio.manifest) {
     return (
       <AdminScroll>
-        <AdminHeader title="Media" description="The app media pool is available after the manifest loads." />
+        <AdminHeader
+          title="Media"
+          description="The app media pool is available after the manifest loads."
+        />
       </AdminScroll>
     );
   }
@@ -55,7 +58,10 @@ export function MediaAdminPage() {
         title="Media"
         description="Canonical app-authoring media. Runtime user uploads are intentionally not shown here."
       />
-      <Card title="Import external URL" description="The URL remains remote and is stored as a stable media source.">
+      <Card
+        title="Import external URL"
+        description="The URL remains remote and is stored as a stable media source."
+      >
         <View style={styles.formStack}>
           <Field label="Name">
             <Input value={name} placeholder="Hero image" onChangeText={setName} />
@@ -64,16 +70,28 @@ export function MediaAdminPage() {
             <Select value={kind} options={MEDIA_KIND_OPTIONS} onValueChange={setKind} />
           </Field>
           <Field label="HTTP(S) URL">
-            <Input value={url} placeholder="https://…" onChangeText={setUrl} autoCapitalize="none" />
+            <Input
+              value={url}
+              placeholder="https://…"
+              onChangeText={setUrl}
+              autoCapitalize="none"
+            />
           </Field>
-          {error ? <Text color="danger" variant="bodySmall">{error}</Text> : null}
-          <Button disabled={!url.trim()} onPress={importUrl}>Import URL</Button>
+          {error ? (
+            <Text color="danger" variant="bodySmall">
+              {error}
+            </Text>
+          ) : null}
+          <Button disabled={!url.trim()} onPress={importUrl}>
+            Import URL
+          </Button>
         </View>
       </Card>
       {assets.length === 0 ? (
         <Card title="No media yet">
           <Text color="neutral" emphasis="muted">
-            Import a stable URL now. Upload and device/photo-library ingestion are added through the trusted host/platform boundary next.
+            Import a stable URL now. Upload and device/photo-library ingestion are added through the
+            trusted host/platform boundary next.
           </Text>
         </Card>
       ) : null}
@@ -94,12 +112,19 @@ function MediaAssetCard({ asset }: { readonly asset: MediaAsset }) {
         <KeyValue label="ID" value={asset.id} />
         <KeyValue label="Kind" value={asset.kind} />
         {asset.contentType ? <KeyValue label="Content type" value={asset.contentType} /> : null}
-        {metadata?.sizeBytes !== undefined ? <KeyValue label="Size" value={`${metadata.sizeBytes} bytes`} /> : null}
+        {metadata?.sizeBytes !== undefined ? (
+          <KeyValue label="Size" value={`${metadata.sizeBytes} bytes`} />
+        ) : null}
         {metadata?.width !== undefined && metadata.height !== undefined ? (
           <KeyValue label="Dimensions" value={`${metadata.width} × ${metadata.height}`} />
         ) : null}
-        {metadata?.durationMs !== undefined ? <KeyValue label="Duration" value={`${metadata.durationMs} ms`} /> : null}
-        <KeyValue label="Usage" value={usages.length === 0 ? 'Unused' : `${usages.length} reference(s)`} />
+        {metadata?.durationMs !== undefined ? (
+          <KeyValue label="Duration" value={`${metadata.durationMs} ms`} />
+        ) : null}
+        <KeyValue
+          label="Usage"
+          value={usages.length === 0 ? 'Unused' : `${usages.length} reference(s)`}
+        />
         <Button disabled={usages.length > 0} onPress={() => studio.removeMediaAsset(asset.id)}>
           Remove media
         </Button>

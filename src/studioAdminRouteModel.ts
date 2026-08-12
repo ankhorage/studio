@@ -70,6 +70,14 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     description: 'Canonical screen metadata and resolved route context.',
   },
   {
+    id: 'media',
+    path: '/ankh/media',
+    label: 'Media',
+    icon: 'images-outline',
+    order: 12,
+    description: 'Canonical app-authoring media pool.',
+  },
+  {
     id: 'apis',
     path: '/ankh/apis',
     label: 'APIs',

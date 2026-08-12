@@ -81,7 +81,9 @@ describe('Studio media authoring model', () => {
 
   test('creates collision-safe stable media ids', () => {
     expect(createStudioMediaAssetId('Hero image')).toBe('hero-image');
-    expect(createStudioMediaAssetId('Hero image', { 'hero-image': imageAsset })).toBe('hero-image-2');
+    expect(createStudioMediaAssetId('Hero image', { 'hero-image': imageAsset })).toBe(
+      'hero-image-2',
+    );
   });
 
   test('accepts stable HTTP URLs and rejects transient or credential-bearing URLs', () => {

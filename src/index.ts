@@ -6,6 +6,7 @@ import type {
   DataSourceDiagnostic,
   DataSourceRegistry,
   GeneratedApiDefinition,
+  MediaAsset,
   NavigatorType,
   ThemeConfig,
   ThemeModeConfig,
@@ -23,6 +24,7 @@ export type {
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
 
 export * from './bindingAuthoringModel';
+export * from './mediaAuthoringModel';
 export type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -107,6 +109,9 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'StudioEvent',
   'StudioComponentMetaRegistry',
   'StudioInstancePropertyField',
+  'listStudioMediaAssets',
+  'createStudioMediaAssetReference',
+  'removeStudioMediaAsset',
   'resolveStudioInstancePropertyGroups',
   'createStudioInstancePropertyPatch',
   'resolveStudioBindableProps',
@@ -139,6 +144,7 @@ export type StudioAdminRouteId =
   | 'overview'
   | 'screens'
   | 'screen-detail'
+  | 'media'
   | 'modules'
   | 'module-detail'
   | 'apis'
@@ -162,6 +168,7 @@ export type StudioAdminRouteId =
 export type StudioAdminStaticRoutePath =
   | '/ankh'
   | '/ankh/screens'
+  | '/ankh/media'
   | '/ankh/modules'
   | '/ankh/apis'
   | '/ankh/apis/data-sources'
@@ -367,6 +374,8 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   setLastNonAdminLocation: (location: string) => void;
   setActiveCanvasDragNodeId: (nodeId: StudioNodeId | null) => void;
   updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
+  upsertMediaAsset: (asset: MediaAsset) => void;
+  removeMediaAsset: (mediaId: string) => boolean;
   updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
   updateDataSources: (dataSources: DataSourceRegistry) => void;
   upsertGeneratedApi: (

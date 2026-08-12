@@ -166,4 +166,22 @@ describe('instance Properties authoring model', () => {
     expect(fields.some((field) => field.name === 'size')).toBe(false);
     expect(fields.some((field) => field.name === 'color')).toBe(false);
   });
+  test('consumes released ZORA Image media metadata without Image-specific Studio logic', () => {
+    const node: UiNode = {
+      id: 'hero',
+      type: 'Image',
+      props: { source: { mediaId: 'hero-media' }, alt: 'Mountain sunrise' },
+    };
+    const fields = resolveStudioInstancePropertyFields(node, ZORA_COMPONENT_META);
+    expect(fields.find((field) => field.name === 'source')).toMatchObject({
+      schemaType: 'media',
+      editor: 'media',
+      mediaKinds: ['image'],
+      value: { mediaId: 'hero-media' },
+      isExplicit: true,
+    });
+    expect(createStudioInstancePropertyPatch(node, 'source', { mediaId: 'other-image' })).toEqual({
+      props: { alt: 'Mountain sunrise', source: { mediaId: 'other-image' } },
+    });
+  });
 });
