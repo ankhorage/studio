@@ -1,0 +1,48 @@
+name: ADM12 remove forced theme toggle
+
+on:
+  push:
+    branches:
+      - issue-127/canonical-theme-mode
+    paths:
+      - .github/workflows/adm12-remove-forced-theme-toggle.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue-127/canonical-theme-mode
+          fetch-depth: 0
+      - name: Restore app UI ownership to released main
+        run: |
+          git checkout 61220836e8995550f088b62056f37d8f00a18ae3 -- \
+            package.json \
+            bun.lock \
+            src/host/generatedAdminExpoWeb.smoke.test.ts \
+            src/host/layout/layoutGenerator.test.ts \
+            src/host/layout/layoutGenerator.ts \
+            src/host/layout/templates/rootLayout.test.ts \
+            src/host/layout/templates/rootLayout.ts \
+            src/host/orchestrator/templates.test.ts \
+            src/host/orchestrator/templates.ts \
+            src/ui/useStudioAppBarAugmentation.ts
+
+          cat > .changeset/bright-mode-chrome.md <<'EOF'
+          ---
+          '@ankhorage/studio': minor
+          ---
+
+          Use one canonical ZORA light/dark runtime mode across Studio and generated app runtime state, and remove the obsolete parallel Studio mode authority without forcing any user-facing theme switcher or app chrome placement.
+          EOF
+
+          git rm .github/workflows/adm12-remove-forced-theme-toggle.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json bun.lock src .changeset/bright-mode-chrome.md
+          git commit -m "Remove forced generated theme mode chrome"
+          git push origin HEAD:issue-127/canonical-theme-mode
