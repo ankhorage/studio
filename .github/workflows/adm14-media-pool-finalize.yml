@@ -1,0 +1,107 @@
+name: ADM-14 Studio Media Finalize
+
+on:
+  push:
+    branches:
+      - agent/adm14-media-pool
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Apply canonical media integration with pre-1.0 release bump
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          source = Path('.github/workflows/adm14-media-pool-gate.yml').read_text().splitlines()
+          start = source.index("          python3 <<'PY'") + 1
+          end = source.index('          PY', start)
+          script = '\n'.join(line[10:] if line.startswith('          ') else line for line in source[start:end])
+          script = script.replace("'@ankhorage/studio': minor", "'@ankhorage/studio': major")
+          Path('/tmp/adm14-integrate.py').write_text(script + '\n')
+          PY
+          python3 /tmp/adm14-integrate.py
+
+      - name: Update dependencies
+        run: bun install
+
+      - name: Format authored changes
+        run: bun run format
+
+      - name: Apply strict lint fixes
+        run: bun run lint:fix
+
+      - name: Build
+        run: bun run build
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test
+        run: bun run test
+
+      - name: Knip
+        run: bun run knip
+
+      - name: Generate documentation
+        run: bun run docs
+
+      - name: Format generated documentation
+        run: bun run format
+
+      - name: Validate repository conventions
+        run: bunx @ankhorage/doctor@0.8.0 validate .
+
+      - name: Verify formatting
+        run: bun run format:check
+
+      - name: Verify lint
+        run: bun run lint
+
+      - name: Verify package contents
+        run: npm pack --dry-run
+
+      - name: Verify changeset
+        run: bun run changeset:status
+
+      - name: Guard transient media persistence
+        run: |
+          if grep -R -n -E "mediaId.*(blob:|file:|content:|data:)|(blob:|file:|content:|data:).*mediaId" src --include='*.ts' --include='*.tsx'; then
+            echo 'Transient media URL found adjacent to canonical media persistence.'
+            exit 1
+          fi
+
+      - name: Guard generated documentation paths
+        run: |
+          if grep -R -E '/home/runner/work/|/Users/[^/]+/.*/node_modules/|[A-Za-z]:\\Users\\[^\\]+\\.*node_modules\\' README.md paradox; then
+            echo 'Generated docs contain machine-specific paths.'
+            exit 1
+          fi
+
+      - name: Verify clean patches
+        run: git diff --check
+
+      - name: Commit validated non-workflow state
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- . ':!.github/workflows/*'
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Validate ADM-14 Studio media pool'
+          git push origin HEAD:agent/adm14-media-pool
