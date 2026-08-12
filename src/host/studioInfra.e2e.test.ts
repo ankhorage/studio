@@ -6,12 +6,11 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 
 import type { AppManifest } from '@ankhorage/contracts';
-import { expect, test } from 'bun:test';
-
 import {
   readProjectInfrastructureEnvironment,
   runProjectInfrastructureLifecycle,
 } from '@ankhorage/infra/project';
+import { expect, test } from 'bun:test';
 
 import {
   ensureProjectInfraPortForward,

@@ -1,9 +1,9 @@
-import cors from '@fastify/cors';
 import {
   InfraScriptExecutionError,
   readProjectInfrastructureEnvironment,
   runProjectInfrastructureLifecycle,
 } from '@ankhorage/infra/project';
+import cors from '@fastify/cors';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
 
@@ -365,7 +365,8 @@ export async function createStudioHostServer(args: {
         const url =
           environment.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? environment.SUPABASE_URL?.trim();
         const anonKey =
-          environment.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? environment.SUPABASE_ANON_KEY?.trim();
+          environment.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ??
+          environment.SUPABASE_ANON_KEY?.trim();
 
         if (!url || !anonKey) {
           return reply.status(400).send({
