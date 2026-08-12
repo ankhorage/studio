@@ -1,0 +1,40 @@
+name: Agent contracts lock sync
+
+on:
+  push:
+    branches:
+      - agent/consume-contracts-appmanifest-parser
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/consume-contracts-appmanifest-parser
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - name: Update Contracts dependency
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const file = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
+          pkg.dependencies['@ankhorage/contracts'] = '^7.2.0';
+          fs.writeFileSync(file, `${JSON.stringify(pkg, null, 2)}\n`);
+          NODE
+      - run: bun install
+      - name: Commit synchronized dependency state
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm .github/workflows/agent-contracts-lock-sync.yml
+          git add package.json bun.lock
+          git commit -m "chore: consume contracts 7.2 parser boundary"
+          git push
