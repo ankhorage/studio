@@ -1,0 +1,31 @@
+name: ADM-14 Changeset Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/adm14-trusted-media-ingestion
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+      - name: Prepare committed ADM-14 diff
+        run: |
+          python3 scripts/adm14-trusted-media-apply.py
+          bun install >/dev/null
+          git config user.name diagnostic
+          git config user.email diagnostic@example.invalid
+          git add -A -- . ':!.github/workflows/*' ':!scripts/adm14-trusted-media-apply.py'
+          git commit -m diagnostic
+      - name: Show changeset status
+        run: bun run changeset:status --since=origin/main
