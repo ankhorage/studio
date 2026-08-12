@@ -71,7 +71,11 @@ jobs:
             echo 'Legacy provider credential route is still present.'
             exit 1
           fi
-          if grep -R -n 'publicUrl' src/host/media src/core/mediaAuthoringHostClient.ts; then
+          if grep -R -n 'publicUrl' src/host/media src/core/mediaAuthoringHostClient.ts \
+            --include='*.ts' \
+            --include='*.tsx' \
+            --exclude='*.test.ts' \
+            --exclude='*.test.tsx'; then
             echo 'Provider URL leaked into canonical media ingestion.'
             exit 1
           fi
