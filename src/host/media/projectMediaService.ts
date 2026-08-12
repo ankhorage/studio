@@ -42,11 +42,17 @@ export class ProjectMediaService {
       upsert: false,
     });
     if (!uploaded.ok) throw new Error(uploaded.error.message);
+    const uploadedAsset = uploaded.data.asset;
     return {
       id: input.assetId,
       name: input.name,
       kind: input.kind,
-      source: { kind: 'storage', ...uploaded.data.asset },
+      source: {
+        kind: 'storage',
+        ...(uploadedAsset.storageId === undefined ? {} : { storageId: uploadedAsset.storageId }),
+        bucket: uploadedAsset.bucket,
+        path: uploadedAsset.path,
+      },
       contentType: input.contentType,
       metadata: {
         originalFileName: input.name,
@@ -87,6 +93,7 @@ function sanitizeSegment(value: string): string {
 }
 
 function sanitizeFileName(value: string): string {
-  const normalized = value.trim().replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^\.+/, '');
+  const baseName = value.trim().split(/[\\/]/).pop() ?? '';
+  const normalized = baseName.replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^\.+/, '');
   return normalized || 'asset';
 }
