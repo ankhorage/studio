@@ -333,7 +333,7 @@ export class ProjectSecretService {
 
   private async readEditableManifest(projectId: string): Promise<AppManifest> {
     try {
-      return await this.projectManager.getStudioManifest(projectId);
+      return await this.projectManager.getProjectManifest(projectId);
     } catch {
       return this.projectManager.getProjectManifest(projectId);
     }

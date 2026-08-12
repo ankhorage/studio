@@ -51,9 +51,9 @@ describe('ProjectSecretService guarded removal', () => {
     const service = new ProjectSecretService({
       workspaceRoot: '/tmp',
       projectManager: {
-        getStudioManifest: () => Promise.resolve(createManifest()),
         getProjectManifest: () => Promise.resolve(createManifest()),
-        saveStudioManifest: () => {
+        getProjectManifest: () => Promise.resolve(createManifest()),
+        persistProjectManifest: () => {
           saveCount += 1;
           return Promise.resolve({ success: true });
         },
@@ -100,7 +100,7 @@ describe('ProjectSecretService guarded removal', () => {
     const service = new ProjectSecretService({
       workspaceRoot: '/tmp',
       projectManager: {
-        getStudioManifest: () => Promise.resolve(manifest),
+        getProjectManifest: () => Promise.resolve(manifest),
         getProjectManifest: () => Promise.resolve(manifest),
       } as never,
       resolveDatabaseUrl: () => Promise.resolve('postgres://local'),
@@ -162,7 +162,7 @@ describe('ProjectSecretService guarded removal', () => {
     const service = new ProjectSecretService({
       workspaceRoot: '/tmp',
       projectManager: {
-        getStudioManifest: () => Promise.resolve(manifest),
+        getProjectManifest: () => Promise.resolve(manifest),
         getProjectManifest: () => Promise.resolve(manifest),
       } as never,
       resolveDatabaseUrl: () => Promise.resolve('postgres://local'),

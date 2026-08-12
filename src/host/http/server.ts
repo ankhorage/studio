@@ -345,57 +345,12 @@ export async function createStudioHostServer(args: {
     }
   });
 
-  // GET studio manifest draft
-  fastify.get(
-    '/api/projects/:id/studio/manifest',
+  fastify.post(
+    '/api/projects/:id/runtime/sync',
     async (req: FastifyRequest, reply: FastifyReply) => {
       const { id } = req.params as { id: string };
-
       try {
-        return await projectManager.getStudioManifest(id);
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(404).send({ error: message });
-      }
-    },
-  );
-
-  // PUT studio manifest draft
-  fastify.put(
-    '/api/projects/:id/studio/manifest',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id } = req.params as { id: string };
-
-      if (!isAppManifest(req.body)) {
-        return reply.status(400).send({ error: 'Manifest body required' });
-      }
-
-      try {
-        return await orchestrator.saveStudioManifest({
-          projectId: id,
-          manifest: req.body,
-        });
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
-
-  fastify.put(
-    '/api/projects/:id/studio/runtime',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id } = req.params as { id: string };
-
-      if (!isAppManifest(req.body)) {
-        return reply.status(400).send({ error: 'Manifest body required' });
-      }
-
-      try {
-        return await orchestrator.syncStudioRuntime({
-          projectId: id,
-          manifest: req.body,
-        });
+        return await orchestrator.syncProjectRuntime(id);
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
         reply.status(500).send({ error: message });
@@ -475,7 +430,7 @@ export async function createStudioHostServer(args: {
     }
 
     try {
-      return await orchestrator.saveProjectManifest({
+      return await orchestrator.persistProjectManifest({
         projectId: id,
         manifest: req.body,
       });

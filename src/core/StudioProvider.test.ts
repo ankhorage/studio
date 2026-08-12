@@ -36,7 +36,7 @@ test('requires caller-injected component metadata for package-neutral placement'
 });
 
 test('owns Studio draft hydration and autosave through the host manifest boundary', () => {
-  expect(source).toContain('/studio/manifest');
+  expect(source).toContain('/manifest');
   expect(source).toContain('createStudioManifestSignature');
   expect(source).toContain('StudioManifestPersistenceCoordinator');
   expect(source).toContain('lastPersistedSignatureRef');

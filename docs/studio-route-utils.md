@@ -10,7 +10,7 @@ import {
   resolveScreenIdForPathname,
 } from '@ankhorage/studio/routeUtils';
 
-import { resolveInitialScreenId } from '@ankhorage/studio/manifestState';
+import { resolveInitialScreenId } from '@ankhorage/manifestState';
 ```
 
 ## Owned here

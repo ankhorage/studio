@@ -496,7 +496,7 @@ function useStudioManifestPersistence(args: {
         setLastPersistedSignature: (signature) => {
           lastPersistedSignatureRef.current = signature;
         },
-        saveManifest: saveStudioManifest,
+        saveManifest: persistProjectManifest,
         setSaveStatus,
         setError,
         toErrorMessage: toPersistenceMessage,
@@ -576,23 +576,18 @@ function useStudioManifestPersistence(args: {
 }
 
 async function requestStudioManifest(projectId: string): Promise<StudioManifest> {
-  const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/studio/manifest`,
-  );
+  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`);
   const value = await readPersistenceJson(response);
   if (!response.ok) throw createPersistenceError(value, response.status);
   return value as StudioManifest;
 }
 
-async function saveStudioManifest(projectId: string, manifest: StudioManifest): Promise<void> {
-  const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/studio/manifest`,
-    {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(manifest),
-    },
-  );
+async function persistProjectManifest(projectId: string, manifest: StudioManifest): Promise<void> {
+  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(manifest),
+  });
   const value = await readPersistenceJson(response);
   if (!response.ok) throw createPersistenceError(value, response.status);
 }

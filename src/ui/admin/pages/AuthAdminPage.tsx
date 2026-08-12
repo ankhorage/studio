@@ -28,7 +28,7 @@ import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
-import { syncStudioRuntime } from '../../../studioRuntimeApi';
+import { syncProjectRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
 import { AuthHealthRefreshCoordinator } from './adminAuthHealthFlow';
 import {
@@ -140,7 +140,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       });
       updateAuthSettings(rebasedDraft);
       await flushManifest();
-      await syncStudioRuntime(projectId);
+      await syncProjectRuntime(projectId);
       setMessage(nextMessage);
       await refreshHealth();
     },

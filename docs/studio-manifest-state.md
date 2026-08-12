@@ -1,6 +1,6 @@
 # Studio manifest state model
 
-This package now exposes a package-neutral manifest state model through `@ankhorage/studio/manifestState`.
+This package now exposes a package-neutral manifest state model through `@ankhorage/manifestState`.
 
 ## Owned here
 
@@ -77,7 +77,7 @@ import {
   resolveInitialScreenId,
   resolveStudioScreenAppPath,
   updateStudioManifestNode,
-} from '@ankhorage/studio/manifestState';
+} from '@ankhorage/manifestState';
 ```
 
 The root package remains the public contracts and authoring model entrypoint. The manifest-state

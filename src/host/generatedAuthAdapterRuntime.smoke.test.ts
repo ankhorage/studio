@@ -143,7 +143,7 @@ async function createGeneratedProject(): Promise<{ workspaceRoot: string; projec
     { includeStudio: false },
   );
 
-  await projectManager.saveStudioManifest({
+  await projectManager.persistProjectManifest({
     projectId: created.id,
     manifest: createRuntimeSmokeManifest(),
   });

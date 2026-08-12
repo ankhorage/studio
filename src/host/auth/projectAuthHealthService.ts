@@ -9,7 +9,7 @@ import { observeProjectAuthRuntimeDiagnostics } from './projectAuthRuntimeDiagno
 
 type ProjectAuthHealthManager = Pick<
   ProjectManager,
-  'getInfrastructureStatus' | 'getProjectManifest' | 'getStudioManifest'
+  'getInfrastructureStatus' | 'getProjectManifest'
 >;
 
 export class ProjectAuthHealthService {
@@ -94,7 +94,7 @@ export class ProjectAuthHealthService {
 
   private async readEditableManifest(projectId: string) {
     try {
-      return await this.projectManager.getStudioManifest(projectId);
+      return await this.projectManager.getProjectManifest(projectId);
     } catch {
       return this.projectManager.getProjectManifest(projectId);
     }

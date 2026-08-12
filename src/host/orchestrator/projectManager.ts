@@ -164,13 +164,7 @@ export class ProjectManager {
 
     if (regenerateRouterFiles) {
       const includeStudio = await this.shouldIncludeStudio(projectPath);
-      await this.syncProjectScaffold(
-        projectPath,
-        projectId,
-        updated,
-        includeStudio,
-        runtimePlan,
-      );
+      await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);
       await this.writeGeneratedFiles(projectPath, updated, mutations, {
         includeStudio,
         runtimePlan,
