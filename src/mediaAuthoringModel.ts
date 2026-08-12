@@ -42,9 +42,9 @@ export function createStudioMediaAssetReference(mediaId: string): MediaAssetRefe
 
 export function readStudioMediaAssetReference(value: unknown): MediaAssetReference | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return null;
-  const entries = Object.entries(value);
-  if (entries.length !== 1 || entries[0]?.[0] !== 'mediaId') return null;
-  const mediaId = entries[0][1];
+  const keys = Reflect.ownKeys(value);
+  if (keys.length !== 1 || keys[0] !== 'mediaId') return null;
+  const { mediaId } = value as { readonly mediaId?: unknown };
   return typeof mediaId === 'string' && mediaId.length > 0 ? { mediaId } : null;
 }
 
