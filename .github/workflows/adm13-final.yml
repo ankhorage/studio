@@ -23,6 +23,8 @@ jobs:
           bun-version: '1.3.13'
       - name: Install
         run: bun install --frozen-lockfile
+      - name: Apply final route-anchor update
+        run: bun scripts/adm13-final-fix.mjs
       - name: Format authored changes
         run: bun run format
       - name: Build
@@ -33,6 +35,7 @@ jobs:
         run: bun run format
       - name: Validate repository
         run: |
+          bunx @ankhorage/ankh doctor validate .
           bun run lint
           bun run format:check
           bun run knip
@@ -56,8 +59,8 @@ jobs:
         run: bun run test:smoke:studio-web
       - name: Generated app web E2E
         run: bun run test:e2e:generated-app-web
-      - name: Remove temporary workflow
-        run: rm .github/workflows/adm13-final.yml
+      - name: Remove temporary files
+        run: rm scripts/adm13-final-fix.mjs .github/workflows/adm13-final.yml
       - name: Commit final ADM-13 artifacts
         run: |
           git config user.name "github-actions[bot]"
