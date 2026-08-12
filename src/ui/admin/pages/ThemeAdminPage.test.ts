@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url';
 
 import { SUPPORTED_COLOR_HARMONIES } from './adminThemeHarmony';
 
+function readSibling(name: string): string {
+  return readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), name), 'utf8');
+}
+
 test('offers only supported typed ColorHarmony values', () => {
   const expected = [
     'monochromatic',
@@ -19,14 +23,21 @@ test('offers only supported typed ColorHarmony values', () => {
   expect(SUPPORTED_COLOR_HARMONIES).toEqual(expected);
 });
 
-test('does not accept arbitrary harmony text through type assertions', () => {
-  const source = readFileSync(
-    path.join(path.dirname(fileURLToPath(import.meta.url)), 'ThemeAdminPage.tsx'),
-    'utf8',
-  );
+test('uses the real ZORA mode authority without a second persisted editor mode', () => {
+  const selector = readSibling('ThemeModeEditorSelector.tsx');
+  const colorsPage = readSibling('ThemeColorsAdminPage.tsx');
 
-  expect(source).not.toContain("harmony as ThemeModeConfig['harmony']");
-  expect(source).not.toContain('as ThemeUpdates');
-  expect(source).toContain('useZoraTheme()');
-  expect(source).toContain('The Studio manifest does not contain a valid active theme.');
+  expect(selector).toContain('useZoraTheme()');
+  expect(selector).toContain('setMode(candidate)');
+  expect(selector).not.toContain('activeThemeMode');
+  expect(colorsPage).not.toContain("harmony as ThemeModeConfig['harmony']");
+  expect(colorsPage).not.toContain('as ThemeUpdates');
+});
+
+test('keeps Theme root focused on canonical source and inheritance', () => {
+  const source = readSibling('ThemeAdminPage.tsx');
+
+  expect(source).toContain('Author the canonical project theme');
+  expect(source).toContain('ThemeModeEditorSelector');
+  expect(source).toContain('Theme changes do not rewrite');
 });
