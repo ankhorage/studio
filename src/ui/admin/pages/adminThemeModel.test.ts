@@ -13,6 +13,23 @@ const theme = {
   name: 'Theme',
   light: { primaryColor: '#111111', harmony: 'monochromatic' },
   dark: { primaryColor: '#222222', harmony: 'analogous' },
+  tokens: {
+    spacing: { compact: 6 },
+    radii: { card: 14 },
+    typography: {
+      sizes: { body: 16 },
+      weights: { emphasis: '700' },
+    },
+    shadows: { raised: 8 },
+  },
+  recipes: {
+    components: {
+      Button: { size: 'l' },
+    },
+    patterns: {
+      Panel: { padding: 'compact' },
+    },
+  },
 } satisfies ThemeConfig;
 
 describe('adminThemeModel', () => {
@@ -48,10 +65,12 @@ describe('adminThemeModel', () => {
     expect(resolved).toEqual([theme.light, theme.dark]);
   });
 
-  test('creates a full Surface theme config from canonical light and dark values', () => {
+  test('preserves the complete canonical theme config for live Surface sync', () => {
     const surfaceConfig = resolveZoraSurfaceThemeConfig(theme);
 
     expect(surfaceConfig).toEqual(theme);
+    expect(surfaceConfig.tokens).toEqual(theme.tokens);
+    expect(surfaceConfig.recipes).toEqual(theme.recipes);
     expect(surfaceConfig.light).not.toBe(theme.light);
     expect(surfaceConfig.dark).not.toBe(theme.dark);
   });
