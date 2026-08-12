@@ -20,7 +20,6 @@ const imageAsset: MediaAsset = {
 };
 
 const baseManifest: AppManifest = {
-  version: 1,
   app: { id: 'media-test', name: 'Media Test' },
   navigator: {
     type: 'stack',
