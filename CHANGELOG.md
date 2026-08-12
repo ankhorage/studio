@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 0.22.1
+
+### Patch Changes
+
+- 8c405d0: Delegate canonical AppManifest structural validation to the parser owned by `@ankhorage/contracts` and remove Studio's duplicate manifest guard tree.
+
 ## 0.22.0
 
 ### Minor Changes
