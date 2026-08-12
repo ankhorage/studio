@@ -11,10 +11,11 @@ export interface ResolveProjectSecretDatabaseUrlInput {
 export async function resolveProjectSecretDatabaseUrl(
   input: ResolveProjectSecretDatabaseUrlInput,
 ): Promise<string> {
-  const trustedHostValue = (
+  const rawTrustedHostValue: unknown =
     input.processEnvironment?.[TRUSTED_HOST_DATABASE_URL_KEY] ??
-    process.env.ANKH_SECRET_STORE_DATABASE_URL
-  )?.trim();
+    process.env.ANKH_SECRET_STORE_DATABASE_URL;
+  const trustedHostValue =
+    typeof rawTrustedHostValue === 'string' ? rawTrustedHostValue.trim() : undefined;
   if (trustedHostValue) return trustedHostValue;
 
   const projectValue = await resolveProjectInfrastructureDatabaseUrl({
