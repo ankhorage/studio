@@ -12,6 +12,7 @@ export { createTrustedExternalApiFetch } from './dataSources/createTrustedExtern
 export { StudioExternalApiService } from './dataSources/studioExternalApiService';
 export { registerProjectAuthRoutes } from './http/authRoutes';
 export { registerProjectDataSourceRoutes } from './http/dataSourceRoutes';
+export { registerProjectMediaRoutes } from './http/mediaRoutes';
 export { registerProjectSecretRoutes } from './http/secretRoutes';
 export { isOriginAllowed } from './http/security';
 export {
@@ -20,6 +21,15 @@ export {
   type StartStudioHostServerOptions,
 } from './http/server';
 export { startStudioHostServerWithSecrets } from './http/serverWithSecrets';
+export {
+  createAuthoringMediaPath,
+  type ProjectMediaIngestInput,
+  ProjectMediaService,
+} from './media/projectMediaService';
+export {
+  type ProjectMediaStorageContext,
+  resolveProjectMediaStorage,
+} from './media/projectMediaStorage';
 export type {
   HostModuleAdminAuthoringContext,
   HostModuleAdminExecutionRequest,
