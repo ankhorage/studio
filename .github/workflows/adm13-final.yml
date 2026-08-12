@@ -29,6 +29,8 @@ jobs:
         run: bun run build
       - name: Generate Paradox documentation
         run: bun run docs
+      - name: Format generated documentation
+        run: bun run format
       - name: Validate repository
         run: |
           bun run lint
