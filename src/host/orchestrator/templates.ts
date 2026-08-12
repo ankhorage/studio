@@ -18,7 +18,7 @@ const RUNTIME_VERSION = '^1.0.0';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.1.2';
 const SUPABASE_DB_VERSION = '^1.0.0';
-const ZORA_VERSION = '^2.10.0';
+const ZORA_VERSION = '^2.9.0';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 

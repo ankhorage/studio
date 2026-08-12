@@ -76,6 +76,9 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
   );
+  expect(generated).toContain(
+    'resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens)',
+  );
   expect(generated).toContain('const appRouteSearchParams = useGlobalSearchParams();');
   expect(generated).toContain('const appLocation = useMemo(');
   expect(generated).toContain('resolveStudioLastNonAdminLocation({');
@@ -99,12 +102,6 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain('}, [themeConfig, themeConfigSignature]);');
   expect(generated).not.toContain('}, [setThemeConfig, themeConfig]);');
   expect(generated).toContain('<GeneratedStatusBar />');
-  expect(generated).toContain('function GeneratedAppHeader');
-  expect(generated).toContain('function StudioAugmentedAppHeader');
-  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
-  expect(generated).toContain('actions={studioAppBar.actions}');
-  expect(generated).toContain('...Children.toArray(actions)');
-  expect(generated).not.toContain('function StudioAppHeader');
 });
 
 test('suppresses the normal Studio app header inside admin routes without auth runtime', () => {
@@ -177,7 +174,7 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).not.toContain('wrapStudioRuntimeNode');
 });
 
-test('keeps generated app chrome Studio-independent when Studio is excluded', () => {
+test('keeps non-Studio generated output unchanged', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -205,10 +202,6 @@ test('keeps generated app chrome Studio-independent when Studio is excluded', ()
   expect(generated).not.toContain('StationaryTapSelector');
   expect(generated).not.toContain('disableActions');
   expect(generated).not.toContain('wrapNode: studioWrapNode');
-  expect(generated).toContain('function GeneratedAppHeader');
-  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
-  expect(generated).toContain('<AppShell header={appHeader}>');
-  expect(generated).not.toContain('StudioAugmentedAppHeader');
 });
 
 test('scopes Studio runtime selection config below StudioProvider', () => {
@@ -290,6 +283,4 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('Pressable');
   expect(generated).not.toContain('GestureResponderEvent');
   expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
-  expect(generated).toContain('<ThemeModeToggle key="theme-mode" />');
-  expect(generated).toContain('function GeneratedAppHeader');
 });

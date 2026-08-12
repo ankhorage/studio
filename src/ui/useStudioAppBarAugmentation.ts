@@ -26,7 +26,9 @@ import { StudioDeleteDialog } from './StudioDeleteDialog';
 import { StudioInsertDialog } from './StudioInsertDialog';
 
 export interface StudioAppBarAugmentation {
+  appMode?: unknown;
   actions?: React.ReactNode;
+  overflow?: unknown;
   overlays?: React.ReactNode;
 }
 

@@ -38,7 +38,6 @@ export function getRootLayoutImportRequirements(
     {
       source: 'react',
       namedImports: [
-        { imported: 'Children' },
         { imported: 'ReactNode', typeOnly: true },
         ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
@@ -137,6 +136,9 @@ function getTopLevelRoute(pathname: string): string {
 function getRootNavigationKey(state: { key?: string } | null | undefined): string {
   return state?.key ?? '';
 }
+${
+  includeStudio
+    ? `
 function isAuthRoute(pathname: string): boolean {
   const activeTopLevelRoute = getTopLevelRoute(pathname);
   return (
@@ -146,13 +148,77 @@ function isAuthRoute(pathname: string): boolean {
 }
 
 function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady: boolean): boolean {
-  if (isAuthRoute(pathname)) return false;
   if (!isGeneratedAuthEnforced()) return true;
   if (!isAuthRuntimeReady) return false;
-  return isAuthenticated();
+  if (!isAuthenticated()) return false;
+  return !isAuthRoute(pathname);
+}
+`
+    : ''
 }
 `
     : '';
+
+  const appHeaderHelpers = `
+function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteDefinition | null {
+  for (const route of navigator.routes) {
+    if (route.screenId === screenId) {
+      return route;
+    }
+
+    if (route.navigator) {
+      const nestedRoute = findRouteByScreenId(route.navigator, screenId);
+      if (nestedRoute) {
+        return nestedRoute;
+      }
+    }
+  }
+
+  return null;
+}
+
+function resolveAppHeaderTitle(manifest: AppManifest, pathname: string): string {
+  const screenId = resolveScreenIdForPathname(manifest.navigator, pathname, manifest.screens);
+  const route = screenId ? findRouteByScreenId(manifest.navigator, screenId) : null;
+  const screen = screenId ? manifest.screens[screenId] : undefined;
+  return route?.label ?? screen?.title ?? screen?.name ?? route?.name ?? 'App';
+}
+
+function resolveAppHeaderTitleForScreenId(
+  manifest: AppManifest,
+  screenId: string | null | undefined,
+): string | null {
+  if (!screenId) return null;
+
+  const screen = manifest.screens[screenId];
+  if (!screen) return null;
+
+  const route = findRouteByScreenId(manifest.navigator, screenId);
+  return route?.label ?? screen.title ?? screen.name;
+}
+
+function resolveStudioAppHeaderTitle(args: {
+  runtimeManifest: AppManifest;
+  studioManifest: AppManifest | null;
+  previewMode: boolean;
+  activeScreenId: string | null;
+  pathname: string;
+}): string {
+  const { runtimeManifest, studioManifest, previewMode, activeScreenId, pathname } = args;
+
+  if (previewMode) {
+    const previewTitle = resolveAppHeaderTitleForScreenId(
+      studioManifest ?? runtimeManifest,
+      activeScreenId,
+    );
+    if (previewTitle) {
+      return previewTitle;
+    }
+  }
+
+  return resolveAppHeaderTitle(runtimeManifest, pathname);
+}
+`;
 
   const authRuntimeHook = authRuntime
     ? `
@@ -352,6 +418,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeModuleDeclarations?.trim(),
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
+    includeStudio ? appHeaderHelpers.trim() : '',
     innerNavigation.declarations.trim(),
   ]
     .filter(Boolean)
@@ -367,9 +434,7 @@ const appLocation = useMemo(
 const shouldMountAppHeader =
   !isStudioAdminPath(appPathname) &&
   ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`
-    : `const appPathname = ${authRuntime ? 'pathname' : 'usePathname()'};
-const shouldMountAppHeader =
-  ${authRuntime ? 'shouldMountAuthenticatedAppHeader(appPathname, isAuthRuntimeReady)' : 'true'};`;
+    : '';
   const indentedStudioRuntimeLines =
     studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';
   const handleInnerContentReadyDeclaration = authRuntime
@@ -489,13 +554,10 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
 
   ${outputDeclaration}
 
-  const appHeader = shouldMountAppHeader ? (
-    <GeneratedAppHeader appHeaderTitle={runtimeManifest.metadata.name} />
-  ) : undefined;
   const shell = (
     <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
       <SafeAreaProvider>
-        <AppShell header={appHeader}>
+        <AppShell>
           ${finalJsx}
         </AppShell>
         <GeneratedStatusBar />
@@ -525,6 +587,7 @@ function StudioShell({
 }) {
   const {
     activeCanvasDragNodeId,
+    activeScreenId,
     componentMeta,
     manifest: studioManifest,
     moveNodeToPlacement,
@@ -559,10 +622,17 @@ function StudioShell({
        }),
      [previewMode],
    );
-   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
+   const appHeaderTitle = resolveStudioAppHeaderTitle({
+     runtimeManifest,
+     studioManifest,
+     previewMode,
+     activeScreenId,
+     pathname: appPathname,
+   });
    const header = shouldMountAppHeader ? (
-     <StudioAugmentedAppHeader appHeaderTitle={studioRuntimeManifest.metadata.name} />
+     <StudioAppHeader appHeaderTitle={appHeaderTitle} />
    ) : undefined;
+   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
    const activeStudioTheme =
      studioRuntimeManifest.themes.find(
        (theme) => theme.id === studioRuntimeManifest.activeThemeId,
@@ -610,36 +680,23 @@ function StudioShell({
   );
 }
 
-function StudioAugmentedAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
+function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
   const studioAppBar = useStudioAppBarAugmentation();
 
   return (
     <>
-      <GeneratedAppHeader appHeaderTitle={appHeaderTitle} actions={studioAppBar.actions} />
+      <AppBar
+        title={appHeaderTitle}
+        appMode={studioAppBar.appMode}
+        actions={studioAppBar.actions}
+        overflow={studioAppBar.overflow}
+      />
       {studioAppBar.overlays}
     </>
   );
 }`
       : ''
   }
-
-function GeneratedAppHeader({
-  appHeaderTitle,
-  actions,
-}: {
-  appHeaderTitle: string;
-  actions?: ReactNode;
-}) {
-  return (
-    <AppBar
-      title={appHeaderTitle}
-      actions={[
-        <ThemeModeToggle key="theme-mode" />,
-        ...Children.toArray(actions),
-      ]}
-    />
-  );
-}
 
 function GeneratedZoraProvider({
   children,
