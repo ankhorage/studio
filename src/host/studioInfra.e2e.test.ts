@@ -9,10 +9,14 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
 import {
+  readProjectInfrastructureEnvironment,
+  runProjectInfrastructureLifecycle,
+} from '@ankhorage/infra/project';
+
+import {
   ensureProjectInfraPortForward,
-  runProjectInfraScript,
   stopAllProjectInfraPortForwards,
-} from './orchestrator/infraRuntime';
+} from './orchestrator/infraSession';
 import { ProjectManager } from './orchestrator/projectManager';
 import { upProjectInfrastructure } from './orchestrator/studioInfraUp';
 import type { TrustedOAuthSecretResolver } from './secrets/trustedOAuthInfraEnvironment';
@@ -93,13 +97,13 @@ infraE2eTest(
       ).not.toContain(fakeGoogleOAuthCredentials.clientSecret);
 
       const firstLaunch = await ensureProjectInfraPortForward({
-        rootPath: workspaceRoot,
         projectId: first.projectId,
+        projectPath: first.projectPath,
         target: 'minikube',
       });
       const firstLaunchAgain = await ensureProjectInfraPortForward({
-        rootPath: workspaceRoot,
         projectId: first.projectId,
+        projectPath: first.projectPath,
         target: 'minikube',
       });
       expect(firstLaunch.url).toBe(`http://127.0.0.1:${first.ports.app}`);
@@ -114,9 +118,9 @@ infraE2eTest(
         'supabase-gateway: running',
       ]);
 
-      await runProjectInfraScript({
-        rootPath: workspaceRoot,
+      await runProjectInfrastructureLifecycle({
         projectId: second.projectId,
+        projectPath: second.projectPath,
         target: 'minikube',
         script: 'down',
       });
@@ -326,22 +330,13 @@ function createUnavailableSecretResolver(): TrustedOAuthSecretResolver {
 }
 
 async function resolveGeneratedDbUrl(workspaceRoot: string, projectId: string): Promise<string> {
-  const infraRoot = path.join(workspaceRoot, 'apps', projectId, 'infra', 'minikube');
-  const env = new Map<string, string>();
-  for (const fileName of ['.env.example', '.env']) {
-    const filePath = path.join(infraRoot, fileName);
-    const content = await readFile(filePath, 'utf8').catch(() => '');
-    for (const line of content.split(/\r?\n/u)) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const index = trimmed.indexOf('=');
-      if (index <= 0) continue;
-      env.set(trimmed.slice(0, index).trim(), trimmed.slice(index + 1).trim());
-    }
-  }
-
-  const port = env.get('SUPABASE_DB_FORWARD_LOCAL_PORT');
-  const password = env.get('POSTGRES_PASSWORD');
+  const environment = await readProjectInfrastructureEnvironment({
+    keys: ['SUPABASE_DB_FORWARD_LOCAL_PORT', 'POSTGRES_PASSWORD'],
+    projectPath: path.join(workspaceRoot, 'apps', projectId),
+    target: 'minikube',
+  });
+  const port = environment.SUPABASE_DB_FORWARD_LOCAL_PORT?.trim();
+  const password = environment.POSTGRES_PASSWORD?.trim();
   if (!port || !password) {
     throw new Error(`Generated Infra for ${projectId} did not provide DB port/password env.`);
   }
@@ -416,16 +411,13 @@ async function expectForwardStatus(
   projectId: string,
   expectedLines: readonly string[],
 ): Promise<void> {
-  const scriptPath = path.join(
-    workspaceRoot,
-    'apps',
+  const output = await runProjectInfrastructureLifecycle({
     projectId,
-    'infra',
-    'minikube',
-    'scripts',
-    'port-forward.sh',
-  );
-  const output = await execFile('bash', [scriptPath, 'status', 'all'], { timeout: 60_000 });
+    projectPath: path.join(workspaceRoot, 'apps', projectId),
+    target: 'minikube',
+    script: 'port-forward',
+    args: ['status', 'all'],
+  });
   for (const line of expectedLines) {
     expect(output.stdout).toContain(line);
   }
@@ -438,23 +430,9 @@ async function expectReachable(url: string, expectedBody: string): Promise<void>
 }
 
 async function destroyIfPresent(workspaceRoot: string, projectId: string): Promise<void> {
-  const scriptPath = path.join(
-    workspaceRoot,
-    'apps',
+  await runProjectInfrastructureLifecycle({
     projectId,
-    'infra',
-    'minikube',
-    'scripts',
-    'destroy.sh',
-  );
-  try {
-    await readFile(scriptPath, 'utf8');
-  } catch {
-    return;
-  }
-  await runProjectInfraScript({
-    rootPath: workspaceRoot,
-    projectId,
+    projectPath: path.join(workspaceRoot, 'apps', projectId),
     target: 'minikube',
     script: 'destroy',
   }).catch(() => undefined);
