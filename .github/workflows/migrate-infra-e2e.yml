@@ -1,0 +1,55 @@
+name: Migrate Infra E2E boundary
+
+on:
+  push:
+    branches:
+      - agent/consume-infra-project-boundary
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/consume-infra-project-boundary
+      - name: Rewrite E2E consumer to owner API
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/host/studioInfra.e2e.test.ts')
+          s = p.read_text()
+          s = s.replace(
+          """import {\n  ensureProjectInfraPortForward,\n  runProjectInfraScript,\n  stopAllProjectInfraPortForwards,\n} from './orchestrator/infraRuntime';\n""",
+          """import {\n  readProjectInfrastructureEnvironment,\n  runProjectInfrastructureLifecycle,\n} from '@ankhorage/infra/project';\n\nimport {\n  ensureProjectInfraPortForward,\n  stopAllProjectInfraPortForwards,\n} from './orchestrator/infraSession';\n""")
+          s = s.replace(
+          """      const firstLaunch = await ensureProjectInfraPortForward({\n        rootPath: workspaceRoot,\n        projectId: first.projectId,\n        target: 'minikube',\n      });\n      const firstLaunchAgain = await ensureProjectInfraPortForward({\n        rootPath: workspaceRoot,\n        projectId: first.projectId,\n        target: 'minikube',\n      });\n""",
+          """      const firstLaunch = await ensureProjectInfraPortForward({\n        projectId: first.projectId,\n        projectPath: first.projectPath,\n        target: 'minikube',\n      });\n      const firstLaunchAgain = await ensureProjectInfraPortForward({\n        projectId: first.projectId,\n        projectPath: first.projectPath,\n        target: 'minikube',\n      });\n""")
+          s = s.replace(
+          """      await runProjectInfraScript({\n        rootPath: workspaceRoot,\n        projectId: second.projectId,\n        target: 'minikube',\n        script: 'down',\n      });\n""",
+          """      await runProjectInfrastructureLifecycle({\n        projectId: second.projectId,\n        projectPath: second.projectPath,\n        target: 'minikube',\n        script: 'down',\n      });\n""")
+          start = s.index("async function resolveGeneratedDbUrl(")
+          end = s.index("\nfunction escapeSqlLiteral", start)
+          s = s[:start] + """async function resolveGeneratedDbUrl(workspaceRoot: string, projectId: string): Promise<string> {\n  const environment = await readProjectInfrastructureEnvironment({\n    keys: ['SUPABASE_DB_FORWARD_LOCAL_PORT', 'POSTGRES_PASSWORD'],\n    projectPath: path.join(workspaceRoot, 'apps', projectId),\n    target: 'minikube',\n  });\n  const port = environment.SUPABASE_DB_FORWARD_LOCAL_PORT?.trim();\n  const password = environment.POSTGRES_PASSWORD?.trim();\n  if (!port || !password) {\n    throw new Error(`Generated Infra for ${projectId} did not provide DB port/password env.`);\n  }\n\n  return `postgres://postgres:${encodeURIComponent(password)}@127.0.0.1:${port}/postgres?sslmode=disable`;\n}\n""" + s[end:]
+          start = s.index("async function expectForwardStatus(")
+          end = s.index("\nasync function expectReachable", start)
+          s = s[:start] + """async function expectForwardStatus(\n  workspaceRoot: string,\n  projectId: string,\n  expectedLines: readonly string[],\n): Promise<void> {\n  const output = await runProjectInfrastructureLifecycle({\n    projectId,\n    projectPath: path.join(workspaceRoot, 'apps', projectId),\n    target: 'minikube',\n    script: 'port-forward',\n    args: ['status', 'all'],\n  });\n  for (const line of expectedLines) {\n    expect(output.stdout).toContain(line);\n  }\n}\n""" + s[end:]
+          start = s.index("async function destroyIfPresent(")
+          end = s.index("\nasync function removeDockerImage", start)
+          s = s[:start] + """async function destroyIfPresent(workspaceRoot: string, projectId: string): Promise<void> {\n  await runProjectInfrastructureLifecycle({\n    projectId,\n    projectPath: path.join(workspaceRoot, 'apps', projectId),\n    target: 'minikube',\n    script: 'destroy',\n  }).catch(() => undefined);\n}\n""" + s[end:]
+          p.write_text(s)
+          PY
+      - name: Commit migration
+        run: |
+          if git diff --quiet -- src/host/studioInfra.e2e.test.ts; then
+            echo 'Expected E2E migration changes but found none.' >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/host/studioInfra.e2e.test.ts
+          git commit -m 'test: consume canonical infra lifecycle in e2e'
+          git push origin HEAD:agent/consume-infra-project-boundary
