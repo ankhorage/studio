@@ -31,10 +31,17 @@ jobs:
           start = source.index("          python3 <<'PY'") + 1
           end = source.index('          PY', start)
           script = '\n'.join(line[10:] if line.startswith('          ') else line for line in source[start:end])
-          script = script.replace("'@ankhorage/studio': minor", "'@ankhorage/studio': major")
+          marker = "@ankhorage/studio': minor"
+          replacement = "@ankhorage/studio': major"
+          if marker not in script:
+              raise SystemExit('Expected Studio changeset bump marker not found')
+          script = script.replace(marker, replacement, 1)
+          if replacement not in script or marker in script:
+              raise SystemExit('Studio changeset bump marker was not updated exactly once')
           Path('/tmp/adm14-integrate.py').write_text(script + '\n')
           PY
           python3 /tmp/adm14-integrate.py
+          grep -n "@ankhorage/studio.*major" .changeset/adm14-studio-media-pool.md
 
       - name: Update dependencies
         run: bun install
