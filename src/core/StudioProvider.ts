@@ -25,7 +25,6 @@ import {
   type StudioComponentMetaRegistry,
   type StudioContextValue,
   type StudioManifest,
-  type StudioMode,
   type StudioNodeId,
   type StudioPanelId,
   type StudioScreenId,
@@ -95,7 +94,6 @@ export const StudioProvider = ({
   const [saveStatus, setSaveStatus] = useState<StudioContextValue['saveStatus']>('idle');
   const [isLoading, setIsLoading] = useState(initialManifest === null);
   const [error, setError] = useState<string | null>(null);
-  const [studioMode, setStudioMode] = useState<StudioMode>('dark');
   const [previewMode, setPreviewMode] = useState(false);
   const manifestRef = useRef<StudioManifest | null>(initialManifest);
   const replaceManifest = useCallback((nextManifest: StudioManifest | null) => {
@@ -377,7 +375,6 @@ export const StudioProvider = ({
       activePanelId,
       activeAdminRouteId,
       activeCanvasDragNodeId,
-      studioMode,
       previewMode,
       lastNonAdminLocation,
       saveStatus,
@@ -411,13 +408,11 @@ export const StudioProvider = ({
       updateTheme,
       deleteTheme: noop,
       setActiveThemeId: noop,
-      setActiveThemeMode: setStudioMode,
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,
       setActiveScreenId,
       findNode: findNodeById,
-      setStudioMode,
       togglePreviewMode: () => setPreviewMode((current) => !current),
       refetchManifest: persistence.refetchManifest,
       flushManifest: persistence.flushManifest,
@@ -437,7 +432,6 @@ export const StudioProvider = ({
       componentMeta,
       saveStatus,
       selectedNodeId,
-      studioMode,
       updateManifest,
       updateNode,
       updateAuthSettings,

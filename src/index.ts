@@ -133,7 +133,6 @@ export type StudioNodeId = string;
 export type StudioScreenId = string;
 export type StudioModuleId = string;
 
-export type StudioMode = 'light' | 'dark';
 export type StudioSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export type StudioPanelId = 'layers';
 export type StudioAdminRouteId =
@@ -191,7 +190,6 @@ export interface StudioSelectionState {
 export interface StudioSessionState {
   projectId: StudioProjectId;
   sessionId?: StudioSessionId;
-  studioMode: StudioMode;
   previewMode: boolean;
   lastNonAdminLocation: string;
   saveStatus: StudioSaveStatus;
@@ -336,7 +334,6 @@ export type StudioCommand =
   | { type: 'studio.setActiveAdminRoute'; routeId: StudioAdminRouteId }
   | { type: 'studio.setActiveCanvasDragNode'; nodeId: StudioNodeId | null }
   | { type: 'studio.setActiveScreen'; screenId: StudioScreenId }
-  | { type: 'studio.setStudioMode'; mode: StudioMode }
   | { type: 'studio.togglePreviewMode' };
 
 export type StudioEvent =
@@ -380,13 +377,11 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   updateTheme: (id: string, updates: ThemeUpdates) => void;
   deleteTheme: (id: string) => void;
   setActiveThemeId: (id: string) => void;
-  setActiveThemeMode: (mode: StudioMode) => void;
   updateAuthSettings: (settings: StudioAuthSettings) => void;
   mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
   updateOAuthProviders: (providers: AuthOAuthProviderConfig[]) => void;
   setActiveScreenId: (id: StudioScreenId) => void;
   findNode: (root: UiNode, id: StudioNodeId) => UiNode | null;
-  setStudioMode: (mode: StudioMode) => void;
   togglePreviewMode: () => void;
   refetchManifest: () => Promise<void>;
   flushManifest: () => Promise<void>;

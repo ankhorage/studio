@@ -17,7 +17,6 @@ import type {
   StudioComponentMetaRegistry,
   StudioIdGenerator,
   StudioManifest,
-  StudioMode,
   ThemeUpdates,
 } from './index';
 import { insertNodeAtPlacement, moveNodeToPlacement } from './index';
@@ -771,7 +770,7 @@ export function setStudioManifestActiveThemeId(
 
 export function setStudioManifestActiveThemeMode(
   manifest: StudioManifest,
-  activeThemeMode: StudioMode,
+  activeThemeMode: NonNullable<StudioManifest['activeThemeMode']>,
 ): StudioManifest {
   return { ...manifest, activeThemeMode };
 }
