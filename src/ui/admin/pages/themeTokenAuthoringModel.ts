@@ -45,10 +45,18 @@ export function updateTypographyHeading(args: {
   readonly value: number | string | undefined;
 }): ThemeGlobalTokenOverrides | undefined {
   const headings = args.tokens?.typography?.headings;
-  const heading = updateRecordValue(headings?.[args.level], args.field, args.value);
+  const current = headings?.[args.level] ?? {};
+  const nextHeading = { ...current };
+  if (args.value === undefined) delete nextHeading[args.field];
+  else Object.assign(nextHeading, { [args.field]: args.value });
+  const nextHeadings = updateRecordValue(
+    headings,
+    args.level,
+    Object.keys(nextHeading).length > 0 ? nextHeading : undefined,
+  );
   return updateTypographyTokens(args.tokens, {
     ...args.tokens?.typography,
-    headings: updateRecordValue(headings, args.level, heading),
+    headings: nextHeadings,
   });
 }
 
