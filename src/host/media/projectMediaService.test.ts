@@ -56,12 +56,24 @@ describe('ProjectMediaService', () => {
       Promise.resolve({ adapter, bucket: 'media' }),
     );
 
-    await expect(
-      service.resolve('demo', { kind: 'storage', bucket: 'media', path: 'authoring/hero/a.png' }),
-    ).resolves.toBe('https://signed.test/a');
-    await expect(
-      service.resolve('demo', { kind: 'storage', bucket: 'private', path: 'authoring/hero/a.png' }),
-    ).rejects.toThrow('outside the project authoring pool');
+    const resolved = await service.resolve('demo', {
+      kind: 'storage',
+      bucket: 'media',
+      path: 'authoring/hero/a.png',
+    });
+    expect(resolved).toBe('https://signed.test/a');
+
+    let errorMessage = '';
+    try {
+      await service.resolve('demo', {
+        kind: 'storage',
+        bucket: 'private',
+        path: 'authoring/hero/a.png',
+      });
+    } catch (error) {
+      errorMessage = error instanceof Error ? error.message : String(error);
+    }
+    expect(errorMessage).toContain('outside the project authoring pool');
   });
 
   test('sanitizes authoring object paths', () => {
