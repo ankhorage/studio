@@ -1,7 +1,10 @@
 import type { MediaAsset, MediaAssetKind, MediaStorageSource } from '@ankhorage/contracts';
 
 import type { ProjectManager } from '../orchestrator/projectManager';
-import { resolveProjectMediaStorage } from './projectMediaStorage';
+import {
+  resolveProjectMediaStorage,
+  type ProjectMediaStorageContext,
+} from './projectMediaStorage';
 
 export interface ProjectMediaIngestInput {
   readonly assetId: string;
@@ -15,18 +18,21 @@ export interface ProjectMediaIngestInput {
   readonly durationMs?: number;
 }
 
+type MediaStorageResolver = (args: {
+  readonly projectId: string;
+  readonly projectManager: ProjectManager;
+  readonly workspaceRoot: string;
+}) => Promise<ProjectMediaStorageContext>;
+
 export class ProjectMediaService {
   constructor(
     private readonly projectManager: ProjectManager,
     private readonly workspaceRoot: string,
+    private readonly resolveStorage: MediaStorageResolver = resolveProjectMediaStorage,
   ) {}
 
   async ingest(projectId: string, input: ProjectMediaIngestInput): Promise<MediaAsset> {
-    const storage = await resolveProjectMediaStorage({
-      projectId,
-      projectManager: this.projectManager,
-      workspaceRoot: this.workspaceRoot,
-    });
+    const storage = await this.getStorage(projectId);
     const path = createAuthoringMediaPath(input.assetId, input.name);
     const uploaded = await storage.adapter.upload({
       bucket: storage.bucket,
@@ -54,17 +60,21 @@ export class ProjectMediaService {
   }
 
   async resolve(projectId: string, source: MediaStorageSource): Promise<string> {
-    const storage = await resolveProjectMediaStorage({
-      projectId,
-      projectManager: this.projectManager,
-      workspaceRoot: this.workspaceRoot,
-    });
+    const storage = await this.getStorage(projectId);
     if (source.bucket !== storage.bucket || !source.path.startsWith('authoring/')) {
       throw new Error('Media storage reference is outside the project authoring pool.');
     }
     const resolved = await storage.adapter.resolve({ ...source, access: 'signed' });
     if (!resolved.ok) throw new Error(resolved.error.message);
     return resolved.data.asset.url;
+  }
+
+  private getStorage(projectId: string) {
+    return this.resolveStorage({
+      projectId,
+      projectManager: this.projectManager,
+      workspaceRoot: this.workspaceRoot,
+    });
   }
 }
 
