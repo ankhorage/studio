@@ -214,33 +214,32 @@ export class ModuleManager {
     const { projectId, includeStudio = true } = args;
     await this.ensureProjectExists(projectId);
     await this.applyPendingOperations(projectId);
-    return await this.projectManager.syncProject({
+    return this.projectManager.syncProject({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
       includeStudio,
     });
   }
 
-  async saveStudioManifest(args: { projectId: string; manifest: AppManifest }) {
+  async persistProjectManifest(args: { projectId: string; manifest: AppManifest }) {
     await this.ensureProjectExists(args.projectId);
-    return await this.projectManager.saveStudioManifest({
+    return this.projectManager.persistProjectManifest({
       ...args,
       manifest: await this.projectLifecycleState(args.projectId, args.manifest),
     });
   }
 
-  async syncStudioRuntime(args: { projectId: string; manifest: AppManifest }) {
-    await this.ensureProjectExists(args.projectId);
-    return await this.projectManager.syncStudioRuntime({
-      ...args,
-      manifest: await this.projectLifecycleState(args.projectId, args.manifest),
-      mutations: await this.resolveLayoutMutations(args.projectId),
+  async syncProjectRuntime(projectId: string) {
+    await this.ensureProjectExists(projectId);
+    return this.projectManager.syncProjectRuntime({
+      projectId,
+      mutations: await this.resolveLayoutMutations(projectId),
     });
   }
 
   async saveProjectManifest(args: { projectId: string; manifest: AppManifest }) {
     await this.ensureProjectExists(args.projectId);
-    return await this.projectManager.saveProjectManifest({
+    return this.projectManager.saveProjectManifest({
       ...args,
       manifest: await this.projectLifecycleState(args.projectId, args.manifest),
       mutations: await this.resolveLayoutMutations(args.projectId),
@@ -250,7 +249,7 @@ export class ModuleManager {
 
   async rebuildRootLayout(projectId: string) {
     await this.ensureProjectExists(projectId);
-    return await this.projectManager.rebuildRootLayout({
+    return this.projectManager.rebuildRootLayout({
       projectId,
       mutations: await this.resolveLayoutMutations(projectId),
     });
@@ -273,7 +272,7 @@ export class ModuleManager {
         await this.updateModuleConfig(projectId, moduleId, config);
       },
       readAuthoringContext: async () => {
-        const manifest = await this.projectManager.getStudioManifest(projectId);
+        const manifest = await this.projectManager.getProjectManifest(projectId);
         return {
           screens: Object.values(manifest.screens).map((screen) => ({
             id: screen.id,
@@ -299,7 +298,7 @@ export class ModuleManager {
       throw new Error('Module admin manifest mutation requires screenId, nodeId, and prop.');
     }
 
-    const manifest = await this.projectManager.getStudioManifest(projectId);
+    const manifest = await this.projectManager.getProjectManifest(projectId);
     const screen = manifest.screens[screenId];
     if (screen?.id !== screenId) {
       throw new Error(`Screen '${screenId}' is not available for module administration.`);
@@ -311,7 +310,7 @@ export class ModuleManager {
     const nextManifest = updateStudioManifestNode(manifest, screenId, nodeId, {
       [prop]: mutation.value,
     });
-    await this.saveStudioManifest({ projectId, manifest: nextManifest });
+    await this.persistProjectManifest({ projectId, manifest: nextManifest });
   }
 
   private async prepareProjectForLifecycle(projectId: string) {
