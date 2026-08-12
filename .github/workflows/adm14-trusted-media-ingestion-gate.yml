@@ -97,7 +97,7 @@ jobs:
           fi
 
       - name: Verify changeset
-        run: bun run changeset:status --since=origin/main
+        run: bun run changeset:status
 
       - name: Push validated state
         run: git push origin HEAD:agent/adm14-trusted-media-ingestion
