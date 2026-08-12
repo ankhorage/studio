@@ -33,7 +33,7 @@ export class ProjectAuthHealthService {
   }): Promise<ProjectAuthHealthResult> {
     let manifest;
     try {
-      manifest = await this.readEditableManifest(input.projectId);
+      manifest = await this.projectManager.getProjectManifest(input.projectId);
     } catch {
       return {
         ok: false,
@@ -89,14 +89,6 @@ export class ProjectAuthHealthService {
           rolloutStatus: 'unavailable',
         }),
       };
-    }
-  }
-
-  private async readEditableManifest(projectId: string) {
-    try {
-      return await this.projectManager.getProjectManifest(projectId);
-    } catch {
-      return this.projectManager.getProjectManifest(projectId);
     }
   }
 }
