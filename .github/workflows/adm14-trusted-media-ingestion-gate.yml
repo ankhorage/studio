@@ -1,0 +1,256 @@
+name: ADM-14 Trusted Media Ingestion Gate
+
+on:
+  push:
+    branches:
+      - agent/adm14-trusted-media-ingestion
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Apply ADM-14 integration
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              if old not in text:
+                  raise SystemExit(f'missing patch anchor in {path}: {old[:80]!r}')
+              p.write_text(text.replace(old, new, 1))
+
+          package_path = Path('package.json')
+          package = json.loads(package_path.read_text())
+          package['dependencies']['@ankhorage/expo-runtime'] = '^2.1.0'
+          package['dependencies']['@ankhorage/supabase-storage'] = '^0.2.0'
+          package_path.write_text(json.dumps(package, indent=2) + '\n')
+
+          replace_once(
+              'src/index.ts',
+              "import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';\n",
+              "import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';\nimport type { StudioMediaIngestResult, StudioMediaPickerSource } from './mediaPickerAuthoring';\n",
+          )
+          replace_once(
+              'src/index.ts',
+              "export * from './mediaAuthoringModel';\n",
+              "export * from './mediaAuthoringModel';\nexport * from './mediaPickerAuthoring';\n",
+          )
+          replace_once(
+              'src/index.ts',
+              "  'removeStudioMediaAsset',\n",
+              "  'removeStudioMediaAsset',\n  'StudioMediaPickerAdapter',\n",
+          )
+          replace_once(
+              'src/index.ts',
+              "  removeMediaAsset: (mediaId: string) => boolean;\n",
+              "  removeMediaAsset: (mediaId: string) => boolean;\n  mediaPickerAvailable: boolean;\n  ingestMediaFromPicker: (source: StudioMediaPickerSource) => Promise<StudioMediaIngestResult>;\n",
+          )
+
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "import { removeStudioMediaAsset, upsertStudioMediaAsset } from '../mediaAuthoringModel';\n",
+              "import {\n  createStudioMediaAssetId,\n  removeStudioMediaAsset,\n  upsertStudioMediaAsset,\n} from '../mediaAuthoringModel';\nimport type {\n  StudioMediaIngestResult,\n  StudioMediaPickerAdapter,\n  StudioMediaPickerSource,\n} from '../mediaPickerAuthoring';\n",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "import { resolveScreenIdForPathname } from '../routeUtils';\n",
+              "import { resolveScreenIdForPathname } from '../routeUtils';\nimport { ingestStudioMediaSelection } from './mediaAuthoringHostClient';\n",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "  componentMeta: StudioComponentMetaRegistry;\n}",
+              "  componentMeta: StudioComponentMetaRegistry;\n  mediaPicker?: StudioMediaPickerAdapter;\n}",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "  componentMeta,\n}: StudioProviderProps) => {",
+              "  componentMeta,\n  mediaPicker,\n}: StudioProviderProps) => {",
+          )
+          remove_block = """  const removeMediaAsset = useCallback(
+    (mediaId: string): boolean => {
+      let removed = false;
+      updateManifest((current) => {
+        const result = removeStudioMediaAsset(current, mediaId);
+        removed = result.ok;
+        return result.ok ? result.manifest : current;
+      });
+      return removed;
+    },
+    [updateManifest],
+  );
+"""
+          ingest_block = remove_block + """
+
+  const ingestMediaFromPicker = useCallback(
+    async (source: StudioMediaPickerSource): Promise<StudioMediaIngestResult> => {
+      if (!mediaPicker) return { ok: false, reason: 'Media picker unavailable.' };
+      const picked = await mediaPicker.pick({ source });
+      if (!picked.ok) return picked;
+      const current = manifestRef.current;
+      if (!current) return { ok: false, reason: 'Manifest unavailable.' };
+      const assetId = createStudioMediaAssetId(picked.selection.name, current.media?.assets);
+      const ingested = await ingestStudioMediaSelection({
+        projectId,
+        assetId,
+        selection: picked.selection,
+      });
+      if (!ingested.ok) return ingested;
+      upsertMediaAsset(ingested.asset);
+      return ingested;
+    },
+    [mediaPicker, projectId, upsertMediaAsset],
+  );
+"""
+          replace_once('src/core/StudioProvider.ts', remove_block, ingest_block)
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "      removeMediaAsset,\n",
+              "      removeMediaAsset,\n      mediaPickerAvailable: mediaPicker !== undefined,\n      ingestMediaFromPicker,\n",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "      removeMediaAsset,\n      updateAuthSettings,\n",
+              "      removeMediaAsset,\n      mediaPicker,\n      ingestMediaFromPicker,\n      updateAuthSettings,\n",
+          )
+
+          server = Path('src/host/http/server.ts')
+          text = server.read_text()
+          text = text.replace(
+              "  readProjectInfrastructureEnvironment,\n",
+              "",
+              1,
+          )
+          text = text.replace(
+              "import { registerProjectModuleRoutes } from './moduleRoutes';\n",
+              "import { registerProjectMediaRoutes } from './mediaRoutes';\nimport { registerProjectModuleRoutes } from './moduleRoutes';\n",
+              1,
+          )
+          text = text.replace(
+              "  // --- PROJECT ROUTES ---\n",
+              "  registerProjectMediaRoutes(fastify, { projectManager, workspaceRoot: projectRoot });\n\n  // --- PROJECT ROUTES ---\n",
+              1,
+          )
+          pattern = re.compile(
+              r"\n  // GET project-scoped Supabase public credentials for Studio uploads\n.*?\n  // PUT \(Save\) Manifest",
+              re.S,
+          )
+          text, count = pattern.subn("\n  // PUT (Save) Manifest", text, count=1)
+          if count != 1:
+              raise SystemExit('failed to remove legacy supabase-public route')
+          server.write_text(text)
+
+          replace_once(
+              'src/host/layout/templates/rootLayout.ts',
+              "    ...(includeStudio\n      ? [\n          {\n            source: '@ankhorage/studio/runtime',",
+              "    ...(includeStudio\n      ? [\n          {\n            source: '@ankhorage/expo-runtime/media-picker',\n            namedImports: [{ imported: 'createExpoMediaPickerAdapter' }],\n          },\n        ]\n      : []),\n    ...(includeStudio\n      ? [\n          {\n            source: '@ankhorage/studio/runtime',",
+          )
+          replace_once(
+              'src/host/layout/templates/rootLayout.ts',
+              "    includeStudio ? appHeaderHelpers.trim() : '',\n    innerNavigation.declarations.trim(),",
+              "    includeStudio ? appHeaderHelpers.trim() : '',\n    includeStudio ? 'const studioMediaPicker = createExpoMediaPickerAdapter();' : '',\n    innerNavigation.declarations.trim(),",
+          )
+          replace_once(
+              'src/host/layout/templates/rootLayout.ts',
+              "        componentMeta={ZORA_COMPONENT_META}\n      >",
+              "        componentMeta={ZORA_COMPONENT_META}\n        mediaPicker={studioMediaPicker}\n      >",
+          )
+
+          replace_once(
+              'src/host/orchestrator/templates.ts',
+              "const EXPO_SECURE_STORE_VERSION = '~15.0.8';\n",
+              "const EXPO_RUNTIME_VERSION = '^2.1.0';\nconst EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';\nconst EXPO_FILE_SYSTEM_VERSION = '~19.0.23';\nconst EXPO_IMAGE_PICKER_VERSION = '~17.0.11';\nconst EXPO_SECURE_STORE_VERSION = '~15.0.8';\n",
+          )
+          replace_once(
+              'src/host/orchestrator/templates.ts',
+              "            '@expo/vector-icons': '^15.0.3',\n            '@react-native-picker/picker': '2.11.1',",
+              "            '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,\n            '@expo/vector-icons': '^15.0.3',\n            '@react-native-picker/picker': '2.11.1',\n            'expo-document-picker': EXPO_DOCUMENT_PICKER_VERSION,\n            'expo-file-system': EXPO_FILE_SYSTEM_VERSION,\n            'expo-image-picker': EXPO_IMAGE_PICKER_VERSION,",
+          )
+          PY
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Format authored changes
+        run: bun run format
+
+      - name: Apply strict lint fixes
+        run: bun run lint:fix
+
+      - name: Build
+        run: bun run build
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test
+        run: bun run test
+
+      - name: Knip
+        run: bun run knip
+
+      - name: Generate documentation
+        run: bun run docs
+
+      - name: Format generated documentation
+        run: bun run format
+
+      - name: Validate repository conventions
+        run: bunx @ankhorage/doctor@0.8.0 validate .
+
+      - name: Verify formatting
+        run: bun run format:check
+
+      - name: Verify lint
+        run: bun run lint
+
+      - name: Verify package contents
+        run: npm pack --dry-run
+
+      - name: Guard trusted media boundary
+        run: |
+          if grep -R -n 'supabase-public' src; then
+            echo 'Legacy provider credential route is still present.'
+            exit 1
+          fi
+          if grep -R -n 'publicUrl' src/host/media src/core/mediaAuthoringHostClient.ts; then
+            echo 'Provider URL leaked into canonical media ingestion.'
+            exit 1
+          fi
+          if grep -n -E 'readonly uri:|readonly uri\?' src/mediaPickerAuthoring.ts; then
+            echo 'Studio picker contract must not expose transient URIs.'
+            exit 1
+          fi
+
+      - name: Verify changeset
+        run: bun run changeset:status --since=origin/main
+
+      - name: Verify clean patches
+        run: git diff --check
+
+      - name: Commit validated non-workflow state
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- . ':!.github/workflows/*'
+          if ! git diff --cached --quiet; then
+            git commit -m 'Validate ADM-14 trusted media ingestion'
+            git push origin HEAD:agent/adm14-trusted-media-ingestion
+          fi
