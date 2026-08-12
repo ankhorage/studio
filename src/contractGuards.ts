@@ -1,9 +1,5 @@
 import { COLOR_HARMONIES, type ColorHarmony } from '@ankhorage/color-theory';
-import {
-  APP_CATEGORIES,
-  type AppCategory,
-  isAppManifest,
-} from '@ankhorage/contracts';
+import { APP_CATEGORIES, type AppCategory, isAppManifest } from '@ankhorage/contracts';
 
 const APP_CATEGORY_SET = new Set<string>(APP_CATEGORIES);
 const COLOR_HARMONY_SET = new Set<string>(COLOR_HARMONIES);
