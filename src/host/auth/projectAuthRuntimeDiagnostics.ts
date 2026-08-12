@@ -1,25 +1,25 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-
 import type { AuthRedirectEnvironment } from '@ankhorage/infra';
 import { resolveAuthRedirectConfiguration } from '@ankhorage/infra';
+import {
+  readProjectInfrastructureEnvironment,
+  runProjectInfrastructureLifecycle,
+} from '@ankhorage/infra/project';
 
 import type { ProjectAuthDiagnostic } from '../../projectAuthHealth';
 import type {
   ProjectAuthRuntimeDiagnostics,
   ProjectAuthRuntimeRolloutStatus,
 } from '../../projectAuthRuntimeDiagnostics';
-import { runProjectInfraScriptCapture } from '../orchestrator/infraRuntime';
 import { getProjectPath } from '../orchestrator/projectPaths';
 
-const SAFE_INFRA_ENV_KEYS = new Set([
+const SAFE_INFRA_ENV_KEYS = [
   'API_EXTERNAL_URL',
   'APP_PORT_FORWARD_LOCAL_PORT',
   'EXPO_PUBLIC_SUPABASE_URL',
   'OAUTH_NATIVE_REDIRECT_URLS',
   'SITE_URL',
   'SUPABASE_GATEWAY_FORWARD_LOCAL_PORT',
-]);
+] as const;
 
 export interface ProjectAuthRedirectRuntime {
   readonly providerRedirectUrl: string;
@@ -51,12 +51,13 @@ export async function observeProjectAuthRuntimeDiagnostics(input: {
   }
 
   const diagnostics: ProjectAuthDiagnostic[] = [];
+  const projectPath = getProjectPath(input.rootPath, input.projectId);
   let expected: ProjectAuthRedirectRuntime | null = null;
 
   try {
-    const environment = await readSafeGeneratedInfraEnvironment({
-      rootPath: input.rootPath,
-      projectId: input.projectId,
+    const environment = await readProjectInfrastructureEnvironment({
+      keys: SAFE_INFRA_ENV_KEYS,
+      projectPath,
       target: input.target,
     });
     expected = resolveProjectAuthRedirectRuntime({
@@ -75,9 +76,9 @@ export async function observeProjectAuthRuntimeDiagnostics(input: {
 
   let observed: ParsedProjectAuthRuntimeStatus = { rolloutStatus: 'unavailable' };
   try {
-    const status = await runProjectInfraScriptCapture({
-      rootPath: input.rootPath,
+    const status = await runProjectInfrastructureLifecycle({
       projectId: input.projectId,
+      projectPath,
       target: input.target,
       script: 'status',
     });
@@ -182,35 +183,6 @@ export function parseProjectAuthRuntimeStatus(stdout: string): ParsedProjectAuth
   };
 }
 
-async function readSafeGeneratedInfraEnvironment(input: {
-  readonly rootPath: string;
-  readonly projectId: string;
-  readonly target: string;
-}): Promise<Readonly<Record<string, string>>> {
-  const projectPath = getProjectPath(input.rootPath, input.projectId);
-  const infraRoot = path.join(projectPath, 'infra', input.target);
-  const envPath = path.join(infraRoot, '.env');
-  const fallbackPath = path.join(infraRoot, '.env.example');
-  const sourcePath = (await exists(envPath)) ? envPath : fallbackPath;
-  const content = await fs.readFile(sourcePath, 'utf8');
-  const environment: Record<string, string> = {};
-
-  for (const line of content.split(/\r?\n/u)) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const separatorIndex = trimmed.indexOf('=');
-    if (separatorIndex <= 0) continue;
-    const key = trimmed.slice(0, separatorIndex).trim();
-    if (!SAFE_INFRA_ENV_KEYS.has(key)) continue;
-    environment[key] = trimmed
-      .slice(separatorIndex + 1)
-      .trim()
-      .replace(/^['"]|['"]$/g, '');
-  }
-
-  return environment;
-}
-
 function resolveOrigin(value: string | undefined, portValue: string | undefined): string | null {
   if (value?.trim()) {
     try {
@@ -247,13 +219,4 @@ function readSafeStatusValue(stdout: string, pattern: RegExp): string | undefine
 
 function isExactWebCallbackUrl(value: string): boolean {
   return /^https?:\/\//u.test(value) && !value.includes('*');
-}
-
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }

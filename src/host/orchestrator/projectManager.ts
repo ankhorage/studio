@@ -1,5 +1,10 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import { type ExpoRuntimePlan, resolveExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
+import {
+  inspectProjectInfrastructure,
+  runProjectInfrastructureLifecycle,
+  syncProjectInfrastructure,
+} from '@ankhorage/infra/project';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -14,9 +19,6 @@ import type { LayoutMutation } from '../modules/layout';
 import type { ProjectTemplateSelection } from '../templateRegistry';
 import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
 import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
-import { getProjectInfrastructureStatus, syncProjectInfrastructure } from './infraGenerator';
-import { runProjectInfraScript } from './infraRuntime';
-import { cleanupProjectGeneratedAppImage } from './projectDeletion';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
 import { ProjectScaffolder } from './scaffolder';
@@ -24,8 +26,7 @@ import type { GeneratedAuthProvider, GeneratedStorageProvider } from './template
 import { runWorkspaceInstall } from './workspaceRuntime';
 
 interface ProjectManagerDependencies {
-  readonly runProjectInfraScript: typeof runProjectInfraScript;
-  readonly cleanupProjectGeneratedAppImage: typeof cleanupProjectGeneratedAppImage;
+  readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
 }
 
 export class ProjectManager {
@@ -44,8 +45,7 @@ export class ProjectManager {
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.appFiles = new GeneratedAppFileGenerator();
     this.dependencies = {
-      runProjectInfraScript,
-      cleanupProjectGeneratedAppImage,
+      runProjectInfrastructureLifecycle,
       ...dependencies,
     };
   }
@@ -56,13 +56,11 @@ export class ProjectManager {
 
   async deleteProject(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
-    const warnings: string[] = [];
     let infraDestroyed = false;
-    let imageCleanup: Awaited<ReturnType<typeof cleanupProjectGeneratedAppImage>> | null = null;
 
     if (await exists(projectPath)) {
       const manifest = await this.store.readManifest(projectId);
-      const infraStatus = await getProjectInfrastructureStatus({
+      const infraStatus = await inspectProjectInfrastructure({
         projectId,
         projectPath,
         manifest,
@@ -72,17 +70,11 @@ export class ProjectManager {
         await syncProjectInfrastructure({ projectId, projectPath, manifest });
         await this.destroyProjectInfrastructure(projectId, projectPath, infraStatus.target);
         infraDestroyed = true;
-        imageCleanup = await this.dependencies.cleanupProjectGeneratedAppImage({
-          projectId,
-          projectPath,
-          target: infraStatus.target,
-        });
-        warnings.push(...imageCleanup.warnings);
       }
     }
 
     await this.store.deleteProject(projectId);
-    return { success: true, infraDestroyed, projectFilesDeleted: true, imageCleanup, warnings };
+    return { success: true, infraDestroyed, projectFilesDeleted: true };
   }
 
   async createProject(
@@ -236,7 +228,7 @@ export class ProjectManager {
   async getInfrastructureStatus(projectId: string) {
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
-    return getProjectInfrastructureStatus({ projectId, projectPath, manifest });
+    return inspectProjectInfrastructure({ projectId, projectPath, manifest });
   }
 
   private async destroyProjectInfrastructure(
@@ -245,9 +237,9 @@ export class ProjectManager {
     target: string,
   ): Promise<void> {
     try {
-      await this.dependencies.runProjectInfraScript({
-        rootPath: this.rootPath,
+      await this.dependencies.runProjectInfrastructureLifecycle({
         projectId,
+        projectPath,
         target,
         script: 'destroy',
       });

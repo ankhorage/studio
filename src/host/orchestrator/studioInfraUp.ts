@@ -1,9 +1,12 @@
+import { runProjectInfrastructureLifecycle } from '@ankhorage/infra/project';
+
 import {
   resolveTrustedOAuthInfraEnvironmentForUp,
   type TrustedOAuthSecretResolver,
 } from '../secrets/trustedOAuthInfraEnvironment';
-import { registerProjectInfraPortForwardOwner, runProjectInfraScript } from './infraRuntime';
+import { registerProjectInfraPortForwardOwner } from './infraSession';
 import type { ProjectManager } from './projectManager';
+import { getProjectPath } from './projectPaths';
 
 export interface StudioInfraUpResult {
   readonly target?: string;
@@ -47,10 +50,11 @@ export async function upProjectInfrastructure(args: {
     workspaceRoot: args.workspaceRoot,
     ...(args.secretResolver ? { secretResolver: args.secretResolver } : {}),
   });
+  const projectPath = getProjectPath(args.workspaceRoot, args.projectId);
 
-  await runProjectInfraScript({
-    rootPath: args.workspaceRoot,
+  await runProjectInfrastructureLifecycle({
     projectId: args.projectId,
+    projectPath,
     target: status.target,
     script: 'up',
     env: {
@@ -59,8 +63,8 @@ export async function upProjectInfrastructure(args: {
     },
   });
   await registerProjectInfraPortForwardOwner({
-    rootPath: args.workspaceRoot,
     projectId: args.projectId,
+    projectPath,
     target: status.target,
   });
 

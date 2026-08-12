@@ -24,6 +24,7 @@ describe('resolveProjectSecretDatabaseUrl', () => {
     const projectPath = await createProjectRoot();
     const result = await resolveProjectSecretDatabaseUrl({
       projectPath,
+      target: 'minikube',
       processEnvironment: {
         ANKH_SECRET_STORE_DATABASE_URL: 'postgres://host-config',
         DATABASE_URL: 'postgres://generic',
@@ -33,7 +34,7 @@ describe('resolveProjectSecretDatabaseUrl', () => {
     expect(result).toBe('postgres://host-config');
   });
 
-  test('reads generated untracked project environment values', async () => {
+  test('delegates generated project database URL resolution to Infra', async () => {
     const projectPath = await createProjectRoot();
     const infraRoot = path.join(projectPath, 'infra', 'minikube');
     await fs.mkdir(infraRoot, { recursive: true });
@@ -45,6 +46,7 @@ describe('resolveProjectSecretDatabaseUrl', () => {
 
     const result = await resolveProjectSecretDatabaseUrl({
       projectPath,
+      target: 'minikube',
       processEnvironment: {},
     });
 
@@ -53,10 +55,21 @@ describe('resolveProjectSecretDatabaseUrl', () => {
 
   test('does not invent a plaintext fallback', async () => {
     const projectPath = await createProjectRoot();
+    const infraRoot = path.join(projectPath, 'infra', 'minikube');
+    await fs.mkdir(infraRoot, { recursive: true });
+    await fs.writeFile(
+      path.join(infraRoot, '.env.example'),
+      'APP_PORT_FORWARD_LOCAL_PORT=48123\n',
+      'utf8',
+    );
     let error: unknown;
 
     try {
-      await resolveProjectSecretDatabaseUrl({ projectPath, processEnvironment: {} });
+      await resolveProjectSecretDatabaseUrl({
+        projectPath,
+        target: 'minikube',
+        processEnvironment: {},
+      });
     } catch (caught) {
       error = caught;
     }

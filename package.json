@@ -206,7 +206,7 @@
     "@ankhorage/contracts": "^7.2.0",
     "@ankhorage/data-sources": "^1.0.1",
     "@ankhorage/expo-runtime": "^2.0.0",
-    "@ankhorage/infra": "^3.0.0",
+    "@ankhorage/infra": "^3.2.0",
     "@ankhorage/orchestrator": "^0.3.0",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",
     "@ankhorage/orchestrator-module-expo-localization": "^0.5.2",

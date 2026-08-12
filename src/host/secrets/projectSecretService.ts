@@ -29,7 +29,7 @@ export interface ProjectSecretServiceOptions {
   readonly projectManager: ProjectManager;
   readonly workspaceRoot: string;
   readonly createClient?: (databaseUrl: string) => BunSupabaseVaultClient;
-  readonly resolveDatabaseUrl?: (projectPath: string) => Promise<string>;
+  readonly resolveDatabaseUrl?: (projectPath: string, target: string) => Promise<string>;
 }
 
 export interface ConfigureOAuthProviderInput {
@@ -82,7 +82,7 @@ export class ProjectSecretService {
   private readonly projectManager: ProjectManager;
   private readonly workspaceRoot: string;
   private readonly createClient: (databaseUrl: string) => BunSupabaseVaultClient;
-  private readonly resolveDatabaseUrl: (projectPath: string) => Promise<string>;
+  private readonly resolveDatabaseUrl: (projectPath: string, target: string) => Promise<string>;
 
   constructor(options: ProjectSecretServiceOptions) {
     this.projectManager = options.projectManager;
@@ -90,7 +90,7 @@ export class ProjectSecretService {
     this.createClient = options.createClient ?? createBunSupabaseVaultClient;
     this.resolveDatabaseUrl =
       options.resolveDatabaseUrl ??
-      ((projectPath) => resolveProjectSecretDatabaseUrl({ projectPath }));
+      ((projectPath, target) => resolveProjectSecretDatabaseUrl({ projectPath, target }));
   }
 
   list(input: {
@@ -213,7 +213,9 @@ export class ProjectSecretService {
     try {
       const manifest = await this.readEditableManifest(input.projectId);
       const projectPath = getProjectPath(this.workspaceRoot, input.projectId);
-      const databaseUrl = await this.resolveDatabaseUrl(projectPath);
+      const infraStatus = await this.projectManager.getInfrastructureStatus(input.projectId);
+      if (!infraStatus.target) throw new Error('Project infrastructure target is unavailable.');
+      const databaseUrl = await this.resolveDatabaseUrl(projectPath, infraStatus.target);
       client = this.createClient(databaseUrl);
       const adapter = createInfraSecretStoreAdapter({
         manifest: manifest.infra,
@@ -351,7 +353,9 @@ export class ProjectSecretService {
     try {
       const manifest = await this.readEditableManifest(projectId);
       const projectPath = getProjectPath(this.workspaceRoot, projectId);
-      const databaseUrl = await this.resolveDatabaseUrl(projectPath);
+      const infraStatus = await this.projectManager.getInfrastructureStatus(projectId);
+      if (!infraStatus.target) throw new Error('Project infrastructure target is unavailable.');
+      const databaseUrl = await this.resolveDatabaseUrl(projectPath, infraStatus.target);
       client = this.createClient(databaseUrl);
       const adapter = createInfraSecretStoreAdapter({
         manifest: manifest.infra,

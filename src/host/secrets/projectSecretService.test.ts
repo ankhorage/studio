@@ -45,6 +45,8 @@ function createManifest(): AppManifest {
   };
 }
 
+const getInfrastructureStatus = () => Promise.resolve({ target: 'minikube' });
+
 describe('ProjectSecretService guarded removal', () => {
   test('stores OAuth credentials without writing manifest state', async () => {
     let saveCount = 0;
@@ -52,6 +54,7 @@ describe('ProjectSecretService guarded removal', () => {
       workspaceRoot: '/tmp',
       projectManager: {
         getProjectManifest: () => Promise.resolve(createManifest()),
+        getInfrastructureStatus,
         persistProjectManifest: () => {
           saveCount += 1;
           return Promise.resolve({ success: true });
@@ -100,6 +103,7 @@ describe('ProjectSecretService guarded removal', () => {
       workspaceRoot: '/tmp',
       projectManager: {
         getProjectManifest: () => Promise.resolve(manifest),
+        getInfrastructureStatus,
       } as never,
       resolveDatabaseUrl: () => Promise.resolve('postgres://local'),
       createClient: () =>
@@ -161,6 +165,7 @@ describe('ProjectSecretService guarded removal', () => {
       workspaceRoot: '/tmp',
       projectManager: {
         getProjectManifest: () => Promise.resolve(manifest),
+        getInfrastructureStatus,
       } as never,
       resolveDatabaseUrl: () => Promise.resolve('postgres://local'),
       createClient: () =>

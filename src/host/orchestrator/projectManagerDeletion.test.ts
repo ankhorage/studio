@@ -7,18 +7,14 @@ import { expect, test } from 'bun:test';
 
 import { ProjectManager } from './projectManager';
 
-test('deleteProject destroys generated Infra before image cleanup and project file removal', async () => {
+test('deleteProject destroys generated Infra before project file removal', async () => {
   const rootPath = await createWorkspace();
   await createProject(rootPath, 'demo');
   const calls: string[] = [];
   const manager = new ProjectManager(rootPath, {
-    runProjectInfraScript: (args) => {
+    runProjectInfrastructureLifecycle: (args) => {
       calls.push(`destroy:${args.projectId}:${args.script}`);
-      return Promise.resolve();
-    },
-    cleanupProjectGeneratedAppImage: (args) => {
-      calls.push(`cleanup:${args.projectId}:${args.target}`);
-      return Promise.resolve({ removedImages: 1, warnings: ['cleanup-warning'] });
+      return Promise.resolve({ stdout: '', stderr: '' });
     },
   });
 
@@ -28,21 +24,16 @@ test('deleteProject destroys generated Infra before image cleanup and project fi
     success: true,
     infraDestroyed: true,
     projectFilesDeleted: true,
-    imageCleanup: { removedImages: 1, warnings: ['cleanup-warning'] },
-    warnings: ['cleanup-warning'],
   });
-  expect(calls).toEqual(['destroy:demo:destroy', 'cleanup:demo:minikube']);
+  expect(calls).toEqual(['destroy:demo:destroy']);
   await expectRejects(() => readFile(path.join(rootPath, 'apps', 'demo', 'package.json'), 'utf8'));
 });
 
-test('deleteProject fails clearly and preserves files when generated destroy fails', async () => {
+test('deleteProject fails clearly and preserves files when Infra destroy fails', async () => {
   const rootPath = await createWorkspace();
   await createProject(rootPath, 'demo');
   const manager = new ProjectManager(rootPath, {
-    runProjectInfraScript: () => Promise.reject(new Error('destroy failed')),
-    cleanupProjectGeneratedAppImage: () => {
-      throw new Error('cleanup should not run');
-    },
+    runProjectInfrastructureLifecycle: () => Promise.reject(new Error('destroy failed')),
   });
 
   await expectRejects(
@@ -60,12 +51,10 @@ test('deleteProject destroys only the requested project', async () => {
   await createProject(rootPath, 'demo-b');
   const destroyed: string[] = [];
   const manager = new ProjectManager(rootPath, {
-    runProjectInfraScript: (args) => {
+    runProjectInfrastructureLifecycle: (args) => {
       destroyed.push(args.projectId);
-      return Promise.resolve();
+      return Promise.resolve({ stdout: '', stderr: '' });
     },
-    cleanupProjectGeneratedAppImage: () =>
-      Promise.resolve({ removedImages: 0, warnings: [], skipped: { reason: 'disabled' } }),
   });
 
   await manager.deleteProject('demo-a');

@@ -69,7 +69,7 @@ export class ProjectAuthHealthService {
         rootPath: this.workspaceRoot,
         projectId: input.projectId,
         target: infraStatus.target,
-        generated: infraStatus.hasLedger,
+        generated: infraStatus.generated,
         environment: resolveAuthRedirectEnvironment(input.environment),
         callbackRoute: oauth.callbackRoute,
       });

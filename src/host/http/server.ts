@@ -1,20 +1,21 @@
+import {
+  InfraScriptExecutionError,
+  readProjectInfrastructureEnvironment,
+  runProjectInfrastructureLifecycle,
+} from '@ankhorage/infra/project';
 import cors from '@fastify/cors';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
-import { promises as fs } from 'fs';
-import path from 'path';
 
 import { isAppCategory, isAppManifest } from '../../contractGuards';
 import { ProjectCreationValidationError } from '../../projectIdentity';
 import {
   ensureProjectInfraPortForward,
-  InfraScriptExecutionError,
-  runProjectInfraScript,
-  runProjectInfraScriptCapture,
   stopAllProjectInfraPortForwards,
-} from '../orchestrator/infraRuntime';
+} from '../orchestrator/infraSession';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
+import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
@@ -23,47 +24,6 @@ import { registerProjectModuleRoutes } from './moduleRoutes';
 import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
-
-async function exists(p: string): Promise<boolean> {
-  try {
-    await fs.access(p);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function readSimpleEnvMap(filePath: string): Promise<Map<string, string>> {
-  const out = new Map<string, string>();
-  if (!(await exists(filePath))) return out;
-
-  const content = await fs.readFile(filePath, 'utf8');
-  const lines = content.split(/\r?\n/u);
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const idx = trimmed.indexOf('=');
-    if (idx <= 0) continue;
-    const key = trimmed.slice(0, idx).trim();
-    const value = trimmed
-      .slice(idx + 1)
-      .trim()
-      .replace(/^['"]|['"]$/g, '');
-    out.set(key, value);
-  }
-
-  return out;
-}
-
-function readFirstEnvValue(env: Map<string, string>, keys: string[]): string | null {
-  for (const key of keys) {
-    const value = env.get(key);
-    if (value && value.trim().length > 0) {
-      return value.trim();
-    }
-  }
-  return null;
-}
 
 function resolveProjectTemplateSelection(body: {
   category?: unknown;
@@ -223,9 +183,9 @@ export async function createStudioHostServer(args: {
         );
       }
 
-      await runProjectInfraScript({
-        rootPath: projectRoot,
+      await runProjectInfrastructureLifecycle({
         projectId: id,
+        projectPath: getProjectPath(projectRoot, id),
         target: status.target,
         script: 'down',
       });
@@ -250,9 +210,9 @@ export async function createStudioHostServer(args: {
         );
       }
 
-      const runtimeOutput = await runProjectInfraScriptCapture({
-        rootPath: projectRoot,
+      const runtimeOutput = await runProjectInfrastructureLifecycle({
         projectId: id,
+        projectPath: getProjectPath(projectRoot, id),
         target: status.target,
         script: 'status',
       });
@@ -328,8 +288,8 @@ export async function createStudioHostServer(args: {
       }
 
       const portForward = await ensureProjectInfraPortForward({
-        rootPath: projectRoot,
         projectId: id,
+        projectPath: getProjectPath(projectRoot, id),
         target: status.target,
       });
 
@@ -392,24 +352,27 @@ export async function createStudioHostServer(args: {
           });
         }
 
-        const infraRoot = path.join(projectRoot, 'apps', id, 'infra', target);
-        const envPath = path.join(infraRoot, '.env');
-        const fallbackEnvPath = path.join(infraRoot, '.env.example');
-
-        const envMap = await readSimpleEnvMap((await exists(envPath)) ? envPath : fallbackEnvPath);
-
+        const environment = await readProjectInfrastructureEnvironment({
+          keys: [
+            'EXPO_PUBLIC_SUPABASE_URL',
+            'SUPABASE_URL',
+            'EXPO_PUBLIC_SUPABASE_ANON_KEY',
+            'SUPABASE_ANON_KEY',
+          ],
+          projectPath: getProjectPath(projectRoot, id),
+          target,
+        });
         const url =
-          readFirstEnvValue(envMap, ['EXPO_PUBLIC_SUPABASE_URL']) ??
-          readFirstEnvValue(envMap, ['SUPABASE_URL']);
+          environment.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? environment.SUPABASE_URL?.trim();
         const anonKey =
-          readFirstEnvValue(envMap, ['EXPO_PUBLIC_SUPABASE_ANON_KEY']) ??
-          readFirstEnvValue(envMap, ['SUPABASE_ANON_KEY']);
+          environment.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ??
+          environment.SUPABASE_ANON_KEY?.trim();
 
         if (!url || !anonKey) {
           return reply.status(400).send({
             error:
               `Missing Supabase public credentials for project '${id}'. ` +
-              `Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY in ${envPath} (or regenerate infra).`,
+              'Regenerate infrastructure and run Infra Up first.',
           });
         }
 
