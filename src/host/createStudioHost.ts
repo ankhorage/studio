@@ -1,4 +1,4 @@
-import { stopAllProjectInfraPortForwards } from './orchestrator/infraRuntime';
+import { stopAllProjectInfraPortForwards } from './orchestrator/infraSession';
 import { ModuleManager } from './orchestrator/moduleManager';
 import { ProjectManager } from './orchestrator/projectManager';
 
