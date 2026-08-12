@@ -99,7 +99,7 @@ export class StudioExternalApiService {
     projectId: string,
     request: ExternalApiOperationTestRequest,
   ): Promise<ExternalApiOperationTestResult> {
-    const manifest = await this.readEditableManifest(projectId);
+    const manifest = await this.projectManager.getProjectManifest(projectId);
     const source = manifest.dataSources?.[request.sourceId];
     if (!source) return missingSourceResult(request.sourceId);
     if (source.kind !== 'api' || source.origin !== 'external') {
@@ -163,7 +163,7 @@ export class StudioExternalApiService {
     attempts: ExternalApiConnectResult['attempts'],
     diagnostics: readonly DataSourceDiagnostic[] = [],
   ): Promise<ExternalApiConnectResult> {
-    const manifest = await this.readEditableManifest(projectId);
+    const manifest = await this.projectManager.getProjectManifest(projectId);
     const upsert = upsertExternalApiDataSource(manifest.dataSources ?? {}, source);
     await this.projectManager.persistProjectManifest({
       projectId,
@@ -178,14 +178,6 @@ export class StudioExternalApiService {
       attempts,
       diagnostics,
     };
-  }
-
-  private async readEditableManifest(projectId: string): Promise<AppManifest> {
-    try {
-      return await this.projectManager.getProjectManifest(projectId);
-    } catch {
-      return this.projectManager.getProjectManifest(projectId);
-    }
   }
 }
 
