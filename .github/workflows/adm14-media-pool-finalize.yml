@@ -82,9 +82,6 @@ jobs:
       - name: Verify package contents
         run: npm pack --dry-run
 
-      - name: Verify changeset
-        run: bun run changeset:status
-
       - name: Guard transient media persistence
         run: |
           if grep -R -n -E "mediaId.*(blob:|file:|content:|data:)|(blob:|file:|content:|data:).*mediaId" src --include='*.ts' --include='*.tsx'; then
@@ -107,8 +104,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A -- . ':!.github/workflows/*'
-          if git diff --cached --quiet; then
-            exit 0
+          if ! git diff --cached --quiet; then
+            git commit -m 'Validate ADM-14 Studio media pool'
+            git push origin HEAD:agent/adm14-media-pool
           fi
-          git commit -m 'Validate ADM-14 Studio media pool'
-          git push origin HEAD:agent/adm14-media-pool
+
+      - name: Verify committed changeset
+        run: bun run changeset:status
