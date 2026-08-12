@@ -20,7 +20,15 @@ const imageAsset: MediaAsset = {
 };
 
 const baseManifest: AppManifest = {
-  app: { id: 'media-test', name: 'Media Test' },
+  metadata: {
+    name: 'Media Test',
+    slug: 'media-test',
+    version: '1.0.0',
+    category: 'developer_tools',
+    themeId: 'default',
+  },
+  settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+  infra: { modules: [] },
   navigator: {
     type: 'stack',
     initialRouteName: 'Home',
@@ -43,6 +51,8 @@ const baseManifest: AppManifest = {
       },
     },
   },
+  themes: [],
+  activeThemeId: 'default',
 };
 
 const unusedManifest: AppManifest = {
