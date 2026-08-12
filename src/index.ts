@@ -150,6 +150,11 @@ export type StudioAdminRouteId =
   | 'auth-profile'
   | 'secrets'
   | 'theme'
+  | 'theme-colors'
+  | 'theme-typography'
+  | 'theme-spacing'
+  | 'theme-radii'
+  | 'theme-shadows'
   | 'bindings'
   | 'properties';
 export type StudioAdminStaticRoutePath =
@@ -164,7 +169,12 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/auth/routes'
   | '/ankh/auth/profile'
   | '/ankh/secrets'
-  | '/ankh/theme';
+  | '/ankh/theme'
+  | '/ankh/theme/colors'
+  | '/ankh/theme/typography'
+  | '/ankh/theme/spacing'
+  | '/ankh/theme/radii'
+  | '/ankh/theme/shadows';
 export type StudioAdminRoutePath =
   | StudioAdminStaticRoutePath
   | `/ankh/screens/${string}`

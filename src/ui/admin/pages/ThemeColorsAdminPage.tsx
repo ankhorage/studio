@@ -71,7 +71,10 @@ function HarmonyChoice(props: {
 function Unavailable() {
   return (
     <AdminScroll>
-      <AdminHeader title="Theme unavailable" description="No canonical active theme is available." />
+      <AdminHeader
+        title="Theme unavailable"
+        description="No canonical active theme is available."
+      />
     </AdminScroll>
   );
 }

@@ -2,10 +2,7 @@ import { useZoraTheme } from '@ankhorage/zora';
 
 import { useStudio } from '../../../core/StudioContext';
 import type { ThemeUpdates } from '../../../index';
-import {
-  type ActiveThemeModeSelection,
-  resolveActiveThemeModeSelection,
-} from './adminThemeModel';
+import { type ActiveThemeModeSelection, resolveActiveThemeModeSelection } from './adminThemeModel';
 
 interface ActiveThemeAdminState {
   readonly mode: 'light' | 'dark';

@@ -19,10 +19,7 @@ export function ThemeAdminPage() {
           <ThemeModeEditorSelector />
           <Card title={selection.theme.name}>
             <Field label="Theme name">
-              <Input
-                value={selection.theme.name}
-                onChangeText={(name) => updateTheme({ name })}
-              />
+              <Input value={selection.theme.name} onChangeText={(name) => updateTheme({ name })} />
             </Field>
             <KeyValue label="Editing runtime mode" value={selection.mode} />
             <KeyValue

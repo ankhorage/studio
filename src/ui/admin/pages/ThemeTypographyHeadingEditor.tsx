@@ -49,7 +49,8 @@ export function ThemeTypographyHeadingEditor() {
 function HeadingRow(props: {
   readonly level: string;
   readonly heading: { readonly size: number; readonly lineHeight: number; readonly weight: string };
-  readonly authored: { readonly size?: number; readonly lineHeight?: number; readonly weight?: string } | undefined;
+  readonly authored:
+    { readonly size?: number; readonly lineHeight?: number; readonly weight?: string } | undefined;
   readonly onChange: (
     field: 'size' | 'lineHeight' | 'weight',
     value: number | string | undefined,
@@ -124,7 +125,9 @@ function HeadingWeightChoice(props: {
               onPress={() => props.onChange(weight)}
               style={[
                 styles.weight,
-                { borderColor: weight === props.value ? theme.colors.primary : theme.colors.border },
+                {
+                  borderColor: weight === props.value ? theme.colors.primary : theme.colors.border,
+                },
               ]}
             >
               <Text color={weight === props.value ? 'primary' : 'neutral'} variant="bodySmall">

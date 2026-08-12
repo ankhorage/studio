@@ -38,6 +38,11 @@ describe('studioAdminRouteModel', () => {
       'auth-profile',
       'secrets',
       'theme',
+      'theme-colors',
+      'theme-typography',
+      'theme-spacing',
+      'theme-radii',
+      'theme-shadows',
       'bindings',
       'properties',
     ]);
@@ -59,6 +64,14 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/auth/profile')).toBe('auth-profile');
     expect(resolveStudioAdminRouteId('/ankh/secrets')).toBe('secrets');
     expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');
+    expect(resolveStudioAdminRouteId('/ankh/theme/colors')).toBe('theme-colors');
+    expect(resolveStudioAdminRouteId('/ankh/theme/typography')).toBe('theme-typography');
+    expect(resolveStudioAdminRouteId('/ankh/theme/spacing')).toBe('theme-spacing');
+    expect(resolveStudioAdminRouteId('/ankh/theme/radii')).toBe('theme-radii');
+    expect(resolveStudioAdminRouteId('/ankh/theme/shadows')).toBe('theme-shadows');
+    expect(
+      isStudioAdminRouteActive({ currentRouteId: 'theme-spacing', candidateRouteId: 'theme' }),
+    ).toBe(true);
     expect(resolveStudioAdminRouteId('/ankh/bindings/node-1')).toBe('bindings');
     expect(resolveStudioAdminRouteId('/ankh/properties/node-1')).toBe('properties');
     expect(resolveStudioAdminRoutePath('/ankh/bindings/node-1')).toBe('/ankh/bindings/node-1');

@@ -68,7 +68,9 @@ function WeightRow(props: {
               onPress={() => props.onChange(weight)}
               style={[
                 styles.choice,
-                { borderColor: weight === props.value ? theme.colors.primary : theme.colors.border },
+                {
+                  borderColor: weight === props.value ? theme.colors.primary : theme.colors.border,
+                },
               ]}
             >
               <Text color={weight === props.value ? 'primary' : 'neutral'} variant="bodySmall">

@@ -3,16 +3,16 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AdminHeader, AdminScroll, Field, Input } from '../adminPagePrimitives';
-import {
-  type NumericThemeTokenFamily,
-  updateNumericThemeToken,
-} from './themeTokenAuthoringModel';
+import { type NumericThemeTokenFamily, updateNumericThemeToken } from './themeTokenAuthoringModel';
 import { useActiveThemeAdmin } from './useActiveThemeAdmin';
 
 const COPY: Record<NumericThemeTokenFamily, { title: string; description: string }> = {
   spacing: { title: 'Spacing', description: 'Shared spacing tokens used by Theme recipes.' },
   radii: { title: 'Radii', description: 'Shared corner-radius tokens used by Theme recipes.' },
-  shadows: { title: 'Shadows', description: 'Shared shadow-strength tokens used by Theme recipes.' },
+  shadows: {
+    title: 'Shadows',
+    description: 'Shared shadow-strength tokens used by Theme recipes.',
+  },
 };
 
 export function ThemeNumericTokensAdminPage(props: { readonly family: NumericThemeTokenFamily }) {
@@ -121,7 +121,10 @@ function Action(props: { readonly label: string; readonly onPress: () => void })
 function ThemeUnavailable() {
   return (
     <AdminScroll>
-      <AdminHeader title="Theme unavailable" description="No canonical active theme is available." />
+      <AdminHeader
+        title="Theme unavailable"
+        description="No canonical active theme is available."
+      />
     </AdminScroll>
   );
 }
