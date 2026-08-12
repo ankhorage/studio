@@ -18,25 +18,28 @@ export function ThemeRecipeAdminPage(props: {
 }) {
   const { theme: runtimeTheme } = useZoraTheme();
   const { selection, updateTheme } = useActiveThemeAdmin();
-  const entry = props.recipeName
-    ? Object.entries(ZORA_THEME_RECIPE_META).find(([name]) => name === props.recipeName)
+  const recipeName = props.recipeName;
+  const entry = recipeName
+    ? Object.entries(ZORA_THEME_RECIPE_META).find(([name]) => name === recipeName)
     : undefined;
   const meta = entry?.[1];
 
   if (!selection) return <Unavailable message="No canonical active theme is available." />;
-  if (!meta || meta.kind !== props.kind || !props.recipeName) {
+  if (!meta || meta.kind !== props.kind || !recipeName) {
     return <Unavailable message="The requested ZORA Theme recipe is not available." />;
   }
 
   const bucket =
-    props.kind === 'component' ? selection.theme.recipes?.components : selection.theme.recipes?.patterns;
-  const overrides = bucket?.[props.recipeName];
+    props.kind === 'component'
+      ? selection.theme.recipes?.components
+      : selection.theme.recipes?.patterns;
+  const overrides = bucket?.[recipeName];
   const updateField = (fieldName: string, value: ThemeRecipeOverrideValue | undefined) => {
     updateTheme({
       recipes: updateThemeRecipeField({
         recipes: selection.theme.recipes,
         kind: props.kind,
-        recipeName: props.recipeName,
+        recipeName,
         fieldName,
         value,
       }),
