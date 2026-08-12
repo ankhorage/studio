@@ -1,0 +1,32 @@
+name: Refresh Infra lockfile
+
+on:
+  push:
+    branches:
+      - agent/consume-infra-project-boundary
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/consume-infra-project-boundary
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install
+      - name: Commit refreshed lockfile
+        run: |
+          if git diff --quiet -- bun.lock; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bun.lock
+          git commit -m 'chore: refresh infra dependency lockfile'
+          git push origin HEAD:agent/consume-infra-project-boundary
