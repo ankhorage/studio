@@ -2,11 +2,21 @@ import { useZoraTheme } from '@ankhorage/zora';
 
 import { useStudio } from '../../../core/StudioContext';
 import type { ThemeUpdates } from '../../../index';
-import { resolveActiveThemeModeSelection } from './adminThemeModel';
+import {
+  type ActiveThemeModeSelection,
+  resolveActiveThemeModeSelection,
+} from './adminThemeModel';
 
-export function useActiveThemeAdmin() {
+interface ActiveThemeAdminState {
+  readonly mode: 'light' | 'dark';
+  readonly selection: ActiveThemeModeSelection | null;
+  readonly setMode: (mode: 'light' | 'dark') => void;
+  readonly updateTheme: (updates: ThemeUpdates) => void;
+}
+
+export function useActiveThemeAdmin(): ActiveThemeAdminState {
   const studio = useStudio();
-  const { mode, setMode, theme: resolvedTheme } = useZoraTheme();
+  const { mode, setMode } = useZoraTheme();
   const selection = studio.manifest
     ? resolveActiveThemeModeSelection({
         themes: studio.manifest.themes,
@@ -20,5 +30,5 @@ export function useActiveThemeAdmin() {
     studio.updateTheme(selection.theme.id, updates);
   };
 
-  return { mode, resolvedTheme, selection, setMode, updateTheme };
+  return { mode, selection, setMode, updateTheme };
 }
