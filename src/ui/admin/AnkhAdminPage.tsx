@@ -8,6 +8,7 @@ import {
   resolveStudioModuleId,
   resolveStudioPropertiesNodeId,
   resolveStudioScreenId,
+  resolveStudioThemeRecipeName,
 } from '../../studioAdminRouteModel';
 import { ApisAdminPage, type ApisAdminRouteId } from './pages/ApisAdminPage';
 import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
@@ -22,6 +23,7 @@ import { SecretsAdminPage } from './pages/SecretsAdminPage';
 import { ThemeAdminPage } from './pages/ThemeAdminPage';
 import { ThemeColorsAdminPage } from './pages/ThemeColorsAdminPage';
 import { ThemeNumericTokensAdminPage } from './pages/ThemeNumericTokensAdminPage';
+import { ThemeRecipeAdminPage } from './pages/ThemeRecipeAdminPage';
 import { ThemeTypographyAdminPage } from './pages/ThemeTypographyAdminPage';
 
 export interface AnkhAdminPageProps {
@@ -85,6 +87,12 @@ const ADMIN_PAGE_RENDERERS = {
   'theme-spacing': () => <ThemeNumericTokensAdminPage family="spacing" />,
   'theme-radii': () => <ThemeNumericTokensAdminPage family="radii" />,
   'theme-shadows': () => <ThemeNumericTokensAdminPage family="shadows" />,
+  'theme-component': ({ pathname }) => (
+    <ThemeRecipeAdminPage kind="component" recipeName={resolveStudioThemeRecipeName(pathname)} />
+  ),
+  'theme-pattern': ({ pathname }) => (
+    <ThemeRecipeAdminPage kind="pattern" recipeName={resolveStudioThemeRecipeName(pathname)} />
+  ),
   bindings: ({ pathname }) => <BindingsAdminPage nodeId={resolveStudioBindingsNodeId(pathname)} />,
   properties: ({ pathname }) => (
     <PropertiesAdminPage nodeId={resolveStudioPropertiesNodeId(pathname)} />
