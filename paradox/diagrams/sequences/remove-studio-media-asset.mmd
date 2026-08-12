@@ -1,0 +1,18 @@
+sequenceDiagram
+  participant participant_collectNodeUsages as collectNodeUsages
+  participant participant_collectStudioMediaAssetUsages as collectStudioMediaAssetUsages
+  participant participant_collectValueUsages as collectValueUsages
+  participant participant_readStudioMediaAssetReference as readStudioMediaAssetReference
+  participant participant_removeStudioMediaAsset as removeStudioMediaAsset
+  participant_removeStudioMediaAsset->>participant_collectStudioMediaAssetUsages: collectStudioMediaAssetUsages()
+  participant_collectStudioMediaAssetUsages->>participant_collectNodeUsages: collectNodeUsages()
+  participant_collectNodeUsages->>participant_collectValueUsages: collectValueUsages()
+  participant_collectValueUsages->>participant_readStudioMediaAssetReference: readStudioMediaAssetReference()
+  participant_readStudioMediaAssetReference-->>participant_collectValueUsages: return
+  participant_collectValueUsages->>participant_collectValueUsages: collectValueUsages()
+  participant_collectValueUsages-->>participant_collectValueUsages: return
+  participant_collectValueUsages-->>participant_collectNodeUsages: return
+  participant_collectNodeUsages->>participant_collectNodeUsages: collectNodeUsages()
+  participant_collectNodeUsages-->>participant_collectNodeUsages: return
+  participant_collectNodeUsages-->>participant_collectStudioMediaAssetUsages: return
+  participant_collectStudioMediaAssetUsages-->>participant_removeStudioMediaAsset: return

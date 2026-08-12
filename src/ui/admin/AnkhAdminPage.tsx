@@ -13,6 +13,7 @@ import {
 import { ApisAdminPage, type ApisAdminRouteId } from './pages/ApisAdminPage';
 import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
 import { BindingsAdminPage } from './pages/BindingsAdminPage';
+import { MediaAdminPage } from './pages/MediaAdminPage';
 import { ModuleDetailAdminPage } from './pages/ModuleDetailAdminPage';
 import { ModulesAdminPage } from './pages/ModulesAdminPage';
 import { OverviewAdminPage } from './pages/OverviewAdminPage';
@@ -42,6 +43,7 @@ type AuthAdminRouteId = AuthAdminPageProps['routeId'];
 const ADMIN_PAGE_RENDERERS = {
   overview: () => <OverviewAdminPage />,
   screens: () => <ScreensAdminPage />,
+  media: () => <MediaAdminPage />,
   'screen-detail': ({ pathname }) => (
     <ScreenDetailAdminPage screenId={resolveStudioScreenId(pathname)} />
   ),

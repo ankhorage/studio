@@ -29,6 +29,7 @@ describe('studioAdminRouteModel', () => {
       'overview',
       'screens',
       'screen-detail',
+      'media',
       'apis',
       'api-data-sources',
       'api-operations',
@@ -57,6 +58,9 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/screens')).toBe('screens');
     expect(resolveStudioAdminRoutePath('/ankh/screens')).toBe('/ankh/screens');
     expect(createStudioAdminRoutePath({ routeId: 'screens' })).toBe('/ankh/screens');
+    expect(resolveStudioAdminRouteId('/ankh/media')).toBe('media');
+    expect(resolveStudioAdminRoutePath('/ankh/media')).toBe('/ankh/media');
+    expect(createStudioAdminRoutePath({ routeId: 'media' })).toBe('/ankh/media');
     expect(resolveStudioAdminRouteId('/ankh/modules')).toBe('modules');
     expect(resolveStudioAdminRoutePath('/ankh/modules')).toBe('/ankh/modules');
     expect(resolveStudioAdminRouteId('/ankh/apis')).toBe('apis');

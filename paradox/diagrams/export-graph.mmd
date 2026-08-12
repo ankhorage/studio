@@ -137,14 +137,9 @@ graph LR
   module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
-  module_src_host_orchestrator_infraGenerator_ts["src/host/orchestrator/infraGenerator.ts"]
-  module_src_host_orchestrator_infraRuntime_test_ts["src/host/orchestrator/infraRuntime.test.ts"]
-  module_src_host_orchestrator_infraRuntime_ts["src/host/orchestrator/infraRuntime.ts"]
-  module_src_host_orchestrator_infraValidation_ts["src/host/orchestrator/infraValidation.ts"]
+  module_src_host_orchestrator_infraSession_ts["src/host/orchestrator/infraSession.ts"]
   module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
   module_src_host_orchestrator_projectCreationSafety_test_ts["src/host/orchestrator/projectCreationSafety.test.ts"]
-  module_src_host_orchestrator_projectDeletion_test_ts["src/host/orchestrator/projectDeletion.test.ts"]
-  module_src_host_orchestrator_projectDeletion_ts["src/host/orchestrator/projectDeletion.ts"]
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
   module_src_host_orchestrator_projectManagerDeletion_test_ts["src/host/orchestrator/projectManagerDeletion.test.ts"]
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
@@ -184,6 +179,8 @@ graph LR
   module_src_manifestState_ts["src/manifestState.ts"]
   module_src_manifestSync_test_ts["src/manifestSync.test.ts"]
   module_src_manifestSync_ts["src/manifestSync.ts"]
+  module_src_mediaAuthoringModel_test_ts["src/mediaAuthoringModel.test.ts"]
+  module_src_mediaAuthoringModel_ts["src/mediaAuthoringModel.ts"]
   module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
   module_src_moduleAdminApi_test_ts["src/moduleAdminApi.test.ts"]
   module_src_moduleAdminApi_ts["src/moduleAdminApi.ts"]
@@ -293,6 +290,8 @@ graph LR
   module_src_ui_admin_pages_GeneratedApiResourceEditor_tsx["src/ui/admin/pages/GeneratedApiResourceEditor.tsx"]
   module_src_ui_admin_pages_GeneratedApiToggle_tsx["src/ui/admin/pages/GeneratedApiToggle.tsx"]
   module_src_ui_admin_pages_ManualRestSourceCard_tsx["src/ui/admin/pages/ManualRestSourceCard.tsx"]
+  module_src_ui_admin_pages_MediaAdminPage_tsx["src/ui/admin/pages/MediaAdminPage.tsx"]
+  module_src_ui_admin_pages_MediaPropertyInput_tsx["src/ui/admin/pages/MediaPropertyInput.tsx"]
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx["src/ui/admin/pages/ModuleDetailAdminPage.tsx"]
   module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
   module_src_ui_admin_pages_OverviewAdminPage_tsx["src/ui/admin/pages/OverviewAdminPage.tsx"]
@@ -366,6 +365,9 @@ graph LR
   export_collectStudioBindingOperationOptions["collectStudioBindingOperationOptions"]
   module_src_bindingOperationModel_ts --> export_collectStudioBindingOperationOptions
   export_collectStudioBindingOperationOptions -.-> export_StudioBindingOperationOption
+  export_collectStudioMediaAssetUsages["collectStudioMediaAssetUsages"]
+  module_src_mediaAuthoringModel_ts --> export_collectStudioMediaAssetUsages
+  export_collectStudioMediaAssetUsages -.-> export_StudioMediaUsage
   export_collectStudioResponsePaths["collectStudioResponsePaths"]
   module_src_bindingSchemaModel_ts --> export_collectStudioResponsePaths
   export_collectStudioResponsePaths -.-> export_StudioBindingResponsePathOption
@@ -380,6 +382,13 @@ graph LR
   export_createStudioInstancePropertyPatch["createStudioInstancePropertyPatch"]
   module_src_propertiesAuthoringModel_ts --> export_createStudioInstancePropertyPatch
   export_createStudioInstancePropertyPatch -.-> export_StudioInstancePropertyValue
+  export_createStudioMediaAssetId["createStudioMediaAssetId"]
+  module_src_mediaAuthoringModel_ts --> export_createStudioMediaAssetId
+  export_createStudioMediaAssetReference["createStudioMediaAssetReference"]
+  module_src_mediaAuthoringModel_ts --> export_createStudioMediaAssetReference
+  export_createStudioUrlMediaAsset["createStudioUrlMediaAsset"]
+  module_src_mediaAuthoringModel_ts --> export_createStudioUrlMediaAsset
+  export_createStudioUrlMediaAsset -.-> export_StudioUrlMediaAssetResult
   export_deriveProjectId["deriveProjectId"]
   module_src_projectIdentity_ts --> export_deriveProjectId
   export_diagnoseStudioComponentBindings["diagnoseStudioComponentBindings"]
@@ -441,6 +450,8 @@ graph LR
   module_src_index_ts --> export_InsertRecipeIssue
   export_InsertRecipeNode["InsertRecipeNode"]
   module_src_index_ts --> export_InsertRecipeNode
+  export_listStudioMediaAssets["listStudioMediaAssets"]
+  module_src_mediaAuthoringModel_ts --> export_listStudioMediaAssets
   export_moveNodeToPlacement["moveNodeToPlacement"]
   module_src_index_ts --> export_moveNodeToPlacement
   export_moveNodeToPlacement -.-> export_MoveNodeToPlacementArgs
@@ -501,10 +512,15 @@ graph LR
   export_ProjectSecretUsageSummary -.-> export_ProjectSecretUsage
   export_ProjectSortKey["ProjectSortKey"]
   module_src_projectWorkspaceContracts_ts --> export_ProjectSortKey
+  export_readStudioMediaAssetReference["readStudioMediaAssetReference"]
+  module_src_mediaAuthoringModel_ts --> export_readStudioMediaAssetReference
   export_removeNodeFromTree["removeNodeFromTree"]
   module_src_index_ts --> export_removeNodeFromTree
   export_removeStudioEventBinding["removeStudioEventBinding"]
   module_src_bindingMutationModel_ts --> export_removeStudioEventBinding
+  export_removeStudioMediaAsset["removeStudioMediaAsset"]
+  module_src_mediaAuthoringModel_ts --> export_removeStudioMediaAsset
+  export_removeStudioMediaAsset -.-> export_StudioMediaAssetRemovalResult
   export_removeStudioPropBinding["removeStudioPropBinding"]
   module_src_bindingMutationModel_ts --> export_removeStudioPropBinding
   export_resolveDefaultInsertPlacement["resolveDefaultInsertPlacement"]
@@ -620,6 +636,10 @@ graph LR
   module_src_propertiesAuthoringModel_ts --> export_StudioInstancePropertyValue
   export_StudioManifest["StudioManifest"]
   module_src_index_ts --> export_StudioManifest
+  export_StudioMediaAssetRemovalResult["StudioMediaAssetRemovalResult"]
+  module_src_mediaAuthoringModel_ts --> export_StudioMediaAssetRemovalResult
+  export_StudioMediaUsage["StudioMediaUsage"]
+  module_src_mediaAuthoringModel_ts --> export_StudioMediaUsage
   export_StudioModuleAdminContribution["StudioModuleAdminContribution"]
   module_src_moduleAdminContracts_ts --> export_StudioModuleAdminContribution
   export_StudioModuleAdminContribution -.-> export_StudioModuleAdminField
@@ -659,6 +679,8 @@ graph LR
   export_StudioSessionState["StudioSessionState"]
   module_src_index_ts --> export_StudioSessionState
   export_StudioSessionState -.-> export_StudioSaveStatus
+  export_StudioUrlMediaAssetResult["StudioUrlMediaAssetResult"]
+  module_src_mediaAuthoringModel_ts --> export_StudioUrlMediaAssetResult
   export_TemplateCatalog["TemplateCatalog"]
   module_src_templateCatalogContracts_ts --> export_TemplateCatalog
   export_TemplateCatalog -.-> export_TemplateCatalogCategory
@@ -675,6 +697,8 @@ graph LR
   module_src_index_ts --> export_TPL_SCREEN_EMPTY
   export_updateNodeInTree["updateNodeInTree"]
   module_src_index_ts --> export_updateNodeInTree
+  export_upsertStudioMediaAsset["upsertStudioMediaAsset"]
+  module_src_mediaAuthoringModel_ts --> export_upsertStudioMediaAsset
   export_upsertStudioPropBinding["upsertStudioPropBinding"]
   module_src_bindingMutationModel_ts --> export_upsertStudioPropBinding
   export_validateInsertRecipe["validateInsertRecipe"]

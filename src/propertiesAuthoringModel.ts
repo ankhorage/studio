@@ -1,10 +1,11 @@
-import type { UiNode } from '@ankhorage/contracts';
+import type { MediaAssetKind, MediaAssetReference, UiNode } from '@ankhorage/contracts';
 
 export interface StudioAuthoringPropSchema {
   readonly type: string;
   readonly category: string;
   readonly label?: string;
   readonly enum?: readonly (string | number)[];
+  readonly mediaKinds?: readonly MediaAssetKind[];
   readonly default?: unknown;
   readonly authoring?: {
     readonly authority: string;
@@ -21,7 +22,7 @@ export type StudioAuthoringMetaRegistry = Readonly<
 >;
 
 export type StudioInstancePropertyEditorKind =
-  'text' | 'number' | 'boolean' | 'choice' | 'unsupported';
+  'text' | 'number' | 'boolean' | 'choice' | 'media' | 'unsupported';
 
 export interface StudioInstancePropertyField {
   readonly name: string;
@@ -30,6 +31,7 @@ export interface StudioInstancePropertyField {
   readonly schemaType: string;
   readonly editor: StudioInstancePropertyEditorKind;
   readonly options: readonly (string | number)[];
+  readonly mediaKinds?: readonly MediaAssetKind[];
   readonly value: unknown;
   readonly defaultValue: unknown;
   readonly isExplicit: boolean;
@@ -40,7 +42,7 @@ export interface StudioInstancePropertyGroup {
   readonly fields: readonly StudioInstancePropertyField[];
 }
 
-export type StudioInstancePropertyValue = string | number | boolean;
+export type StudioInstancePropertyValue = string | number | boolean | MediaAssetReference;
 
 export function resolveStudioInstancePropertyFields(
   node: UiNode,
@@ -63,6 +65,7 @@ export function resolveStudioInstancePropertyFields(
         schemaType: schema.type,
         editor: resolveEditorKind(schema),
         options: schema.enum ?? [],
+        ...(schema.mediaKinds ? { mediaKinds: schema.mediaKinds } : {}),
         value: isExplicit ? propValues.get(name) : schema.default,
         defaultValue: schema.default,
         isExplicit,
@@ -103,6 +106,7 @@ function resolveEditorKind(schema: StudioAuthoringPropSchema): StudioInstancePro
   if (schema.type === 'string') return 'text';
   if (schema.type === 'number') return 'number';
   if (schema.type === 'boolean') return 'boolean';
+  if (schema.type === 'media') return 'media';
   if (schema.type === 'enum' && (schema.enum?.length ?? 0) > 0) return 'choice';
   return 'unsupported';
 }

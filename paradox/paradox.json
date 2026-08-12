@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.22.1",
+      "value": "v0.24.0",
       "color": "cb3837"
     },
     {
@@ -521,6 +521,7 @@
         "src/index.ts",
         "src/manifestState.ts",
         "src/manifestSync.ts",
+        "src/mediaAuthoringModel.ts",
         "src/routeUtils.ts",
         "src/studioSelectionModel.ts",
         "src/ui/admin/AuthAdminSession.tsx"
@@ -643,7 +644,6 @@
       "path": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/orchestrator/infraRuntime.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/projectAuthHealth.ts",
         "src/projectAuthRuntimeDiagnostics.ts"
@@ -660,7 +660,7 @@
       "path": "src/host/createStudioHost.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/infraSession.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts"
       ],
@@ -861,9 +861,10 @@
         "src/contractGuards.ts",
         "src/host/http/moduleRoutes.ts",
         "src/host/http/security.ts",
-        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/infraSession.ts",
         "src/host/orchestrator/moduleManager.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/studioInfraUp.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/utils/trimOutput.ts",
@@ -1348,42 +1349,14 @@
       "exports": ["syncGeneratedRouteFiles"]
     },
     {
-      "path": "src/host/orchestrator/infraGenerator.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/infraValidation.ts"],
-      "exports": [
-        "getProjectInfrastructureStatus",
-        "InfraStatusResult",
-        "InfraSyncResult",
-        "syncProjectInfrastructure"
-      ]
-    },
-    {
-      "path": "src/host/orchestrator/infraRuntime.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/infraRuntime.ts"],
-      "exports": []
-    },
-    {
-      "path": "src/host/orchestrator/infraRuntime.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/projectPaths.ts"],
-      "exports": [
-        "ensureProjectInfraPortForward",
-        "InfraLifecycleScript",
-        "InfraScriptExecutionError",
-        "InfraScriptOutput",
-        "registerProjectInfraPortForwardOwner",
-        "runProjectInfraScript",
-        "runProjectInfraScriptCapture",
-        "stopAllProjectInfraPortForwards"
-      ]
-    },
-    {
-      "path": "src/host/orchestrator/infraValidation.ts",
+      "path": "src/host/orchestrator/infraSession.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["validateInfraSupport"]
+      "exports": [
+        "ensureProjectInfraPortForward",
+        "registerProjectInfraPortForwardOwner",
+        "stopAllProjectInfraPortForwards"
+      ]
     },
     {
       "path": "src/host/orchestrator/moduleManager.ts",
@@ -1410,22 +1383,6 @@
       "exports": []
     },
     {
-      "path": "src/host/orchestrator/projectDeletion.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/projectDeletion.ts"],
-      "exports": []
-    },
-    {
-      "path": "src/host/orchestrator/projectDeletion.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "cleanupProjectGeneratedAppImage",
-        "CommandRunner",
-        "ProjectGeneratedAppImageCleanupResult"
-      ]
-    },
-    {
       "path": "src/host/orchestrator/projectManager.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1434,9 +1391,6 @@
         "src/host/manifestSystem/index.ts",
         "src/host/modules/layout.ts",
         "src/host/orchestrator/generatedRouteCleanup.ts",
-        "src/host/orchestrator/infraGenerator.ts",
-        "src/host/orchestrator/infraRuntime.ts",
-        "src/host/orchestrator/projectDeletion.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/projectStore.ts",
         "src/host/orchestrator/scaffolder.ts",
@@ -1516,8 +1470,9 @@
       "path": "src/host/orchestrator/studioInfraUp.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/infraSession.ts",
         "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts",
         "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       ],
       "exports": ["StudioInfraUpResult", "upProjectInfrastructure"]
@@ -1624,7 +1579,7 @@
       "path": "src/host/studioInfra.e2e.test.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/orchestrator/infraRuntime.ts",
+        "src/host/orchestrator/infraSession.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/studioInfraUp.ts",
         "src/host/secrets/trustedOAuthInfraEnvironment.ts"
@@ -1698,10 +1653,14 @@
         "canAcceptChild",
         "cloneWithNewIds",
         "collectStudioBindingOperationOptions",
+        "collectStudioMediaAssetUsages",
         "collectStudioResponsePaths",
         "createNodeFromCatalogEntry",
         "createStudioActionInputFields",
         "createStudioInstancePropertyPatch",
+        "createStudioMediaAssetId",
+        "createStudioMediaAssetReference",
+        "createStudioUrlMediaAsset",
         "deriveProjectId",
         "diagnoseStudioComponentBindings",
         "findNodeById",
@@ -1722,6 +1681,7 @@
         "InsertRecipe",
         "InsertRecipeIssue",
         "InsertRecipeNode",
+        "listStudioMediaAssets",
         "moveNodeToPlacement",
         "MoveNodeToPlacementArgs",
         "MoveNodeToPlacementResult",
@@ -1745,8 +1705,10 @@
         "ProjectSecretUsageCategory",
         "ProjectSecretUsageSummary",
         "ProjectSortKey",
+        "readStudioMediaAssetReference",
         "removeNodeFromTree",
         "removeStudioEventBinding",
+        "removeStudioMediaAsset",
         "removeStudioPropBinding",
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
@@ -1789,6 +1751,8 @@
         "StudioInstancePropertyGroup",
         "StudioInstancePropertyValue",
         "StudioManifest",
+        "StudioMediaAssetRemovalResult",
+        "StudioMediaUsage",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
         "StudioModuleAdminField",
@@ -1806,6 +1770,7 @@
         "StudioSelectionState",
         "StudioSessionId",
         "StudioSessionState",
+        "StudioUrlMediaAssetResult",
         "TemplateCatalog",
         "TemplateCatalogCategory",
         "TemplateCatalogTemplate",
@@ -1813,6 +1778,7 @@
         "ThemeUpdates",
         "TPL_SCREEN_EMPTY",
         "updateNodeInTree",
+        "upsertStudioMediaAsset",
         "upsertStudioPropBinding",
         "validateInsertRecipe",
         "validateNodePlacement",
@@ -1935,6 +1901,30 @@
       "isEntrypoint": false,
       "dependencies": ["src/index.ts"],
       "exports": ["createStudioManifestSignature", "createStudioRuntimeSyncSignature"]
+    },
+    {
+      "path": "src/mediaAuthoringModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/mediaAuthoringModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/mediaAuthoringModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "collectStudioMediaAssetUsages",
+        "createStudioMediaAssetId",
+        "createStudioMediaAssetReference",
+        "createStudioUrlMediaAsset",
+        "listStudioMediaAssets",
+        "readStudioMediaAssetReference",
+        "removeStudioMediaAsset",
+        "StudioMediaAssetRemovalResult",
+        "StudioMediaUsage",
+        "StudioUrlMediaAssetResult",
+        "upsertStudioMediaAsset"
+      ]
     },
     {
       "path": "src/moduleAdmin.public.test.ts",
@@ -2176,6 +2166,7 @@
         "canAcceptChild",
         "cloneWithNewIds",
         "collectStudioBindingOperationOptions",
+        "collectStudioMediaAssetUsages",
         "collectStudioResponsePaths",
         "CreateCategoriesScreen",
         "CreateCategoryTemplatesScreen",
@@ -2183,6 +2174,9 @@
         "CreateProjectFromTemplateScreen",
         "createStudioActionInputFields",
         "createStudioInstancePropertyPatch",
+        "createStudioMediaAssetId",
+        "createStudioMediaAssetReference",
+        "createStudioUrlMediaAsset",
         "deriveProjectId",
         "diagnoseStudioComponentBindings",
         "findNodeById",
@@ -2205,6 +2199,7 @@
         "InsertRecipe",
         "InsertRecipeIssue",
         "InsertRecipeNode",
+        "listStudioMediaAssets",
         "moveNodeToPlacement",
         "MoveNodeToPlacementArgs",
         "MoveNodeToPlacementResult",
@@ -2232,8 +2227,10 @@
         "ProjectsOverviewScreen",
         "RAW_SECRET_RESPONSE_KEYS",
         "RawSecretResponseKeyMatch",
+        "readStudioMediaAssetReference",
         "removeNodeFromTree",
         "removeStudioEventBinding",
+        "removeStudioMediaAsset",
         "removeStudioPropBinding",
         "resolveDefaultInsertPlacement",
         "resolveInsertCatalogEntries",
@@ -2277,6 +2274,8 @@
         "StudioInstancePropertyGroup",
         "StudioInstancePropertyValue",
         "StudioManifest",
+        "StudioMediaAssetRemovalResult",
+        "StudioMediaUsage",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
         "StudioModuleAdminField",
@@ -2295,6 +2294,7 @@
         "StudioSelectionState",
         "StudioSessionId",
         "StudioSessionState",
+        "StudioUrlMediaAssetResult",
         "TemplateCatalog",
         "TemplateCatalogCategory",
         "TemplateCatalogTemplate",
@@ -2302,6 +2302,7 @@
         "ThemeUpdates",
         "TPL_SCREEN_EMPTY",
         "updateNodeInTree",
+        "upsertStudioMediaAsset",
         "upsertStudioPropBinding",
         "useStudio",
         "useStudioAppBarAugmentation",
@@ -2738,6 +2739,7 @@
         "src/ui/admin/pages/ApisAdminPage.tsx",
         "src/ui/admin/pages/AuthAdminPage.tsx",
         "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "src/ui/admin/pages/MediaAdminPage.tsx",
         "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "src/ui/admin/pages/ModulesAdminPage.tsx",
         "src/ui/admin/pages/OverviewAdminPage.tsx",
@@ -3166,6 +3168,22 @@
       "exports": ["ManualRestSourceCard"]
     },
     {
+      "path": "src/ui/admin/pages/MediaAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/mediaAuthoringModel.ts",
+        "src/ui/admin/adminPagePrimitives.tsx"
+      ],
+      "exports": ["MediaAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/MediaPropertyInput.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/mediaAuthoringModel.ts", "src/propertiesAuthoringModel.ts"],
+      "exports": ["MediaPropertyInput"]
+    },
+    {
       "path": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
@@ -3210,7 +3228,8 @@
         "src/core/StudioContext.ts",
         "src/manifestState.ts",
         "src/propertiesAuthoringModel.ts",
-        "src/ui/admin/adminPagePrimitives.tsx"
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/MediaPropertyInput.tsx"
       ],
       "exports": ["PropertiesAdminPage"]
     },
@@ -3594,7 +3613,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 404,
+        "line": 413,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3612,7 +3631,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 321,
+        "line": 328,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3754,7 +3773,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1346,
+        "line": 1355,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3786,7 +3805,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 722,
+        "line": 731,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3818,7 +3837,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 551,
+        "line": 560,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3880,6 +3899,44 @@
       "structuredRows": []
     },
     {
+      "name": "collectStudioMediaAssetUsages",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 95,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaUsage"],
+      "signatures": [
+        {
+          "label": "(manifest: AppManifest, mediaId: string) => readonly StudioMediaUsage[]",
+          "parameters": [
+            {
+              "name": "manifest",
+              "type": "AppManifest",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "mediaId",
+              "type": "string",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "readonly StudioMediaUsage[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "collectStudioResponsePaths",
       "description": null,
       "isReadme": false,
@@ -3926,7 +3983,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1265,
+        "line": 1274,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4002,7 +4059,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 89,
+        "line": 92,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4031,6 +4088,108 @@
             }
           ],
           "returnType": "Readonly<Record<string, unknown>>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createStudioMediaAssetId",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 51,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(name: string, registry?: Readonly<Record<string, MediaAsset>>) => string",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "string",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "registry",
+              "type": "Readonly<Record<string, MediaAsset>>",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "string",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createStudioMediaAssetReference",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 39,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(mediaId: string) => MediaAssetReference",
+          "parameters": [
+            {
+              "name": "mediaId",
+              "type": "string",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "MediaAssetReference",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createStudioUrlMediaAsset",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 64,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioUrlMediaAssetResult"],
+      "signatures": [
+        {
+          "label": "(args: { readonly id: string; readonly name: string; readonly kind: MediaAssetKind; readonly url: string; }) => StudioUrlMediaAssetResult",
+          "parameters": [
+            {
+              "name": "args",
+              "type": "{ readonly id: string; readonly name: string; readonly kind: MediaAssetKind; readonly url: string; }",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "StudioUrlMediaAssetResult",
           "returnDescription": null
         }
       ],
@@ -4110,7 +4269,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 568,
+        "line": 577,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4186,7 +4345,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 544,
+        "line": 553,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4218,7 +4377,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1191,
+        "line": 1200,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4250,7 +4409,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 299,
+        "line": 306,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4343,7 +4502,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 281,
+        "line": 288,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4383,7 +4542,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 258,
+        "line": 265,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4401,7 +4560,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 309,
+        "line": 316,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4419,7 +4578,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 287,
+        "line": 294,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4506,7 +4665,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 255,
+        "line": 262,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4524,7 +4683,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 256,
+        "line": 263,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4542,7 +4701,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 304,
+        "line": 311,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4636,7 +4795,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 984,
+        "line": 993,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4668,7 +4827,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 927,
+        "line": 936,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4715,7 +4874,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 934,
+        "line": 943,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4748,7 +4907,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 266,
+        "line": 273,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4802,7 +4961,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 274,
+        "line": 281,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4849,7 +5008,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 261,
+        "line": 268,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4874,6 +5033,44 @@
       "structuredRows": []
     },
     {
+      "name": "listStudioMediaAssets",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 28,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(manifest: AppManifest, mediaKinds?: readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined) => readonly MediaAsset[]",
+          "parameters": [
+            {
+              "name": "manifest",
+              "type": "AppManifest",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "mediaKinds",
+              "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "readonly MediaAsset[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "moveNodeToPlacement",
       "description": null,
       "isReadme": false,
@@ -4882,7 +5079,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1120,
+        "line": 1129,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4914,7 +5111,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1011,
+        "line": 1020,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4961,7 +5158,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1018,
+        "line": 1027,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4994,7 +5191,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 216,
+        "line": 223,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5041,7 +5238,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 223,
+        "line": 230,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5059,7 +5256,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 236,
+        "line": 243,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5092,7 +5289,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 214,
+        "line": 221,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5110,7 +5307,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 248,
+        "line": 255,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5128,7 +5325,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 241,
+        "line": 248,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5596,6 +5793,38 @@
       "structuredRows": []
     },
     {
+      "name": "readStudioMediaAssetReference",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 43,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(value: unknown) => MediaAssetReference | null",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "unknown",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "MediaAssetReference | null",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "removeNodeFromTree",
       "description": null,
       "isReadme": false,
@@ -5604,7 +5833,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 608,
+        "line": 617,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5684,6 +5913,44 @@
       "structuredRows": []
     },
     {
+      "name": "removeStudioMediaAsset",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 106,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": ["StudioMediaAssetRemovalResult"],
+      "signatures": [
+        {
+          "label": "(manifest: AppManifest, mediaId: string) => StudioMediaAssetRemovalResult",
+          "parameters": [
+            {
+              "name": "manifest",
+              "type": "AppManifest",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "mediaId",
+              "type": "string",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "StudioMediaAssetRemovalResult",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
       "name": "removeStudioPropBinding",
       "description": null,
       "isReadme": false,
@@ -5736,7 +6003,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 882,
+        "line": 891,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5768,7 +6035,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1388,
+        "line": 1397,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5800,7 +6067,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 821,
+        "line": 830,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5836,7 +6103,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1052,
+        "line": 1061,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5944,7 +6211,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 45,
+        "line": 47,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5982,7 +6249,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 74,
+        "line": 77,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6064,7 +6331,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1158,
+        "line": 1167,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6107,7 +6374,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 67,
+        "line": 69,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6125,7 +6392,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 59,
+        "line": 61,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6143,7 +6410,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 99,
+        "line": 101,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6161,7 +6428,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 313,
+        "line": 320,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6201,7 +6468,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 311,
+        "line": 318,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6219,7 +6486,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 319,
+        "line": 326,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6237,7 +6504,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 138,
+        "line": 143,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6255,7 +6522,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 180,
+        "line": 187,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6273,7 +6540,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 162,
+        "line": 168,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6291,7 +6558,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 14,
+        "line": 15,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6324,7 +6591,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 19,
+        "line": 20,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6381,6 +6648,13 @@
           "name": "label",
           "kind": "property",
           "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "mediaKinds",
+          "kind": "property",
+          "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
           "required": false,
           "description": null
         },
@@ -6689,7 +6963,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 345,
+        "line": 352,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6707,7 +6981,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 329,
+        "line": 336,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6740,7 +7014,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 334,
+        "line": 341,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6787,7 +7061,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 341,
+        "line": 348,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6805,7 +7079,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 360,
+        "line": 367,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6991,6 +7265,13 @@
           "description": null
         },
         {
+          "name": "removeMediaAsset",
+          "kind": "property",
+          "type": "(mediaId: string) => boolean",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "rootNode",
           "kind": "property",
           "type": "UiNode | null",
@@ -7143,6 +7424,13 @@
           "type": "(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]",
           "required": true,
           "description": null
+        },
+        {
+          "name": "upsertMediaAsset",
+          "kind": "property",
+          "type": "(asset: MediaAsset) => void",
+          "required": true,
+          "description": null
         }
       ],
       "structuredRows": []
@@ -7156,7 +7444,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 353,
+        "line": 360,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7174,7 +7462,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 343,
+        "line": 350,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7192,7 +7480,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 23,
+        "line": 24,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7210,7 +7498,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 26,
+        "line": 27,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7253,6 +7541,13 @@
           "description": null
         },
         {
+          "name": "mediaKinds",
+          "kind": "property",
+          "type": "readonly (\"image\" | \"audio\" | \"video\" | \"font\" | \"file\")[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
           "name": "name",
           "kind": "property",
           "type": "string",
@@ -7292,7 +7587,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 38,
+        "line": 40,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7325,7 +7620,7 @@
       "modulePath": "src/propertiesAuthoringModel.ts",
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 43,
+        "line": 45,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7343,13 +7638,71 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 189,
+        "line": 196,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaAssetRemovalResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 16,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioMediaUsage",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "nodeId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "propertyPath",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "screenId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
       "structuredRows": []
     },
     {
@@ -7473,7 +7826,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 134,
+        "line": 139,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7669,7 +8022,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 132,
+        "line": 137,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7687,7 +8040,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 61,
+        "line": 63,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7727,7 +8080,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 137,
+        "line": 142,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7745,7 +8098,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 130,
+        "line": 135,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7852,7 +8205,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 128,
+        "line": 133,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7870,7 +8223,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 136,
+        "line": 141,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7888,7 +8241,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 133,
+        "line": 138,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7906,7 +8259,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 196,
+        "line": 203,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7960,7 +8313,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 131,
+        "line": 136,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7978,7 +8331,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 204,
+        "line": 211,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8035,6 +8388,24 @@
           "description": null
         }
       ],
+      "structuredRows": []
+    },
+    {
+      "name": "StudioUrlMediaAssetResult",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 24,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
       "structuredRows": []
     },
     {
@@ -8212,7 +8583,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 191,
+        "line": 198,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8230,7 +8601,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 496,
+        "line": 505,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8248,7 +8619,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 580,
+        "line": 589,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8277,6 +8648,44 @@
             }
           ],
           "returnType": "UiNode",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "upsertStudioMediaAsset",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/mediaAuthoringModel.ts",
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 83,
+        "column": 1
+      },
+      "exportPaths": ["src/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(manifest: AppManifest, asset: MediaAsset) => AppManifest",
+          "parameters": [
+            {
+              "name": "asset",
+              "type": "MediaAsset",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "manifest",
+              "type": "AppManifest",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "AppManifest",
           "returnDescription": null
         }
       ],
@@ -8342,7 +8751,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1208,
+        "line": 1217,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8380,7 +8789,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 734,
+        "line": 743,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9734,7 +10143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 75,
+        "line": 77,
         "column": 7
       }
     },
@@ -9743,7 +10152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 78,
+        "line": 80,
         "column": 14
       }
     },
@@ -9752,7 +10161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 465,
+        "line": 491,
         "column": 1
       }
     },
@@ -9761,7 +10170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 578,
+        "line": 604,
         "column": 1
       }
     },
@@ -9770,7 +10179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 585,
+        "line": 611,
         "column": 1
       }
     },
@@ -9779,7 +10188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 595,
+        "line": 621,
         "column": 1
       }
     },
@@ -9788,7 +10197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 603,
+        "line": 629,
         "column": 1
       }
     },
@@ -9797,7 +10206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 610,
+        "line": 636,
         "column": 1
       }
     },
@@ -10292,7 +10701,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 129,
+        "line": 130,
         "column": 1
       }
     },
@@ -10301,16 +10710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 166,
-        "column": 1
-      }
-    },
-    {
-      "name": "readSafeGeneratedInfraEnvironment",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 185,
+        "line": 167,
         "column": 1
       }
     },
@@ -10319,7 +10719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 214,
+        "line": 186,
         "column": 1
       }
     },
@@ -10328,7 +10728,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 227,
+        "line": 199,
         "column": 1
       }
     },
@@ -10337,7 +10737,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 234,
+        "line": 206,
         "column": 1
       }
     },
@@ -10346,7 +10746,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 242,
+        "line": 214,
         "column": 1
       }
     },
@@ -10355,16 +10755,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 248,
-        "column": 1
-      }
-    },
-    {
-      "name": "exists",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "line": 252,
+        "line": 220,
         "column": 1
       }
     },
@@ -11503,38 +11894,11 @@
       }
     },
     {
-      "name": "exists",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 27,
-        "column": 1
-      }
-    },
-    {
-      "name": "readSimpleEnvMap",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 36,
-        "column": 1
-      }
-    },
-    {
-      "name": "readFirstEnvValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/http/server.ts",
-        "line": 58,
-        "column": 1
-      }
-    },
-    {
       "name": "resolveProjectTemplateSelection",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 68,
+        "line": 28,
         "column": 1
       }
     },
@@ -11543,7 +11907,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 86,
+        "line": 46,
         "column": 1
       }
     },
@@ -11552,7 +11916,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 463,
+        "line": 426,
         "column": 1
       }
     },
@@ -11561,7 +11925,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 477,
+        "line": 440,
         "column": 1
       }
     },
@@ -12826,146 +13190,11 @@
       }
     },
     {
-      "name": "syncProjectInfrastructure",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 41,
-        "column": 1
-      }
-    },
-    {
-      "name": "getProjectInfrastructureStatus",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 105,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveProjectFile",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 139,
-        "column": 1
-      }
-    },
-    {
-      "name": "readInfraLedger",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 151,
-        "column": 1
-      }
-    },
-    {
-      "name": "writeInfraLedger",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 165,
-        "column": 1
-      }
-    },
-    {
-      "name": "removeInfraLedger",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 171,
-        "column": 1
-      }
-    },
-    {
-      "name": "removeFiles",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 175,
-        "column": 1
-      }
-    },
-    {
-      "name": "isInfraLedger",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 184,
-        "column": 1
-      }
-    },
-    {
-      "name": "unique",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraGenerator.ts",
-        "line": 197,
-        "column": 1
-      }
-    },
-    {
-      "name": "createGeneratedForwardProject",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
-        "line": 261,
-        "column": 1
-      }
-    },
-    {
-      "name": "writePortForwardScript",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
-        "line": 273,
-        "column": 1
-      }
-    },
-    {
-      "name": "expectRejects",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.test.ts",
-        "line": 288,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveProjectInfraScriptPath",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 37,
-        "column": 1
-      }
-    },
-    {
-      "name": "runProjectInfraScript",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 49,
-        "column": 1
-      }
-    },
-    {
-      "name": "runProjectInfraScriptCapture",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 67,
-        "column": 1
-      }
-    },
-    {
       "name": "ensureProjectInfraPortForward",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 84,
+        "filePath": "src/host/orchestrator/infraSession.ts",
+        "line": 14,
         "column": 1
       }
     },
@@ -12973,8 +13202,8 @@
       "name": "registerProjectInfraPortForwardOwner",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 117,
+        "filePath": "src/host/orchestrator/infraSession.ts",
+        "line": 38,
         "column": 1
       }
     },
@@ -12982,98 +13211,17 @@
       "name": "stopAllProjectInfraPortForwards",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 136,
+        "filePath": "src/host/orchestrator/infraSession.ts",
+        "line": 46,
         "column": 1
       }
     },
     {
-      "name": "getInfraScriptsDir",
+      "name": "sessionKey",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 152,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveProjectPortForwardLocalPort",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 161,
-        "column": 1
-      }
-    },
-    {
-      "name": "readSimpleEnvMap",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 186,
-        "column": 1
-      }
-    },
-    {
-      "name": "parsePositivePort",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 208,
-        "column": 1
-      }
-    },
-    {
-      "name": "runShellScript",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 216,
-        "column": 1
-      }
-    },
-    {
-      "name": "exists",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraRuntime.ts",
-        "line": 265,
-        "column": 1
-      }
-    },
-    {
-      "name": "validateInfraSupport",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraValidation.ts",
-        "line": 10,
-        "column": 1
-      }
-    },
-    {
-      "name": "warningForUnsupportedValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraValidation.ts",
-        "line": 71,
-        "column": 1
-      }
-    },
-    {
-      "name": "isSupported",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraValidation.ts",
-        "line": 80,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatSupportedValues",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/infraValidation.ts",
-        "line": 84,
+        "filePath": "src/host/orchestrator/infraSession.ts",
+        "line": 65,
         "column": 1
       }
     },
@@ -13096,110 +13244,11 @@
       }
     },
     {
-      "name": "cleanupProjectGeneratedAppImage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 42,
-        "column": 1
-      }
-    },
-    {
-      "name": "removeMinikubeImage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 103,
-        "column": 1
-      }
-    },
-    {
-      "name": "removeDockerImage",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 143,
-        "column": 1
-      }
-    },
-    {
-      "name": "readMinikubeEnv",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 178,
-        "column": 1
-      }
-    },
-    {
-      "name": "mergeEnvFile",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 188,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseEnvLine",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 202,
-        "column": 1
-      }
-    },
-    {
-      "name": "readBooleanEnv",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 216,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMissingCommandError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 224,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMissingFileError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 230,
-        "column": 1
-      }
-    },
-    {
-      "name": "isImageNotFoundError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 236,
-        "column": 1
-      }
-    },
-    {
-      "name": "formatError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectDeletion.ts",
-        "line": 241,
-        "column": 1
-      }
-    },
-    {
       "name": "exists",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 307,
+        "line": 299,
         "column": 1
       }
     },
@@ -13208,7 +13257,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 316,
+        "line": 308,
         "column": 1
       }
     },
@@ -13217,7 +13266,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 324,
+        "line": 316,
         "column": 1
       }
     },
@@ -13226,7 +13275,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 82,
+        "line": 71,
         "column": 1
       }
     },
@@ -13235,7 +13284,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 92,
+        "line": 81,
         "column": 1
       }
     },
@@ -13244,7 +13293,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 105,
+        "line": 94,
         "column": 1
       }
     },
@@ -13253,7 +13302,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManagerDeletion.test.ts",
-        "line": 162,
+        "line": 151,
         "column": 1
       }
     },
@@ -13451,7 +13500,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/studioInfraUp.ts",
-        "line": 22,
+        "line": 25,
         "column": 1
       }
     },
@@ -13681,11 +13730,20 @@
       }
     },
     {
+      "name": "getInfrastructureStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/secrets/projectSecretService.test.ts",
+        "line": 48,
+        "column": 7
+      }
+    },
+    {
       "name": "withOAuthProvider",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 209,
+        "line": 214,
         "column": 1
       }
     },
@@ -13694,7 +13752,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 230,
+        "line": 235,
         "column": 1
       }
     },
@@ -13703,7 +13761,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 238,
+        "line": 243,
         "column": 1
       }
     },
@@ -13712,7 +13770,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 389,
+        "line": 393,
         "column": 1
       }
     },
@@ -13721,7 +13779,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 396,
+        "line": 400,
         "column": 1
       }
     },
@@ -13730,7 +13788,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.ts",
-        "line": 402,
+        "line": 406,
         "column": 1
       }
     },
@@ -13748,34 +13806,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
-        "line": 23,
-        "column": 1
-      }
-    },
-    {
-      "name": "readFirstValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
-        "line": 40,
-        "column": 1
-      }
-    },
-    {
-      "name": "readEnvFile",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
-        "line": 49,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMissingFileError",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts",
-        "line": 76,
+        "line": 11,
         "column": 1
       }
     },
@@ -13856,7 +13887,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 164,
+        "line": 167,
         "column": 1
       }
     },
@@ -13865,7 +13896,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 172,
+        "line": 175,
         "column": 1
       }
     },
@@ -13874,7 +13905,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 237,
+        "line": 240,
         "column": 1
       }
     },
@@ -13883,7 +13914,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 251,
+        "line": 254,
         "column": 1
       }
     },
@@ -13892,7 +13923,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 303,
+        "line": 306,
         "column": 1
       }
     },
@@ -13901,7 +13932,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 315,
+        "line": 318,
         "column": 1
       }
     },
@@ -13910,7 +13941,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 328,
+        "line": 331,
         "column": 1
       }
     },
@@ -13919,7 +13950,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 352,
+        "line": 346,
         "column": 1
       }
     },
@@ -13928,7 +13959,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 356,
+        "line": 350,
         "column": 1
       }
     },
@@ -13937,7 +13968,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 370,
+        "line": 364,
         "column": 1
       }
     },
@@ -13946,7 +13977,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 375,
+        "line": 369,
         "column": 1
       }
     },
@@ -13955,7 +13986,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 380,
+        "line": 374,
         "column": 1
       }
     },
@@ -13964,7 +13995,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 390,
+        "line": 384,
         "column": 1
       }
     },
@@ -13973,7 +14004,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 414,
+        "line": 408,
         "column": 1
       }
     },
@@ -13982,7 +14013,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 434,
+        "line": 425,
         "column": 1
       }
     },
@@ -13991,7 +14022,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 440,
+        "line": 431,
         "column": 1
       }
     },
@@ -14000,7 +14031,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 463,
+        "line": 440,
         "column": 1
       }
     },
@@ -14009,7 +14040,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 467,
+        "line": 444,
         "column": 1
       }
     },
@@ -14018,7 +14049,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 494,
+        "line": 471,
         "column": 1
       }
     },
@@ -14027,7 +14058,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 506,
+        "line": 483,
         "column": 1
       }
     },
@@ -14036,7 +14067,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 515,
+        "line": 492,
         "column": 1
       }
     },
@@ -14045,7 +14076,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/studioInfra.e2e.test.ts",
-        "line": 520,
+        "line": 497,
         "column": 1
       }
     },
@@ -14360,7 +14391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 544,
+        "line": 553,
         "column": 14
       }
     },
@@ -14369,7 +14400,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 551,
+        "line": 560,
         "column": 14
       }
     },
@@ -14378,7 +14409,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 568,
+        "line": 577,
         "column": 14
       }
     },
@@ -14387,7 +14418,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 580,
+        "line": 589,
         "column": 14
       }
     },
@@ -14396,7 +14427,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 608,
+        "line": 617,
         "column": 14
       }
     },
@@ -14405,7 +14436,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 632,
+        "line": 641,
         "column": 1
       }
     },
@@ -14414,7 +14445,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 637,
+        "line": 646,
         "column": 9
       }
     },
@@ -14423,7 +14454,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 656,
+        "line": 665,
         "column": 1
       }
     },
@@ -14432,7 +14463,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 667,
+        "line": 676,
         "column": 1
       }
     },
@@ -14441,7 +14472,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 722,
+        "line": 731,
         "column": 1
       }
     },
@@ -14450,7 +14481,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 734,
+        "line": 743,
         "column": 1
       }
     },
@@ -14459,7 +14490,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 821,
+        "line": 830,
         "column": 1
       }
     },
@@ -14468,7 +14499,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 882,
+        "line": 891,
         "column": 1
       }
     },
@@ -14477,7 +14508,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 939,
+        "line": 948,
         "column": 1
       }
     },
@@ -14486,7 +14517,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 984,
+        "line": 993,
         "column": 1
       }
     },
@@ -14495,7 +14526,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1023,
+        "line": 1032,
         "column": 1
       }
     },
@@ -14504,7 +14535,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1052,
+        "line": 1061,
         "column": 1
       }
     },
@@ -14513,7 +14544,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1120,
+        "line": 1129,
         "column": 1
       }
     },
@@ -14522,7 +14553,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1191,
+        "line": 1200,
         "column": 1
       }
     },
@@ -14531,7 +14562,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1195,
+        "line": 1204,
         "column": 1
       }
     },
@@ -14540,7 +14571,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1200,
+        "line": 1209,
         "column": 1
       }
     },
@@ -14549,7 +14580,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1208,
+        "line": 1217,
         "column": 1
       }
     },
@@ -14558,7 +14589,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1212,
+        "line": 1221,
         "column": 9
       }
     },
@@ -14567,7 +14598,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1245,
+        "line": 1254,
         "column": 1
       }
     },
@@ -14576,7 +14607,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1250,
+        "line": 1259,
         "column": 9
       }
     },
@@ -14585,7 +14616,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1265,
+        "line": 1274,
         "column": 1
       }
     },
@@ -14594,7 +14625,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1285,
+        "line": 1294,
         "column": 1
       }
     },
@@ -14603,7 +14634,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1308,
+        "line": 1317,
         "column": 1
       }
     },
@@ -14612,7 +14643,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1346,
+        "line": 1355,
         "column": 1
       }
     },
@@ -14621,7 +14652,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1372,
+        "line": 1381,
         "column": 1
       }
     },
@@ -14630,7 +14661,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1388,
+        "line": 1397,
         "column": 1
       }
     },
@@ -14639,7 +14670,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1437,
+        "line": 1446,
         "column": 1
       }
     },
@@ -15306,6 +15337,105 @@
       "sourceLocation": {
         "filePath": "src/manifestSync.ts",
         "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "listStudioMediaAssets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioMediaAssetReference",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStudioMediaAssetReference",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioMediaAssetId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioUrlMediaAsset",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "upsertStudioMediaAsset",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 83,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectStudioMediaAssetUsages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeStudioMediaAsset",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 106,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectNodeUsages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 126,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectValueUsages",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 138,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeStableHttpUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/mediaAuthoringModel.ts",
+        "line": 163,
         "column": 1
       }
     },
@@ -16124,7 +16254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 45,
+        "line": 47,
         "column": 1
       }
     },
@@ -16133,7 +16263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 74,
+        "line": 77,
         "column": 1
       }
     },
@@ -16142,7 +16272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 89,
+        "line": 92,
         "column": 1
       }
     },
@@ -16151,7 +16281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/propertiesAuthoringModel.ts",
-        "line": 102,
+        "line": 105,
         "column": 1
       }
     },
@@ -16952,7 +17082,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 261,
+        "line": 269,
         "column": 1
       }
     },
@@ -16961,7 +17091,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 272,
+        "line": 280,
         "column": 1
       }
     },
@@ -16970,7 +17100,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 311,
+        "line": 319,
         "column": 1
       }
     },
@@ -16979,7 +17109,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 342,
+        "line": 350,
         "column": 1
       }
     },
@@ -16988,7 +17118,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 346,
+        "line": 354,
         "column": 1
       }
     },
@@ -16997,7 +17127,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 350,
+        "line": 358,
         "column": 1
       }
     },
@@ -17006,7 +17136,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 354,
+        "line": 362,
         "column": 1
       }
     },
@@ -17015,7 +17145,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 358,
+        "line": 366,
         "column": 1
       }
     },
@@ -17024,7 +17154,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 362,
+        "line": 370,
         "column": 1
       }
     },
@@ -17033,7 +17163,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 372,
+        "line": 380,
         "column": 1
       }
     },
@@ -17042,7 +17172,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 382,
+        "line": 390,
         "column": 1
       }
     },
@@ -17051,7 +17181,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 386,
+        "line": 394,
         "column": 1
       }
     },
@@ -17060,7 +17190,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 390,
+        "line": 398,
         "column": 1
       }
     },
@@ -17069,7 +17199,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 394,
+        "line": 402,
         "column": 1
       }
     },
@@ -17078,7 +17208,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 425,
+        "line": 433,
         "column": 1
       }
     },
@@ -17087,7 +17217,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 442,
+        "line": 450,
         "column": 1
       }
     },
@@ -17096,7 +17226,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 446,
+        "line": 454,
         "column": 1
       }
     },
@@ -17105,7 +17235,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 463,
+        "line": 471,
         "column": 1
       }
     },
@@ -17114,7 +17244,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 484,
+        "line": 492,
         "column": 1
       }
     },
@@ -17123,7 +17253,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 507,
+        "line": 515,
         "column": 1
       }
     },
@@ -17132,7 +17262,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 511,
+        "line": 519,
         "column": 1
       }
     },
@@ -17141,7 +17271,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 521,
+        "line": 529,
         "column": 1
       }
     },
@@ -17150,7 +17280,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 529,
+        "line": 537,
         "column": 1
       }
     },
@@ -17159,7 +17289,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 540,
+        "line": 548,
         "column": 1
       }
     },
@@ -17330,7 +17460,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
-        "line": 102,
+        "line": 104,
         "column": 1
       }
     },
@@ -18586,6 +18716,51 @@
       }
     },
     {
+      "name": "MediaAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "importUrl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "line": 42,
+        "column": 9
+      }
+    },
+    {
+      "name": "MediaAssetCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatMediaSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "MediaPropertyInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/MediaPropertyInput.tsx",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
       "name": "ModuleDetailAdminPage",
       "description": null,
       "sourceLocation": {
@@ -18644,7 +18819,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 16,
+        "line": 17,
         "column": 1
       }
     },
@@ -18653,7 +18828,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 41,
+        "line": 42,
         "column": 1
       }
     },
@@ -18662,7 +18837,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 45,
+        "line": 46,
         "column": 9
       }
     },
@@ -18671,7 +18846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 78,
+        "line": 79,
         "column": 1
       }
     },
@@ -18680,7 +18855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 103,
+        "line": 108,
         "column": 1
       }
     },
@@ -18689,7 +18864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 116,
+        "line": 121,
         "column": 9
       }
     },
@@ -18698,7 +18873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 152,
+        "line": 157,
         "column": 1
       }
     },
@@ -18707,7 +18882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 171,
+        "line": 176,
         "column": 1
       }
     },
@@ -18716,7 +18891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 197,
+        "line": 203,
         "column": 1
       }
     },
@@ -18725,7 +18900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 207,
+        "line": 213,
         "column": 1
       }
     },
@@ -18734,7 +18909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
-        "line": 217,
+        "line": 223,
         "column": 1
       }
     },
@@ -19852,6 +20027,14 @@
     },
     {
       "kind": "export",
+      "name": "collectStudioMediaAssetUsages",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "collectStudioMediaAssetUsages",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "collectStudioResponsePaths",
       "sourcePath": "src/bindingSchemaModel.ts",
       "symbolName": "collectStudioResponsePaths",
@@ -19879,6 +20062,30 @@
       "name": "createStudioInstancePropertyPatch",
       "sourcePath": "src/propertiesAuthoringModel.ts",
       "symbolName": "createStudioInstancePropertyPatch",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createStudioMediaAssetId",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "createStudioMediaAssetId",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createStudioMediaAssetReference",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "createStudioMediaAssetReference",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createStudioUrlMediaAsset",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "createStudioUrlMediaAsset",
       "description": null,
       "isReadme": false
     },
@@ -19940,9 +20147,25 @@
     },
     {
       "kind": "export",
+      "name": "listStudioMediaAssets",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "listStudioMediaAssets",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
       "name": "moveNodeToPlacement",
       "sourcePath": "src/index.ts",
       "symbolName": "moveNodeToPlacement",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "readStudioMediaAssetReference",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "readStudioMediaAssetReference",
       "description": null,
       "isReadme": false
     },
@@ -19959,6 +20182,14 @@
       "name": "removeStudioEventBinding",
       "sourcePath": "src/bindingMutationModel.ts",
       "symbolName": "removeStudioEventBinding",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "removeStudioMediaAsset",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "removeStudioMediaAsset",
       "description": null,
       "isReadme": false
     },
@@ -20047,6 +20278,14 @@
       "name": "updateNodeInTree",
       "sourcePath": "src/index.ts",
       "symbolName": "updateNodeInTree",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "upsertStudioMediaAsset",
+      "sourcePath": "src/mediaAuthoringModel.ts",
+      "symbolName": "upsertStudioMediaAsset",
       "description": null,
       "isReadme": false
     },
@@ -20302,6 +20541,11 @@
       },
       {
         "fromPath": "src/index.ts",
+        "toPath": "src/mediaAuthoringModel.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
         "toPath": "src/projectAuthHealth.ts",
         "sourcePath": "src/index.ts"
       },
@@ -20404,6 +20648,11 @@
         "fromPath": "src/manifestSync.ts",
         "toPath": "src/index.ts",
         "sourcePath": "src/manifestSync.ts"
+      },
+      {
+        "fromPath": "src/mediaAuthoringModel.test.ts",
+        "toPath": "src/mediaAuthoringModel.ts",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
       },
       {
         "fromPath": "src/moduleAdmin.public.test.ts",
@@ -20877,6 +21126,11 @@
       },
       {
         "fromPath": "src/core/StudioProvider.ts",
+        "toPath": "src/mediaAuthoringModel.ts",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromPath": "src/core/StudioProvider.ts",
         "toPath": "src/routeUtils.ts",
         "sourcePath": "src/core/StudioProvider.ts"
       },
@@ -20947,7 +21201,7 @@
       },
       {
         "fromPath": "src/host/createStudioHost.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
@@ -21177,7 +21431,7 @@
       },
       {
         "fromPath": "src/host/studioInfra.e2e.test.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -21497,11 +21751,6 @@
       },
       {
         "fromPath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
-        "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
-      },
-      {
-        "fromPath": "src/host/auth/projectAuthRuntimeDiagnostics.ts",
         "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
@@ -21672,7 +21921,7 @@
       },
       {
         "fromPath": "src/host/http/server.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -21683,6 +21932,11 @@
       {
         "fromPath": "src/host/http/server.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromPath": "src/host/http/server.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -21896,21 +22150,6 @@
         "sourcePath": "src/host/orchestrator/generatedAppFiles.ts"
       },
       {
-        "fromPath": "src/host/orchestrator/infraGenerator.ts",
-        "toPath": "src/host/orchestrator/infraValidation.ts",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/infraRuntime.test.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/infraRuntime.ts",
-        "toPath": "src/host/orchestrator/projectPaths.ts",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
         "fromPath": "src/host/orchestrator/moduleManager.ts",
         "toPath": "src/manifestState.ts",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
@@ -21961,11 +22200,6 @@
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
-        "fromPath": "src/host/orchestrator/projectDeletion.test.ts",
-        "toPath": "src/host/orchestrator/projectDeletion.ts",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/projectIdentity.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -22003,21 +22237,6 @@
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/host/orchestrator/infraGenerator.ts",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/host/orchestrator/projectDeletion.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -22122,12 +22341,17 @@
       },
       {
         "fromPath": "src/host/orchestrator/studioInfraUp.ts",
-        "toPath": "src/host/orchestrator/infraRuntime.ts",
+        "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
       },
       {
         "fromPath": "src/host/orchestrator/studioInfraUp.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/studioInfraUp.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
         "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
       },
       {
@@ -22248,6 +22472,11 @@
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
         "toPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/MediaAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
@@ -22946,6 +23175,31 @@
         "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toPath": "src/mediaAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaPropertyInput.tsx",
+        "toPath": "src/mediaAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/MediaPropertyInput.tsx",
+        "toPath": "src/propertiesAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
         "fromPath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "toPath": "src/core/StudioContext.ts",
         "sourcePath": "src/ui/admin/pages/ModuleDetailAdminPage.tsx"
@@ -23033,6 +23287,11 @@
       {
         "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/PropertiesAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/MediaPropertyInput.tsx",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
@@ -26218,6 +26477,120 @@
         "sourcePath": "src/manifestSync.ts"
       },
       {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "upsertStudioMediaAsset",
+        "callExpression": "upsertStudioMediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "listStudioMediaAssets",
+        "callExpression": "listStudioMediaAssets",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "createStudioMediaAssetReference",
+        "callExpression": "createStudioMediaAssetReference",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "readStudioMediaAssetReference",
+        "callExpression": "readStudioMediaAssetReference",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "createStudioMediaAssetId",
+        "callExpression": "createStudioMediaAssetId",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "createStudioUrlMediaAsset",
+        "callExpression": "createStudioUrlMediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "collectStudioMediaAssetUsages",
+        "callExpression": "collectStudioMediaAssetUsages",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.test.ts",
+        "toSymbol": "removeStudioMediaAsset",
+        "callExpression": "removeStudioMediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "createStudioUrlMediaAsset",
+        "toSymbol": "normalizeStableHttpUrl",
+        "callExpression": "normalizeStableHttpUrl",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioMediaAssetUsages",
+        "toSymbol": "collectNodeUsages",
+        "callExpression": "collectNodeUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioMediaAsset",
+        "toSymbol": "collectStudioMediaAssetUsages",
+        "callExpression": "collectStudioMediaAssetUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectNodeUsages",
+        "toSymbol": "collectValueUsages",
+        "callExpression": "collectValueUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectNodeUsages",
+        "toSymbol": "collectNodeUsages",
+        "callExpression": "collectNodeUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectValueUsages",
+        "toSymbol": "readStudioMediaAssetReference",
+        "callExpression": "readStudioMediaAssetReference",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "src/mediaAuthoringModel.ts",
+        "toSymbol": "collectValueUsages",
+        "callExpression": "collectValueUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectValueUsages",
+        "toSymbol": "collectValueUsages",
+        "callExpression": "collectValueUsages",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
         "fromSymbol": "src/moduleAdmin.public.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -29327,6 +29700,18 @@
       },
       {
         "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "upsertStudioMediaAsset",
+        "callExpression": "upsertStudioMediaAsset",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
+        "toSymbol": "removeStudioMediaAsset",
+        "callExpression": "removeStudioMediaAsset",
+        "sourcePath": "src/core/StudioProvider.ts"
+      },
+      {
+        "fromSymbol": "src/core/StudioProvider.ts",
         "toSymbol": "updateStudioManifestDraftTheme",
         "callExpression": "updateStudioManifestDraftTheme",
         "sourcePath": "src/core/StudioProvider.ts"
@@ -32105,8 +32490,8 @@
       },
       {
         "fromSymbol": "src/host/studioInfra.e2e.test.ts",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -32237,8 +32622,8 @@
       },
       {
         "fromSymbol": "resolveGeneratedDbUrl",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
+        "toSymbol": "readProjectInfrastructureEnvironment",
+        "callExpression": "readProjectInfrastructureEnvironment",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -32315,8 +32700,8 @@
       },
       {
         "fromSymbol": "expectForwardStatus",
-        "toSymbol": "execFile",
-        "callExpression": "execFile",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -32333,14 +32718,8 @@
       },
       {
         "fromSymbol": "destroyIfPresent",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/host/studioInfra.e2e.test.ts"
-      },
-      {
-        "fromSymbol": "destroyIfPresent",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/studioInfra.e2e.test.ts"
       },
       {
@@ -34499,8 +34878,14 @@
       },
       {
         "fromSymbol": "observeProjectAuthRuntimeDiagnostics",
-        "toSymbol": "readSafeGeneratedInfraEnvironment",
-        "callExpression": "readSafeGeneratedInfraEnvironment",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
+      },
+      {
+        "fromSymbol": "observeProjectAuthRuntimeDiagnostics",
+        "toSymbol": "readProjectInfrastructureEnvironment",
+        "callExpression": "readProjectInfrastructureEnvironment",
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
       {
@@ -34511,8 +34896,8 @@
       },
       {
         "fromSymbol": "observeProjectAuthRuntimeDiagnostics",
-        "toSymbol": "runProjectInfraScriptCapture",
-        "callExpression": "runProjectInfraScriptCapture",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
       {
@@ -34543,18 +34928,6 @@
         "fromSymbol": "parseProjectAuthRuntimeStatus",
         "toSymbol": "readSafeStatusValue",
         "callExpression": "readSafeStatusValue",
-        "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
-      },
-      {
-        "fromSymbol": "readSafeGeneratedInfraEnvironment",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
-      },
-      {
-        "fromSymbol": "readSafeGeneratedInfraEnvironment",
-        "toSymbol": "exists",
-        "callExpression": "exists",
         "sourcePath": "src/host/auth/projectAuthRuntimeDiagnostics.ts"
       },
       {
@@ -35248,12 +35621,6 @@
         "sourcePath": "src/host/http/secretRoutes.ts"
       },
       {
-        "fromSymbol": "readSimpleEnvMap",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
         "fromSymbol": "resolveProjectTemplateSelection",
         "toSymbol": "isAppCategory",
         "callExpression": "isAppCategory",
@@ -35339,14 +35706,14 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/http/server.ts"
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "runProjectInfraScriptCapture",
-        "callExpression": "runProjectInfraScriptCapture",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -35381,20 +35748,8 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "readSimpleEnvMap",
-        "callExpression": "readSimpleEnvMap",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "readFirstEnvValue",
-        "callExpression": "readFirstEnvValue",
+        "toSymbol": "readProjectInfrastructureEnvironment",
+        "callExpression": "readProjectInfrastructureEnvironment",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -36394,376 +36749,40 @@
         "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
       },
       {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "validateInfraSupport",
-        "callExpression": "validateInfraSupport",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "readInfraLedger",
-        "callExpression": "readInfraLedger",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "removeFiles",
-        "callExpression": "removeFiles",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "removeInfraLedger",
-        "callExpression": "removeInfraLedger",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "unique",
-        "callExpression": "unique",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "resolveProjectFile",
-        "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "syncProjectInfrastructure",
-        "toSymbol": "writeInfraLedger",
-        "callExpression": "writeInfraLedger",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "getProjectInfrastructureStatus",
-        "toSymbol": "validateInfraSupport",
-        "callExpression": "validateInfraSupport",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "getProjectInfrastructureStatus",
-        "toSymbol": "readInfraLedger",
-        "callExpression": "readInfraLedger",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "getProjectInfrastructureStatus",
-        "toSymbol": "unique",
-        "callExpression": "unique",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "readInfraLedger",
-        "toSymbol": "isInfraLedger",
-        "callExpression": "isInfraLedger",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "removeFiles",
-        "toSymbol": "resolveProjectFile",
-        "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/infraGenerator.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "tmpdir",
-        "callExpression": "tmpdir",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "ensureProjectInfraPortForward",
-        "callExpression": "ensureProjectInfraPortForward",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "stopAllProjectInfraPortForwards",
-        "callExpression": "stopAllProjectInfraPortForwards",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "registerProjectInfraPortForwardOwner",
-        "callExpression": "registerProjectInfraPortForwardOwner",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "writePortForwardScript",
-        "callExpression": "writePortForwardScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "expectRejects",
-        "callExpression": "expectRejects",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "createGeneratedForwardProject",
-        "callExpression": "createGeneratedForwardProject",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "runProjectInfraScriptCapture",
-        "callExpression": "runProjectInfraScriptCapture",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.test.ts",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "createGeneratedForwardProject",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "createGeneratedForwardProject",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "createGeneratedForwardProject",
-        "toSymbol": "writePortForwardScript",
-        "callExpression": "writePortForwardScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "writePortForwardScript",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "expectRejects",
-        "toSymbol": "operation",
-        "callExpression": "operation",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "expectRejects",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/infraRuntime.test.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectInfraScriptPath",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectInfraScriptPath",
-        "toSymbol": "getInfraScriptsDir",
-        "callExpression": "getInfraScriptsDir",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScript",
-        "toSymbol": "resolveProjectInfraScriptPath",
-        "callExpression": "resolveProjectInfraScriptPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScript",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScript",
-        "toSymbol": "runShellScript",
-        "callExpression": "runShellScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScriptCapture",
-        "toSymbol": "resolveProjectInfraScriptPath",
-        "callExpression": "resolveProjectInfraScriptPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScriptCapture",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "runProjectInfraScriptCapture",
-        "toSymbol": "runShellScript",
-        "callExpression": "runShellScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+        "fromSymbol": "ensureProjectInfraPortForward",
+        "toSymbol": "resolveProjectInfrastructurePortForward",
+        "callExpression": "resolveProjectInfrastructurePortForward",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
         "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "resolveProjectInfraScriptPath",
-        "callExpression": "resolveProjectInfraScriptPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
         "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "resolveProjectPortForwardLocalPort",
-        "callExpression": "resolveProjectPortForwardLocalPort",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "ensureProjectInfraPortForward",
-        "toSymbol": "runShellScript",
-        "callExpression": "runShellScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+        "toSymbol": "sessionKey",
+        "callExpression": "sessionKey",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
         "fromSymbol": "registerProjectInfraPortForwardOwner",
-        "toSymbol": "resolveProjectInfraScriptPath",
-        "callExpression": "resolveProjectInfraScriptPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+        "toSymbol": "resolveProjectInfrastructurePortForward",
+        "callExpression": "resolveProjectInfrastructurePortForward",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
         "fromSymbol": "registerProjectInfraPortForwardOwner",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
+        "toSymbol": "sessionKey",
+        "callExpression": "sessionKey",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
-        "fromSymbol": "registerProjectInfraPortForwardOwner",
-        "toSymbol": "resolveProjectPortForwardLocalPort",
-        "callExpression": "resolveProjectPortForwardLocalPort",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "resolveProjectInfraScriptPath",
-        "callExpression": "resolveProjectInfraScriptPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "runShellScript",
-        "callExpression": "runShellScript",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "readSimpleEnvMap",
-        "callExpression": "readSimpleEnvMap",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectPortForwardLocalPort",
-        "toSymbol": "parsePositivePort",
-        "callExpression": "parsePositivePort",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "readSimpleEnvMap",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "spawn",
-        "callExpression": "spawn",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "reject",
-        "callExpression": "reject",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/infraRuntime.ts",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/host/orchestrator/infraRuntime.ts"
-      },
-      {
-        "fromSymbol": "validateInfraSupport",
-        "toSymbol": "isSupported",
-        "callExpression": "isSupported",
-        "sourcePath": "src/host/orchestrator/infraValidation.ts"
-      },
-      {
-        "fromSymbol": "validateInfraSupport",
-        "toSymbol": "warningForUnsupportedValue",
-        "callExpression": "warningForUnsupportedValue",
-        "sourcePath": "src/host/orchestrator/infraValidation.ts"
-      },
-      {
-        "fromSymbol": "warningForUnsupportedValue",
-        "toSymbol": "formatSupportedValues",
-        "callExpression": "formatSupportedValues",
-        "sourcePath": "src/host/orchestrator/infraValidation.ts"
+        "fromSymbol": "src/host/orchestrator/infraSession.ts",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
+        "sourcePath": "src/host/orchestrator/infraSession.ts"
       },
       {
         "fromSymbol": "listModules",
@@ -37474,156 +37493,6 @@
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "tmpdir",
-        "callExpression": "tmpdir",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "cleanupProjectGeneratedAppImage",
-        "callExpression": "cleanupProjectGeneratedAppImage",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/projectDeletion.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectDeletion.ts",
-        "toSymbol": "promisify",
-        "callExpression": "promisify",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "run",
-        "toSymbol": "execFileAsync",
-        "callExpression": "execFileAsync",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "cleanupProjectGeneratedAppImage",
-        "toSymbol": "readMinikubeEnv",
-        "callExpression": "readMinikubeEnv",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "cleanupProjectGeneratedAppImage",
-        "toSymbol": "readBooleanEnv",
-        "callExpression": "readBooleanEnv",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "cleanupProjectGeneratedAppImage",
-        "toSymbol": "removeMinikubeImage",
-        "callExpression": "removeMinikubeImage",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "cleanupProjectGeneratedAppImage",
-        "toSymbol": "removeDockerImage",
-        "callExpression": "removeDockerImage",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeMinikubeImage",
-        "toSymbol": "run",
-        "callExpression": "runner.run",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeMinikubeImage",
-        "toSymbol": "isMissingCommandError",
-        "callExpression": "isMissingCommandError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeMinikubeImage",
-        "toSymbol": "isImageNotFoundError",
-        "callExpression": "isImageNotFoundError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeMinikubeImage",
-        "toSymbol": "formatError",
-        "callExpression": "formatError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeDockerImage",
-        "toSymbol": "run",
-        "callExpression": "runner.run",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeDockerImage",
-        "toSymbol": "isMissingCommandError",
-        "callExpression": "isMissingCommandError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeDockerImage",
-        "toSymbol": "isImageNotFoundError",
-        "callExpression": "isImageNotFoundError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "removeDockerImage",
-        "toSymbol": "formatError",
-        "callExpression": "formatError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "readMinikubeEnv",
-        "toSymbol": "mergeEnvFile",
-        "callExpression": "mergeEnvFile",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "mergeEnvFile",
-        "toSymbol": "parseEnvLine",
-        "callExpression": "parseEnvLine",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "mergeEnvFile",
-        "toSymbol": "isMissingFileError",
-        "callExpression": "isMissingFileError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
-        "fromSymbol": "isImageNotFoundError",
-        "toSymbol": "formatError",
-        "callExpression": "formatError",
-        "sourcePath": "src/host/orchestrator/projectDeletion.ts"
-      },
-      {
         "fromSymbol": "ProjectManager",
         "toSymbol": "getAppsRoot",
         "callExpression": "getAppsRoot",
@@ -37655,8 +37524,8 @@
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "getProjectInfrastructureStatus",
-        "callExpression": "getProjectInfrastructureStatus",
+        "toSymbol": "inspectProjectInfrastructure",
+        "callExpression": "inspectProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -37669,12 +37538,6 @@
         "fromSymbol": "deleteProject",
         "toSymbol": "destroyProjectInfrastructure",
         "callExpression": "this.destroyProjectInfrastructure",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "deleteProject",
-        "toSymbol": "cleanupProjectGeneratedAppImage",
-        "callExpression": "this.dependencies.cleanupProjectGeneratedAppImage",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -37961,14 +37824,14 @@
       },
       {
         "fromSymbol": "getInfrastructureStatus",
-        "toSymbol": "getProjectInfrastructureStatus",
-        "callExpression": "getProjectInfrastructureStatus",
+        "toSymbol": "inspectProjectInfrastructure",
+        "callExpression": "inspectProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "destroyProjectInfrastructure",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "this.dependencies.runProjectInfraScript",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "this.dependencies.runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -38699,8 +38562,14 @@
       },
       {
         "fromSymbol": "upProjectInfrastructure",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "runProjectInfraScript",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
+      },
+      {
+        "fromSymbol": "upProjectInfrastructure",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
         "sourcePath": "src/host/orchestrator/studioInfraUp.ts"
       },
       {
@@ -39095,6 +38964,12 @@
       },
       {
         "fromSymbol": "removeGuarded",
+        "toSymbol": "getInfrastructureStatus",
+        "callExpression": "this.projectManager.getInfrastructureStatus",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "removeGuarded",
         "toSymbol": "resolveDatabaseUrl",
         "callExpression": "this.resolveDatabaseUrl",
         "sourcePath": "src/host/secrets/projectSecretService.ts"
@@ -39185,6 +39060,12 @@
       },
       {
         "fromSymbol": "withAdapter",
+        "toSymbol": "getInfrastructureStatus",
+        "callExpression": "this.projectManager.getInfrastructureStatus",
+        "sourcePath": "src/host/secrets/projectSecretService.ts"
+      },
+      {
+        "fromSymbol": "withAdapter",
         "toSymbol": "resolveDatabaseUrl",
         "callExpression": "this.resolveDatabaseUrl",
         "sourcePath": "src/host/secrets/projectSecretService.ts"
@@ -39257,20 +39138,8 @@
       },
       {
         "fromSymbol": "resolveProjectSecretDatabaseUrl",
-        "toSymbol": "readFirstValue",
-        "callExpression": "readFirstValue",
-        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
-      },
-      {
-        "fromSymbol": "resolveProjectSecretDatabaseUrl",
-        "toSymbol": "readEnvFile",
-        "callExpression": "readEnvFile",
-        "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
-      },
-      {
-        "fromSymbol": "readEnvFile",
-        "toSymbol": "isMissingFileError",
-        "callExpression": "isMissingFileError",
+        "toSymbol": "resolveProjectInfrastructureDatabaseUrl",
+        "callExpression": "resolveProjectInfrastructureDatabaseUrl",
         "sourcePath": "src/host/secrets/resolveProjectSecretDatabaseUrl.ts"
       },
       {
@@ -42496,6 +42365,120 @@
         "sourcePath": "src/ui/admin/pages/ManualRestSourceCard.tsx"
       },
       {
+        "fromSymbol": "MediaAdminPage",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaAdminPage",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaAdminPage",
+        "toSymbol": "useMemo",
+        "callExpression": "useMemo",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toSymbol": "listStudioMediaAssets",
+        "callExpression": "listStudioMediaAssets",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "createStudioMediaAssetId",
+        "callExpression": "createStudioMediaAssetId",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "createStudioUrlMediaAsset",
+        "callExpression": "createStudioUrlMediaAsset",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "upsertMediaAsset",
+        "callExpression": "studio.upsertMediaAsset",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "setName",
+        "callExpression": "setName",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "importUrl",
+        "toSymbol": "setUrl",
+        "callExpression": "setUrl",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaAssetCard",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaAssetCard",
+        "toSymbol": "collectStudioMediaAssetUsages",
+        "callExpression": "collectStudioMediaAssetUsages",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaAssetCard",
+        "toSymbol": "formatMediaSource",
+        "callExpression": "formatMediaSource",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/MediaAdminPage.tsx",
+        "toSymbol": "removeMediaAsset",
+        "callExpression": "studio.removeMediaAsset",
+        "sourcePath": "src/ui/admin/pages/MediaAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "MediaPropertyInput",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
+        "fromSymbol": "MediaPropertyInput",
+        "toSymbol": "listStudioMediaAssets",
+        "callExpression": "listStudioMediaAssets",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
+        "fromSymbol": "MediaPropertyInput",
+        "toSymbol": "readStudioMediaAssetReference",
+        "callExpression": "readStudioMediaAssetReference",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/MediaPropertyInput.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/MediaPropertyInput.tsx",
+        "toSymbol": "createStudioMediaAssetReference",
+        "callExpression": "createStudioMediaAssetReference",
+        "sourcePath": "src/ui/admin/pages/MediaPropertyInput.tsx"
+      },
+      {
         "fromSymbol": "ModuleDetailAdminPage",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
@@ -42857,6 +42840,12 @@
       },
       {
         "fromSymbol": "InstancePropertyEditor",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "InstancePropertyEditor",
         "toSymbol": "toInputText",
         "callExpression": "toInputText",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
@@ -42901,6 +42890,12 @@
         "fromSymbol": "src/ui/admin/pages/PropertiesAdminPage.tsx",
         "toSymbol": "onChange",
         "callExpression": "onChange",
+        "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ChoicePropertyInput",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
         "sourcePath": "src/ui/admin/pages/PropertiesAdminPage.tsx"
       },
       {
@@ -44937,6 +44932,11 @@
       },
       {
         "fromSymbol": "StudioContextValue",
+        "toType": "MediaAsset",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromSymbol": "StudioContextValue",
         "toType": "NavigatorType",
         "sourcePath": "src/index.ts"
       },
@@ -45309,6 +45309,76 @@
         "fromSymbol": "assessStudioBindingCompatibility",
         "toType": "UiBindableValueMeta",
         "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "listStudioMediaAssets",
+        "toType": "AppManifest",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "listStudioMediaAssets",
+        "toType": "MediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioMediaAssetReference",
+        "toType": "MediaAssetReference",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "readStudioMediaAssetReference",
+        "toType": "MediaAssetReference",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioMediaAssetId",
+        "toType": "MediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioMediaAssetId",
+        "toType": "Readonly",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioUrlMediaAsset",
+        "toType": "MediaAssetKind",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioUrlMediaAsset",
+        "toType": "StudioUrlMediaAssetResult",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioMediaAsset",
+        "toType": "AppManifest",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "upsertStudioMediaAsset",
+        "toType": "MediaAsset",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioMediaAssetUsages",
+        "toType": "AppManifest",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "collectStudioMediaAssetUsages",
+        "toType": "StudioMediaUsage",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioMediaAsset",
+        "toType": "AppManifest",
+        "sourcePath": "src/mediaAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "removeStudioMediaAsset",
+        "toType": "StudioMediaAssetRemovalResult",
+        "sourcePath": "src/mediaAuthoringModel.ts"
       },
       {
         "fromSymbol": "resolveStudioInstancePropertyFields",
