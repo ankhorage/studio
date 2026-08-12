@@ -891,6 +891,10 @@ graph TD
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ScreensAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_SecretsAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeColorsAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx
   module_src_ui_admin_AnkhAdminShell_test_ts["src/ui/admin/AnkhAdminShell.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_AnkhAdminShell_test_ts
   module_src_ui_admin_AnkhAdminShell_tsx["src/ui/admin/AnkhAdminShell.tsx"]
@@ -949,7 +953,6 @@ graph TD
   module_src_ui_admin_pages_adminThemeModel_test_ts --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_admin_pages_adminThemeModel_ts["src/ui/admin/pages/adminThemeModel.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_adminThemeModel_ts
-  module_src_ui_admin_pages_adminThemeModel_ts --> module_src_index_ts
   module_src_ui_admin_pages_ApisAdminPage_test_ts["src/ui/admin/pages/ApisAdminPage.test.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ApisAdminPage_test_ts
   module_src_ui_admin_pages_ApisAdminPage_test_ts --> module_src_ui_admin_pages_adminDataSourceOperations_ts
@@ -1150,11 +1153,86 @@ graph TD
   module_src_ui_admin_pages_ThemeAdminPage_test_ts --> module_src_ui_admin_pages_adminThemeHarmony_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx["src/ui/admin/pages/ThemeAdminPage.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeAdminPage_tsx
-  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_core_StudioContext_ts
-  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_index_ts
   module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
-  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeHarmony_ts
-  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_adminThemeModel_ts
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_ThemeModeEditorSelector_tsx
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_ThemeRecipeCatalog_tsx
+  module_src_ui_admin_pages_ThemeAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx["src/ui/admin/pages/ThemeColorsAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeColorsAdminPage_tsx
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx --> module_src_ui_admin_pages_adminThemeHarmony_ts
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx --> module_src_ui_admin_pages_adminThemeModel_ts
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx --> module_src_ui_admin_pages_ThemeModeEditorSelector_tsx
+  module_src_ui_admin_pages_ThemeColorsAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeModeEditorSelector_tsx["src/ui/admin/pages/ThemeModeEditorSelector.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeModeEditorSelector_tsx
+  module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx["src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx
+  module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeNumericTokensAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_test_ts["src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeAdminPage_test_ts
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx["src/ui/admin/pages/ThemeRecipeAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_themeRecipeTokenOptions_ts
+  module_src_ui_admin_pages_ThemeRecipeAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts["src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts
+  module_src_ui_admin_pages_themeRecipeAuthoringModel_test_ts --> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
+  module_src_ui_admin_pages_themeRecipeAuthoringModel_ts["src/ui/admin/pages/themeRecipeAuthoringModel.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeRecipeAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeRecipeCatalog_tsx["src/ui/admin/pages/ThemeRecipeCatalog.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeCatalog_tsx
+  module_src_ui_admin_pages_ThemeRecipeCatalog_tsx --> module_src_studioAdminRouteModel_ts
+  module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx["src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx
+  module_src_ui_admin_pages_ThemeRecipeFieldEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_themeRecipeTokenOptions_test_ts["src/ui/admin/pages/themeRecipeTokenOptions.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeRecipeTokenOptions_test_ts
+  module_src_ui_admin_pages_themeRecipeTokenOptions_test_ts --> module_src_ui_admin_pages_themeRecipeTokenOptions_ts
+  module_src_ui_admin_pages_themeRecipeTokenOptions_ts["src/ui/admin/pages/themeRecipeTokenOptions.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeRecipeTokenOptions_ts
+  module_src_ui_admin_pages_ThemeTokenAction_tsx["src/ui/admin/pages/ThemeTokenAction.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTokenAction_tsx
+  module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts["src/ui/admin/pages/themeTokenAuthoringModel.test.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts
+  module_src_ui_admin_pages_themeTokenAuthoringModel_test_ts --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_themeTokenAuthoringModel_ts["src/ui/admin/pages/themeTokenAuthoringModel.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx["src/ui/admin/pages/ThemeTypographyAdminPage.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographyAdminPage_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx["src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx --> module_src_ui_admin_pages_ThemeTokenAction_tsx
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeTypographyHeadingEditor_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx["src/ui/admin/pages/ThemeTypographySizeEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx --> module_src_ui_admin_pages_ThemeTokenAction_tsx
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeTypographySizeEditor_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx["src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx --> module_src_ui_admin_pages_ThemeTokenAction_tsx
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx --> module_src_ui_admin_pages_themeTokenAuthoringModel_ts
+  module_src_ui_admin_pages_ThemeTypographyWeightEditor_tsx --> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_useActiveThemeAdmin_ts["src/ui/admin/pages/useActiveThemeAdmin.ts"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_useActiveThemeAdmin_ts
+  module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_core_StudioContext_ts
+  module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_index_ts
+  module_src_ui_admin_pages_useActiveThemeAdmin_ts --> module_src_ui_admin_pages_adminThemeModel_ts
   module_src_ui_AnkhStudio_ts["src/ui/AnkhStudio.ts"]
   package__ankhorage_studio -.-> module_src_ui_AnkhStudio_ts
   module_src_ui_AnkhStudio_ts --> module_src_core_StudioContext_ts

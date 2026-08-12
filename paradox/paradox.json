@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.19.0",
+      "value": "v0.22.1",
       "color": "cb3837"
     },
     {
@@ -1468,7 +1468,12 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/projectWorkspaceContracts.ts"
       ],
-      "exports": ["ProjectManifestNotFoundError", "ProjectStore", "ProjectSummary"]
+      "exports": [
+        "ObsoleteStudioManifestError",
+        "ProjectManifestNotFoundError",
+        "ProjectStore",
+        "ProjectSummary"
+      ]
     },
     {
       "path": "src/host/orchestrator/projectStoreSummary.test.ts",
@@ -1784,7 +1789,6 @@
         "StudioInstancePropertyGroup",
         "StudioInstancePropertyValue",
         "StudioManifest",
-        "StudioMode",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
         "StudioModuleAdminField",
@@ -2273,7 +2277,6 @@
         "StudioInstancePropertyGroup",
         "StudioInstancePropertyValue",
         "StudioManifest",
-        "StudioMode",
         "StudioModuleAdminContribution",
         "StudioModuleAdminControl",
         "StudioModuleAdminField",
@@ -2634,6 +2637,7 @@
         "createStudioModuleRoutePath",
         "createStudioPropertiesRoutePath",
         "createStudioScreenRoutePath",
+        "createStudioThemeRecipeRoutePath",
         "getStudioAdminRouteDefinition",
         "isStudioAdminPath",
         "isStudioAdminRouteActive",
@@ -2648,6 +2652,7 @@
         "resolveStudioNavigableLocation",
         "resolveStudioPropertiesNodeId",
         "resolveStudioScreenId",
+        "resolveStudioThemeRecipeName",
         "STUDIO_ADMIN_ROUTE_REGISTRY",
         "StudioAdminRouteAvailabilityContext",
         "StudioAdminRouteDefinition",
@@ -2664,7 +2669,7 @@
       "path": "src/studioRuntimeApi.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["syncStudioRuntime"]
+      "exports": ["syncProjectRuntime"]
     },
     {
       "path": "src/studioSelectionModel.knip.test.ts",
@@ -2740,7 +2745,11 @@
         "src/ui/admin/pages/ScreenDetailAdminPage.tsx",
         "src/ui/admin/pages/ScreensAdminPage.tsx",
         "src/ui/admin/pages/SecretsAdminPage.tsx",
-        "src/ui/admin/pages/ThemeAdminPage.tsx"
+        "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
       ],
       "exports": ["AnkhAdminPage", "AnkhAdminPageProps"]
     },
@@ -2876,7 +2885,7 @@
     {
       "path": "src/ui/admin/pages/adminThemeModel.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/index.ts"],
+      "dependencies": [],
       "exports": [
         "ActiveThemeModeSelection",
         "createThemeModeUpdates",
@@ -3279,13 +3288,173 @@
       "path": "src/ui/admin/pages/ThemeAdminPage.tsx",
       "isEntrypoint": false,
       "dependencies": [
-        "src/core/StudioContext.ts",
-        "src/index.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/adminThemeHarmony.ts",
-        "src/ui/admin/pages/adminThemeModel.ts"
+        "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+        "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
       ],
       "exports": ["ThemeAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/adminThemeHarmony.ts",
+        "src/ui/admin/pages/adminThemeModel.ts",
+        "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeColorsAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ThemeModeEditorSelector"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeNumericTokensAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "src/ui/admin/pages/themeRecipeTokenOptions.ts",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeRecipeAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/themeRecipeAuthoringModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ThemeRecipeAuthoringKind", "updateThemeRecipeField"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/studioAdminRouteModel.ts"],
+      "exports": ["ThemeRecipeCatalog"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["ThemeRecipeFieldEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/themeRecipeTokenOptions.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/themeRecipeTokenOptions.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["resolveThemeRecipeTokenOptions"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeTokenAction.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ThemeTokenAction"]
+    },
+    {
+      "path": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/themeTokenAuthoringModel.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "NumericThemeTokenFamily",
+        "updateNumericThemeToken",
+        "updateTypographyHeading",
+        "updateTypographySize",
+        "updateTypographyWeight"
+      ]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeTypographyAdminPage"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeTypographyHeadingEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeTypographySizeEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      ],
+      "exports": ["ThemeTypographyWeightEditor"]
+    },
+    {
+      "path": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/core/StudioContext.ts",
+        "src/index.ts",
+        "src/ui/admin/pages/adminThemeModel.ts"
+      ],
+      "exports": ["useActiveThemeAdmin"]
     },
     {
       "path": "src/ui/AnkhStudio.ts",
@@ -3425,7 +3594,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 395,
+        "line": 404,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3443,7 +3612,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 309,
+        "line": 321,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3585,7 +3754,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1337,
+        "line": 1346,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3617,7 +3786,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 713,
+        "line": 722,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3649,7 +3818,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 551,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3757,7 +3926,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1256,
+        "line": 1265,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -3941,7 +4110,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 559,
+        "line": 568,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4017,7 +4186,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 535,
+        "line": 544,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4049,7 +4218,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1182,
+        "line": 1191,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4081,7 +4250,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 287,
+        "line": 299,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4174,7 +4343,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 269,
+        "line": 281,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4214,7 +4383,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 246,
+        "line": 258,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4232,7 +4401,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 297,
+        "line": 309,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4250,7 +4419,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 275,
+        "line": 287,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4337,7 +4506,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 243,
+        "line": 255,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4355,7 +4524,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 244,
+        "line": 256,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4373,7 +4542,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 292,
+        "line": 304,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4467,7 +4636,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 975,
+        "line": 984,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4499,7 +4668,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 918,
+        "line": 927,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4546,7 +4715,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 925,
+        "line": 934,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4579,7 +4748,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 254,
+        "line": 266,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4633,7 +4802,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 262,
+        "line": 274,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4680,7 +4849,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 249,
+        "line": 261,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4713,7 +4882,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1111,
+        "line": 1120,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4745,7 +4914,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1002,
+        "line": 1011,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4792,7 +4961,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1009,
+        "line": 1018,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4825,7 +4994,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 204,
+        "line": 216,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4872,7 +5041,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 211,
+        "line": 223,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4890,7 +5059,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 224,
+        "line": 236,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4923,7 +5092,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 202,
+        "line": 214,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4941,7 +5110,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 236,
+        "line": 248,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4959,7 +5128,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 229,
+        "line": 241,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5435,7 +5604,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 599,
+        "line": 608,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5567,7 +5736,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 873,
+        "line": 882,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5599,7 +5768,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1379,
+        "line": 1388,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5631,7 +5800,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 812,
+        "line": 821,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5667,7 +5836,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1043,
+        "line": 1052,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5895,7 +6064,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1149,
+        "line": 1158,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -5992,7 +6161,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 301,
+        "line": 313,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6032,7 +6201,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 299,
+        "line": 311,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6050,7 +6219,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 307,
+        "line": 319,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6068,7 +6237,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 139,
+        "line": 138,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6086,7 +6255,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 169,
+        "line": 180,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6104,7 +6273,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 156,
+        "line": 162,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6520,7 +6689,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 333,
+        "line": 345,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6538,7 +6707,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 317,
+        "line": 329,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6571,7 +6740,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 322,
+        "line": 334,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6618,7 +6787,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 329,
+        "line": 341,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6636,7 +6805,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 349,
+        "line": 360,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6645,7 +6814,6 @@
         "NodePlacement",
         "StudioAdminRouteId",
         "StudioComponentMetaRegistry",
-        "StudioMode",
         "StudioNodeId",
         "StudioPanelId",
         "StudioSaveStatus",
@@ -6893,13 +7061,6 @@
           "description": null
         },
         {
-          "name": "setActiveThemeMode",
-          "kind": "property",
-          "type": "(mode: StudioMode) => void",
-          "required": true,
-          "description": null
-        },
-        {
           "name": "setLastNonAdminLocation",
           "kind": "property",
           "type": "(location: string) => void",
@@ -6924,20 +7085,6 @@
           "name": "setRoutePrimaryNavigationVisibility",
           "kind": "property",
           "type": "(parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => void",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "setStudioMode",
-          "kind": "property",
-          "type": "(mode: StudioMode) => void",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "studioMode",
-          "kind": "property",
-          "type": "StudioMode",
           "required": true,
           "description": null
         },
@@ -7009,7 +7156,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 342,
+        "line": 353,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7027,7 +7174,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 331,
+        "line": 343,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7196,25 +7343,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 176,
-        "column": 1
-      },
-      "exportPaths": ["src/index.ts"],
-      "relatedSymbols": [],
-      "signatures": [],
-      "members": [],
-      "structuredRows": []
-    },
-    {
-      "name": "StudioMode",
-      "description": null,
-      "isReadme": false,
-      "examples": [],
-      "kind": "unknown",
-      "modulePath": "src/index.ts",
-      "sourceLocation": {
-        "filePath": "src/index.ts",
-        "line": 136,
+        "line": 189,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7598,7 +7727,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 138,
+        "line": 137,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7741,7 +7870,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 137,
+        "line": 136,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7777,7 +7906,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 183,
+        "line": 196,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7849,11 +7978,11 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 191,
+        "line": 204,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
-      "relatedSymbols": ["StudioMode", "StudioSaveStatus"],
+      "relatedSymbols": ["StudioSaveStatus"],
       "signatures": [],
       "members": [
         {
@@ -7903,13 +8032,6 @@
           "kind": "property",
           "type": "string | undefined",
           "required": false,
-          "description": null
-        },
-        {
-          "name": "studioMode",
-          "kind": "property",
-          "type": "StudioMode",
-          "required": true,
           "description": null
         }
       ],
@@ -8090,7 +8212,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 178,
+        "line": 191,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8108,7 +8230,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 487,
+        "line": 496,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8126,7 +8248,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 571,
+        "line": 580,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -8220,7 +8342,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1199,
+        "line": 1208,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8258,7 +8380,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 725,
+        "line": 734,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9459,16 +9581,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.test.ts",
-        "line": 182,
-        "column": 1
-      }
-    },
-    {
-      "name": "withPath",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.test.ts",
-        "line": 221,
+        "line": 34,
         "column": 1
       }
     },
@@ -9477,7 +9590,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 57,
+        "line": 9,
         "column": 1
       }
     },
@@ -9486,574 +9599,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/contractGuards.ts",
-        "line": 61,
-        "column": 1
-      }
-    },
-    {
-      "name": "isRecord",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 65,
-        "column": 1
-      }
-    },
-    {
-      "name": "isOptionalString",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 69,
-        "column": 1
-      }
-    },
-    {
-      "name": "isOptionalNumber",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 73,
-        "column": 1
-      }
-    },
-    {
-      "name": "isOptionalBoolean",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 77,
-        "column": 1
-      }
-    },
-    {
-      "name": "isStringArray",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 81,
-        "column": 1
-      }
-    },
-    {
-      "name": "isManifestValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 85,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNavigatorType",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 102,
-        "column": 1
-      }
-    },
-    {
-      "name": "isThemeModeConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 106,
-        "column": 1
-      }
-    },
-    {
-      "name": "isThemeConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 110,
-        "column": 1
-      }
-    },
-    {
-      "name": "isUiNode",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 120,
-        "column": 1
-      }
-    },
-    {
-      "name": "isScreenSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 140,
-        "column": 1
-      }
-    },
-    {
-      "name": "isRouteDefinition",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 155,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNavigatorSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 171,
-        "column": 1
-      }
-    },
-    {
-      "name": "isSplashScreenModeSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 182,
-        "column": 1
-      }
-    },
-    {
-      "name": "isSplashScreenSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 194,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDeploymentSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 202,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDatabaseSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 208,
-        "column": 1
-      }
-    },
-    {
-      "name": "isStorageSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 217,
-        "column": 1
-      }
-    },
-    {
-      "name": "isStateSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 226,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNetworkingSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 235,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAuthSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 239,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAuthFlow",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 271,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAuthOAuthConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 284,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAuthProfileSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 307,
-        "column": 1
-      }
-    },
-    {
-      "name": "isInfraManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 324,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAppSettings",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 341,
-        "column": 1
-      }
-    },
-    {
-      "name": "isScreenRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 352,
-        "column": 1
-      }
-    },
-    {
-      "name": "isIconSpec",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 361,
-        "column": 1
-      }
-    },
-    {
-      "name": "isSecretRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 373,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCredentialRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 377,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAdapterRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 387,
-        "column": 1
-      }
-    },
-    {
-      "name": "isScreenRequirements",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 398,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 414,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiDefinition",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 418,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiAuthRequirement",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 436,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiResourceDefinition",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 447,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiCrudOperation",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 468,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGeneratedApiPolicyRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 472,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDbCollectionDefinition",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 480,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataSourceRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 502,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataSourceConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 506,
-        "column": 1
-      }
-    },
-    {
-      "name": "isOpenApiDocumentRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 553,
-        "column": 1
-      }
-    },
-    {
-      "name": "isGraphQlIntrospection",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 562,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataEndpointRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 568,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataEndpointConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 572,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataOperationConfig",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 588,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataOperationRequest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 608,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataOperationParameter",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 617,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataOperationResponse",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 630,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDataSchemaSlot",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 642,
-        "column": 1
-      }
-    },
-    {
-      "name": "isComponentDataBindingRegistry",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 646,
-        "column": 1
-      }
-    },
-    {
-      "name": "isComponentDataBinding",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 650,
-        "column": 1
-      }
-    },
-    {
-      "name": "isPropBinding",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 665,
-        "column": 1
-      }
-    },
-    {
-      "name": "isEventBinding",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 677,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingValueSource",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 695,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingOperationRef",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 708,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingFallback",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 717,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingLifecycleBehavior",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 725,
-        "column": 1
-      }
-    },
-    {
-      "name": "isOptionalBindingTransforms",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 735,
-        "column": 1
-      }
-    },
-    {
-      "name": "isScreenDataLoaderDefinition",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 743,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingInputMap",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 753,
-        "column": 1
-      }
-    },
-    {
-      "name": "isBindingInputValue",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 757,
-        "column": 1
-      }
-    },
-    {
-      "name": "isAppManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/contractGuards.ts",
-        "line": 772,
+        "line": 13,
         "column": 1
       }
     },
@@ -10188,7 +9734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 76,
+        "line": 75,
         "column": 7
       }
     },
@@ -10197,7 +9743,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 79,
+        "line": 78,
         "column": 14
       }
     },
@@ -10206,25 +9752,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 471,
+        "line": 465,
         "column": 1
       }
     },
     {
-      "name": "requestStudioManifest",
+      "name": "requestProjectManifest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 584,
+        "line": 578,
         "column": 1
       }
     },
     {
-      "name": "saveStudioManifest",
+      "name": "persistProjectManifest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 593,
+        "line": 585,
         "column": 1
       }
     },
@@ -10233,7 +9779,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 606,
+        "line": 595,
         "column": 1
       }
     },
@@ -10242,7 +9788,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 614,
+        "line": 603,
         "column": 1
       }
     },
@@ -10251,7 +9797,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
-        "line": 621,
+        "line": 610,
         "column": 1
       }
     },
@@ -10728,7 +10274,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/auth/projectAuthHealthService.ts",
-        "line": 104,
+        "line": 96,
         "column": 1
       }
     },
@@ -10953,7 +10499,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 49,
+        "line": 48,
         "column": 1
       }
     },
@@ -10962,7 +10508,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 53,
+        "line": 52,
         "column": 1
       }
     },
@@ -10971,7 +10517,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 69,
+        "line": 68,
         "column": 1
       }
     },
@@ -10980,7 +10526,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 97,
+        "line": 96,
         "column": 11
       }
     },
@@ -10989,7 +10535,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 127,
+        "line": 126,
         "column": 11
       }
     },
@@ -10998,7 +10544,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.test.ts",
-        "line": 203,
+        "line": 202,
         "column": 11
       }
     },
@@ -11007,7 +10553,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 196,
+        "line": 184,
         "column": 1
       }
     },
@@ -11016,7 +10562,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 204,
+        "line": 192,
         "column": 1
       }
     },
@@ -11025,7 +10571,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 218,
+        "line": 206,
         "column": 1
       }
     },
@@ -11034,7 +10580,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/dataSources/studioExternalApiService.ts",
-        "line": 232,
+        "line": 220,
         "column": 1
       }
     },
@@ -12006,7 +11552,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 508,
+        "line": 463,
         "column": 1
       }
     },
@@ -12015,7 +11561,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/server.ts",
-        "line": 522,
+        "line": 477,
         "column": 1
       }
     },
@@ -13536,7 +13082,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/moduleManager.ts",
-        "line": 493,
+        "line": 492,
         "column": 1
       }
     },
@@ -13653,7 +13199,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 448,
+        "line": 307,
         "column": 1
       }
     },
@@ -13662,7 +13208,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 457,
+        "line": 316,
         "column": 1
       }
     },
@@ -13671,7 +13217,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 466,
+        "line": 324,
         "column": 1
       }
     },
@@ -13739,11 +13285,20 @@
       }
     },
     {
+      "name": "normalizeManifestForProject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStore.ts",
+        "line": 137,
+        "column": 1
+      }
+    },
+    {
       "name": "parseProjectSummaryManifest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 180,
+        "line": 148,
         "column": 1
       }
     },
@@ -13752,7 +13307,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 188,
+        "line": 156,
         "column": 1
       }
     },
@@ -13761,7 +13316,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 196,
+        "line": 164,
         "column": 1
       }
     },
@@ -13770,7 +13325,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 205,
+        "line": 173,
         "column": 1
       }
     },
@@ -13779,7 +13334,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 214,
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectWorkspace",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "line": 110,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathExists",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "line": 143,
         "column": 1
       }
     },
@@ -13788,7 +13370,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "line": 73,
+        "line": 152,
         "column": 1
       }
     },
@@ -14103,7 +13685,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 212,
+        "line": 209,
         "column": 1
       }
     },
@@ -14112,7 +13694,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 233,
+        "line": 230,
         "column": 1
       }
     },
@@ -14121,7 +13703,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/projectSecretService.test.ts",
-        "line": 241,
+        "line": 238,
         "column": 1
       }
     },
@@ -14211,7 +13793,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 183,
+        "line": 182,
         "column": 1
       }
     },
@@ -14220,7 +13802,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 189,
+        "line": 188,
         "column": 1
       }
     },
@@ -14229,7 +13811,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 199,
+        "line": 198,
         "column": 1
       }
     },
@@ -14238,7 +13820,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/secrets/trustedOAuthInfraEnvironment.test.ts",
-        "line": 263,
+        "line": 262,
         "column": 1
       }
     },
@@ -14778,7 +14360,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 535,
+        "line": 544,
         "column": 14
       }
     },
@@ -14787,7 +14369,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 542,
+        "line": 551,
         "column": 14
       }
     },
@@ -14796,7 +14378,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 559,
+        "line": 568,
         "column": 14
       }
     },
@@ -14805,7 +14387,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 571,
+        "line": 580,
         "column": 14
       }
     },
@@ -14814,7 +14396,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 599,
+        "line": 608,
         "column": 14
       }
     },
@@ -14823,7 +14405,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 623,
+        "line": 632,
         "column": 1
       }
     },
@@ -14832,7 +14414,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 628,
+        "line": 637,
         "column": 9
       }
     },
@@ -14841,7 +14423,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 647,
+        "line": 656,
         "column": 1
       }
     },
@@ -14850,7 +14432,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 658,
+        "line": 667,
         "column": 1
       }
     },
@@ -14859,7 +14441,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 713,
+        "line": 722,
         "column": 1
       }
     },
@@ -14868,7 +14450,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 725,
+        "line": 734,
         "column": 1
       }
     },
@@ -14877,7 +14459,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 812,
+        "line": 821,
         "column": 1
       }
     },
@@ -14886,7 +14468,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 873,
+        "line": 882,
         "column": 1
       }
     },
@@ -14895,7 +14477,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 930,
+        "line": 939,
         "column": 1
       }
     },
@@ -14904,7 +14486,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 975,
+        "line": 984,
         "column": 1
       }
     },
@@ -14913,7 +14495,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1014,
+        "line": 1023,
         "column": 1
       }
     },
@@ -14922,7 +14504,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1043,
+        "line": 1052,
         "column": 1
       }
     },
@@ -14931,7 +14513,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1111,
+        "line": 1120,
         "column": 1
       }
     },
@@ -14940,7 +14522,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1182,
+        "line": 1191,
         "column": 1
       }
     },
@@ -14949,7 +14531,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1186,
+        "line": 1195,
         "column": 1
       }
     },
@@ -14958,7 +14540,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1191,
+        "line": 1200,
         "column": 1
       }
     },
@@ -14967,7 +14549,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1199,
+        "line": 1208,
         "column": 1
       }
     },
@@ -14976,7 +14558,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1203,
+        "line": 1212,
         "column": 9
       }
     },
@@ -14985,7 +14567,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1236,
+        "line": 1245,
         "column": 1
       }
     },
@@ -14994,7 +14576,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1241,
+        "line": 1250,
         "column": 9
       }
     },
@@ -15003,7 +14585,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1256,
+        "line": 1265,
         "column": 1
       }
     },
@@ -15012,7 +14594,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1276,
+        "line": 1285,
         "column": 1
       }
     },
@@ -15021,7 +14603,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1299,
+        "line": 1308,
         "column": 1
       }
     },
@@ -15030,7 +14612,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1337,
+        "line": 1346,
         "column": 1
       }
     },
@@ -15039,7 +14621,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1363,
+        "line": 1372,
         "column": 1
       }
     },
@@ -15048,7 +14630,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1379,
+        "line": 1388,
         "column": 1
       }
     },
@@ -15057,7 +14639,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1428,
+        "line": 1437,
         "column": 1
       }
     },
@@ -15147,7 +14729,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 142,
+        "line": 141,
         "column": 14
       }
     },
@@ -15156,7 +14738,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 149,
+        "line": 148,
         "column": 1
       }
     },
@@ -15165,7 +14747,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 166,
+        "line": 165,
         "column": 1
       }
     },
@@ -15174,7 +14756,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 170,
+        "line": 169,
         "column": 1
       }
     },
@@ -15183,7 +14765,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 174,
+        "line": 173,
         "column": 1
       }
     },
@@ -15192,7 +14774,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 200,
+        "line": 199,
         "column": 1
       }
     },
@@ -15201,7 +14783,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 223,
+        "line": 222,
         "column": 1
       }
     },
@@ -15210,7 +14792,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 234,
+        "line": 233,
         "column": 1
       }
     },
@@ -15219,7 +14801,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 246,
+        "line": 245,
         "column": 1
       }
     },
@@ -15228,7 +14810,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 316,
+        "line": 315,
         "column": 1
       }
     },
@@ -15237,7 +14819,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 341,
+        "line": 340,
         "column": 1
       }
     },
@@ -15246,7 +14828,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 464,
+        "line": 463,
         "column": 1
       }
     },
@@ -15255,7 +14837,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 471,
+        "line": 470,
         "column": 1
       }
     },
@@ -15264,7 +14846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 475,
+        "line": 474,
         "column": 1
       }
     },
@@ -15273,7 +14855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 479,
+        "line": 478,
         "column": 1
       }
     },
@@ -15282,7 +14864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 488,
+        "line": 487,
         "column": 1
       }
     },
@@ -15291,7 +14873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 514,
+        "line": 513,
         "column": 1
       }
     },
@@ -15300,7 +14882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 522,
+        "line": 521,
         "column": 1
       }
     },
@@ -15309,7 +14891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 530,
+        "line": 529,
         "column": 1
       }
     },
@@ -15318,7 +14900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 541,
+        "line": 540,
         "column": 1
       }
     },
@@ -15327,7 +14909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 549,
+        "line": 548,
         "column": 1
       }
     },
@@ -15336,7 +14918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 560,
+        "line": 559,
         "column": 1
       }
     },
@@ -15345,7 +14927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 585,
+        "line": 584,
         "column": 1
       }
     },
@@ -15354,7 +14936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 622,
+        "line": 621,
         "column": 1
       }
     },
@@ -15363,7 +14945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 656,
+        "line": 655,
         "column": 1
       }
     },
@@ -15372,7 +14954,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 691,
+        "line": 690,
         "column": 1
       }
     },
@@ -15381,7 +14963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 698,
+        "line": 697,
         "column": 1
       }
     },
@@ -15390,7 +14972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 705,
+        "line": 704,
         "column": 1
       }
     },
@@ -15399,7 +14981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 723,
+        "line": 722,
         "column": 1
       }
     },
@@ -15408,7 +14990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/manifestState.ts",
-        "line": 730,
+        "line": 729,
         "column": 1
       }
     },
@@ -17370,7 +16952,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 189,
+        "line": 261,
         "column": 1
       }
     },
@@ -17379,7 +16961,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 200,
+        "line": 272,
         "column": 1
       }
     },
@@ -17388,7 +16970,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 229,
+        "line": 311,
         "column": 1
       }
     },
@@ -17397,7 +16979,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 252,
+        "line": 342,
         "column": 1
       }
     },
@@ -17406,7 +16988,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 256,
+        "line": 346,
         "column": 1
       }
     },
@@ -17415,7 +16997,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 260,
+        "line": 350,
         "column": 1
       }
     },
@@ -17424,7 +17006,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 264,
+        "line": 354,
         "column": 1
       }
     },
@@ -17433,7 +17015,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 268,
+        "line": 358,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStudioThemeRecipeName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 362,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStudioThemeRecipeRoutePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/studioAdminRouteModel.ts",
+        "line": 372,
         "column": 1
       }
     },
@@ -17442,7 +17042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 272,
+        "line": 382,
         "column": 1
       }
     },
@@ -17451,7 +17051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 276,
+        "line": 386,
         "column": 1
       }
     },
@@ -17460,7 +17060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 280,
+        "line": 390,
         "column": 1
       }
     },
@@ -17469,7 +17069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 284,
+        "line": 394,
         "column": 1
       }
     },
@@ -17478,7 +17078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 306,
+        "line": 425,
         "column": 1
       }
     },
@@ -17487,7 +17087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 323,
+        "line": 442,
         "column": 1
       }
     },
@@ -17496,7 +17096,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 327,
+        "line": 446,
         "column": 1
       }
     },
@@ -17505,7 +17105,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 344,
+        "line": 463,
         "column": 1
       }
     },
@@ -17514,7 +17114,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 365,
+        "line": 484,
         "column": 1
       }
     },
@@ -17523,7 +17123,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 386,
+        "line": 507,
         "column": 1
       }
     },
@@ -17532,7 +17132,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 390,
+        "line": 511,
         "column": 1
       }
     },
@@ -17541,7 +17141,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 400,
+        "line": 521,
         "column": 1
       }
     },
@@ -17550,7 +17150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 408,
+        "line": 529,
         "column": 1
       }
     },
@@ -17559,7 +17159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 419,
+        "line": 540,
         "column": 1
       }
     },
@@ -17568,7 +17168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioRuntimeApi.test.ts",
-        "line": 54,
+        "line": 38,
         "column": 1
       }
     },
@@ -17577,12 +17177,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioRuntimeApi.test.ts",
-        "line": 60,
+        "line": 44,
         "column": 1
       }
     },
     {
-      "name": "syncStudioRuntime",
+      "name": "syncProjectRuntime",
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioRuntimeApi.ts",
@@ -17595,7 +17195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioRuntimeApi.ts",
-        "line": 26,
+        "line": 13,
         "column": 1
       }
     },
@@ -17604,7 +17204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioRuntimeApi.ts",
-        "line": 34,
+        "line": 21,
         "column": 1
       }
     },
@@ -17730,7 +17330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
-        "line": 86,
+        "line": 102,
         "column": 1
       }
     },
@@ -19436,29 +19036,497 @@
       }
     },
     {
+      "name": "readSibling",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeAdminPage.test.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
       "name": "ThemeAdminPage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeColorsAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
         "line": 12,
         "column": 1
       }
     },
     {
-      "name": "updateActiveTheme",
+      "name": "updateMode",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "line": 22,
+        "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "line": 16,
         "column": 9
       }
     },
     {
-      "name": "updateActiveMode",
+      "name": "HarmonyChoice",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "line": 26,
+        "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "Unavailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeModeEditorSelector",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeNumericTokensAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 18,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 28,
+        "column": 9
+      }
+    },
+    {
+      "name": "addToken",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 38,
+        "column": 9
+      }
+    },
+    {
+      "name": "NumericTokenRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "Action",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 106,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeUnavailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 121,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseNonNegativeNumber",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSibling",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeRecipeAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "line": 34,
+        "column": 9
+      }
+    },
+    {
+      "name": "Unavailable",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateThemeRecipeField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateField",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeRecipeCatalog",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "RecipeGroup",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "RecipeLink",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeRecipeFieldEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveFieldOptions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatInheritedLabel",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "Choice",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveThemeRecipeTokenOptions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeRecipeTokenOptions.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeTokenAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateNumericThemeToken",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateTypographySize",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateTypographyWeight",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateTypographyHeading",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateTypographyTokens",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateRecordValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeTypography",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeGlobalTokens",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeTypographyAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeTypographyHeadingEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateHeading",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 17,
+        "column": 9
+      }
+    },
+    {
+      "name": "HeadingRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "MetricInput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 85,
+        "column": 1
+      }
+    },
+    {
+      "name": "HeadingWeightChoice",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 110,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseNonNegativeNumber",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "line": 147,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeTypographySizeEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateSize",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "line": 17,
+        "column": 9
+      }
+    },
+    {
+      "name": "addSize",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "line": 23,
+        "column": 9
+      }
+    },
+    {
+      "name": "SizeRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseNonNegativeNumber",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "ThemeTypographyWeightEditor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateWeight",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "line": 29,
+        "column": 9
+      }
+    },
+    {
+      "name": "WeightRow",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "useActiveThemeAdmin",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "updateTheme",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "line": 25,
         "column": 9
       }
     },
@@ -22204,12 +22272,12 @@
       },
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ScreensAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ScreenDetailAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/ScreenDetailAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ScreensAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
@@ -22220,6 +22288,26 @@
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
         "toPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
@@ -22526,11 +22614,6 @@
         "fromPath": "src/ui/admin/pages/adminThemeModel.test.ts",
         "toPath": "src/ui/admin/pages/adminThemeModel.ts",
         "sourcePath": "src/ui/admin/pages/adminThemeModel.test.ts"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/adminThemeModel.ts",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/ui/admin/pages/adminThemeModel.ts"
       },
       {
         "fromPath": "src/ui/admin/pages/ApisAdminPage.test.ts",
@@ -23024,28 +23107,213 @@
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toPath": "src/core/StudioContext.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toPath": "src/index.ts",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/adminThemeHarmony.ts",
+        "toPath": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/adminThemeModel.ts",
+        "toPath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/adminThemeHarmony.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/adminThemeModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/themeRecipeTokenOptions.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+        "toPath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "toPath": "src/studioAdminRouteModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+        "toPath": "src/ui/admin/pages/themeRecipeTokenOptions.ts",
+        "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toPath": "src/ui/admin/pages/ThemeTokenAction.tsx",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toPath": "src/ui/admin/pages/themeTokenAuthoringModel.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "toPath": "src/core/StudioContext.ts",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "toPath": "src/index.ts",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/useActiveThemeAdmin.ts",
+        "toPath": "src/ui/admin/pages/adminThemeModel.ts",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
       },
       {
         "fromPath": "src/host/layout/templates/auth/adapter.test.ts",
@@ -24307,999 +24575,27 @@
       },
       {
         "fromSymbol": "src/contractGuards.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromSymbol": "src/contractGuards.test.ts",
         "toSymbol": "isAppManifest",
         "callExpression": "isAppManifest",
         "sourcePath": "src/contractGuards.test.ts"
       },
       {
         "fromSymbol": "src/contractGuards.test.ts",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
+        "toSymbol": "isAppCategory",
+        "callExpression": "isAppCategory",
         "sourcePath": "src/contractGuards.test.ts"
       },
       {
         "fromSymbol": "src/contractGuards.test.ts",
-        "toSymbol": "withPath",
-        "callExpression": "withPath",
-        "sourcePath": "src/contractGuards.test.ts"
-      },
-      {
-        "fromSymbol": "withPath",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
-        "sourcePath": "src/contractGuards.test.ts"
-      },
-      {
-        "fromSymbol": "isManifestValue",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isThemeModeConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isThemeModeConfig",
         "toSymbol": "isColorHarmony",
         "callExpression": "isColorHarmony",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isThemeConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isThemeConfig",
-        "toSymbol": "isThemeModeConfig",
-        "callExpression": "isThemeModeConfig",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isUiNode",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isUiNode",
-        "toSymbol": "isBindingValueSource",
-        "callExpression": "isBindingValueSource",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isUiNode",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenSpec",
-        "toSymbol": "isScreenRequirements",
-        "callExpression": "isScreenRequirements",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenSpec",
-        "toSymbol": "isUiNode",
-        "callExpression": "isUiNode",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isRouteDefinition",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isRouteDefinition",
-        "toSymbol": "isIconSpec",
-        "callExpression": "isIconSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isRouteDefinition",
-        "toSymbol": "isNavigatorSpec",
-        "callExpression": "isNavigatorSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isNavigatorSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isNavigatorSpec",
-        "toSymbol": "isNavigatorType",
-        "callExpression": "isNavigatorType",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isSplashScreenModeSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isSplashScreenModeSpec",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isSplashScreenModeSpec",
-        "toSymbol": "isOptionalNumber",
-        "callExpression": "isOptionalNumber",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isSplashScreenSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isSplashScreenSpec",
-        "toSymbol": "isSplashScreenModeSpec",
-        "callExpression": "isSplashScreenModeSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDeploymentSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDatabaseSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isStorageSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isStorageSpec",
-        "toSymbol": "isStringArray",
-        "callExpression": "isStringArray",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isStateSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isNetworkingSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isNetworkingSpec",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthSpec",
-        "toSymbol": "isAuthFlow",
-        "callExpression": "isAuthFlow",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthSpec",
-        "toSymbol": "isStringArray",
-        "callExpression": "isStringArray",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthSpec",
-        "toSymbol": "isAuthOAuthConfig",
-        "callExpression": "isAuthOAuthConfig",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthSpec",
-        "toSymbol": "isAuthProfileSpec",
-        "callExpression": "isAuthProfileSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthFlow",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthFlow",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthOAuthConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isOptionalBoolean",
-        "callExpression": "isOptionalBoolean",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isStringArray",
-        "callExpression": "isStringArray",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isIconSpec",
-        "callExpression": "isIconSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isSecretRef",
-        "callExpression": "isSecretRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthProfileSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthProfileSpec",
-        "toSymbol": "isStringArray",
-        "callExpression": "isStringArray",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAuthProfileSpec",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isDeploymentSpec",
-        "callExpression": "isDeploymentSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isAuthSpec",
-        "callExpression": "isAuthSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isDatabaseSpec",
-        "callExpression": "isDatabaseSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isStorageSpec",
-        "callExpression": "isStorageSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isStateSpec",
-        "callExpression": "isStateSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isInfraManifest",
-        "toSymbol": "isNetworkingSpec",
-        "callExpression": "isNetworkingSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppSettings",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenRegistry",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "src/contractGuards.ts",
-        "toSymbol": "isScreenSpec",
-        "callExpression": "isScreenSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isIconSpec",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isIconSpec",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isCredentialRef",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isCredentialRef",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAdapterRef",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAdapterRef",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAdapterRef",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenRequirements",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiRegistry",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiDefinition",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiDefinition",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiDefinition",
-        "toSymbol": "isAdapterRef",
-        "callExpression": "isAdapterRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiDefinition",
-        "toSymbol": "isGeneratedApiAuthRequirement",
-        "callExpression": "isGeneratedApiAuthRequirement",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiDefinition",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiAuthRequirement",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiAuthRequirement",
-        "toSymbol": "isOptionalBoolean",
-        "callExpression": "isOptionalBoolean",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiAuthRequirement",
-        "toSymbol": "isStringArray",
-        "callExpression": "isStringArray",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiAuthRequirement",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiAuthRequirement",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiResourceDefinition",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiResourceDefinition",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiResourceDefinition",
-        "toSymbol": "isDbCollectionDefinition",
-        "callExpression": "isDbCollectionDefinition",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiResourceDefinition",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiPolicyRef",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGeneratedApiPolicyRef",
-        "toSymbol": "isGeneratedApiCrudOperation",
-        "callExpression": "isGeneratedApiCrudOperation",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDbCollectionDefinition",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDbCollectionDefinition",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceRegistry",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isCredentialRef",
-        "callExpression": "isCredentialRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isDataEndpointRegistry",
-        "callExpression": "isDataEndpointRegistry",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isAdapterRef",
-        "callExpression": "isAdapterRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isOpenApiDocumentRef",
-        "callExpression": "isOpenApiDocumentRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSourceConfig",
-        "toSymbol": "isGraphQlIntrospection",
-        "callExpression": "isGraphQlIntrospection",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isOpenApiDocumentRef",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isOpenApiDocumentRef",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGraphQlIntrospection",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isGraphQlIntrospection",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataEndpointRegistry",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataEndpointConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataEndpointConfig",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataEndpointConfig",
-        "toSymbol": "isCredentialRef",
-        "callExpression": "isCredentialRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataEndpointConfig",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isDataOperationRequest",
-        "callExpression": "isDataOperationRequest",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isDataOperationResponse",
-        "callExpression": "isDataOperationResponse",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isCredentialRef",
-        "callExpression": "isCredentialRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationConfig",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationRequest",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationRequest",
-        "toSymbol": "isDataSchemaSlot",
-        "callExpression": "isDataSchemaSlot",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationParameter",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationParameter",
-        "toSymbol": "isDataSchemaSlot",
-        "callExpression": "isDataSchemaSlot",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationParameter",
-        "toSymbol": "isOptionalBoolean",
-        "callExpression": "isOptionalBoolean",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationParameter",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationParameter",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationResponse",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationResponse",
-        "toSymbol": "isDataSchemaSlot",
-        "callExpression": "isDataSchemaSlot",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataOperationResponse",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isDataSchemaSlot",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isComponentDataBindingRegistry",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isComponentDataBinding",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isComponentDataBinding",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isPropBinding",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isPropBinding",
-        "toSymbol": "isBindingValueSource",
-        "callExpression": "isBindingValueSource",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isPropBinding",
-        "toSymbol": "isBindingFallback",
-        "callExpression": "isBindingFallback",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isPropBinding",
-        "toSymbol": "isBindingLifecycleBehavior",
-        "callExpression": "isBindingLifecycleBehavior",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isPropBinding",
-        "toSymbol": "isOptionalBindingTransforms",
-        "callExpression": "isOptionalBindingTransforms",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isEventBinding",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isEventBinding",
-        "toSymbol": "isBindingOperationRef",
-        "callExpression": "isBindingOperationRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isEventBinding",
-        "toSymbol": "isBindingInputMap",
-        "callExpression": "isBindingInputMap",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isEventBinding",
-        "toSymbol": "isBindingValueSource",
-        "callExpression": "isBindingValueSource",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isEventBinding",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingValueSource",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingValueSource",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingValueSource",
-        "toSymbol": "isBindingOperationRef",
-        "callExpression": "isBindingOperationRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingValueSource",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingOperationRef",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingOperationRef",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingFallback",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingFallback",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingFallback",
-        "toSymbol": "isBindingValueSource",
-        "callExpression": "isBindingValueSource",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingLifecycleBehavior",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingLifecycleBehavior",
-        "toSymbol": "isBindingFallback",
-        "callExpression": "isBindingFallback",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingLifecycleBehavior",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenDataLoaderDefinition",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenDataLoaderDefinition",
-        "toSymbol": "isOptionalString",
-        "callExpression": "isOptionalString",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenDataLoaderDefinition",
-        "toSymbol": "isBindingOperationRef",
-        "callExpression": "isBindingOperationRef",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isScreenDataLoaderDefinition",
-        "toSymbol": "isBindingInputMap",
-        "callExpression": "isBindingInputMap",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputMap",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputValue",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputValue",
-        "toSymbol": "isManifestValue",
-        "callExpression": "isManifestValue",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputValue",
-        "toSymbol": "isBindingInputMap",
-        "callExpression": "isBindingInputMap",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputValue",
-        "toSymbol": "isBindingValueSource",
-        "callExpression": "isBindingValueSource",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isBindingInputValue",
-        "toSymbol": "isOptionalBindingTransforms",
-        "callExpression": "isOptionalBindingTransforms",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isAppCategory",
-        "callExpression": "isAppCategory",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isSplashScreenSpec",
-        "callExpression": "isSplashScreenSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isInfraManifest",
-        "callExpression": "isInfraManifest",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isNavigatorSpec",
-        "callExpression": "isNavigatorSpec",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isScreenRegistry",
-        "callExpression": "isScreenRegistry",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isGeneratedApiRegistry",
-        "callExpression": "isGeneratedApiRegistry",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isDataSourceRegistry",
-        "callExpression": "isDataSourceRegistry",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isComponentDataBindingRegistry",
-        "callExpression": "isComponentDataBindingRegistry",
-        "sourcePath": "src/contractGuards.ts"
-      },
-      {
-        "fromSymbol": "isAppManifest",
-        "toSymbol": "isAppSettings",
-        "callExpression": "isAppSettings",
-        "sourcePath": "src/contractGuards.ts"
+        "sourcePath": "src/contractGuards.test.ts"
       },
       {
         "fromSymbol": "connectExternalApi",
@@ -28393,6 +27689,24 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "createStudioThemeRecipeRoutePath",
+        "callExpression": "createStudioThemeRecipeRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "resolveStudioThemeRecipeName",
+        "callExpression": "resolveStudioThemeRecipeName",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
+        "toSymbol": "isStudioAdminRouteActive",
+        "callExpression": "isStudioAdminRouteActive",
+        "sourcePath": "src/studioAdminRouteModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "createStudioModuleRoutePath",
         "callExpression": "createStudioModuleRoutePath",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
@@ -28447,12 +27761,6 @@
       },
       {
         "fromSymbol": "src/studioAdminRouteModel.test.ts",
-        "toSymbol": "isStudioAdminRouteActive",
-        "callExpression": "isStudioAdminRouteActive",
-        "sourcePath": "src/studioAdminRouteModel.test.ts"
-      },
-      {
-        "fromSymbol": "src/studioAdminRouteModel.test.ts",
         "toSymbol": "isStudioAdminRouteAvailable",
         "callExpression": "isStudioAdminRouteAvailable",
         "sourcePath": "src/studioAdminRouteModel.test.ts"
@@ -28485,6 +27793,12 @@
         "fromSymbol": "resolveStudioAdminRouteId",
         "toSymbol": "resolveStudioScreenId",
         "callExpression": "resolveStudioScreenId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRouteId",
+        "toSymbol": "resolveStudioThemeRecipeName",
+        "callExpression": "resolveStudioThemeRecipeName",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -28527,6 +27841,18 @@
         "fromSymbol": "resolveStudioAdminRoutePath",
         "toSymbol": "createStudioModuleRoutePath",
         "callExpression": "createStudioModuleRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "resolveStudioThemeRecipeName",
+        "callExpression": "resolveStudioThemeRecipeName",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "resolveStudioAdminRoutePath",
+        "toSymbol": "createStudioThemeRecipeRoutePath",
+        "callExpression": "createStudioThemeRecipeRoutePath",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -28578,6 +27904,12 @@
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
+        "fromSymbol": "resolveStudioThemeRecipeName",
+        "toSymbol": "resolveStudioDetailId",
+        "callExpression": "resolveStudioDetailId",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
         "fromSymbol": "resolveStudioPropertiesNodeId",
         "toSymbol": "resolveStudioContextNodeId",
         "callExpression": "resolveStudioContextNodeId",
@@ -28587,6 +27919,12 @@
         "fromSymbol": "createStudioAdminRoutePath",
         "toSymbol": "createStudioScreenRoutePath",
         "callExpression": "createStudioScreenRoutePath",
+        "sourcePath": "src/studioAdminRouteModel.ts"
+      },
+      {
+        "fromSymbol": "createStudioAdminRoutePath",
+        "toSymbol": "createStudioThemeRecipeRoutePath",
+        "callExpression": "createStudioThemeRecipeRoutePath",
         "sourcePath": "src/studioAdminRouteModel.ts"
       },
       {
@@ -28717,8 +28055,8 @@
       },
       {
         "fromSymbol": "src/studioRuntimeApi.test.ts",
-        "toSymbol": "syncStudioRuntime",
-        "callExpression": "syncStudioRuntime",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "syncProjectRuntime",
         "sourcePath": "src/studioRuntimeApi.test.ts"
       },
       {
@@ -28740,13 +28078,13 @@
         "sourcePath": "src/studioRuntimeApi.test.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "readJson",
         "callExpression": "readJson",
         "sourcePath": "src/studioRuntimeApi.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "readErrorMessage",
         "callExpression": "readErrorMessage",
         "sourcePath": "src/studioRuntimeApi.ts"
@@ -30181,8 +29519,8 @@
       },
       {
         "fromSymbol": "src/core/StudioProvider.ts",
-        "toSymbol": "requestStudioManifest",
-        "callExpression": "requestStudioManifest",
+        "toSymbol": "requestProjectManifest",
+        "callExpression": "requestProjectManifest",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
@@ -30228,25 +29566,25 @@
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromSymbol": "requestStudioManifest",
+        "fromSymbol": "requestProjectManifest",
         "toSymbol": "readPersistenceJson",
         "callExpression": "readPersistenceJson",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromSymbol": "requestStudioManifest",
+        "fromSymbol": "requestProjectManifest",
         "toSymbol": "createPersistenceError",
         "callExpression": "createPersistenceError",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "readPersistenceJson",
         "callExpression": "readPersistenceJson",
         "sourcePath": "src/core/StudioProvider.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "createPersistenceError",
         "callExpression": "createPersistenceError",
         "sourcePath": "src/core/StudioProvider.ts"
@@ -31303,8 +30641,8 @@
       },
       {
         "fromSymbol": "createGeneratedAdminProject",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "projectManager.saveStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "projectManager.persistProjectManifest",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
       },
       {
@@ -31825,8 +31163,8 @@
       },
       {
         "fromSymbol": "createGeneratedProject",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "projectManager.saveStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "projectManager.persistProjectManifest",
         "sourcePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts"
       },
       {
@@ -32365,14 +31703,14 @@
       },
       {
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "projectManager.getStudioManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "projectManager.getProjectManifest",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "projectManager.saveStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "projectManager.persistProjectManifest",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
@@ -32629,8 +31967,8 @@
       },
       {
         "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "projectManager.saveStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "projectManager.persistProjectManifest",
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
       },
       {
@@ -35089,8 +34427,8 @@
       },
       {
         "fromSymbol": "get",
-        "toSymbol": "readEditableManifest",
-        "callExpression": "this.readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/auth/projectAuthHealthService.ts"
       },
       {
@@ -35127,18 +34465,6 @@
         "fromSymbol": "get",
         "toSymbol": "applyProjectAuthRuntimeDiagnostics",
         "callExpression": "applyProjectAuthRuntimeDiagnostics",
-        "sourcePath": "src/host/auth/projectAuthHealthService.ts"
-      },
-      {
-        "fromSymbol": "readEditableManifest",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "this.projectManager.getStudioManifest",
-        "sourcePath": "src/host/auth/projectAuthHealthService.ts"
-      },
-      {
-        "fromSymbol": "readEditableManifest",
-        "toSymbol": "getProjectManifest",
-        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/auth/projectAuthHealthService.ts"
       },
       {
@@ -35473,8 +34799,8 @@
       },
       {
         "fromSymbol": "testOperation",
-        "toSymbol": "readEditableManifest",
-        "callExpression": "this.readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
       },
       {
@@ -35539,8 +34865,8 @@
       },
       {
         "fromSymbol": "persist",
-        "toSymbol": "readEditableManifest",
-        "callExpression": "this.readEditableManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
       },
       {
@@ -35551,20 +34877,8 @@
       },
       {
         "fromSymbol": "persist",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "this.projectManager.saveStudioManifest",
-        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
-      },
-      {
-        "fromSymbol": "readEditableManifest",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "this.projectManager.getStudioManifest",
-        "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
-      },
-      {
-        "fromSymbol": "readEditableManifest",
-        "toSymbol": "getProjectManifest",
-        "callExpression": "this.projectManager.getProjectManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "this.projectManager.persistProjectManifest",
         "sourcePath": "src/host/dataSources/studioExternalApiService.ts"
       },
       {
@@ -36049,26 +35363,8 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "projectManager.getStudioManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "isAppManifest",
-        "callExpression": "isAppManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "orchestrator.saveStudioManifest",
-        "sourcePath": "src/host/http/server.ts"
-      },
-      {
-        "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "syncStudioRuntime",
-        "callExpression": "orchestrator.syncStudioRuntime",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "orchestrator.syncProjectRuntime",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -36103,8 +35399,14 @@
       },
       {
         "fromSymbol": "src/host/http/server.ts",
-        "toSymbol": "saveProjectManifest",
-        "callExpression": "orchestrator.saveProjectManifest",
+        "toSymbol": "isAppManifest",
+        "callExpression": "isAppManifest",
+        "sourcePath": "src/host/http/server.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/server.ts",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "orchestrator.persistProjectManifest",
         "sourcePath": "src/host/http/server.ts"
       },
       {
@@ -37782,43 +37084,37 @@
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "ensureProjectExists",
         "callExpression": "this.ensureProjectExists",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "this.projectManager.saveStudioManifest",
+        "fromSymbol": "persistProjectManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "this.projectManager.persistProjectManifest",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "projectLifecycleState",
         "callExpression": "this.projectLifecycleState",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "ensureProjectExists",
         "callExpression": "this.ensureProjectExists",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
-        "toSymbol": "syncStudioRuntime",
-        "callExpression": "this.projectManager.syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "this.projectManager.syncProjectRuntime",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
-        "toSymbol": "projectLifecycleState",
-        "callExpression": "this.projectLifecycleState",
-        "sourcePath": "src/host/orchestrator/moduleManager.ts"
-      },
-      {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "resolveLayoutMutations",
         "callExpression": "this.resolveLayoutMutations",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
@@ -37879,8 +37175,8 @@
       },
       {
         "fromSymbol": "readAuthoringContext",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "this.projectManager.getStudioManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -37891,8 +37187,8 @@
       },
       {
         "fromSymbol": "mutateModuleAdminManifestField",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "this.projectManager.getStudioManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -37909,8 +37205,8 @@
       },
       {
         "fromSymbol": "mutateModuleAdminManifestField",
-        "toSymbol": "saveStudioManifest",
-        "callExpression": "this.saveStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "this.persistProjectManifest",
         "sourcePath": "src/host/orchestrator/moduleManager.ts"
       },
       {
@@ -38371,8 +37667,8 @@
       },
       {
         "fromSymbol": "deleteProject",
-        "toSymbol": "runProjectInfraScript",
-        "callExpression": "this.dependencies.runProjectInfraScript",
+        "toSymbol": "destroyProjectInfrastructure",
+        "callExpression": "this.destroyProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -38496,57 +37792,27 @@
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "getStudioManifest",
-        "toSymbol": "readStudioManifest",
-        "callExpression": "this.store.readStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "updateStudioManifestIfExists",
-        "toSymbol": "hasStudioManifest",
-        "callExpression": "this.store.hasStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "updateStudioManifestIfExists",
-        "toSymbol": "readStudioManifest",
-        "callExpression": "this.store.readStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "updateStudioManifestIfExists",
-        "toSymbol": "updater",
-        "callExpression": "updater",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "updateStudioManifestIfExists",
-        "toSymbol": "writeStudioManifest",
-        "callExpression": "this.store.writeStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "saveProjectManifest",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "saveProjectManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "applySystemTemplates",
         "callExpression": "applySystemTemplates",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "saveProjectManifest",
+        "fromSymbol": "persistProjectManifest",
         "toSymbol": "writeManifest",
         "callExpression": "this.store.writeManifest",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "saveProjectManifest",
-        "toSymbol": "deleteStudioManifest",
-        "callExpression": "this.store.deleteStudioManifest",
+        "toSymbol": "persistProjectManifest",
+        "callExpression": "this.persistProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "saveProjectManifest",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -38580,61 +37846,43 @@
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "saveStudioManifest",
-        "toSymbol": "applySystemTemplates",
-        "callExpression": "applySystemTemplates",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "saveStudioManifest",
-        "toSymbol": "writeStudioManifest",
-        "callExpression": "this.store.writeStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncStudioRuntime",
-        "toSymbol": "applySystemTemplates",
-        "callExpression": "applySystemTemplates",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "this.getProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "shouldIncludeStudio",
         "callExpression": "this.shouldIncludeStudio",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "resolveExpoRuntimePlan",
         "callExpression": "resolveExpoRuntimePlan",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
-        "toSymbol": "writeStudioManifest",
-        "callExpression": "this.store.writeStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "syncProjectScaffold",
         "callExpression": "this.syncProjectScaffold",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "writeGeneratedFiles",
         "callExpression": "this.writeGeneratedFiles",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
-        "fromSymbol": "syncStudioRuntime",
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "syncProjectInfrastructure",
         "callExpression": "syncProjectInfrastructure",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -38677,74 +37925,8 @@
       },
       {
         "fromSymbol": "syncProject",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "hasStudioManifest",
-        "callExpression": "this.store.hasStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "readStudioManifest",
-        "callExpression": "this.store.readStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "getProjectManifest",
-        "callExpression": "this.getProjectManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "applySystemTemplates",
-        "callExpression": "applySystemTemplates",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "shouldIncludeStudio",
-        "callExpression": "this.shouldIncludeStudio",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "resolveExpoRuntimePlan",
-        "callExpression": "resolveExpoRuntimePlan",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "writeManifest",
-        "callExpression": "this.store.writeManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "deleteStudioManifest",
-        "callExpression": "this.store.deleteStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "syncProjectScaffold",
-        "callExpression": "this.syncProjectScaffold",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "writeGeneratedFiles",
-        "callExpression": "this.writeGeneratedFiles",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "syncProject",
-        "toSymbol": "syncProjectInfrastructure",
-        "callExpression": "syncProjectInfrastructure",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "this.syncProjectRuntime",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -38781,6 +37963,12 @@
         "fromSymbol": "getInfrastructureStatus",
         "toSymbol": "getProjectInfrastructureStatus",
         "callExpression": "getProjectInfrastructureStatus",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "destroyProjectInfrastructure",
+        "toSymbol": "runProjectInfraScript",
+        "callExpression": "this.dependencies.runProjectInfraScript",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -38952,33 +38140,15 @@
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "getStudioManifestPath",
+        "fromSymbol": "getObsoleteStudioManifestPath",
         "toSymbol": "getProjectPath",
         "callExpression": "this.getProjectPath",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/projectStore.ts",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectStore.ts",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectStore.ts",
-        "toSymbol": "parseProjectSummaryManifest",
-        "callExpression": "parseProjectSummaryManifest",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectStore.ts",
-        "toSymbol": "resolveActiveTheme",
-        "callExpression": "resolveActiveTheme",
+        "toSymbol": "readProjectSummary",
+        "callExpression": "this.readProjectSummary",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
@@ -39007,50 +38177,44 @@
       },
       {
         "fromSymbol": "readManifest",
+        "toSymbol": "assertNoObsoleteStudioManifest",
+        "callExpression": "this.assertNoObsoleteStudioManifest",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "readManifest",
         "toSymbol": "parseReadableAppManifest",
         "callExpression": "parseReadableAppManifest",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "readStudioManifest",
-        "toSymbol": "getStudioManifestPath",
-        "callExpression": "this.getStudioManifestPath",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "readStudioManifest",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "readStudioManifest",
-        "toSymbol": "parseReadableAppManifest",
-        "callExpression": "parseReadableAppManifest",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "readStudioManifest",
-        "toSymbol": "readManifest",
-        "callExpression": "this.readManifest",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "hasStudioManifest",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "hasStudioManifest",
-        "toSymbol": "getStudioManifestPath",
-        "callExpression": "this.getStudioManifestPath",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
         "fromSymbol": "writeManifest",
         "toSymbol": "getProjectPath",
         "callExpression": "this.getProjectPath",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "writeManifest",
+        "toSymbol": "exists",
+        "callExpression": "exists",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "writeManifest",
+        "toSymbol": "assertNoObsoleteStudioManifest",
+        "callExpression": "this.assertNoObsoleteStudioManifest",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "writeManifest",
+        "toSymbol": "normalizeManifestForProject",
+        "callExpression": "normalizeManifestForProject",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "writeManifest",
+        "toSymbol": "writeJsonAtomic",
+        "callExpression": "writeJsonAtomic",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
@@ -39060,49 +38224,55 @@
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "writeManifest",
-        "toSymbol": "exists",
-        "callExpression": "exists",
+        "fromSymbol": "mutateManifest",
+        "toSymbol": "readManifest",
+        "callExpression": "this.readManifest",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "writeManifest",
-        "toSymbol": "writeJsonAtomic",
-        "callExpression": "writeJsonAtomic",
+        "fromSymbol": "mutateManifest",
+        "toSymbol": "writeManifest",
+        "callExpression": "this.writeManifest",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "writeStudioManifest",
+        "fromSymbol": "mutateManifest",
+        "toSymbol": "updater",
+        "callExpression": "updater",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "readProjectSummary",
         "toSymbol": "getProjectPath",
-        "callExpression": "this.getProjectPath",
+        "callExpression": "getProjectPath",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "writeStudioManifest",
-        "toSymbol": "getStudioManifestPath",
-        "callExpression": "this.getStudioManifestPath",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "writeStudioManifest",
+        "fromSymbol": "readProjectSummary",
         "toSymbol": "exists",
         "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "writeStudioManifest",
-        "toSymbol": "writeJsonAtomic",
-        "callExpression": "writeJsonAtomic",
+        "fromSymbol": "readProjectSummary",
+        "toSymbol": "parseProjectSummaryManifest",
+        "callExpression": "parseProjectSummaryManifest",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "deleteStudioManifest",
-        "toSymbol": "getStudioManifestPath",
-        "callExpression": "this.getStudioManifestPath",
+        "fromSymbol": "readProjectSummary",
+        "toSymbol": "resolveActiveTheme",
+        "callExpression": "resolveActiveTheme",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "deleteStudioManifest",
+        "fromSymbol": "assertNoObsoleteStudioManifest",
+        "toSymbol": "getObsoleteStudioManifestPath",
+        "callExpression": "this.getObsoleteStudioManifestPath",
+        "sourcePath": "src/host/orchestrator/projectStore.ts"
+      },
+      {
+        "fromSymbol": "assertNoObsoleteStudioManifest",
         "toSymbol": "exists",
         "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
@@ -39171,6 +38341,66 @@
         "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
         "toSymbol": "readManifest",
         "callExpression": "store.readManifest",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "createProjectWorkspace",
+        "callExpression": "createProjectWorkspace",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "writeManifest",
+        "callExpression": "store.writeManifest",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "pathExists",
+        "callExpression": "pathExists",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
+        "toSymbol": "readManifest",
+        "callExpression": "new ProjectStore(workspaceRoot).readManifest",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectWorkspace",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectWorkspace",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectWorkspace",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectWorkspace",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
+      },
+      {
+        "fromSymbol": "pathExists",
+        "toSymbol": "access",
+        "callExpression": "access",
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
@@ -39714,12 +38944,6 @@
         "sourcePath": "src/host/secrets/projectSecretService.test.ts"
       },
       {
-        "fromSymbol": "getStudioManifest",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
-        "sourcePath": "src/host/secrets/projectSecretService.test.ts"
-      },
-      {
         "fromSymbol": "getProjectManifest",
         "toSymbol": "createManifest",
         "callExpression": "createManifest",
@@ -39943,12 +39167,6 @@
       },
       {
         "fromSymbol": "readEditableManifest",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "this.projectManager.getStudioManifest",
-        "sourcePath": "src/host/secrets/projectSecretService.ts"
-      },
-      {
-        "fromSymbol": "readEditableManifest",
         "toSymbol": "getProjectManifest",
         "callExpression": "this.projectManager.getProjectManifest",
         "sourcePath": "src/host/secrets/projectSecretService.ts"
@@ -40141,12 +39359,6 @@
       },
       {
         "fromSymbol": "readCurrentManifest",
-        "toSymbol": "getStudioManifest",
-        "callExpression": "projectManager.getStudioManifest",
-        "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
-      },
-      {
-        "fromSymbol": "readCurrentManifest",
         "toSymbol": "getProjectManifest",
         "callExpression": "projectManager.getProjectManifest",
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
@@ -40275,6 +39487,18 @@
         "fromSymbol": "'module-detail'",
         "toSymbol": "resolveStudioModuleId",
         "callExpression": "resolveStudioModuleId",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "'theme-component'",
+        "toSymbol": "resolveStudioThemeRecipeName",
+        "callExpression": "resolveStudioThemeRecipeName",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "'theme-pattern'",
+        "toSymbol": "resolveStudioThemeRecipeName",
+        "callExpression": "resolveStudioThemeRecipeName",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
@@ -42445,8 +41669,8 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/AuthAdminPage.tsx",
-        "toSymbol": "syncStudioRuntime",
-        "callExpression": "syncStudioRuntime",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "syncProjectRuntime",
         "sourcePath": "src/ui/admin/pages/AuthAdminPage.tsx"
       },
       {
@@ -44280,6 +43504,18 @@
         "sourcePath": "src/ui/admin/pages/SecretsAdminPage.tsx"
       },
       {
+        "fromSymbol": "readSibling",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "readSibling",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
+      },
+      {
         "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -44293,69 +43529,621 @@
       },
       {
         "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.test.ts",
-        "toSymbol": "fileURLToPath",
-        "callExpression": "fileURLToPath",
+        "toSymbol": "readSibling",
+        "callExpression": "readSibling",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.test.ts"
       },
       {
         "fromSymbol": "ThemeAdminPage",
-        "toSymbol": "useStudio",
-        "callExpression": "useStudio",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
-        "fromSymbol": "ThemeAdminPage",
-        "toSymbol": "useZoraTheme",
-        "callExpression": "useZoraTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "ThemeAdminPage",
-        "toSymbol": "resolveActiveThemeModeSelection",
-        "callExpression": "resolveActiveThemeModeSelection",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "updateActiveTheme",
+        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
         "toSymbol": "updateTheme",
-        "callExpression": "studio.updateTheme",
+        "callExpression": "updateTheme",
         "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateActiveMode",
-        "toSymbol": "updateActiveTheme",
-        "callExpression": "updateActiveTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+        "fromSymbol": "ThemeColorsAdminPage",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
-        "fromSymbol": "updateActiveMode",
+        "fromSymbol": "updateMode",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateMode",
         "toSymbol": "createThemeModeUpdates",
         "callExpression": "createThemeModeUpdates",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toSymbol": "updateActiveTheme",
-        "callExpression": "updateActiveTheme",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+        "fromSymbol": "src/ui/admin/pages/ThemeColorsAdminPage.tsx",
+        "toSymbol": "updateMode",
+        "callExpression": "updateMode",
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
-        "toSymbol": "updateActiveMode",
-        "callExpression": "updateActiveMode",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
-      },
-      {
-        "fromSymbol": "src/ui/admin/pages/ThemeAdminPage.tsx",
+        "fromSymbol": "HarmonyChoice",
         "toSymbol": "formatHarmonyLabel",
         "callExpression": "formatHarmonyLabel",
-        "sourcePath": "src/ui/admin/pages/ThemeAdminPage.tsx"
+        "sourcePath": "src/ui/admin/pages/ThemeColorsAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeModeEditorSelector",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeModeEditorSelector.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeModeEditorSelector.tsx",
+        "toSymbol": "setMode",
+        "callExpression": "setMode",
+        "sourcePath": "src/ui/admin/pages/ThemeModeEditorSelector.tsx"
+      },
+      {
+        "fromSymbol": "ThemeNumericTokensAdminPage",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeNumericTokensAdminPage",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeNumericTokensAdminPage",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateValue",
+        "toSymbol": "updateNumericThemeToken",
+        "callExpression": "updateNumericThemeToken",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateValue",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "addToken",
+        "toSymbol": "parseNonNegativeNumber",
+        "callExpression": "parseNonNegativeNumber",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "addToken",
+        "toSymbol": "updateValue",
+        "callExpression": "updateValue",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "addToken",
+        "toSymbol": "setNewKey",
+        "callExpression": "setNewKey",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "addToken",
+        "toSymbol": "setNewValue",
+        "callExpression": "setNewValue",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toSymbol": "updateValue",
+        "callExpression": "updateValue",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toSymbol": "parseNonNegativeNumber",
+        "callExpression": "parseNonNegativeNumber",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "Action",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeNumericTokensAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "readSibling",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "readSibling",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
+        "toSymbol": "readSibling",
+        "callExpression": "readSibling",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.test.ts"
+      },
+      {
+        "fromSymbol": "ThemeRecipeAdminPage",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeRecipeAdminPage",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "updateThemeRecipeField",
+        "callExpression": "updateThemeRecipeField",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toSymbol": "resolveThemeRecipeTokenOptions",
+        "callExpression": "resolveThemeRecipeTokenOptions",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx",
+        "toSymbol": "updateField",
+        "callExpression": "updateField",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts",
+        "toSymbol": "updateThemeRecipeField",
+        "callExpression": "updateThemeRecipeField",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "updateThemeRecipeField",
+        "toSymbol": "updateField",
+        "callExpression": "updateField",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateThemeRecipeField",
+        "toSymbol": "updateRecord",
+        "callExpression": "updateRecord",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateField",
+        "toSymbol": "updateRecord",
+        "callExpression": "updateRecord",
+        "sourcePath": "src/ui/admin/pages/themeRecipeAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "ThemeRecipeCatalog",
+        "toSymbol": "useRouter",
+        "callExpression": "useRouter",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "toSymbol": "createStudioThemeRecipeRoutePath",
+        "callExpression": "createStudioThemeRecipeRoutePath",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeCatalog.tsx",
+        "toSymbol": "onOpen",
+        "callExpression": "props.onOpen",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
+      },
+      {
+        "fromSymbol": "RecipeLink",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeCatalog.tsx"
+      },
+      {
+        "fromSymbol": "ThemeRecipeFieldEditor",
+        "toSymbol": "resolveFieldOptions",
+        "callExpression": "resolveFieldOptions",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeRecipeFieldEditor",
+        "toSymbol": "formatInheritedLabel",
+        "callExpression": "formatInheritedLabel",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
+      },
+      {
+        "fromSymbol": "Choice",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeRecipeFieldEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts",
+        "toSymbol": "resolveThemeRecipeTokenOptions",
+        "callExpression": "resolveThemeRecipeTokenOptions",
+        "sourcePath": "src/ui/admin/pages/themeRecipeTokenOptions.test.ts"
+      },
+      {
+        "fromSymbol": "ThemeTokenAction",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTokenAction.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "updateNumericThemeToken",
+        "callExpression": "updateNumericThemeToken",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "updateTypographySize",
+        "callExpression": "updateTypographySize",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "updateTypographyWeight",
+        "callExpression": "updateTypographyWeight",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts",
+        "toSymbol": "updateTypographyHeading",
+        "callExpression": "updateTypographyHeading",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.test.ts"
+      },
+      {
+        "fromSymbol": "updateNumericThemeToken",
+        "toSymbol": "updateRecordValue",
+        "callExpression": "updateRecordValue",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateNumericThemeToken",
+        "toSymbol": "normalizeGlobalTokens",
+        "callExpression": "normalizeGlobalTokens",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographySize",
+        "toSymbol": "updateTypographyTokens",
+        "callExpression": "updateTypographyTokens",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographySize",
+        "toSymbol": "updateRecordValue",
+        "callExpression": "updateRecordValue",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyWeight",
+        "toSymbol": "updateTypographyTokens",
+        "callExpression": "updateTypographyTokens",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyWeight",
+        "toSymbol": "updateRecordValue",
+        "callExpression": "updateRecordValue",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyHeading",
+        "toSymbol": "updateRecordValue",
+        "callExpression": "updateRecordValue",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyHeading",
+        "toSymbol": "updateTypographyTokens",
+        "callExpression": "updateTypographyTokens",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyTokens",
+        "toSymbol": "normalizeGlobalTokens",
+        "callExpression": "normalizeGlobalTokens",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "updateTypographyTokens",
+        "toSymbol": "normalizeTypography",
+        "callExpression": "normalizeTypography",
+        "sourcePath": "src/ui/admin/pages/themeTokenAuthoringModel.ts"
+      },
+      {
+        "fromSymbol": "ThemeTypographyAdminPage",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyAdminPage.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographyHeadingEditor",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographyHeadingEditor",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateHeading",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateHeading",
+        "toSymbol": "updateTypographyHeading",
+        "callExpression": "updateTypographyHeading",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toSymbol": "updateHeading",
+        "callExpression": "updateHeading",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx",
+        "toSymbol": "parseNonNegativeNumber",
+        "callExpression": "parseNonNegativeNumber",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "HeadingWeightChoice",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyHeadingEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographySizeEditor",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographySizeEditor",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographySizeEditor",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateSize",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateSize",
+        "toSymbol": "updateTypographySize",
+        "callExpression": "updateTypographySize",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "addSize",
+        "toSymbol": "parseNonNegativeNumber",
+        "callExpression": "parseNonNegativeNumber",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "addSize",
+        "toSymbol": "updateSize",
+        "callExpression": "updateSize",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "addSize",
+        "toSymbol": "setNewKey",
+        "callExpression": "setNewKey",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "addSize",
+        "toSymbol": "setNewValue",
+        "callExpression": "setNewValue",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toSymbol": "updateSize",
+        "callExpression": "updateSize",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toSymbol": "parseNonNegativeNumber",
+        "callExpression": "parseNonNegativeNumber",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographySizeEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographyWeightEditor",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "ThemeTypographyWeightEditor",
+        "toSymbol": "useActiveThemeAdmin",
+        "callExpression": "useActiveThemeAdmin",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateWeight",
+        "toSymbol": "updateTheme",
+        "callExpression": "updateTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "updateWeight",
+        "toSymbol": "updateTypographyWeight",
+        "callExpression": "updateTypographyWeight",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toSymbol": "updateWeight",
+        "callExpression": "updateWeight",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "WeightRow",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx",
+        "toSymbol": "onChange",
+        "callExpression": "props.onChange",
+        "sourcePath": "src/ui/admin/pages/ThemeTypographyWeightEditor.tsx"
+      },
+      {
+        "fromSymbol": "useActiveThemeAdmin",
+        "toSymbol": "useStudio",
+        "callExpression": "useStudio",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromSymbol": "useActiveThemeAdmin",
+        "toSymbol": "useZoraTheme",
+        "callExpression": "useZoraTheme",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromSymbol": "useActiveThemeAdmin",
+        "toSymbol": "resolveActiveThemeModeSelection",
+        "callExpression": "resolveActiveThemeModeSelection",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
+      },
+      {
+        "fromSymbol": "updateTheme",
+        "toSymbol": "updateTheme",
+        "callExpression": "studio.updateTheme",
+        "sourcePath": "src/ui/admin/pages/useActiveThemeAdmin.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/auth/adapter.test.ts",
@@ -45009,11 +44797,6 @@
       },
       {
         "fromSymbol": "StudioSessionState",
-        "toType": "StudioMode",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "StudioSessionState",
         "toType": "StudioSaveStatus",
         "sourcePath": "src/index.ts"
       },
@@ -45180,11 +44963,6 @@
       {
         "fromSymbol": "StudioContextValue",
         "toType": "StudioComponentMetaRegistry",
-        "sourcePath": "src/index.ts"
-      },
-      {
-        "fromSymbol": "StudioContextValue",
-        "toType": "StudioMode",
         "sourcePath": "src/index.ts"
       },
       {
