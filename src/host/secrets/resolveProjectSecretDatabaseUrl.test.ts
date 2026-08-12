@@ -55,6 +55,13 @@ describe('resolveProjectSecretDatabaseUrl', () => {
 
   test('does not invent a plaintext fallback', async () => {
     const projectPath = await createProjectRoot();
+    const infraRoot = path.join(projectPath, 'infra', 'minikube');
+    await fs.mkdir(infraRoot, { recursive: true });
+    await fs.writeFile(
+      path.join(infraRoot, '.env.example'),
+      'APP_PORT_FORWARD_LOCAL_PORT=48123\n',
+      'utf8',
+    );
     let error: unknown;
 
     try {
