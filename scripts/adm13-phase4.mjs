@@ -35,3 +35,5 @@ replaceOnce(
   `    expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');\n`,
   `    expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');\n    expect(resolveStudioAdminRouteId('/ankh/theme/colors')).toBe('theme-colors');\n    expect(resolveStudioAdminRouteId('/ankh/theme/typography')).toBe('theme-typography');\n    expect(resolveStudioAdminRouteId('/ankh/theme/spacing')).toBe('theme-spacing');\n    expect(resolveStudioAdminRouteId('/ankh/theme/radii')).toBe('theme-radii');\n    expect(resolveStudioAdminRouteId('/ankh/theme/shadows')).toBe('theme-shadows');\n    expect(\n      isStudioAdminRouteActive({ currentRouteId: 'theme-spacing', candidateRouteId: 'theme' }),\n    ).toBe(true);\n`,
 );
+
+// Retry marker: typed runtime-theme access and portable hook return are now fixed.
