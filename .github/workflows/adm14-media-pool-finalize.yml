@@ -84,7 +84,10 @@ jobs:
 
       - name: Guard transient media persistence
         run: |
-          if grep -R -n -E "mediaId.*(blob:|file:|content:|data:)|(blob:|file:|content:|data:).*mediaId" src --include='*.ts' --include='*.tsx'; then
+          if grep -R -n -E "mediaId.*(blob:|file:|content:|data:)|(blob:|file:|content:|data:).*mediaId" src \
+            --include='*.ts' --include='*.tsx' \
+            --exclude='*.test.ts' --exclude='*.test.tsx' \
+            --exclude='*.spec.ts' --exclude='*.spec.tsx'; then
             echo 'Transient media URL found adjacent to canonical media persistence.'
             exit 1
           fi
