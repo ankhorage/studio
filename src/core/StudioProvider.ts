@@ -508,7 +508,7 @@ function useStudioManifestPersistence(args: {
     setIsLoading(true);
     setError(null);
     try {
-      const loaded = await requestStudioManifest(projectId);
+      const loaded = await requestProjectManifest(projectId);
       const loadedSignature = createStudioManifestSignature(loaded);
       const currentManifest = manifestRef.current;
       if (!currentManifest || createStudioManifestSignature(currentManifest) !== loadedSignature) {
@@ -575,7 +575,7 @@ function useStudioManifestPersistence(args: {
   return { refetchManifest: loadManifest, flushManifest };
 }
 
-async function requestStudioManifest(projectId: string): Promise<StudioManifest> {
+async function requestProjectManifest(projectId: string): Promise<StudioManifest> {
   const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`);
   const value = await readPersistenceJson(response);
   if (!response.ok) throw createPersistenceError(value, response.status);
@@ -596,7 +596,7 @@ async function readPersistenceJson(response: Response): Promise<unknown> {
   try {
     return await response.json();
   } catch {
-    throw new Error(`Studio manifest request returned non-JSON status ${response.status}.`);
+    throw new Error(`Project manifest request returned non-JSON status ${response.status}.`);
   }
 }
 
@@ -608,5 +608,5 @@ function createPersistenceError(value: unknown, status: number): Error {
 }
 
 function toPersistenceMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'Studio manifest persistence failed.';
+  return error instanceof Error ? error.message : 'Project manifest persistence failed.';
 }
