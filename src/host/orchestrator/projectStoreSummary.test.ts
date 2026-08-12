@@ -1,4 +1,4 @@
-import { access, mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -81,9 +81,10 @@ test('canonical writes persist only ankh.config.json', async () => {
   await store.writeManifest('demo', createManifest('Canonical'));
 
   const projectRoot = path.join(workspaceRoot, 'apps', 'demo');
-  const persisted = JSON.parse(await readFile(path.join(projectRoot, 'ankh.config.json'), 'utf8'));
+  const persisted = await store.readManifest('demo');
 
   expect(persisted.metadata.name).toBe('Canonical');
+  expect(await pathExists(path.join(projectRoot, 'ankh.config.json'))).toBe(true);
   expect(await pathExists(path.join(projectRoot, '.ankh', 'studio.manifest.json'))).toBe(false);
 });
 
