@@ -21,6 +21,26 @@ export type StudioMediaAssetRemovalResult =
       readonly usages: readonly StudioMediaUsage[];
     };
 
+export type StudioMediaDeleteResult =
+  | { readonly ok: true; readonly cleanup: 'none' | 'removed' }
+  | {
+      readonly ok: false;
+      readonly reason: 'not-found' | 'in-use';
+      readonly usages: readonly StudioMediaUsage[];
+    }
+  | {
+      readonly ok: false;
+      readonly reason: 'save-failed';
+      readonly message: string;
+      readonly mediaRemoved: false;
+    }
+  | {
+      readonly ok: false;
+      readonly reason: 'cleanup-failed';
+      readonly message: string;
+      readonly mediaRemoved: true;
+    };
+
 export type StudioUrlMediaAssetResult =
   | { readonly ok: true; readonly asset: MediaAsset }
   | { readonly ok: false; readonly error: 'invalid-url' };
