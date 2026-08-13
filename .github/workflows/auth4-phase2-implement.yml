@@ -73,10 +73,10 @@ jobs:
           if text.count(old) != 1:
               raise SystemExit('fixture deploy override shape changed')
           text = text.replace(old, new, 1)
-          marker = "    await fs.writeFile(\n      path.join(projectPath, 'ankh.config.json'),\n      JSON.stringify(manifest, null, 2),\n"
-          replacement = "    const manifest = { ...fixtureManifest, deploy: createdManifest.deploy };\n\n    await fs.writeFile(\n      path.join(projectPath, 'ankh.config.json'),\n      JSON.stringify(manifest, null, 2),\n"
+          marker = "    const oauth = manifest.infra.auth?.oauth;\n"
+          replacement = "    const manifest = { ...fixtureManifest, deploy: createdManifest.deploy };\n    const oauth = manifest.infra.auth?.oauth;\n"
           if text.count(marker) != 1:
-              raise SystemExit('fixture persistence marker shape changed')
+              raise SystemExit('fixture oauth marker shape changed')
           path.write_text(text.replace(marker, replacement, 1))
 
           path = Path('src/host/orchestrator/appTargetGeneration.test.ts')
@@ -87,13 +87,13 @@ jobs:
               1,
           )
           text = text.replace(
-              "} as const satisfies AppDeployTargets;\nconst IOS = {",
-              "};\nconst IOS: AppDeployTargets = {",
+              "const ANDROID = {",
+              "const ANDROID: AppDeployTargets = {",
               1,
           )
           text = text.replace(
-              "const ANDROID = {",
-              "const ANDROID: AppDeployTargets = {",
+              "} as const satisfies AppDeployTargets;\nconst IOS = {",
+              "};\nconst IOS: AppDeployTargets = {",
               1,
           )
           text = text.replace(
