@@ -39,6 +39,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           path = Path('src/host/orchestrator/templates.ts')
           text = path.read_text()
           pattern = r"  return sections\.length > 0 \? `[\s\S]*?` : '';\n}\n\nexport function getAppConfigTs"
@@ -47,6 +48,18 @@ jobs:
           if count != 1:
               raise SystemExit('target section newline normalization failed')
           path.write_text(text)
+
+          for filename in [
+              'src/host/orchestrator/templates.ts',
+              'src/host/orchestrator/scaffolder.ts',
+          ]:
+              path = Path(filename)
+              text = path.read_text()
+              old = "const LEGACY_WEB_ONLY_TARGETS = { web: { enabled: true } } as const satisfies AppDeployTargets;"
+              new = "const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };"
+              if text.count(old) != 1:
+                  raise SystemExit(f'{filename}: legacy target fallback shape changed')
+              path.write_text(text.replace(old, new, 1))
           PY
 
       - name: Refresh dependencies
