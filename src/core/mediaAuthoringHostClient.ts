@@ -5,8 +5,8 @@ import type {
   StudioMediaIngestTarget,
   StudioMediaPickerSelection,
 } from '../mediaPickerAuthoring';
-import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 import { API_BASE } from './constants';
+import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 
 interface IngestStudioMediaSelectionArgs {
   readonly projectId: string;
