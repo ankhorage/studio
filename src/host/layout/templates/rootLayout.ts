@@ -50,6 +50,14 @@ export function getRootLayoutImportRequirements(
           },
         ]
       : []),
+    {
+      source: '@ankhorage/expo-runtime',
+      namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
+    },
+    {
+      source: '@/generated/bundledMediaRegistry',
+      namedImports: [{ imported: 'bundledMediaRegistry' }],
+    },
     ...(includeStudio
       ? [
           {
@@ -395,8 +403,10 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
       executeAction,
       registry: runtimeComponentRegistry,
       executeOperation,
+      mediaAssets: runtimeManifest.media?.assets,
+      resolveMediaAsset: bundledMediaResolver,
     }),
-    [executeAction, executeOperation],
+    [executeAction, executeOperation, runtimeManifest.media?.assets],
   );
 
   const runtimeContent = (
@@ -413,6 +423,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
       <AnkhStudio
         runtimeRegistry={runtimeComponentRegistry}
         runtimeConfig={generatedRuntimeConfig}
+        bundledMediaRegistry={bundledMediaRegistry}
       >
         {runtimeContent}
       </AnkhStudio>
@@ -424,6 +435,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
   const output = runtimeContent;`;
   const moduleLevelDeclarations = [
     runtimeModuleDeclarations?.trim(),
+    'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',
     runtimeOperationHelpers.trim(),
     authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
