@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.3.0
+
+### Minor Changes
+
+- c973abc: Complete the ADM-14 media lifecycle with persisted manifest-first cleanup for managed and bundled authoring sources.
+
 ## 1.2.0
 
 ### Minor Changes
