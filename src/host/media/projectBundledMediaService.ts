@@ -1,8 +1,9 @@
-import type { MediaAsset, MediaAssetKind } from '@ankhorage/contracts';
+import type { MediaAsset, MediaAssetKind, MediaBundledSource } from '@ankhorage/contracts';
 
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { writeProjectAuthoringAsset } from './projectAuthoringAssetWriter';
 import { syncProjectBundledMediaRegistry } from './projectBundledMediaRegistry';
+import { removeProjectAuthoringAsset } from './removeProjectAuthoringAsset';
 
 export interface ProjectBundledMediaInput {
   readonly assetId: string;
@@ -40,6 +41,12 @@ export class ProjectBundledMediaService {
         createdAt: new Date().toISOString(),
       },
     };
+  }
+
+  async remove(projectId: string, source: MediaBundledSource): Promise<void> {
+    const projectPath = getProjectPath(this.workspaceRoot, projectId);
+    await removeProjectAuthoringAsset(projectPath, source.path);
+    await syncProjectBundledMediaRegistry(projectPath);
   }
 }
 
