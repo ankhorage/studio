@@ -46,7 +46,8 @@ function registerMediaCleanupRoute(
 ): void {
   fastify.post('/api/projects/:id/media/cleanup', async (req, reply) => {
     const source = readCleanupSource((req.body as { source?: unknown } | undefined)?.source);
-    if (!source) return reply.status(400).send({ error: 'Canonical managed media source required.' });
+    if (!source)
+      return reply.status(400).send({ error: 'Canonical managed media source required.' });
     try {
       const { id } = req.params as { id: string };
       if (source.kind === 'storage') await storageService.remove(id, source);

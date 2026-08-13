@@ -1,9 +1,6 @@
 import type { AppManifest, MediaAssetSource } from '@ankhorage/contracts';
 
-import {
-  removeStudioMediaAsset,
-  type StudioMediaDeleteResult,
-} from '../mediaAuthoringModel';
+import { removeStudioMediaAsset, type StudioMediaDeleteResult } from '../mediaAuthoringModel';
 
 export interface StudioMediaSourceCleanupResult {
   readonly ok: boolean;

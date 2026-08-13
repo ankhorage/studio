@@ -166,7 +166,8 @@ function formatDeleteNotice(result: StudioMediaDeleteResult): string | null {
   if (result.reason === 'cleanup-failed') {
     return `The media item was removed safely, but an orphaned authoring source may remain: ${result.message}`;
   }
-  if (result.reason === 'in-use') return 'The media item is still referenced by component properties.';
+  if (result.reason === 'in-use')
+    return 'The media item is still referenced by component properties.';
   return 'The media item no longer exists in the authoring pool.';
 }
 
