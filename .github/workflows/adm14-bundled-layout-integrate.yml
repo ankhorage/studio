@@ -1,0 +1,45 @@
+name: ADM-14 Bundled Layout Integrate
+
+on:
+  push:
+    branches:
+      - agent/adm14-bundled-assets-authoring
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch generated root layout
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/host/layout/templates/rootLayout.ts')
+          s = p.read_text()
+          anchor = "    ...(includeStudio\n      ? [\n          {\n            source: '@ankhorage/expo-runtime/media-picker',"
+          inserted = "    {\n      source: '@ankhorage/expo-runtime',\n      namedImports: [{ imported: 'createExpoBundledMediaResolver' }],\n    },\n    {\n      source: '@/generated/bundledMediaRegistry',\n      namedImports: [{ imported: 'bundledMediaRegistry' }],\n    },\n" + anchor
+          if anchor not in s: raise SystemExit('root import anchor missing')
+          s = s.replace(anchor, inserted, 1)
+          changes = [
+            ('      executeAction,\n      registry: runtimeComponentRegistry,\n      executeOperation,\n', '      executeAction,\n      registry: runtimeComponentRegistry,\n      executeOperation,\n      mediaAssets: runtimeManifest.media?.assets,\n      resolveMediaAsset: bundledMediaResolver,\n'),
+            ('    [executeAction, executeOperation],', '    [executeAction, executeOperation, runtimeManifest.media?.assets],'),
+            ('        runtimeRegistry={runtimeComponentRegistry}\n        runtimeConfig={generatedRuntimeConfig}\n', '        runtimeRegistry={runtimeComponentRegistry}\n        runtimeConfig={generatedRuntimeConfig}\n        bundledMediaRegistry={bundledMediaRegistry}\n'),
+            ('  const moduleLevelDeclarations = [\n    runtimeModuleDeclarations?.trim(),', "  const moduleLevelDeclarations = [\n    runtimeModuleDeclarations?.trim(),\n    'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',"),
+          ]
+          for old, new in changes:
+              if old not in s: raise SystemExit('root layout integration anchor missing')
+              s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+          git diff --check -- src/host/layout/templates/rootLayout.ts
+      - name: Commit root layout
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/host/layout/templates/rootLayout.ts
+          git commit -m 'Wire bundled media into generated runtime'
+          git push origin HEAD:agent/adm14-bundled-assets-authoring
