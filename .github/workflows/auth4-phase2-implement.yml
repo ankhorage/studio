@@ -60,6 +60,53 @@ jobs:
               if text.count(old) != 1:
                   raise SystemExit(f'{filename}: legacy target fallback shape changed')
               path.write_text(text.replace(old, new, 1))
+
+          path = Path('src/host/oauthFixtureConsumer.smoke.test.ts')
+          text = path.read_text()
+          old = "    const manifest = createOAuthFixtureManifest({\n"
+          new = "    const fixtureManifest = createOAuthFixtureManifest({\n"
+          if text.count(old) != 1:
+              raise SystemExit('fixture manifest declaration shape changed')
+          text = text.replace(old, new, 1)
+          old = "      overrides: {\n        deploy: createdManifest.deploy,\n        metadata: {\n"
+          new = "      overrides: {\n        metadata: {\n"
+          if text.count(old) != 1:
+              raise SystemExit('fixture deploy override shape changed')
+          text = text.replace(old, new, 1)
+          marker = "    await fs.writeFile(\n      path.join(projectPath, 'ankh.config.json'),\n      JSON.stringify(manifest, null, 2),\n"
+          replacement = "    const manifest = { ...fixtureManifest, deploy: createdManifest.deploy };\n\n    await fs.writeFile(\n      path.join(projectPath, 'ankh.config.json'),\n      JSON.stringify(manifest, null, 2),\n"
+          if text.count(marker) != 1:
+              raise SystemExit('fixture persistence marker shape changed')
+          path.write_text(text.replace(marker, replacement, 1))
+
+          path = Path('src/host/orchestrator/appTargetGeneration.test.ts')
+          text = path.read_text()
+          text = text.replace(
+              "const WEB = { web: { enabled: true } } as const satisfies AppDeployTargets;",
+              "const WEB: AppDeployTargets = { web: { enabled: true } };",
+              1,
+          )
+          text = text.replace(
+              "} as const satisfies AppDeployTargets;\nconst IOS = {",
+              "};\nconst IOS: AppDeployTargets = {",
+              1,
+          )
+          text = text.replace(
+              "const ANDROID = {",
+              "const ANDROID: AppDeployTargets = {",
+              1,
+          )
+          text = text.replace(
+              "} as const satisfies AppDeployTargets;\n\nconst COMBINATIONS = [",
+              "};\n\nconst COMBINATIONS: readonly (readonly [string, AppDeployTargets])[] = [",
+              1,
+          )
+          text = text.replace(
+              "] as const satisfies readonly (readonly [string, AppDeployTargets])[];",
+              "];",
+              1,
+          )
+          path.write_text(text)
           PY
 
       - name: Refresh dependencies
