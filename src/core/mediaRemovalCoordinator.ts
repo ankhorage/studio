@@ -31,16 +31,17 @@ export async function commitStudioMediaRemoval(args: {
     return { ok: false, reason: 'save-failed', message: toMessage(error), mediaRemoved: false };
   }
 
-  const cleanup = await args.cleanupSource(asset.source);
-  if (!cleanup.ok) {
-    return {
-      ok: false,
-      reason: 'cleanup-failed',
-      message: cleanup.reason ?? 'Media source cleanup failed.',
-      mediaRemoved: true,
-    };
+  try {
+    const cleanup = await args.cleanupSource(asset.source);
+    if (cleanup.ok) return { ok: true, cleanup: cleanup.cleanup ?? 'none' };
+    return cleanupFailure(cleanup.reason ?? 'Media source cleanup failed.');
+  } catch (error) {
+    return cleanupFailure(toMessage(error));
   }
-  return { ok: true, cleanup: cleanup.cleanup ?? 'none' };
+}
+
+function cleanupFailure(message: string): StudioMediaDeleteResult {
+  return { ok: false, reason: 'cleanup-failed', message, mediaRemoved: true };
 }
 
 function toMessage(error: unknown): string {
