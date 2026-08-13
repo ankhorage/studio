@@ -1,6 +1,20 @@
-import { describe, expect, it } from 'bun:test';
+import { afterEach, describe, expect, it } from 'bun:test';
+import { promises as fs } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
-import { createGeneratedAppExtensionRegistrySource } from './generatedAppFiles';
+import {
+  createGeneratedAppExtensionRegistrySource,
+  syncGeneratedAppFiles,
+} from './generatedAppFiles';
+
+const projectRoots: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(
+    projectRoots.splice(0).map((root) => fs.rm(root, { recursive: true, force: true })),
+  );
+});
 
 describe('generated app extension interaction-policy support', () => {
   it('emits an explicit support map beside the generated component registry', () => {
@@ -57,3 +71,27 @@ describe('generated app extension interaction-policy support', () => {
     expect(source).not.toContain('RegisteredOnlyWidget: true');
   });
 });
+
+describe('generated bundled media registry', () => {
+  it('regenerates static Metro requires from app authoring assets', async () => {
+    const projectPath = await createProjectRoot();
+    const assetPath = path.join(projectPath, 'assets/authoring/hero/hero.png');
+    await fs.mkdir(path.dirname(assetPath), { recursive: true });
+    await fs.writeFile(assetPath, new Uint8Array([1]));
+
+    await syncGeneratedAppFiles(projectPath);
+
+    const source = await fs.readFile(
+      path.join(projectPath, 'src/generated/bundledMediaRegistry.ts'),
+      'utf8',
+    );
+    expect(source).toContain('"assets/authoring/hero/hero.png"');
+    expect(source).toContain('require("../../assets/authoring/hero/hero.png")');
+  });
+});
+
+async function createProjectRoot(): Promise<string> {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'ankh-generated-files-'));
+  projectRoots.push(root);
+  return root;
+}
