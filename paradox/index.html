@@ -1273,6 +1273,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/projectTargets.ts"
+              >
+                src/host/orchestrator/projectTargets.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/resolveMutations.ts"
               >
                 src/host/orchestrator/resolveMutations.ts
@@ -1316,7 +1326,7 @@
                 data-target="src/host/orchestrator/templates.ts"
               >
                 src/host/orchestrator/templates.ts
-                <small>17 functions</small>
+                <small>16 functions</small>
               </button>
             </li>
             <li>
@@ -2561,7 +2571,7 @@
             <div class="summary">
               <div><strong>147</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>359</strong><span class="muted">modules</span></div>
+              <div><strong>361</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -4446,6 +4456,18 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/appTargetGeneration.test.ts src/host/orchestrator/projectTargets.ts src/host/orchestrator/templates.ts"
+            >
+              <h3>src/host/orchestrator/appTargetGeneration.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/projectTargets.ts</code>,
+                <code>src/host/orchestrator/templates.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts src/host/orchestrator/expoSdk54AnimationCompatibility.ts src/host/orchestrator/templates.ts"
             >
               <h3>src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts</h3>
@@ -4548,7 +4570,7 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/projectManager.ts src/host/generatedDatabaseRuntime.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts src/projectIdentity.ts ProjectManager"
+              data-search="src/host/orchestrator/projectManager.ts src/host/generatedDatabaseRuntime.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/projectTargets.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts src/projectIdentity.ts ProjectManager"
             >
               <h3>src/host/orchestrator/projectManager.ts</h3>
               <p class="muted">Referenced module</p>
@@ -4560,6 +4582,7 @@
                 <code>src/host/orchestrator/generatedRouteCleanup.ts</code>,
                 <code>src/host/orchestrator/projectPaths.ts</code>,
                 <code>src/host/orchestrator/projectStore.ts</code>,
+                <code>src/host/orchestrator/projectTargets.ts</code>,
                 <code>src/host/orchestrator/scaffolder.ts</code>,
                 <code>src/host/orchestrator/templates.ts</code>,
                 <code>src/host/orchestrator/workspaceRuntime.ts</code>,
@@ -4618,6 +4641,15 @@
                 <strong>Dependencies:</strong> <code>src/host/orchestrator/projectStore.ts</code>
               </p>
               <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/projectTargets.ts createDefaultAppDeployManifest"
+            >
+              <h3>src/host/orchestrator/projectTargets.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>createDefaultAppDeployManifest</code></p>
             </article>
             <article
               class="item"
@@ -14184,6 +14216,13 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_appTargetGeneration_test_ts
+                module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
+                module_src_host_orchestrator_projectTargets_ts
+                module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts
@@ -14249,6 +14288,8 @@
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_projectStore_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_host_orchestrator_projectTargets_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_scaffolder_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_templates_ts
@@ -14278,6 +14319,8 @@
                 module_src_host_orchestrator_projectStoreSummary_test_ts
                 module_src_host_orchestrator_projectStoreSummary_test_ts --&gt;
                 module_src_host_orchestrator_projectStore_ts
+                module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectTargets_ts
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_resolveMutations_ts
                 module_src_host_orchestrator_resolveMutations_ts --&gt;
@@ -15851,6 +15894,10 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_appTargetGeneration_test_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --&gt; module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
@@ -15891,6 +15938,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
@@ -15910,6 +15958,8 @@ graph TD
   module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectStoreSummary_test_ts
   module_src_host_orchestrator_projectStoreSummary_test_ts --&gt; module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_resolveMutations_ts --&gt; module_src_host_modules_catalog_ts
@@ -16809,6 +16859,7 @@ graph TD
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
@@ -16822,6 +16873,7 @@ graph TD
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+                module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
@@ -17414,6 +17466,10 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
+                module_src_host_orchestrator_projectTargets_ts
+                module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --&gt;
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --&gt;
@@ -17454,6 +17510,8 @@ graph TD
                 module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_projectStore_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_host_orchestrator_projectTargets_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_scaffolder_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -18172,6 +18230,7 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
@@ -18185,6 +18244,7 @@ graph LR
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+  module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
@@ -18644,6 +18704,8 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --&gt; module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
@@ -18666,6 +18728,7 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_workspaceRuntime_ts
@@ -19176,6 +19239,7 @@ graph LR
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
                 module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
@@ -19189,6 +19253,7 @@ graph LR
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
                 module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
                 module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+                module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
                 module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
@@ -19935,6 +20000,7 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts&quot;]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts[&quot;src/host/orchestrator/expoSdk54AnimationCompatibility.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
@@ -19948,6 +20014,7 @@ graph LR
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
   module_src_host_orchestrator_projectStore_ts[&quot;src/host/orchestrator/projectStore.ts&quot;]
   module_src_host_orchestrator_projectStoreSummary_test_ts[&quot;src/host/orchestrator/projectStoreSummary.test.ts&quot;]
+  module_src_host_orchestrator_projectTargets_ts[&quot;src/host/orchestrator/projectTargets.ts&quot;]
   module_src_host_orchestrator_resolveMutations_ts[&quot;src/host/orchestrator/resolveMutations.ts&quot;]
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
@@ -26354,7 +26421,7 @@ sequenceDiagram
             <h2>src/host/orchestrator/projectManager.ts</h2>
             <article class="item" data-search="exists src/host/orchestrator/projectManager.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:299:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:304:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26362,7 +26429,7 @@ sequenceDiagram
               data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedAuthProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:308:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:313:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26370,7 +26437,7 @@ sequenceDiagram
               data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedStorageProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:316:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:321:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -26562,6 +26629,32 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-orchestrator-projecttargets-ts"
+          class="view"
+          data-view="src/host/orchestrator/projectTargets.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/projectTargets.ts</h2>
+            <article
+              class="item"
+              data-search="createDefaultAppDeployManifest src/host/orchestrator/projectTargets.ts "
+            >
+              <h3>createDefaultAppDeployManifest</h3>
+              <p class="muted"><code>src/host/orchestrator/projectTargets.ts:76:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createNativeIdentifierSegment src/host/orchestrator/projectTargets.ts "
+            >
+              <h3>createNativeIdentifierSegment</h3>
+              <p class="muted"><code>src/host/orchestrator/projectTargets.ts:98:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-orchestrator-resolvemutations-ts"
           class="view"
           data-view="src/host/orchestrator/resolveMutations.ts"
@@ -26589,7 +26682,7 @@ sequenceDiagram
             <h2>src/host/orchestrator/scaffolder.ts</h2>
             <article class="item" data-search="exists src/host/orchestrator/scaffolder.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:315:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:328:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26597,7 +26690,7 @@ sequenceDiagram
               data-search="withZoraExtensionDependencies src/host/orchestrator/scaffolder.ts "
             >
               <h3>withZoraExtensionDependencies</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:324:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:337:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26605,12 +26698,12 @@ sequenceDiagram
               data-search="mergePackageJson src/host/orchestrator/scaffolder.ts "
             >
               <h3>mergePackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:337:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:350:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="mergeScripts src/host/orchestrator/scaffolder.ts ">
               <h3>mergeScripts</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:406:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:423:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -26680,7 +26773,7 @@ sequenceDiagram
               data-search="serializeStringLiteral src/host/orchestrator/templates.ts "
             >
               <h3>serializeStringLiteral</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:102:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:35:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26688,7 +26781,7 @@ sequenceDiagram
               data-search="serializeJsValue src/host/orchestrator/templates.ts "
             >
               <h3>serializeJsValue</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:110:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:43:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26696,7 +26789,7 @@ sequenceDiagram
               data-search="serializeSplashScreenPlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeSplashScreenPlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:152:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:85:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26704,7 +26797,7 @@ sequenceDiagram
               data-search="serializeRuntimePlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeRuntimePlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:166:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:99:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26712,31 +26805,7 @@ sequenceDiagram
               data-search="serializePluginsWithRuntimePlan src/host/orchestrator/templates.ts "
             >
               <h3>serializePluginsWithRuntimePlan</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:179:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="createNativeIdentifierSegment src/host/orchestrator/templates.ts "
-            >
-              <h3>createNativeIdentifierSegment</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:201:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="createNativeApplicationId src/host/orchestrator/templates.ts "
-            >
-              <h3>createNativeApplicationId</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:211:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="createExpoScheme src/host/orchestrator/templates.ts "
-            >
-              <h3>createExpoScheme</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:215:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:112:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26744,12 +26813,28 @@ sequenceDiagram
               data-search="serializeAndroidConfig src/host/orchestrator/templates.ts "
             >
               <h3>serializeAndroidConfig</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:220:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:134:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="serializeIosConfig src/host/orchestrator/templates.ts "
+            >
+              <h3>serializeIosConfig</h3>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:155:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="serializeTargetSections src/host/orchestrator/templates.ts "
+            >
+              <h3>serializeTargetSections</h3>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:167:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getAppConfigTs src/host/orchestrator/templates.ts ">
               <h3>getAppConfigTs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:234:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:192:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26757,7 +26842,7 @@ sequenceDiagram
               data-search="getMetroConfigJs src/host/orchestrator/templates.ts "
             >
               <h3>getMetroConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:270:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:225:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26765,12 +26850,12 @@ sequenceDiagram
               data-search="getBabelConfigJs src/host/orchestrator/templates.ts "
             >
               <h3>getBabelConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:278:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:233:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPackageJson src/host/orchestrator/templates.ts ">
               <h3>getPackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:302:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:257:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26778,22 +26863,22 @@ sequenceDiagram
               data-search="getEslintConfigMjs src/host/orchestrator/templates.ts "
             >
               <h3>getEslintConfigMjs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:401:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:358:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPrettierRcJs src/host/orchestrator/templates.ts ">
               <h3>getPrettierRcJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:425:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:382:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getIndexJs src/host/orchestrator/templates.ts ">
               <h3>getIndexJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:430:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:387:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getTsConfigJson src/host/orchestrator/templates.ts ">
               <h3>getTsConfigJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:435:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:392:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>

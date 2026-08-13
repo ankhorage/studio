@@ -63,7 +63,8 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     );
     expect(created.id).toBe(PROJECT_ID);
 
-    const manifest = createOAuthFixtureManifest({
+    const createdManifest = await projectManager.getProjectManifest(created.id);
+    const fixtureManifest = createOAuthFixtureManifest({
       category: 'developer_tools',
       fixture: 'google-apple',
       overrides: {
@@ -73,6 +74,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
         },
       },
     });
+    const manifest = { ...fixtureManifest, deploy: createdManifest.deploy };
     const oauth = manifest.infra.auth?.oauth;
     if (!oauth) {
       throw new Error('Combined OAuth fixture did not configure OAuth.');

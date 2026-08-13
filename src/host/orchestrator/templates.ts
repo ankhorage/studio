@@ -1,4 +1,9 @@
 import type { SplashScreenSpec } from '@ankhorage/contracts';
+import type {
+  AppDeployAndroidTargetConfig,
+  AppDeployIosTargetConfig,
+  AppDeployTargets,
+} from '@ankhorage/contracts/deploy';
 import {
   type ExpoRuntimeConfigPluginOutput,
   type ExpoRuntimePlan,
@@ -25,79 +30,7 @@ const EXPO_FILE_SYSTEM_VERSION = '~19.0.23';
 const EXPO_IMAGE_PICKER_VERSION = '~17.0.11';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
-
-const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
-  [
-    'abstract',
-    'annotation',
-    'as',
-    'break',
-    'byte',
-    'case',
-    'catch',
-    'char',
-    'class',
-    'companion',
-    'const',
-    'continue',
-    'data',
-    'do',
-    'double',
-    'else',
-    'enum',
-    'extends',
-    'false',
-    'final',
-    'finally',
-    'float',
-    'for',
-    'fun',
-    'if',
-    'implements',
-    'import',
-    'in',
-    'int',
-    'interface',
-    'internal',
-    'is',
-    'long',
-    'native',
-    'new',
-    'null',
-    'object',
-    'open',
-    'operator',
-    'out',
-    'override',
-    'package',
-    'private',
-    'protected',
-    'public',
-    'return',
-    'sealed',
-    'short',
-    'static',
-    'strictfp',
-    'super',
-    'suspend',
-    'switch',
-    'synchronized',
-    'this',
-    'throw',
-    'throws',
-    'transient',
-    'true',
-    'try',
-    'typealias',
-    'typeof',
-    'val',
-    'var',
-    'void',
-    'volatile',
-    'when',
-    'while',
-  ].map((segment) => segment.toLowerCase()),
-);
+const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 
 function serializeStringLiteral(value: string): string {
   return `'${value
@@ -198,73 +131,95 @@ function serializePluginsWithRuntimePlan(args: {
   ]`;
 }
 
-function createNativeIdentifierSegment(bundleSuffix: string): string {
-  const sanitized = bundleSuffix.replace(/[^A-Za-z0-9_]/g, '').toLowerCase();
-  const ensuredValue = sanitized.length > 0 ? sanitized : 'app';
-  const leadingLetterSegment = /^[a-z]/u.test(ensuredValue) ? ensuredValue : `app${ensuredValue}`;
-
-  return RESERVED_NATIVE_IDENTIFIER_SEGMENTS.has(leadingLetterSegment)
-    ? `app${leadingLetterSegment}`
-    : leadingLetterSegment;
-}
-
-function createNativeApplicationId(bundleSuffix: string): string {
-  return `com.ankh.${createNativeIdentifierSegment(bundleSuffix)}`;
-}
-
-function createExpoScheme(bundleSuffix: string): string {
-  const identitySegment = createNativeIdentifierSegment(bundleSuffix).replaceAll('_', '') || 'app';
-  return `ankh-${identitySegment}`;
-}
-
 function serializeAndroidConfig(args: {
-  bundleSuffix: string;
+  target: AppDeployAndroidTargetConfig;
   runtimePlan?: ExpoRuntimePlan;
 }): string {
   const permissions = resolveExpoRuntimeNativeOutput(args.runtimePlan).androidPermissions;
   const extraLines =
-    permissions.length > 0 ? `\n    permissions: ${serializeJsValue(permissions, 2)},` : '';
+    permissions.length > 0
+      ? `
+    permissions: ${serializeJsValue(permissions, 2)},`
+      : '';
+  const schemeLine = args.target.scheme
+    ? `
+    scheme: ${serializeStringLiteral(args.target.scheme)},`
+    : '';
 
   return `{
     ...config.android,${extraLines}
-    package: ${serializeStringLiteral(createNativeApplicationId(args.bundleSuffix))},
+    package: ${serializeStringLiteral(args.target.package)},${schemeLine}
   }`;
+}
+
+function serializeIosConfig(target: AppDeployIosTargetConfig): string {
+  const schemeLine = target.scheme
+    ? `
+    scheme: ${serializeStringLiteral(target.scheme)},`
+    : '';
+
+  return `{
+    ...config.ios,
+    bundleIdentifier: ${serializeStringLiteral(target.bundleIdentifier)},${schemeLine}
+  }`;
+}
+
+function serializeTargetSections(args: {
+  targets: AppDeployTargets;
+  runtimePlan?: ExpoRuntimePlan;
+}): string {
+  const sections: string[] = [];
+  if (args.targets.android?.enabled) {
+    sections.push(
+      `  android: ${serializeAndroidConfig({ target: args.targets.android, runtimePlan: args.runtimePlan })},`,
+    );
+  }
+  if (args.targets.ios?.enabled) {
+    sections.push(`  ios: ${serializeIosConfig(args.targets.ios)},`);
+  }
+  if (args.targets.web?.enabled) {
+    sections.push(`  web: {
+    ...config.web,
+    output: 'static',
+    favicon: './assets/favicon.png',
+  },`);
+  }
+  return sections.length > 0
+    ? String.fromCharCode(10) + sections.join(String.fromCharCode(10))
+    : '';
 }
 
 export function getAppConfigTs({
   name,
   slug,
-  bundleSuffix,
+  targets,
   splashScreen = null,
   runtimePlan,
 }: {
   name: string;
   slug: string;
-  bundleSuffix: string;
+  targets: AppDeployTargets;
   splashScreen?: SplashScreenSpec | null;
   runtimePlan?: ExpoRuntimePlan;
 }) {
-  const appConfigTs = `import type { ConfigContext, ExpoConfig } from 'expo/config';
+  const targetSections = serializeTargetSections({ targets, runtimePlan });
+  return `import type { ConfigContext, ExpoConfig } from 'expo/config';
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
-  ...config,
-  name: ${serializeStringLiteral(name)},
-  slug: ${serializeStringLiteral(slug)},
-  scheme: ${serializeStringLiteral(createExpoScheme(bundleSuffix))},
-  plugins: ${serializePluginsWithRuntimePlan({ splashScreen, runtimePlan })},
-  android: ${serializeAndroidConfig({ bundleSuffix, runtimePlan })},
-  ios: {
-    ...config.ios,
-    bundleIdentifier: ${serializeStringLiteral(createNativeApplicationId(bundleSuffix))},
-  },
-  web: {
-    ...config.web,
-    output: 'static',
-    favicon: './assets/favicon.png',
-  },
-});
+export default ({ config }: ConfigContext): ExpoConfig => {
+  const baseConfig = { ...config };
+  delete baseConfig.scheme;
+  delete baseConfig.android;
+  delete baseConfig.ios;
+  delete baseConfig.web;
+
+  return {
+    ...baseConfig,
+    name: ${serializeStringLiteral(name)},
+    slug: ${serializeStringLiteral(slug)},
+    plugins: ${serializePluginsWithRuntimePlan({ splashScreen, runtimePlan })},${targetSections}
+  };
+};
 `;
-  return appConfigTs;
 }
 
 export function getMetroConfigJs() {
@@ -306,6 +261,7 @@ export function getPackageJson(args: {
   databaseRuntimeProvider?: GeneratedDatabaseRuntimeProvider | null;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
+  targets?: AppDeployTargets;
 }) {
   const {
     name,
@@ -314,6 +270,7 @@ export function getPackageJson(args: {
     databaseRuntimeProvider = null,
     storageProvider = null,
     runtimePlan,
+    targets = LEGACY_WEB_ONLY_TARGETS,
   } = args;
   const runtimeDependencies = resolveExpoRuntimeDependencyMap(runtimePlan);
   const pkgJson = {
@@ -323,9 +280,9 @@ export function getPackageJson(args: {
     version: '1.0.0',
     scripts: {
       start: 'expo start',
-      android: 'expo run:android',
-      ios: 'expo run:ios',
-      web: 'expo start --web',
+      ...(targets.android?.enabled ? { android: 'expo run:android' } : {}),
+      ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),
+      ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),
       lint: 'ankhorage-eslint . --max-warnings=0',
       'lint:fix': 'ankhorage-eslint . --fix --max-warnings=0',
       format: 'ankhorage-prettier --write .',

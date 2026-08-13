@@ -21,6 +21,7 @@ import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
 import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
+import { createDefaultAppDeployManifest } from './projectTargets';
 import { ProjectScaffolder } from './scaffolder';
 import type { GeneratedAuthProvider, GeneratedStorageProvider } from './templates';
 import { runWorkspaceInstall } from './workspaceRuntime';
@@ -100,7 +101,8 @@ export class ProjectManager {
     }
 
     const templateData = this.scaffolder.getTemplate(templateSelection);
-    const scaffoldManifest = applySystemTemplates(templateData);
+    const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);
+    const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });
     const zoraExtensions = resolveZoraExtensionsForTemplateSelection(templateSelection);
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
@@ -109,6 +111,7 @@ export class ProjectManager {
       runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
       storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
       splashScreen: scaffoldManifest.splashScreen ?? null,
+      targets: deploy.targets,
       zoraExtensions,
     });
 
@@ -118,6 +121,7 @@ export class ProjectManager {
       name,
       slug,
       templateSelection.category,
+      deploy,
     );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
     await this.writeGeneratedFiles(projectPath, manifest, [], { includeStudio, runtimePlan });
@@ -292,6 +296,7 @@ export class ProjectManager {
       runtimePlan,
       storageProvider: resolveGeneratedStorageProvider(manifest),
       splashScreen: manifest.splashScreen ?? null,
+      targets: manifest.deploy?.targets,
     });
   }
 }

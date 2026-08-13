@@ -556,6 +556,10 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts["src/host/orchestrator/appTargetGeneration.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_appTargetGeneration_test_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts["src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
@@ -596,6 +600,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_generatedRouteCleanup_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
@@ -615,6 +620,8 @@ graph TD
   module_src_host_orchestrator_projectStoreSummary_test_ts["src/host/orchestrator/projectStoreSummary.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectStoreSummary_test_ts
   module_src_host_orchestrator_projectStoreSummary_test_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectTargets_ts["src/host/orchestrator/projectTargets.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_resolveMutations_ts
   module_src_host_orchestrator_resolveMutations_ts --> module_src_host_modules_catalog_ts

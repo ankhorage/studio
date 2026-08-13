@@ -146,6 +146,7 @@ graph LR
   module_src_host_modules_layout_ts["src/host/modules/layout.ts"]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts["src/host/modules/runtime/LocalFsTargetAdapter.ts"]
   module_src_host_oauthFixtureConsumer_smoke_test_ts["src/host/oauthFixtureConsumer.smoke.test.ts"]
+  module_src_host_orchestrator_appTargetGeneration_test_ts["src/host/orchestrator/appTargetGeneration.test.ts"]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts["src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"]
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts["src/host/orchestrator/expoSdk54AnimationCompatibility.ts"]
   module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
@@ -159,6 +160,7 @@ graph LR
   module_src_host_orchestrator_projectPaths_ts["src/host/orchestrator/projectPaths.ts"]
   module_src_host_orchestrator_projectStore_ts["src/host/orchestrator/projectStore.ts"]
   module_src_host_orchestrator_projectStoreSummary_test_ts["src/host/orchestrator/projectStoreSummary.test.ts"]
+  module_src_host_orchestrator_projectTargets_ts["src/host/orchestrator/projectTargets.ts"]
   module_src_host_orchestrator_resolveMutations_ts["src/host/orchestrator/resolveMutations.ts"]
   module_src_host_orchestrator_scaffolder_ts["src/host/orchestrator/scaffolder.ts"]
   module_src_host_orchestrator_semverRange_test_ts["src/host/orchestrator/semverRange.test.ts"]
@@ -618,6 +620,8 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
+  module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
@@ -640,6 +644,7 @@ graph LR
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_generatedRouteCleanup_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_scaffolder_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_workspaceRuntime_ts
