@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.2.0
+
+### Minor Changes
+
+- 06294ee: Add bundled app media authoring backed by assets/authoring and generated Expo media registries.
+
 ## 1.1.0
 
 ### Minor Changes
