@@ -43,7 +43,7 @@ jobs:
         run: |
           bunx @ankhorage/ankh doctor validate .
           npm pack --dry-run
-          bun run changeset:status --since=origin/main
+          bun run changeset:status
 
       - name: Commit generated documentation
         run: |
