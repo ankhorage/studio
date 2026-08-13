@@ -205,7 +205,7 @@
     "@ankhorage/color-theory": "^0.0.8",
     "@ankhorage/contracts": "^7.6.0",
     "@ankhorage/data-sources": "^1.0.1",
-    "@ankhorage/expo-runtime": "^2.0.0",
+    "@ankhorage/expo-runtime": "^2.1.0",
     "@ankhorage/infra": "^3.2.0",
     "@ankhorage/orchestrator": "^0.3.0",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",
@@ -220,7 +220,8 @@
     "@ankhorage/zora-tabletop": "^0.0.5",
     "@fastify/cors": "^11.2.0",
     "fastify": "^5.7.4",
-    "react-native-gesture-handler": "~2.28.0"
+    "react-native-gesture-handler": "~2.28.0",
+    "@ankhorage/supabase-storage": "^0.2.0"
   },
   "peerDependencies": {
     "@expo/vector-icons": "^15.0.3",

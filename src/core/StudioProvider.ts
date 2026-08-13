@@ -46,7 +46,16 @@ import {
   setStudioManifestRoutePrimaryNavigationVisibility,
 } from '../manifestState';
 import { createStudioManifestSignature } from '../manifestSync';
-import { removeStudioMediaAsset, upsertStudioMediaAsset } from '../mediaAuthoringModel';
+import {
+  createStudioMediaAssetId,
+  removeStudioMediaAsset,
+  upsertStudioMediaAsset,
+} from '../mediaAuthoringModel';
+import type {
+  StudioMediaIngestResult,
+  StudioMediaPickerAdapter,
+  StudioMediaPickerSource,
+} from '../mediaPickerAuthoring';
 import { resolveScreenIdForPathname } from '../routeUtils';
 import {
   resolveStudioSelectedNodeId,
@@ -54,6 +63,7 @@ import {
 } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
+import { ingestStudioMediaSelection } from './mediaAuthoringHostClient';
 import { StudioContext } from './StudioContext';
 import {
   applyStudioManifestDraftMutation,
@@ -72,6 +82,7 @@ export interface StudioProviderProps {
   initialManifest?: StudioManifest | null;
   activePathname?: string;
   componentMeta: StudioComponentMetaRegistry;
+  mediaPicker?: StudioMediaPickerAdapter;
 }
 
 const noop = () => undefined;
@@ -83,6 +94,7 @@ export const StudioProvider = ({
   initialManifest = null,
   activePathname,
   componentMeta,
+  mediaPicker,
 }: StudioProviderProps) => {
   const [manifest, setManifest] = useState<StudioManifest | null>(initialManifest);
   const [activePanelId, setActivePanelId] = useState<StudioPanelId | null>(null);
@@ -176,6 +188,26 @@ export const StudioProvider = ({
       return removed;
     },
     [updateManifest],
+  );
+
+  const ingestMediaFromPicker = useCallback(
+    async (source: StudioMediaPickerSource): Promise<StudioMediaIngestResult> => {
+      if (!mediaPicker) return { ok: false, reason: 'Media picker unavailable.' };
+      const picked = await mediaPicker.pick({ source });
+      if (!picked.ok) return picked;
+      const { current } = manifestRef;
+      if (!current) return { ok: false, reason: 'Manifest unavailable.' };
+      const assetId = createStudioMediaAssetId(picked.selection.name, current.media?.assets);
+      const ingested = await ingestStudioMediaSelection({
+        projectId,
+        assetId,
+        selection: picked.selection,
+      });
+      if (!ingested.ok) return ingested;
+      upsertMediaAsset(ingested.asset);
+      return ingested;
+    },
+    [mediaPicker, projectId, upsertMediaAsset],
   );
 
   const updateTheme = useCallback(
@@ -413,6 +445,8 @@ export const StudioProvider = ({
       updateNode,
       upsertMediaAsset,
       removeMediaAsset,
+      mediaPickerAvailable: mediaPicker !== undefined,
+      ingestMediaFromPicker,
       updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
@@ -460,6 +494,8 @@ export const StudioProvider = ({
       updateNode,
       upsertMediaAsset,
       removeMediaAsset,
+      mediaPicker,
+      ingestMediaFromPicker,
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,

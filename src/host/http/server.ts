@@ -1,6 +1,5 @@
 import {
   InfraScriptExecutionError,
-  readProjectInfrastructureEnvironment,
   runProjectInfrastructureLifecycle,
 } from '@ankhorage/infra/project';
 import cors from '@fastify/cors';
@@ -20,6 +19,7 @@ import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { getTemplateCatalog, type ProjectTemplateSelection } from '../templateRegistry';
 import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
+import { registerProjectMediaRoutes } from './mediaRoutes';
 import { registerProjectModuleRoutes } from './moduleRoutes';
 import { isOriginAllowed } from './security';
 
@@ -64,6 +64,8 @@ export async function createStudioHostServer(args: {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
+
+  registerProjectMediaRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
 
   // --- PROJECT ROUTES ---
 
@@ -336,53 +338,6 @@ export async function createStudioHostServer(args: {
       reply.status(404).send({ error: message });
     }
   });
-
-  // GET project-scoped Supabase public credentials for Studio uploads
-  fastify.get(
-    '/api/projects/:id/infra/storage/supabase-public',
-    async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id } = req.params as { id: string };
-
-      try {
-        const status = await projectManager.getInfrastructureStatus(id);
-        const { target } = status;
-        if (!target) {
-          return reply.status(400).send({
-            error: `Project '${id}' has no infra deployment target configured. Run infra generation first.`,
-          });
-        }
-
-        const environment = await readProjectInfrastructureEnvironment({
-          keys: [
-            'EXPO_PUBLIC_SUPABASE_URL',
-            'SUPABASE_URL',
-            'EXPO_PUBLIC_SUPABASE_ANON_KEY',
-            'SUPABASE_ANON_KEY',
-          ],
-          projectPath: getProjectPath(projectRoot, id),
-          target,
-        });
-        const url =
-          environment.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? environment.SUPABASE_URL?.trim();
-        const anonKey =
-          environment.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim() ??
-          environment.SUPABASE_ANON_KEY?.trim();
-
-        if (!url || !anonKey) {
-          return reply.status(400).send({
-            error:
-              `Missing Supabase public credentials for project '${id}'. ` +
-              'Regenerate infrastructure and run Infra Up first.',
-          });
-        }
-
-        return { url, anonKey };
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        reply.status(500).send({ error: message });
-      }
-    },
-  );
 
   // PUT (Save) Manifest
   fastify.put('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {

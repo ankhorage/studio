@@ -19,6 +19,10 @@ const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.1.2';
 const SUPABASE_DB_VERSION = '^1.0.0';
 const ZORA_VERSION = '^2.9.0';
+const EXPO_RUNTIME_VERSION = '^2.1.0';
+const EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';
+const EXPO_FILE_SYSTEM_VERSION = '~19.0.23';
+const EXPO_IMAGE_PICKER_VERSION = '~17.0.11';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 
@@ -348,8 +352,12 @@ export function getPackageJson(args: {
       ...runtimeDependencies,
       ...(includeStudio
         ? {
+            '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
             '@expo/vector-icons': '^15.0.3',
             '@react-native-picker/picker': '2.11.1',
+            'expo-document-picker': EXPO_DOCUMENT_PICKER_VERSION,
+            'expo-file-system': EXPO_FILE_SYSTEM_VERSION,
+            'expo-image-picker': EXPO_IMAGE_PICKER_VERSION,
           }
         : {}),
       '@react-navigation/bottom-tabs': '^7.18.2',

@@ -39,6 +39,7 @@ graph LR
   module_src_contractGuards_test_ts["src/contractGuards.test.ts"]
   module_src_contractGuards_ts["src/contractGuards.ts"]
   module_src_core_constants_ts["src/core/constants.ts"]
+  module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
   module_src_core_studioManifestDraftModel_test_ts["src/core/studioManifestDraftModel.test.ts"]
   module_src_core_studioManifestDraftModel_ts["src/core/studioManifestDraftModel.ts"]
@@ -79,6 +80,7 @@ graph LR
   module_src_host_http_authRoutes_test_ts["src/host/http/authRoutes.test.ts"]
   module_src_host_http_authRoutes_ts["src/host/http/authRoutes.ts"]
   module_src_host_http_dataSourceRoutes_ts["src/host/http/dataSourceRoutes.ts"]
+  module_src_host_http_mediaRoutes_ts["src/host/http/mediaRoutes.ts"]
   module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
   module_src_host_http_moduleRoutes_ts["src/host/http/moduleRoutes.ts"]
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
@@ -125,6 +127,9 @@ graph LR
   module_src_host_manifestSystem_auth_shared_index_ts["src/host/manifestSystem/auth/shared/index.ts"]
   module_src_host_manifestSystem_index_ts["src/host/manifestSystem/index.ts"]
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
+  module_src_host_media_projectMediaService_test_ts["src/host/media/projectMediaService.test.ts"]
+  module_src_host_media_projectMediaService_ts["src/host/media/projectMediaService.ts"]
+  module_src_host_media_projectMediaStorage_ts["src/host/media/projectMediaStorage.ts"]
   module_src_host_modules_adminRuntime_test_ts["src/host/modules/adminRuntime.test.ts"]
   module_src_host_modules_adminRuntime_ts["src/host/modules/adminRuntime.ts"]
   module_src_host_modules_catalog_test_ts["src/host/modules/catalog.test.ts"]
@@ -181,6 +186,7 @@ graph LR
   module_src_manifestSync_ts["src/manifestSync.ts"]
   module_src_mediaAuthoringModel_test_ts["src/mediaAuthoringModel.test.ts"]
   module_src_mediaAuthoringModel_ts["src/mediaAuthoringModel.ts"]
+  module_src_mediaPickerAuthoring_ts["src/mediaPickerAuthoring.ts"]
   module_src_moduleAdmin_public_test_ts["src/moduleAdmin.public.test.ts"]
   module_src_moduleAdminApi_test_ts["src/moduleAdminApi.test.ts"]
   module_src_moduleAdminApi_ts["src/moduleAdminApi.ts"]
@@ -230,6 +236,7 @@ graph LR
   module_src_runtime_stationarySelectionCoordinator_ts["src/runtime/stationarySelectionCoordinator.ts"]
   module_src_runtime_stationarySelectionInputState_test_ts["src/runtime/stationarySelectionInputState.test.ts"]
   module_src_runtime_stationarySelectionInputState_ts["src/runtime/stationarySelectionInputState.ts"]
+  module_src_runtime_studioMediaResolver_ts["src/runtime/studioMediaResolver.ts"]
   module_src_runtime_useRuntimeAction_ts["src/runtime/useRuntimeAction.ts"]
   module_src_runtimeDiagnosticsModel_test_ts["src/runtimeDiagnosticsModel.test.ts"]
   module_src_runtimeDiagnosticsModel_ts["src/runtimeDiagnosticsModel.ts"]
@@ -291,6 +298,7 @@ graph LR
   module_src_ui_admin_pages_GeneratedApiToggle_tsx["src/ui/admin/pages/GeneratedApiToggle.tsx"]
   module_src_ui_admin_pages_ManualRestSourceCard_tsx["src/ui/admin/pages/ManualRestSourceCard.tsx"]
   module_src_ui_admin_pages_MediaAdminPage_tsx["src/ui/admin/pages/MediaAdminPage.tsx"]
+  module_src_ui_admin_pages_MediaDeviceImportCard_tsx["src/ui/admin/pages/MediaDeviceImportCard.tsx"]
   module_src_ui_admin_pages_MediaPropertyInput_tsx["src/ui/admin/pages/MediaPropertyInput.tsx"]
   module_src_ui_admin_pages_ModuleDetailAdminPage_tsx["src/ui/admin/pages/ModuleDetailAdminPage.tsx"]
   module_src_ui_admin_pages_ModulesAdminPage_tsx["src/ui/admin/pages/ModulesAdminPage.tsx"]
@@ -615,6 +623,8 @@ graph LR
   export_StudioContextValue -.-> export_NodePlacement
   export_StudioContextValue -.-> export_StudioAdminRouteId
   export_StudioContextValue -.-> export_StudioComponentMetaRegistry
+  export_StudioContextValue -.-> export_StudioMediaIngestResult
+  export_StudioContextValue -.-> export_StudioMediaPickerSource
   export_StudioContextValue -.-> export_StudioNodeId
   export_StudioContextValue -.-> export_StudioPanelId
   export_StudioContextValue -.-> export_StudioSaveStatus
@@ -638,6 +648,23 @@ graph LR
   module_src_index_ts --> export_StudioManifest
   export_StudioMediaAssetRemovalResult["StudioMediaAssetRemovalResult"]
   module_src_mediaAuthoringModel_ts --> export_StudioMediaAssetRemovalResult
+  export_StudioMediaIngestResult["StudioMediaIngestResult"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaIngestResult
+  export_StudioMediaPickerAdapter["StudioMediaPickerAdapter"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerAdapter
+  export_StudioMediaPickerAdapter -.-> export_StudioMediaPickerInput
+  export_StudioMediaPickerAdapter -.-> export_StudioMediaPickerResult
+  export_StudioMediaPickerFailureReason["StudioMediaPickerFailureReason"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerFailureReason
+  export_StudioMediaPickerInput["StudioMediaPickerInput"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerInput
+  export_StudioMediaPickerInput -.-> export_StudioMediaPickerSource
+  export_StudioMediaPickerResult["StudioMediaPickerResult"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerResult
+  export_StudioMediaPickerSelection["StudioMediaPickerSelection"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerSelection
+  export_StudioMediaPickerSource["StudioMediaPickerSource"]
+  module_src_mediaPickerAuthoring_ts --> export_StudioMediaPickerSource
   export_StudioMediaUsage["StudioMediaUsage"]
   module_src_mediaAuthoringModel_ts --> export_StudioMediaUsage
   export_StudioModuleAdminContribution["StudioModuleAdminContribution"]

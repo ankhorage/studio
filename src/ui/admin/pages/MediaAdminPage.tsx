@@ -11,6 +11,7 @@ import {
   listStudioMediaAssets,
 } from '../../../mediaAuthoringModel';
 import { AdminHeader, AdminScroll, Field, KeyValue } from '../adminPagePrimitives';
+import { MediaDeviceImportCard } from './MediaDeviceImportCard';
 
 const MEDIA_KIND_OPTIONS = MEDIA_ASSET_KINDS.map((value) => ({
   value,
@@ -58,6 +59,7 @@ export function MediaAdminPage() {
         title="Media"
         description="Canonical app-authoring media. Runtime user uploads are intentionally not shown here."
       />
+      <MediaDeviceImportCard />
       <Card
         title="Import external URL"
         description="The URL remains remote and is stored as a stable media source."
@@ -90,8 +92,7 @@ export function MediaAdminPage() {
       {assets.length === 0 ? (
         <Card title="No media yet">
           <Text color="neutral" emphasis="muted">
-            Import a stable URL now. Upload and device/photo-library ingestion are added through the
-            trusted host/platform boundary next.
+            Import a device file, photo-library item, or stable external URL.
           </Text>
         </Card>
       ) : null}
