@@ -67,9 +67,13 @@ Studio now provides:
 - Studio preview composition of bundled and storage-backed media resolution;
 - media metadata display where available;
 - recursive component-property usage detection;
-- deletion of manifest entries only when an asset is unused;
+- usage-safe manifest-first deletion with managed/bundled physical cleanup;
 - generic Properties selection driven by ZORA `type: 'media'` and `mediaKinds` metadata.
 
 ## Lifecycle boundary
 
-Manifest removal remains usage-aware. Physical cleanup of bundled files and managed storage objects is intentionally a separate trusted lifecycle operation. It is not silently coupled to manifest mutation, so filesystem/provider deletion failures and reference safety can be handled explicitly in the next lifecycle slice.
+Media deletion is usage-aware and manifest-first. Studio removes the unused asset from the canonical manifest and flushes that manifest successfully before the trusted host may touch a physical source. A failed manifest save rolls the local mutation back and leaves the source untouched.
+
+After a successful manifest save, managed storage sources are removed through the provider-neutral `MediaStorageAdapter.remove()` boundary and bundled sources are removed only below `assets/authoring` before the static Metro registry is regenerated. Stable external URL sources have no physical cleanup operation.
+
+If post-save physical cleanup fails, Studio keeps the manifest safely reference-free and reports that an orphaned authoring source may remain. It never restores a manifest reference to a source whose cleanup outcome is uncertain.
