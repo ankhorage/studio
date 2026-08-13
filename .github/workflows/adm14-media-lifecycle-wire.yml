@@ -120,6 +120,11 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/core/StudioProvider.ts src/index.ts
+          git add \
+            src/core/StudioProvider.ts \
+            src/index.ts \
+            src/core/mediaRemovalCoordinator.ts \
+            src/host/http/mediaRoutes.ts \
+            src/ui/admin/pages/MediaAdminPage.tsx
           git commit -m 'Wire trusted media lifecycle' || exit 0
           git push origin HEAD:agent/adm14-media-lifecycle
