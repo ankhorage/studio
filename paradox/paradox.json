@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.2.0",
+      "value": "v1.3.0",
       "color": "cb3837"
     },
     {
@@ -1435,6 +1435,15 @@
       "exports": []
     },
     {
+      "path": "src/host/orchestrator/appTargetGeneration.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectTargets.ts",
+        "src/host/orchestrator/templates.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1519,6 +1528,7 @@
         "src/host/orchestrator/generatedRouteCleanup.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/projectStore.ts",
+        "src/host/orchestrator/projectTargets.ts",
         "src/host/orchestrator/scaffolder.ts",
         "src/host/orchestrator/templates.ts",
         "src/host/orchestrator/workspaceRuntime.ts",
@@ -1560,6 +1570,12 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/projectStore.ts"],
       "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/projectTargets.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createDefaultAppDeployManifest"]
     },
     {
       "path": "src/host/orchestrator/resolveMutations.ts",
@@ -14065,7 +14081,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 299,
+        "line": 304,
         "column": 1
       }
     },
@@ -14074,7 +14090,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 308,
+        "line": 313,
         "column": 1
       }
     },
@@ -14083,7 +14099,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 316,
+        "line": 321,
         "column": 1
       }
     },
@@ -14241,6 +14257,24 @@
       }
     },
     {
+      "name": "createDefaultAppDeployManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectTargets.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "createNativeIdentifierSegment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectTargets.ts",
+        "line": 98,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveModuleLayoutMutations",
       "description": null,
       "sourceLocation": {
@@ -14254,7 +14288,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 315,
+        "line": 328,
         "column": 1
       }
     },
@@ -14263,7 +14297,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 324,
+        "line": 337,
         "column": 1
       }
     },
@@ -14272,7 +14306,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 337,
+        "line": 350,
         "column": 1
       }
     },
@@ -14281,7 +14315,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 406,
+        "line": 423,
         "column": 1
       }
     },
@@ -14326,7 +14360,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 102,
+        "line": 35,
         "column": 1
       }
     },
@@ -14335,7 +14369,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 110,
+        "line": 43,
         "column": 1
       }
     },
@@ -14344,7 +14378,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 152,
+        "line": 85,
         "column": 1
       }
     },
@@ -14353,7 +14387,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 166,
+        "line": 99,
         "column": 1
       }
     },
@@ -14362,34 +14396,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 179,
-        "column": 1
-      }
-    },
-    {
-      "name": "createNativeIdentifierSegment",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/templates.ts",
-        "line": 201,
-        "column": 1
-      }
-    },
-    {
-      "name": "createNativeApplicationId",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/templates.ts",
-        "line": 211,
-        "column": 1
-      }
-    },
-    {
-      "name": "createExpoScheme",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/templates.ts",
-        "line": 215,
+        "line": 112,
         "column": 1
       }
     },
@@ -14398,7 +14405,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 220,
+        "line": 134,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializeIosConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/templates.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializeTargetSections",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/templates.ts",
+        "line": 167,
         "column": 1
       }
     },
@@ -14407,7 +14432,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 234,
+        "line": 192,
         "column": 1
       }
     },
@@ -14416,7 +14441,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 270,
+        "line": 225,
         "column": 1
       }
     },
@@ -14425,7 +14450,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 278,
+        "line": 233,
         "column": 1
       }
     },
@@ -14434,7 +14459,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 302,
+        "line": 257,
         "column": 1
       }
     },
@@ -14443,7 +14468,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 401,
+        "line": 358,
         "column": 1
       }
     },
@@ -14452,7 +14477,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 425,
+        "line": 382,
         "column": 1
       }
     },
@@ -14461,7 +14486,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 430,
+        "line": 387,
         "column": 1
       }
     },
@@ -14470,7 +14495,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 435,
+        "line": 392,
         "column": 1
       }
     },
@@ -21922,12 +21947,12 @@
       },
       {
         "fromPath": "src/core/mediaAuthoringHostClient.ts",
-        "toPath": "src/core/mediaRemovalCoordinator.ts",
+        "toPath": "src/core/constants.ts",
         "sourcePath": "src/core/mediaAuthoringHostClient.ts"
       },
       {
         "fromPath": "src/core/mediaAuthoringHostClient.ts",
-        "toPath": "src/core/constants.ts",
+        "toPath": "src/core/mediaRemovalCoordinator.ts",
         "sourcePath": "src/core/mediaAuthoringHostClient.ts"
       },
       {
@@ -23151,6 +23176,16 @@
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toPath": "src/host/orchestrator/projectTargets.ts",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toPath": "src/host/orchestrator/templates.ts",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
         "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
         "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
@@ -23273,6 +23308,11 @@
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/projectStore.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/orchestrator/projectTargets.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -33495,6 +33535,12 @@
       },
       {
         "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "projectManager.getProjectManifest",
+        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
         "toSymbol": "createOAuthFixtureManifest",
         "callExpression": "createOAuthFixtureManifest",
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
@@ -33509,12 +33555,6 @@
         "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
         "toSymbol": "syncProject",
         "callExpression": "moduleManager.syncProject",
-        "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/oauthFixtureConsumer.smoke.test.ts",
-        "toSymbol": "getProjectManifest",
-        "callExpression": "projectManager.getProjectManifest",
         "sourcePath": "src/host/oauthFixtureConsumer.smoke.test.ts"
       },
       {
@@ -38204,6 +38244,42 @@
         "sourcePath": "src/host/modules/catalog.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "getAppConfigTs",
+        "callExpression": "getAppConfigTs",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/appTargetGeneration.test.ts",
+        "toSymbol": "createDefaultAppDeployManifest",
+        "callExpression": "createDefaultAppDeployManifest",
+        "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
+      },
+      {
         "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -39255,6 +39331,12 @@
       },
       {
         "fromSymbol": "createProject",
+        "toSymbol": "createDefaultAppDeployManifest",
+        "callExpression": "createDefaultAppDeployManifest",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "createProject",
         "toSymbol": "applySystemTemplates",
         "callExpression": "applySystemTemplates",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -39944,6 +40026,12 @@
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
+        "fromSymbol": "createDefaultAppDeployManifest",
+        "toSymbol": "createNativeIdentifierSegment",
+        "callExpression": "createNativeIdentifierSegment",
+        "sourcePath": "src/host/orchestrator/projectTargets.ts"
+      },
+      {
         "fromSymbol": "resolveModuleLayoutMutations",
         "toSymbol": "getHostModule",
         "callExpression": "getHostModule",
@@ -40334,18 +40422,6 @@
         "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
-        "fromSymbol": "createNativeApplicationId",
-        "toSymbol": "createNativeIdentifierSegment",
-        "callExpression": "createNativeIdentifierSegment",
-        "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
-        "fromSymbol": "createExpoScheme",
-        "toSymbol": "createNativeIdentifierSegment",
-        "callExpression": "createNativeIdentifierSegment",
-        "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
         "fromSymbol": "serializeAndroidConfig",
         "toSymbol": "resolveExpoRuntimeNativeOutput",
         "callExpression": "resolveExpoRuntimeNativeOutput",
@@ -40364,9 +40440,27 @@
         "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
-        "fromSymbol": "serializeAndroidConfig",
-        "toSymbol": "createNativeApplicationId",
-        "callExpression": "createNativeApplicationId",
+        "fromSymbol": "serializeIosConfig",
+        "toSymbol": "serializeStringLiteral",
+        "callExpression": "serializeStringLiteral",
+        "sourcePath": "src/host/orchestrator/templates.ts"
+      },
+      {
+        "fromSymbol": "serializeTargetSections",
+        "toSymbol": "serializeAndroidConfig",
+        "callExpression": "serializeAndroidConfig",
+        "sourcePath": "src/host/orchestrator/templates.ts"
+      },
+      {
+        "fromSymbol": "serializeTargetSections",
+        "toSymbol": "serializeIosConfig",
+        "callExpression": "serializeIosConfig",
+        "sourcePath": "src/host/orchestrator/templates.ts"
+      },
+      {
+        "fromSymbol": "getAppConfigTs",
+        "toSymbol": "serializeTargetSections",
+        "callExpression": "serializeTargetSections",
         "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
@@ -40377,26 +40471,8 @@
       },
       {
         "fromSymbol": "getAppConfigTs",
-        "toSymbol": "createExpoScheme",
-        "callExpression": "createExpoScheme",
-        "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
-        "fromSymbol": "getAppConfigTs",
         "toSymbol": "serializePluginsWithRuntimePlan",
         "callExpression": "serializePluginsWithRuntimePlan",
-        "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
-        "fromSymbol": "getAppConfigTs",
-        "toSymbol": "serializeAndroidConfig",
-        "callExpression": "serializeAndroidConfig",
-        "sourcePath": "src/host/orchestrator/templates.ts"
-      },
-      {
-        "fromSymbol": "getAppConfigTs",
-        "toSymbol": "createNativeApplicationId",
-        "callExpression": "createNativeApplicationId",
         "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {

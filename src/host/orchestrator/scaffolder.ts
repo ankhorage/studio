@@ -1,4 +1,5 @@
 import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
+import type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -34,6 +35,7 @@ interface ScaffoldProjectOptions {
   splashScreen?: SplashScreenSpec | null;
   zoraExtensions?: readonly ZoraExtensionDefinition[];
   runtimePlan?: ExpoRuntimePlan;
+  targets?: AppDeployTargets;
 }
 
 type PackageJsonShape = ReturnType<typeof getPackageJson>;
@@ -43,7 +45,9 @@ type ExtendedPackageJsonShape = Omit<PackageJsonShape, 'dependencies'> & {
 type PackageScripts = PackageJsonShape['scripts'];
 type PartialPackageScripts = Partial<PackageScripts>;
 
-const MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
+const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
+const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;
+const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 const LEGACY_MANAGED_DEV_DEPENDENCIES = ['eslint', 'prettier'] as const;
 
 export class ProjectScaffolder {
@@ -63,6 +67,7 @@ export class ProjectScaffolder {
       splashScreen = null,
       zoraExtensions = [],
       runtimePlan,
+      targets = LEGACY_WEB_ONLY_TARGETS,
     } = options;
     await fs.mkdir(projectPath, { recursive: true });
     await fs.mkdir(path.join(projectPath, 'assets'), { recursive: true });
@@ -77,8 +82,9 @@ export class ProjectScaffolder {
       storageProvider,
       zoraExtensions,
       runtimePlan,
+      targets,
     );
-    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);
+    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
@@ -106,6 +112,7 @@ export class ProjectScaffolder {
       storageProvider = null,
       splashScreen = null,
       runtimePlan,
+      targets = LEGACY_WEB_ONLY_TARGETS,
     } = options;
     await fs.mkdir(projectPath, { recursive: true });
     await fs.mkdir(path.join(projectPath, 'assets'), { recursive: true });
@@ -128,6 +135,7 @@ export class ProjectScaffolder {
         databaseRuntimeProvider,
         storageProvider,
         runtimePlan,
+        targets,
       }),
       zoraExtensions,
     );
@@ -136,10 +144,11 @@ export class ProjectScaffolder {
       existingPackageJson,
       templatePackageJson,
       includeStudio,
+      targets,
     );
 
     await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
-    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);
+    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
@@ -162,10 +171,12 @@ export class ProjectScaffolder {
     appName: string,
     slug: string,
     category: AppCategory,
+    deploy: AppDeployManifest,
   ) {
     const now = new Date().toISOString();
     const manifestWithCategory: AppManifest = {
       ...templateData,
+      deploy,
       metadata: {
         ...templateData.metadata,
         name: appName,
@@ -190,13 +201,13 @@ export class ProjectScaffolder {
     dir: string,
     name: string,
     slug: string,
+    targets: AppDeployTargets,
     splashScreen: SplashScreenSpec | null,
     runtimePlan?: ExpoRuntimePlan,
   ) {
-    const bundleSuffix = slug.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
     await fs.writeFile(
       path.join(dir, 'app.config.ts'),
-      getAppConfigTs({ name, slug, bundleSuffix, splashScreen, runtimePlan }),
+      getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
       'utf8',
     );
   }
@@ -221,7 +232,8 @@ export class ProjectScaffolder {
     databaseRuntimeProvider: GeneratedDatabaseRuntimeProvider | null,
     storageProvider: GeneratedStorageProvider,
     zoraExtensions: readonly ZoraExtensionDefinition[],
-    runtimePlan?: ExpoRuntimePlan,
+    runtimePlan: ExpoRuntimePlan | undefined,
+    targets: AppDeployTargets,
   ) {
     const packageJson = withZoraExtensionDependencies(
       getPackageJson({
@@ -231,6 +243,7 @@ export class ProjectScaffolder {
         databaseRuntimeProvider,
         storageProvider,
         runtimePlan,
+        targets,
       }),
       zoraExtensions,
     );
@@ -338,24 +351,28 @@ function mergePackageJson(
   existing: ExtendedPackageJsonShape | null,
   template: ExtendedPackageJsonShape,
   includeStudio: boolean,
+  targets: AppDeployTargets,
 ) {
-  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false });
-  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true });
+  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false, targets });
+  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true, targets });
   const supabaseBaseTemplate = getPackageJson({
     name: template.name,
     includeStudio: false,
     authProvider: 'supabase',
     storageProvider: 'supabase',
+    targets,
   });
   const supabaseStudioTemplate = getPackageJson({
     name: template.name,
     includeStudio: true,
     authProvider: 'supabase',
     storageProvider: 'supabase',
+    targets,
   });
   const supabaseDatabaseTemplate = getPackageJson({
     name: template.name,
     databaseRuntimeProvider: 'supabase',
+    targets,
   });
 
   const managedDependencies = new Set([
@@ -407,13 +424,21 @@ function mergeScripts(
   existingScripts: PartialPackageScripts,
   templateScripts: PackageScripts,
 ): PackageScripts {
-  const mergedScripts: PackageScripts = {
+  const mergedScripts = {
     ...templateScripts,
     ...existingScripts,
   };
 
-  for (const scriptName of MANAGED_SCRIPT_NAMES) {
+  for (const scriptName of REQUIRED_MANAGED_SCRIPT_NAMES) {
     mergedScripts[scriptName] = templateScripts[scriptName];
+  }
+  for (const scriptName of TARGET_SCRIPT_NAMES) {
+    const targetScript = templateScripts[scriptName];
+    if (targetScript === undefined) {
+      delete mergedScripts[scriptName];
+    } else {
+      mergedScripts[scriptName] = targetScript;
+    }
   }
 
   return mergedScripts;

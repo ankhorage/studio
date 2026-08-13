@@ -75,16 +75,30 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['expo-web-browser']).toBeUndefined();
   });
 
-  it('generates one deterministic native scheme for callback deep links', () => {
+  it('uses canonical target identities for generated native configuration', () => {
     const appConfig = getAppConfigTs({
       name: 'OAuth App',
-      slug: 'oauth-app',
-      bundleSuffix: 'oauthapp',
+      slug: 'renamed-oauth-app',
+      targets: {
+        web: { enabled: true },
+        android: {
+          enabled: true,
+          package: 'com.example.stable.android',
+          scheme: 'stable-android',
+        },
+        ios: {
+          enabled: true,
+          bundleIdentifier: 'com.example.stable.ios',
+          scheme: 'stable-ios',
+        },
+      },
     });
 
-    expect(appConfig).toContain("scheme: 'ankh-oauthapp'");
-    expect(appConfig).toContain("package: 'com.ankh.oauthapp'");
-    expect(appConfig).toContain("bundleIdentifier: 'com.ankh.oauthapp'");
+    expect(appConfig).toContain("package: 'com.example.stable.android'");
+    expect(appConfig).toContain("bundleIdentifier: 'com.example.stable.ios'");
+    expect(appConfig).toContain("scheme: 'stable-android'");
+    expect(appConfig).toContain("scheme: 'stable-ios'");
+    expect(appConfig).not.toContain('com.ankh.renamedoauthapp');
   });
 
   it('uses the canonical Expo Router entry for cold deep links', () => {
