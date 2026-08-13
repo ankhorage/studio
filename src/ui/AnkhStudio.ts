@@ -1,4 +1,12 @@
-import { type RuntimeRendererConfig, RuntimeRendererConfigProvider } from '@ankhorage/runtime';
+import {
+  createExpoBundledMediaResolver,
+  type ExpoBundledMediaRegistry,
+} from '@ankhorage/expo-runtime/bundled-media';
+import {
+  type RuntimeMediaAssetResolver,
+  type RuntimeRendererConfig,
+  RuntimeRendererConfigProvider,
+} from '@ankhorage/runtime';
 import React, { useMemo } from 'react';
 
 import { API_BASE } from '../core/constants';
@@ -9,14 +17,19 @@ export interface AnkhStudioProps {
   children: React.ReactNode;
   runtimeRegistry?: unknown;
   runtimeConfig?: unknown;
+  bundledMediaRegistry?: ExpoBundledMediaRegistry;
 }
 
-export const AnkhStudio = ({ children }: AnkhStudioProps) => {
+export const AnkhStudio = ({ children, bundledMediaRegistry = {} }: AnkhStudioProps) => {
   const studio = useStudio();
-  const resolveMediaAsset = useMemo(
-    () => createStudioMediaAssetResolver({ apiBase: API_BASE, projectId: studio.projectId }),
-    [studio.projectId],
-  );
+  const resolveMediaAsset = useMemo<RuntimeMediaAssetResolver>(() => {
+    const bundledResolver = createExpoBundledMediaResolver(bundledMediaRegistry);
+    const storageResolver = createStudioMediaAssetResolver({
+      apiBase: API_BASE,
+      projectId: studio.projectId,
+    });
+    return async (args) => bundledResolver(args) ?? (await storageResolver(args));
+  }, [bundledMediaRegistry, studio.projectId]);
   const mediaConfig = useMemo<RuntimeRendererConfig>(
     () => ({ mediaAssets: studio.manifest?.media?.assets, resolveMediaAsset }),
     [resolveMediaAsset, studio.manifest?.media?.assets],

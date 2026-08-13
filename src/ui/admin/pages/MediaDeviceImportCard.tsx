@@ -3,17 +3,20 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useStudio } from '../../../core/StudioContext';
-import type { StudioMediaPickerSource } from '../../../mediaPickerAuthoring';
+import type {
+  StudioMediaIngestTarget,
+  StudioMediaPickerSource,
+} from '../../../mediaPickerAuthoring';
 
 export function MediaDeviceImportCard() {
   const studio = useStudio();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const importMedia = async (source: StudioMediaPickerSource) => {
+  const importMedia = async (source: StudioMediaPickerSource, target: StudioMediaIngestTarget) => {
     setBusy(true);
     setError(null);
-    const result = await studio.ingestMediaFromPicker(source);
+    const result = await studio.ingestMediaFromPicker(source, target);
     setBusy(false);
     if (!result.ok && result.reason !== 'cancelled') setError(result.reason);
   };
@@ -21,20 +24,40 @@ export function MediaDeviceImportCard() {
   return (
     <Card
       title="Import from device"
-      description="Selected local files are ingested through the trusted Studio host before entering the manifest."
+      description="Use managed storage for remote authoring media, or bundle files into the app under /assets."
     >
+      <Text color="neutral" emphasis="muted" variant="bodySmall">
+        Managed storage
+      </Text>
       <View style={styles.actions}>
         <Button
           disabled={busy || !studio.mediaPickerAvailable}
-          onPress={() => void importMedia('file')}
+          onPress={() => void importMedia('file', 'storage')}
         >
-          Choose file
+          Upload file
         </Button>
         <Button
           disabled={busy || !studio.mediaPickerAvailable}
-          onPress={() => void importMedia('photo-library')}
+          onPress={() => void importMedia('photo-library', 'storage')}
         >
-          Photo library
+          Upload photo
+        </Button>
+      </View>
+      <Text color="neutral" emphasis="muted" variant="bodySmall">
+        App bundle
+      </Text>
+      <View style={styles.actions}>
+        <Button
+          disabled={busy || !studio.mediaPickerAvailable}
+          onPress={() => void importMedia('file', 'bundled')}
+        >
+          Bundle file
+        </Button>
+        <Button
+          disabled={busy || !studio.mediaPickerAvailable}
+          onPress={() => void importMedia('photo-library', 'bundled')}
+        >
+          Bundle photo
         </Button>
       </View>
       {!studio.mediaPickerAvailable ? (

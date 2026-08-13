@@ -1,20 +1,26 @@
 import type { MediaAsset } from '@ankhorage/contracts';
 
-import type { StudioMediaIngestResult, StudioMediaPickerSelection } from '../mediaPickerAuthoring';
+import type {
+  StudioMediaIngestResult,
+  StudioMediaIngestTarget,
+  StudioMediaPickerSelection,
+} from '../mediaPickerAuthoring';
 import { API_BASE } from './constants';
 
 interface IngestStudioMediaSelectionArgs {
   readonly projectId: string;
   readonly assetId: string;
   readonly selection: StudioMediaPickerSelection;
+  readonly target?: StudioMediaIngestTarget;
 }
 
 export async function ingestStudioMediaSelection(
   args: IngestStudioMediaSelectionArgs,
 ): Promise<StudioMediaIngestResult> {
   const query = createIngestQuery(args.assetId, args.selection);
+  const endpoint = args.target === 'bundled' ? 'bundle' : 'ingest';
   const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(args.projectId)}/media/ingest?${query}`,
+    `${API_BASE}/projects/${encodeURIComponent(args.projectId)}/media/${endpoint}?${query}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream' },

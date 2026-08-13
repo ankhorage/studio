@@ -1,0 +1,50 @@
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+
+import { getExpoBundledMediaRegistrySource } from '@ankhorage/expo-runtime/bundled-media';
+
+const AUTHORING_ASSETS_PATH = 'assets/authoring';
+const GENERATED_REGISTRY_PATH = 'src/generated/bundledMediaRegistry.ts';
+
+export async function syncProjectBundledMediaRegistry(projectPath: string): Promise<void> {
+  const registryPath = path.join(projectPath, GENERATED_REGISTRY_PATH);
+  const files = await listFiles(path.join(projectPath, AUTHORING_ASSETS_PATH));
+  const entries = files.map((filePath) => ({
+    path: toPortablePath(path.relative(projectPath, filePath)),
+    requirePath: toRequirePath(path.relative(path.dirname(registryPath), filePath)),
+  }));
+
+  await fs.mkdir(path.dirname(registryPath), { recursive: true });
+  await fs.writeFile(registryPath, getExpoBundledMediaRegistrySource(entries), 'utf8');
+}
+
+async function listFiles(rootPath: string): Promise<string[]> {
+  let entries;
+  try {
+    entries = await fs.readdir(rootPath, { withFileTypes: true });
+  } catch (error) {
+    if (isMissingPathError(error)) return [];
+    throw error;
+  }
+
+  const files: string[] = [];
+  for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
+    const entryPath = path.join(rootPath, entry.name);
+    if (entry.isDirectory()) files.push(...(await listFiles(entryPath)));
+    else if (entry.isFile()) files.push(entryPath);
+  }
+  return files;
+}
+
+function toPortablePath(value: string): string {
+  return value.split(path.sep).join('/');
+}
+
+function toRequirePath(value: string): string {
+  const portable = toPortablePath(value);
+  return portable.startsWith('.') ? portable : `./${portable}`;
+}
+
+function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && 'code' in error && error.code === 'ENOENT';
+}

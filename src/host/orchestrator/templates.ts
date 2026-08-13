@@ -19,7 +19,7 @@ const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.1.2';
 const SUPABASE_DB_VERSION = '^1.0.0';
 const ZORA_VERSION = '^2.9.0';
-const EXPO_RUNTIME_VERSION = '^2.1.0';
+const EXPO_RUNTIME_VERSION = '^2.2.1';
 const EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';
 const EXPO_FILE_SYSTEM_VERSION = '~19.0.23';
 const EXPO_IMAGE_PICKER_VERSION = '~17.0.11';
@@ -334,6 +334,7 @@ export function getPackageJson(args: {
     dependencies: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
       '@ankhorage/data-sources': DATA_SOURCES_VERSION,
+      '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
       '@ankhorage/studio': 'latest',
       ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
@@ -352,7 +353,6 @@ export function getPackageJson(args: {
       ...runtimeDependencies,
       ...(includeStudio
         ? {
-            '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
             '@expo/vector-icons': '^15.0.3',
             '@react-native-picker/picker': '2.11.1',
             'expo-document-picker': EXPO_DOCUMENT_PICKER_VERSION,

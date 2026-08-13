@@ -1,6 +1,7 @@
 import type { MediaAsset, MediaAssetKind } from '@ankhorage/contracts';
 
 export type StudioMediaPickerSource = 'file' | 'photo-library';
+export type StudioMediaIngestTarget = 'storage' | 'bundled';
 
 export interface StudioMediaPickerInput {
   readonly source: StudioMediaPickerSource;
