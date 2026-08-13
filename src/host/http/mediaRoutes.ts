@@ -1,6 +1,7 @@
 import {
   MEDIA_ASSET_KINDS,
   type MediaAssetKind,
+  type MediaBundledSource,
   type MediaStorageSource,
 } from '@ankhorage/contracts';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
@@ -25,12 +26,32 @@ export function registerProjectMediaRoutes(
   registerMediaByteRoute(fastify, '/api/projects/:id/media/bundle', (id, input) =>
     bundledService.bundle(id, input),
   );
+  registerMediaCleanupRoute(fastify, storageService, bundledService);
   fastify.post('/api/projects/:id/media/resolve', async (req, reply) => {
     const source = readStorageSource((req.body as { source?: unknown } | undefined)?.source);
     if (!source) return reply.status(400).send({ error: 'Canonical storage source required.' });
     try {
       const { id } = req.params as { id: string };
       return { url: await storageService.resolve(id, source) };
+    } catch (error) {
+      return reply.status(400).send({ error: readErrorMessage(error) });
+    }
+  });
+}
+
+function registerMediaCleanupRoute(
+  fastify: FastifyInstance,
+  storageService: ProjectMediaService,
+  bundledService: ProjectBundledMediaService,
+): void {
+  fastify.post('/api/projects/:id/media/cleanup', async (req, reply) => {
+    const source = readCleanupSource((req.body as { source?: unknown } | undefined)?.source);
+    if (!source) return reply.status(400).send({ error: 'Canonical managed media source required.' });
+    try {
+      const { id } = req.params as { id: string };
+      if (source.kind === 'storage') await storageService.remove(id, source);
+      else await bundledService.remove(id, source);
+      return { cleanup: 'removed' };
     } catch (error) {
       return reply.status(400).send({ error: readErrorMessage(error) });
     }
@@ -90,6 +111,16 @@ function readIngestRequest(req: FastifyRequest) {
     height: readNumber(query.height),
     durationMs: readNumber(query.durationMs),
   };
+}
+
+function readCleanupSource(value: unknown): MediaBundledSource | MediaStorageSource | null {
+  const storage = readStorageSource(value);
+  if (storage) return storage;
+  if (!value || typeof value !== 'object') return null;
+  const source = value as Record<string, unknown>;
+  if (source.kind !== 'bundled' || typeof source.path !== 'string' || source.path.length === 0)
+    return null;
+  return { kind: 'bundled', path: source.path };
 }
 
 function readStorageSource(value: unknown): MediaStorageSource | null {
