@@ -22,7 +22,11 @@ export type {
 } from './moduleAdminContracts';
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
-import type { StudioMediaIngestResult, StudioMediaPickerSource } from './mediaPickerAuthoring';
+import type {
+  StudioMediaIngestResult,
+  StudioMediaIngestTarget,
+  StudioMediaPickerSource,
+} from './mediaPickerAuthoring';
 
 export * from './bindingAuthoringModel';
 export * from './mediaAuthoringModel';
@@ -380,7 +384,10 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   upsertMediaAsset: (asset: MediaAsset) => void;
   removeMediaAsset: (mediaId: string) => boolean;
   mediaPickerAvailable: boolean;
-  ingestMediaFromPicker: (source: StudioMediaPickerSource) => Promise<StudioMediaIngestResult>;
+  ingestMediaFromPicker: (
+    source: StudioMediaPickerSource,
+    target?: StudioMediaIngestTarget,
+  ) => Promise<StudioMediaIngestResult>;
   updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
   updateDataSources: (dataSources: DataSourceRegistry) => void;
   upsertGeneratedApi: (
