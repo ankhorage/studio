@@ -23,7 +23,7 @@ test('managed media cleanup stays inside the configured authoring pool', async (
     path: 'authoring/hero/a.png',
   });
 
-  await expect(
+  expect(
     service.remove('demo', { kind: 'storage', bucket: 'media', path: 'runtime/avatar.png' }),
   ).rejects.toThrow('outside the project authoring pool');
   expect(removed).toHaveLength(1);
