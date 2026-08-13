@@ -36,6 +36,18 @@ jobs:
           path.write_text(text.replace(old, new, 1))
           PY
           python3 scripts/auth4-patch-templates.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path('src/host/orchestrator/templates.ts')
+          text = path.read_text()
+          pattern = r"  return sections\.length > 0 \? `[\s\S]*?` : '';\n}\n\nexport function getAppConfigTs"
+          replacement = "  return sections.length > 0\n    ? String.fromCharCode(10) + sections.join(String.fromCharCode(10))\n    : '';\n}\n\nexport function getAppConfigTs"
+          text, count = re.subn(pattern, replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('target section newline normalization failed')
+          path.write_text(text)
+          PY
 
       - name: Refresh dependencies
         run: bun install
