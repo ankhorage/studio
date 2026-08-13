@@ -1,0 +1,41 @@
+name: ADM-14 Bundled Provider Integrate
+
+on:
+  push:
+    branches:
+      - agent/adm14-bundled-assets-authoring
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch StudioProvider
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/core/StudioProvider.ts')
+          s = p.read_text()
+          changes = [
+            ("  StudioMediaIngestResult,\n  StudioMediaPickerAdapter,\n", "  StudioMediaIngestResult,\n  StudioMediaIngestTarget,\n  StudioMediaPickerAdapter,\n"),
+            ("    async (source: StudioMediaPickerSource): Promise<StudioMediaIngestResult> => {", "    async (\n      source: StudioMediaPickerSource,\n      target: StudioMediaIngestTarget = 'storage',\n    ): Promise<StudioMediaIngestResult> => {"),
+            ("        selection: picked.selection,\n      });", "        selection: picked.selection,\n        target,\n      });"),
+          ]
+          for old, new in changes:
+              if old not in s:
+                  raise SystemExit('StudioProvider integration anchor missing')
+              s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+          git diff --check -- src/core/StudioProvider.ts
+      - name: Commit StudioProvider
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/core/StudioProvider.ts
+          git commit -m 'Wire bundled media target into StudioProvider'
+          git push origin HEAD:agent/adm14-bundled-assets-authoring
