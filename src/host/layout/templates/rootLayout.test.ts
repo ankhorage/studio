@@ -1,7 +1,7 @@
 import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
-import { getRootLayoutTsx } from './rootLayout';
+import { getRootLayoutImportRequirements, getRootLayoutTsx } from './rootLayout';
 
 test('declares generated runtime registries before composing them', () => {
   const generated = getRootLayoutTsx({
@@ -284,4 +284,42 @@ test('keeps generated apps Studio-independent when includeStudio is false', () =
   expect(generated).not.toContain('Pressable');
   expect(generated).not.toContain('GestureResponderEvent');
   expect(generated).not.toContain('createStudioActionSuppressionConfig(previewMode)');
+});
+
+test('wires bundled media through generated runtime and Studio preview', () => {
+  for (const includeStudio of [false, true]) {
+    const imports = getRootLayoutImportRequirements(includeStudio);
+    expect(imports).toContainEqual({
+      source: '@ankhorage/expo-runtime',
+      namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
+    });
+    expect(imports).toContainEqual({
+      source: '@/generated/bundledMediaRegistry',
+      namedImports: [{ imported: 'bundledMediaRegistry' }],
+    });
+  }
+
+  const generated = getRootLayoutTsx({
+    manifest: { navigator: { initialRouteName: 'index' } } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+  });
+
+  expect(generated).toContain(
+    'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',
+  );
+  expect(generated).toContain('mediaAssets: runtimeManifest.media?.assets');
+  expect(generated).toContain('resolveMediaAsset: bundledMediaResolver');
+  expect(generated).toContain('bundledMediaRegistry={bundledMediaRegistry}');
 });
