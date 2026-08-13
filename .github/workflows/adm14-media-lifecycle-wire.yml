@@ -57,36 +57,27 @@ jobs:
           } from './mediaAuthoringHostClient';
           import { commitStudioMediaRemoval } from './mediaRemovalCoordinator';""",
           )
-          old = """  const removeMediaAsset = useCallback(
-            (mediaId: string): boolean => {
-              let removed = false;
-              updateManifest((current) => {
-                const result = removeStudioMediaAsset(current, mediaId);
-                removed = result.ok;
-                return result.ok ? result.manifest : current;
-              });
-              return removed;
-            },
-            [updateManifest],
-          );
-          """
-          new = old + """
-          const deleteMediaAsset = useCallback(
-            async (mediaId: string): Promise<StudioMediaDeleteResult> => {
-              const current = manifestRef.current;
-              if (!current) return { ok: false, reason: 'not-found', usages: [] };
-              return commitStudioMediaRemoval({
-                manifest: current,
-                mediaId,
-                applyManifest: replaceManifest,
-                persistManifest: persistence.flushManifest,
-                cleanupSource: (source) => cleanupStudioMediaSource(projectId, source),
-              });
-            },
-            [persistence.flushManifest, projectId, replaceManifest],
-          );
-          """
-          replace_once('src/core/StudioProvider.ts', old, new)
+          delete_block = (
+              "  const deleteMediaAsset = useCallback(\n"
+              "    async (mediaId: string): Promise<StudioMediaDeleteResult> => {\n"
+              "      const current = manifestRef.current;\n"
+              "      if (!current) return { ok: false, reason: 'not-found', usages: [] };\n"
+              "      return commitStudioMediaRemoval({\n"
+              "        manifest: current,\n"
+              "        mediaId,\n"
+              "        applyManifest: replaceManifest,\n"
+              "        persistManifest: persistence.flushManifest,\n"
+              "        cleanupSource: (source) => cleanupStudioMediaSource(projectId, source),\n"
+              "      });\n"
+              "    },\n"
+              "    [persistence.flushManifest, projectId, replaceManifest],\n"
+              "  );\n\n"
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "  const ingestMediaFromPicker = useCallback(",
+              delete_block + "  const ingestMediaFromPicker = useCallback(",
+          )
           replace_once(
               'src/core/StudioProvider.ts',
               "      removeMediaAsset,\n      mediaPickerAvailable:",
@@ -112,9 +103,7 @@ jobs:
           replace_once(
               'src/index.ts',
               "  removeMediaAsset: (mediaId: string) => boolean;\n",
-              """  removeMediaAsset: (mediaId: string) => boolean;
-            deleteMediaAsset: (mediaId: string) => Promise<StudioMediaDeleteResult>;
-          """,
+              "  removeMediaAsset: (mediaId: string) => boolean;\n  deleteMediaAsset: (mediaId: string) => Promise<StudioMediaDeleteResult>;\n",
           )
           PY
 
