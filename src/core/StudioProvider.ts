@@ -53,6 +53,7 @@ import {
 } from '../mediaAuthoringModel';
 import type {
   StudioMediaIngestResult,
+  StudioMediaIngestTarget,
   StudioMediaPickerAdapter,
   StudioMediaPickerSource,
 } from '../mediaPickerAuthoring';
@@ -191,7 +192,10 @@ export const StudioProvider = ({
   );
 
   const ingestMediaFromPicker = useCallback(
-    async (source: StudioMediaPickerSource): Promise<StudioMediaIngestResult> => {
+    async (
+      source: StudioMediaPickerSource,
+      target: StudioMediaIngestTarget = 'storage',
+    ): Promise<StudioMediaIngestResult> => {
       if (!mediaPicker) return { ok: false, reason: 'Media picker unavailable.' };
       const picked = await mediaPicker.pick({ source });
       if (!picked.ok) return picked;
@@ -202,6 +206,7 @@ export const StudioProvider = ({
         projectId,
         assetId,
         selection: picked.selection,
+        target,
       });
       if (!ingested.ok) return ingested;
       upsertMediaAsset(ingested.asset);
