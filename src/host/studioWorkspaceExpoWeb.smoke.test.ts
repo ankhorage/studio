@@ -8,8 +8,6 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 import type { FastifyInstance } from 'fastify';
 
-import { startStudioHostServerWithSecrets } from './http/serverWithSecrets';
-import { getTemplateCatalog } from './templateRegistry';
 
 const studioWorkspaceWebSmokeTest =
   process.env.ANKH_STUDIO_WORKSPACE_WEB_SMOKE === '1' ? test : test.skip;
@@ -45,9 +43,10 @@ studioWorkspaceWebSmokeTest(
     const appUrl = `http://127.0.0.1:${expoPort}`;
 
     try {
-      const { category, template } = getSmokeTemplateSelection();
+      const { category, template } = await getSmokeTemplateSelection();
       await createSmokeWorkspaceFixture(workspaceRoot, category.id);
 
+      const { startStudioHostServerWithSecrets } = await import('./http/serverWithSecrets');
       studioHost = await startStudioHostServerWithSecrets({
         projectRoot: workspaceRoot,
         port: hostPort,
@@ -114,7 +113,8 @@ studioWorkspaceWebSmokeTest(
   TEST_TIMEOUT_MS,
 );
 
-function getSmokeTemplateSelection() {
+async function getSmokeTemplateSelection() {
+  const { getTemplateCatalog } = await import('./templateRegistry');
   const category = getTemplateCatalog().categories.find((entry) => entry.templates.length > 0);
   const [template] = category?.templates ?? [];
   if (category === undefined || template === undefined) {
