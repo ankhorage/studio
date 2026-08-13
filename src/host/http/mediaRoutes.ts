@@ -5,6 +5,7 @@ import {
 } from '@ankhorage/contracts';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
+import { ProjectBundledMediaService } from '../media/projectBundledMediaService';
 import { ProjectMediaService } from '../media/projectMediaService';
 import type { ProjectManager } from '../orchestrator/projectManager';
 
@@ -14,18 +15,46 @@ export function registerProjectMediaRoutes(
   fastify: FastifyInstance,
   args: { readonly projectManager: ProjectManager; readonly workspaceRoot: string },
 ) {
-  if (!fastify.hasContentTypeParser('application/octet-stream')) {
-    fastify.addContentTypeParser(
-      'application/octet-stream',
-      { parseAs: 'buffer' },
-      (_req, body, done) => {
-        done(null, body);
-      },
-    );
-  }
-  const service = new ProjectMediaService(args.projectManager, args.workspaceRoot);
+  ensureBinaryBodyParser(fastify);
+  const storageService = new ProjectMediaService(args.projectManager, args.workspaceRoot);
+  const bundledService = new ProjectBundledMediaService(args.workspaceRoot);
+
+  registerMediaByteRoute(fastify, '/api/projects/:id/media/ingest', (id, input) =>
+    storageService.ingest(id, input),
+  );
+  registerMediaByteRoute(fastify, '/api/projects/:id/media/bundle', (id, input) =>
+    bundledService.bundle(id, input),
+  );
+  fastify.post('/api/projects/:id/media/resolve', async (req, reply) => {
+    const source = readStorageSource((req.body as { source?: unknown } | undefined)?.source);
+    if (!source) return reply.status(400).send({ error: 'Canonical storage source required.' });
+    try {
+      const { id } = req.params as { id: string };
+      return { url: await storageService.resolve(id, source) };
+    } catch (error) {
+      return reply.status(400).send({ error: readErrorMessage(error) });
+    }
+  });
+}
+
+function ensureBinaryBodyParser(fastify: FastifyInstance) {
+  if (fastify.hasContentTypeParser('application/octet-stream')) return;
+  fastify.addContentTypeParser(
+    'application/octet-stream',
+    { parseAs: 'buffer' },
+    (_req, body, done) => {
+      done(null, body);
+    },
+  );
+}
+
+function registerMediaByteRoute(
+  fastify: FastifyInstance,
+  route: string,
+  ingest: (id: string, input: NonNullable<ReturnType<typeof readIngestRequest>>) => Promise<unknown>,
+) {
   fastify.post(
-    '/api/projects/:id/media/ingest',
+    route,
     { bodyLimit: MAX_MEDIA_BODY_BYTES },
     async (req: FastifyRequest, reply: FastifyReply) => {
       const input = readIngestRequest(req);
@@ -33,22 +62,12 @@ export function registerProjectMediaRoutes(
         return reply.status(400).send({ error: 'Valid media metadata and bytes are required.' });
       try {
         const { id } = req.params as { id: string };
-        return { asset: await service.ingest(id, input) };
+        return { asset: await ingest(id, input) };
       } catch (error) {
         return reply.status(400).send({ error: readErrorMessage(error) });
       }
     },
   );
-  fastify.post('/api/projects/:id/media/resolve', async (req, reply) => {
-    const source = readStorageSource((req.body as { source?: unknown } | undefined)?.source);
-    if (!source) return reply.status(400).send({ error: 'Canonical storage source required.' });
-    try {
-      const { id } = req.params as { id: string };
-      return { url: await service.resolve(id, source) };
-    } catch (error) {
-      return reply.status(400).send({ error: readErrorMessage(error) });
-    }
-  });
 }
 
 function readIngestRequest(req: FastifyRequest) {
