@@ -50,6 +50,29 @@ describe('ProjectBundledMediaService', () => {
     expect(registry).toContain(bundledPath);
   });
 
+  test('removes a bundled authoring source and regenerates the registry', async () => {
+    const root = await createWorkspaceRoot();
+    const service = new ProjectBundledMediaService(root);
+    const asset = await service.bundle('demo', {
+      assetId: 'hero',
+      name: 'hero.png',
+      kind: 'image',
+      body: new Uint8Array([1]),
+    });
+
+    if (asset.source.kind !== 'bundled') throw new Error('Expected bundled source.');
+    await service.remove('demo', asset.source);
+
+    const projectPath = path.join(root, 'apps/demo');
+    expect(await exists(path.join(projectPath, asset.source.path))).toBe(false);
+    expect(await exists(path.join(projectPath, 'assets/authoring/hero'))).toBe(false);
+    const registry = await fs.readFile(
+      path.join(projectPath, 'src/generated/bundledMediaRegistry.ts'),
+      'utf8',
+    );
+    expect(registry).not.toContain(asset.source.path);
+  });
+
   test('does not overwrite an existing bundled authoring file', async () => {
     const root = await createWorkspaceRoot();
     const service = new ProjectBundledMediaService(root);
@@ -80,4 +103,13 @@ async function createWorkspaceRoot(): Promise<string> {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'ankh-bundled-service-'));
   roots.push(root);
   return root;
+}
+
+async function exists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
