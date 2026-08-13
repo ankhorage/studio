@@ -30,4 +30,8 @@ Stable external HTTP(S) URL import remains a third canonical source form. Copyin
 
 Runtime/user-generated uploads remain a separate logical pool. Managed app-authoring media uses the authoring storage namespace, while bundled authoring media ships with the generated app. Neither path turns runtime application uploads into Studio manifest assets.
 
-Physical cleanup of bundled files or managed storage objects remains separate from manifest removal so deletion failures and reference safety stay explicit.
+## Deletion lifecycle
+
+Deletion uses a manifest-first trusted lifecycle. Studio first removes an unused asset from the canonical manifest and flushes that save. Only after persistence succeeds may the host remove a managed storage object through `MediaStorageAdapter.remove()` or remove a bundled file below `assets/authoring` and regenerate the Metro registry. Stable URL sources have no physical cleanup operation.
+
+A failed manifest save rolls the local mutation back and never touches the physical source. A later provider/filesystem cleanup failure can therefore leave only an orphaned authoring source, never a manifest reference to a prematurely deleted object.
