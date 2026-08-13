@@ -64,12 +64,17 @@ export class ProjectMediaService {
 
   async resolve(projectId: string, source: MediaStorageSource): Promise<string> {
     const storage = await this.getStorage(projectId);
-    if (source.bucket !== storage.bucket || !source.path.startsWith('authoring/')) {
-      throw new Error('Media storage reference is outside the project authoring pool.');
-    }
+    assertAuthoringStorageSource(source, storage.bucket);
     const resolved = await storage.adapter.resolve({ ...source, access: 'signed' });
     if (!resolved.ok) throw new Error(resolved.error.message);
     return resolved.data.asset.url;
+  }
+
+  async remove(projectId: string, source: MediaStorageSource): Promise<void> {
+    const storage = await this.getStorage(projectId);
+    assertAuthoringStorageSource(source, storage.bucket);
+    const removed = await storage.adapter.remove(source);
+    if (!removed.ok) throw new Error(removed.error.message);
   }
 
   private getStorage(projectId: string) {
@@ -83,6 +88,12 @@ export class ProjectMediaService {
 
 export function createAuthoringMediaPath(assetId: string, fileName: string): string {
   return `authoring/${sanitizeSegment(assetId)}/${sanitizeFileName(fileName)}`;
+}
+
+function assertAuthoringStorageSource(source: MediaStorageSource, bucket: string): void {
+  if (source.bucket !== bucket || !source.path.startsWith('authoring/')) {
+    throw new Error('Media storage reference is outside the project authoring pool.');
+  }
 }
 
 function sanitizeSegment(value: string): string {

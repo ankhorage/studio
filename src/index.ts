@@ -22,6 +22,7 @@ export type {
 } from './moduleAdminContracts';
 
 import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
+import type { StudioMediaDeleteResult } from './mediaAuthoringModel';
 import type {
   StudioMediaIngestResult,
   StudioMediaIngestTarget,
@@ -118,6 +119,7 @@ export const STUDIO_PUBLIC_CONTRACTS = [
   'listStudioMediaAssets',
   'createStudioMediaAssetReference',
   'removeStudioMediaAsset',
+  'StudioMediaDeleteResult',
   'StudioMediaPickerAdapter',
   'resolveStudioInstancePropertyGroups',
   'createStudioInstancePropertyPatch',
@@ -383,6 +385,7 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   updateNode: (nodeId: StudioNodeId, props: Record<string, unknown>) => void;
   upsertMediaAsset: (asset: MediaAsset) => void;
   removeMediaAsset: (mediaId: string) => boolean;
+  deleteMediaAsset: (mediaId: string) => Promise<StudioMediaDeleteResult>;
   mediaPickerAvailable: boolean;
   ingestMediaFromPicker: (
     source: StudioMediaPickerSource,

@@ -9,6 +9,7 @@ import {
   createStudioMediaAssetId,
   createStudioUrlMediaAsset,
   listStudioMediaAssets,
+  type StudioMediaDeleteResult,
 } from '../../../mediaAuthoringModel';
 import { AdminHeader, AdminScroll, Field, KeyValue } from '../adminPagePrimitives';
 import { MediaDeviceImportCard } from './MediaDeviceImportCard';
@@ -24,6 +25,7 @@ export function MediaAdminPage() {
   const [url, setUrl] = useState('');
   const [kind, setKind] = useState<MediaAssetKind>('image');
   const [error, setError] = useState<string | null>(null);
+  const [deleteNotice, setDeleteNotice] = useState<string | null>(null);
   const assets = useMemo(
     () => (studio.manifest ? listStudioMediaAssets(studio.manifest) : []),
     [studio.manifest],
@@ -89,6 +91,13 @@ export function MediaAdminPage() {
           </Button>
         </View>
       </Card>
+      {deleteNotice ? (
+        <Card title="Media lifecycle notice">
+          <Text color="danger" variant="bodySmall">
+            {deleteNotice}
+          </Text>
+        </Card>
+      ) : null}
       {assets.length === 0 ? (
         <Card title="No media yet">
           <Text color="neutral" emphasis="muted">
@@ -97,16 +106,26 @@ export function MediaAdminPage() {
         </Card>
       ) : null}
       {assets.map((asset) => (
-        <MediaAssetCard key={asset.id} asset={asset} />
+        <MediaAssetCard key={asset.id} asset={asset} onDeleteNotice={setDeleteNotice} />
       ))}
     </AdminScroll>
   );
 }
 
-function MediaAssetCard({ asset }: { readonly asset: MediaAsset }) {
+function MediaAssetCard({
+  asset,
+  onDeleteNotice,
+}: {
+  readonly asset: MediaAsset;
+  readonly onDeleteNotice: (message: string | null) => void;
+}) {
   const studio = useStudio();
   const usages = studio.manifest ? collectStudioMediaAssetUsages(studio.manifest, asset.id) : [];
   const metadata = asset.metadata;
+  const removeAsset = async () => {
+    const result = await studio.deleteMediaAsset(asset.id);
+    onDeleteNotice(formatDeleteNotice(result));
+  };
   return (
     <Card title={asset.name} description={formatMediaSource(asset)}>
       <View style={styles.details}>
@@ -126,7 +145,7 @@ function MediaAssetCard({ asset }: { readonly asset: MediaAsset }) {
           label="Usage"
           value={usages.length === 0 ? 'Unused' : `${usages.length} reference(s)`}
         />
-        <Button disabled={usages.length > 0} onPress={() => studio.removeMediaAsset(asset.id)}>
+        <Button disabled={usages.length > 0} onPress={() => void removeAsset()}>
           Remove media
         </Button>
         {usages.length > 0 ? (
@@ -137,6 +156,19 @@ function MediaAssetCard({ asset }: { readonly asset: MediaAsset }) {
       </View>
     </Card>
   );
+}
+
+function formatDeleteNotice(result: StudioMediaDeleteResult): string | null {
+  if (result.ok) return null;
+  if (result.reason === 'save-failed') {
+    return `The manifest did not save, so no physical media source was removed: ${result.message}`;
+  }
+  if (result.reason === 'cleanup-failed') {
+    return `The media item was removed safely, but an orphaned authoring source may remain: ${result.message}`;
+  }
+  if (result.reason === 'in-use')
+    return 'The media item is still referenced by component properties.';
+  return 'The media item no longer exists in the authoring pool.';
 }
 
 function formatMediaSource(asset: MediaAsset): string {

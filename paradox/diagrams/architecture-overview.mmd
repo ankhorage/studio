@@ -142,7 +142,14 @@ graph TD
   module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
   package__ankhorage_studio -.-> module_src_core_mediaAuthoringHostClient_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_core_constants_ts
+  module_src_core_mediaAuthoringHostClient_ts --> module_src_core_mediaRemovalCoordinator_ts
   module_src_core_mediaAuthoringHostClient_ts --> module_src_mediaPickerAuthoring_ts
+  module_src_core_mediaRemovalCoordinator_test_ts["src/core/mediaRemovalCoordinator.test.ts"]
+  package__ankhorage_studio -.-> module_src_core_mediaRemovalCoordinator_test_ts
+  module_src_core_mediaRemovalCoordinator_test_ts --> module_src_core_mediaRemovalCoordinator_ts
+  module_src_core_mediaRemovalCoordinator_ts["src/core/mediaRemovalCoordinator.ts"]
+  package__ankhorage_studio -.-> module_src_core_mediaRemovalCoordinator_ts
+  module_src_core_mediaRemovalCoordinator_ts --> module_src_mediaAuthoringModel_ts
   module_src_core_StudioContext_ts["src/core/StudioContext.ts"]
   package__ankhorage_studio -.-> module_src_core_StudioContext_ts
   module_src_core_StudioContext_ts --> module_src_index_ts
@@ -174,6 +181,7 @@ graph TD
   module_src_core_StudioProvider_ts --> module_src_authSettings_ts
   module_src_core_StudioProvider_ts --> module_src_core_constants_ts
   module_src_core_StudioProvider_ts --> module_src_core_mediaAuthoringHostClient_ts
+  module_src_core_StudioProvider_ts --> module_src_core_mediaRemovalCoordinator_ts
   module_src_core_StudioProvider_ts --> module_src_core_StudioContext_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestDraftModel_ts
   module_src_core_StudioProvider_ts --> module_src_core_studioManifestPersistenceModel_ts
@@ -320,6 +328,7 @@ graph TD
   module_src_host_http_dataSourceRoutes_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_http_mediaRoutes_ts["src/host/http/mediaRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_mediaRoutes_ts
+  module_src_host_http_mediaRoutes_ts --> module_src_host_media_projectBundledMediaService_ts
   module_src_host_http_mediaRoutes_ts --> module_src_host_media_projectMediaService_ts
   module_src_host_http_mediaRoutes_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_http_moduleRoutes_test_ts["src/host/http/moduleRoutes.test.ts"]
@@ -491,6 +500,26 @@ graph TD
   module_src_host_manifestSystem_index_ts --> module_src_host_utils_requirementsInference_ts
   module_src_host_manifestSystem_types_ts["src/host/manifestSystem/types.ts"]
   package__ankhorage_studio -.-> module_src_host_manifestSystem_types_ts
+  module_src_host_media_projectAuthoringAssetWriter_ts["src/host/media/projectAuthoringAssetWriter.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectAuthoringAssetWriter_ts
+  module_src_host_media_projectBundledMediaRegistry_test_ts["src/host/media/projectBundledMediaRegistry.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectBundledMediaRegistry_test_ts
+  module_src_host_media_projectBundledMediaRegistry_test_ts --> module_src_host_media_projectBundledMediaRegistry_ts
+  module_src_host_media_projectBundledMediaRegistry_ts["src/host/media/projectBundledMediaRegistry.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectBundledMediaRegistry_ts
+  module_src_host_media_projectBundledMediaService_test_ts["src/host/media/projectBundledMediaService.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectBundledMediaService_test_ts
+  module_src_host_media_projectBundledMediaService_test_ts --> module_src_host_media_projectBundledMediaService_ts
+  module_src_host_media_projectBundledMediaService_ts["src/host/media/projectBundledMediaService.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectBundledMediaService_ts
+  module_src_host_media_projectBundledMediaService_ts --> module_src_host_media_projectAuthoringAssetWriter_ts
+  module_src_host_media_projectBundledMediaService_ts --> module_src_host_media_projectBundledMediaRegistry_ts
+  module_src_host_media_projectBundledMediaService_ts --> module_src_host_media_removeProjectAuthoringAsset_ts
+  module_src_host_media_projectBundledMediaService_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_media_projectMediaRemoval_test_ts["src/host/media/projectMediaRemoval.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_projectMediaRemoval_test_ts
+  module_src_host_media_projectMediaRemoval_test_ts --> module_src_host_media_projectMediaService_ts
+  module_src_host_media_projectMediaRemoval_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_media_projectMediaService_test_ts["src/host/media/projectMediaService.test.ts"]
   package__ankhorage_studio -.-> module_src_host_media_projectMediaService_test_ts
   module_src_host_media_projectMediaService_test_ts --> module_src_host_media_projectMediaService_ts
@@ -503,6 +532,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_media_projectMediaStorage_ts
   module_src_host_media_projectMediaStorage_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_media_projectMediaStorage_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_media_removeProjectAuthoringAsset_ts["src/host/media/removeProjectAuthoringAsset.ts"]
+  package__ankhorage_studio -.-> module_src_host_media_removeProjectAuthoringAsset_ts
   module_src_host_modules_adminRuntime_test_ts["src/host/modules/adminRuntime.test.ts"]
   package__ankhorage_studio -.-> module_src_host_modules_adminRuntime_test_ts
   module_src_host_modules_adminRuntime_test_ts --> module_src_host_modules_adminRuntime_ts
@@ -536,6 +567,7 @@ graph TD
   module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts["src/host/orchestrator/generatedAppFiles.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_ts
+  module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_media_projectBundledMediaRegistry_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedRouteCleanup_ts
@@ -649,8 +681,6 @@ graph TD
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   package__ankhorage_studio -.-> module_src_host_studioWorkspaceExpoWeb_smoke_test_ts
-  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --> module_src_host_http_serverWithSecrets_ts
-  module_src_host_studioWorkspaceExpoWeb_smoke_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
   package__ankhorage_studio -.-> module_src_host_templateRegistry_catalog_test_ts
   module_src_host_templateRegistry_catalog_test_ts --> module_src_host_templateRegistry_index_ts
@@ -671,6 +701,7 @@ graph TD
   module_src_index_test_ts --> module_src_index_ts
   module_src_index_ts["src/index.ts"]
   module_src_index_ts --> module_src_authSettings_ts
+  module_src_index_ts --> module_src_mediaAuthoringModel_ts
   module_src_index_ts --> module_src_mediaPickerAuthoring_ts
   module_src_insertModalModel_public_test_ts["src/insertModalModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_insertModalModel_public_test_ts

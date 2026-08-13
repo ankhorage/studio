@@ -49,6 +49,7 @@ import { createStudioManifestSignature } from '../manifestSync';
 import {
   createStudioMediaAssetId,
   removeStudioMediaAsset,
+  type StudioMediaDeleteResult,
   upsertStudioMediaAsset,
 } from '../mediaAuthoringModel';
 import type {
@@ -64,7 +65,8 @@ import {
 } from '../studioSelectionModel';
 import { AuthAdminSessionProvider } from '../ui/admin/AuthAdminSession';
 import { API_BASE } from './constants';
-import { ingestStudioMediaSelection } from './mediaAuthoringHostClient';
+import { cleanupStudioMediaSource, ingestStudioMediaSelection } from './mediaAuthoringHostClient';
+import { commitStudioMediaRemoval } from './mediaRemovalCoordinator';
 import { StudioContext } from './StudioContext';
 import {
   applyStudioManifestDraftMutation,
@@ -189,6 +191,21 @@ export const StudioProvider = ({
       return removed;
     },
     [updateManifest],
+  );
+
+  const deleteMediaAsset = useCallback(
+    async (mediaId: string): Promise<StudioMediaDeleteResult> => {
+      const { current } = manifestRef;
+      if (!current) return { ok: false, reason: 'not-found', usages: [] };
+      return commitStudioMediaRemoval({
+        manifest: current,
+        mediaId,
+        applyManifest: replaceManifest,
+        persistManifest: persistence.flushManifest,
+        cleanupSource: (source) => cleanupStudioMediaSource(projectId, source),
+      });
+    },
+    [persistence.flushManifest, projectId, replaceManifest],
   );
 
   const ingestMediaFromPicker = useCallback(
@@ -450,6 +467,7 @@ export const StudioProvider = ({
       updateNode,
       upsertMediaAsset,
       removeMediaAsset,
+      deleteMediaAsset,
       mediaPickerAvailable: mediaPicker !== undefined,
       ingestMediaFromPicker,
       updateDataBindings: (dataBindings: ComponentDataBindingRegistry) =>
@@ -499,6 +517,7 @@ export const StudioProvider = ({
       updateNode,
       upsertMediaAsset,
       removeMediaAsset,
+      deleteMediaAsset,
       mediaPicker,
       ingestMediaFromPicker,
       updateAuthSettings,

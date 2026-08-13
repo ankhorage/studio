@@ -1,4 +1,4 @@
-import type { MediaAsset } from '@ankhorage/contracts';
+import type { MediaAsset, MediaAssetSource } from '@ankhorage/contracts';
 
 import type {
   StudioMediaIngestResult,
@@ -6,6 +6,7 @@ import type {
   StudioMediaPickerSelection,
 } from '../mediaPickerAuthoring';
 import { API_BASE } from './constants';
+import type { StudioMediaSourceCleanupResult } from './mediaRemovalCoordinator';
 
 interface IngestStudioMediaSelectionArgs {
   readonly projectId: string;
@@ -32,6 +33,26 @@ export async function ingestStudioMediaSelection(
     return { ok: false, reason: payload.error ?? `Media ingest failed (${response.status}).` };
   }
   return { ok: true, asset: payload.asset };
+}
+
+export async function cleanupStudioMediaSource(
+  projectId: string,
+  source: MediaAssetSource,
+): Promise<StudioMediaSourceCleanupResult> {
+  if (source.kind === 'url') return { ok: true, cleanup: 'none' };
+  const response = await fetch(
+    `${API_BASE}/projects/${encodeURIComponent(projectId)}/media/cleanup`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source }),
+    },
+  );
+  const payload = (await response.json()) as { cleanup?: 'removed'; error?: string };
+  if (!response.ok) {
+    return { ok: false, reason: payload.error ?? `Media cleanup failed (${response.status}).` };
+  }
+  return { ok: true, cleanup: payload.cleanup ?? 'removed' };
 }
 
 function createIngestQuery(assetId: string, selection: StudioMediaPickerSelection): string {
