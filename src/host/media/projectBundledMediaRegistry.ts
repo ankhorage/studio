@@ -1,6 +1,7 @@
-import { getExpoBundledMediaRegistrySource } from '@ankhorage/expo-runtime';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+
+import { getExpoBundledMediaRegistrySource } from '@ankhorage/expo-runtime/bundled-media';
 
 const AUTHORING_ASSETS_PATH = 'assets/authoring';
 const GENERATED_REGISTRY_PATH = 'src/generated/bundledMediaRegistry.ts';

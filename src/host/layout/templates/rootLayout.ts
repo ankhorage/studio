@@ -51,7 +51,7 @@ export function getRootLayoutImportRequirements(
         ]
       : []),
     {
-      source: '@ankhorage/expo-runtime',
+      source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     },
     {

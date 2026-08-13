@@ -8,7 +8,6 @@ import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 import type { FastifyInstance } from 'fastify';
 
-
 const studioWorkspaceWebSmokeTest =
   process.env.ANKH_STUDIO_WORKSPACE_WEB_SMOKE === '1' ? test : test.skip;
 const FIXTURE_PROJECT_ID = 'release-monitor';

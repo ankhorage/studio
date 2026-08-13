@@ -290,7 +290,7 @@ test('wires bundled media through generated runtime and Studio preview', () => {
   for (const includeStudio of [false, true]) {
     const imports = getRootLayoutImportRequirements(includeStudio);
     expect(imports).toContainEqual({
-      source: '@ankhorage/expo-runtime',
+      source: '@ankhorage/expo-runtime/bundled-media',
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     });
     expect(imports).toContainEqual({

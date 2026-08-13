@@ -51,7 +51,10 @@ function ensureBinaryBodyParser(fastify: FastifyInstance) {
 function registerMediaByteRoute(
   fastify: FastifyInstance,
   route: string,
-  ingest: (id: string, input: NonNullable<ReturnType<typeof readIngestRequest>>) => Promise<unknown>,
+  ingest: (
+    id: string,
+    input: NonNullable<ReturnType<typeof readIngestRequest>>,
+  ) => Promise<unknown>,
 ) {
   fastify.post(
     route,

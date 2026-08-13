@@ -1,7 +1,8 @@
-import { afterEach, describe, expect, it } from 'bun:test';
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+
+import { afterEach, describe, expect, it } from 'bun:test';
 
 import {
   createGeneratedAppExtensionRegistrySource,
@@ -87,6 +88,8 @@ describe('generated bundled media registry', () => {
     );
     expect(source).toContain('"assets/authoring/hero/hero.png"');
     expect(source).toContain('require("../../assets/authoring/hero/hero.png")');
+    expect(source).toContain("from '@ankhorage/expo-runtime/bundled-media';");
+    expect(source).not.toContain("from '@ankhorage/expo-runtime';");
   });
 });
 

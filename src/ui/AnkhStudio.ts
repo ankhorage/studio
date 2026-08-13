@@ -1,7 +1,7 @@
 import {
   createExpoBundledMediaResolver,
   type ExpoBundledMediaRegistry,
-} from '@ankhorage/expo-runtime';
+} from '@ankhorage/expo-runtime/bundled-media';
 import {
   type RuntimeMediaAssetResolver,
   type RuntimeRendererConfig,

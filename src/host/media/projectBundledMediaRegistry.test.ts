@@ -1,7 +1,8 @@
-import { afterEach, describe, expect, test } from 'bun:test';
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+
+import { afterEach, describe, expect, test } from 'bun:test';
 
 import { syncProjectBundledMediaRegistry } from './projectBundledMediaRegistry';
 
@@ -26,6 +27,8 @@ describe('syncProjectBundledMediaRegistry', () => {
     );
     expect(source).toContain('"assets/authoring/hero/Hero Image.png"');
     expect(source).toContain('require("../../assets/authoring/hero/Hero Image.png")');
+    expect(source).toContain("from '@ankhorage/expo-runtime/bundled-media';");
+    expect(source).not.toContain("from '@ankhorage/expo-runtime';");
   });
 
   test('writes an empty static registry when the authoring assets directory is absent', async () => {

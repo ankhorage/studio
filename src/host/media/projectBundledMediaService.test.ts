@@ -1,7 +1,8 @@
-import { afterEach, describe, expect, test } from 'bun:test';
 import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+
+import { afterEach, describe, expect, test } from 'bun:test';
 
 import {
   createBundledAuthoringMediaPath,
@@ -32,7 +33,12 @@ describe('ProjectBundledMediaService', () => {
     expect(asset).toMatchObject({
       id: '../ Hero Image /',
       source: { kind: 'bundled', path: bundledPath },
-      metadata: { originalFileName: '../../Hero Image.png', sizeBytes: 3, width: 1200, height: 800 },
+      metadata: {
+        originalFileName: '../../Hero Image.png',
+        sizeBytes: 3,
+        width: 1200,
+        height: 800,
+      },
     });
     expect(
       new Uint8Array(await fs.readFile(path.join(root, 'apps/demo', ...bundledPath.split('/')))),
