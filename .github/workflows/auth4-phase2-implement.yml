@@ -14,655 +14,210 @@ jobs:
   implement:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: agent/auth4-canonical-target-generation
           fetch-depth: 0
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.3.13'
 
-      - name: Apply Auth 4 Phase 2 Studio consumer
+      - name: Patch target-aware generation
         run: |
+          python3 scripts/auth4-patch-templates.py
           python3 <<'PY'
           from pathlib import Path
           import re
 
-          def replace_once(path: str, old: str, new: str) -> None:
+          def replace_once(path, old, new):
               file = Path(path)
               text = file.read_text()
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f'{path}: expected one exact match, got {count}')
+              if text.count(old) != 1:
+                  raise SystemExit(f'{path}: expected one match for {old[:60]!r}')
               file.write_text(text.replace(old, new, 1))
 
-          def regex_once(path: str, pattern: str, replacement: str) -> None:
-              file = Path(path)
-              text = file.read_text()
-              updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
-              if count != 1:
-                  raise SystemExit(f'{path}: expected one regex match, got {count}: {pattern}')
-              file.write_text(updated)
+          path = 'src/host/orchestrator/scaffolder.ts'
+          replace_once(path, "import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';\n", "import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';\nimport type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';\n")
+          replace_once(path, "  runtimePlan?: ExpoRuntimePlan;\n}\n", "  runtimePlan?: ExpoRuntimePlan;\n  targets?: AppDeployTargets;\n}\n")
+          replace_once(path, "const MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;\n", "const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;\nconst TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;\nconst LEGACY_WEB_ONLY_TARGETS = { web: { enabled: true } } as const satisfies AppDeployTargets;\n")
+          replace_once(path, "      zoraExtensions = [],\n      runtimePlan,\n    } = options;\n", "      zoraExtensions = [],\n      runtimePlan,\n      targets = LEGACY_WEB_ONLY_TARGETS,\n    } = options;\n")
+          replace_once(path, "      zoraExtensions,\n      runtimePlan,\n    );\n    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);\n", "      zoraExtensions,\n      runtimePlan,\n      targets,\n    );\n    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);\n")
+          replace_once(path, "      splashScreen = null,\n      runtimePlan,\n    } = options;\n", "      splashScreen = null,\n      runtimePlan,\n      targets = LEGACY_WEB_ONLY_TARGETS,\n    } = options;\n")
+          replace_once(path, "        storageProvider,\n        runtimePlan,\n      }),\n", "        storageProvider,\n        runtimePlan,\n        targets,\n      }),\n")
+          replace_once(path, "      includeStudio,\n    );\n\n    await fs.writeFile(packageJsonPath", "      includeStudio,\n      targets,\n    );\n\n    await fs.writeFile(packageJsonPath")
+          replace_once(path, "    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);\n", "    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);\n")
+          replace_once(path, "    category: AppCategory,\n  ) {\n", "    category: AppCategory,\n    deploy: AppDeployManifest,\n  ) {\n")
+          replace_once(path, "    const manifestWithCategory: AppManifest = {\n      ...templateData,\n      metadata: {\n", "    const manifestWithCategory: AppManifest = {\n      ...templateData,\n      deploy,\n      metadata: {\n")
+          file = Path(path)
+          text = file.read_text()
+          text, count = re.subn(r"  private async writeAppConfig\([\s\S]*?\n  private async writeMetroConfig", "  private async writeAppConfig(\n    dir: string,\n    name: string,\n    slug: string,\n    targets: AppDeployTargets,\n    splashScreen: SplashScreenSpec | null,\n    runtimePlan?: ExpoRuntimePlan,\n  ) {\n    await fs.writeFile(\n      path.join(dir, 'app.config.ts'),\n      getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),\n      'utf8',\n    );\n  }\n\n  private async writeMetroConfig", text, count=1)
+          if count != 1:
+              raise SystemExit('writeAppConfig replacement failed')
+          file.write_text(text)
+          replace_once(path, "    zoraExtensions: readonly ZoraExtensionDefinition[],\n    runtimePlan?: ExpoRuntimePlan,\n  ) {\n", "    zoraExtensions: readonly ZoraExtensionDefinition[],\n    runtimePlan: ExpoRuntimePlan | undefined,\n    targets: AppDeployTargets,\n  ) {\n")
+          replace_once(path, "        storageProvider,\n        runtimePlan,\n      }),\n      zoraExtensions,\n", "        storageProvider,\n        runtimePlan,\n        targets,\n      }),\n      zoraExtensions,\n")
+          replace_once(path, "function mergePackageJson(\n  existing: ExtendedPackageJsonShape | null,\n  template: ExtendedPackageJsonShape,\n  includeStudio: boolean,\n) {\n", "function mergePackageJson(\n  existing: ExtendedPackageJsonShape | null,\n  template: ExtendedPackageJsonShape,\n  includeStudio: boolean,\n  targets: AppDeployTargets,\n) {\n")
+          replace_once(path, "  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false });\n  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true });\n", "  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false, targets });\n  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true, targets });\n")
+          replace_once(path, "    storageProvider: 'supabase',\n  });\n  const supabaseStudioTemplate", "    storageProvider: 'supabase',\n    targets,\n  });\n  const supabaseStudioTemplate")
+          replace_once(path, "    storageProvider: 'supabase',\n  });\n  const supabaseDatabaseTemplate", "    storageProvider: 'supabase',\n    targets,\n  });\n  const supabaseDatabaseTemplate")
+          replace_once(path, "    databaseRuntimeProvider: 'supabase',\n  });\n", "    databaseRuntimeProvider: 'supabase',\n    targets,\n  });\n")
+          file = Path(path)
+          text = file.read_text()
+          replacement = "function mergeScripts(\n  existingScripts: PartialPackageScripts,\n  templateScripts: PackageScripts,\n): PackageScripts {\n  const mergedScripts = {\n    ...templateScripts,\n    ...existingScripts,\n  };\n\n  for (const scriptName of REQUIRED_MANAGED_SCRIPT_NAMES) {\n    mergedScripts[scriptName] = templateScripts[scriptName];\n  }\n  for (const scriptName of TARGET_SCRIPT_NAMES) {\n    const targetScript = templateScripts[scriptName];\n    if (targetScript === undefined) {\n      delete mergedScripts[scriptName];\n    } else {\n      mergedScripts[scriptName] = targetScript;\n    }\n  }\n\n  return mergedScripts;\n}\n"
+          text, count = re.subn(r"function mergeScripts\([\s\S]*?\n}\n$", replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('mergeScripts replacement failed')
+          file.write_text(text)
 
-          # Published owner boundaries.
-          replace_once(
-              'package.json',
-              '"@ankhorage/contracts": "^7.6.0"',
-              '"@ankhorage/contracts": "^7.7.0"',
-          )
-          replace_once(
-              'package.json',
-              '"@ankhorage/infra": "^3.2.0"',
-              '"@ankhorage/infra": "^3.3.0"',
-          )
+          path = 'src/host/orchestrator/projectManager.ts'
+          replace_once(path, "import { ProjectScaffolder } from './scaffolder';\n", "import { createDefaultAppDeployManifest } from './projectTargets';\nimport { ProjectScaffolder } from './scaffolder';\n")
+          replace_once(path, "    const templateData = this.scaffolder.getTemplate(templateSelection);\n    const scaffoldManifest = applySystemTemplates(templateData);\n", "    const templateData = this.scaffolder.getTemplate(templateSelection);\n    const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);\n    const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });\n")
+          replace_once(path, "      splashScreen: scaffoldManifest.splashScreen ?? null,\n      zoraExtensions,\n    });\n", "      splashScreen: scaffoldManifest.splashScreen ?? null,\n      targets: deploy.targets,\n      zoraExtensions,\n    });\n")
+          replace_once(path, "      templateSelection.category,\n    );\n", "      templateSelection.category,\n      deploy,\n    );\n")
+          replace_once(path, "      splashScreen: manifest.splashScreen ?? null,\n    });\n", "      splashScreen: manifest.splashScreen ?? null,\n      targets: manifest.deploy?.targets,\n    });\n")
 
-          # Move identity derivation out of the generation template. Generated Expo config now consumes
-          # only canonical AppManifest.deploy.targets values.
-          replace_once(
-              'src/host/orchestrator/templates.ts',
-              "import type { SplashScreenSpec } from '@ankhorage/contracts';\n",
-              "import type { SplashScreenSpec } from '@ankhorage/contracts';\n"
-              "import type {\n"
-              "  AppDeployAndroidTargetConfig,\n"
-              "  AppDeployIosTargetConfig,\n"
-              "  AppDeployTargets,\n"
-              "} from '@ankhorage/contracts/deploy';\n",
-          )
-          regex_once(
-              'src/host/orchestrator/templates.ts',
-              r"const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set\([\s\S]*?\n\);\n\nfunction serializeStringLiteral",
-              'function serializeStringLiteral',
-          )
-          regex_once(
-              'src/host/orchestrator/templates.ts',
-              r"function createNativeIdentifierSegment\([\s\S]*?\nexport function getMetroConfigJs",
-              '''function serializeAndroidConfig(args: {
-  target: AppDeployAndroidTargetConfig;
-  runtimePlan?: ExpoRuntimePlan;
-}): string {
-  const permissions = resolveExpoRuntimeNativeOutput(args.runtimePlan).androidPermissions;
-  const extraLines =
-    permissions.length > 0 ? `\\n    permissions: ${serializeJsValue(permissions, 2)},` : '';
-  const schemeLine = args.target.scheme
-    ? `\\n    scheme: ${serializeStringLiteral(args.target.scheme)},`
-    : '';
+          replace_once('package.json', '"@ankhorage/contracts": "^7.6.0"', '"@ankhorage/contracts": "^7.7.0"')
+          replace_once('package.json', '"@ankhorage/infra": "^3.2.0"', '"@ankhorage/infra": "^3.3.0"')
 
-  return `{
-    ...config.android,${extraLines}
-    package: ${serializeStringLiteral(args.target.package)},${schemeLine}
-  }`;
-}
+          path = 'src/host/oauthFixtureConsumer.smoke.test.ts'
+          replace_once(path, "    const manifest = createOAuthFixtureManifest({\n", "    const createdManifest = await projectManager.getProjectManifest(created.id);\n    const manifest = createOAuthFixtureManifest({\n")
+          replace_once(path, "      overrides: {\n        metadata: {\n", "      overrides: {\n        deploy: createdManifest.deploy,\n        metadata: {\n")
 
-function serializeIosConfig(target: AppDeployIosTargetConfig): string {
-  const schemeLine = target.scheme
-    ? `\\n    scheme: ${serializeStringLiteral(target.scheme)},`
-    : '';
-
-  return `{
-    ...config.ios,
-    bundleIdentifier: ${serializeStringLiteral(target.bundleIdentifier)},${schemeLine}
-  }`;
-}
-
-function serializeTargetSections(args: {
-  targets: AppDeployTargets;
-  runtimePlan?: ExpoRuntimePlan;
-}): string {
-  const sections: string[] = [];
-  if (args.targets.android?.enabled) {
-    sections.push(
-      `  android: ${serializeAndroidConfig({ target: args.targets.android, runtimePlan: args.runtimePlan })},`,
-    );
-  }
-  if (args.targets.ios?.enabled) {
-    sections.push(`  ios: ${serializeIosConfig(args.targets.ios)},`);
-  }
-  if (args.targets.web?.enabled) {
-    sections.push(`  web: {
-    ...config.web,
-    output: 'static',
-    favicon: './assets/favicon.png',
-  },`);
-  }
-  return sections.length > 0 ? `\\n${sections.join('\\n')}` : '';
-}
-
-export function getAppConfigTs({
-  name,
-  slug,
-  targets,
-  splashScreen = null,
-  runtimePlan,
-}: {
-  name: string;
-  slug: string;
-  targets: AppDeployTargets;
-  splashScreen?: SplashScreenSpec | null;
-  runtimePlan?: ExpoRuntimePlan;
-}) {
-  const targetSections = serializeTargetSections({ targets, runtimePlan });
-  const appConfigTs = `import type { ConfigContext, ExpoConfig } from 'expo/config';
-
-export default ({ config }: ConfigContext): ExpoConfig => {
-  const baseConfig = { ...config };
-  delete baseConfig.scheme;
-  delete baseConfig.android;
-  delete baseConfig.ios;
-  delete baseConfig.web;
-
-  return {
-    ...baseConfig,
-    name: ${serializeStringLiteral(name)},
-    slug: ${serializeStringLiteral(slug)},
-    plugins: ${serializePluginsWithRuntimePlan({ splashScreen, runtimePlan })},${targetSections}
-  };
-};
-`;
-  return appConfigTs;
-}
-
-export function getMetroConfigJs''',
-          )
-          replace_once(
-              'src/host/orchestrator/templates.ts',
-              "const EXPO_WEB_BROWSER_VERSION = '~15.0.11';\n",
-              "const EXPO_WEB_BROWSER_VERSION = '~15.0.11';\n"
-              "const LEGACY_WEB_ONLY_TARGETS = { web: { enabled: true } } as const satisfies AppDeployTargets;\n",
-          )
-          replace_once(
-              'src/host/orchestrator/templates.ts',
-              "  storageProvider?: GeneratedStorageProvider;\n  runtimePlan?: ExpoRuntimePlan;\n}) {\n",
-              "  storageProvider?: GeneratedStorageProvider;\n  runtimePlan?: ExpoRuntimePlan;\n  targets?: AppDeployTargets;\n}) {\n",
-          )
-          replace_once(
-              'src/host/orchestrator/templates.ts',
-              "    storageProvider = null,\n    runtimePlan,\n  } = args;\n",
-              "    storageProvider = null,\n    runtimePlan,\n    targets = LEGACY_WEB_ONLY_TARGETS,\n  } = args;\n",
-          )
-          replace_once(
-              'src/host/orchestrator/templates.ts',
-              "    scripts: {\n      start: 'expo start',\n      android: 'expo run:android',\n      ios: 'expo run:ios',\n      web: 'expo start --web',\n      lint: 'ankhorage-eslint . --max-warnings=0',\n",
-              "    scripts: {\n      start: 'expo start',\n      ...(targets.android?.enabled ? { android: 'expo run:android' } : {}),\n      ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),\n      ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),\n      lint: 'ankhorage-eslint . --max-warnings=0',\n",
-          )
-
-          # Scaffolder passes target desired state to package/app config generation and uses a Web-only
-          # migration-safe view for manifests predating deploy.targets.
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';\n",
-              "import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';\n"
-              "import type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "  runtimePlan?: ExpoRuntimePlan;\n}\n",
-              "  runtimePlan?: ExpoRuntimePlan;\n  targets?: AppDeployTargets;\n}\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "const MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;\n",
-              "const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;\n"
-              "const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;\n"
-              "const LEGACY_WEB_ONLY_TARGETS = { web: { enabled: true } } as const satisfies AppDeployTargets;\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "      zoraExtensions = [],\n      runtimePlan,\n    } = options;\n",
-              "      zoraExtensions = [],\n      runtimePlan,\n      targets = LEGACY_WEB_ONLY_TARGETS,\n    } = options;\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "      zoraExtensions,\n      runtimePlan,\n    );\n    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);\n",
-              "      zoraExtensions,\n      runtimePlan,\n      targets,\n    );\n    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "      splashScreen = null,\n      runtimePlan,\n    } = options;\n",
-              "      splashScreen = null,\n      runtimePlan,\n      targets = LEGACY_WEB_ONLY_TARGETS,\n    } = options;\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "        storageProvider,\n        runtimePlan,\n      }),\n",
-              "        storageProvider,\n        runtimePlan,\n        targets,\n      }),\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "      includeStudio,\n    );\n\n    await fs.writeFile(packageJsonPath",
-              "      includeStudio,\n      targets,\n    );\n\n    await fs.writeFile(packageJsonPath",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    await this.writeAppConfig(projectPath, appName, slug, splashScreen, runtimePlan);\n",
-              "    await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    category: AppCategory,\n  ) {\n",
-              "    category: AppCategory,\n    deploy: AppDeployManifest,\n  ) {\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    const manifestWithCategory: AppManifest = {\n      ...templateData,\n      metadata: {\n",
-              "    const manifestWithCategory: AppManifest = {\n      ...templateData,\n      deploy,\n      metadata: {\n",
-          )
-          regex_once(
-              'src/host/orchestrator/scaffolder.ts',
-              r"  private async writeAppConfig\([\s\S]*?\n  private async writeMetroConfig",
-              '''  private async writeAppConfig(
-    dir: string,
-    name: string,
-    slug: string,
-    targets: AppDeployTargets,
-    splashScreen: SplashScreenSpec | null,
-    runtimePlan?: ExpoRuntimePlan,
-  ) {
-    await fs.writeFile(
-      path.join(dir, 'app.config.ts'),
-      getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
-      'utf8',
-    );
-  }
-
-  private async writeMetroConfig''',
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    zoraExtensions: readonly ZoraExtensionDefinition[],\n    runtimePlan?: ExpoRuntimePlan,\n  ) {\n",
-              "    zoraExtensions: readonly ZoraExtensionDefinition[],\n    runtimePlan: ExpoRuntimePlan | undefined,\n    targets: AppDeployTargets,\n  ) {\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "        storageProvider,\n        runtimePlan,\n      }),\n      zoraExtensions,\n",
-              "        storageProvider,\n        runtimePlan,\n        targets,\n      }),\n      zoraExtensions,\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "function mergePackageJson(\n  existing: ExtendedPackageJsonShape | null,\n  template: ExtendedPackageJsonShape,\n  includeStudio: boolean,\n) {\n",
-              "function mergePackageJson(\n  existing: ExtendedPackageJsonShape | null,\n  template: ExtendedPackageJsonShape,\n  includeStudio: boolean,\n  targets: AppDeployTargets,\n) {\n",
-          )
-          # Every package template used to establish managed dependencies/scripts must see the same targets.
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false });\n  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true });\n",
-              "  const baseTemplate = getPackageJson({ name: template.name, includeStudio: false, targets });\n"
-              "  const studioTemplate = getPackageJson({ name: template.name, includeStudio: true, targets });\n",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    storageProvider: 'supabase',\n  });\n  const supabaseStudioTemplate",
-              "    storageProvider: 'supabase',\n    targets,\n  });\n  const supabaseStudioTemplate",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    storageProvider: 'supabase',\n  });\n  const supabaseDatabaseTemplate",
-              "    storageProvider: 'supabase',\n    targets,\n  });\n  const supabaseDatabaseTemplate",
-          )
-          replace_once(
-              'src/host/orchestrator/scaffolder.ts',
-              "    databaseRuntimeProvider: 'supabase',\n  });\n",
-              "    databaseRuntimeProvider: 'supabase',\n    targets,\n  });\n",
-          )
-          regex_once(
-              'src/host/orchestrator/scaffolder.ts',
-              r"function mergeScripts\([\s\S]*?\n}\n$",
-              '''function mergeScripts(
-  existingScripts: PartialPackageScripts,
-  templateScripts: PackageScripts,
-): PackageScripts {
-  const mergedScripts = {
-    ...templateScripts,
-    ...existingScripts,
-  };
-
-  for (const scriptName of REQUIRED_MANAGED_SCRIPT_NAMES) {
-    mergedScripts[scriptName] = templateScripts[scriptName];
-  }
-  for (const scriptName of TARGET_SCRIPT_NAMES) {
-    const targetScript = templateScripts[scriptName];
-    if (targetScript === undefined) {
-      delete mergedScripts[scriptName];
-    } else {
-      mergedScripts[scriptName] = targetScript;
-    }
-  }
-
-  return mergedScripts;
-}
-''',
-          )
-
-          # New projects derive legacy-compatible target identity exactly once and persist it. Existing
-          # projects pass their canonical manifest targets back into regeneration.
-          replace_once(
-              'src/host/orchestrator/projectManager.ts',
-              "import { ProjectScaffolder } from './scaffolder';\n",
-              "import { createDefaultAppDeployManifest } from './projectTargets';\n"
-              "import { ProjectScaffolder } from './scaffolder';\n",
-          )
-          replace_once(
-              'src/host/orchestrator/projectManager.ts',
-              "    const templateData = this.scaffolder.getTemplate(templateSelection);\n    const scaffoldManifest = applySystemTemplates(templateData);\n",
-              "    const templateData = this.scaffolder.getTemplate(templateSelection);\n"
-              "    const deploy = templateData.deploy ?? createDefaultAppDeployManifest(slug);\n"
-              "    const scaffoldManifest = applySystemTemplates({ ...templateData, deploy });\n",
-          )
-          replace_once(
-              'src/host/orchestrator/projectManager.ts',
-              "      splashScreen: scaffoldManifest.splashScreen ?? null,\n      zoraExtensions,\n    });\n",
-              "      splashScreen: scaffoldManifest.splashScreen ?? null,\n      targets: deploy.targets,\n      zoraExtensions,\n    });\n",
-          )
-          replace_once(
-              'src/host/orchestrator/projectManager.ts',
-              "      templateSelection.category,\n    );\n",
-              "      templateSelection.category,\n      deploy,\n    );\n",
-          )
-          replace_once(
-              'src/host/orchestrator/projectManager.ts',
-              "      splashScreen: manifest.splashScreen ?? null,\n    });\n",
-              "      splashScreen: manifest.splashScreen ?? null,\n      targets: manifest.deploy?.targets,\n    });\n",
-          )
-
-          # Keep the OAuth fixture's project identity when replacing its manifest with a package fixture.
-          replace_once(
-              'src/host/oauthFixtureConsumer.smoke.test.ts',
-              "    const manifest = createOAuthFixtureManifest({\n",
-              "    const createdManifest = await projectManager.getProjectManifest(created.id);\n"
-              "    const manifest = createOAuthFixtureManifest({\n",
-          )
-          replace_once(
-              'src/host/oauthFixtureConsumer.smoke.test.ts',
-              "      overrides: {\n        metadata: {\n",
-              "      overrides: {\n        deploy: createdManifest.deploy,\n        metadata: {\n",
-          )
-
-          # Replace the old slug-derived unit expectation with explicit canonical target values.
-          regex_once(
-              'src/host/orchestrator/templates.test.ts',
-              r"  it\('generates one deterministic native scheme for callback deep links',[\s\S]*?\n  \}\);\n\n  it\('uses the canonical Expo Router entry",
-              '''  it('uses canonical target identities for generated native configuration', () => {
-    const appConfig = getAppConfigTs({
-      name: 'OAuth App',
-      slug: 'renamed-oauth-app',
-      targets: {
-        web: { enabled: true },
-        android: {
-          enabled: true,
-          package: 'com.example.stable.android',
-          scheme: 'stable-android',
-        },
-        ios: {
-          enabled: true,
-          bundleIdentifier: 'com.example.stable.ios',
-          scheme: 'stable-ios',
-        },
-      },
-    });
-
-    expect(appConfig).toContain("package: 'com.example.stable.android'");
-    expect(appConfig).toContain("bundleIdentifier: 'com.example.stable.ios'");
-    expect(appConfig).toContain("scheme: 'stable-android'");
-    expect(appConfig).toContain("scheme: 'stable-ios'");
-    expect(appConfig).not.toContain('com.ankh.renamedoauthapp');
-  });
-
-  it('uses the canonical Expo Router entry''',
-          )
-
-          Path('src/host/orchestrator/projectTargets.ts').write_text('''import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-
-const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
-  [
-    'abstract',
-    'annotation',
-    'as',
-    'break',
-    'byte',
-    'case',
-    'catch',
-    'char',
-    'class',
-    'companion',
-    'const',
-    'continue',
-    'data',
-    'do',
-    'double',
-    'else',
-    'enum',
-    'extends',
-    'false',
-    'final',
-    'finally',
-    'float',
-    'for',
-    'fun',
-    'if',
-    'implements',
-    'import',
-    'in',
-    'int',
-    'interface',
-    'internal',
-    'is',
-    'long',
-    'native',
-    'new',
-    'null',
-    'object',
-    'open',
-    'operator',
-    'out',
-    'override',
-    'package',
-    'private',
-    'protected',
-    'public',
-    'return',
-    'sealed',
-    'short',
-    'static',
-    'strictfp',
-    'super',
-    'suspend',
-    'switch',
-    'synchronized',
-    'this',
-    'throw',
-    'throws',
-    'transient',
-    'true',
-    'try',
-    'typealias',
-    'typeof',
-    'val',
-    'var',
-    'void',
-    'volatile',
-    'when',
-    'while',
-  ].map((segment) => segment.toLowerCase()),
-);
-
-export function createDefaultAppDeployManifest(projectId: string): AppDeployManifest {
-  const identifierSegment = createNativeIdentifierSegment(projectId);
-  const applicationId = `com.ankh.${identifierSegment}`;
-  const schemeSegment = identifierSegment.replaceAll('_', '') || 'app';
-  const scheme = `ankh-${schemeSegment}`;
-
-  return {
-    targets: {
-      web: { enabled: true },
-      android: {
-        enabled: true,
-        package: applicationId,
-        scheme,
-      },
-      ios: {
-        enabled: true,
-        bundleIdentifier: applicationId,
-        scheme,
-      },
-    },
-  };
-}
-
-function createNativeIdentifierSegment(projectId: string): string {
-  const sanitized = projectId.replace(/[^A-Za-z0-9_]/g, '').toLowerCase();
-  const ensuredValue = sanitized.length > 0 ? sanitized : 'app';
-  const leadingLetterSegment = /^[a-z]/u.test(ensuredValue) ? ensuredValue : `app${ensuredValue}`;
-
-  return RESERVED_NATIVE_IDENTIFIER_SEGMENTS.has(leadingLetterSegment)
-    ? `app${leadingLetterSegment}`
-    : leadingLetterSegment;
-}
-''')
-
-          Path('src/host/orchestrator/appTargetGeneration.test.ts').write_text('''import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
-import { describe, expect, it } from 'bun:test';
-
-import { createDefaultAppDeployManifest } from './projectTargets';
-import { getAppConfigTs, getPackageJson } from './templates';
-
-const WEB = { web: { enabled: true } } as const satisfies AppDeployTargets;
-const ANDROID = {
-  android: {
-    enabled: true,
-    package: 'com.example.android',
-    scheme: 'example-android',
-  },
-} as const satisfies AppDeployTargets;
-const IOS = {
-  ios: {
-    enabled: true,
-    bundleIdentifier: 'com.example.ios',
-    scheme: 'example-ios',
-  },
-} as const satisfies AppDeployTargets;
-
-const COMBINATIONS = [
-  ['web', WEB],
-  ['android', ANDROID],
-  ['ios', IOS],
-  ['web+android', { ...WEB, ...ANDROID }],
-  ['web+ios', { ...WEB, ...IOS }],
-  ['android+ios', { ...ANDROID, ...IOS }],
-  ['web+android+ios', { ...WEB, ...ANDROID, ...IOS }],
-] as const satisfies readonly (readonly [string, AppDeployTargets])[];
-
-describe('canonical app target generation', () => {
-  it.each(COMBINATIONS)('emits only enabled target sections and scripts for %s', (_label, targets) => {
-    const appConfig = getAppConfigTs({ name: 'Target App', slug: 'target-app', targets });
-    const packageJson = getPackageJson({ name: 'target-app', targets });
-    const scripts = packageJson.scripts as Readonly<Record<string, string>>;
-
-    expect(appConfig.includes('  web: {')).toBe(targets.web?.enabled === true);
-    expect(appConfig.includes('  android: {')).toBe(targets.android?.enabled === true);
-    expect(appConfig.includes('  ios: {')).toBe(targets.ios?.enabled === true);
-    expect('web' in scripts).toBe(targets.web?.enabled === true);
-    expect('android' in scripts).toBe(targets.android?.enabled === true);
-    expect('ios' in scripts).toBe(targets.ios?.enabled === true);
-  });
-
-  it('uses distinct canonical native schemes without a slug-derived fallback', () => {
-    const appConfig = getAppConfigTs({
-      name: 'Target App',
-      slug: 'slug-must-not-own-native-identity',
-      targets: { ...ANDROID, ...IOS },
-    });
-
-    expect(appConfig).toContain("package: 'com.example.android'");
-    expect(appConfig).toContain("scheme: 'example-android'");
-    expect(appConfig).toContain("bundleIdentifier: 'com.example.ios'");
-    expect(appConfig).toContain("scheme: 'example-ios'");
-    expect(appConfig).not.toContain('ankh-slugmustnotownnativeidentity');
-  });
-
-  it('creates the legacy-compatible default identity once for a new project', () => {
-    expect(createDefaultAppDeployManifest('OAuth Fixture Consumer')).toEqual({
-      targets: {
-        web: { enabled: true },
-        android: {
-          enabled: true,
-          package: 'com.ankh.oauthfixtureconsumer',
-          scheme: 'ankh-oauthfixtureconsumer',
-        },
-        ios: {
-          enabled: true,
-          bundleIdentifier: 'com.ankh.oauthfixtureconsumer',
-          scheme: 'ankh-oauthfixtureconsumer',
-        },
-      },
-    });
-  });
-
-  it('does not invent a scheme when a canonical native target omits one', () => {
-    const appConfig = getAppConfigTs({
-      name: 'Legacy Native App',
-      slug: 'legacy-native-app',
-      targets: {
-        android: { enabled: true, package: 'com.example.legacy' },
-      },
-    });
-
-    expect(appConfig).toContain("package: 'com.example.legacy'");
-    expect(appConfig).not.toContain('scheme:');
-  });
-});
-''')
-
-          Path('docs/auth4-target-generation.md').write_text('''# Auth 4 canonical target generation
-
-Studio generation consumes `AppManifest.deploy.targets` as the application platform identity source.
-
-- New Studio projects preserve the historical Web + Android + iOS default by deriving identifiers once during project creation and persisting them into `deploy.targets`.
-- Regeneration reads Android package, iOS bundle identifier, and native schemes only from the persisted target model; slug changes do not rename native identities.
-- Disabled targets do not emit their Expo platform section or package script.
-- Manifests predating `deploy.targets` use a migration-safe Web-only generation view and do not gain guessed native identities.
-- Native targets without a canonical scheme do not receive a Studio-generated scheme.
-
-Infra owns redirect allowlist derivation from the same target model; Studio does not duplicate redirect policy.
-''')
-
-          Path('.changeset/auth4-canonical-target-generation.md').write_text('''---
-'@ankhorage/studio': minor
----
-
-Consume canonical app deployment targets when generating Expo platform configuration and scripts, persist stable native identities for new projects, and stop deriving native identity during regeneration.
-''')
+          path = 'src/host/orchestrator/templates.test.ts'
+          file = Path(path)
+          text = file.read_text()
+          replacement = "  it('uses canonical target identities for generated native configuration', () => {\n    const appConfig = getAppConfigTs({\n      name: 'OAuth App',\n      slug: 'renamed-oauth-app',\n      targets: {\n        web: { enabled: true },\n        android: { enabled: true, package: 'com.example.stable.android', scheme: 'stable-android' },\n        ios: { enabled: true, bundleIdentifier: 'com.example.stable.ios', scheme: 'stable-ios' },\n      },\n    });\n\n    expect(appConfig).toContain(\"package: 'com.example.stable.android'\");\n    expect(appConfig).toContain(\"bundleIdentifier: 'com.example.stable.ios'\");\n    expect(appConfig).toContain(\"scheme: 'stable-android'\");\n    expect(appConfig).toContain(\"scheme: 'stable-ios'\");\n    expect(appConfig).not.toContain('com.ankh.renamedoauthapp');\n  });\n\n  it('uses the canonical Expo Router entry"
+          text, count = re.subn(r"  it\('generates one deterministic native scheme for callback deep links',[\s\S]*?\n  \}\);\n\n  it\('uses the canonical Expo Router entry", replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('templates test replacement failed')
+          file.write_text(text)
           PY
 
-      - name: Refresh released dependencies and lockfile
+          cat > src/host/orchestrator/projectTargets.ts <<'EOF'
+          import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
+
+          const RESERVED_NATIVE_IDENTIFIER_SEGMENTS = new Set(
+            ['class', 'object', 'package', 'private', 'public', 'return', 'static', 'when'].map((segment) =>
+              segment.toLowerCase(),
+            ),
+          );
+
+          export function createDefaultAppDeployManifest(projectId: string): AppDeployManifest {
+            const identifierSegment = createNativeIdentifierSegment(projectId);
+            const applicationId = `com.ankh.${identifierSegment}`;
+            const scheme = `ankh-${identifierSegment.replaceAll('_', '') || 'app'}`;
+            return {
+              targets: {
+                web: { enabled: true },
+                android: { enabled: true, package: applicationId, scheme },
+                ios: { enabled: true, bundleIdentifier: applicationId, scheme },
+              },
+            };
+          }
+
+          function createNativeIdentifierSegment(projectId: string): string {
+            const sanitized = projectId.replace(/[^A-Za-z0-9_]/g, '').toLowerCase();
+            const ensuredValue = sanitized.length > 0 ? sanitized : 'app';
+            const leadingLetterSegment = /^[a-z]/u.test(ensuredValue) ? ensuredValue : `app${ensuredValue}`;
+            return RESERVED_NATIVE_IDENTIFIER_SEGMENTS.has(leadingLetterSegment)
+              ? `app${leadingLetterSegment}`
+              : leadingLetterSegment;
+          }
+          EOF
+
+          cat > src/host/orchestrator/appTargetGeneration.test.ts <<'EOF'
+          import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
+          import { describe, expect, it } from 'bun:test';
+
+          import { createDefaultAppDeployManifest } from './projectTargets';
+          import { getAppConfigTs, getPackageJson } from './templates';
+
+          const WEB = { web: { enabled: true } } as const satisfies AppDeployTargets;
+          const ANDROID = { android: { enabled: true, package: 'com.example.android', scheme: 'example-android' } } as const satisfies AppDeployTargets;
+          const IOS = { ios: { enabled: true, bundleIdentifier: 'com.example.ios', scheme: 'example-ios' } } as const satisfies AppDeployTargets;
+          const COMBINATIONS = [
+            ['web', WEB],
+            ['android', ANDROID],
+            ['ios', IOS],
+            ['web+android', { ...WEB, ...ANDROID }],
+            ['web+ios', { ...WEB, ...IOS }],
+            ['android+ios', { ...ANDROID, ...IOS }],
+            ['web+android+ios', { ...WEB, ...ANDROID, ...IOS }],
+          ] as const satisfies readonly (readonly [string, AppDeployTargets])[];
+
+          describe('canonical app target generation', () => {
+            it.each(COMBINATIONS)('emits only enabled target sections and scripts for %s', (_label, targets) => {
+              const appConfig = getAppConfigTs({ name: 'Target App', slug: 'target-app', targets });
+              const scripts = getPackageJson({ name: 'target-app', targets }).scripts as Readonly<Record<string, string>>;
+              expect(appConfig.includes('  web: {')).toBe(targets.web?.enabled === true);
+              expect(appConfig.includes('  android: {')).toBe(targets.android?.enabled === true);
+              expect(appConfig.includes('  ios: {')).toBe(targets.ios?.enabled === true);
+              expect('web' in scripts).toBe(targets.web?.enabled === true);
+              expect('android' in scripts).toBe(targets.android?.enabled === true);
+              expect('ios' in scripts).toBe(targets.ios?.enabled === true);
+            });
+
+            it('keeps generation independent from the slug', () => {
+              const appConfig = getAppConfigTs({ name: 'Target App', slug: 'renamed-slug', targets: { ...ANDROID, ...IOS } });
+              expect(appConfig).toContain("package: 'com.example.android'");
+              expect(appConfig).toContain("scheme: 'example-android'");
+              expect(appConfig).toContain("bundleIdentifier: 'com.example.ios'");
+              expect(appConfig).toContain("scheme: 'example-ios'");
+              expect(appConfig).not.toContain('ankh-renamedslug');
+            });
+
+            it('persists the historical default identity for new projects', () => {
+              expect(createDefaultAppDeployManifest('oauth-fixture-consumer')).toEqual({
+                targets: {
+                  web: { enabled: true },
+                  android: { enabled: true, package: 'com.ankh.oauthfixtureconsumer', scheme: 'ankh-oauthfixtureconsumer' },
+                  ios: { enabled: true, bundleIdentifier: 'com.ankh.oauthfixtureconsumer', scheme: 'ankh-oauthfixtureconsumer' },
+                },
+              });
+            });
+
+            it('does not invent a scheme when a target omits one', () => {
+              const appConfig = getAppConfigTs({ name: 'Legacy', slug: 'legacy', targets: { android: { enabled: true, package: 'com.example.legacy' } } });
+              expect(appConfig).toContain("package: 'com.example.legacy'");
+              expect(appConfig).not.toContain('scheme:');
+            });
+          });
+          EOF
+
+          cat > docs/auth4-target-generation.md <<'EOF'
+          # Auth 4 canonical target generation
+
+          Studio generation consumes `AppManifest.deploy.targets` as the application platform identity source. New projects derive the historical Web + Android + iOS identity once and persist it. Regeneration reads native identifiers and schemes only from that persisted model. Disabled targets do not emit platform config or package scripts, and manifests predating `deploy.targets` use a Web-only migration-safe generation view without guessed native identity.
+          EOF
+
+          cat > .changeset/auth4-canonical-target-generation.md <<'EOF'
+          ---
+          '@ankhorage/studio': minor
+          ---
+
+          Consume canonical app deployment targets when generating Expo platform configuration and scripts, persist stable native identities for new projects, and stop deriving native identity during regeneration.
+          EOF
+
+      - name: Refresh dependencies
         run: bun install
 
-      - name: Format changed sources
-        run: bun run format
-
-      - name: Run focused target tests
-        run: bun test src/host/orchestrator/appTargetGeneration.test.ts src/host/orchestrator/templates.test.ts src/host/oauthFixtureConsumer.smoke.test.ts
-
-      - name: Run build and typecheck
+      - name: Format and validate focused scope
         run: |
+          bun run format
+          bun test src/host/orchestrator/appTargetGeneration.test.ts src/host/orchestrator/templates.test.ts src/host/oauthFixtureConsumer.smoke.test.ts
           bun run build
           bun run typecheck
-
-      - name: Run lint and Knip
-        run: |
           bun run lint
           bun run knip
-
-      - name: Refresh Paradox docs
-        run: |
           bun run docs
           bun run format
+          git diff --check
 
       - name: Commit implementation
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json bun.lock src docs .changeset paradox README.md
-          git diff --cached --check
           git commit -m "Consume canonical app targets in Studio generation"
           git push origin HEAD:agent/auth4-canonical-target-generation
