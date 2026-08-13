@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.4.0
+
+### Minor Changes
+
+- e1d5727: Consume canonical app deployment targets when generating Expo platform configuration and scripts, persist stable native identities for new projects, and stop deriving native identity during regeneration.
+
 ## 1.3.0
 
 ### Minor Changes
