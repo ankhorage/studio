@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:418:14`
+Source: `src/index.ts:428:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:331:1`
+Source: `src/index.ts:337:1`
 
 ### Members
 
@@ -54,7 +54,7 @@ Source: `src/bindingSchemaModel.ts:43:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1360:1`
+Source: `src/index.ts:1370:1`
 
 ### Signatures
 
@@ -66,7 +66,7 @@ Source: `src/index.ts:1360:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:736:1`
+Source: `src/index.ts:746:1`
 
 ### Signatures
 
@@ -78,7 +78,7 @@ Source: `src/index.ts:736:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:565:14`
+Source: `src/index.ts:575:14`
 
 ### Signatures
 
@@ -103,7 +103,7 @@ Source: `src/bindingOperationModel.ts:16:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:95:1`
+Source: `src/mediaAuthoringModel.ts:115:1`
 
 ### Signatures
 
@@ -129,7 +129,7 @@ Source: `src/bindingSchemaModel.ts:33:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1279:1`
+Source: `src/index.ts:1289:1`
 
 ### Signatures
 
@@ -169,7 +169,7 @@ Source: `src/propertiesAuthoringModel.ts:92:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:51:1`
+Source: `src/mediaAuthoringModel.ts:71:1`
 
 ### Signatures
 
@@ -182,7 +182,7 @@ Source: `src/mediaAuthoringModel.ts:51:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:39:1`
+Source: `src/mediaAuthoringModel.ts:59:1`
 
 ### Signatures
 
@@ -194,7 +194,7 @@ Source: `src/mediaAuthoringModel.ts:39:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:64:1`
+Source: `src/mediaAuthoringModel.ts:84:1`
 
 ### Signatures
 
@@ -230,7 +230,7 @@ Source: `src/bindingDiagnosticsModel.ts:20:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:582:14`
+Source: `src/index.ts:592:14`
 
 ### Signatures
 
@@ -256,7 +256,7 @@ Source: `src/bindingOperationModel.ts:24:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:558:14`
+Source: `src/index.ts:568:14`
 
 ### Signatures
 
@@ -268,7 +268,7 @@ Source: `src/index.ts:558:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1205:1`
+Source: `src/index.ts:1215:1`
 
 ### Signatures
 
@@ -280,7 +280,7 @@ Source: `src/index.ts:1205:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:309:1`
+Source: `src/index.ts:315:1`
 
 ### Members
 
@@ -301,7 +301,7 @@ Source: `src/index.ts:309:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:291:1`
+Source: `src/index.ts:297:1`
 
 ### Members
 
@@ -315,19 +315,19 @@ Source: `src/index.ts:291:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:268:1`
+Source: `src/index.ts:274:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:319:1`
+Source: `src/index.ts:325:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:297:1`
+Source: `src/index.ts:303:1`
 
 ### Members
 
@@ -347,19 +347,19 @@ Source: `src/index.ts:297:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:265:1`
+Source: `src/index.ts:271:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:266:1`
+Source: `src/index.ts:272:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:314:1`
+Source: `src/index.ts:320:1`
 
 ### Members
 
@@ -380,7 +380,7 @@ Source: `src/index.ts:314:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:998:1`
+Source: `src/index.ts:1008:1`
 
 ### Signatures
 
@@ -392,7 +392,7 @@ Source: `src/index.ts:998:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:941:1`
+Source: `src/index.ts:951:1`
 
 ### Members
 
@@ -407,7 +407,7 @@ Source: `src/index.ts:941:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:948:1`
+Source: `src/index.ts:958:1`
 
 ### Members
 
@@ -420,7 +420,7 @@ Source: `src/index.ts:948:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:276:1`
+Source: `src/index.ts:282:1`
 
 ### Members
 
@@ -436,7 +436,7 @@ Source: `src/index.ts:276:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:284:1`
+Source: `src/index.ts:290:1`
 
 ### Members
 
@@ -451,7 +451,7 @@ Source: `src/index.ts:284:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:271:1`
+Source: `src/index.ts:277:1`
 
 ### Members
 
@@ -464,7 +464,7 @@ Source: `src/index.ts:271:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:28:1`
+Source: `src/mediaAuthoringModel.ts:48:1`
 
 ### Signatures
 
@@ -477,7 +477,7 @@ Source: `src/mediaAuthoringModel.ts:28:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1134:1`
+Source: `src/index.ts:1144:1`
 
 ### Signatures
 
@@ -489,7 +489,7 @@ Source: `src/index.ts:1134:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1025:1`
+Source: `src/index.ts:1035:1`
 
 ### Members
 
@@ -504,7 +504,7 @@ Source: `src/index.ts:1025:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1032:1`
+Source: `src/index.ts:1042:1`
 
 ### Members
 
@@ -517,7 +517,7 @@ Source: `src/index.ts:1032:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:226:1`
+Source: `src/index.ts:232:1`
 
 ### Members
 
@@ -532,13 +532,13 @@ Source: `src/index.ts:226:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:233:1`
+Source: `src/index.ts:239:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:246:1`
+Source: `src/index.ts:252:1`
 
 ### Members
 
@@ -551,19 +551,19 @@ Source: `src/index.ts:246:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:224:1`
+Source: `src/index.ts:230:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:258:1`
+Source: `src/index.ts:264:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:251:1`
+Source: `src/index.ts:257:1`
 
 ## ProjectAuthDiagnostic
 
@@ -711,7 +711,7 @@ Source: `src/projectWorkspaceContracts.ts:16:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:43:1`
+Source: `src/mediaAuthoringModel.ts:63:1`
 
 ### Signatures
 
@@ -723,7 +723,7 @@ Source: `src/mediaAuthoringModel.ts:43:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:622:14`
+Source: `src/index.ts:632:14`
 
 ### Signatures
 
@@ -751,7 +751,7 @@ Source: `src/bindingMutationModel.ts:50:1`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:106:1`
+Source: `src/mediaAuthoringModel.ts:126:1`
 
 ### Signatures
 
@@ -778,7 +778,7 @@ Source: `src/bindingMutationModel.ts:22:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:896:1`
+Source: `src/index.ts:906:1`
 
 ### Signatures
 
@@ -790,7 +790,7 @@ Source: `src/index.ts:896:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1402:1`
+Source: `src/index.ts:1412:1`
 
 ### Signatures
 
@@ -802,7 +802,7 @@ Source: `src/index.ts:1402:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:835:1`
+Source: `src/index.ts:845:1`
 
 ### Signatures
 
@@ -814,7 +814,7 @@ Source: `src/index.ts:835:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1066:1`
+Source: `src/index.ts:1076:1`
 
 ### Signatures
 
@@ -892,7 +892,7 @@ Source: `src/bindingSchemaModel.ts:14:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1172:14`
+Source: `src/index.ts:1182:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -904,25 +904,25 @@ Source: `src/index.ts:1172:14`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:71:14`
+Source: `src/index.ts:76:14`
 
 ## STUDIO_PACKAGE_NAME
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:63:14`
+Source: `src/index.ts:68:14`
 
 ## STUDIO_PUBLIC_CONTRACTS
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:103:14`
+Source: `src/index.ts:108:14`
 
 ## StudioActionPayloadField
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:323:1`
+Source: `src/index.ts:329:1`
 
 ### Members
 
@@ -936,31 +936,31 @@ Source: `src/index.ts:323:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:321:1`
+Source: `src/index.ts:327:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:329:1`
+Source: `src/index.ts:335:1`
 
 ## StudioAdminRouteId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:146:1`
+Source: `src/index.ts:152:1`
 
 ## StudioAdminRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:190:1`
+Source: `src/index.ts:196:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:171:1`
+Source: `src/index.ts:177:1`
 
 ## StudioAuthoringComponentMeta
 
@@ -1097,13 +1097,13 @@ Source: `src/bindingAuthoringContracts.ts:29:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:355:1`
+Source: `src/index.ts:361:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:339:1`
+Source: `src/index.ts:345:1`
 
 ### Members
 
@@ -1116,7 +1116,7 @@ Source: `src/index.ts:339:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:344:1`
+Source: `src/index.ts:350:1`
 
 ### Members
 
@@ -1131,80 +1131,81 @@ Source: `src/index.ts:344:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:351:1`
+Source: `src/index.ts:357:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:370:1`
+Source: `src/index.ts:376:1`
 
 ### Members
 
-| Name                                | Kind     | Type                                                                                           | Required | Description |
-| ----------------------------------- | -------- | ---------------------------------------------------------------------------------------------- | -------- | ----------- |
-| activeAdminRouteId                  | property | `StudioAdminRouteId`                                                                           | yes      |             |
-| activeCanvasDragNodeId              | property | `string \| null`                                                                               | yes      |             |
-| activePanelId                       | property | `"layers" \| null`                                                                             | yes      |             |
-| activeScreenId                      | property | `string \| null`                                                                               | yes      |             |
-| addScreen                           | property | `(name: string) => void`                                                                       | yes      |             |
-| addTheme                            | property | `() => void`                                                                                   | yes      |             |
-| componentMeta                       | property | `StudioComponentMetaRegistry`                                                                  | yes      |             |
-| deleteGeneratedApi                  | property | `(id: string) => void`                                                                         | yes      |             |
-| deleteNode                          | property | `(id: StudioNodeId) => void`                                                                   | yes      |             |
-| deleteScreen                        | property | `(id: StudioScreenId) => void`                                                                 | yes      |             |
-| deleteTheme                         | property | `(id: string) => void`                                                                         | yes      |             |
-| error                               | property | `string \| null`                                                                               | yes      |             |
-| findNode                            | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                                           | yes      |             |
-| flushManifest                       | property | `() => Promise<void>`                                                                          | yes      |             |
-| ingestMediaFromPicker               | property | `(source: StudioMediaPickerSource) => Promise<StudioMediaIngestResult>`                        | yes      |             |
-| insertFromCatalogEntry              | property | `(entry: InsertCatalogEntry) => boolean`                                                       | yes      |             |
-| isLoading                           | property | `boolean`                                                                                      | yes      |             |
-| lastNonAdminLocation                | property | `string`                                                                                       | yes      |             |
-| manifest                            | property | `AppManifest \| null`                                                                          | yes      |             |
-| mediaPickerAvailable                | property | `boolean`                                                                                      | yes      |             |
-| moveNodeToPlacement                 | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`                                  | yes      |             |
-| moveRoute                           | property | `(parentPath: string[], routeName: string, toIndex: number) => void`                           | yes      |             |
-| mutateAuthSettings                  | property | `(mutation: StudioAuthSettingsMutation) => StudioAuthSettings \| null`                         | yes      |             |
-| previewMode                         | property | `boolean`                                                                                      | yes      |             |
-| projectId                           | property | `string`                                                                                       | yes      |             |
-| refetchManifest                     | property | `() => Promise<void>`                                                                          | yes      |             |
-| removeMediaAsset                    | property | `(mediaId: string) => boolean`                                                                 | yes      |             |
-| rootNode                            | property | `UiNode \| null`                                                                               | yes      |             |
-| saveStatus                          | property | `StudioSaveStatus`                                                                             | yes      |             |
-| selectedNodeId                      | property | `string \| null`                                                                               | yes      |             |
-| selectNode                          | property | `(id: StudioNodeId \| null) => void`                                                           | yes      |             |
-| sessionId                           | property | `string \| undefined`                                                                          | no       |             |
-| setActiveAdminRouteId               | property | `(routeId: StudioAdminRouteId) => void`                                                        | yes      |             |
-| setActiveCanvasDragNodeId           | property | `(nodeId: StudioNodeId \| null) => void`                                                       | yes      |             |
-| setActivePanelId                    | property | `(panelId: StudioPanelId \| null) => void`                                                     | yes      |             |
-| setActiveScreenId                   | property | `(id: StudioScreenId) => void`                                                                 | yes      |             |
-| setActiveThemeId                    | property | `(id: string) => void`                                                                         | yes      |             |
-| setLastNonAdminLocation             | property | `(location: string) => void`                                                                   | yes      |             |
-| setNavigatorInitialRoute            | property | `(routeName: string) => void`                                                                  | yes      |             |
-| setNavigatorType                    | property | `(type: NavigatorType) => void`                                                                | yes      |             |
-| setRoutePrimaryNavigationVisibility | property | `(parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => void`          | yes      |             |
-| togglePreviewMode                   | property | `() => void`                                                                                   | yes      |             |
-| updateAuthSettings                  | property | `(settings: StudioAuthSettings) => void`                                                       | yes      |             |
-| updateDataBindings                  | property | `(dataBindings: ComponentDataBindingRegistry) => void`                                         | yes      |             |
-| updateDataSources                   | property | `(dataSources: DataSourceRegistry) => void`                                                    | yes      |             |
-| updateNode                          | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`                               | yes      |             |
-| updateOAuthProviders                | property | `(providers: AuthOAuthProviderConfig[]) => void`                                               | yes      |             |
-| updateTheme                         | property | `(id: string, updates: ThemeUpdates) => void`                                                  | yes      |             |
-| upsertGeneratedApi                  | property | `(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]` | yes      |             |
-| upsertMediaAsset                    | property | `(asset: MediaAsset) => void`                                                                  | yes      |             |
+| Name                                | Kind     | Type                                                                                                      | Required | Description |
+| ----------------------------------- | -------- | --------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| activeAdminRouteId                  | property | `StudioAdminRouteId`                                                                                      | yes      |             |
+| activeCanvasDragNodeId              | property | `string \| null`                                                                                          | yes      |             |
+| activePanelId                       | property | `"layers" \| null`                                                                                        | yes      |             |
+| activeScreenId                      | property | `string \| null`                                                                                          | yes      |             |
+| addScreen                           | property | `(name: string) => void`                                                                                  | yes      |             |
+| addTheme                            | property | `() => void`                                                                                              | yes      |             |
+| componentMeta                       | property | `StudioComponentMetaRegistry`                                                                             | yes      |             |
+| deleteGeneratedApi                  | property | `(id: string) => void`                                                                                    | yes      |             |
+| deleteMediaAsset                    | property | `(mediaId: string) => Promise<StudioMediaDeleteResult>`                                                   | yes      |             |
+| deleteNode                          | property | `(id: StudioNodeId) => void`                                                                              | yes      |             |
+| deleteScreen                        | property | `(id: StudioScreenId) => void`                                                                            | yes      |             |
+| deleteTheme                         | property | `(id: string) => void`                                                                                    | yes      |             |
+| error                               | property | `string \| null`                                                                                          | yes      |             |
+| findNode                            | property | `(root: UiNode, id: StudioNodeId) => UiNode \| null`                                                      | yes      |             |
+| flushManifest                       | property | `() => Promise<void>`                                                                                     | yes      |             |
+| ingestMediaFromPicker               | property | `(source: StudioMediaPickerSource, target?: StudioMediaIngestTarget) => Promise<StudioMediaIngestResult>` | yes      |             |
+| insertFromCatalogEntry              | property | `(entry: InsertCatalogEntry) => boolean`                                                                  | yes      |             |
+| isLoading                           | property | `boolean`                                                                                                 | yes      |             |
+| lastNonAdminLocation                | property | `string`                                                                                                  | yes      |             |
+| manifest                            | property | `AppManifest \| null`                                                                                     | yes      |             |
+| mediaPickerAvailable                | property | `boolean`                                                                                                 | yes      |             |
+| moveNodeToPlacement                 | property | `(nodeId: StudioNodeId, placement: NodePlacement) => boolean`                                             | yes      |             |
+| moveRoute                           | property | `(parentPath: string[], routeName: string, toIndex: number) => void`                                      | yes      |             |
+| mutateAuthSettings                  | property | `(mutation: StudioAuthSettingsMutation) => StudioAuthSettings \| null`                                    | yes      |             |
+| previewMode                         | property | `boolean`                                                                                                 | yes      |             |
+| projectId                           | property | `string`                                                                                                  | yes      |             |
+| refetchManifest                     | property | `() => Promise<void>`                                                                                     | yes      |             |
+| removeMediaAsset                    | property | `(mediaId: string) => boolean`                                                                            | yes      |             |
+| rootNode                            | property | `UiNode \| null`                                                                                          | yes      |             |
+| saveStatus                          | property | `StudioSaveStatus`                                                                                        | yes      |             |
+| selectedNodeId                      | property | `string \| null`                                                                                          | yes      |             |
+| selectNode                          | property | `(id: StudioNodeId \| null) => void`                                                                      | yes      |             |
+| sessionId                           | property | `string \| undefined`                                                                                     | no       |             |
+| setActiveAdminRouteId               | property | `(routeId: StudioAdminRouteId) => void`                                                                   | yes      |             |
+| setActiveCanvasDragNodeId           | property | `(nodeId: StudioNodeId \| null) => void`                                                                  | yes      |             |
+| setActivePanelId                    | property | `(panelId: StudioPanelId \| null) => void`                                                                | yes      |             |
+| setActiveScreenId                   | property | `(id: StudioScreenId) => void`                                                                            | yes      |             |
+| setActiveThemeId                    | property | `(id: string) => void`                                                                                    | yes      |             |
+| setLastNonAdminLocation             | property | `(location: string) => void`                                                                              | yes      |             |
+| setNavigatorInitialRoute            | property | `(routeName: string) => void`                                                                             | yes      |             |
+| setNavigatorType                    | property | `(type: NavigatorType) => void`                                                                           | yes      |             |
+| setRoutePrimaryNavigationVisibility | property | `(parentPath: string[], routeName: string, showInPrimaryNavigation: boolean) => void`                     | yes      |             |
+| togglePreviewMode                   | property | `() => void`                                                                                              | yes      |             |
+| updateAuthSettings                  | property | `(settings: StudioAuthSettings) => void`                                                                  | yes      |             |
+| updateDataBindings                  | property | `(dataBindings: ComponentDataBindingRegistry) => void`                                                    | yes      |             |
+| updateDataSources                   | property | `(dataSources: DataSourceRegistry) => void`                                                               | yes      |             |
+| updateNode                          | property | `(nodeId: StudioNodeId, props: Record<string, unknown>) => void`                                          | yes      |             |
+| updateOAuthProviders                | property | `(providers: AuthOAuthProviderConfig[]) => void`                                                          | yes      |             |
+| updateTheme                         | property | `(id: string, updates: ThemeUpdates) => void`                                                             | yes      |             |
+| upsertGeneratedApi                  | property | `(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]`            | yes      |             |
+| upsertMediaAsset                    | property | `(asset: MediaAsset) => void`                                                                             | yes      |             |
 
 ## StudioEvent
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:363:1`
+Source: `src/index.ts:369:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:353:1`
+Source: `src/index.ts:359:1`
 
 ## StudioInstancePropertyEditorKind
 
@@ -1256,7 +1257,7 @@ Source: `src/propertiesAuthoringModel.ts:45:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:199:1`
+Source: `src/index.ts:205:1`
 
 ## StudioMediaAssetRemovalResult
 
@@ -1264,17 +1265,29 @@ Kind: `unknown`
 Module: `src/mediaAuthoringModel.ts`
 Source: `src/mediaAuthoringModel.ts:16:1`
 
+## StudioMediaDeleteResult
+
+Kind: `unknown`
+Module: `src/mediaAuthoringModel.ts`
+Source: `src/mediaAuthoringModel.ts:24:1`
+
 ## StudioMediaIngestResult
 
 Kind: `unknown`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:32:1`
+Source: `src/mediaPickerAuthoring.ts:33:1`
+
+## StudioMediaIngestTarget
+
+Kind: `unknown`
+Module: `src/mediaPickerAuthoring.ts`
+Source: `src/mediaPickerAuthoring.ts:4:1`
 
 ## StudioMediaPickerAdapter
 
 Kind: `type`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:28:1`
+Source: `src/mediaPickerAuthoring.ts:29:1`
 
 ### Members
 
@@ -1286,13 +1299,13 @@ Source: `src/mediaPickerAuthoring.ts:28:1`
 
 Kind: `unknown`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:21:1`
+Source: `src/mediaPickerAuthoring.ts:22:1`
 
 ## StudioMediaPickerInput
 
 Kind: `type`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:5:1`
+Source: `src/mediaPickerAuthoring.ts:6:1`
 
 ### Members
 
@@ -1305,13 +1318,13 @@ Source: `src/mediaPickerAuthoring.ts:5:1`
 
 Kind: `unknown`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:24:1`
+Source: `src/mediaPickerAuthoring.ts:25:1`
 
 ## StudioMediaPickerSelection
 
 Kind: `type`
 Module: `src/mediaPickerAuthoring.ts`
-Source: `src/mediaPickerAuthoring.ts:10:1`
+Source: `src/mediaPickerAuthoring.ts:11:1`
 
 ### Members
 
@@ -1386,7 +1399,7 @@ Source: `src/moduleAdminContracts.ts:4:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:142:1`
+Source: `src/index.ts:148:1`
 
 ## StudioModuleOperationResult
 
@@ -1434,13 +1447,13 @@ Source: `src/moduleAdminContracts.ts:18:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:140:1`
+Source: `src/index.ts:146:1`
 
 ## StudioPackageBoundary
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:65:1`
+Source: `src/index.ts:70:1`
 
 ### Members
 
@@ -1454,13 +1467,13 @@ Source: `src/index.ts:65:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:145:1`
+Source: `src/index.ts:151:1`
 
 ## StudioProjectId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:138:1`
+Source: `src/index.ts:144:1`
 
 ## StudioProjectSummary
 
@@ -1487,25 +1500,25 @@ Source: `src/projectWorkspaceContracts.ts:3:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:136:1`
+Source: `src/index.ts:142:1`
 
 ## StudioSaveStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:144:1`
+Source: `src/index.ts:150:1`
 
 ## StudioScreenId
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:141:1`
+Source: `src/index.ts:147:1`
 
 ## StudioSelectionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:206:1`
+Source: `src/index.ts:212:1`
 
 ### Members
 
@@ -1521,13 +1534,13 @@ Source: `src/index.ts:206:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:139:1`
+Source: `src/index.ts:145:1`
 
 ## StudioSessionState
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:214:1`
+Source: `src/index.ts:220:1`
 
 ### Members
 
@@ -1545,7 +1558,7 @@ Source: `src/index.ts:214:1`
 
 Kind: `unknown`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:24:1`
+Source: `src/mediaAuthoringModel.ts:44:1`
 
 ## TemplateCatalog
 
@@ -1603,19 +1616,19 @@ Source: `src/templateCatalogContracts.ts:25:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:201:1`
+Source: `src/index.ts:207:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:510:14`
+Source: `src/index.ts:520:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:594:14`
+Source: `src/index.ts:604:14`
 
 ### Signatures
 
@@ -1629,7 +1642,7 @@ Source: `src/index.ts:594:14`
 
 Kind: `function`
 Module: `src/mediaAuthoringModel.ts`
-Source: `src/mediaAuthoringModel.ts:83:1`
+Source: `src/mediaAuthoringModel.ts:103:1`
 
 ### Signatures
 
@@ -1657,7 +1670,7 @@ Source: `src/bindingMutationModel.ts:9:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1222:1`
+Source: `src/index.ts:1232:1`
 
 ### Signatures
 
@@ -1670,7 +1683,7 @@ Source: `src/index.ts:1222:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:748:1`
+Source: `src/index.ts:758:1`
 
 ### Signatures
 
