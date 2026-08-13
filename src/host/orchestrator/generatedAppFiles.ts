@@ -3,6 +3,7 @@ import { getExpoBarcodeScannerViewSource } from '@ankhorage/expo-runtime/plannin
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { syncProjectBundledMediaRegistry } from '../media/projectBundledMediaRegistry';
 import { type ZoraExtensionDefinition } from '../zoraExtensions';
 
 export interface GeneratedAppFilesOptions {
@@ -53,6 +54,7 @@ export async function syncGeneratedAppFiles(
     }),
     'utf8',
   );
+  await syncProjectBundledMediaRegistry(targetProjectPath);
 
   await assertNoForbiddenSpecifiers(targetProjectPath);
 }
