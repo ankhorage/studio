@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.1.0
+
+### Minor Changes
+
+- 48fe300: Add trusted device and photo-library media ingestion, provider-neutral storage-backed authoring assets, and transient preview resolution through the local Studio host.
+
 ## 1.0.0
 
 ### Major Changes
