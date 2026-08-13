@@ -1,0 +1,136 @@
+name: ADM-14 Media Lifecycle Wiring
+
+on:
+  push:
+    branches:
+      - agent/adm14-media-lifecycle
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Wire Studio media lifecycle
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: str, old: str, new: str) -> None:
+              file = Path(path)
+              text = file.read_text()
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, found {count}: {old!r}')
+              file.write_text(text.replace(old, new))
+
+          replace_once(
+              'src/core/StudioProvider.ts',
+              """import {
+            createStudioMediaAssetId,
+            removeStudioMediaAsset,
+            upsertStudioMediaAsset,
+          } from '../mediaAuthoringModel';""",
+              """import {
+            createStudioMediaAssetId,
+            removeStudioMediaAsset,
+            type StudioMediaDeleteResult,
+            upsertStudioMediaAsset,
+          } from '../mediaAuthoringModel';""",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "import { ingestStudioMediaSelection } from './mediaAuthoringHostClient';",
+              """import {
+            cleanupStudioMediaSource,
+            ingestStudioMediaSelection,
+          } from './mediaAuthoringHostClient';
+          import { commitStudioMediaRemoval } from './mediaRemovalCoordinator';""",
+          )
+          old = """  const removeMediaAsset = useCallback(
+            (mediaId: string): boolean => {
+              let removed = false;
+              updateManifest((current) => {
+                const result = removeStudioMediaAsset(current, mediaId);
+                removed = result.ok;
+                return result.ok ? result.manifest : current;
+              });
+              return removed;
+            },
+            [updateManifest],
+          );
+          """
+          new = old + """
+          const deleteMediaAsset = useCallback(
+            async (mediaId: string): Promise<StudioMediaDeleteResult> => {
+              const current = manifestRef.current;
+              if (!current) return { ok: false, reason: 'not-found', usages: [] };
+              return commitStudioMediaRemoval({
+                manifest: current,
+                mediaId,
+                applyManifest: replaceManifest,
+                persistManifest: persistence.flushManifest,
+                cleanupSource: (source) => cleanupStudioMediaSource(projectId, source),
+              });
+            },
+            [persistence.flushManifest, projectId, replaceManifest],
+          );
+          """
+          replace_once('src/core/StudioProvider.ts', old, new)
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "      removeMediaAsset,\n      mediaPickerAvailable:",
+              "      removeMediaAsset,\n      deleteMediaAsset,\n      mediaPickerAvailable:",
+          )
+          replace_once(
+              'src/core/StudioProvider.ts',
+              "      removeMediaAsset,\n      mediaPicker,",
+              "      removeMediaAsset,\n      deleteMediaAsset,\n      mediaPicker,",
+          )
+
+          replace_once(
+              'src/index.ts',
+              "import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';",
+              """import type { StudioAuthSettings, StudioAuthSettingsMutation } from './authSettings';
+          import type { StudioMediaDeleteResult } from './mediaAuthoringModel';""",
+          )
+          replace_once(
+              'src/index.ts',
+              "  'removeStudioMediaAsset',\n",
+              "  'removeStudioMediaAsset',\n  'StudioMediaDeleteResult',\n",
+          )
+          replace_once(
+              'src/index.ts',
+              "  removeMediaAsset: (mediaId: string) => boolean;\n",
+              """  removeMediaAsset: (mediaId: string) => boolean;
+            deleteMediaAsset: (mediaId: string) => Promise<StudioMediaDeleteResult>;
+          """,
+          )
+          PY
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Format and lint
+        run: |
+          bun run format
+          bun run lint:fix
+          git diff --check
+
+      - name: Commit wiring
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/core/StudioProvider.ts src/index.ts
+          git commit -m 'Wire trusted media lifecycle' || exit 0
+          git push origin HEAD:agent/adm14-media-lifecycle
