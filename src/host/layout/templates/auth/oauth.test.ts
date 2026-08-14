@@ -51,7 +51,11 @@ test('generates full-page Web OAuth and preserves the native system browser', ()
   expect(webTransport).not.toContain('window.closed');
 
   expect(runtime).toContain('browserResult = await WebBrowser.openAuthSessionAsync(');
-  expect(runtime).toContain('return completeOAuthCallback(browserResult.url);');
+  expect(runtime).toContain("from '@ankhorage/expo-runtime/oauth-browser';");
+  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserResult(browserResult);');
+  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserException();');
+  expect(runtime).toContain('response: browserResponse');
+  expect(runtime).not.toContain("browserResult.type === 'dismiss'");
   expect(runtime).toContain("message: 'Web OAuth requires full-page browser navigation.'");
   expect(runtime).toContain('recoverable: true');
 });

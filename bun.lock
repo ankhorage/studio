@@ -8,7 +8,7 @@
         "@ankhorage/color-theory": "^0.0.8",
         "@ankhorage/contracts": "^7.8.0",
         "@ankhorage/data-sources": "^1.0.1",
-        "@ankhorage/expo-runtime": "^2.3.0",
+        "@ankhorage/expo-runtime": "2.4.0",
         "@ankhorage/infra": "^3.3.0",
         "@ankhorage/orchestrator": "^0.3.0",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",
@@ -96,7 +96,7 @@
 
     "@ankhorage/doctor": ["@ankhorage/doctor@0.5.0", "", { "dependencies": { "@ankhorage/contracts": "^1.19.0" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-IO0srzVuqBXURXSrViNpRUhkTG+z84Or8Bv+lA/q6HVUS2fIx1ZjqI8DyglXjqu6mfB9tG7J+0nTKvZ8t3rh9Q=="],
 
-    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@2.3.0", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@ankhorage/permissions": "^0.2.1" }, "peerDependencies": { "@ankhorage/zora": "^2.8.7", "expo": "~54.0.34", "expo-camera": "~17.0.10", "expo-document-picker": "~14.0.8", "expo-file-system": "~19.0.23", "expo-image-picker": "~17.0.11", "react": "19.1.0", "react-native": "0.81.5" }, "optionalPeers": ["expo-document-picker", "expo-file-system", "expo-image-picker"] }, "sha512-QxQ6kY0dn3hVyplW+d3k1SanWceOXzf2p8NRoSan+C0XmUosmVLDzmZxJPlkZ+/enx3MidJwk+0vH2AaZiM1Ew=="],
+    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@2.4.0", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@ankhorage/permissions": "^0.2.1" }, "peerDependencies": { "@ankhorage/zora": "^2.8.7", "expo": "~54.0.34", "expo-camera": "~17.0.10", "expo-document-picker": "~14.0.8", "expo-file-system": "~19.0.23", "expo-image-picker": "~17.0.11", "react": "19.1.0", "react-native": "0.81.5" }, "optionalPeers": ["expo-document-picker", "expo-file-system", "expo-image-picker"] }, "sha512-VTqYRAKSrryogsbsxYU7m6pCh8ZRC+YRvfN9OBm80gH++WfNiCkk+Q3UoGkMa3ezRRdFYpEv6LDls8BnuCV/Lw=="],
 
     "@ankhorage/infra": ["@ankhorage/infra@3.3.0", "", { "dependencies": { "@ankhorage/contracts": "^7.7.0", "@ankhorage/supabase-vault": "^0.2.4" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-SIQ4gRht9njAUQ06/+ItWafgWezGqpXJJy7qQDli+AaegcRJFYoVYItXbMPIBp8d9DFBQbiooE7EmF6o+NTgXA=="],
 
