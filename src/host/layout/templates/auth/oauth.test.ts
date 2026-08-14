@@ -52,12 +52,27 @@ test('generates full-page Web OAuth and preserves the native system browser', ()
 
   expect(runtime).toContain('browserResult = await WebBrowser.openAuthSessionAsync(');
   expect(runtime).toContain("from '@ankhorage/expo-runtime/oauth-browser';");
+  expect(runtime).toContain("from '@ankhorage/expo-runtime/oauth-browser-runtime';");
   expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserResult(browserResult);');
   expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserException();');
   expect(runtime).toContain('response: browserResponse');
   expect(runtime).not.toContain("browserResult.type === 'dismiss'");
   expect(runtime).toContain("message: 'Web OAuth requires full-page browser navigation.'");
   expect(runtime).toContain('recoverable: true');
+});
+
+test('preflights native OAuth before the adapter creates an authorization attempt', () => {
+  const runtime = createOAuthRuntime();
+  const preflight = runtime.indexOf(
+    'const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();',
+  );
+  const adapterStart = runtime.indexOf('const started = await oauth.startAuthorization({');
+
+  expect(runtime).toContain("if (Platform.OS !== 'web') {");
+  expect(preflight).toBeGreaterThan(-1);
+  expect(adapterStart).toBeGreaterThan(preflight);
+  expect(runtime).toContain("if (runtimeReadiness.status !== 'ready') {");
+  expect(runtime).toContain('message: runtimeReadiness.message');
 });
 
 test('derives the Web callback from the current browser origin', () => {

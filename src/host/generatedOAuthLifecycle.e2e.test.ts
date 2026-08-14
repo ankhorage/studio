@@ -205,6 +205,12 @@ async function writeDocument(documentRoot: string): Promise<void> {
   await Promise.all([
     writeFile(path.join(documentRoot, 'oauth.ts'), createGeneratedOAuthSource()),
     writeFile(
+      path.join(documentRoot, 'runtimeReadiness.ts'),
+      `export function resolveExpoOAuthBrowserRuntimeReadiness(): never {\n` +
+        `  throw new Error('Native OAuth runtime preflight must not run on Web.');\n` +
+        `}\n`,
+    ),
+    writeFile(
       path.join(documentRoot, 'session.ts'),
       `import { values } from '../state.ts';\n\n` +
         `export const AUTH_SESSION_STORAGE_KEY = '${SESSION_STORAGE_KEY}';\n` +
@@ -282,6 +288,10 @@ function createGeneratedOAuthSource(): string {
       },
     ],
   })
+    .replace(
+      "from '@ankhorage/expo-runtime/oauth-browser-runtime';",
+      "from './runtimeReadiness.ts';",
+    )
     .replace("from 'expo-linking';", "from './linking.ts';")
     .replace("from 'expo-web-browser';", "from './webBrowser.ts';")
     .replace("from 'react-native';", "from './platform.ts';")

@@ -10,6 +10,8 @@ import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
 const SESSION_STORAGE_KEY = 'generated.native.oauth.session';
 const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
 const CALLBACK_URL = 'ankh-ios://auth/callback';
+const EXPO_GO_MESSAGE =
+  'Brokered OAuth requires a development or standalone build with the configured app scheme; Expo Go cannot provide a stable OAuth callback scheme.';
 const temporaryRoots = new Set<string>();
 
 type GeneratedOAuthOutcome =
@@ -17,15 +19,21 @@ type GeneratedOAuthOutcome =
   | { status: 'cancelled'; message: string }
   | { status: 'error'; message: string; recoverable: boolean };
 
+type RuntimeReadiness =
+  | { readonly status: 'ready' }
+  | { readonly status: 'unsupported'; readonly reason: 'expo-go'; readonly message: string };
+
 interface GeneratedOAuthRuntime {
   startOAuthAuthorization(providerId: string): Promise<GeneratedOAuthOutcome>;
 }
 
 interface HarnessState {
   readonly fetchCalls: { readonly body?: string; readonly url: string }[];
+  readonly storageWrites: { readonly key: string; readonly value: string }[];
   readonly values: Map<string, string>;
   setBrowserResult(result: unknown): void;
   setBrowserThrows(value: boolean): void;
+  setRuntimeReadiness(value: RuntimeReadiness): void;
 }
 
 interface NativeHarness {
@@ -53,6 +61,27 @@ describe('generated native OAuth lifecycle', () => {
     expect(harness.state.fetchCalls).toHaveLength(1);
     expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
     expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
+    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+    expect(hasPkceVerifier(harness.state.values)).toBe(false);
+  });
+
+  it('rejects Expo Go before the adapter creates PKCE or transport state', async () => {
+    const harness = await createHarness();
+    harness.state.setRuntimeReadiness({
+      status: 'unsupported',
+      reason: 'expo-go',
+      message: EXPO_GO_MESSAGE,
+    });
+
+    const result = await (await harness.importRuntime()).startOAuthAuthorization('google');
+
+    expect(result).toEqual({
+      status: 'error',
+      message: EXPO_GO_MESSAGE,
+      recoverable: true,
+    });
+    expect(harness.state.fetchCalls).toHaveLength(0);
+    expect(harness.state.storageWrites).toHaveLength(0);
     expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
     expect(hasPkceVerifier(harness.state.values)).toBe(false);
   });
@@ -124,13 +153,17 @@ async function writeState(root: string): Promise<void> {
   await writeFile(
     path.join(root, 'state.ts'),
     `export const values = new Map<string, string>();\n` +
+      `export const storageWrites: { key: string; value: string }[] = [];\n` +
       `export const fetchCalls: { body?: string; url: string }[] = [];\n` +
       `let browserResult: unknown = { type: 'dismiss' };\n` +
       `let browserThrows = false;\n` +
+      `let runtimeReadiness = { status: 'ready' } as const;\n` +
       `export const getBrowserResult = () => browserResult;\n` +
       `export const getBrowserThrows = () => browserThrows;\n` +
+      `export const getRuntimeReadiness = () => runtimeReadiness;\n` +
       `export const setBrowserResult = (value: unknown) => { browserResult = value; };\n` +
-      `export const setBrowserThrows = (value: boolean) => { browserThrows = value; };\n`,
+      `export const setBrowserThrows = (value: boolean) => { browserThrows = value; };\n` +
+      `export const setRuntimeReadiness = (value: typeof runtimeReadiness | { status: 'unsupported'; reason: 'expo-go'; message: string }) => { runtimeReadiness = value as typeof runtimeReadiness; };\n`,
   );
 }
 
@@ -140,6 +173,11 @@ async function writeDocument(root: string): Promise<void> {
     writeFile(path.join(root, 'oauth.ts'), createGeneratedOAuthSource()),
     writeFile(path.join(root, 'session.ts'), createSessionSource()),
     writeFile(path.join(root, 'adapter.ts'), createAdapterSource()),
+    writeFile(
+      path.join(root, 'runtimeReadiness.ts'),
+      `import { getRuntimeReadiness } from './state.ts';\n` +
+        `export const resolveExpoOAuthBrowserRuntimeReadiness = getRuntimeReadiness;\n`,
+    ),
     writeFile(
       path.join(root, 'linking.ts'),
       `export const createURL = (path: string, options?: { scheme?: string }) =>\n` +
@@ -172,6 +210,10 @@ function createGeneratedOAuthSource(): string {
       },
     ],
   })
+    .replace(
+      "from '@ankhorage/expo-runtime/oauth-browser-runtime';",
+      "from './runtimeReadiness.ts';",
+    )
     .replace("from 'expo-linking';", "from './linking.ts';")
     .replace("from 'expo-web-browser';", "from './webBrowser.ts';")
     .replace("from 'react-native';", "from './platform.ts';")
@@ -181,11 +223,11 @@ function createGeneratedOAuthSource(): string {
 
 function createSessionSource(): string {
   return (
-    `import { values } from './state.ts';\n\n` +
+    `import { storageWrites, values } from './state.ts';\n\n` +
     `export const AUTH_SESSION_STORAGE_KEY = '${SESSION_STORAGE_KEY}';\n` +
     `export const authSessionStorage = {\n` +
     `  getItem: (key: string) => values.get(key) ?? null,\n` +
-    `  setItem: (key: string, value: string) => { values.set(key, value); },\n` +
+    `  setItem: (key: string, value: string) => { storageWrites.push({ key, value }); values.set(key, value); },\n` +
     `  removeItem: (key: string) => { values.delete(key); },\n` +
     `};\n\n` +
     `export function getStoredAuthSession() {\n` +
