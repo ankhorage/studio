@@ -86,6 +86,7 @@ jobs:
       - name: Format and validate
         run: |
           bun run format
+          bun run lint:fix
           bun run build
           bunx @ankhorage/ankh doctor validate .
           bun run lint
