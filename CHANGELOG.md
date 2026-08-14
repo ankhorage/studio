@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.8.0
+
+### Minor Changes
+
+- 6cee05f: Reject unsupported Expo Go native OAuth hosts before the generated auth adapter creates authorization or PKCE state.
+
 ## 1.7.0
 
 ### Minor Changes
