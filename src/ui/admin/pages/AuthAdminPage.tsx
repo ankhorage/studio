@@ -4,6 +4,14 @@ import {
   type AuthOAuthProviderConfig,
   type AuthOAuthProviderId,
 } from '@ankhorage/contracts';
+import type {
+  AuthOAuthSetupCallbackRequirement,
+  AuthOAuthSetupFieldRequirement,
+} from '@ankhorage/contracts/auth';
+import {
+  APP_DEPLOY_ENVIRONMENT_IDS,
+  type AppDeployEnvironmentId,
+} from '@ankhorage/contracts/deploy';
 import {
   getSupabaseOAuthProviderDefinition,
   SUPABASE_OAUTH_PROVIDER_IDS,
@@ -27,6 +35,7 @@ import { useStudio } from '../../../core/StudioContext';
 import type { StudioAdminRouteId } from '../../../index';
 import type { ProjectAuthHealth } from '../../../projectAuthHealth';
 import { getProjectAuthHealth, ProjectAuthApiError } from '../../../projectAuthApi';
+import { resolveProjectOAuthSetupPlan } from '../../../projectOAuthSetup';
 import { configureProjectOAuthProvider } from '../../../projectSecretApi';
 import { syncProjectRuntime } from '../../../studioRuntimeApi';
 import { useAuthAdminSession } from '../AuthAdminSession';
@@ -77,6 +86,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
     () => readStudioAuthSettings(manifest ?? createFallbackManifest()) ?? createDefaultSettings(),
   );
   const [health, setHealth] = useState<ProjectAuthHealth | null>(null);
+  const [environment, setEnvironment] = useState<AppDeployEnvironmentId>('local');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -94,16 +104,16 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
   const refreshHealth = useCallback(async () => {
     await healthRefreshCoordinatorRef.current.refresh({
-      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      loadHealth: () => getProjectAuthHealth({ projectId, environment }),
       onHealth: setHealth,
       onError: (error) => setMessage(toMessage(error)),
     });
-  }, [projectId]);
+  }, [environment, projectId]);
 
   const reload = useCallback(async () => {
     setLoading(true);
     const result = await healthRefreshCoordinatorRef.current.refresh({
-      loadHealth: () => getProjectAuthHealth({ projectId, environment: 'local' }),
+      loadHealth: () => getProjectAuthHealth({ projectId, environment }),
       onHealth: (loadedHealth) => {
         const canonicalAuthSettings = canonicalManifestRef.current
           ? readStudioAuthSettings(canonicalManifestRef.current)
@@ -121,7 +131,7 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
       },
     });
     if (result.applied || result.error) setLoading(false);
-  }, [projectId]);
+  }, [environment, projectId]);
 
   useEffect(() => {
     void refreshHealth().finally(() => {
@@ -416,6 +426,20 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
 
       {showProviders ? (
         <Card title="OAuth providers">
+          <Text weight="semiBold">Environment</Text>
+          <View style={styles.choiceRow}>
+            {APP_DEPLOY_ENVIRONMENT_IDS.map((environmentId) => (
+              <Choice
+                key={environmentId}
+                label={environmentId}
+                selected={environment === environmentId}
+                onPress={() => {
+                  setHealth(null);
+                  setEnvironment(environmentId);
+                }}
+              />
+            ))}
+          </View>
           <SwitchSetting
             title="OAuth enabled"
             description="Provider credentials remain in the server-side secret store."
@@ -432,6 +456,8 @@ export function AuthAdminPage(props: AuthAdminPageProps) {
               key={providerId}
               projectId={projectId}
               providerId={providerId}
+              manifest={canonicalManifestRef.current ?? createFallbackManifest()}
+              environment={environment}
               oauth={oauth}
               providerHealth={health?.providers.find(
                 (provider) => provider.providerId === providerId,
@@ -613,6 +639,8 @@ function PendingCredentialLinkCard(props: {
 function OAuthProviderSetting(props: {
   readonly projectId: string;
   readonly providerId: SupabaseOAuthProviderId;
+  readonly manifest: AppManifest;
+  readonly environment: AppDeployEnvironmentId;
   readonly oauth: NonNullable<StudioAuthSettings['oauth']>;
   readonly providerHealth: ProjectAuthHealth['providers'][number] | undefined;
   readonly onChange: (
@@ -628,14 +656,28 @@ function OAuthProviderSetting(props: {
   readonly transactionBusy: boolean;
 }) {
   const definition = getSupabaseOAuthProviderDefinition(props.providerId);
+  const setupPlan = resolveProjectOAuthSetupPlan({
+    manifest: props.manifest,
+    provider: props.providerId,
+    environment: props.environment,
+  });
+  const credentialFields =
+    setupPlan?.requirements.filter(
+      (requirement): requirement is AuthOAuthSetupFieldRequirement =>
+        requirement.kind === 'field' && requirement.persistence === 'trustedCredential',
+    ) ?? [];
+  const callbackRequirements =
+    setupPlan?.requirements.filter(
+      (requirement): requirement is AuthOAuthSetupCallbackRequirement =>
+        requirement.kind === 'callback',
+    ) ?? [];
   const current = props.oauth.providers.find((provider) => provider.id === props.providerId);
   const requiredFields =
     props.providerHealth?.requiredFields ??
-    definition?.secretFields.map((field) => field.name) ??
-    [];
+    credentialFields.filter((field) => field.required).map((field) => field.key);
   const configuredFields = props.providerHealth?.configuredFields ?? [];
   const credentialsComplete =
-    definition !== null &&
+    setupPlan !== null &&
     Boolean(current?.credentialsRef) &&
     requiredFields.length > 0 &&
     requiredFields.every((field) => configuredFields.includes(field));
@@ -678,13 +720,13 @@ function OAuthProviderSetting(props: {
       return;
     }
 
-    if (!definition) {
-      setCredentialMessage('The selected OAuth provider is not supported.');
+    if (!definition || !setupPlan) {
+      setCredentialMessage('The selected OAuth provider setup is not supported.');
       return;
     }
 
-    const entries = definition.secretFields.map(
-      (field) => [field.name, credentialValues[field.name] ?? ''] as const,
+    const entries = credentialFields.map(
+      (field) => [field.key, credentialValues[field.key] ?? ''] as const,
     );
     if (entries.some(([, value]) => !value)) {
       setCredentialMessage(
@@ -704,7 +746,7 @@ function OAuthProviderSetting(props: {
           const result = await configureProjectOAuthProvider({
             projectId: props.projectId,
             providerId: props.providerId as AuthOAuthProviderId,
-            environment: 'local',
+            environment: props.environment,
             credentialsRef,
             payload: Object.freeze(Object.fromEntries(entries) as Record<string, string>),
           });
@@ -761,21 +803,33 @@ function OAuthProviderSetting(props: {
         <Switch value={enabled} onValueChange={setEnabled} />
       </View>
 
-      {definition?.secretFields.map((field) => (
-        <Field key={field.name} label={field.label}>
+      {credentialFields.map((field) => (
+        <Field key={field.key} label={field.label}>
           <Input
-            value={credentialValues[field.name] ?? ''}
-            secureTextEntry={field.secret}
+            value={credentialValues[field.key] ?? ''}
+            secureTextEntry={field.sensitivity === 'secret'}
             autoCapitalize="none"
             placeholder={credentialsComplete ? 'Enter complete replacement value' : field.label}
             onChangeText={(value) =>
               setCredentialValues((currentValues) => ({
                 ...currentValues,
-                [field.name]: value,
+                [field.key]: value,
               }))
             }
           />
         </Field>
+      ))}
+
+      {callbackRequirements.map((requirement) => (
+        <Text
+          key={`${requirement.role}:${requirement.target ?? 'provider'}`}
+          color="neutral"
+          emphasis="muted"
+          variant="caption"
+        >
+          {requirement.label}
+          {requirement.target ? ` — ${requirement.target}` : ' — provider'}
+        </Text>
       ))}
 
       <View style={styles.actions}>
@@ -904,6 +958,8 @@ function AuthHealthCard({ health }: { readonly health: ProjectAuthHealth | null 
       <Text color={healthStatusColor(health.status)} weight="semiBold">
         {formatHealthStatus(health.status)}
       </Text>
+      <KeyValue label="Environment" value={health.setup.environment} />
+      <KeyValue label="Enabled targets" value={health.setup.targets.join(', ') || 'none'} />
       <KeyValue label="Callback route" value={health.callbackUrls.appCallbackRoute} />
       {health.callbackUrls.providerRedirectUrl ? (
         <KeyValue label="Provider redirect URL" value={health.callbackUrls.providerRedirectUrl} />

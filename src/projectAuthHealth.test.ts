@@ -64,6 +64,7 @@ describe('projectAuthHealth', () => {
       'referenced_secret_missing',
     );
     expect(health.callbackUrls.providerRedirectUrl).toBeUndefined();
+    expect(health.setup).toEqual({ environment: 'local', targets: ['web'] });
   });
 
   test('requires every registry field to be configured', () => {
@@ -79,8 +80,11 @@ describe('projectAuthHealth', () => {
       manifest: createManifest(),
       secretMetadata: [googleMetadata],
       secretStoreAvailable: true,
+      environment: 'production',
     });
     expect(complete.providers[0]?.status).toBe('configured');
+    expect(complete.providers[0]?.requiredFields).toEqual(['clientId', 'clientSecret']);
+    expect(complete.setup).toEqual({ environment: 'production', targets: ['web'] });
     expect(JSON.stringify(complete)).not.toContain('sentinel-phase2-secret-do-not-leak');
   });
 
