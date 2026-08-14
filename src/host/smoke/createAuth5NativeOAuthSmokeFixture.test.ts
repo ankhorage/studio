@@ -1,0 +1,74 @@
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+
+import { expect, test } from 'bun:test';
+
+import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
+import { createAuth5NativeOAuthSmokeFixture } from './createAuth5NativeOAuthSmokeFixture.js';
+
+interface GeneratedPackageJson {
+  readonly dependencies?: Record<string, string>;
+  readonly scripts?: Record<string, string>;
+}
+
+interface GeneratedManifest {
+  readonly deploy?: {
+    readonly targets?: {
+      readonly android?: { readonly scheme?: string };
+      readonly ios?: { readonly scheme?: string };
+    };
+  };
+  readonly infra?: {
+    readonly auth?: {
+      readonly oauth?: {
+        readonly providers?: readonly { readonly id?: string; readonly credentialsRef?: string }[];
+      };
+    };
+  };
+}
+
+test('prepares a secret-free real generated app for Auth 5 native smoke validation', async () => {
+  const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'ankh-auth5-native-smoke-'));
+  try {
+    const fixture = await createAuth5NativeOAuthSmokeFixture(workspaceRoot);
+    const manifest = await readJson<GeneratedManifest>(fixture.projectRoot, 'ankh.config.json');
+    const packageJson = await readJson<GeneratedPackageJson>(fixture.projectRoot, 'package.json');
+    const appConfig = await readText(fixture.projectRoot, 'app.config.ts');
+    const oauthRuntime = await readText(fixture.projectRoot, 'src/auth/oauth.ts');
+
+    expect(fixture.projectId).toBe(AUTH5_NATIVE_OAUTH_SMOKE.projectId);
+    expect(manifest.deploy?.targets?.android?.scheme).toBe(AUTH5_NATIVE_OAUTH_SMOKE.android.scheme);
+    expect(manifest.deploy?.targets?.ios?.scheme).toBe(AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme);
+    expect(manifest.infra?.auth?.oauth?.providers).toEqual([
+      expect.objectContaining({ id: 'google', credentialsRef: 'auth/oauth/google' }),
+    ]);
+
+    expect(packageJson.scripts?.android).toBe('expo run:android');
+    expect(packageJson.scripts?.ios).toBe('expo run:ios');
+    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^2.5.0');
+    expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');
+    expect(packageJson.dependencies?.['@react-native-google-signin/google-signin']).toBeUndefined();
+    expect(packageJson.dependencies?.['expo-apple-authentication']).toBeUndefined();
+
+    expect(appConfig).toContain(`scheme: '${AUTH5_NATIVE_OAUTH_SMOKE.android.scheme}'`);
+    expect(appConfig).toContain(`scheme: '${AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme}'`);
+    expect(oauthRuntime).toContain('resolveExpoOAuthBrowserRuntimeReadiness()');
+    expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
+    expect(oauthRuntime).toContain('oauth.completeAuthorization({');
+    expect(oauthRuntime).not.toContain('setSession(');
+    expect(oauthRuntime).not.toContain('access_token');
+    expect(JSON.stringify(manifest)).not.toContain('clientSecret');
+    expect(JSON.stringify(manifest)).not.toContain('serviceRoleKey');
+  } finally {
+    await rm(workspaceRoot, { force: true, recursive: true });
+  }
+}, 45_000);
+
+async function readText(projectRoot: string, relativePath: string): Promise<string> {
+  return readFile(path.join(projectRoot, relativePath), 'utf8');
+}
+
+async function readJson<T>(projectRoot: string, relativePath: string): Promise<T> {
+  return JSON.parse(await readText(projectRoot, relativePath)) as T;
+}
