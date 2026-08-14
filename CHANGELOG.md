@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.9.0
+
+### Minor Changes
+
+- 979ce37: Consume released `@ankhorage/deploy` owner APIs through a shared trusted Studio host service, server-only Vault credential adaptation, and thin browser-safe deployment administration routes.
+
 ## 1.8.0
 
 ### Minor Changes
