@@ -1734,7 +1734,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 14,
+      "line": 11,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1795,7 +1795,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 12,
+      "line": 9,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1813,7 +1813,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 37,
+      "line": 34,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1846,13 +1846,6 @@
         "description": null
       },
       {
-        "name": "setup",
-        "kind": "property",
-        "type": "{ readonly environment: AppDeployEnvironmentId; readonly targets: readonly AppDeployTargetId[]; }",
-        "required": true,
-        "description": null
-      },
-      {
         "name": "status",
         "kind": "property",
         "type": "ProjectAuthHealthStatus",
@@ -1871,7 +1864,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 10,
+      "line": 7,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1976,7 +1969,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 26,
+      "line": 23,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2051,7 +2044,7 @@
     "modulePath": "src/projectAuthHealth.ts",
     "sourceLocation": {
       "filePath": "src/projectAuthHealth.ts",
-      "line": 23,
+      "line": 20,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
