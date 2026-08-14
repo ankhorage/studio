@@ -22,93 +22,11 @@ jobs:
         with:
           bun-version: 1.3.13
       - name: Apply Studio consumer
-        shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          oauth = Path('src/host/layout/templates/auth/oauth.ts')
-          text = oauth.read_text()
-          old_import = "} from '@ankhorage/contracts/auth';\nimport * as Linking from 'expo-linking';"
-          new_import = (
-              "} from '@ankhorage/contracts/auth';\n"
-              "import {\n"
-              "  resolveExpoOAuthBrowserException,\n"
-              "  resolveExpoOAuthBrowserResult,\n"
-              "} from '@ankhorage/expo-runtime/oauth-browser';\n"
-              "import * as Linking from 'expo-linking';"
-          )
-          if old_import not in text:
-              raise SystemExit('OAuth import anchor not found')
-          text = text.replace(old_import, new_import, 1)
-
-          start_marker = '  let browserResult: WebBrowser.WebBrowserAuthSessionResult;'
-          end_marker = '  return toTransportOutcome(completed);'
-          start = text.find(start_marker)
-          if start < 0:
-              raise SystemExit('Native OAuth transport start anchor not found')
-          end = text.find(end_marker, start)
-          if end < 0:
-              raise SystemExit('Native OAuth transport end anchor not found')
-          end += len(end_marker)
-          new_transport = """  let browserResponse;
-  try {
-    const browserResult = await WebBrowser.openAuthSessionAsync(
-      started.data.authorizationUrl,
-      started.data.redirectUri,
-    );
-    browserResponse = resolveExpoOAuthBrowserResult(browserResult);
-  } catch {
-    browserResponse = resolveExpoOAuthBrowserException();
-  }
-
-  if (browserResponse.type === 'callback') {
-    return completeOAuthCallback(browserResponse.url);
-  }
-
-  let completed: AuthOAuthCompletionResult;
-  try {
-    completed = await oauth.completeAuthorization({
-      attemptId: started.data.attemptId,
-      response: browserResponse,
-    });
-  } catch {
-    await clearTransportAttempt();
-    return {
-      status: 'error',
-      message: 'The OAuth browser result could not be completed.',
-      recoverable: true,
-    };
-  }
-  await clearTransportAttempt();
-  return toTransportOutcome(completed);"""
-          oauth.write_text(text[:start] + new_transport + text[end:])
-
-          templates = Path('src/host/orchestrator/templates.ts')
-          text = templates.read_text()
-          old_version = "const EXPO_RUNTIME_VERSION = '^2.2.1';"
-          if old_version not in text:
-              raise SystemExit('Generated Expo Runtime version anchor not found')
-          templates.write_text(text.replace(old_version, "const EXPO_RUNTIME_VERSION = '^2.4.0';", 1))
-
-          test = Path('src/host/layout/templates/auth/oauth.test.ts')
-          text = test.read_text()
-          old_expect = "  expect(runtime).toContain('return completeOAuthCallback(browserResult.url);');"
-          new_expect = "\n".join([
-              "  expect(runtime).toContain(\"from '@ankhorage/expo-runtime/oauth-browser';\");",
-              "  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserResult(browserResult);');",
-              "  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserException();');",
-              "  expect(runtime).toContain('response: browserResponse');",
-              "  expect(runtime).not.toContain(\"browserResult.type === 'dismiss'\");",
-          ])
-          if old_expect not in text:
-              raise SystemExit('OAuth template test anchor not found')
-          test.write_text(text.replace(old_expect, new_expect, 1))
-          PY
+          python3 .github/auth5-native-browser-completion.py
           bun update @ankhorage/expo-runtime@2.4.0
           bun run format
       - name: Validate Studio consumer
-        shell: bash
         run: |
           bun run build
           bunx ankh doctor validate .
@@ -121,15 +39,11 @@ jobs:
           bun run typecheck
           bun run changeset:status
       - name: Commit validated consumer
-        shell: bash
         run: |
+          rm .github/auth5-native-browser-completion.py
           rm .github/workflows/auth5-native-browser-completion.yml
           git config user.name 'Fabio Gartenmann'
           git config user.email '137318798+artiphishle@users.noreply.github.com'
-          git add package.json bun.lock src/host/layout/templates/auth/oauth.ts src/host/layout/templates/auth/oauth.test.ts src/host/orchestrator/templates.ts src/host/generatedNativeOAuthLifecycle.e2e.test.ts .github/workflows/auth5-native-browser-completion.yml
-          if git diff --cached --quiet; then
-            echo 'No validated changes to commit.'
-          else
-            git commit -m 'Consume native OAuth browser classifier'
-            git push origin HEAD:agent/auth5-native-browser-completion
-          fi
+          git add -A
+          git commit -m 'Consume native OAuth browser classifier'
+          git push origin HEAD:agent/auth5-native-browser-completion
