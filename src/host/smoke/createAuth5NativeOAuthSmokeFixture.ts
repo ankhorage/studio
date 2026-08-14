@@ -1,11 +1,11 @@
 import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 
-import { ModuleManager } from '../orchestrator/moduleManager.js';
-import { ProjectManager } from '../orchestrator/projectManager.js';
-import { getTemplateCatalog } from '../templateRegistry.js';
-import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
-import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest.js';
-import { prepareAuth5NativeOAuthSmokeWorkspace } from './prepareAuth5NativeOAuthSmokeWorkspace.js';
+import { ModuleManager } from '../orchestrator/moduleManager';
+import { ProjectManager } from '../orchestrator/projectManager';
+import { getTemplateCatalog } from '../templateRegistry';
+import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
+import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest';
+import { prepareAuth5NativeOAuthSmokeWorkspace } from './prepareAuth5NativeOAuthSmokeWorkspace';
 
 export interface Auth5NativeOAuthSmokeFixture {
   readonly callbackRoute: string;
