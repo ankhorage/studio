@@ -73,6 +73,13 @@ templates.write_text(
     )
 )
 
+template_tests = Path('src/host/orchestrator/templates.test.ts')
+text = template_tests.read_text()
+old_expectation = "toBe('^2.2.1');"
+if text.count(old_expectation) != 3:
+    raise SystemExit('Expected exactly three generated Expo Runtime test anchors')
+template_tests.write_text(text.replace(old_expectation, "toBe('^2.4.0');"))
+
 test = Path('src/host/layout/templates/auth/oauth.test.ts')
 text = test.read_text()
 new_expect = '\n'.join(
