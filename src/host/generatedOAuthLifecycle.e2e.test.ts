@@ -272,6 +272,7 @@ function createGeneratedOAuthSource(): string {
     callbackRoute: '/auth/callback',
     callbackRouteName: 'auth/callback',
     callbackTopLevelRouteName: 'auth',
+    nativeSchemes: {},
     providers: [
       {
         id: 'google',

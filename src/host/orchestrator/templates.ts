@@ -9,6 +9,7 @@ import {
   type ExpoRuntimePlan,
   resolveExpoRuntimeDependencyMap,
   resolveExpoRuntimeNativeOutput,
+  resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 
 import type { GeneratedDatabaseRuntimeProvider } from '../generatedDatabaseRuntime';
@@ -133,6 +134,7 @@ function serializePluginsWithRuntimePlan(args: {
 
 function serializeAndroidConfig(args: {
   target: AppDeployAndroidTargetConfig;
+  scheme?: string;
   runtimePlan?: ExpoRuntimePlan;
 }): string {
   const permissions = resolveExpoRuntimeNativeOutput(args.runtimePlan).androidPermissions;
@@ -141,9 +143,9 @@ function serializeAndroidConfig(args: {
       ? `
     permissions: ${serializeJsValue(permissions, 2)},`
       : '';
-  const schemeLine = args.target.scheme
+  const schemeLine = args.scheme
     ? `
-    scheme: ${serializeStringLiteral(args.target.scheme)},`
+    scheme: ${serializeStringLiteral(args.scheme)},`
     : '';
 
   return `{
@@ -152,15 +154,15 @@ function serializeAndroidConfig(args: {
   }`;
 }
 
-function serializeIosConfig(target: AppDeployIosTargetConfig): string {
-  const schemeLine = target.scheme
+function serializeIosConfig(args: { target: AppDeployIosTargetConfig; scheme?: string }): string {
+  const schemeLine = args.scheme
     ? `
-    scheme: ${serializeStringLiteral(target.scheme)},`
+    scheme: ${serializeStringLiteral(args.scheme)},`
     : '';
 
   return `{
     ...config.ios,
-    bundleIdentifier: ${serializeStringLiteral(target.bundleIdentifier)},${schemeLine}
+    bundleIdentifier: ${serializeStringLiteral(args.target.bundleIdentifier)},${schemeLine}
   }`;
 }
 
@@ -169,13 +171,16 @@ function serializeTargetSections(args: {
   runtimePlan?: ExpoRuntimePlan;
 }): string {
   const sections: string[] = [];
+  const nativeSchemes = resolveExpoRuntimeNativeSchemeMap(args.targets);
   if (args.targets.android?.enabled) {
     sections.push(
-      `  android: ${serializeAndroidConfig({ target: args.targets.android, runtimePlan: args.runtimePlan })},`,
+      `  android: ${serializeAndroidConfig({ target: args.targets.android, scheme: nativeSchemes.android, runtimePlan: args.runtimePlan })},`,
     );
   }
   if (args.targets.ios?.enabled) {
-    sections.push(`  ios: ${serializeIosConfig(args.targets.ios)},`);
+    sections.push(
+      `  ios: ${serializeIosConfig({ target: args.targets.ios, scheme: nativeSchemes.ios })},`,
+    );
   }
   if (args.targets.web?.enabled) {
     sections.push(`  web: {
