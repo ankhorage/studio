@@ -35,10 +35,11 @@ jobs:
           PY
           python /tmp/auth4_apply.py
 
-      - name: Apply type narrowing fix
+      - name: Apply type narrowing and fixture fixes
         run: |
           python - <<'PY'
           from pathlib import Path
+
           def once(path, old, new):
               p = Path(path)
               text = p.read_text()
@@ -74,7 +75,27 @@ jobs:
           once(
               'src/projectOAuthSetup.test.ts',
               "plan.requirements\n            .filter(\n              (requirement) => requirement.kind === 'callback' && requirement.role === 'app',\n            )\n            .map((requirement) => requirement.target),",
-              "plan.requirements.flatMap((requirement) =>\n            requirement.kind === 'callback' && requirement.role === 'app'\n              ? [requirement.target]\n              : [],\n          ),",
+              "plan.requirements.flatMap((requirement) =>\n            requirement.kind === 'callback' &&\n            requirement.role === 'app' &&\n            requirement.target !== undefined\n              ? [requirement.target]\n              : [],\n          ),",
+          )
+          once(
+              'src/projectOAuthSetup.test.ts',
+              "              : [],\n          ),\n        ).toEqual(targets);",
+              "              : [],\n          ),\n        ).toEqual([...targets]);",
+          )
+          once(
+              'src/index.test.ts',
+              "      diagnostics: [],\n      providers: [],\n      callbackUrls: { appCallbackRoute: '/auth/callback' },",
+              "      diagnostics: [],\n      providers: [],\n      setup: { environment: 'local', targets: ['web'] },\n      callbackUrls: { appCallbackRoute: '/auth/callback' },",
+          )
+          once(
+              'src/projectAuthRuntimeDiagnostics.test.ts',
+              "  diagnostics: [],\n  providers: [],\n  callbackUrls: {",
+              "  diagnostics: [],\n  providers: [],\n  setup: { environment: 'local', targets: ['web'] },\n  callbackUrls: {",
+          )
+          once(
+              'src/ui/admin/pages/adminAuthHealthFlow.test.ts',
+              "    callbackUrls: { appCallbackRoute: '/auth/callback' },\n    providers: [],\n    diagnostics: [],",
+              "    callbackUrls: { appCallbackRoute: '/auth/callback' },\n    providers: [],\n    diagnostics: [],\n    setup: { environment: 'local', targets: ['web'] },",
           )
           PY
 
