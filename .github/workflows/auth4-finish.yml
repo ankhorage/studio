@@ -1,0 +1,105 @@
+name: Auth4 platform readiness finish
+
+on:
+  push:
+    branches:
+      - agent/auth4-platform-readiness
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/auth4-platform-readiness
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Apply existing Studio patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64, gzip, re
+          text = Path('.github/workflows/auth4-apply.yml').read_text()
+          payload = re.search(r"PATCH_GZ_B64: '([^']+)'", text).group(1)
+          Path('/tmp/auth4_apply.py').write_bytes(gzip.decompress(base64.b64decode(payload)))
+          PY
+          python /tmp/auth4_apply.py
+
+      - name: Apply type narrowing fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          def once(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              if text.count(old) != 1:
+                  raise SystemExit(f'{path}: expected one match, found {text.count(old)}')
+              p.write_text(text.replace(old, new, 1))
+
+          once(
+              'src/projectAuthHealth.ts',
+              "import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';\nimport type { AppDeployEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';",
+              "import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';\nimport type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';\nimport type { AppDeployEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';",
+          )
+          once(
+              'src/projectAuthHealth.ts',
+              ".filter(\n        (requirement) =>\n          requirement.kind === 'field' &&",
+              ".filter(\n        (requirement): requirement is AuthOAuthSetupFieldRequirement =>\n          requirement.kind === 'field' &&",
+          )
+          once(
+              'src/ui/admin/pages/AuthAdminPage.tsx',
+              "import {\n  APP_DEPLOY_ENVIRONMENT_IDS,\n  type AppDeployEnvironmentId,\n} from '@ankhorage/contracts/deploy';",
+              "import type {\n  AuthOAuthSetupCallbackRequirement,\n  AuthOAuthSetupFieldRequirement,\n} from '@ankhorage/contracts/auth';\nimport {\n  APP_DEPLOY_ENVIRONMENT_IDS,\n  type AppDeployEnvironmentId,\n} from '@ankhorage/contracts/deploy';",
+          )
+          once(
+              'src/ui/admin/pages/AuthAdminPage.tsx',
+              "setupPlan?.requirements.filter(\n      (requirement) => requirement.kind === 'field' && requirement.persistence === 'trustedCredential',\n    ) ?? [];\n  const callbackRequirements =\n    setupPlan?.requirements.filter((requirement) => requirement.kind === 'callback') ?? [];",
+              "setupPlan?.requirements.filter(\n      (requirement): requirement is AuthOAuthSetupFieldRequirement =>\n        requirement.kind === 'field' && requirement.persistence === 'trustedCredential',\n    ) ?? [];\n  const callbackRequirements =\n    setupPlan?.requirements.filter(\n      (requirement): requirement is AuthOAuthSetupCallbackRequirement =>\n        requirement.kind === 'callback',\n    ) ?? [];",
+          )
+          once(
+              'src/projectOAuthSetup.test.ts',
+              "plan.requirements\n            .filter((requirement) => requirement.kind === 'field')\n            .map((requirement) => requirement.key),",
+              "plan.requirements.flatMap((requirement) =>\n            requirement.kind === 'field' ? [requirement.key] : [],\n          ),",
+          )
+          once(
+              'src/projectOAuthSetup.test.ts',
+              "plan.requirements\n            .filter(\n              (requirement) => requirement.kind === 'callback' && requirement.role === 'app',\n            )\n            .map((requirement) => requirement.target),",
+              "plan.requirements.flatMap((requirement) =>\n            requirement.kind === 'callback' && requirement.role === 'app'\n              ? [requirement.target]\n              : [],\n          ),",
+          )
+          PY
+
+      - name: Resolve lockfile
+        run: |
+          bun install --lockfile-only
+          bun install --frozen-lockfile
+
+      - name: Format and validate
+        run: |
+          bun run format
+          bun run build
+          bunx @ankhorage/ankh doctor validate .
+          bun run lint
+          bun run format:check
+          bun run knip
+          bun run test
+          bun run typecheck
+
+      - name: Commit product changes
+        run: |
+          rm .github/workflows/auth4-apply.yml .github/workflows/auth4-finish.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          git commit -m 'Add platform-aware auth administration'
+          git push origin HEAD:agent/auth4-platform-readiness
