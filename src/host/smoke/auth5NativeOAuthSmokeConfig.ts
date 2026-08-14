@@ -1,6 +1,6 @@
 export const AUTH5_NATIVE_OAUTH_SMOKE = {
   projectId: 'auth5-native-oauth-smoke',
-  projectName: 'Auth 5 Native OAuth Smoke',
+  projectName: 'Auth5 Native OAuth Smoke',
   android: {
     package: 'com.ankh.auth5smoke.android',
     scheme: 'ankh-auth5-android',
