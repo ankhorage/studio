@@ -213,7 +213,6 @@
     "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2",
     "@ankhorage/runtime": "^1.1.0",
     "@ankhorage/supabase-auth": "^1.2.0",
-    "@ankhorage/supabase-storage": "^0.2.0",
     "@ankhorage/supabase-vault": "^0.2.4",
     "@ankhorage/templates": "^6.0.0",
     "@ankhorage/zora": "^2.13.0",
@@ -221,7 +220,8 @@
     "@ankhorage/zora-tabletop": "^0.0.5",
     "@fastify/cors": "^11.2.0",
     "fastify": "^5.7.4",
-    "react-native-gesture-handler": "~2.28.0"
+    "react-native-gesture-handler": "~2.28.0",
+    "@ankhorage/supabase-storage": "^0.2.0"
   },
   "peerDependencies": {
     "@expo/vector-icons": "^15.0.3",
