@@ -1,3 +1,10 @@
+import {
+  APP_DEPLOY_ENVIRONMENT_IDS,
+  APP_DEPLOY_TARGET_IDS,
+  type AppDeployEnvironmentId,
+  type AppDeployTargetId,
+} from '@ankhorage/contracts/deploy';
+
 import type {
   ProjectAuthDiagnostic,
   ProjectAuthDiagnosticSeverity,
@@ -22,7 +29,7 @@ export class ProjectAuthApiError extends Error {
 
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
-  readonly environment?: string;
+  readonly environment?: AppDeployEnvironmentId;
 }): Promise<ProjectAuthHealth> {
   const query = createQuery({ environment: input.environment });
   const value = await requestJson(
@@ -93,12 +100,16 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 function parseProjectAuthHealth(value: unknown): ProjectAuthHealth {
   const record = asRecord(value);
+  const setup = asRecord(record?.setup);
   const callbackUrls = asRecord(record?.callbackUrls);
   if (
     record === null ||
     !isProjectAuthHealthStatus(record.status) ||
     !Array.isArray(record.diagnostics) ||
     !Array.isArray(record.providers) ||
+    setup === null ||
+    !isAppDeployEnvironmentId(setup.environment) ||
+    !isAppDeployTargetIdArray(setup.targets) ||
     callbackUrls === null ||
     typeof callbackUrls.appCallbackRoute !== 'string' ||
     (callbackUrls.providerRedirectUrl !== undefined &&
@@ -111,6 +122,10 @@ function parseProjectAuthHealth(value: unknown): ProjectAuthHealth {
     status: record.status,
     diagnostics: record.diagnostics.map(parseProjectAuthDiagnostic),
     providers: record.providers.map(parseProjectOAuthProviderHealth),
+    setup: {
+      environment: setup.environment,
+      targets: [...setup.targets],
+    },
     callbackUrls: {
       appCallbackRoute: callbackUrls.appCallbackRoute,
       ...(typeof callbackUrls.providerRedirectUrl === 'string'
@@ -193,6 +208,23 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
+}
+
+function isAppDeployEnvironmentId(value: unknown): value is AppDeployEnvironmentId {
+  return (
+    typeof value === 'string' &&
+    APP_DEPLOY_ENVIRONMENT_IDS.includes(value as AppDeployEnvironmentId)
+  );
+}
+
+function isAppDeployTargetIdArray(value: unknown): value is AppDeployTargetId[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (entry) =>
+        typeof entry === 'string' && APP_DEPLOY_TARGET_IDS.includes(entry as AppDeployTargetId),
+    )
+  );
 }
 
 function isProjectAuthHealthStatus(value: unknown): value is ProjectAuthHealthStatus {

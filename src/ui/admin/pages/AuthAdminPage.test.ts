@@ -10,7 +10,9 @@ const source = readFileSync(
 
 test('auth settings keeps provider-specific OAuth credential orchestration', () => {
   expect(source).toContain('configureProjectOAuthProvider');
-  expect(source).toContain('definition.secretFields.map');
+  expect(source).toContain('resolveProjectOAuthSetupPlan');
+  expect(source).toContain('credentialFields.map');
+  expect(source).not.toContain('definition.secretFields.map');
   expect(source).toContain('credentialsRef');
   expect(source).toContain('persistStoredOAuthCredentialLink');
   expect(source).toContain('authAdminSession.setPendingCredentialLink(result.pendingLink)');

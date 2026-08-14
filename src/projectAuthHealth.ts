@@ -1,8 +1,11 @@
 import type { AppManifest, AuthOAuthProviderConfig } from '@ankhorage/contracts';
+import type { AuthOAuthSetupFieldRequirement } from '@ankhorage/contracts/auth';
+import type { AppDeployEnvironmentId, AppDeployTargetId } from '@ankhorage/contracts/deploy';
 import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import { getSupabaseOAuthProviderDefinition } from '@ankhorage/supabase-auth';
 
 import { validateStudioAuthSettings } from './authSettings';
+import { resolveProjectEnabledTargets, resolveProjectOAuthSetupPlan } from './projectOAuthSetup';
 
 export type ProjectAuthHealthStatus = 'healthy' | 'warning' | 'error' | 'unconfigured';
 
@@ -35,6 +38,10 @@ export interface ProjectAuthHealth {
   readonly status: ProjectAuthHealthStatus;
   readonly diagnostics: readonly ProjectAuthDiagnostic[];
   readonly providers: readonly ProjectOAuthProviderHealth[];
+  readonly setup: {
+    readonly environment: AppDeployEnvironmentId;
+    readonly targets: readonly AppDeployTargetId[];
+  };
   readonly callbackUrls: {
     readonly appCallbackRoute: string;
     readonly providerRedirectUrl?: string;
@@ -45,8 +52,11 @@ export function analyzeProjectAuthHealth(input: {
   readonly manifest: AppManifest;
   readonly secretMetadata: readonly SecretMetadata[];
   readonly secretStoreAvailable?: boolean;
+  readonly environment?: AppDeployEnvironmentId;
 }): ProjectAuthHealth {
   const diagnostics: ProjectAuthDiagnostic[] = [];
+  const environment = input.environment ?? 'local';
+  const targets = resolveProjectEnabledTargets(input.manifest);
   const { auth } = input.manifest.infra;
   const secretMetadataByRef = new Map(
     input.secretMetadata.map((metadata) => [metadata.ref, metadata]),
@@ -71,6 +81,7 @@ export function analyzeProjectAuthHealth(input: {
       status: 'unconfigured',
       diagnostics: sortDiagnostics(diagnostics),
       providers: [],
+      setup: { environment, targets },
       callbackUrls: { appCallbackRoute: '/auth/callback' },
     };
   }
@@ -111,6 +122,11 @@ export function analyzeProjectAuthHealth(input: {
       secretMetadata: provider.credentialsRef
         ? secretMetadataByRef.get(provider.credentialsRef)
         : undefined,
+      setupPlan: resolveProjectOAuthSetupPlan({
+        manifest: input.manifest,
+        provider: provider.id,
+        environment,
+      }),
       diagnostics,
     }),
   );
@@ -133,6 +149,7 @@ export function analyzeProjectAuthHealth(input: {
     providers: providerHealth.sort((left, right) =>
       left.providerId.localeCompare(right.providerId),
     ),
+    setup: { environment, targets },
     callbackUrls: {
       appCallbackRoute: oauth?.callbackRoute ?? '/auth/callback',
     },
@@ -143,22 +160,31 @@ function analyzeProviderHealth(input: {
   readonly provider: AuthOAuthProviderConfig;
   readonly index: number;
   readonly secretMetadata: SecretMetadata | undefined;
+  readonly setupPlan: ReturnType<typeof resolveProjectOAuthSetupPlan>;
   readonly diagnostics: ProjectAuthDiagnostic[];
 }): ProjectOAuthProviderHealth {
-  const { provider, secretMetadata } = input;
+  const { provider, secretMetadata, setupPlan } = input;
   const definition = getSupabaseOAuthProviderDefinition(provider.id);
   const enabled = provider.enabled === true;
   const { credentialsRef } = provider;
   const path = `infra.auth.oauth.providers[${input.index}]`;
-  const requiredFields = definition?.secretFields.map((field) => field.name) ?? [];
+  const requiredFields =
+    setupPlan?.requirements
+      .filter(
+        (requirement): requirement is AuthOAuthSetupFieldRequirement =>
+          requirement.kind === 'field' &&
+          requirement.required &&
+          requirement.persistence === 'trustedCredential',
+      )
+      .map((requirement) => requirement.key) ?? [];
   const configuredFields = secretMetadata?.configuredFields ?? [];
   const missingFields = requiredFields.filter((field) => !configuredFields.includes(field));
 
-  if (!definition) {
+  if (!setupPlan) {
     input.diagnostics.push({
       code: 'invalid_provider',
       severity: 'error',
-      message: `OAuth provider "${provider.id}" is not supported.`,
+      message: `OAuth provider "${provider.id}" is not supported for brokered setup.`,
       path,
       providerId: provider.id,
       ...(credentialsRef ? { credentialsRef } : {}),
@@ -204,7 +230,7 @@ function analyzeProviderHealth(input: {
     ...(credentialsRef ? { credentialsRef } : {}),
     status: resolveProviderStatus({
       enabled,
-      definitionExists: definition !== null,
+      definitionExists: setupPlan !== null,
       credentialsRef,
       secretMetadata,
       missingFields,

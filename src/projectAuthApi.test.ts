@@ -15,6 +15,7 @@ describe('projectAuthApi', () => {
         data: {
           status: 'healthy',
           diagnostics: [],
+          setup: { environment: 'preview', targets: ['web', 'ios'] },
           providers: [
             {
               providerId: 'google',
@@ -31,6 +32,19 @@ describe('projectAuthApi', () => {
         },
       }).providers[0]?.status,
     ).toBe('configured');
+    expect(
+      parseProjectAuthHealthResponse({
+        ok: true,
+        state: 'loaded',
+        data: {
+          status: 'healthy',
+          diagnostics: [],
+          setup: { environment: 'preview', targets: ['web', 'ios'] },
+          providers: [],
+          callbackUrls: { appCallbackRoute: '/auth/callback' },
+        },
+      }).setup,
+    ).toEqual({ environment: 'preview', targets: ['web', 'ios'] });
 
     expect(() =>
       parseProjectAuthHealthResponse({

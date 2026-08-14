@@ -1,8 +1,7 @@
-import type { AuthRedirectEnvironment } from '@ankhorage/infra';
-
 import type { ProjectAuthHealth } from '../../projectAuthHealth';
 import { analyzeProjectAuthHealth } from '../../projectAuthHealth';
 import { applyProjectAuthRuntimeDiagnostics } from '../../projectAuthRuntimeDiagnostics';
+import { resolveProjectAuthEnvironment } from '../../projectOAuthSetup';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import type { ProjectSecretService } from '../secrets/projectSecretService';
 import { observeProjectAuthRuntimeDiagnostics } from './projectAuthRuntimeDiagnostics';
@@ -44,14 +43,16 @@ export class ProjectAuthHealthService {
       };
     }
 
+    const environment = resolveProjectAuthEnvironment(input.environment);
     const secretResult = await this.secretService.list({
       projectId: input.projectId,
-      environment: input.environment,
+      environment,
     });
     const desiredHealth = analyzeProjectAuthHealth({
       manifest,
       secretMetadata: secretResult.ok ? secretResult.data : [],
       secretStoreAvailable: secretResult.ok,
+      environment,
     });
     const oauth = manifest.infra.auth?.oauth;
 
@@ -70,7 +71,7 @@ export class ProjectAuthHealthService {
         projectId: input.projectId,
         target: infraStatus.target,
         generated: infraStatus.generated,
-        environment: resolveAuthRedirectEnvironment(input.environment),
+        environment,
         callbackRoute: oauth.callbackRoute,
       });
 
@@ -91,11 +92,6 @@ export class ProjectAuthHealthService {
       };
     }
   }
-}
-
-function resolveAuthRedirectEnvironment(environment: string | undefined): AuthRedirectEnvironment {
-  if (environment === 'preview' || environment === 'production') return environment;
-  return 'local';
 }
 
 export type ProjectAuthHealthResult =

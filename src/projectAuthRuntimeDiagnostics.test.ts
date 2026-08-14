@@ -7,6 +7,7 @@ const healthyDesiredState: ProjectAuthHealth = {
   status: 'healthy',
   diagnostics: [],
   providers: [],
+  setup: { environment: 'local', targets: ['web'] },
   callbackUrls: {
     appCallbackRoute: '/auth/callback',
   },

@@ -9,6 +9,7 @@ function createHealth(status: ProjectAuthHealth['status']): ProjectAuthHealth {
     callbackUrls: { appCallbackRoute: '/auth/callback' },
     providers: [],
     diagnostics: [],
+    setup: { environment: 'local', targets: ['web'] },
   };
 }
 

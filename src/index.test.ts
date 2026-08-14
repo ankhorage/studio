@@ -112,6 +112,7 @@ describe('@ankhorage/studio', () => {
       status: 'healthy',
       diagnostics: [],
       providers: [],
+      setup: { environment: 'local', targets: ['web'] },
       callbackUrls: { appCallbackRoute: '/auth/callback' },
     } satisfies ProjectAuthHealth;
     const usages = {
