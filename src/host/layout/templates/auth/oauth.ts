@@ -23,6 +23,10 @@ export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   AuthOAuthCompletionResult,
   AuthOAuthTransportCancellationReason,
 } from '@ankhorage/contracts/auth';
+import {
+  resolveExpoOAuthBrowserException,
+  resolveExpoOAuthBrowserResult,
+} from '@ankhorage/expo-runtime/oauth-browser';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
@@ -137,32 +141,35 @@ async function runOAuthAuthorization(
     });
   }
 
-  let browserResult: WebBrowser.WebBrowserAuthSessionResult;
+  let browserResponse;
   try {
-    browserResult = await WebBrowser.openAuthSessionAsync(
+    const browserResult = await WebBrowser.openAuthSessionAsync(
       started.data.authorizationUrl,
       started.data.redirectUri,
     );
+    browserResponse = resolveExpoOAuthBrowserResult(browserResult);
   } catch {
-    await cancelOAuthAttempt(started.data.attemptId, 'browser_dismissed');
+    browserResponse = resolveExpoOAuthBrowserException();
+  }
+
+  if (browserResponse.type === 'callback') {
+    return completeOAuthCallback(browserResponse.url);
+  }
+
+  let completed: AuthOAuthCompletionResult;
+  try {
+    completed = await oauth.completeAuthorization({
+      attemptId: started.data.attemptId,
+      response: browserResponse,
+    });
+  } catch {
     await clearTransportAttempt();
     return {
       status: 'error',
-      message: 'The system authentication browser could not be opened.',
+      message: 'The OAuth browser result could not be completed.',
       recoverable: true,
     };
   }
-
-  if (browserResult.type === 'success' && typeof browserResult.url === 'string') {
-    return completeOAuthCallback(browserResult.url);
-  }
-
-  const cancellationReason =
-    browserResult.type === 'dismiss' ? 'browser_dismissed' : 'user_cancelled';
-  const completed = await oauth.completeAuthorization({
-    attemptId: started.data.attemptId,
-    response: { type: 'cancelled', reason: cancellationReason },
-  });
   await clearTransportAttempt();
   return toTransportOutcome(completed);
 }
