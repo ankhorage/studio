@@ -1,9 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export async function prepareAuth5NativeOAuthSmokeWorkspace(
-  workspaceRoot: string,
-): Promise<void> {
+export async function prepareAuth5NativeOAuthSmokeWorkspace(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
