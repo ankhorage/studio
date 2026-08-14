@@ -128,6 +128,18 @@ jobs:
               "  test('injects canonical native target schemes into the generated OAuth runtime', () => {\n    const manifest: AppManifest = {\n      ...createOAuthManifest(),\n      deploy: {\n        targets: {\n          web: { enabled: true },\n          android: {\n            enabled: true,\n            package: 'com.example.android',\n            scheme: 'ankh-android-auth',\n          },\n          ios: {\n            enabled: true,\n            bundleIdentifier: 'com.example.ios',\n            scheme: 'ankh-ios-auth',\n          },\n        },\n      },\n    };\n    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {\n      includeStudio: false,\n    });\n    const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';\n\n    expect(oauth).toContain(\"android: 'ankh-android-auth'\");\n    expect(oauth).toContain(\"ios: 'ankh-ios-auth'\");\n    expect(oauth).not.toContain('com.example.android');\n    expect(oauth).not.toContain('com.example.ios');\n  });\n\n  test('generates a Supabase Auth adapter that only reads Expo public env statically', () => {",
           )
 
+          replace_once(
+              'src/host/generatedOAuthLifecycle.e2e.test.ts',
+              "    callbackTopLevelRouteName: 'auth',\n    providers: [",
+              "    callbackTopLevelRouteName: 'auth',\n    nativeSchemes: {},\n    providers: [",
+          )
+
+          replace_once(
+              'src/host/oauthFixtureConsumer.smoke.test.ts',
+              "    expect(oauthRuntime).toContain('Linking.createURL(callbackPath)');",
+              "    expect(oauthRuntime).toContain(\"android: 'ankh-oauthfixtureconsumer'\");\n    expect(oauthRuntime).toContain(\"ios: 'ankh-oauthfixtureconsumer'\");\n    expect(oauthRuntime).toContain(\n      'Linking.createURL(callbackPath, { scheme: nativeScheme })',\n    );",
+          )
+
           changeset = Path('.changeset/auth5-native-callback-linking.md')
           changeset.write_text("""---\n'@ankhorage/studio': minor\n---\n\nGenerate native brokered OAuth callbacks from canonical Expo target schemes.\n""")
           PY
