@@ -27,6 +27,7 @@ import {
   resolveExpoOAuthBrowserException,
   resolveExpoOAuthBrowserResult,
 } from '@ankhorage/expo-runtime/oauth-browser';
+import { resolveExpoOAuthBrowserRuntimeReadiness } from '@ankhorage/expo-runtime/oauth-browser-runtime';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
@@ -103,6 +104,17 @@ async function runOAuthAuthorization(
       message: 'The OAuth redirect URI could not be resolved in this environment.',
       recoverable: true,
     };
+  }
+
+  if (Platform.OS !== 'web') {
+    const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();
+    if (runtimeReadiness.status !== 'ready') {
+      return {
+        status: 'error',
+        message: runtimeReadiness.message,
+        recoverable: true,
+      };
+    }
   }
 
   const started = await oauth.startAuthorization({
