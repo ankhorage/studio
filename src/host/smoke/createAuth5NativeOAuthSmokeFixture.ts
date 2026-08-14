@@ -1,12 +1,11 @@
-import type { AppManifest } from '@ankhorage/contracts';
-import { createOAuthFixtureManifest, OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
-import { mkdir, writeFile } from 'node:fs/promises';
-import path from 'node:path';
+import { OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 
 import { ModuleManager } from '../orchestrator/moduleManager.js';
 import { ProjectManager } from '../orchestrator/projectManager.js';
 import { getTemplateCatalog } from '../templateRegistry.js';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
+import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest.js';
+import { prepareAuth5NativeOAuthSmokeWorkspace } from './prepareAuth5NativeOAuthSmokeWorkspace.js';
 
 export interface Auth5NativeOAuthSmokeFixture {
   readonly callbackRoute: string;
@@ -18,7 +17,7 @@ export interface Auth5NativeOAuthSmokeFixture {
 export async function createAuth5NativeOAuthSmokeFixture(
   workspaceRoot: string,
 ): Promise<Auth5NativeOAuthSmokeFixture> {
-  await prepareWorkspace(workspaceRoot);
+  await prepareAuth5NativeOAuthSmokeWorkspace(workspaceRoot);
   const projectManager = new ProjectManager(workspaceRoot);
   const moduleManager = new ModuleManager(workspaceRoot);
   const template = getTemplateCatalog()
@@ -32,8 +31,10 @@ export async function createAuth5NativeOAuthSmokeFixture(
     undefined,
     { includeStudio: false },
   );
-  const manifest = createSmokeManifest();
-  await moduleManager.saveProjectManifest({ projectId: created.id, manifest });
+  await moduleManager.saveProjectManifest({
+    projectId: created.id,
+    manifest: createAuth5NativeOAuthSmokeManifest(),
+  });
 
   return {
     callbackRoute: OAUTH_CALLBACK_ROUTE,
@@ -41,35 +42,4 @@ export async function createAuth5NativeOAuthSmokeFixture(
     projectRoot: created.path,
     workspaceRoot,
   };
-}
-
-function createSmokeManifest(): AppManifest {
-  return {
-    ...createOAuthFixtureManifest({
-      category: 'developer_tools',
-      fixture: 'google',
-      overrides: {
-        metadata: {
-          name: AUTH5_NATIVE_OAUTH_SMOKE.projectName,
-          slug: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
-        },
-      },
-    }),
-    deploy: {
-      targets: {
-        web: { enabled: true },
-        android: { enabled: true, ...AUTH5_NATIVE_OAUTH_SMOKE.android },
-        ios: { enabled: true, ...AUTH5_NATIVE_OAUTH_SMOKE.ios },
-      },
-    },
-  };
-}
-
-async function prepareWorkspace(workspaceRoot: string): Promise<void> {
-  await mkdir(path.join(workspaceRoot, 'apps', 'studio'), { recursive: true });
-  await writeFile(
-    path.join(workspaceRoot, 'package.json'),
-    `${JSON.stringify({ name: '@ankhorage/auth5-native-oauth-smoke', private: true, packageManager: 'bun@1.3.13', workspaces: ['apps/*'] }, null, 2)}\n`,
-    'utf8',
-  );
 }
