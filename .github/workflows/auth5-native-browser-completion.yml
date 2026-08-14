@@ -29,80 +29,60 @@ jobs:
 
           oauth = Path('src/host/layout/templates/auth/oauth.ts')
           text = oauth.read_text()
-          old_import = """} from '@ankhorage/contracts/auth';
-          import * as Linking from 'expo-linking';"""
-          new_import = """} from '@ankhorage/contracts/auth';
-          import {
-            resolveExpoOAuthBrowserException,
-            resolveExpoOAuthBrowserResult,
-          } from '@ankhorage/expo-runtime/oauth-browser';
-          import * as Linking from 'expo-linking';"""
+          old_import = "} from '@ankhorage/contracts/auth';\nimport * as Linking from 'expo-linking';"
+          new_import = (
+              "} from '@ankhorage/contracts/auth';\n"
+              "import {\n"
+              "  resolveExpoOAuthBrowserException,\n"
+              "  resolveExpoOAuthBrowserResult,\n"
+              "} from '@ankhorage/expo-runtime/oauth-browser';\n"
+              "import * as Linking from 'expo-linking';"
+          )
           if old_import not in text:
               raise SystemExit('OAuth import anchor not found')
           text = text.replace(old_import, new_import, 1)
 
-          old_transport = """  let browserResult: WebBrowser.WebBrowserAuthSessionResult;
-          try {
-            browserResult = await WebBrowser.openAuthSessionAsync(
-              started.data.authorizationUrl,
-              started.data.redirectUri,
-            );
-          } catch {
-            await cancelOAuthAttempt(started.data.attemptId, 'browser_dismissed');
-            await clearTransportAttempt();
-            return {
-              status: 'error',
-              message: 'The system authentication browser could not be opened.',
-              recoverable: true,
-            };
-          }
-
-          if (browserResult.type === 'success' && typeof browserResult.url === 'string') {
-            return completeOAuthCallback(browserResult.url);
-          }
-
-          const cancellationReason =
-            browserResult.type === 'dismiss' ? 'browser_dismissed' : 'user_cancelled';
-          const completed = await oauth.completeAuthorization({
-            attemptId: started.data.attemptId,
-            response: { type: 'cancelled', reason: cancellationReason },
-          });
-          await clearTransportAttempt();
-          return toTransportOutcome(completed);"""
+          start_marker = '  let browserResult: WebBrowser.WebBrowserAuthSessionResult;'
+          end_marker = '  return toTransportOutcome(completed);'
+          start = text.find(start_marker)
+          if start < 0:
+              raise SystemExit('Native OAuth transport start anchor not found')
+          end = text.find(end_marker, start)
+          if end < 0:
+              raise SystemExit('Native OAuth transport end anchor not found')
+          end += len(end_marker)
           new_transport = """  let browserResponse;
-          try {
-            const browserResult = await WebBrowser.openAuthSessionAsync(
-              started.data.authorizationUrl,
-              started.data.redirectUri,
-            );
-            browserResponse = resolveExpoOAuthBrowserResult(browserResult);
-          } catch {
-            browserResponse = resolveExpoOAuthBrowserException();
-          }
+  try {
+    const browserResult = await WebBrowser.openAuthSessionAsync(
+      started.data.authorizationUrl,
+      started.data.redirectUri,
+    );
+    browserResponse = resolveExpoOAuthBrowserResult(browserResult);
+  } catch {
+    browserResponse = resolveExpoOAuthBrowserException();
+  }
 
-          if (browserResponse.type === 'callback') {
-            return completeOAuthCallback(browserResponse.url);
-          }
+  if (browserResponse.type === 'callback') {
+    return completeOAuthCallback(browserResponse.url);
+  }
 
-          let completed: AuthOAuthCompletionResult;
-          try {
-            completed = await oauth.completeAuthorization({
-              attemptId: started.data.attemptId,
-              response: browserResponse,
-            });
-          } catch {
-            await clearTransportAttempt();
-            return {
-              status: 'error',
-              message: 'The OAuth browser result could not be completed.',
-              recoverable: true,
-            };
-          }
-          await clearTransportAttempt();
-          return toTransportOutcome(completed);"""
-          if old_transport not in text:
-              raise SystemExit('Native OAuth transport anchor not found')
-          oauth.write_text(text.replace(old_transport, new_transport, 1))
+  let completed: AuthOAuthCompletionResult;
+  try {
+    completed = await oauth.completeAuthorization({
+      attemptId: started.data.attemptId,
+      response: browserResponse,
+    });
+  } catch {
+    await clearTransportAttempt();
+    return {
+      status: 'error',
+      message: 'The OAuth browser result could not be completed.',
+      recoverable: true,
+    };
+  }
+  await clearTransportAttempt();
+  return toTransportOutcome(completed);"""
+          oauth.write_text(text[:start] + new_transport + text[end:])
 
           templates = Path('src/host/orchestrator/templates.ts')
           text = templates.read_text()
@@ -114,11 +94,13 @@ jobs:
           test = Path('src/host/layout/templates/auth/oauth.test.ts')
           text = test.read_text()
           old_expect = "  expect(runtime).toContain('return completeOAuthCallback(browserResult.url);');"
-          new_expect = """  expect(runtime).toContain("from '@ankhorage/expo-runtime/oauth-browser';");
-            expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserResult(browserResult);');
-            expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserException();');
-            expect(runtime).toContain('response: browserResponse');
-            expect(runtime).not.toContain("browserResult.type === 'dismiss'");"""
+          new_expect = "\n".join([
+              "  expect(runtime).toContain(\"from '@ankhorage/expo-runtime/oauth-browser';\");",
+              "  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserResult(browserResult);');",
+              "  expect(runtime).toContain('browserResponse = resolveExpoOAuthBrowserException();');",
+              "  expect(runtime).toContain('response: browserResponse');",
+              "  expect(runtime).not.toContain(\"browserResult.type === 'dismiss'\");",
+          ])
           if old_expect not in text:
               raise SystemExit('OAuth template test anchor not found')
           test.write_text(text.replace(old_expect, new_expect, 1))
