@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.6.0
+
+### Minor Changes
+
+- f4079c4: Generate native brokered OAuth callbacks from canonical Expo target schemes.
+
 ## 1.5.0
 
 ### Minor Changes
