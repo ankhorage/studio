@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.7.0
+
+### Minor Changes
+
+- 4854095: Route native Expo authentication browser outcomes through the Expo Runtime transport classifier before adapter completion.
+
 ## 1.6.0
 
 ### Minor Changes
