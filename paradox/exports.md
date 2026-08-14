@@ -569,7 +569,7 @@ Source: `src/index.ts:257:1`
 
 Kind: `type`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:11:1`
+Source: `src/projectAuthHealth.ts:14:1`
 
 ### Members
 
@@ -586,28 +586,29 @@ Source: `src/projectAuthHealth.ts:11:1`
 
 Kind: `unknown`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:9:1`
+Source: `src/projectAuthHealth.ts:12:1`
 
 ## ProjectAuthHealth
 
 Kind: `type`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:34:1`
+Source: `src/projectAuthHealth.ts:37:1`
 
 ### Members
 
-| Name         | Kind     | Type                                                                            | Required | Description |
-| ------------ | -------- | ------------------------------------------------------------------------------- | -------- | ----------- |
-| callbackUrls | property | `{ readonly appCallbackRoute: string; readonly providerRedirectUrl?: string; }` | yes      |             |
-| diagnostics  | property | `readonly ProjectAuthDiagnostic[]`                                              | yes      |             |
-| providers    | property | `readonly ProjectOAuthProviderHealth[]`                                         | yes      |             |
-| status       | property | `ProjectAuthHealthStatus`                                                       | yes      |             |
+| Name         | Kind     | Type                                                                                                | Required | Description |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| callbackUrls | property | `{ readonly appCallbackRoute: string; readonly providerRedirectUrl?: string; }`                     | yes      |             |
+| diagnostics  | property | `readonly ProjectAuthDiagnostic[]`                                                                  | yes      |             |
+| providers    | property | `readonly ProjectOAuthProviderHealth[]`                                                             | yes      |             |
+| setup        | property | `{ readonly environment: AppDeployEnvironmentId; readonly targets: readonly AppDeployTargetId[]; }` | yes      |             |
+| status       | property | `ProjectAuthHealthStatus`                                                                           | yes      |             |
 
 ## ProjectAuthHealthStatus
 
 Kind: `unknown`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:7:1`
+Source: `src/projectAuthHealth.ts:10:1`
 
 ## ProjectCreationValidationCode
 
@@ -644,7 +645,7 @@ Source: `src/projectWorkspaceContracts.ts:30:1`
 
 Kind: `type`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:23:1`
+Source: `src/projectAuthHealth.ts:26:1`
 
 ### Members
 
@@ -663,7 +664,7 @@ Source: `src/projectAuthHealth.ts:23:1`
 
 Kind: `unknown`
 Module: `src/projectAuthHealth.ts`
-Source: `src/projectAuthHealth.ts:20:1`
+Source: `src/projectAuthHealth.ts:23:1`
 
 ## ProjectSecretUsage
 

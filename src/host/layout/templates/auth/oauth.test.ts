@@ -63,7 +63,9 @@ test('generates full-page Web OAuth and preserves the native system browser', ()
 
 test('preflights native OAuth before the adapter creates an authorization attempt', () => {
   const runtime = createOAuthRuntime();
-  const preflight = runtime.indexOf('const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();');
+  const preflight = runtime.indexOf(
+    'const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();',
+  );
   const adapterStart = runtime.indexOf('const started = await oauth.startAuthorization({');
 
   expect(runtime).toContain("if (Platform.OS !== 'web') {");

@@ -210,7 +210,10 @@ function createGeneratedOAuthSource(): string {
       },
     ],
   })
-    .replace("from '@ankhorage/expo-runtime/oauth-browser-runtime';", "from './runtimeReadiness.ts';")
+    .replace(
+      "from '@ankhorage/expo-runtime/oauth-browser-runtime';",
+      "from './runtimeReadiness.ts';",
+    )
     .replace("from 'expo-linking';", "from './linking.ts';")
     .replace("from 'expo-web-browser';", "from './webBrowser.ts';")
     .replace("from 'react-native';", "from './platform.ts';")
