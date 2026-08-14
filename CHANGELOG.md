@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.5.0
+
+### Minor Changes
+
+- 09cfbfa: Consume platform- and environment-aware OAuth setup requirements in Studio auth administration and health.
+
 ## 1.4.0
 
 ### Minor Changes
