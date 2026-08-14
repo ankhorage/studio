@@ -3,6 +3,7 @@ import { ProjectManager } from '../orchestrator/projectManager';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectAuthRoutes } from './authRoutes';
 import { registerProjectDataSourceRoutes } from './dataSourceRoutes';
+import { registerProjectDeployRoutes } from './deployRoutes';
 import { registerProjectSecretRoutes } from './secretRoutes';
 import { createStudioHostServer, type StartStudioHostServerOptions } from './server';
 
@@ -21,6 +22,7 @@ export async function startStudioHostServerWithSecrets(
   registerProjectAuthRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
   registerProjectSecretRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
   registerProjectDataSourceRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
+  registerProjectDeployRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
 
   const port = resolvedOptions.port ?? 3000;
   const host = resolvedOptions.host ?? '127.0.0.1';

@@ -83,6 +83,7 @@ export const STUDIO_PACKAGE_BOUNDARY: StudioPackageBoundary = {
   ],
   consumes: [
     '@ankhorage/contracts',
+    '@ankhorage/deploy',
     '@ankhorage/runtime',
     '@ankhorage/expo-runtime',
     '@ankhorage/orchestrator',
