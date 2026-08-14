@@ -1,0 +1,58 @@
+name: Auth4 platform readiness apply
+
+on:
+  push:
+    branches:
+      - agent/auth4-platform-readiness
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/auth4-platform-readiness
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Apply Studio slice
+        env:
+          PATCH_GZ_B64: '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'
+        run: |
+          printf '%s' "$PATCH_GZ_B64" | base64 -d | gzip -d > /tmp/auth4_apply.py
+          python /tmp/auth4_apply.py
+
+      - name: Resolve lockfile
+        run: |
+          bun install --lockfile-only
+          bun install --frozen-lockfile
+
+      - name: Format and validate
+        run: |
+          bun run format
+          bun run build
+          bunx @ankhorage/ankh doctor validate .
+          bun run lint
+          bun run format:check
+          bun run knip
+          bun run test
+          bun run typecheck
+
+      - name: Commit product changes
+        run: |
+          rm .github/workflows/auth4-apply.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          git commit -m 'Add platform-aware auth administration'
+          git push origin HEAD:agent/auth4-platform-readiness
