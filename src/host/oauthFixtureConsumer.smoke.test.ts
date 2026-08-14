@@ -126,7 +126,9 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(oauthRuntime).toContain('"id":"apple"');
     expect(oauthRuntime).toContain("Platform.OS === 'web'");
     expect(oauthRuntime).toContain('new URL(`/${callbackPath}`');
-    expect(oauthRuntime).toContain('Linking.createURL(callbackPath)');
+    expect(oauthRuntime).toContain("android: 'ankh-oauthfixtureconsumer'");
+    expect(oauthRuntime).toContain("ios: 'ankh-oauthfixtureconsumer'");
+    expect(oauthRuntime).toContain('Linking.createURL(callbackPath, { scheme: nativeScheme })');
     expect(oauthRuntime).toContain("Reflect.get(location, 'assign')");
     expect(oauthRuntime).toContain('Reflect.apply(assign, location, [args.authorizationUrl]);');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');

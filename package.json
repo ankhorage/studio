@@ -205,7 +205,7 @@
     "@ankhorage/color-theory": "^0.0.8",
     "@ankhorage/contracts": "^7.8.0",
     "@ankhorage/data-sources": "^1.0.1",
-    "@ankhorage/expo-runtime": "^2.2.1",
+    "@ankhorage/expo-runtime": "^2.3.0",
     "@ankhorage/infra": "^3.3.0",
     "@ankhorage/orchestrator": "^0.3.0",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0",

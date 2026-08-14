@@ -1,9 +1,23 @@
+import type { ExpoRuntimeNativeSchemeMap } from '@ankhorage/expo-runtime/planning';
+
 import type { AuthOAuthLayoutPlan } from '../../auth/resolveAuthLayoutPlan';
 import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 
-export function getAuthOAuthRuntimeTs(args: AuthOAuthLayoutPlan) {
+interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
+  readonly nativeSchemes: ExpoRuntimeNativeSchemeMap;
+}
+
+export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   const callbackRoute = escapeStringLiteral(args.callbackRoute);
   const providers = JSON.stringify(args.providers);
+  const androidScheme =
+    args.nativeSchemes.android === undefined
+      ? 'undefined'
+      : `'${escapeStringLiteral(args.nativeSchemes.android)}'`;
+  const iosScheme =
+    args.nativeSchemes.ios === undefined
+      ? 'undefined'
+      : `'${escapeStringLiteral(args.nativeSchemes.ios)}'`;
 
   return `import type {
   AuthOAuthCompletionResult,
@@ -23,6 +37,10 @@ const OAUTH_CALLBACK_ROUTE = '${callbackRoute}';
 const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
 const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
 const GENERATED_OAUTH_PROVIDERS = ${providers} as const;
+const GENERATED_NATIVE_SCHEMES = {
+  android: ${androidScheme},
+  ios: ${iosScheme},
+} as const;
 
 export const generatedOAuthProviderItems = GENERATED_OAUTH_PROVIDERS.map((provider) => ({
   id: provider.id,
@@ -251,7 +269,17 @@ function resolveOAuthRedirectUri(): string {
     throw new Error('Web OAuth requires a canonical browser origin.');
   }
 
-  return Linking.createURL(callbackPath);
+  const nativeScheme =
+    Platform.OS === 'android'
+      ? GENERATED_NATIVE_SCHEMES.android
+      : Platform.OS === 'ios'
+        ? GENERATED_NATIVE_SCHEMES.ios
+        : undefined;
+  if (!nativeScheme) {
+    throw new Error('Native OAuth requires a configured application scheme.');
+  }
+
+  return Linking.createURL(callbackPath, { scheme: nativeScheme });
 }
 
 function isCanonicalOAuthCallback(callbackUrl: string): boolean {

@@ -2,11 +2,17 @@ import { expect, test } from 'bun:test';
 
 import { getAuthOAuthRuntimeTs } from './oauth';
 
-function createOAuthRuntime(): string {
+function createOAuthRuntime(
+  nativeSchemes: { readonly android?: string; readonly ios?: string } = {
+    android: 'ankh-android',
+    ios: 'ankh-ios',
+  },
+): string {
   return getAuthOAuthRuntimeTs({
     callbackRoute: '/auth/callback',
     callbackRouteName: 'auth/callback',
     callbackTopLevelRouteName: 'auth',
+    nativeSchemes,
     providers: [
       {
         id: 'google',
@@ -59,6 +65,30 @@ test('derives the Web callback from the current browser origin', () => {
   expect(runtime).toContain('return new URL(`/${callbackPath}`, origin).toString();');
   expect(runtime).not.toMatch(/localhost:\d+/u);
   expect(runtime).not.toContain('window.closed');
+});
+
+test('derives native callbacks from canonical platform schemes', () => {
+  const runtime = createOAuthRuntime({
+    android: 'ankh-android-auth',
+    ios: 'ankh-ios-auth',
+  });
+
+  expect(runtime).toContain("android: 'ankh-android-auth'");
+  expect(runtime).toContain("ios: 'ankh-ios-auth'");
+  expect(runtime).toContain("Platform.OS === 'android'");
+  expect(runtime).toContain("Platform.OS === 'ios'");
+  expect(runtime).toContain('return Linking.createURL(callbackPath, { scheme: nativeScheme });');
+  expect(runtime).not.toContain('return Linking.createURL(callbackPath);');
+});
+
+test('does not invent a native callback scheme when none is configured', () => {
+  const runtime = createOAuthRuntime({});
+
+  expect(runtime).toContain('android: undefined');
+  expect(runtime).toContain('ios: undefined');
+  expect(runtime).toContain(
+    "throw new Error('Native OAuth requires a configured application scheme.');",
+  );
 });
 
 test('generates adapter-owned OAuth lifecycle coordination with a correlation-only marker', () => {

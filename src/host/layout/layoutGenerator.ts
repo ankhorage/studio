@@ -2,6 +2,7 @@ import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/con
 import {
   type ExpoRuntimePlan,
   resolveExpoRuntimeLayoutIntegration,
+  resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 import path from 'path';
 
@@ -203,7 +204,7 @@ export class GeneratedAppFileGenerator {
       for (const generatedAuthFile of authLayoutPlan.generatedFiles) {
         files.push({
           path: generatedAuthFile.path,
-          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan),
+          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan, manifest),
         });
       }
 
@@ -423,6 +424,7 @@ export class GeneratedAppFileGenerator {
   private getGeneratedAuthFileContent(
     filePlan: AuthGeneratedFilePlan,
     authLayoutPlan: EnabledAuthLayoutPlan,
+    manifest: AppManifest,
   ): string {
     switch (filePlan.kind) {
       case 'adapter':
@@ -435,7 +437,10 @@ export class GeneratedAppFileGenerator {
         if (!authLayoutPlan.oauth) {
           throw new Error('OAuth runtime generation requires an OAuth layout plan.');
         }
-        return getAuthOAuthRuntimeTs(authLayoutPlan.oauth);
+        return getAuthOAuthRuntimeTs({
+          ...authLayoutPlan.oauth,
+          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(manifest.deploy?.targets ?? {}),
+        });
       case 'oauth-callback':
         return getAuthOAuthCallbackTsx({
           signInRoute: authLayoutPlan.signInRoute,

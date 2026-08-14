@@ -312,6 +312,36 @@ describe('GeneratedAppFileGenerator', () => {
     expect(allGeneratedSource).not.toContain('serviceRole');
   });
 
+  test('injects canonical native target schemes into the generated OAuth runtime', () => {
+    const manifest: AppManifest = {
+      ...createOAuthManifest(),
+      deploy: {
+        targets: {
+          web: { enabled: true },
+          android: {
+            enabled: true,
+            package: 'com.example.android',
+            scheme: 'ankh-android-auth',
+          },
+          ios: {
+            enabled: true,
+            bundleIdentifier: 'com.example.ios',
+            scheme: 'ankh-ios-auth',
+          },
+        },
+      },
+    };
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
+      includeStudio: false,
+    });
+    const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
+
+    expect(oauth).toContain("android: 'ankh-android-auth'");
+    expect(oauth).toContain("ios: 'ankh-ios-auth'");
+    expect(oauth).not.toContain('com.example.android');
+    expect(oauth).not.toContain('com.example.ios');
+  });
+
   test('generates a Supabase Auth adapter that only reads Expo public env statically', () => {
     const adapter = getGeneratedAuthAdapter(createOAuthManifest());
 
