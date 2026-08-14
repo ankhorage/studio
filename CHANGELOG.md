@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.9.1
+
+### Patch Changes
+
+- 884956a: Add a reproducible Google brokered-OAuth development-build smoke fixture and manual iOS/Android validation matrix for Auth 5.
+
 ## 1.9.0
 
 ### Minor Changes
