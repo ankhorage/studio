@@ -41,11 +41,18 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
     templateId: template.templateId,
   });
   expect(created.success).toBe(true);
+  expect(
+    JSON.parse(await readFile(path.join(created.path, '.ankh/generation-state.json'), 'utf8')),
+  ).toEqual({ schemaVersion: 1, includeStudio: true });
 
   const projects = await projectManager.listProjects();
   expect(projects.some((project) => project.id === created.id && project.isAnkhApp)).toBe(true);
 
-  await moduleManager.syncProject({ projectId: created.id, includeStudio: true });
+  await moduleManager.syncProjectRuntime(created.id);
+  expect(await readFile(path.join(created.path, 'src/app/ankh/_layout.tsx'), 'utf8')).toContain(
+    'AnkhAdminShell',
+  );
+
   const manifest = await projectManager.getProjectManifest(created.id);
   await projectManager.persistProjectManifest({
     projectId: created.id,
