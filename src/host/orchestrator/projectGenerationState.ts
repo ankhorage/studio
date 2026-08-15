@@ -74,9 +74,7 @@ async function readPackageJson(
 }
 
 function isProjectGenerationState(value: unknown): value is ProjectGenerationState {
-  return (
-    isRecord(value) && value.schemaVersion === 1 && typeof value.includeStudio === 'boolean'
-  );
+  return isRecord(value) && value.schemaVersion === 1 && typeof value.includeStudio === 'boolean';
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
