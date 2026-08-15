@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.8.0",
+      "value": "v1.9.1",
       "color": "cb3837"
     },
     {
@@ -80,6 +80,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["default"]
+    },
+    {
+      "path": "scripts/auth5-native-oauth-smoke.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/runAuth5NativeOAuthSmoke.ts"],
+      "exports": []
     },
     {
       "path": "src/ankhAdmin.public.test.ts",
@@ -554,6 +560,12 @@
       "exports": ["StudioProvider", "StudioProviderProps"]
     },
     {
+      "path": "src/createProjectDeployRequest.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectDeployRequest.ts"],
+      "exports": ["createProjectDeployRequest"]
+    },
+    {
       "path": "src/externalApiApi.ts",
       "isEntrypoint": false,
       "dependencies": ["src/core/constants.ts", "src/externalApiAuthoringContracts.ts"],
@@ -807,7 +819,8 @@
         "src/host/deploy/ProjectDeploySecretStore.ts",
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/projectPaths.ts",
-        "src/host/secrets/projectSecretService.ts"
+        "src/host/secrets/projectSecretService.ts",
+        "src/projectDeployReleaseInspectionResult.ts"
       ],
       "exports": [
         "ProjectDeployReleaseInspectionResult",
@@ -1812,6 +1825,52 @@
       ]
     },
     {
+      "path": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["AUTH5_NATIVE_OAUTH_SMOKE"]
+    },
+    {
+      "path": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/moduleManager.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
+      "exports": ["Auth5NativeOAuthSmokeFixture", "createAuth5NativeOAuthSmokeFixture"]
+    },
+    {
+      "path": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"],
+      "exports": ["createAuth5NativeOAuthSmokeManifest"]
+    },
+    {
+      "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["prepareAuth5NativeOAuthSmokeWorkspace"]
+    },
+    {
+      "path": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/studioInfra.e2e.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -2308,6 +2367,70 @@
         "ProjectAuthRuntimeDiagnostics",
         "ProjectAuthRuntimeRolloutStatus"
       ]
+    },
+    {
+      "path": "src/projectDeployApi.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployApiError.ts",
+        "src/projectDeployClient.ts",
+        "src/projectDeployRequest.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/projectDeployApi.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/createProjectDeployRequest.ts",
+        "src/projectDeployClient.ts",
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/projectDeployRuntimeInput.ts"
+      ],
+      "exports": [
+        "inspectProjectDeployRelease",
+        "listProjectDeployReleaseHistory",
+        "readProjectDeployConfig",
+        "readProjectDeployListing",
+        "readProjectDeployMonetization",
+        "readProjectDeployRelease"
+      ]
+    },
+    {
+      "path": "src/projectDeployApiError.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployApiError"]
+    },
+    {
+      "path": "src/projectDeployClient.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployApiError.ts",
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/projectDeployRequest.ts",
+        "src/projectDeployRuntimeInput.ts",
+        "src/secretResponseGuard.ts"
+      ],
+      "exports": ["ProjectDeployClient"]
+    },
+    {
+      "path": "src/projectDeployReleaseInspectionResult.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployReleaseInspectionResult"]
+    },
+    {
+      "path": "src/projectDeployRequest.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployRequest"]
+    },
+    {
+      "path": "src/projectDeployRuntimeInput.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployRuntimeInput"]
     },
     {
       "path": "src/projectIdentity.test.ts",
@@ -3035,6 +3158,7 @@
         "src/ui/admin/pages/ApisAdminPage.tsx",
         "src/ui/admin/pages/AuthAdminPage.tsx",
         "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "src/ui/admin/pages/DeployAdminPage.tsx",
         "src/ui/admin/pages/MediaAdminPage.tsx",
         "src/ui/admin/pages/ModuleDetailAdminPage.tsx",
         "src/ui/admin/pages/ModulesAdminPage.tsx",
@@ -3352,6 +3476,83 @@
         "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"
       ],
       "exports": ["DataSourceOperationsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["DeployAuthoredStateCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["DeployLoadable", "ProjectDeployDashboardState"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["DeployHistoryCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployApi.ts",
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/projectDeployRuntimeInput.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["DeployReadinessCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["DeploySummaryGrid"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["DeployTargetsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployApi.ts",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+      ],
+      "exports": ["useProjectDeployDashboard"]
+    },
+    {
+      "path": "src/ui/admin/pages/DeployAdminPage.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+        "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      ],
+      "exports": ["DeployAdminPage"]
     },
     {
       "path": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
@@ -3927,7 +4128,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 429,
+        "line": 431,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -3945,7 +4146,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 338,
+        "line": 340,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4087,7 +4288,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1371,
+        "line": 1373,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4119,7 +4320,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 747,
+        "line": 749,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4151,7 +4352,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 576,
+        "line": 578,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4297,7 +4498,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1290,
+        "line": 1292,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4583,7 +4784,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 593,
+        "line": 595,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4659,7 +4860,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 569,
+        "line": 571,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -4691,7 +4892,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1216,
+        "line": 1218,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4723,7 +4924,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 316,
+        "line": 318,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4816,7 +5017,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 298,
+        "line": 300,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4856,7 +5057,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 275,
+        "line": 277,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4874,7 +5075,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 326,
+        "line": 328,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4892,7 +5093,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 304,
+        "line": 306,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4979,7 +5180,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 272,
+        "line": 274,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -4997,7 +5198,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 273,
+        "line": 275,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5015,7 +5216,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 321,
+        "line": 323,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5109,7 +5310,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1009,
+        "line": 1011,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5141,7 +5342,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 952,
+        "line": 954,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5188,7 +5389,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 959,
+        "line": 961,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5221,7 +5422,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 283,
+        "line": 285,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5275,7 +5476,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 291,
+        "line": 293,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5322,7 +5523,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 278,
+        "line": 280,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5393,7 +5594,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1145,
+        "line": 1147,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5425,7 +5626,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1036,
+        "line": 1038,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5472,7 +5673,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1043,
+        "line": 1045,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5505,7 +5706,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 233,
+        "line": 235,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5552,7 +5753,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 240,
+        "line": 242,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5570,7 +5771,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 253,
+        "line": 255,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5603,7 +5804,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 231,
+        "line": 233,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5621,7 +5822,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 265,
+        "line": 267,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -5639,7 +5840,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 258,
+        "line": 260,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6154,7 +6355,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 635,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6324,7 +6525,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 907,
+        "line": 909,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6356,7 +6557,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1413,
+        "line": 1415,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6388,7 +6589,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 846,
+        "line": 848,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6424,7 +6625,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1077,
+        "line": 1079,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6652,7 +6853,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1183,
+        "line": 1185,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -6749,7 +6950,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 330,
+        "line": 332,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6789,7 +6990,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 328,
+        "line": 330,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6807,7 +7008,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 336,
+        "line": 338,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6843,7 +7044,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 197,
+        "line": 199,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -6861,7 +7062,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 178,
+        "line": 179,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7284,7 +7485,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 362,
+        "line": 364,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7302,7 +7503,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 346,
+        "line": 348,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7335,7 +7536,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 351,
+        "line": 353,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7382,7 +7583,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 358,
+        "line": 360,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7400,7 +7601,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 377,
+        "line": 379,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7790,7 +7991,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 370,
+        "line": 372,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7808,7 +8009,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 360,
+        "line": 362,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -7984,7 +8185,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 206,
+        "line": 208,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8847,7 +9048,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 213,
+        "line": 215,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -8919,7 +9120,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 221,
+        "line": 223,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9171,7 +9372,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 208,
+        "line": 210,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9189,7 +9390,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 521,
+        "line": 523,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -9207,7 +9408,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 605,
+        "line": 607,
         "column": 14
       },
       "exportPaths": ["src/index.ts"],
@@ -9339,7 +9540,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1233,
+        "line": 1235,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -9377,7 +9578,7 @@
       "modulePath": "src/index.ts",
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 761,
         "column": 1
       },
       "exportPaths": ["src/index.ts"],
@@ -10858,6 +11059,15 @@
       "sourceLocation": {
         "filePath": "src/core/StudioProvider.ts",
         "line": 696,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectDeployRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/createProjectDeployRequest.ts",
+        "line": 3,
         "column": 1
       }
     },
@@ -15074,6 +15284,51 @@
       }
     },
     {
+      "name": "readText",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuth5NativeOAuthSmokeFixture",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuth5NativeOAuthSmokeManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "prepareAuth5NativeOAuthSmokeWorkspace",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
       "name": "createWorkspace",
       "description": null,
       "sourceLocation": {
@@ -15582,7 +15837,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 569,
+        "line": 571,
         "column": 14
       }
     },
@@ -15591,7 +15846,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 576,
+        "line": 578,
         "column": 14
       }
     },
@@ -15600,7 +15855,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 593,
+        "line": 595,
         "column": 14
       }
     },
@@ -15609,7 +15864,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 605,
+        "line": 607,
         "column": 14
       }
     },
@@ -15618,7 +15873,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 633,
+        "line": 635,
         "column": 14
       }
     },
@@ -15627,7 +15882,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 657,
+        "line": 659,
         "column": 1
       }
     },
@@ -15636,7 +15891,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 662,
+        "line": 664,
         "column": 9
       }
     },
@@ -15645,7 +15900,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 681,
+        "line": 683,
         "column": 1
       }
     },
@@ -15654,7 +15909,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 692,
+        "line": 694,
         "column": 1
       }
     },
@@ -15663,7 +15918,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 747,
+        "line": 749,
         "column": 1
       }
     },
@@ -15672,7 +15927,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 759,
+        "line": 761,
         "column": 1
       }
     },
@@ -15681,7 +15936,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 846,
+        "line": 848,
         "column": 1
       }
     },
@@ -15690,7 +15945,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 907,
+        "line": 909,
         "column": 1
       }
     },
@@ -15699,7 +15954,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 964,
+        "line": 966,
         "column": 1
       }
     },
@@ -15708,7 +15963,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1009,
+        "line": 1011,
         "column": 1
       }
     },
@@ -15717,7 +15972,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1048,
+        "line": 1050,
         "column": 1
       }
     },
@@ -15726,7 +15981,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1077,
+        "line": 1079,
         "column": 1
       }
     },
@@ -15735,7 +15990,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1145,
+        "line": 1147,
         "column": 1
       }
     },
@@ -15744,7 +15999,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1216,
+        "line": 1218,
         "column": 1
       }
     },
@@ -15753,7 +16008,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1220,
+        "line": 1222,
         "column": 1
       }
     },
@@ -15762,7 +16017,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1225,
+        "line": 1227,
         "column": 1
       }
     },
@@ -15771,7 +16026,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1233,
+        "line": 1235,
         "column": 1
       }
     },
@@ -15780,7 +16035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1237,
+        "line": 1239,
         "column": 9
       }
     },
@@ -15789,7 +16044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1270,
+        "line": 1272,
         "column": 1
       }
     },
@@ -15798,7 +16053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1275,
+        "line": 1277,
         "column": 9
       }
     },
@@ -15807,7 +16062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1290,
+        "line": 1292,
         "column": 1
       }
     },
@@ -15816,7 +16071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1310,
+        "line": 1312,
         "column": 1
       }
     },
@@ -15825,7 +16080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1333,
+        "line": 1335,
         "column": 1
       }
     },
@@ -15834,7 +16089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1371,
+        "line": 1373,
         "column": 1
       }
     },
@@ -15843,7 +16098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1397,
+        "line": 1399,
         "column": 1
       }
     },
@@ -15852,7 +16107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1413,
+        "line": 1415,
         "column": 1
       }
     },
@@ -15861,7 +16116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/index.ts",
-        "line": 1462,
+        "line": 1464,
         "column": 1
       }
     },
@@ -17153,6 +17408,222 @@
       }
     },
     {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 15,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 33,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 49,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 61,
+        "column": 9
+      }
+    },
+    {
+      "name": "captureProjectDeployApiError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 101,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectDeployConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectDeployListing",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectDeployMonetization",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "listProjectDeployReleaseHistory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "readJson",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "projectPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseListing",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 83,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMonetization",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 104,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseHistory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseInspection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
+      "name": "isHistoryRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 156,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertBrowserSafe",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 168,
+        "column": 1
+      }
+    },
+    {
+      "name": "readError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "invalid",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 183,
+        "column": 1
+      }
+    },
+    {
+      "name": "asRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 187,
+        "column": 1
+      }
+    },
+    {
       "name": "deriveProjectId",
       "description": null,
       "sourceLocation": {
@@ -18345,7 +18816,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 269,
+        "line": 277,
         "column": 1
       }
     },
@@ -18354,7 +18825,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 280,
+        "line": 288,
         "column": 1
       }
     },
@@ -18363,7 +18834,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 319,
+        "line": 327,
         "column": 1
       }
     },
@@ -18372,7 +18843,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 350,
+        "line": 358,
         "column": 1
       }
     },
@@ -18381,7 +18852,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 354,
+        "line": 362,
         "column": 1
       }
     },
@@ -18390,7 +18861,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 358,
+        "line": 366,
         "column": 1
       }
     },
@@ -18399,7 +18870,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 362,
+        "line": 370,
         "column": 1
       }
     },
@@ -18408,7 +18879,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 366,
+        "line": 374,
         "column": 1
       }
     },
@@ -18417,7 +18888,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 370,
+        "line": 378,
         "column": 1
       }
     },
@@ -18426,7 +18897,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 380,
+        "line": 388,
         "column": 1
       }
     },
@@ -18435,7 +18906,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 390,
+        "line": 398,
         "column": 1
       }
     },
@@ -18444,7 +18915,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 394,
+        "line": 402,
         "column": 1
       }
     },
@@ -18453,7 +18924,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 398,
+        "line": 406,
         "column": 1
       }
     },
@@ -18462,7 +18933,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 402,
+        "line": 410,
         "column": 1
       }
     },
@@ -18471,7 +18942,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 433,
+        "line": 441,
         "column": 1
       }
     },
@@ -18480,7 +18951,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 450,
+        "line": 458,
         "column": 1
       }
     },
@@ -18489,7 +18960,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 454,
+        "line": 462,
         "column": 1
       }
     },
@@ -18498,7 +18969,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 471,
+        "line": 479,
         "column": 1
       }
     },
@@ -18507,7 +18978,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 492,
+        "line": 500,
         "column": 1
       }
     },
@@ -18516,7 +18987,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 515,
+        "line": 523,
         "column": 1
       }
     },
@@ -18525,7 +18996,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 519,
+        "line": 527,
         "column": 1
       }
     },
@@ -18534,7 +19005,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 529,
+        "line": 537,
         "column": 1
       }
     },
@@ -18543,7 +19014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 537,
+        "line": 545,
         "column": 1
       }
     },
@@ -18552,7 +19023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/studioAdminRouteModel.ts",
-        "line": 548,
+        "line": 556,
         "column": 1
       }
     },
@@ -18723,7 +19194,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminPage.tsx",
-        "line": 104,
+        "line": 106,
         "column": 1
       }
     },
@@ -19696,6 +20167,204 @@
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
         "line": 117,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployAuthoredStateCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "listingValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "monetizationValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "releaseValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 37,
+        "column": 1
+      }
+    },
+    {
+      "name": "revisionValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "statusValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "shortRevision",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployHistoryCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployReadinessCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "line": 48,
+        "column": 9
+      }
+    },
+    {
+      "name": "ReadinessResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "line": 96,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeploySummaryGrid",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "enabledTargets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "readyCount",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployTargetsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatTarget",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatProviders",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "isString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "useProjectDeployDashboard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "loadDashboard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "capture",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployAdminPage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "line": 13,
         "column": 1
       }
     },
@@ -21624,6 +22293,11 @@
   "graphs": {
     "imports": [
       {
+        "fromPath": "scripts/auth5-native-oauth-smoke.ts",
+        "toPath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+        "sourcePath": "scripts/auth5-native-oauth-smoke.ts"
+      },
+      {
         "fromPath": "src/ankhAdmin.public.test.ts",
         "toPath": "src/root.ts",
         "sourcePath": "src/ankhAdmin.public.test.ts"
@@ -21772,6 +22446,11 @@
         "fromPath": "src/contractGuards.test.ts",
         "toPath": "src/contractGuards.ts",
         "sourcePath": "src/contractGuards.test.ts"
+      },
+      {
+        "fromPath": "src/createProjectDeployRequest.ts",
+        "toPath": "src/projectDeployRequest.ts",
+        "sourcePath": "src/createProjectDeployRequest.ts"
       },
       {
         "fromPath": "src/externalApiApi.ts",
@@ -22037,6 +22716,66 @@
         "fromPath": "src/projectAuthRuntimeDiagnostics.ts",
         "toPath": "src/projectAuthHealth.ts",
         "sourcePath": "src/projectAuthRuntimeDiagnostics.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.test.ts",
+        "toPath": "src/projectDeployApiError.ts",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.test.ts",
+        "toPath": "src/projectDeployClient.ts",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.test.ts",
+        "toPath": "src/projectDeployRequest.ts",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/createProjectDeployRequest.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployClient.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployApiError.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployRequest.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/secretResponseGuard.ts",
+        "sourcePath": "src/projectDeployClient.ts"
       },
       {
         "fromPath": "src/projectIdentity.test.ts",
@@ -23264,6 +24003,11 @@
         "sourcePath": "src/host/deploy/projectDeployExports.test.ts"
       },
       {
+        "fromPath": "src/host/deploy/ProjectDeployRuntimeInput.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/host/deploy/ProjectDeployRuntimeInput.ts"
+      },
+      {
         "fromPath": "src/host/deploy/ProjectDeployService.test.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
@@ -23277,6 +24021,11 @@
         "fromPath": "src/host/deploy/ProjectDeployService.test.ts",
         "toPath": "src/host/deploy/ProjectDeployService.ts",
         "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
+      },
+      {
+        "fromPath": "src/host/deploy/ProjectDeployService.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
         "fromPath": "src/host/deploy/ProjectDeployService.ts",
@@ -24034,6 +24783,56 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/orchestrator/moduleManager.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "toPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+        "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
         "fromPath": "src/host/templateRegistry/catalog.test.ts",
         "toPath": "src/host/templateRegistry/index.ts",
         "sourcePath": "src/host/templateRegistry/catalog.test.ts"
@@ -24076,6 +24875,11 @@
       {
         "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
         "toPath": "src/ui/admin/pages/BindingsAdminPage.tsx",
+        "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/AnkhAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/DeployAdminPage.tsx",
         "sourcePath": "src/ui/admin/AnkhAdminPage.tsx"
       },
       {
@@ -24622,6 +25426,41 @@
         "fromPath": "src/ui/admin/pages/DataSourceOperationsCard.tsx",
         "toPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/ExternalApiAdminPrimitives.tsx",
@@ -25357,6 +26196,81 @@
         "fromPath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx",
         "toPath": "src/ui/admin/pages/bindings/PropertyBindingEditor.tsx",
         "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
       },
       {
         "fromPath": "src/ui/admin/pages/screens/screensAdminActions.test.ts",
@@ -28861,6 +29775,276 @@
         "toSymbol": "resolveHealthStatus",
         "callExpression": "resolveHealthStatus",
         "sourcePath": "src/projectAuthRuntimeDiagnostics.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "readConfig",
+        "callExpression": "client.readConfig",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "readListing",
+        "callExpression": "client.readListing",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "captureProjectDeployApiError",
+        "callExpression": "captureProjectDeployApiError",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "inspectRelease",
+        "callExpression": "client.inspectRelease",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "captureProjectDeployApiError",
+        "toSymbol": "action",
+        "callExpression": "action",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.ts",
+        "toSymbol": "createProjectDeployRequest",
+        "callExpression": "createProjectDeployRequest",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readProjectDeployConfig",
+        "toSymbol": "readConfig",
+        "callExpression": "client.readConfig",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readProjectDeployListing",
+        "toSymbol": "readListing",
+        "callExpression": "client.readListing",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readProjectDeployMonetization",
+        "toSymbol": "readMonetization",
+        "callExpression": "client.readMonetization",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readProjectDeployRelease",
+        "toSymbol": "readRelease",
+        "callExpression": "client.readRelease",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "listProjectDeployReleaseHistory",
+        "toSymbol": "listReleaseHistory",
+        "callExpression": "client.listReleaseHistory",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "inspectProjectDeployRelease",
+        "toSymbol": "inspectRelease",
+        "callExpression": "client.inspectRelease",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "readConfig",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readConfig",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readListing",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readListing",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readMonetization",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readMonetization",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readRelease",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readRelease",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "listReleaseHistory",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "listReleaseHistory",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "inspectRelease",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "inspectRelease",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "request",
+        "callExpression": "this.request",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "assertBrowserSafe",
+        "callExpression": "assertBrowserSafe",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "requestJson",
+        "toSymbol": "parse",
+        "callExpression": "parse",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseConfig",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseConfig",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseListing",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseListing",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetization",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetization",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseRelease",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseRelease",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseHistory",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseInspection",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseInspection",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "isHistoryRecord",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "assertBrowserSafe",
+        "toSymbol": "findRawSecretResponseKey",
+        "callExpression": "findRawSecretResponseKey",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "readError",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
       },
       {
         "fromSymbol": "src/projectIdentity.test.ts",
@@ -42267,6 +43451,132 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "callExpression": "createAuth5NativeOAuthSmokeFixture",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "readJson",
+        "callExpression": "readJson",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "readText",
+        "callExpression": "readText",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "readText",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "readJson",
+        "toSymbol": "readText",
+        "callExpression": "readText",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "toSymbol": "prepareAuth5NativeOAuthSmokeWorkspace",
+        "callExpression": "prepareAuth5NativeOAuthSmokeWorkspace",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "toSymbol": "createProject",
+        "callExpression": "projectManager.createProject",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "toSymbol": "saveProjectManifest",
+        "callExpression": "moduleManager.saveProjectManifest",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "toSymbol": "createAuth5NativeOAuthSmokeManifest",
+        "callExpression": "createAuth5NativeOAuthSmokeManifest",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"
+      },
+      {
+        "fromSymbol": "createAuth5NativeOAuthSmokeManifest",
+        "toSymbol": "createOAuthFixtureManifest",
+        "callExpression": "createOAuthFixtureManifest",
+        "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeWorkspace",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeWorkspace",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
+        "toSymbol": "createAuth5NativeOAuthSmokeFixture",
+        "callExpression": "createAuth5NativeOAuthSmokeFixture",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
         "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -45033,6 +46343,12 @@
         "sourcePath": "src/ui/admin/pages/DataSourceOperationsCard.tsx"
       },
       {
+        "fromSymbol": "DeployAdminPage",
+        "toSymbol": "useProjectDeployDashboard",
+        "callExpression": "useProjectDeployDashboard",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
         "fromSymbol": "ExternalApiConnectCard",
         "toSymbol": "useStudio",
         "callExpression": "useStudio",
@@ -47629,6 +48945,198 @@
         "toSymbol": "removeStudioPropBinding",
         "callExpression": "removeStudioPropBinding",
         "sourcePath": "src/ui/admin/pages/bindings/PropertyBindingsCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployAuthoredStateCard",
+        "toSymbol": "listingValue",
+        "callExpression": "listingValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployAuthoredStateCard",
+        "toSymbol": "revisionValue",
+        "callExpression": "revisionValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployAuthoredStateCard",
+        "toSymbol": "monetizationValue",
+        "callExpression": "monetizationValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployAuthoredStateCard",
+        "toSymbol": "releaseValue",
+        "callExpression": "releaseValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "listingValue",
+        "toSymbol": "statusValue",
+        "callExpression": "statusValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "monetizationValue",
+        "toSymbol": "statusValue",
+        "callExpression": "statusValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "releaseValue",
+        "toSymbol": "statusValue",
+        "callExpression": "statusValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "revisionValue",
+        "toSymbol": "shortRevision",
+        "callExpression": "shortRevision",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "revisionValue",
+        "toSymbol": "statusValue",
+        "callExpression": "statusValue",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployReadinessCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setChecking",
+        "callExpression": "setChecking",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "inspectProjectDeployRelease",
+        "callExpression": "inspectProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toSymbol": "inspect",
+        "callExpression": "inspect",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+      },
+      {
+        "fromSymbol": "DeploySummaryGrid",
+        "toSymbol": "enabledTargets",
+        "callExpression": "enabledTargets",
+        "sourcePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"
+      },
+      {
+        "fromSymbol": "DeploySummaryGrid",
+        "toSymbol": "readyCount",
+        "callExpression": "readyCount",
+        "sourcePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"
+      },
+      {
+        "fromSymbol": "readyCount",
+        "toSymbol": "count",
+        "callExpression": "count",
+        "sourcePath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"
+      },
+      {
+        "fromSymbol": "DeployTargetsCard",
+        "toSymbol": "formatTarget",
+        "callExpression": "formatTarget",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx"
+      },
+      {
+        "fromSymbol": "formatTarget",
+        "toSymbol": "formatProviders",
+        "callExpression": "formatProviders",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployTargetsCard.tsx"
+      },
+      {
+        "fromSymbol": "useProjectDeployDashboard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "useProjectDeployDashboard",
+        "toSymbol": "useEffect",
+        "callExpression": "useEffect",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "toSymbol": "setState",
+        "callExpression": "setState",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "toSymbol": "loadDashboard",
+        "callExpression": "loadDashboard",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "useProjectDeployDashboard",
+        "toSymbol": "useCallback",
+        "callExpression": "useCallback",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts",
+        "toSymbol": "setRefreshGeneration",
+        "callExpression": "setRefreshGeneration",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "capture",
+        "callExpression": "capture",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "readProjectDeployConfig",
+        "callExpression": "readProjectDeployConfig",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "readProjectDeployListing",
+        "callExpression": "readProjectDeployListing",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "readProjectDeployMonetization",
+        "callExpression": "readProjectDeployMonetization",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "readProjectDeployRelease",
+        "callExpression": "readProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
+      },
+      {
+        "fromSymbol": "loadDashboard",
+        "toSymbol": "listProjectDeployReleaseHistory",
+        "callExpression": "listProjectDeployReleaseHistory",
+        "sourcePath": "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
       },
       {
         "fromSymbol": "src/ui/admin/pages/screens/screensAdminActions.test.ts",
