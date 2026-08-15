@@ -18,11 +18,8 @@ import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
 import type { ProjectTemplateSelection } from '../templateRegistry';
 import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
-import {
-  readProjectStudioInclusion,
-  writeProjectStudioInclusion,
-} from './projectGenerationState';
 import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
+import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
 import { createDefaultAppDeployManifest } from './projectTargets';
