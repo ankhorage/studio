@@ -18,6 +18,10 @@ import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
 import type { ProjectTemplateSelection } from '../templateRegistry';
 import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
+import {
+  readProjectStudioInclusion,
+  writeProjectStudioInclusion,
+} from './projectGenerationState';
 import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
@@ -114,6 +118,7 @@ export class ProjectManager {
       targets: deploy.targets,
       zoraExtensions,
     });
+    await writeProjectStudioInclusion(projectPath, includeStudio);
 
     const manifest = await this.scaffolder.finalizeManifest(
       projectPath,
@@ -278,8 +283,7 @@ export class ProjectManager {
   }
 
   private async shouldIncludeStudio(projectPath: string, requested?: boolean) {
-    if (requested === false) return false;
-    return requested ?? (await exists(path.join(projectPath, 'src/studio')));
+    return requested ?? (await readProjectStudioInclusion(projectPath));
   }
 
   private async syncProjectScaffold(
@@ -298,6 +302,7 @@ export class ProjectManager {
       splashScreen: manifest.splashScreen ?? null,
       targets: manifest.deploy?.targets,
     });
+    await writeProjectStudioInclusion(projectPath, includeStudio);
   }
 }
 
