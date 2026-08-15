@@ -1269,6 +1269,26 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/projectGenerationState.test.ts"
+              >
+                src/host/orchestrator/projectGenerationState.test.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/orchestrator/projectGenerationState.ts"
+              >
+                src/host/orchestrator/projectGenerationState.ts
+                <small>7 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/projectManager.ts"
               >
                 src/host/orchestrator/projectManager.ts
@@ -2757,7 +2777,7 @@
             <div class="summary">
               <div><strong>147</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>397</strong><span class="muted">modules</span></div>
+              <div><strong>399</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -4906,7 +4926,31 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/projectManager.ts src/host/generatedDatabaseRuntime.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/projectTargets.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts src/projectIdentity.ts ProjectManager"
+              data-search="src/host/orchestrator/projectGenerationState.test.ts src/host/orchestrator/projectGenerationState.ts"
+            >
+              <h3>src/host/orchestrator/projectGenerationState.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong>
+                <code>src/host/orchestrator/projectGenerationState.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/projectGenerationState.ts readProjectStudioInclusion writeProjectStudioInclusion"
+            >
+              <h3>src/host/orchestrator/projectGenerationState.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p>
+                <strong>Exports:</strong> <code>readProjectStudioInclusion</code>,
+                <code>writeProjectStudioInclusion</code>
+              </p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/projectManager.ts src/host/generatedDatabaseRuntime.ts src/host/layout/layoutGenerator.ts src/host/manifestSystem/index.ts src/host/modules/layout.ts src/host/orchestrator/generatedRouteCleanup.ts src/host/orchestrator/projectGenerationState.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/projectStore.ts src/host/orchestrator/projectTargets.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts src/host/orchestrator/workspaceRuntime.ts src/host/templateRegistry/index.ts src/host/zoraExtensions/index.ts src/projectIdentity.ts ProjectManager"
             >
               <h3>src/host/orchestrator/projectManager.ts</h3>
               <p class="muted">Referenced module</p>
@@ -4916,6 +4960,7 @@
                 <code>src/host/manifestSystem/index.ts</code>,
                 <code>src/host/modules/layout.ts</code>,
                 <code>src/host/orchestrator/generatedRouteCleanup.ts</code>,
+                <code>src/host/orchestrator/projectGenerationState.ts</code>,
                 <code>src/host/orchestrator/projectPaths.ts</code>,
                 <code>src/host/orchestrator/projectStore.ts</code>,
                 <code>src/host/orchestrator/projectTargets.ts</code>,
@@ -14982,6 +15027,14 @@
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
                 module_src_projectIdentity_ts
+                module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectGenerationState_test_ts
+                module_src_host_orchestrator_projectGenerationState_test_ts --&gt;
+                module_src_host_orchestrator_projectGenerationState_ts
+                module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_projectGenerationState_ts
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManager_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -14993,6 +15046,8 @@
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_modules_layout_ts module_src_host_orchestrator_projectManager_ts
                 --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_host_orchestrator_projectGenerationState_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -16832,6 +16887,11 @@ graph TD
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
+  module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectGenerationState_test_ts
+  module_src_host_orchestrator_projectGenerationState_test_ts --&gt; module_src_host_orchestrator_projectGenerationState_ts
+  module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_generatedDatabaseRuntime_ts
@@ -16839,6 +16899,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectTargets_ts
@@ -17879,6 +17940,8 @@ graph TD
                 module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
                 module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+                module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+                module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -18578,7 +18641,10 @@ graph TD
                 module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
                 module_src_host_orchestrator_projectCreationSafety_test_ts --&gt;
-                module_src_projectIdentity_ts module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_projectIdentity_ts
+                module_src_host_orchestrator_projectGenerationState_test_ts --&gt;
+                module_src_host_orchestrator_projectGenerationState_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_generatedDatabaseRuntime_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_layout_layoutGenerator_ts
@@ -18587,6 +18653,8 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_modules_layout_ts module_src_host_orchestrator_projectManager_ts
                 --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
+                module_src_host_orchestrator_projectManager_ts --&gt;
+                module_src_host_orchestrator_projectGenerationState_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
                 module_src_host_orchestrator_projectPaths_ts
                 module_src_host_orchestrator_projectManager_ts --&gt;
@@ -19413,6 +19481,8 @@ graph LR
   module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+  module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+  module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -19944,11 +20014,13 @@ graph LR
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --&gt; module_src_projectIdentity_ts
+  module_src_host_orchestrator_projectGenerationState_test_ts --&gt; module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_generatedDatabaseRuntime_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_layout_layoutGenerator_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_modules_layout_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_projectManager_ts --&gt; module_src_host_orchestrator_projectTargets_ts
@@ -20531,6 +20603,8 @@ graph LR
                 module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
                 module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+                module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+                module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
                 module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
                 module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
                 module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -21328,6 +21402,8 @@ graph LR
   module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
+  module_src_host_orchestrator_projectGenerationState_test_ts[&quot;src/host/orchestrator/projectGenerationState.test.ts&quot;]
+  module_src_host_orchestrator_projectGenerationState_ts[&quot;src/host/orchestrator/projectGenerationState.ts&quot;]
   module_src_host_orchestrator_projectManager_ts[&quot;src/host/orchestrator/projectManager.ts&quot;]
   module_src_host_orchestrator_projectManagerDeletion_test_ts[&quot;src/host/orchestrator/projectManagerDeletion.test.ts&quot;]
   module_src_host_orchestrator_projectPaths_ts[&quot;src/host/orchestrator/projectPaths.ts&quot;]
@@ -28014,6 +28090,92 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-orchestrator-projectgenerationstate-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/projectGenerationState.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/projectGenerationState.test.ts</h2>
+            <article
+              class="item"
+              data-search="captureError src/host/orchestrator/projectGenerationState.test.ts "
+            >
+              <h3>captureError</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/projectGenerationState.test.ts:9:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-orchestrator-projectgenerationstate-ts"
+          class="view"
+          data-view="src/host/orchestrator/projectGenerationState.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/projectGenerationState.ts</h2>
+            <article
+              class="item"
+              data-search="readProjectStudioInclusion src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>readProjectStudioInclusion</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:10:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeProjectStudioInclusion src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>writeProjectStudioInclusion</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:16:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readProjectGenerationState src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>readProjectGenerationState</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:28:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isProjectGenerationState src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>isProjectGenerationState</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:55:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isRecord src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>isRecord</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:59:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="resolveProjectFile src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>resolveProjectFile</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:63:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isMissingPathError src/host/orchestrator/projectGenerationState.ts "
+            >
+              <h3>isMissingPathError</h3>
+              <p class="muted"><code>src/host/orchestrator/projectGenerationState.ts:73:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-orchestrator-projectmanager-ts"
           class="view"
           data-view="src/host/orchestrator/projectManager.ts"
@@ -28023,7 +28185,7 @@ sequenceDiagram
             <h2>src/host/orchestrator/projectManager.ts</h2>
             <article class="item" data-search="exists src/host/orchestrator/projectManager.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:304:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:306:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28031,7 +28193,7 @@ sequenceDiagram
               data-search="resolveGeneratedAuthProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedAuthProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:313:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:315:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28039,7 +28201,7 @@ sequenceDiagram
               data-search="resolveGeneratedStorageProvider src/host/orchestrator/projectManager.ts "
             >
               <h3>resolveGeneratedStorageProvider</h3>
-              <p class="muted"><code>src/host/orchestrator/projectManager.ts:321:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/projectManager.ts:323:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
