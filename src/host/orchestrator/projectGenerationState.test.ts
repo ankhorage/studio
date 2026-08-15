@@ -14,7 +14,7 @@ test('persists explicit Studio inclusion', async () => {
   expect(await readProjectStudioInclusion(projectPath)).toBe(true);
   expect(
     JSON.parse(await readFile(path.join(projectPath, '.ankh/generation-state.json'), 'utf8')),
-  ).toEqual({ schemaVersion: 1, includeStudio: true });
+  ).toEqual({ includeStudio: true });
 });
 
 test('persists an explicit Studio-free generated project', async () => {
@@ -37,7 +37,7 @@ test('rejects invalid generation state instead of inferring Studio inclusion', a
   const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
   const statePath = path.join(projectPath, '.ankh/generation-state.json');
   await mkdir(path.dirname(statePath), { recursive: true });
-  await writeFile(statePath, JSON.stringify({ schemaVersion: 1, includeStudio: 'yes' }), 'utf8');
+  await writeFile(statePath, JSON.stringify({ includeStudio: 'yes' }), 'utf8');
 
   await expect(readProjectStudioInclusion(projectPath)).rejects.toThrow(
     'Project generation state is invalid',
