@@ -72,6 +72,23 @@ Issue #56 establishes `src/host/` as the direct owner of the local Studio applic
 
 ## Core architectural rules
 
+### No legacy, deprecation, migration, or compatibility paths before product adoption
+
+This repository is still pre-product and is not required to preserve historical local development states or APIs for external consumers. Keep one canonical implementation and change it directly.
+
+Do not add code whose purpose is to preserve or infer obsolete behavior, including:
+
+- legacy or deprecated aliases and code paths
+- compatibility shims or adapters for superseded internal APIs
+- migration readers/writers for prior local project formats
+- fallback inference from old files, dependencies, directories, or state shapes
+- dual old/new implementations kept side by side
+- versioned state solely to support earlier pre-release local states
+
+When a model, state shape, API, generated file, or architecture changes, update the canonical implementation and explicitly regenerate or update local development data/projects instead of carrying compatibility code forward. Remove obsolete paths rather than deprecating them.
+
+Only introduce compatibility or migration behavior when there is a concrete supported external consumer or released product that requires it, and the task explicitly calls for that support. In that case, document the consumer, reason, scope, and removal condition.
+
 ### Studio owns authoring/product contracts and package-neutral model helpers
 
 Studio owns reusable authoring contracts, command/event contracts, package-neutral authoring model helpers, and package-neutral manifest-state helpers.
@@ -245,7 +262,7 @@ Before coding:
 While coding:
 
 1. keep changes narrow
-2. preserve public API compatibility where possible
+2. keep one canonical public API; preserve compatibility only when a concrete supported external consumer or released product requires it
 3. avoid host/runtime/platform coupling
 4. update tests with behavior
 5. update docs/changeset for public package changes
@@ -270,6 +287,7 @@ Before final handoff:
 - Adding public exports without tests, causing Knip failures.
 - Forgetting a changeset for public package changes.
 - Treating `ankhorage4` transition host behavior as package-owned behavior.
+- Adding legacy, deprecation, migration, fallback, or compatibility code for pre-release local states instead of updating the canonical model directly.
 - Building a Studio-only auth, navigation, data, action, module, or UI path that ordinary Ankhorage apps cannot use.
 - Solving a missing shared capability locally in Studio instead of improving the owning Ankhorage package first.
 
