@@ -4,7 +4,6 @@ import path from 'path';
 const PROJECT_GENERATION_STATE_REL_PATH = '.ankh/generation-state.json';
 
 interface ProjectGenerationState {
-  readonly schemaVersion: 1;
   readonly includeStudio: boolean;
 }
 
@@ -18,7 +17,7 @@ export async function writeProjectStudioInclusion(
   projectPath: string,
   includeStudio: boolean,
 ): Promise<void> {
-  const state: ProjectGenerationState = { schemaVersion: 1, includeStudio };
+  const state: ProjectGenerationState = { includeStudio };
   const statePath = resolveProjectFile(projectPath, PROJECT_GENERATION_STATE_REL_PATH);
   await fs.mkdir(path.dirname(statePath), { recursive: true });
   const temporaryPath = `${statePath}.${process.pid}.${Date.now()}.tmp`;
@@ -54,7 +53,7 @@ async function readProjectGenerationState(statePath: string): Promise<ProjectGen
 }
 
 function isProjectGenerationState(value: unknown): value is ProjectGenerationState {
-  return isRecord(value) && value.schemaVersion === 1 && typeof value.includeStudio === 'boolean';
+  return isRecord(value) && typeof value.includeStudio === 'boolean';
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
