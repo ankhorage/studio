@@ -72,6 +72,10 @@ Issue #56 establishes `src/host/` as the direct owner of the local Studio applic
 
 ## Core architectural rules
 
+### No legacy or compatibility code
+
+Do not add or keep legacy, deprecated, compatibility, migration, fallback, alias, shim, or dual old/new code paths. Update the canonical implementation and all affected Ankhorage packages directly; remove obsolete code instead of preserving it.
+
 ### Studio owns authoring/product contracts and package-neutral model helpers
 
 Studio owns reusable authoring contracts, command/event contracts, package-neutral authoring model helpers, and package-neutral manifest-state helpers.
@@ -132,7 +136,7 @@ When adding a public helper or type:
 3. document the package boundary when the new helper changes ownership
 4. add a changeset for published API changes
 
-Prefer the root export for broad contracts and authoring helpers. Prefer `@ankhorage/studio/manifestState` for manifest-state model helpers so downstream hosts can migrate incrementally.
+Prefer the root export for broad contracts and authoring helpers. Prefer `@ankhorage/studio/manifestState` for manifest-state model helpers.
 
 Do not rely on deep imports from consumers. If consumers need it, export it intentionally.
 
@@ -245,7 +249,7 @@ Before coding:
 While coding:
 
 1. keep changes narrow
-2. preserve public API compatibility where possible
+2. keep one canonical public API and update all consumers directly
 3. avoid host/runtime/platform coupling
 4. update tests with behavior
 5. update docs/changeset for public package changes
@@ -270,6 +274,7 @@ Before final handoff:
 - Adding public exports without tests, causing Knip failures.
 - Forgetting a changeset for public package changes.
 - Treating `ankhorage4` transition host behavior as package-owned behavior.
+- Adding or keeping legacy, deprecated, compatibility, migration, fallback, alias, shim, or dual old/new code paths.
 - Building a Studio-only auth, navigation, data, action, module, or UI path that ordinary Ankhorage apps cannot use.
 - Solving a missing shared capability locally in Studio instead of improving the owning Ankhorage package first.
 

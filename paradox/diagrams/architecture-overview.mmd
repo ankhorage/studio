@@ -640,6 +640,11 @@ graph TD
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_projectCreationSafety_test_ts --> module_src_projectIdentity_ts
+  module_src_host_orchestrator_projectGenerationState_test_ts["src/host/orchestrator/projectGenerationState.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectGenerationState_test_ts
+  module_src_host_orchestrator_projectGenerationState_test_ts --> module_src_host_orchestrator_projectGenerationState_ts
+  module_src_host_orchestrator_projectGenerationState_ts["src/host/orchestrator/projectGenerationState.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts["src/host/orchestrator/projectManager.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_generatedDatabaseRuntime_ts
@@ -647,6 +652,7 @@ graph TD
   module_src_host_orchestrator_projectManager_ts --> module_src_host_manifestSystem_index_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_modules_layout_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectGenerationState_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectStore_ts
   module_src_host_orchestrator_projectManager_ts --> module_src_host_orchestrator_projectTargets_ts

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.9.1",
+      "value": "v1.10.0",
       "color": "cb3837"
     },
     {
@@ -1625,6 +1625,18 @@
       "exports": []
     },
     {
+      "path": "src/host/orchestrator/projectGenerationState.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/projectGenerationState.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/projectGenerationState.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["readProjectStudioInclusion", "writeProjectStudioInclusion"]
+    },
+    {
       "path": "src/host/orchestrator/projectManager.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1633,6 +1645,7 @@
         "src/host/manifestSystem/index.ts",
         "src/host/modules/layout.ts",
         "src/host/orchestrator/generatedRouteCleanup.ts",
+        "src/host/orchestrator/projectGenerationState.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/projectStore.ts",
         "src/host/orchestrator/projectTargets.ts",
@@ -14636,11 +14649,83 @@
       }
     },
     {
+      "name": "captureError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.test.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectStudioInclusion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeProjectStudioInclusion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProjectGenerationState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
+      "name": "isProjectGenerationState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMissingPathError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectGenerationState.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
       "name": "exists",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 304,
+        "line": 306,
         "column": 1
       }
     },
@@ -14649,7 +14734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 313,
+        "line": 315,
         "column": 1
       }
     },
@@ -14658,7 +14743,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 321,
+        "line": 323,
         "column": 1
       }
     },
@@ -24548,6 +24633,11 @@
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toPath": "src/host/orchestrator/projectGenerationState.ts",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/projectIdentity.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -24585,6 +24675,11 @@
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/generatedRouteCleanup.ts",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManager.ts",
+        "toPath": "src/host/orchestrator/projectGenerationState.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -35226,14 +35321,20 @@
       },
       {
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
         "toSymbol": "listProjects",
         "callExpression": "projectManager.listProjects",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
-        "toSymbol": "syncProject",
-        "callExpression": "moduleManager.syncProject",
+        "toSymbol": "syncProjectRuntime",
+        "callExpression": "moduleManager.syncProjectRuntime",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
@@ -35246,12 +35347,6 @@
         "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
         "toSymbol": "persistProjectManifest",
         "callExpression": "projectManager.persistProjectManifest",
-        "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/hostLifecycle.smoke.test.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
         "sourcePath": "src/host/hostLifecycle.smoke.test.ts"
       },
       {
@@ -41705,6 +41800,108 @@
         "sourcePath": "src/host/orchestrator/projectCreationSafety.test.ts"
       },
       {
+        "fromSymbol": "captureError",
+        "toSymbol": "operation",
+        "callExpression": "operation",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "writeProjectStudioInclusion",
+        "callExpression": "writeProjectStudioInclusion",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "readProjectStudioInclusion",
+        "callExpression": "readProjectStudioInclusion",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "captureError",
+        "callExpression": "captureError",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectGenerationState.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.test.ts"
+      },
+      {
+        "fromSymbol": "readProjectStudioInclusion",
+        "toSymbol": "resolveProjectFile",
+        "callExpression": "resolveProjectFile",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
+        "fromSymbol": "readProjectStudioInclusion",
+        "toSymbol": "readProjectGenerationState",
+        "callExpression": "readProjectGenerationState",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
+        "fromSymbol": "writeProjectStudioInclusion",
+        "toSymbol": "resolveProjectFile",
+        "callExpression": "resolveProjectFile",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
+        "fromSymbol": "readProjectGenerationState",
+        "toSymbol": "isMissingPathError",
+        "callExpression": "isMissingPathError",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
+        "fromSymbol": "readProjectGenerationState",
+        "toSymbol": "isProjectGenerationState",
+        "callExpression": "isProjectGenerationState",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
+        "fromSymbol": "isProjectGenerationState",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/orchestrator/projectGenerationState.ts"
+      },
+      {
         "fromSymbol": "ProjectManager",
         "toSymbol": "getAppsRoot",
         "callExpression": "getAppsRoot",
@@ -41834,6 +42031,12 @@
         "fromSymbol": "createProject",
         "toSymbol": "resolveGeneratedStorageProvider",
         "callExpression": "resolveGeneratedStorageProvider",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "createProject",
+        "toSymbol": "writeProjectStudioInclusion",
+        "callExpression": "writeProjectStudioInclusion",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -42072,8 +42275,8 @@
       },
       {
         "fromSymbol": "shouldIncludeStudio",
-        "toSymbol": "exists",
-        "callExpression": "exists",
+        "toSymbol": "readProjectStudioInclusion",
+        "callExpression": "readProjectStudioInclusion",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -42098,6 +42301,12 @@
         "fromSymbol": "syncProjectScaffold",
         "toSymbol": "resolveGeneratedStorageProvider",
         "callExpression": "resolveGeneratedStorageProvider",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "writeProjectStudioInclusion",
+        "callExpression": "writeProjectStudioInclusion",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
