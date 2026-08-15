@@ -2,12 +2,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 const PROJECT_GENERATION_STATE_REL_PATH = '.ankh/generation-state.json';
-const LEGACY_STUDIO_ROUTE_REL_PATH = 'src/app/ankh/_layout.tsx';
-const LEGACY_STUDIO_DEPENDENCIES = [
-  '@react-native-picker/picker',
-  'expo-document-picker',
-  'expo-image-picker',
-] as const;
 
 interface ProjectGenerationState {
   readonly schemaVersion: 1;
@@ -15,12 +9,9 @@ interface ProjectGenerationState {
 }
 
 export async function readProjectStudioInclusion(projectPath: string): Promise<boolean> {
-  const stored = await readProjectGenerationState(projectPath);
-  if (stored) return stored.includeStudio;
-
-  const includeStudio = await inferLegacyStudioInclusion(projectPath);
-  await writeProjectStudioInclusion(projectPath, includeStudio);
-  return includeStudio;
+  const statePath = resolveProjectFile(projectPath, PROJECT_GENERATION_STATE_REL_PATH);
+  const state = await readProjectGenerationState(statePath);
+  return state.includeStudio;
 }
 
 export async function writeProjectStudioInclusion(
@@ -35,42 +26,31 @@ export async function writeProjectStudioInclusion(
   await fs.rename(temporaryPath, statePath);
 }
 
-async function readProjectGenerationState(
-  projectPath: string,
-): Promise<ProjectGenerationState | null> {
+async function readProjectGenerationState(statePath: string): Promise<ProjectGenerationState> {
+  let source: string;
   try {
-    const statePath = resolveProjectFile(projectPath, PROJECT_GENERATION_STATE_REL_PATH);
-    const parsed = JSON.parse(await fs.readFile(statePath, 'utf8')) as unknown;
-    if (!isProjectGenerationState(parsed)) return null;
-    return parsed;
+    source = await fs.readFile(statePath, 'utf8');
   } catch (error) {
-    if (isMissingPathError(error)) return null;
+    if (isMissingPathError(error)) {
+      throw new Error(
+        `Project generation state is missing at '${statePath}'. Run an explicit project sync with includeStudio set before using implicit runtime sync.`,
+        { cause: error },
+      );
+    }
     throw error;
   }
-}
 
-async function inferLegacyStudioInclusion(projectPath: string): Promise<boolean> {
-  if (await exists(resolveProjectFile(projectPath, LEGACY_STUDIO_ROUTE_REL_PATH))) return true;
-
-  const packageJson = await readPackageJson(projectPath);
-  return LEGACY_STUDIO_DEPENDENCIES.some((dependency) =>
-    Object.prototype.hasOwnProperty.call(packageJson?.dependencies ?? {}, dependency),
-  );
-}
-
-async function readPackageJson(
-  projectPath: string,
-): Promise<{ readonly dependencies?: Readonly<Record<string, unknown>> } | null> {
+  let parsed: unknown;
   try {
-    const packagePath = resolveProjectFile(projectPath, 'package.json');
-    const parsed = JSON.parse(await fs.readFile(packagePath, 'utf8')) as unknown;
-    if (!isRecord(parsed)) return null;
-    const dependencies = isRecord(parsed.dependencies) ? parsed.dependencies : undefined;
-    return { dependencies };
+    parsed = JSON.parse(source) as unknown;
   } catch (error) {
-    if (isMissingPathError(error)) return null;
-    throw error;
+    throw new Error(`Project generation state is invalid at '${statePath}'.`, { cause: error });
   }
+
+  if (!isProjectGenerationState(parsed)) {
+    throw new Error(`Project generation state is invalid at '${statePath}'.`);
+  }
+  return parsed;
 }
 
 function isProjectGenerationState(value: unknown): value is ProjectGenerationState {
@@ -89,15 +69,6 @@ function resolveProjectFile(projectPath: string, relativePath: string): string {
     throw new Error(`Invalid project generation state path: ${relativePath}`);
   }
   return target;
-}
-
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 function isMissingPathError(error: unknown): error is NodeJS.ErrnoException {
