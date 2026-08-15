@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 1.10.1
+
+### Patch Changes
+
+- ac33da2: Preserve Studio administration routes across generated-app runtime syncs by persisting explicit
+  project generation state instead of inferring Studio inclusion from generated source structure.
+
 ## 1.10.0
 
 ### Minor Changes
