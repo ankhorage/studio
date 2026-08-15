@@ -4,10 +4,7 @@ import path from 'node:path';
 
 import { expect, test } from 'bun:test';
 
-import {
-  readProjectStudioInclusion,
-  writeProjectStudioInclusion,
-} from './projectGenerationState';
+import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 
 test('persists explicit Studio inclusion independently from legacy source directories', async () => {
   const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
