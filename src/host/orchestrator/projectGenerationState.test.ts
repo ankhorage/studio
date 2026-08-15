@@ -6,6 +6,15 @@ import { expect, test } from 'bun:test';
 
 import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 
+async function captureError(operation: () => Promise<unknown>): Promise<Error | null> {
+  try {
+    await operation();
+    return null;
+  } catch (error) {
+    return error instanceof Error ? error : new Error(String(error));
+  }
+}
+
 test('persists explicit Studio inclusion', async () => {
   const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
 
@@ -28,9 +37,10 @@ test('persists an explicit Studio-free generated project', async () => {
 test('requires explicit generation state instead of inferring Studio inclusion', async () => {
   const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
 
-  await expect(readProjectStudioInclusion(projectPath)).rejects.toThrow(
-    'Project generation state is missing',
-  );
+  const error = await captureError(() => readProjectStudioInclusion(projectPath));
+
+  expect(error).not.toBeNull();
+  expect(error?.message).toContain('Project generation state is missing');
 });
 
 test('rejects invalid generation state instead of inferring Studio inclusion', async () => {
@@ -39,7 +49,8 @@ test('rejects invalid generation state instead of inferring Studio inclusion', a
   await mkdir(path.dirname(statePath), { recursive: true });
   await writeFile(statePath, JSON.stringify({ includeStudio: 'yes' }), 'utf8');
 
-  await expect(readProjectStudioInclusion(projectPath)).rejects.toThrow(
-    'Project generation state is invalid',
-  );
+  const error = await captureError(() => readProjectStudioInclusion(projectPath));
+
+  expect(error).not.toBeNull();
+  expect(error?.message).toContain('Project generation state is invalid');
 });
