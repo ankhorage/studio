@@ -40,6 +40,7 @@ describe('studioAdminRouteModel', () => {
       'auth-routes',
       'auth-profile',
       'secrets',
+      'deploy',
       'theme',
       'theme-colors',
       'theme-typography',
@@ -71,6 +72,9 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/auth/routes')).toBe('auth-routes');
     expect(resolveStudioAdminRouteId('/ankh/auth/profile')).toBe('auth-profile');
     expect(resolveStudioAdminRouteId('/ankh/secrets')).toBe('secrets');
+    expect(resolveStudioAdminRouteId('/ankh/deploy')).toBe('deploy');
+    expect(resolveStudioAdminRoutePath('/ankh/deploy')).toBe('/ankh/deploy');
+    expect(createStudioAdminRoutePath({ routeId: 'deploy' })).toBe('/ankh/deploy');
     expect(resolveStudioAdminRouteId('/ankh/theme')).toBe('theme');
     expect(resolveStudioAdminRouteId('/ankh/theme/colors')).toBe('theme-colors');
     expect(resolveStudioAdminRouteId('/ankh/theme/typography')).toBe('theme-typography');

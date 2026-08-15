@@ -131,6 +131,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/ankh/auth/routes.tsx');
     expect(paths).toContain('src/app/ankh/auth/profile.tsx');
     expect(paths).toContain('src/app/ankh/secrets.tsx');
+    expect(paths).toContain('src/app/ankh/deploy.tsx');
     expect(paths).toContain('src/app/ankh/bindings/[nodeId].tsx');
     expect(paths).toContain('src/app/ankh/properties/[nodeId].tsx');
     expect(paths).toContain('src/app/ankh/theme/index.tsx');
@@ -155,6 +156,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).toContain('routeId="modules"');
     expect(adminSources).toContain('routeId="module-detail"');
     expect(adminSources).toContain('routeId="api-data-sources"');
+    expect(adminSources).toContain('routeId="deploy"');
     expect(adminSources).not.toContain('return null;');
   });
 

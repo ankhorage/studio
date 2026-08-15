@@ -165,6 +165,14 @@ export const STUDIO_ADMIN_ROUTE_REGISTRY: readonly StudioAdminRouteDefinition[] 
     description: 'Server-side project secret administration.',
   },
   {
+    id: 'deploy',
+    path: '/ankh/deploy',
+    label: 'Deploy',
+    icon: 'rocket-outline',
+    order: 35,
+    description: 'Deployment targets, authored release state, and provider readiness.',
+  },
+  {
     id: 'theme',
     path: '/ankh/theme',
     label: 'Theme',

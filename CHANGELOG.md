@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.10.0
+
+### Minor Changes
+
+- 9097d8c: Add the canonical `/ankh/deploy` administration route with a read-only Deploy-owned target, authored-state, history, and provider-readiness dashboard. Provider readiness uses the trusted Studio Deploy host and never exposes raw credential material or executes deployment mutations.
+
 ## 1.9.1
 
 ### Patch Changes

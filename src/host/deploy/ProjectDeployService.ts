@@ -1,5 +1,5 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { DeploymentFailure, MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
+import type { MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
 import type {
   ProjectReleaseExecutionResult,
   ProjectReleaseInput,
@@ -25,6 +25,7 @@ import {
   writeProjectStoreListingLocale,
 } from '@ankhorage/deploy/project';
 
+import type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { ProjectSecretService } from '../secrets/projectSecretService';
@@ -38,16 +39,7 @@ export interface ProjectDeployServiceOptions {
   readonly secretStore?: ProjectDeploySecretStore;
 }
 
-export type ProjectDeployReleaseInspectionResult =
-  | {
-      readonly ok: true;
-      readonly inspection: ProjectReleaseInspection;
-      readonly plan: ReleasePlan;
-    }
-  | {
-      readonly ok: false;
-      readonly failure: DeploymentFailure;
-    };
+export type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
 
 export class ProjectDeployService {
   private readonly workspaceRoot: string;
