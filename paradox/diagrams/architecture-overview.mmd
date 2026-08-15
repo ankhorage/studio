@@ -871,22 +871,24 @@ graph TD
   module_src_projectDeployApi_ts["src/projectDeployApi.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployApi_ts
   module_src_projectDeployApi_ts --> module_src_createProjectDeployRequest_ts
-  module_src_projectDeployApi_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts["src/projectDeployClient.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployClient_ts
-  module_src_projectDeployClient_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
   module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployRequest_ts["src/projectDeployRequest.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployRequest_ts
+  module_src_projectDeployRuntimeInput_ts["src/projectDeployRuntimeInput.ts"]
+  package__ankhorage_studio -.-> module_src_projectDeployRuntimeInput_ts
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   package__ankhorage_studio -.-> module_src_projectIdentity_test_ts
   module_src_projectIdentity_test_ts --> module_src_projectIdentity_ts
@@ -1207,9 +1209,9 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx["src/ui/admin/pages/deploy/DeployReadinessCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployService_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployRuntimeInput_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx["src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"]

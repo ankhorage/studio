@@ -2383,9 +2383,9 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/createProjectDeployRequest.ts",
-        "src/host/deploy/ProjectDeployRuntimeInput.ts",
         "src/projectDeployClient.ts",
-        "src/projectDeployReleaseInspectionResult.ts"
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/projectDeployRuntimeInput.ts"
       ],
       "exports": [
         "inspectProjectDeployRelease",
@@ -2406,10 +2406,10 @@
       "path": "src/projectDeployClient.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/deploy/ProjectDeployRuntimeInput.ts",
         "src/projectDeployApiError.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRequest.ts",
+        "src/projectDeployRuntimeInput.ts",
         "src/secretResponseGuard.ts"
       ],
       "exports": ["ProjectDeployClient"]
@@ -2425,6 +2425,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["ProjectDeployRequest"]
+    },
+    {
+      "path": "src/projectDeployRuntimeInput.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployRuntimeInput"]
     },
     {
       "path": "src/projectIdentity.test.ts",
@@ -3499,9 +3505,9 @@
       "path": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
       "isEntrypoint": false,
       "dependencies": [
-        "src/host/deploy/ProjectDeployRuntimeInput.ts",
-        "src/host/deploy/ProjectDeployService.ts",
         "src/projectDeployApi.ts",
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/projectDeployRuntimeInput.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       ],
@@ -22733,11 +22739,6 @@
       },
       {
         "fromPath": "src/projectDeployApi.ts",
-        "toPath": "src/host/deploy/ProjectDeployRuntimeInput.ts",
-        "sourcePath": "src/projectDeployApi.ts"
-      },
-      {
-        "fromPath": "src/projectDeployApi.ts",
         "toPath": "src/projectDeployClient.ts",
         "sourcePath": "src/projectDeployApi.ts"
       },
@@ -22747,9 +22748,9 @@
         "sourcePath": "src/projectDeployApi.ts"
       },
       {
-        "fromPath": "src/projectDeployClient.ts",
-        "toPath": "src/host/deploy/ProjectDeployRuntimeInput.ts",
-        "sourcePath": "src/projectDeployClient.ts"
+        "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/projectDeployApi.ts"
       },
       {
         "fromPath": "src/projectDeployClient.ts",
@@ -22764,6 +22765,11 @@
       {
         "fromPath": "src/projectDeployClient.ts",
         "toPath": "src/projectDeployRequest.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -23995,6 +24001,11 @@
         "fromPath": "src/host/deploy/projectDeployExports.test.ts",
         "toPath": "src/host/index.ts",
         "sourcePath": "src/host/deploy/projectDeployExports.test.ts"
+      },
+      {
+        "fromPath": "src/host/deploy/ProjectDeployRuntimeInput.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/host/deploy/ProjectDeployRuntimeInput.ts"
       },
       {
         "fromPath": "src/host/deploy/ProjectDeployService.test.ts",
@@ -26208,12 +26219,12 @@
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "toPath": "src/host/deploy/ProjectDeployService.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "toPath": "src/host/deploy/ProjectDeployRuntimeInput.ts",
+        "toPath": "src/projectDeployRuntimeInput.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
       },
       {

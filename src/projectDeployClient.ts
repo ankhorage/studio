@@ -2,10 +2,10 @@ import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/deploy';
 import type { ProjectReleaseHistoryRecord, ProjectStoreListing } from '@ankhorage/deploy/project';
 
-import type { ProjectDeployRuntimeInput } from './host/deploy/ProjectDeployRuntimeInput';
 import { ProjectDeployApiError } from './projectDeployApiError';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRequest } from './projectDeployRequest';
+import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 import { findRawSecretResponseKey } from './secretResponseGuard';
 
 export class ProjectDeployClient {

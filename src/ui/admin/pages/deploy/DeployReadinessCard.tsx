@@ -7,8 +7,8 @@ import { Button, Card, Select, Text } from '@ankhorage/zora';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import type { ProjectDeployReleaseInspectionResult } from '../../../../host/deploy/ProjectDeployService';
-import type { ProjectDeployRuntimeInput } from '../../../../host/deploy/ProjectDeployRuntimeInput';
+import type { ProjectDeployReleaseInspectionResult } from '../../../../projectDeployReleaseInspectionResult';
+import type { ProjectDeployRuntimeInput } from '../../../../projectDeployRuntimeInput';
 import { inspectProjectDeployRelease } from '../../../../projectDeployApi';
 import { Field, KeyValue } from '../../adminPagePrimitives';
 import type { ProjectDeployDashboardState } from './deployDashboardTypes';

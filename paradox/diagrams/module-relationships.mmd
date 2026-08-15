@@ -235,6 +235,7 @@ graph LR
   module_src_projectDeployClient_ts["src/projectDeployClient.ts"]
   module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
   module_src_projectDeployRequest_ts["src/projectDeployRequest.ts"]
+  module_src_projectDeployRuntimeInput_ts["src/projectDeployRuntimeInput.ts"]
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   module_src_projectIdentity_ts["src/projectIdentity.ts"]
   module_src_projectOAuthSetup_test_ts["src/projectOAuthSetup.test.ts"]
@@ -801,13 +802,13 @@ graph LR
   module_src_projectDeployApi_test_ts --> module_src_projectDeployClient_ts
   module_src_projectDeployApi_test_ts --> module_src_projectDeployRequest_ts
   module_src_projectDeployApi_ts --> module_src_createProjectDeployRequest_ts
-  module_src_projectDeployApi_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
-  module_src_projectDeployClient_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
   module_src_projectIdentity_test_ts --> module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --> module_src_projectWorkspaceContracts_ts
@@ -945,9 +946,9 @@ graph LR
   module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployService_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployRuntimeInput_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --> module_src_ui_admin_adminPagePrimitives_tsx

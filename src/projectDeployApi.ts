@@ -3,9 +3,9 @@ import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/d
 import type { ProjectReleaseHistoryRecord, ProjectStoreListing } from '@ankhorage/deploy/project';
 
 import { createProjectDeployRequest } from './createProjectDeployRequest';
-import type { ProjectDeployRuntimeInput } from './host/deploy/ProjectDeployRuntimeInput';
 import { ProjectDeployClient } from './projectDeployClient';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
+import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 
 const client = new ProjectDeployClient(createProjectDeployRequest());
 

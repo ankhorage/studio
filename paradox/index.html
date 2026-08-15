@@ -2757,7 +2757,7 @@
             <div class="summary">
               <div><strong>147</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>396</strong><span class="muted">modules</span></div>
+              <div><strong>397</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -5809,15 +5809,15 @@
             </article>
             <article
               class="item"
-              data-search="src/projectDeployApi.ts src/createProjectDeployRequest.ts src/host/deploy/ProjectDeployRuntimeInput.ts src/projectDeployClient.ts src/projectDeployReleaseInspectionResult.ts inspectProjectDeployRelease listProjectDeployReleaseHistory readProjectDeployConfig readProjectDeployListing readProjectDeployMonetization readProjectDeployRelease"
+              data-search="src/projectDeployApi.ts src/createProjectDeployRequest.ts src/projectDeployClient.ts src/projectDeployReleaseInspectionResult.ts src/projectDeployRuntimeInput.ts inspectProjectDeployRelease listProjectDeployReleaseHistory readProjectDeployConfig readProjectDeployListing readProjectDeployMonetization readProjectDeployRelease"
             >
               <h3>src/projectDeployApi.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/createProjectDeployRequest.ts</code>,
-                <code>src/host/deploy/ProjectDeployRuntimeInput.ts</code>,
                 <code>src/projectDeployClient.ts</code>,
-                <code>src/projectDeployReleaseInspectionResult.ts</code>
+                <code>src/projectDeployReleaseInspectionResult.ts</code>,
+                <code>src/projectDeployRuntimeInput.ts</code>
               </p>
               <p>
                 <strong>Exports:</strong> <code>inspectProjectDeployRelease</code>,
@@ -5834,16 +5834,16 @@
             </article>
             <article
               class="item"
-              data-search="src/projectDeployClient.ts src/host/deploy/ProjectDeployRuntimeInput.ts src/projectDeployApiError.ts src/projectDeployReleaseInspectionResult.ts src/projectDeployRequest.ts src/secretResponseGuard.ts ProjectDeployClient"
+              data-search="src/projectDeployClient.ts src/projectDeployApiError.ts src/projectDeployReleaseInspectionResult.ts src/projectDeployRequest.ts src/projectDeployRuntimeInput.ts src/secretResponseGuard.ts ProjectDeployClient"
             >
               <h3>src/projectDeployClient.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong>
-                <code>src/host/deploy/ProjectDeployRuntimeInput.ts</code>,
-                <code>src/projectDeployApiError.ts</code>,
+                <strong>Dependencies:</strong> <code>src/projectDeployApiError.ts</code>,
                 <code>src/projectDeployReleaseInspectionResult.ts</code>,
-                <code>src/projectDeployRequest.ts</code>, <code>src/secretResponseGuard.ts</code>
+                <code>src/projectDeployRequest.ts</code>,
+                <code>src/projectDeployRuntimeInput.ts</code>,
+                <code>src/secretResponseGuard.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>ProjectDeployClient</code></p>
             </article>
@@ -5861,6 +5861,15 @@
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>ProjectDeployRequest</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/projectDeployRuntimeInput.ts ProjectDeployRuntimeInput"
+            >
+              <h3>src/projectDeployRuntimeInput.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>ProjectDeployRuntimeInput</code></p>
             </article>
             <article
               class="item"
@@ -7112,15 +7121,14 @@
             </article>
             <article
               class="item"
-              data-search="src/ui/admin/pages/deploy/DeployReadinessCard.tsx src/host/deploy/ProjectDeployRuntimeInput.ts src/host/deploy/ProjectDeployService.ts src/projectDeployApi.ts src/ui/admin/adminPagePrimitives.tsx src/ui/admin/pages/deploy/deployDashboardTypes.ts DeployReadinessCard"
+              data-search="src/ui/admin/pages/deploy/DeployReadinessCard.tsx src/projectDeployApi.ts src/projectDeployReleaseInspectionResult.ts src/projectDeployRuntimeInput.ts src/ui/admin/adminPagePrimitives.tsx src/ui/admin/pages/deploy/deployDashboardTypes.ts DeployReadinessCard"
             >
               <h3>src/ui/admin/pages/deploy/DeployReadinessCard.tsx</h3>
               <p class="muted">Referenced module</p>
               <p>
-                <strong>Dependencies:</strong>
-                <code>src/host/deploy/ProjectDeployRuntimeInput.ts</code>,
-                <code>src/host/deploy/ProjectDeployService.ts</code>,
-                <code>src/projectDeployApi.ts</code>,
+                <strong>Dependencies:</strong> <code>src/projectDeployApi.ts</code>,
+                <code>src/projectDeployReleaseInspectionResult.ts</code>,
+                <code>src/projectDeployRuntimeInput.ts</code>,
                 <code>src/ui/admin/adminPagePrimitives.tsx</code>,
                 <code>src/ui/admin/pages/deploy/deployDashboardTypes.ts</code>
               </p>
@@ -15274,25 +15282,26 @@
                 module_src_projectDeployApi_ts[&quot;src/projectDeployApi.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectDeployApi_ts
                 module_src_projectDeployApi_ts --&gt; module_src_createProjectDeployRequest_ts
+                module_src_projectDeployApi_ts --&gt; module_src_projectDeployClient_ts
                 module_src_projectDeployApi_ts --&gt;
-                module_src_host_deploy_ProjectDeployRuntimeInput_ts module_src_projectDeployApi_ts
-                --&gt; module_src_projectDeployClient_ts module_src_projectDeployApi_ts --&gt;
-                module_src_projectDeployReleaseInspectionResult_ts
+                module_src_projectDeployReleaseInspectionResult_ts module_src_projectDeployApi_ts
+                --&gt; module_src_projectDeployRuntimeInput_ts
                 module_src_projectDeployApiError_ts[&quot;src/projectDeployApiError.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectDeployApiError_ts
                 module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectDeployClient_ts
-                module_src_projectDeployClient_ts --&gt;
-                module_src_host_deploy_ProjectDeployRuntimeInput_ts
                 module_src_projectDeployClient_ts --&gt; module_src_projectDeployApiError_ts
                 module_src_projectDeployClient_ts --&gt;
                 module_src_projectDeployReleaseInspectionResult_ts module_src_projectDeployClient_ts
                 --&gt; module_src_projectDeployRequest_ts module_src_projectDeployClient_ts --&gt;
+                module_src_projectDeployRuntimeInput_ts module_src_projectDeployClient_ts --&gt;
                 module_src_secretResponseGuard_ts
                 module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectDeployReleaseInspectionResult_ts
                 module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectDeployRequest_ts
+                module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_projectDeployRuntimeInput_ts
                 module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_projectIdentity_test_ts
                 module_src_projectIdentity_test_ts --&gt; module_src_projectIdentity_ts
@@ -15724,11 +15733,11 @@
                 package__ankhorage_studio -.-&gt;
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
-                module_src_host_deploy_ProjectDeployRuntimeInput_ts
-                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
-                module_src_host_deploy_ProjectDeployService_ts
-                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
                 module_src_projectDeployApi_ts
+                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
+                module_src_projectDeployReleaseInspectionResult_ts
+                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
+                module_src_projectDeployRuntimeInput_ts
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
                 module_src_ui_admin_adminPagePrimitives_tsx
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
@@ -17054,22 +17063,24 @@ graph TD
   module_src_projectDeployApi_ts[&quot;src/projectDeployApi.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectDeployApi_ts
   module_src_projectDeployApi_ts --&gt; module_src_createProjectDeployRequest_ts
-  module_src_projectDeployApi_ts --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployApi_ts --&gt; module_src_projectDeployClient_ts
   module_src_projectDeployApi_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
+  module_src_projectDeployApi_ts --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployApiError_ts[&quot;src/projectDeployApiError.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectDeployClient_ts
-  module_src_projectDeployClient_ts --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployRequest_ts
+  module_src_projectDeployClient_ts --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --&gt; module_src_secretResponseGuard_ts
   module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectDeployRequest_ts
+  module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_projectDeployRuntimeInput_ts
   module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_projectIdentity_test_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectIdentity_ts
@@ -17390,9 +17401,9 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --&gt; module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx[&quot;src/ui/admin/pages/deploy/DeployReadinessCard.tsx&quot;]
   package__ankhorage_studio -.-&gt; module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_host_deploy_ProjectDeployService_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx[&quot;src/ui/admin/pages/deploy/DeploySummaryGrid.tsx&quot;]
@@ -17936,6 +17947,7 @@ graph TD
                 module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
                 module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
                 module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
+                module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
                 module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
                 module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
                 module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
@@ -18722,15 +18734,14 @@ graph TD
                 module_src_projectDeployApi_test_ts --&gt; module_src_projectDeployClient_ts
                 module_src_projectDeployApi_test_ts --&gt; module_src_projectDeployRequest_ts
                 module_src_projectDeployApi_ts --&gt; module_src_createProjectDeployRequest_ts
+                module_src_projectDeployApi_ts --&gt; module_src_projectDeployClient_ts
                 module_src_projectDeployApi_ts --&gt;
-                module_src_host_deploy_ProjectDeployRuntimeInput_ts module_src_projectDeployApi_ts
-                --&gt; module_src_projectDeployClient_ts module_src_projectDeployApi_ts --&gt;
-                module_src_projectDeployReleaseInspectionResult_ts module_src_projectDeployClient_ts
-                --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
-                module_src_projectDeployClient_ts --&gt; module_src_projectDeployApiError_ts
-                module_src_projectDeployClient_ts --&gt;
+                module_src_projectDeployReleaseInspectionResult_ts module_src_projectDeployApi_ts
+                --&gt; module_src_projectDeployRuntimeInput_ts module_src_projectDeployClient_ts
+                --&gt; module_src_projectDeployApiError_ts module_src_projectDeployClient_ts --&gt;
                 module_src_projectDeployReleaseInspectionResult_ts module_src_projectDeployClient_ts
                 --&gt; module_src_projectDeployRequest_ts module_src_projectDeployClient_ts --&gt;
+                module_src_projectDeployRuntimeInput_ts module_src_projectDeployClient_ts --&gt;
                 module_src_secretResponseGuard_ts module_src_projectIdentity_test_ts --&gt;
                 module_src_projectIdentity_ts module_src_projectIdentity_test_ts --&gt;
                 module_src_projectWorkspaceContracts_ts module_src_projectIdentity_ts --&gt;
@@ -18947,11 +18958,11 @@ graph TD
                 module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --&gt;
                 module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
-                module_src_host_deploy_ProjectDeployRuntimeInput_ts
-                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
-                module_src_host_deploy_ProjectDeployService_ts
-                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
                 module_src_projectDeployApi_ts
+                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
+                module_src_projectDeployReleaseInspectionResult_ts
+                module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
+                module_src_projectDeployRuntimeInput_ts
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
                 module_src_ui_admin_adminPagePrimitives_tsx
                 module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt;
@@ -19470,6 +19481,7 @@ graph LR
   module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
   module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
   module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
+  module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
   module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
   module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
   module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
@@ -20036,13 +20048,13 @@ graph LR
   module_src_projectDeployApi_test_ts --&gt; module_src_projectDeployClient_ts
   module_src_projectDeployApi_test_ts --&gt; module_src_projectDeployRequest_ts
   module_src_projectDeployApi_ts --&gt; module_src_createProjectDeployRequest_ts
-  module_src_projectDeployApi_ts --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
   module_src_projectDeployApi_ts --&gt; module_src_projectDeployClient_ts
   module_src_projectDeployApi_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
-  module_src_projectDeployClient_ts --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
+  module_src_projectDeployApi_ts --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployApiError_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --&gt; module_src_projectDeployRequest_ts
+  module_src_projectDeployClient_ts --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --&gt; module_src_secretResponseGuard_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --&gt; module_src_projectWorkspaceContracts_ts
@@ -20180,9 +20192,9 @@ graph LR
   module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --&gt; module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --&gt; module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_host_deploy_ProjectDeployRuntimeInput_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_host_deploy_ProjectDeployService_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_projectDeployRuntimeInput_ts
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --&gt; module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --&gt; module_src_ui_admin_adminPagePrimitives_tsx
@@ -20587,6 +20599,7 @@ graph LR
                 module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
                 module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
                 module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
+                module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
                 module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
                 module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
                 module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
@@ -21383,6 +21396,7 @@ graph LR
   module_src_projectDeployClient_ts[&quot;src/projectDeployClient.ts&quot;]
   module_src_projectDeployReleaseInspectionResult_ts[&quot;src/projectDeployReleaseInspectionResult.ts&quot;]
   module_src_projectDeployRequest_ts[&quot;src/projectDeployRequest.ts&quot;]
+  module_src_projectDeployRuntimeInput_ts[&quot;src/projectDeployRuntimeInput.ts&quot;]
   module_src_projectIdentity_test_ts[&quot;src/projectIdentity.test.ts&quot;]
   module_src_projectIdentity_ts[&quot;src/projectIdentity.ts&quot;]
   module_src_projectOAuthSetup_test_ts[&quot;src/projectOAuthSetup.test.ts&quot;]
