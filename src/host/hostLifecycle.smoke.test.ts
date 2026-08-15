@@ -43,7 +43,7 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   expect(created.success).toBe(true);
   expect(
     JSON.parse(await readFile(path.join(created.path, '.ankh/generation-state.json'), 'utf8')),
-  ).toEqual({ schemaVersion: 1, includeStudio: true });
+  ).toEqual({ includeStudio: true });
 
   const projects = await projectManager.listProjects();
   expect(projects.some((project) => project.id === created.id && project.isAnkhApp)).toBe(true);
