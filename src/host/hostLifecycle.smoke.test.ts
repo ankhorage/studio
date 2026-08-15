@@ -52,6 +52,9 @@ test('creates, synchronizes, edits and deletes a real generated app without ankh
   expect(await readFile(path.join(created.path, 'src/app/ankh/_layout.tsx'), 'utf8')).toContain(
     'AnkhAdminShell',
   );
+  expect(await readFile(path.join(created.path, 'src/app/ankh/deploy.tsx'), 'utf8')).toContain(
+    'routeId="deploy"',
+  );
 
   const manifest = await projectManager.getProjectManifest(created.id);
   await projectManager.persistProjectManifest({
