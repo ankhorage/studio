@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -36,6 +36,7 @@ test('requires explicit generation state instead of inferring Studio inclusion',
 test('rejects invalid generation state instead of inferring Studio inclusion', async () => {
   const projectPath = await mkdtemp(path.join(tmpdir(), 'ankhorage-studio-generation-state-'));
   const statePath = path.join(projectPath, '.ankh/generation-state.json');
+  await mkdir(path.dirname(statePath), { recursive: true });
   await writeFile(statePath, JSON.stringify({ schemaVersion: 1, includeStudio: 'yes' }), 'utf8');
 
   await expect(readProjectStudioInclusion(projectPath)).rejects.toThrow(
