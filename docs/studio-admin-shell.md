@@ -18,6 +18,7 @@ Canonical routes:
 - `/ankh/auth/routes`
 - `/ankh/auth/profile`
 - `/ankh/secrets`
+- `/ankh/deploy`
 - `/ankh/theme`
 - `/ankh/properties/<node-id>`
 
@@ -58,6 +59,13 @@ through `StudioProvider` as the single canonical manifest writer, while OAuth cr
 remain server-owned in the project secret store. The pages keep provider health, trusted OAuth
 credential linking, project-secret inventory, rotation, usage detection, guarded removal, and
 browser-safe secret responses.
+
+Deploy administration at `/ankh/deploy` is a read-only projection over `@ankhorage/deploy` owner
+APIs. It shows canonical target configuration, store-listing and monetization revisions, prepared
+release state, release history, and provider readiness. Readiness uses Deploy's own release
+inspection and plan objects with an explicitly selected secret environment; raw credential material
+remains server-only. This dashboard does not execute deployment mutations or define parallel Studio
+listing, product, release, plan, or history schemas.
 
 Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
 the existing manifest theme state for the currently active rendered theme mode. It does not

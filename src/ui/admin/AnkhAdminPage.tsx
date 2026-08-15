@@ -13,6 +13,7 @@ import {
 import { ApisAdminPage, type ApisAdminRouteId } from './pages/ApisAdminPage';
 import { AuthAdminPage, type AuthAdminPageProps } from './pages/AuthAdminPage';
 import { BindingsAdminPage } from './pages/BindingsAdminPage';
+import { DeployAdminPage } from './pages/DeployAdminPage';
 import { MediaAdminPage } from './pages/MediaAdminPage';
 import { ModuleDetailAdminPage } from './pages/ModuleDetailAdminPage';
 import { ModulesAdminPage } from './pages/ModulesAdminPage';
@@ -83,6 +84,7 @@ const ADMIN_PAGE_RENDERERS = {
     />
   ),
   secrets: ({ studio }) => <SecretsAdminPage projectId={studio.projectId} />,
+  deploy: ({ studio }) => <DeployAdminPage projectId={studio.projectId} />,
   theme: () => <ThemeAdminPage />,
   'theme-colors': () => <ThemeColorsAdminPage />,
   'theme-typography': () => <ThemeTypographyAdminPage />,

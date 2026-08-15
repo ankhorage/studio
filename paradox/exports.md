@@ -4,13 +4,13 @@
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:429:14`
+Source: `src/index.ts:431:14`
 
 ## ActionDefinition
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:338:1`
+Source: `src/index.ts:340:1`
 
 ### Members
 
@@ -54,7 +54,7 @@ Source: `src/bindingSchemaModel.ts:43:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1371:1`
+Source: `src/index.ts:1373:1`
 
 ### Signatures
 
@@ -66,7 +66,7 @@ Source: `src/index.ts:1371:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:747:1`
+Source: `src/index.ts:749:1`
 
 ### Signatures
 
@@ -78,7 +78,7 @@ Source: `src/index.ts:747:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:576:14`
+Source: `src/index.ts:578:14`
 
 ### Signatures
 
@@ -129,7 +129,7 @@ Source: `src/bindingSchemaModel.ts:33:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1290:1`
+Source: `src/index.ts:1292:1`
 
 ### Signatures
 
@@ -230,7 +230,7 @@ Source: `src/bindingDiagnosticsModel.ts:20:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:593:14`
+Source: `src/index.ts:595:14`
 
 ### Signatures
 
@@ -256,7 +256,7 @@ Source: `src/bindingOperationModel.ts:24:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:569:14`
+Source: `src/index.ts:571:14`
 
 ### Signatures
 
@@ -268,7 +268,7 @@ Source: `src/index.ts:569:14`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1216:1`
+Source: `src/index.ts:1218:1`
 
 ### Signatures
 
@@ -280,7 +280,7 @@ Source: `src/index.ts:1216:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:316:1`
+Source: `src/index.ts:318:1`
 
 ### Members
 
@@ -301,7 +301,7 @@ Source: `src/index.ts:316:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:298:1`
+Source: `src/index.ts:300:1`
 
 ### Members
 
@@ -315,19 +315,19 @@ Source: `src/index.ts:298:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:275:1`
+Source: `src/index.ts:277:1`
 
 ## InsertCatalogEntry
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:326:1`
+Source: `src/index.ts:328:1`
 
 ## InsertCatalogEntryBase
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:304:1`
+Source: `src/index.ts:306:1`
 
 ### Members
 
@@ -347,19 +347,19 @@ Source: `src/index.ts:304:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:272:1`
+Source: `src/index.ts:274:1`
 
 ## InsertCatalogEntryStatus
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:273:1`
+Source: `src/index.ts:275:1`
 
 ## InsertCatalogRecipeEntry
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:321:1`
+Source: `src/index.ts:323:1`
 
 ### Members
 
@@ -380,7 +380,7 @@ Source: `src/index.ts:321:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1009:1`
+Source: `src/index.ts:1011:1`
 
 ### Signatures
 
@@ -392,7 +392,7 @@ Source: `src/index.ts:1009:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:952:1`
+Source: `src/index.ts:954:1`
 
 ### Members
 
@@ -407,7 +407,7 @@ Source: `src/index.ts:952:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:959:1`
+Source: `src/index.ts:961:1`
 
 ### Members
 
@@ -420,7 +420,7 @@ Source: `src/index.ts:959:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:283:1`
+Source: `src/index.ts:285:1`
 
 ### Members
 
@@ -436,7 +436,7 @@ Source: `src/index.ts:283:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:291:1`
+Source: `src/index.ts:293:1`
 
 ### Members
 
@@ -451,7 +451,7 @@ Source: `src/index.ts:291:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:278:1`
+Source: `src/index.ts:280:1`
 
 ### Members
 
@@ -477,7 +477,7 @@ Source: `src/mediaAuthoringModel.ts:48:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1145:1`
+Source: `src/index.ts:1147:1`
 
 ### Signatures
 
@@ -489,7 +489,7 @@ Source: `src/index.ts:1145:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1036:1`
+Source: `src/index.ts:1038:1`
 
 ### Members
 
@@ -504,7 +504,7 @@ Source: `src/index.ts:1036:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:1043:1`
+Source: `src/index.ts:1045:1`
 
 ### Members
 
@@ -517,7 +517,7 @@ Source: `src/index.ts:1043:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:233:1`
+Source: `src/index.ts:235:1`
 
 ### Members
 
@@ -532,13 +532,13 @@ Source: `src/index.ts:233:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:240:1`
+Source: `src/index.ts:242:1`
 
 ## PlacementFailureReason
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:253:1`
+Source: `src/index.ts:255:1`
 
 ### Members
 
@@ -551,19 +551,19 @@ Source: `src/index.ts:253:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:231:1`
+Source: `src/index.ts:233:1`
 
 ## PlacementResolutionResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:265:1`
+Source: `src/index.ts:267:1`
 
 ## PlacementValidationResult
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:258:1`
+Source: `src/index.ts:260:1`
 
 ## ProjectAuthDiagnostic
 
@@ -724,7 +724,7 @@ Source: `src/mediaAuthoringModel.ts:63:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:633:14`
+Source: `src/index.ts:635:14`
 
 ### Signatures
 
@@ -779,7 +779,7 @@ Source: `src/bindingMutationModel.ts:22:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:907:1`
+Source: `src/index.ts:909:1`
 
 ### Signatures
 
@@ -791,7 +791,7 @@ Source: `src/index.ts:907:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1413:1`
+Source: `src/index.ts:1415:1`
 
 ### Signatures
 
@@ -803,7 +803,7 @@ Source: `src/index.ts:1413:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:846:1`
+Source: `src/index.ts:848:1`
 
 ### Signatures
 
@@ -815,7 +815,7 @@ Source: `src/index.ts:846:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1077:1`
+Source: `src/index.ts:1079:1`
 
 ### Signatures
 
@@ -893,7 +893,7 @@ Source: `src/bindingSchemaModel.ts:14:1`
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:1183:14`
+Source: `src/index.ts:1185:14`
 
 | id             | label          | description                              | category |
 | -------------- | -------------- | ---------------------------------------- | -------- |
@@ -923,7 +923,7 @@ Source: `src/index.ts:109:14`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:330:1`
+Source: `src/index.ts:332:1`
 
 ### Members
 
@@ -937,13 +937,13 @@ Source: `src/index.ts:330:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:328:1`
+Source: `src/index.ts:330:1`
 
 ## StudioActionPayloadSchema
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:336:1`
+Source: `src/index.ts:338:1`
 
 ## StudioAdminRouteId
 
@@ -955,13 +955,13 @@ Source: `src/index.ts:153:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:197:1`
+Source: `src/index.ts:199:1`
 
 ## StudioAdminStaticRoutePath
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:178:1`
+Source: `src/index.ts:179:1`
 
 ## StudioAuthoringComponentMeta
 
@@ -1098,13 +1098,13 @@ Source: `src/bindingAuthoringContracts.ts:29:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:362:1`
+Source: `src/index.ts:364:1`
 
 ## StudioComponentBlueprint
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:346:1`
+Source: `src/index.ts:348:1`
 
 ### Members
 
@@ -1117,7 +1117,7 @@ Source: `src/index.ts:346:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:351:1`
+Source: `src/index.ts:353:1`
 
 ### Members
 
@@ -1132,13 +1132,13 @@ Source: `src/index.ts:351:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:358:1`
+Source: `src/index.ts:360:1`
 
 ## StudioContextValue
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:377:1`
+Source: `src/index.ts:379:1`
 
 ### Members
 
@@ -1200,13 +1200,13 @@ Source: `src/index.ts:377:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:370:1`
+Source: `src/index.ts:372:1`
 
 ## StudioIdGenerator
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:360:1`
+Source: `src/index.ts:362:1`
 
 ## StudioInstancePropertyEditorKind
 
@@ -1258,7 +1258,7 @@ Source: `src/propertiesAuthoringModel.ts:45:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:206:1`
+Source: `src/index.ts:208:1`
 
 ## StudioMediaAssetRemovalResult
 
@@ -1519,7 +1519,7 @@ Source: `src/index.ts:148:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:213:1`
+Source: `src/index.ts:215:1`
 
 ### Members
 
@@ -1541,7 +1541,7 @@ Source: `src/index.ts:146:1`
 
 Kind: `type`
 Module: `src/index.ts`
-Source: `src/index.ts:221:1`
+Source: `src/index.ts:223:1`
 
 ### Members
 
@@ -1617,19 +1617,19 @@ Source: `src/templateCatalogContracts.ts:25:1`
 
 Kind: `unknown`
 Module: `src/index.ts`
-Source: `src/index.ts:208:1`
+Source: `src/index.ts:210:1`
 
 ## TPL_SCREEN_EMPTY
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:521:14`
+Source: `src/index.ts:523:14`
 
 ## updateNodeInTree
 
 Kind: `value`
 Module: `src/index.ts`
-Source: `src/index.ts:605:14`
+Source: `src/index.ts:607:14`
 
 ### Signatures
 
@@ -1671,7 +1671,7 @@ Source: `src/bindingMutationModel.ts:9:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:1233:1`
+Source: `src/index.ts:1235:1`
 
 ### Signatures
 
@@ -1684,7 +1684,7 @@ Source: `src/index.ts:1233:1`
 
 Kind: `function`
 Module: `src/index.ts`
-Source: `src/index.ts:759:1`
+Source: `src/index.ts:761:1`
 
 ### Signatures
 

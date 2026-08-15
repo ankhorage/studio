@@ -1,6 +1,7 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_scripts_auth5_native_oauth_smoke_ts["scripts/auth5-native-oauth-smoke.ts"]
   module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   module_src_app_CreateCategoriesScreen_tsx["src/app/CreateCategoriesScreen.tsx"]
   module_src_app_CreateCategoryTemplatesScreen_tsx["src/app/CreateCategoryTemplatesScreen.tsx"]
@@ -50,6 +51,7 @@ graph LR
   module_src_core_studioPackageBoundary_ts["src/core/studioPackageBoundary.ts"]
   module_src_core_StudioProvider_test_ts["src/core/StudioProvider.test.ts"]
   module_src_core_StudioProvider_ts["src/core/StudioProvider.ts"]
+  module_src_createProjectDeployRequest_ts["src/createProjectDeployRequest.ts"]
   module_src_externalApiApi_ts["src/externalApiApi.ts"]
   module_src_externalApiAuthoring_public_test_ts["src/externalApiAuthoring.public.test.ts"]
   module_src_externalApiAuthoring_ts["src/externalApiAuthoring.ts"]
@@ -186,6 +188,12 @@ graph LR
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts["src/host/secrets/resolveProjectSecretDatabaseUrl.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts["src/host/secrets/trustedOAuthInfraEnvironment.test.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts["src/host/secrets/trustedOAuthInfraEnvironment.ts"]
+  module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"]
+  module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"]
+  module_src_host_smoke_runAuth5NativeOAuthSmoke_ts["src/host/smoke/runAuth5NativeOAuthSmoke.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
@@ -221,6 +229,12 @@ graph LR
   module_src_projectAuthHealth_ts["src/projectAuthHealth.ts"]
   module_src_projectAuthRuntimeDiagnostics_test_ts["src/projectAuthRuntimeDiagnostics.test.ts"]
   module_src_projectAuthRuntimeDiagnostics_ts["src/projectAuthRuntimeDiagnostics.ts"]
+  module_src_projectDeployApi_test_ts["src/projectDeployApi.test.ts"]
+  module_src_projectDeployApi_ts["src/projectDeployApi.ts"]
+  module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
+  module_src_projectDeployClient_ts["src/projectDeployClient.ts"]
+  module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
+  module_src_projectDeployRequest_ts["src/projectDeployRequest.ts"]
   module_src_projectIdentity_test_ts["src/projectIdentity.test.ts"]
   module_src_projectIdentity_ts["src/projectIdentity.ts"]
   module_src_projectOAuthSetup_test_ts["src/projectOAuthSetup.test.ts"]
@@ -309,6 +323,14 @@ graph LR
   module_src_ui_admin_pages_BindingsAdminPage_tsx["src/ui/admin/pages/BindingsAdminPage.tsx"]
   module_src_ui_admin_pages_DataSourceCatalogCard_tsx["src/ui/admin/pages/DataSourceCatalogCard.tsx"]
   module_src_ui_admin_pages_DataSourceOperationsCard_tsx["src/ui/admin/pages/DataSourceOperationsCard.tsx"]
+  module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx["src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"]
+  module_src_ui_admin_pages_deploy_deployDashboardTypes_ts["src/ui/admin/pages/deploy/deployDashboardTypes.ts"]
+  module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx["src/ui/admin/pages/deploy/DeployHistoryCard.tsx"]
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx["src/ui/admin/pages/deploy/DeployReadinessCard.tsx"]
+  module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx["src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"]
+  module_src_ui_admin_pages_deploy_DeployTargetsCard_tsx["src/ui/admin/pages/deploy/DeployTargetsCard.tsx"]
+  module_src_ui_admin_pages_deploy_useProjectDeployDashboard_ts["src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"]
+  module_src_ui_admin_pages_DeployAdminPage_tsx["src/ui/admin/pages/DeployAdminPage.tsx"]
   module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx["src/ui/admin/pages/ExternalApiAdminPrimitives.tsx"]
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx["src/ui/admin/pages/ExternalApiConnectCard.tsx"]
   module_src_ui_admin_pages_GeneratedApiAuthoringCard_tsx["src/ui/admin/pages/GeneratedApiAuthoringCard.tsx"]
@@ -373,6 +395,7 @@ graph LR
   module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
   module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
   module_src_workspaceSearch_ts["src/workspaceSearch.ts"]
+  module_scripts_auth5_native_oauth_smoke_ts --> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
   module_src_app_CreateCategoriesScreen_tsx --> module_src_hooks_useTemplateCatalog_ts
@@ -463,6 +486,7 @@ graph LR
   module_src_core_StudioProvider_ts --> module_src_routeUtils_ts
   module_src_core_StudioProvider_ts --> module_src_studioSelectionModel_ts
   module_src_core_StudioProvider_ts --> module_src_ui_admin_AuthAdminSession_tsx
+  module_src_createProjectDeployRequest_ts --> module_src_projectDeployRequest_ts
   module_src_externalApiApi_ts --> module_src_core_constants_ts
   module_src_externalApiApi_ts --> module_src_externalApiAuthoringContracts_ts
   module_src_externalApiAuthoring_public_test_ts --> module_src_externalApiAuthoring_ts
@@ -521,6 +545,7 @@ graph LR
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_installedPackageProvenance_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_generatedAdminExpoWeb_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
@@ -719,6 +744,16 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
@@ -762,6 +797,18 @@ graph LR
   module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthHealth_ts
   module_src_projectAuthRuntimeDiagnostics_test_ts --> module_src_projectAuthRuntimeDiagnostics_ts
   module_src_projectAuthRuntimeDiagnostics_ts --> module_src_projectAuthHealth_ts
+  module_src_projectDeployApi_test_ts --> module_src_projectDeployApiError_ts
+  module_src_projectDeployApi_test_ts --> module_src_projectDeployClient_ts
+  module_src_projectDeployApi_test_ts --> module_src_projectDeployRequest_ts
+  module_src_projectDeployApi_ts --> module_src_createProjectDeployRequest_ts
+  module_src_projectDeployApi_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_projectDeployClient_ts --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployApiError_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
+  module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
   module_src_projectIdentity_test_ts --> module_src_projectIdentity_ts
   module_src_projectIdentity_test_ts --> module_src_projectWorkspaceContracts_ts
   module_src_projectIdentity_ts --> module_src_projectWorkspaceContracts_ts
@@ -805,6 +852,7 @@ graph LR
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ApisAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_AuthAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_BindingsAdminPage_tsx
+  module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_DeployAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_MediaAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModuleDetailAdminPage_tsx
   module_src_ui_admin_AnkhAdminPage_tsx --> module_src_ui_admin_pages_ModulesAdminPage_tsx
@@ -893,6 +941,28 @@ graph LR
   module_src_ui_admin_pages_DataSourceOperationsCard_tsx --> module_src_externalApiAuthoringContracts_ts
   module_src_ui_admin_pages_DataSourceOperationsCard_tsx --> module_src_ui_admin_pages_adminDataSourceOperations_ts
   module_src_ui_admin_pages_DataSourceOperationsCard_tsx --> module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployRuntimeInput_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_host_deploy_ProjectDeployService_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployTargetsCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployTargetsCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_useProjectDeployDashboard_ts --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_useProjectDeployDashboard_ts --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployTargetsCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_useProjectDeployDashboard_ts
   module_src_ui_admin_pages_ExternalApiAdminPrimitives_tsx --> module_src_externalApiAuthoringContracts_ts
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx --> module_src_core_StudioContext_ts
   module_src_ui_admin_pages_ExternalApiConnectCard_tsx --> module_src_externalApiApi_ts
