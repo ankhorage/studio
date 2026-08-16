@@ -848,6 +848,7 @@
         "src/host/orchestrator/projectManager.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/host/secrets/projectSecretService.ts",
+        "src/projectDeployMonetizationInspectionResult.ts",
         "src/projectDeployReleaseInspectionResult.ts"
       ],
       "exports": [
@@ -2425,13 +2426,16 @@
       "dependencies": [
         "src/createProjectDeployRequest.ts",
         "src/projectDeployClient.ts",
+        "src/projectDeployMonetizationInspectionResult.ts",
         "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
       "exports": [
+        "executeProjectDeployMonetization",
         "executeProjectDeployRelease",
         "executeProjectDeployReleaseControl",
+        "inspectProjectDeployMonetization",
         "inspectProjectDeployRelease",
         "listProjectDeployReleaseHistory",
         "readProjectDeployConfig",
@@ -2464,6 +2468,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/projectDeployApiError.ts",
+        "src/projectDeployMonetizationInspectionResult.ts",
         "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRequest.ts",
@@ -2471,6 +2476,12 @@
         "src/secretResponseGuard.ts"
       ],
       "exports": ["ProjectDeployClient"]
+    },
+    {
+      "path": "src/projectDeployMonetizationInspectionResult.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployMonetizationInspectionResult"]
     },
     {
       "path": "src/projectDeployReleaseExecutionResponse.ts",
@@ -3607,6 +3618,34 @@
       "exports": ["DeployMonetizationAuthoringCard"]
     },
     {
+      "path": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["DeployMonetizationExecutionView"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployMonetizationInspectionResult.ts",
+        "src/ui/admin/adminPagePrimitives.tsx"
+      ],
+      "exports": ["DeployMonetizationPlanView"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployApi.ts",
+        "src/projectDeployMonetizationInspectionResult.ts",
+        "src/projectDeployRuntimeInput.ts",
+        "src/ui/admin/adminPagePrimitives.tsx",
+        "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
+        "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"
+      ],
+      "exports": ["DeployMonetizationSyncCard"]
+    },
+    {
       "path": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
       "isEntrypoint": false,
       "dependencies": [
@@ -3697,6 +3736,7 @@
         "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
         "src/ui/admin/pages/deploy/DeployListingLocaleAuthoringCard.tsx",
         "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
+        "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
         "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
         "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
         "src/ui/admin/pages/deploy/DeployStoreAssetAuthoringCard.tsx",
@@ -12110,7 +12150,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 835,
+        "line": 840,
         "column": 1
       }
     },
@@ -12119,7 +12159,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1079,
+        "line": 1084,
         "column": 1
       }
     },
@@ -12128,7 +12168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1307,
+        "line": 1312,
         "column": 1
       }
     },
@@ -12137,7 +12177,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1334,
+        "line": 1339,
         "column": 1
       }
     },
@@ -12146,7 +12186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1353,
+        "line": 1358,
         "column": 1
       }
     },
@@ -12155,7 +12195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1373,
+        "line": 1378,
         "column": 1
       }
     },
@@ -12164,7 +12204,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1392,
+        "line": 1397,
         "column": 1
       }
     },
@@ -12173,7 +12213,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1413,
+        "line": 1418,
         "column": 1
       }
     },
@@ -12182,7 +12222,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1417,
+        "line": 1422,
         "column": 1
       }
     },
@@ -12191,7 +12231,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1437,
+        "line": 1442,
         "column": 1
       }
     },
@@ -12200,7 +12240,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1458,
+        "line": 1463,
         "column": 1
       }
     },
@@ -12209,7 +12249,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1480,
+        "line": 1485,
         "column": 1
       }
     },
@@ -12218,7 +12258,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1519,
+        "line": 1524,
         "column": 1
       }
     },
@@ -12227,7 +12267,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1533,
+        "line": 1538,
         "column": 1
       }
     },
@@ -12236,7 +12276,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1562,
+        "line": 1567,
         "column": 1
       }
     },
@@ -12245,7 +12285,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1569,
+        "line": 1574,
         "column": 1
       }
     },
@@ -12254,7 +12294,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1576,
+        "line": 1581,
         "column": 1
       }
     },
@@ -12263,7 +12303,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1585,
+        "line": 1590,
         "column": 1
       }
     },
@@ -12272,7 +12312,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1610,
+        "line": 1615,
         "column": 1
       }
     },
@@ -12281,7 +12321,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1617,
+        "line": 1622,
         "column": 1
       }
     },
@@ -12290,7 +12330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1656,
+        "line": 1661,
         "column": 1
       }
     },
@@ -12299,7 +12339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1690,
+        "line": 1695,
         "column": 1
       }
     },
@@ -12308,7 +12348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1719,
+        "line": 1724,
         "column": 1
       }
     },
@@ -12317,7 +12357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1997,
+        "line": 2002,
         "column": 1
       }
     },
@@ -12326,7 +12366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2020,
+        "line": 2025,
         "column": 1
       }
     },
@@ -12335,7 +12375,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2037,
+        "line": 2042,
         "column": 1
       }
     },
@@ -12344,7 +12384,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2053,
+        "line": 2058,
         "column": 1
       }
     },
@@ -12353,7 +12393,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2075,
+        "line": 2080,
         "column": 1
       }
     },
@@ -12362,7 +12402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2104,
+        "line": 2109,
         "column": 1
       }
     },
@@ -12371,7 +12411,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2167,
+        "line": 2172,
         "column": 1
       }
     },
@@ -12380,7 +12420,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2230,
+        "line": 2235,
         "column": 1
       }
     },
@@ -12389,7 +12429,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2263,
+        "line": 2268,
         "column": 1
       }
     },
@@ -12398,7 +12438,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2277,
+        "line": 2282,
         "column": 1
       }
     },
@@ -12407,7 +12447,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2286,
+        "line": 2291,
         "column": 1
       }
     },
@@ -12416,7 +12456,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2302,
+        "line": 2307,
         "column": 1
       }
     },
@@ -12425,7 +12465,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2309,
+        "line": 2314,
         "column": 1
       }
     },
@@ -12434,7 +12474,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2315,
+        "line": 2320,
         "column": 1
       }
     },
@@ -12443,7 +12483,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2328,
+        "line": 2333,
         "column": 1
       }
     },
@@ -12452,7 +12492,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2345,
+        "line": 2350,
         "column": 1
       }
     },
@@ -12461,7 +12501,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2362,
+        "line": 2367,
         "column": 1
       }
     },
@@ -12470,7 +12510,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2368,
+        "line": 2373,
         "column": 1
       }
     },
@@ -12479,7 +12519,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2374,
+        "line": 2379,
         "column": 1
       }
     },
@@ -12488,7 +12528,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2390,
+        "line": 2395,
         "column": 1
       }
     },
@@ -12497,7 +12537,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2946,
+        "line": 2951,
         "column": 1
       }
     },
@@ -12506,7 +12546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2961,
+        "line": 2966,
         "column": 1
       }
     },
@@ -12515,7 +12555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2965,
+        "line": 2970,
         "column": 1
       }
     },
@@ -12524,7 +12564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2974,
+        "line": 2979,
         "column": 1
       }
     },
@@ -12533,7 +12573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2985,
+        "line": 2990,
         "column": 1
       }
     },
@@ -12965,7 +13005,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 19,
+        "line": 21,
         "column": 1
       }
     },
@@ -12974,7 +13014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 41,
+        "line": 43,
         "column": 1
       }
     },
@@ -12983,7 +13023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 52,
+        "line": 54,
         "column": 1
       }
     },
@@ -12992,7 +13032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 73,
+        "line": 75,
         "column": 1
       }
     },
@@ -13001,7 +13041,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 93,
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeMonetizationRequest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 115,
         "column": 1
       }
     },
@@ -13010,7 +13059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 105,
+        "line": 129,
         "column": 1
       }
     },
@@ -13019,7 +13068,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 123,
+        "line": 147,
         "column": 1
       }
     },
@@ -13028,7 +13077,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 138,
+        "line": 162,
         "column": 1
       }
     },
@@ -13037,7 +13086,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 158,
+        "line": 182,
         "column": 1
       }
     },
@@ -13046,7 +13095,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 176,
+        "line": 200,
         "column": 1
       }
     },
@@ -13055,7 +13104,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 188,
+        "line": 212,
         "column": 1
       }
     },
@@ -13064,7 +13113,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 197,
+        "line": 221,
         "column": 1
       }
     },
@@ -13073,7 +13122,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 223,
+        "line": 247,
         "column": 1
       }
     },
@@ -13082,7 +13131,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 227,
+        "line": 251,
         "column": 1
       }
     },
@@ -13091,7 +13140,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 235,
+        "line": 259,
         "column": 1
       }
     },
@@ -17717,7 +17766,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 24,
+        "line": 31,
         "column": 9
       }
     },
@@ -17726,7 +17775,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 39,
+        "line": 46,
         "column": 9
       }
     },
@@ -17735,7 +17784,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 48,
+        "line": 55,
         "column": 9
       }
     },
@@ -17744,7 +17793,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 58,
+        "line": 65,
         "column": 9
       }
     },
@@ -17753,7 +17802,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 86,
+        "line": 93,
         "column": 9
       }
     },
@@ -17762,7 +17811,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 116,
+        "line": 123,
         "column": 9
       }
     },
@@ -17771,7 +17820,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 147,
+        "line": 154,
         "column": 9
       }
     },
@@ -17780,7 +17829,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 207,
+        "line": 214,
         "column": 9
       }
     },
@@ -17789,8 +17838,44 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 226,
+        "line": 233,
         "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 252,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 310,
+        "column": 9
+      }
+    },
+    {
+      "name": "monetizationInspection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 328,
+        "column": 1
+      }
+    },
+    {
+      "name": "monetizationPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 346,
+        "column": 1
       }
     },
     {
@@ -17798,7 +17883,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 241,
+        "line": 364,
         "column": 1
       }
     },
@@ -17807,7 +17892,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 257,
+        "line": 380,
         "column": 1
       }
     },
@@ -17816,7 +17901,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 276,
+        "line": 399,
         "column": 1
       }
     },
@@ -17825,7 +17910,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 27,
+        "line": 31,
         "column": 1
       }
     },
@@ -17834,7 +17919,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 31,
+        "line": 35,
         "column": 1
       }
     },
@@ -17843,7 +17928,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 35,
+        "line": 39,
         "column": 1
       }
     },
@@ -17852,7 +17937,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 42,
+        "line": 46,
         "column": 1
       }
     },
@@ -17861,7 +17946,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 49,
+        "line": 53,
         "column": 1
       }
     },
@@ -17870,7 +17955,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 57,
+        "line": 61,
         "column": 1
       }
     },
@@ -17879,7 +17964,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 64,
+        "line": 68,
         "column": 1
       }
     },
@@ -17888,21 +17973,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 70,
+        "line": 74,
         "column": 1
       }
     },
     {
-      "name": "readProjectDeployRelease",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/projectDeployApi.ts",
-        "line": 77,
-        "column": 1
-      }
-    },
-    {
-      "name": "writeProjectDeployRelease",
+      "name": "inspectProjectDeployMonetization",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
@@ -17911,7 +17987,7 @@
       }
     },
     {
-      "name": "listProjectDeployReleaseHistory",
+      "name": "executeProjectDeployMonetization",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
@@ -17920,16 +17996,16 @@
       }
     },
     {
-      "name": "inspectProjectDeployRelease",
+      "name": "readProjectDeployRelease",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 94,
+        "line": 97,
         "column": 1
       }
     },
     {
-      "name": "executeProjectDeployRelease",
+      "name": "writeProjectDeployRelease",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
@@ -17938,11 +18014,38 @@
       }
     },
     {
+      "name": "listProjectDeployReleaseHistory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 121,
+        "column": 1
+      }
+    },
+    {
       "name": "resumeProjectDeployRelease",
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 110,
+        "line": 130,
         "column": 1
       }
     },
@@ -17951,7 +18054,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 118,
+        "line": 138,
         "column": 1
       }
     },
@@ -17969,7 +18072,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 198,
+        "line": 230,
         "column": 1
       }
     },
@@ -17978,7 +18081,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 206,
+        "line": 238,
         "column": 1
       }
     },
@@ -17987,7 +18090,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 212,
+        "line": 244,
         "column": 1
       }
     },
@@ -17996,7 +18099,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 216,
+        "line": 248,
         "column": 1
       }
     },
@@ -18005,7 +18108,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 224,
+        "line": 256,
         "column": 1
       }
     },
@@ -18014,7 +18117,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 236,
+        "line": 268,
         "column": 1
       }
     },
@@ -18023,7 +18126,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 243,
+        "line": 275,
         "column": 1
       }
     },
@@ -18032,7 +18135,61 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 256,
+        "line": 288,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMonetizationInspectionResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 296,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMonetizationInspection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 312,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMonetizationPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 326,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMonetizationExecutionResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 341,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMonetizationPlanStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 357,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMonetizationExecutionStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 361,
         "column": 1
       }
     },
@@ -18041,7 +18198,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 264,
+        "line": 365,
         "column": 1
       }
     },
@@ -18050,7 +18207,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 279,
+        "line": 380,
         "column": 1
       }
     },
@@ -18059,7 +18216,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 284,
+        "line": 385,
         "column": 1
       }
     },
@@ -18068,7 +18225,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 316,
+        "line": 417,
         "column": 1
       }
     },
@@ -18077,7 +18234,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 325,
+        "line": 426,
         "column": 1
       }
     },
@@ -18086,7 +18243,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 349,
+        "line": 450,
         "column": 1
       }
     },
@@ -18095,7 +18252,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 364,
+        "line": 465,
         "column": 1
       }
     },
@@ -18104,7 +18261,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 371,
+        "line": 472,
         "column": 1
       }
     },
@@ -18113,7 +18270,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 381,
+        "line": 482,
         "column": 1
       }
     },
@@ -18122,7 +18279,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 385,
+        "line": 486,
         "column": 1
       }
     },
@@ -18131,7 +18288,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 397,
+        "line": 498,
         "column": 1
       }
     },
@@ -18140,7 +18297,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 407,
+        "line": 508,
         "column": 1
       }
     },
@@ -18149,7 +18306,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 412,
+        "line": 513,
         "column": 1
       }
     },
@@ -18158,7 +18315,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 416,
+        "line": 517,
         "column": 1
       }
     },
@@ -20908,6 +21065,69 @@
       }
     },
     {
+      "name": "DeployMonetizationExecutionView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployMonetizationPlanView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
+        "line": 13,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployMonetizationSyncCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspect",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "line": 46,
+        "column": 9
+      }
+    },
+    {
+      "name": "execute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "line": 66,
+        "column": 9
+      }
+    },
+    {
+      "name": "ViewFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "line": 143,
+        "column": 1
+      }
+    },
+    {
+      "name": "readError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
       "name": "DeployPlanPreview",
       "description": null,
       "sourceLocation": {
@@ -21218,7 +21438,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/DeployAdminPage.tsx",
-        "line": 17,
+        "line": 18,
         "column": 1
       }
     },
@@ -23613,6 +23833,11 @@
       },
       {
         "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployMonetizationInspectionResult.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
         "toPath": "src/projectDeployReleaseExecutionResponse.ts",
         "sourcePath": "src/projectDeployApi.ts"
       },
@@ -23629,6 +23854,11 @@
       {
         "fromPath": "src/projectDeployClient.ts",
         "toPath": "src/projectDeployApiError.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployMonetizationInspectionResult.ts",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -24905,6 +25135,11 @@
         "fromPath": "src/host/deploy/ProjectDeployService.test.ts",
         "toPath": "src/host/deploy/ProjectDeployService.ts",
         "sourcePath": "src/host/deploy/ProjectDeployService.test.ts"
+      },
+      {
+        "fromPath": "src/host/deploy/ProjectDeployService.ts",
+        "toPath": "src/projectDeployMonetizationInspectionResult.ts",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
         "fromPath": "src/host/deploy/ProjectDeployService.ts",
@@ -26353,6 +26588,11 @@
       },
       {
         "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
         "toPath": "src/ui/admin/pages/deploy/DeployPreparedReleaseAuthoringCard.tsx",
         "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
       },
@@ -27180,6 +27420,51 @@
         "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx",
         "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
+        "toPath": "src/projectDeployMonetizationInspectionResult.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/projectDeployMonetizationInspectionResult.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
@@ -30946,6 +31231,30 @@
         "sourcePath": "src/projectDeployApi.test.ts"
       },
       {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "monetizationInspection",
+        "callExpression": "monetizationInspection",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "monetizationPlan",
+        "callExpression": "monetizationPlan",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "inspectMonetization",
+        "callExpression": "client.inspectMonetization",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "executeMonetization",
+        "callExpression": "client.executeMonetization",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
         "fromSymbol": "captureProjectDeployApiError",
         "toSymbol": "action",
         "callExpression": "action",
@@ -31003,6 +31312,18 @@
         "fromSymbol": "writeProjectDeployMonetization",
         "toSymbol": "writeMonetization",
         "callExpression": "client.writeMonetization",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "inspectProjectDeployMonetization",
+        "toSymbol": "inspectMonetization",
+        "callExpression": "client.inspectMonetization",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectDeployMonetization",
+        "toSymbol": "executeMonetization",
+        "callExpression": "client.executeMonetization",
         "sourcePath": "src/projectDeployApi.ts"
       },
       {
@@ -31180,6 +31501,42 @@
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "jsonRequest",
+        "callExpression": "jsonRequest",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "executeMonetization",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "executeMonetization",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "executeMonetization",
+        "toSymbol": "jsonRequest",
+        "callExpression": "jsonRequest",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
         "fromSymbol": "readRelease",
         "toSymbol": "requestJson",
         "callExpression": "this.requestJson",
@@ -31327,6 +31684,108 @@
         "fromSymbol": "parseMonetization",
         "toSymbol": "invalid",
         "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspectionResult",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspectionResult",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspectionResult",
+        "toSymbol": "parseFailure",
+        "callExpression": "parseFailure",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspectionResult",
+        "toSymbol": "parseMonetizationInspection",
+        "callExpression": "parseMonetizationInspection",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspectionResult",
+        "toSymbol": "parseMonetizationPlan",
+        "callExpression": "parseMonetizationPlan",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspection",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspection",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationInspection",
+        "toSymbol": "parseMonetization",
+        "callExpression": "parseMonetization",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationPlan",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationPlan",
+        "toSymbol": "isMonetizationPlanStatus",
+        "callExpression": "isMonetizationPlanStatus",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationPlan",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "isMonetizationExecutionStatus",
+        "callExpression": "isMonetizationExecutionStatus",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "parseMonetizationInspection",
+        "callExpression": "parseMonetizationInspection",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "parseMonetizationPlan",
+        "callExpression": "parseMonetizationPlan",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseMonetizationExecutionResult",
+        "toSymbol": "parseFailure",
+        "callExpression": "parseFailure",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -40180,6 +40639,48 @@
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "createAccess",
+        "callExpression": "this.createAccess",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "inspectProjectMonetization",
+        "callExpression": "inspectProjectMonetization",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "projectRoot",
+        "callExpression": "this.projectRoot",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "inspectMonetization",
+        "toSymbol": "createProjectMonetizationPlan",
+        "callExpression": "createProjectMonetizationPlan",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "executeMonetization",
+        "toSymbol": "run",
+        "callExpression": "this.mutationGuard.run",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "src/host/deploy/ProjectDeployService.ts",
+        "toSymbol": "createAccess",
+        "callExpression": "this.createAccess",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "src/host/deploy/ProjectDeployService.ts",
+        "toSymbol": "executeProjectMonetizationSync",
+        "callExpression": "executeProjectMonetizationSync",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
         "fromSymbol": "readRelease",
         "toSymbol": "readProjectRelease",
         "callExpression": "readProjectRelease",
@@ -40230,13 +40731,7 @@
       {
         "fromSymbol": "executeRelease",
         "toSymbol": "run",
-        "callExpression": "this.releaseMutationGuard.run",
-        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
-      },
-      {
-        "fromSymbol": "src/host/deploy/ProjectDeployService.ts",
-        "toSymbol": "createAccess",
-        "callExpression": "this.createAccess",
+        "callExpression": "this.mutationGuard.run",
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
@@ -40248,7 +40743,7 @@
       {
         "fromSymbol": "resumeRelease",
         "toSymbol": "run",
-        "callExpression": "this.releaseMutationGuard.run",
+        "callExpression": "this.mutationGuard.run",
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
@@ -40266,7 +40761,7 @@
       {
         "fromSymbol": "executeReleaseControl",
         "toSymbol": "run",
-        "callExpression": "this.releaseMutationGuard.run",
+        "callExpression": "this.mutationGuard.run",
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
@@ -40585,6 +41080,30 @@
         "fromSymbol": "src/host/http/deployRoutes.ts",
         "toSymbol": "writeMonetization",
         "callExpression": "service.writeMonetization",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "inspectMonetization",
+        "callExpression": "service.inspectMonetization",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "executeMonetizationRequest",
+        "callExpression": "executeMonetizationRequest",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeMonetizationRequest",
+        "toSymbol": "executeMonetization",
+        "callExpression": "service.executeMonetization",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeMonetizationRequest",
+        "toSymbol": "projectId",
+        "callExpression": "projectId",
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
@@ -50930,6 +51449,138 @@
         "toSymbol": "save",
         "callExpression": "save",
         "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationAuthoringCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployMonetizationSyncCard",
+        "toSymbol": "useState",
+        "callExpression": "useState",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "DeployMonetizationSyncCard",
+        "toSymbol": "useRef",
+        "callExpression": "useRef",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "inspectProjectDeployMonetization",
+        "callExpression": "inspectProjectDeployMonetization",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "inspect",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "setConfirm",
+        "callExpression": "setConfirm",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "executeProjectDeployMonetization",
+        "callExpression": "executeProjectDeployMonetization",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "onComplete",
+        "callExpression": "props.onComplete",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "execute",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "setEnvironment",
+        "callExpression": "setEnvironment",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "setResult",
+        "callExpression": "setResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "setConfirm",
+        "callExpression": "setConfirm",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "inspect",
+        "callExpression": "inspect",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx",
+        "toSymbol": "execute",
+        "callExpression": "execute",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"
       },
       {
         "fromSymbol": "DeployPreparedReleaseAuthoringCard",

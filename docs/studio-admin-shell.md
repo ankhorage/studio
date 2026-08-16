@@ -65,9 +65,13 @@ target configuration, store listing/locales/assets, monetization, prepared relea
 history, readiness, planning, execution, resume, and lifecycle controls. Locale and semantic asset
 mutations, the exact canonical product array, and `ProjectReleaseInput` are sent through Deploy's
 released project authoring APIs; Studio never constructs Deploy filesystem paths or persists a second
-deployment model. Saving authored desired state never mutates a provider.
+deployment model. Saving authored desired state never mutates a provider. Monetization
+synchronization separately uses Deploy's released inspection, plan, and execution APIs: Studio
+renders canonical target observations, diagnostics, required actions, and synchronization steps,
+requires explicit confirmation for a changing plan, passes the exact inspected snapshot back to
+Deploy, and leaves preflight drift detection plus post-execution verification to the owner.
 
-Studio previews Deploy's exact inspection/plan objects, visibly marks irreversible plan steps,
+Studio previews Deploy's exact release inspection/plan objects, visibly marks irreversible plan steps,
 requires explicit confirmation, and sends the same inspected snapshot to Deploy execution without
 re-planning in the browser. Waiting, blocked, no-change, drifted, failed, completed, and
 history-recording outcomes remain owner-defined states. Release execution/resume/lifecycle mutations

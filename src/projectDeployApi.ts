@@ -8,6 +8,9 @@ import type {
   ReleasePlan,
 } from '@ankhorage/deploy';
 import type {
+  ProjectMonetizationExecutionResult,
+  ProjectMonetizationInspection,
+  ProjectMonetizationPlan,
   ProjectReleaseHistoryRecord,
   ProjectReleaseInput,
   ProjectReleaseInspection,
@@ -18,6 +21,7 @@ import type {
 
 import { createProjectDeployRequest } from './createProjectDeployRequest';
 import { ProjectDeployClient } from './projectDeployClient';
+import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
 import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
@@ -72,6 +76,22 @@ export function writeProjectDeployMonetization(
   products: readonly MonetizationProduct[],
 ): Promise<MonetizationDesiredState> {
   return client.writeMonetization(projectId, products);
+}
+
+export function inspectProjectDeployMonetization(input: {
+  readonly projectId: string;
+  readonly runtime: ProjectDeployRuntimeInput;
+}): Promise<ProjectDeployMonetizationInspectionResult> {
+  return client.inspectMonetization(input);
+}
+
+export function executeProjectDeployMonetization(input: {
+  readonly projectId: string;
+  readonly runtime: ProjectDeployRuntimeInput;
+  readonly inspection: ProjectMonetizationInspection;
+  readonly plan: ProjectMonetizationPlan;
+}): Promise<ProjectMonetizationExecutionResult> {
+  return client.executeMonetization(input);
 }
 
 export function readProjectDeployRelease(projectId: string): Promise<ReleaseDesiredState> {

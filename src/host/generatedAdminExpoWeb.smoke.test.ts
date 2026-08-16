@@ -667,6 +667,7 @@ adminWebSmokeTest(
                     (text) =>
                       text.includes('Deployment administration') &&
                       text.includes('Prepared release desired state') &&
+                      text.includes('Monetization synchronization') &&
                       text.includes('1.2.3'),
                     HTTP_TIMEOUT_MS,
                   )
@@ -685,6 +686,7 @@ adminWebSmokeTest(
           if (route === '/ankh/deploy') {
             expect(bodyText).toContain('Store listing locales');
             expect(bodyText).toContain('Monetization desired state');
+            expect(bodyText).toContain('Monetization synchronization');
             expect(bodyText).toContain('Release plan and execution');
             expect(bodyText).toContain('smoke-execution-1');
             expect(bodyText).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
@@ -714,6 +716,7 @@ adminWebSmokeTest(
             (text) =>
               text.includes('Deployment administration') &&
               text.includes('Prepared release desired state') &&
+              text.includes('Monetization synchronization') &&
               text.includes('smoke-execution-1'),
             HTTP_TIMEOUT_MS,
           );
@@ -727,7 +730,9 @@ adminWebSmokeTest(
           const refreshedDeployBody = await waitForBodyText(
             directDeployPage,
             (text) =>
-              text.includes('Release plan and execution') && text.includes('smoke-execution-1'),
+              text.includes('Release plan and execution') &&
+              text.includes('Monetization synchronization') &&
+              text.includes('smoke-execution-1'),
             HTTP_TIMEOUT_MS,
           );
           expect(refreshedDeployBody).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');

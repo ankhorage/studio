@@ -1,5 +1,10 @@
 import type { MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
-import type { ProjectReleaseInput, ProjectReleaseInspection } from '@ankhorage/deploy/project';
+import type {
+  ProjectMonetizationInspection,
+  ProjectMonetizationPlan,
+  ProjectReleaseInput,
+  ProjectReleaseInspection,
+} from '@ankhorage/deploy/project';
 import { expect, test } from 'bun:test';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
@@ -16,6 +21,8 @@ test('public Deploy API module is import-safe without booting Expo or React Nati
   expect(typeof api.writeProjectDeployListingLocale).toBe('function');
   expect(typeof api.writeProjectDeployListingAsset).toBe('function');
   expect(typeof api.writeProjectDeployMonetization).toBe('function');
+  expect(typeof api.inspectProjectDeployMonetization).toBe('function');
+  expect(typeof api.executeProjectDeployMonetization).toBe('function');
   expect(typeof api.writeProjectDeployRelease).toBe('function');
 });
 
@@ -237,6 +244,122 @@ test('Deploy authoring responses cannot smuggle secret-shaped fields into browse
   expect(error.message).toContain('forbidden secret-shaped field');
   expect(error.message).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
 });
+
+test('Deploy client previews and executes the exact monetization owner snapshot', async () => {
+  const requests: { readonly path: string; readonly init?: RequestInit }[] = [];
+  const inspection = monetizationInspection();
+  const plan = monetizationPlan();
+  const request: ProjectDeployRequest = (path, init) => {
+    requests.push({ path, init });
+    if (path.endsWith('/inspect')) {
+      return Promise.resolve(Response.json({ ok: true, inspection, plan }));
+    }
+    return Promise.resolve(
+      Response.json({
+        status: 'completed',
+        inspection: { ...inspection, currentRevision: 'money-current-r2' },
+        plan: { ...plan, status: 'no-change', currentRevision: 'money-current-r2', steps: [] },
+      }),
+    );
+  };
+  const client = new ProjectDeployClient(request);
+  const runtime = { environment: 'production' as const };
+
+  const preview = await client.inspectMonetization({ projectId: 'demo', runtime });
+  expect(preview.ok).toBe(true);
+  if (!preview.ok) throw new Error('Expected monetization inspection to succeed.');
+
+  const execution = await client.executeMonetization({
+    projectId: 'demo',
+    runtime,
+    inspection: preview.inspection,
+    plan: preview.plan,
+  });
+
+  expect(execution.status).toBe('completed');
+  expect(requests).toHaveLength(2);
+  expect(requests[0]?.path).toBe('/projects/demo/deploy/monetization/inspect');
+  expect(requests[0]?.init?.body).toBe(JSON.stringify(runtime));
+  expect(requests[1]?.path).toBe('/projects/demo/deploy/monetization/execute');
+  expect(requests[1]?.init?.body).toBe(
+    JSON.stringify({ runtime, inspection: preview.inspection, plan: preview.plan }),
+  );
+});
+
+test('Deploy client preserves monetization action-required and failure owner states', async () => {
+  const responses = [
+    {
+      status: 'action-required',
+      actions: [
+        {
+          type: 'authentication',
+          provider: 'google-play',
+          code: 'AUTH_REQUIRED',
+          message: 'Authenticate Google Play.',
+        },
+      ],
+    },
+    {
+      status: 'failed',
+      failure: {
+        code: 'PROJECT_MONETIZATION_DRIFT',
+        message: 'Monetization state changed after planning.',
+      },
+    },
+  ];
+  const request: ProjectDeployRequest = () =>
+    Promise.resolve(Response.json(responses.shift() ?? responses[1]));
+  const client = new ProjectDeployClient(request);
+  const runtime = { environment: 'production' as const };
+  const inspection = monetizationInspection();
+  const plan = monetizationPlan();
+
+  expect(
+    await client.executeMonetization({ projectId: 'demo', runtime, inspection, plan }),
+  ).toMatchObject({ status: 'action-required' });
+  expect(
+    await client.executeMonetization({ projectId: 'demo', runtime, inspection, plan }),
+  ).toMatchObject({
+    status: 'failed',
+    failure: { code: 'PROJECT_MONETIZATION_DRIFT' },
+  });
+});
+
+function monetizationInspection(): ProjectMonetizationInspection {
+  return {
+    projectRoot: '/tmp/demo',
+    desired: { revision: 'money-desired-r1', products: [] },
+    targets: { androidPackage: 'com.example.demo' },
+    states: [
+      {
+        target: 'android',
+        products: [],
+        subscriptionFamilies: [],
+        diagnostics: [],
+      },
+    ],
+    currentRevision: 'money-current-r1',
+    actions: [],
+  };
+}
+
+function monetizationPlan(): ProjectMonetizationPlan {
+  return {
+    status: 'changes',
+    desiredRevision: 'money-desired-r1',
+    currentRevision: 'money-current-r1',
+    steps: [
+      {
+        id: 'android:pro:create',
+        target: 'android',
+        productId: 'pro',
+        operation: 'create-product',
+      },
+    ],
+    diagnostics: [],
+    actions: [],
+  };
+}
 
 function releaseInspection(): ProjectReleaseInspection {
   return {

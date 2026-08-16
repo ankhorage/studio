@@ -8,6 +8,9 @@ import type {
   ReleasePlan,
 } from '@ankhorage/deploy';
 import type {
+  ProjectMonetizationExecutionResult,
+  ProjectMonetizationInspection,
+  ProjectMonetizationPlan,
   ProjectReleaseHistoryRecord,
   ProjectReleaseInput,
   ProjectReleaseInspection,
@@ -17,6 +20,7 @@ import type {
 } from '@ankhorage/deploy/project';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
+import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
 import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRequest } from './projectDeployRequest';
@@ -89,6 +93,34 @@ export class ProjectDeployClient {
       projectPath(projectId, 'monetization'),
       jsonRequest('PUT', { products }),
       parseMonetization,
+    );
+  }
+
+  inspectMonetization(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+  }): Promise<ProjectDeployMonetizationInspectionResult> {
+    return this.requestJson(
+      projectPath(input.projectId, 'monetization/inspect'),
+      jsonRequest('POST', input.runtime),
+      parseMonetizationInspectionResult,
+    );
+  }
+
+  executeMonetization(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly inspection: ProjectMonetizationInspection;
+    readonly plan: ProjectMonetizationPlan;
+  }): Promise<ProjectMonetizationExecutionResult> {
+    return this.requestJson(
+      projectPath(input.projectId, 'monetization/execute'),
+      jsonRequest('POST', {
+        runtime: input.runtime,
+        inspection: input.inspection,
+        plan: input.plan,
+      }),
+      parseMonetizationExecutionResult,
     );
   }
 
@@ -259,6 +291,75 @@ function parseMonetization(value: unknown): MonetizationDesiredState {
     invalid('Monetization');
   }
   return value as MonetizationDesiredState;
+}
+
+function parseMonetizationInspectionResult(
+  value: unknown,
+): ProjectDeployMonetizationInspectionResult {
+  const record = asRecord(value);
+  if (record === null || typeof record.ok !== 'boolean') {
+    invalid('Monetization inspection');
+  }
+  if (!record.ok) {
+    parseFailure(record.failure, 'Monetization inspection failure');
+    return value as ProjectDeployMonetizationInspectionResult;
+  }
+  parseMonetizationInspection(record.inspection);
+  parseMonetizationPlan(record.plan);
+  return value as ProjectDeployMonetizationInspectionResult;
+}
+
+function parseMonetizationInspection(value: unknown): void {
+  const inspection = asRecord(value);
+  if (
+    inspection === null ||
+    typeof inspection.currentRevision !== 'string' ||
+    asRecord(inspection.targets) === null ||
+    !Array.isArray(inspection.states) ||
+    !Array.isArray(inspection.actions)
+  ) {
+    invalid('Monetization inspection');
+  }
+  parseMonetization(inspection.desired);
+}
+
+function parseMonetizationPlan(value: unknown): void {
+  const plan = asRecord(value);
+  if (
+    plan === null ||
+    !isMonetizationPlanStatus(plan.status) ||
+    typeof plan.desiredRevision !== 'string' ||
+    typeof plan.currentRevision !== 'string' ||
+    !Array.isArray(plan.steps) ||
+    !Array.isArray(plan.diagnostics) ||
+    !Array.isArray(plan.actions)
+  ) {
+    invalid('Monetization plan');
+  }
+}
+
+function parseMonetizationExecutionResult(value: unknown): ProjectMonetizationExecutionResult {
+  const result = asRecord(value);
+  if (result === null || !isMonetizationExecutionStatus(result.status)) {
+    invalid('Monetization execution');
+  }
+  if (result.status === 'completed') {
+    parseMonetizationInspection(result.inspection);
+    parseMonetizationPlan(result.plan);
+  } else if (result.status === 'action-required') {
+    if (!Array.isArray(result.actions)) invalid('Monetization execution');
+  } else {
+    parseFailure(result.failure, 'Monetization execution failure');
+  }
+  return value as ProjectMonetizationExecutionResult;
+}
+
+function isMonetizationPlanStatus(value: unknown): boolean {
+  return value === 'no-change' || value === 'changes' || value === 'blocked';
+}
+
+function isMonetizationExecutionStatus(value: unknown): boolean {
+  return value === 'completed' || value === 'action-required' || value === 'failed';
 }
 
 function parseRelease(value: unknown): ReleaseDesiredState {

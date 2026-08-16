@@ -327,6 +327,7 @@ graph TD
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_host_deploy_serializeProjectDeploySecret_ts["src/host/deploy/serializeProjectDeploySecret.ts"]
   package__ankhorage_studio -.-> module_src_host_deploy_serializeProjectDeploySecret_ts
@@ -891,6 +892,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_projectDeployApi_ts
   module_src_projectDeployApi_ts --> module_src_createProjectDeployRequest_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
@@ -901,11 +903,14 @@ graph TD
   module_src_projectDeployClient_ts["src/projectDeployClient.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployClient_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployApiError_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
+  module_src_projectDeployMonetizationInspectionResult_ts["src/projectDeployMonetizationInspectionResult.ts"]
+  package__ankhorage_studio -.-> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployReleaseExecutionResponse_ts["src/projectDeployReleaseExecutionResponse.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
@@ -1251,6 +1256,21 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_projectDeployApi_ts
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx["src/ui/admin/pages/deploy/DeployMonetizationExecutionView.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx["src/ui/admin/pages/deploy/DeployMonetizationPlanView.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx --> module_src_projectDeployMonetizationInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx["src/ui/admin/pages/deploy/DeployMonetizationSyncCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_projectDeployMonetizationInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_projectDeployRuntimeInput_ts
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationExecutionView_tsx
+  module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationPlanView_tsx
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx["src/ui/admin/pages/deploy/DeployPlanPreview.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx
   module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx --> module_src_projectDeployReleaseInspectionResult_ts
@@ -1302,6 +1322,7 @@ graph TD
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployListingLocaleAuthoringCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationAuthoringCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployMonetizationSyncCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployPreparedReleaseAuthoringCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployStoreAssetAuthoringCard_tsx

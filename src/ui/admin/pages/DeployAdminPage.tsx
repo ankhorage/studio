@@ -7,6 +7,7 @@ import { DeployAuthoredStateCard } from './deploy/DeployAuthoredStateCard';
 import { DeployHistoryCard } from './deploy/DeployHistoryCard';
 import { DeployListingLocaleAuthoringCard } from './deploy/DeployListingLocaleAuthoringCard';
 import { DeployMonetizationAuthoringCard } from './deploy/DeployMonetizationAuthoringCard';
+import { DeployMonetizationSyncCard } from './deploy/DeployMonetizationSyncCard';
 import { DeployPreparedReleaseAuthoringCard } from './deploy/DeployPreparedReleaseAuthoringCard';
 import { DeployReleaseOperationsCard } from './deploy/DeployReleaseOperationsCard';
 import { DeployStoreAssetAuthoringCard } from './deploy/DeployStoreAssetAuthoringCard';
@@ -50,6 +51,7 @@ export function DeployAdminPage({ projectId }: { readonly projectId: string }) {
         monetization={dashboard.state.monetization}
         onMutation={dashboard.refresh}
       />
+      <DeployMonetizationSyncCard projectId={projectId} onComplete={dashboard.refresh} />
       <DeployPreparedReleaseAuthoringCard
         projectId={projectId}
         release={dashboard.state.release}
