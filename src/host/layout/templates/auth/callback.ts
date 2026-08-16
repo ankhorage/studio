@@ -5,13 +5,15 @@ export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInR
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
   const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
-  return `import * as Linking from 'expo-linking';
-import { Stack, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+  return `import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text, useZoraTheme } from '@ankhorage/zora';
 
-import { completeOAuthCallback } from '@/auth/oauth';
+import {
+  completeOAuthCallback,
+  resolveOAuthCallbackUrl,
+} from '@/auth/oauth';
 
 const SIGN_IN_ROUTE = '${signInTarget}';
 const POST_SIGN_IN_ROUTE = '${postSignInTarget}';
@@ -46,7 +48,14 @@ function completeOAuthCallbackOnce(callbackUrl: string) {
 
 export default function OAuthCallbackScreen() {
   const router = useRouter();
-  const callbackUrl = Linking.useURL();
+  const callbackParams = useLocalSearchParams<Record<string, string | string[] | undefined>>();
+  const callbackUrl = useMemo(() => {
+    try {
+      return resolveOAuthCallbackUrl(callbackParams);
+    } catch {
+      return null;
+    }
+  }, [callbackParams]);
   const { theme } = useZoraTheme();
   const handledOutcomeRef = useRef(false);
   const [message, setMessage] = useState('Completing secure sign in…');
@@ -55,17 +64,16 @@ export default function OAuthCallbackScreen() {
   useEffect(() => {
     let active = true;
     void (async () => {
-      const deliveredUrl = callbackUrl ?? (await Linking.getInitialURL());
-      if (!deliveredUrl) {
+      if (!callbackUrl) {
         if (active && !handledOutcomeRef.current) {
           handledOutcomeRef.current = true;
           setFailed(true);
-          setMessage('The OAuth callback URL is unavailable.');
+          setMessage('The OAuth callback URL could not be resolved.');
         }
         return;
       }
 
-      const outcome = await completeOAuthCallbackOnce(deliveredUrl);
+      const outcome = await completeOAuthCallbackOnce(callbackUrl);
       if (!active || handledOutcomeRef.current) return;
       handledOutcomeRef.current = true;
 

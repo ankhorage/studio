@@ -8,8 +8,7 @@ import { afterEach, describe, expect, it } from 'bun:test';
 import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
 
 const SESSION_STORAGE_KEY = 'generated.oauth.session';
-const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
-const LEGACY_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
+const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
 const CALLBACK_URL = 'https://app.example/auth/callback';
 const SCENARIO_ENV = 'ANKH_GENERATED_OAUTH_SCENARIO';
 const temporaryRoots = new Set<string>();
@@ -108,7 +107,6 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   await waitFor(() => harness.state.assignedUrls.length === 1);
 
   const markerBeforeCallback = readTransportMarker(harness.state.values);
-  expect(markerBeforeCallback.version).toBe(1);
   expect(markerBeforeCallback.attemptId.length).toBeGreaterThan(0);
   expect(JSON.stringify(markerBeforeCallback)).not.toContain('provider');
   expect(JSON.stringify(markerBeforeCallback)).not.toContain('redirectUri');
@@ -124,7 +122,6 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
   expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
   expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
-  expect(harness.state.values.has(LEGACY_TRANSPORT_ATTEMPT_KEY)).toBe(false);
   expect(hasPkceVerifier(harness.state.values)).toBe(false);
   expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
 
@@ -299,20 +296,16 @@ function createGeneratedOAuthSource(): string {
     .replace("from './session';", "from './session.ts';");
 }
 
-function readTransportMarker(values: ReadonlyMap<string, string>): {
-  attemptId: string;
-  version: number;
-} {
+function readTransportMarker(values: ReadonlyMap<string, string>): { attemptId: string } {
   const raw = values.get(TRANSPORT_ATTEMPT_KEY);
   if (!raw) throw new Error('Generated OAuth transport marker was not persisted.');
   const value: unknown = JSON.parse(raw);
   if (!isRecord(value)) throw new Error('Generated OAuth transport marker is invalid.');
   const attemptId = Reflect.get(value, 'attemptId');
-  const version = Reflect.get(value, 'version');
-  if (typeof attemptId !== 'string' || typeof version !== 'number') {
+  if (typeof attemptId !== 'string') {
     throw new Error('Generated OAuth transport marker has an invalid shape.');
   }
-  return { attemptId, version };
+  return { attemptId };
 }
 
 function hasPkceVerifier(values: ReadonlyMap<string, string>): boolean {

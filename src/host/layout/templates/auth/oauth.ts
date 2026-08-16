@@ -39,8 +39,7 @@ import {
 } from './session';
 
 const OAUTH_CALLBACK_ROUTE = '${callbackRoute}';
-const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
-const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';
+const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
 const GENERATED_OAUTH_PROVIDERS = ${providers} as const;
 const GENERATED_NATIVE_SCHEMES = {
   android: ${androidScheme},
@@ -59,9 +58,12 @@ export type GeneratedOAuthTransportOutcome =
   | { status: 'error'; message: string; recoverable: boolean };
 
 interface StoredTransportAttempt {
-  version: 1;
   attemptId: string;
 }
+
+export type OAuthCallbackRouteParams = Readonly<
+  Record<string, string | string[] | undefined>
+>;
 
 let activeAuthorization: Promise<GeneratedOAuthTransportOutcome> | null = null;
 
@@ -133,7 +135,6 @@ async function runOAuthAuthorization(
 
   try {
     await writeTransportAttempt({
-      version: 1,
       attemptId: started.data.attemptId,
     });
   } catch {
@@ -220,6 +221,19 @@ function waitForFullPageNavigation(): Promise<never> {
   return new Promise<never>(() => {
     // Full-page navigation replaces this document before the promise settles.
   });
+}
+
+export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): string {
+  const callbackUrl = new URL(resolveOAuthRedirectUri());
+  for (const [name, value] of Object.entries(params)) {
+    if (name === '#') continue;
+    if (Array.isArray(value)) {
+      for (const item of value) callbackUrl.searchParams.append(name, item);
+      continue;
+    }
+    if (typeof value === 'string') callbackUrl.searchParams.append(name, value);
+  }
+  return callbackUrl.toString();
 }
 
 export async function completeOAuthCallback(
@@ -362,23 +376,18 @@ async function cancelOAuthAttempt(
 }
 
 async function writeTransportAttempt(attempt: StoredTransportAttempt): Promise<void> {
-  await clearLegacyTransportAttempt();
   await authSessionStorage.setItem(OAUTH_TRANSPORT_ATTEMPT_KEY, JSON.stringify(attempt));
 }
 
 async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
   const raw = await authSessionStorage.getItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
-  if (!raw) {
-    await clearLegacyTransportAttempt();
-    return null;
-  }
+  if (!raw) return null;
   try {
     const value: unknown = JSON.parse(raw);
     if (isRecord(value)) {
-      const version = Reflect.get(value, 'version');
       const attemptId = Reflect.get(value, 'attemptId');
-      if (version === 1 && typeof attemptId === 'string' && attemptId.trim().length > 0) {
-        return { version, attemptId };
+      if (typeof attemptId === 'string' && attemptId.trim().length > 0) {
+        return { attemptId };
       }
     }
   } catch {
@@ -389,14 +398,7 @@ async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
 }
 
 async function clearTransportAttempt(): Promise<void> {
-  await Promise.all([
-    safeRemoveTransportItem(OAUTH_TRANSPORT_ATTEMPT_KEY),
-    safeRemoveTransportItem(LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY),
-  ]);
-}
-
-async function clearLegacyTransportAttempt(): Promise<void> {
-  await safeRemoveTransportItem(LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY);
+  await safeRemoveTransportItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
 }
 
 async function safeRemoveTransportItem(key: string): Promise<void> {

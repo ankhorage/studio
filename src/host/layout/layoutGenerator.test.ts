@@ -300,8 +300,12 @@ describe('GeneratedAppFileGenerator', () => {
     expect(oauth).toContain('Linking.createURL');
     expect(oauth).toContain('callback_already_completed');
     expect(oauth).toContain('cancelOAuthAttempt');
-    expect(oauth).toContain('version === 1');
-    expect(oauth).toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+    expect(oauth).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';");
+    expect(oauth).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
+    expect(oauth).not.toContain('version === 1');
+    expect(oauth).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+    expect(oauth).not.toContain('ankh.auth.oauth.transport.v1');
+    expect(oauth).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreens).toContain('OAuthProviderList');
     expect(authScreens).toContain('startOAuthAuthorization');
