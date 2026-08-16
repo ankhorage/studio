@@ -7,7 +7,7 @@ import type {
   ExternalApiDiscoveryAttempt,
   ExternalApiOperationTestRequest,
   ExternalApiOperationTestResult,
-  ManualRestSourceRequest,
+  ManualRestApiRequest,
 } from './externalApiAuthoringContracts';
 
 class ExternalApiApiError extends Error {
@@ -27,9 +27,9 @@ export function connectExternalApi(
   return requestResult(projectId, 'connect', request, parseConnectResult);
 }
 
-export function createManualRestSource(
+export function createManualRestApi(
   projectId: string,
-  request: ManualRestSourceRequest,
+  request: ManualRestApiRequest,
 ): Promise<ExternalApiConnectResult> {
   return requestResult(projectId, 'manual-rest', request, parseConnectResult);
 }
@@ -47,14 +47,11 @@ async function requestResult<TResult>(
   body: unknown,
   parse: (value: unknown) => TResult,
 ): Promise<TResult> {
-  const response = await fetch(
-    `${API_BASE}/projects/${encodeURIComponent(projectId)}/data-sources/${action}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    },
-  );
+  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/apis/${action}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
   const value = await readJson(response);
   if (!response.ok && !isStructuredFailure(value)) {
     throw new ExternalApiApiError('The Studio external API request failed.', response.status);
@@ -76,8 +73,7 @@ function parseConnectResult(value: unknown): ExternalApiConnectResult {
   const attempts = parseAttempts(record.attempts);
   if (!record.ok) return { ok: false, diagnostics, attempts };
   if (
-    typeof record.sourceId !== 'string' ||
-    record.kind !== 'api' ||
+    typeof record.apiId !== 'string' ||
     !isConnectedProtocol(record.protocol) ||
     typeof record.created !== 'boolean'
   ) {
@@ -85,8 +81,7 @@ function parseConnectResult(value: unknown): ExternalApiConnectResult {
   }
   return {
     ok: true,
-    sourceId: record.sourceId,
-    kind: record.kind,
+    apiId: record.apiId,
     protocol: record.protocol,
     created: record.created,
     diagnostics,
@@ -127,7 +122,7 @@ function parseDiagnostics(value: unknown): readonly DataSourceDiagnostic[] {
       code: record.code,
       message: record.message,
       severity: record.severity,
-      dataSourceId: readString(record.dataSourceId),
+      apiId: readString(record.apiId),
       endpointId: readString(record.endpointId),
       operationId: readString(record.operationId),
       path: readString(record.path),
