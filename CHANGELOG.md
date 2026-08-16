@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.5
+
+### Patch Changes
+
+- 8bef0ce: Keep Deploy runtime logic in the trusted Studio host so generated React Native clients do not bundle Node-only `@ankhorage/deploy` modules.
+
 ## 1.12.4
 
 ### Patch Changes
