@@ -110,6 +110,13 @@ graph TD
   module_src_bindingSchemaModel_ts["src/bindingSchemaModel.ts"]
   package__ankhorage_studio -.-> module_src_bindingSchemaModel_ts
   module_src_bindingSchemaModel_ts --> module_src_bindingAuthoringContracts_ts
+  module_src_canExecuteProjectDeployRelease_test_ts["src/canExecuteProjectDeployRelease.test.ts"]
+  package__ankhorage_studio -.-> module_src_canExecuteProjectDeployRelease_test_ts
+  module_src_canExecuteProjectDeployRelease_test_ts --> module_src_canExecuteProjectDeployRelease_ts
+  module_src_canExecuteProjectDeployRelease_test_ts --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_canExecuteProjectDeployRelease_ts["src/canExecuteProjectDeployRelease.ts"]
+  package__ankhorage_studio -.-> module_src_canExecuteProjectDeployRelease_ts
+  module_src_canExecuteProjectDeployRelease_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_canvasDragModel_public_test_ts["src/canvasDragModel.public.test.ts"]
   package__ankhorage_studio -.-> module_src_canvasDragModel_public_test_ts
   module_src_canvasDragModel_public_test_ts --> module_src_canvasDragModel_ts
@@ -878,6 +885,7 @@ graph TD
   package__ankhorage_studio -.-> module_src_projectDeployApi_ts
   module_src_projectDeployApi_ts --> module_src_createProjectDeployRequest_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
@@ -885,10 +893,13 @@ graph TD
   module_src_projectDeployClient_ts["src/projectDeployClient.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployClient_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployApiError_ts
+  module_src_projectDeployClient_ts --> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRequest_ts
   module_src_projectDeployClient_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployClient_ts --> module_src_secretResponseGuard_ts
+  module_src_projectDeployReleaseExecutionResponse_ts["src/projectDeployReleaseExecutionResponse.ts"]
+  package__ankhorage_studio -.-> module_src_projectDeployReleaseExecutionResponse_ts
   module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployRequest_ts["src/projectDeployRequest.ts"]
@@ -1207,19 +1218,42 @@ graph TD
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx
   module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployControlResultView_tsx["src/ui/admin/pages/deploy/DeployControlResultView.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployControlResultView_tsx
+  module_src_ui_admin_pages_deploy_DeployControlResultView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_deployDashboardTypes_ts["src/ui/admin/pages/deploy/deployDashboardTypes.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx["src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx
+  module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx --> module_src_projectDeployReleaseExecutionResponse_ts
+  module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx["src/ui/admin/pages/deploy/DeployHistoryCard.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx["src/ui/admin/pages/deploy/DeployReadinessCard.tsx"]
-  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployApi_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployReleaseInspectionResult_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_projectDeployRuntimeInput_ts
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
-  module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployLifecycleControls_tsx["src/ui/admin/pages/deploy/DeployLifecycleControls.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployLifecycleControls_tsx
+  module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx["src/ui/admin/pages/deploy/DeployPlanPreview.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx
+  module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx["src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_canExecuteProjectDeployRelease_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_projectDeployApi_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_projectDeployReleaseExecutionResponse_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_projectDeployReleaseInspectionResult_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_projectDeployRuntimeInput_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_DeployControlResultView_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_DeployLifecycleControls_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_DeployPlanPreview_tsx
+  module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx --> module_src_ui_admin_pages_deploy_DeployResumeActions_tsx
+  module_src_ui_admin_pages_deploy_DeployResumeActions_tsx["src/ui/admin/pages/deploy/DeployResumeActions.tsx"]
+  package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployResumeActions_tsx
+  module_src_ui_admin_pages_deploy_DeployResumeActions_tsx --> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx["src/ui/admin/pages/deploy/DeploySummaryGrid.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx
   module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
@@ -1237,7 +1271,7 @@ graph TD
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployAuthoredStateCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployHistoryCard_tsx
-  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployReadinessCard_tsx
+  module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployReleaseOperationsCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeploySummaryGrid_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_DeployTargetsCard_tsx
   module_src_ui_admin_pages_DeployAdminPage_tsx --> module_src_ui_admin_pages_deploy_useProjectDeployDashboard_ts

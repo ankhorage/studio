@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.10.0",
+      "value": "v1.10.1",
       "color": "cb3837"
     },
     {
@@ -368,6 +368,21 @@
         "collectStudioResponsePaths",
         "resolveStudioSchemaValueMeta"
       ]
+    },
+    {
+      "path": "src/canExecuteProjectDeployRelease.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/canExecuteProjectDeployRelease.ts",
+        "src/projectDeployReleaseInspectionResult.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/canExecuteProjectDeployRelease.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/projectDeployReleaseInspectionResult.ts"],
+      "exports": ["canExecuteProjectDeployRelease"]
     },
     {
       "path": "src/canvasDragModel.public.test.ts",
@@ -2397,16 +2412,20 @@
       "dependencies": [
         "src/createProjectDeployRequest.ts",
         "src/projectDeployClient.ts",
+        "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
       "exports": [
+        "executeProjectDeployRelease",
+        "executeProjectDeployReleaseControl",
         "inspectProjectDeployRelease",
         "listProjectDeployReleaseHistory",
         "readProjectDeployConfig",
         "readProjectDeployListing",
         "readProjectDeployMonetization",
-        "readProjectDeployRelease"
+        "readProjectDeployRelease",
+        "resumeProjectDeployRelease"
       ]
     },
     {
@@ -2420,12 +2439,19 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/projectDeployApiError.ts",
+        "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRequest.ts",
         "src/projectDeployRuntimeInput.ts",
         "src/secretResponseGuard.ts"
       ],
       "exports": ["ProjectDeployClient"]
+    },
+    {
+      "path": "src/projectDeployReleaseExecutionResponse.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployReleaseExecutionResponse"]
     },
     {
       "path": "src/projectDeployReleaseInspectionResult.ts",
@@ -3500,10 +3526,25 @@
       "exports": ["DeployAuthoredStateCard"]
     },
     {
+      "path": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/adminPagePrimitives.tsx"],
+      "exports": ["DeployControlResultView"]
+    },
+    {
       "path": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["DeployLoadable", "ProjectDeployDashboardState"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/projectDeployReleaseExecutionResponse.ts",
+        "src/ui/admin/adminPagePrimitives.tsx"
+      ],
+      "exports": ["DeployExecutionResultView"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
@@ -3515,16 +3556,44 @@
       "exports": ["DeployHistoryCard"]
     },
     {
-      "path": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+      "path": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["DeployLifecycleControls"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
       "isEntrypoint": false,
       "dependencies": [
+        "src/projectDeployReleaseInspectionResult.ts",
+        "src/ui/admin/adminPagePrimitives.tsx"
+      ],
+      "exports": ["DeployPlanPreview"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/canExecuteProjectDeployRelease.ts",
         "src/projectDeployApi.ts",
+        "src/projectDeployReleaseExecutionResponse.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRuntimeInput.ts",
         "src/ui/admin/adminPagePrimitives.tsx",
-        "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
+        "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
+        "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+        "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
+        "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
+        "src/ui/admin/pages/deploy/DeployResumeActions.tsx"
       ],
-      "exports": ["DeployReadinessCard"]
+      "exports": ["DeployReleaseOperationsCard"]
+    },
+    {
+      "path": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
+      "isEntrypoint": false,
+      "dependencies": ["src/ui/admin/pages/deploy/deployDashboardTypes.ts"],
+      "exports": ["DeployResumeActions"]
     },
     {
       "path": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
@@ -3560,7 +3629,7 @@
         "src/ui/admin/adminPagePrimitives.tsx",
         "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx",
         "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
-        "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
         "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
         "src/ui/admin/pages/deploy/DeployTargetsCard.tsx",
         "src/ui/admin/pages/deploy/useProjectDeployDashboard.ts"
@@ -10563,6 +10632,24 @@
       }
     },
     {
+      "name": "resultFor",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canExecuteProjectDeployRelease.test.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "canExecuteProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/canExecuteProjectDeployRelease.ts",
+        "line": 3,
+        "column": 1
+      }
+    },
+    {
       "name": "treeContainsNode",
       "description": null,
       "sourceLocation": {
@@ -12781,7 +12868,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 17,
+        "line": 19,
         "column": 1
       }
     },
@@ -12790,7 +12877,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 39,
+        "line": 41,
         "column": 1
       }
     },
@@ -12799,7 +12886,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 50,
+        "line": 52,
         "column": 1
       }
     },
@@ -12808,7 +12895,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 71,
+        "line": 73,
         "column": 1
       }
     },
@@ -12817,7 +12904,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 91,
+        "line": 93,
         "column": 1
       }
     },
@@ -12826,39 +12913,39 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 103,
+        "line": 105,
         "column": 1
       }
     },
     {
-      "name": "ensureBinaryBodyParser",
+      "name": "registerReleaseMutationRoutes",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 137,
+        "line": 123,
         "column": 1
       }
     },
     {
-      "name": "readAssetLocation",
+      "name": "executeReleaseRequest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 146,
+        "line": 138,
         "column": 1
       }
     },
     {
-      "name": "projectId",
+      "name": "resumeReleaseRequest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 172,
+        "line": 158,
         "column": 1
       }
     },
     {
-      "name": "respond",
+      "name": "executeReleaseControlRequest",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
@@ -12867,11 +12954,47 @@
       }
     },
     {
+      "name": "ensureBinaryBodyParser",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "readAssetLocation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "projectId",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 223,
+        "column": 1
+      }
+    },
+    {
+      "name": "respond",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/deployRoutes.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
       "name": "readErrorMessage",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/http/deployRoutes.ts",
-        "line": 184,
+        "line": 235,
         "column": 1
       }
     },
@@ -17497,7 +17620,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 15,
+        "line": 20,
         "column": 9
       }
     },
@@ -17506,7 +17629,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 33,
+        "line": 35,
         "column": 9
       }
     },
@@ -17515,7 +17638,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 49,
+        "line": 44,
         "column": 9
       }
     },
@@ -17524,8 +17647,44 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 61,
+        "line": 54,
         "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 82,
+        "column": 9
+      }
+    },
+    {
+      "name": "request",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 112,
+        "column": 9
+      }
+    },
+    {
+      "name": "releaseInspection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "releasePlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.test.ts",
+        "line": 157,
+        "column": 1
       }
     },
     {
@@ -17533,7 +17692,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.test.ts",
-        "line": 101,
+        "line": 176,
         "column": 1
       }
     },
@@ -17542,7 +17701,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 12,
+        "line": 23,
         "column": 1
       }
     },
@@ -17551,7 +17710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 16,
+        "line": 27,
         "column": 1
       }
     },
@@ -17560,7 +17719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 20,
+        "line": 31,
         "column": 1
       }
     },
@@ -17569,7 +17728,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 26,
+        "line": 37,
         "column": 1
       }
     },
@@ -17578,7 +17737,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 30,
+        "line": 41,
         "column": 1
       }
     },
@@ -17587,7 +17746,34 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 36,
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "resumeProjectDeployRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeProjectDeployReleaseControl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 71,
         "column": 1
       }
     },
@@ -17596,7 +17782,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 64,
+        "line": 132,
         "column": 1
       }
     },
@@ -17605,7 +17791,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 72,
+        "line": 140,
         "column": 1
       }
     },
@@ -17614,7 +17800,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 76,
+        "line": 144,
         "column": 1
       }
     },
@@ -17623,7 +17809,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 83,
+        "line": 151,
         "column": 1
       }
     },
@@ -17632,7 +17818,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 96,
+        "line": 164,
         "column": 1
       }
     },
@@ -17641,7 +17827,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 104,
+        "line": 172,
         "column": 1
       }
     },
@@ -17650,7 +17836,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 119,
+        "line": 187,
         "column": 1
       }
     },
@@ -17659,7 +17845,61 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 124,
+        "line": 192,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseExecutionResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 224,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseProjectReleaseExecutionResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseControlResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 257,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 272,
+        "column": 1
+      }
+    },
+    {
+      "name": "isReconcileStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 279,
+        "column": 1
+      }
+    },
+    {
+      "name": "isControlStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployClient.ts",
+        "line": 289,
         "column": 1
       }
     },
@@ -17668,7 +17908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 156,
+        "line": 293,
         "column": 1
       }
     },
@@ -17677,7 +17917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 168,
+        "line": 305,
         "column": 1
       }
     },
@@ -17686,7 +17926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 178,
+        "line": 315,
         "column": 1
       }
     },
@@ -17695,7 +17935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 183,
+        "line": 320,
         "column": 1
       }
     },
@@ -17704,7 +17944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployClient.ts",
-        "line": 187,
+        "line": 324,
         "column": 1
       }
     },
@@ -20319,6 +20559,24 @@
       }
     },
     {
+      "name": "DeployControlResultView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployExecutionResultView",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
       "name": "DeployHistoryCard",
       "description": null,
       "sourceLocation": {
@@ -20328,29 +20586,119 @@
       }
     },
     {
-      "name": "DeployReadinessCard",
+      "name": "DeployLifecycleControls",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "line": 32,
+        "filePath": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
+        "line": 6,
         "column": 1
       }
     },
     {
-      "name": "inspect",
+      "name": "DeployPlanPreview",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "line": 48,
+        "filePath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployReleaseOperationsCard",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "resetPreviewState",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 100,
         "column": 9
       }
     },
     {
-      "name": "ReadinessResult",
+      "name": "previewRelease",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "line": 96,
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 110,
+        "column": 9
+      }
+    },
+    {
+      "name": "executeRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 127,
+        "column": 9
+      }
+    },
+    {
+      "name": "resumeRelease",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 149,
+        "column": 9
+      }
+    },
+    {
+      "name": "executeControl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 171,
+        "column": 9
+      }
+    },
+    {
+      "name": "chooseResume",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 193,
+        "column": 9
+      }
+    },
+    {
+      "name": "chooseControl",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 197,
+        "column": 9
+      }
+    },
+    {
+      "name": "createRuntime",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 295,
+        "column": 1
+      }
+    },
+    {
+      "name": "readError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "line": 308,
+        "column": 1
+      }
+    },
+    {
+      "name": "DeployResumeActions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
+        "line": 8,
         "column": 1
       }
     },
@@ -22483,6 +22831,21 @@
         "sourcePath": "src/bindingSchemaModel.ts"
       },
       {
+        "fromPath": "src/canExecuteProjectDeployRelease.test.ts",
+        "toPath": "src/canExecuteProjectDeployRelease.ts",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
+      },
+      {
+        "fromPath": "src/canExecuteProjectDeployRelease.test.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
+      },
+      {
+        "fromPath": "src/canExecuteProjectDeployRelease.ts",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/canExecuteProjectDeployRelease.ts"
+      },
+      {
         "fromPath": "src/canvasDragModel.public.test.ts",
         "toPath": "src/canvasDragModel.ts",
         "sourcePath": "src/canvasDragModel.public.test.ts"
@@ -22829,6 +23192,11 @@
       },
       {
         "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployReleaseExecutionResponse.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
         "toPath": "src/projectDeployReleaseInspectionResult.ts",
         "sourcePath": "src/projectDeployApi.ts"
       },
@@ -22840,6 +23208,11 @@
       {
         "fromPath": "src/projectDeployClient.ts",
         "toPath": "src/projectDeployApiError.ts",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromPath": "src/projectDeployClient.ts",
+        "toPath": "src/projectDeployReleaseExecutionResponse.ts",
         "sourcePath": "src/projectDeployClient.ts"
       },
       {
@@ -25539,7 +25912,7 @@
       },
       {
         "fromPath": "src/ui/admin/pages/DeployAdminPage.tsx",
-        "toPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
         "sourcePath": "src/ui/admin/pages/DeployAdminPage.tsx"
       },
       {
@@ -26303,6 +26676,21 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
       },
       {
+        "fromPath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+        "toPath": "src/projectDeployReleaseExecutionResponse.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"
+      },
+      {
         "fromPath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx"
@@ -26313,29 +26701,79 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployHistoryCard.tsx"
       },
       {
-        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "fromPath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
         "toPath": "src/projectDeployReleaseInspectionResult.ts",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx"
       },
       {
-        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "toPath": "src/projectDeployRuntimeInput.ts",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "toPath": "src/projectDeployApi.ts",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
-      },
-      {
-        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "fromPath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx"
       },
       {
-        "fromPath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/canExecuteProjectDeployRelease.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/projectDeployApi.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/projectDeployReleaseExecutionResponse.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/projectDeployReleaseInspectionResult.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/projectDeployRuntimeInput.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/adminPagePrimitives.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
         "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployPlanPreview.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toPath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
+        "toPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx"
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeploySummaryGrid.tsx",
@@ -27278,6 +27716,30 @@
         "toSymbol": "isObjectLike",
         "callExpression": "isObjectLike",
         "sourcePath": "src/bindingSchemaModel.ts"
+      },
+      {
+        "fromSymbol": "src/canExecuteProjectDeployRelease.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
+      },
+      {
+        "fromSymbol": "src/canExecuteProjectDeployRelease.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
+      },
+      {
+        "fromSymbol": "src/canExecuteProjectDeployRelease.test.ts",
+        "toSymbol": "canExecuteProjectDeployRelease",
+        "callExpression": "canExecuteProjectDeployRelease",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
+      },
+      {
+        "fromSymbol": "src/canExecuteProjectDeployRelease.test.ts",
+        "toSymbol": "resultFor",
+        "callExpression": "resultFor",
+        "sourcePath": "src/canExecuteProjectDeployRelease.test.ts"
       },
       {
         "fromSymbol": "src/canvasDragModel.public.test.ts",
@@ -29908,6 +30370,36 @@
         "sourcePath": "src/projectDeployApi.test.ts"
       },
       {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "releaseInspection",
+        "callExpression": "releaseInspection",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "releasePlan",
+        "callExpression": "releasePlan",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "executeRelease",
+        "callExpression": "client.executeRelease",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "resumeRelease",
+        "callExpression": "client.resumeRelease",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
+        "fromSymbol": "src/projectDeployApi.test.ts",
+        "toSymbol": "executeReleaseControl",
+        "callExpression": "client.executeReleaseControl",
+        "sourcePath": "src/projectDeployApi.test.ts"
+      },
+      {
         "fromSymbol": "captureProjectDeployApiError",
         "toSymbol": "action",
         "callExpression": "action",
@@ -29956,6 +30448,24 @@
         "sourcePath": "src/projectDeployApi.ts"
       },
       {
+        "fromSymbol": "executeProjectDeployRelease",
+        "toSymbol": "executeRelease",
+        "callExpression": "client.executeRelease",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "resumeProjectDeployRelease",
+        "toSymbol": "resumeRelease",
+        "callExpression": "client.resumeRelease",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromSymbol": "executeProjectDeployReleaseControl",
+        "toSymbol": "executeReleaseControl",
+        "callExpression": "client.executeReleaseControl",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
         "fromSymbol": "readConfig",
         "toSymbol": "requestJson",
         "callExpression": "this.requestJson",
@@ -30023,6 +30533,36 @@
       },
       {
         "fromSymbol": "inspectRelease",
+        "toSymbol": "projectPath",
+        "callExpression": "projectPath",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "postReleaseAction",
+        "callExpression": "this.postReleaseAction",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "postReleaseAction",
+        "callExpression": "this.postReleaseAction",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControl",
+        "toSymbol": "postReleaseAction",
+        "callExpression": "this.postReleaseAction",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "postReleaseAction",
+        "toSymbol": "requestJson",
+        "callExpression": "this.requestJson",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "postReleaseAction",
         "toSymbol": "projectPath",
         "callExpression": "projectPath",
         "sourcePath": "src/projectDeployClient.ts"
@@ -30119,6 +30659,78 @@
       },
       {
         "fromSymbol": "parseInspection",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseExecutionResponse",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseExecutionResponse",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseExecutionResponse",
+        "toSymbol": "parseProjectReleaseExecutionResult",
+        "callExpression": "parseProjectReleaseExecutionResult",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseProjectReleaseExecutionResult",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseProjectReleaseExecutionResult",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseProjectReleaseExecutionResult",
+        "toSymbol": "parseFailure",
+        "callExpression": "parseFailure",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseProjectReleaseExecutionResult",
+        "toSymbol": "isReconcileStatus",
+        "callExpression": "isReconcileStatus",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseControlResult",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseControlResult",
+        "toSymbol": "isControlStatus",
+        "callExpression": "isControlStatus",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseControlResult",
+        "toSymbol": "invalid",
+        "callExpression": "invalid",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseFailure",
+        "toSymbol": "asRecord",
+        "callExpression": "asRecord",
+        "sourcePath": "src/projectDeployClient.ts"
+      },
+      {
+        "fromSymbol": "parseFailure",
         "toSymbol": "invalid",
         "callExpression": "invalid",
         "sourcePath": "src/projectDeployClient.ts"
@@ -38836,6 +39448,42 @@
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
       {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "createAccess",
+        "callExpression": "this.createAccess",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "resumeProjectRelease",
+        "callExpression": "resumeProjectRelease",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "projectRoot",
+        "callExpression": "this.projectRoot",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControl",
+        "toSymbol": "createAccess",
+        "callExpression": "this.createAccess",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControl",
+        "toSymbol": "executeProjectReleaseControl",
+        "callExpression": "executeProjectReleaseControl",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControl",
+        "toSymbol": "projectRoot",
+        "callExpression": "this.projectRoot",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
         "fromSymbol": "listReleaseHistory",
         "toSymbol": "listProjectReleaseHistory",
         "callExpression": "listProjectReleaseHistory",
@@ -39166,15 +39814,81 @@
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
-        "fromSymbol": "src/host/http/deployRoutes.ts",
-        "toSymbol": "executeRelease",
-        "callExpression": "service.executeRelease",
+        "fromSymbol": "registerReleaseRoutes",
+        "toSymbol": "registerReleaseMutationRoutes",
+        "callExpression": "registerReleaseMutationRoutes",
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
         "fromSymbol": "src/host/http/deployRoutes.ts",
         "toSymbol": "listReleaseHistory",
         "callExpression": "service.listReleaseHistory",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "executeReleaseRequest",
+        "callExpression": "executeReleaseRequest",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "resumeReleaseRequest",
+        "callExpression": "resumeReleaseRequest",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/deployRoutes.ts",
+        "toSymbol": "executeReleaseControlRequest",
+        "callExpression": "executeReleaseControlRequest",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseRequest",
+        "toSymbol": "randomUUID",
+        "callExpression": "randomUUID",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseRequest",
+        "toSymbol": "executeRelease",
+        "callExpression": "service.executeRelease",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseRequest",
+        "toSymbol": "projectId",
+        "callExpression": "projectId",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "resumeReleaseRequest",
+        "toSymbol": "randomUUID",
+        "callExpression": "randomUUID",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "resumeReleaseRequest",
+        "toSymbol": "resumeRelease",
+        "callExpression": "service.resumeRelease",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "resumeReleaseRequest",
+        "toSymbol": "projectId",
+        "callExpression": "projectId",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControlRequest",
+        "toSymbol": "executeReleaseControl",
+        "callExpression": "service.executeReleaseControl",
+        "sourcePath": "src/host/http/deployRoutes.ts"
+      },
+      {
+        "fromSymbol": "executeReleaseControlRequest",
+        "toSymbol": "projectId",
+        "callExpression": "projectId",
         "sourcePath": "src/host/http/deployRoutes.ts"
       },
       {
@@ -49210,40 +49924,334 @@
         "sourcePath": "src/ui/admin/pages/deploy/DeployAuthoredStateCard.tsx"
       },
       {
-        "fromSymbol": "DeployReadinessCard",
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx",
+        "toSymbol": "onControl",
+        "callExpression": "props.onControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployLifecycleControls.tsx"
+      },
+      {
+        "fromSymbol": "DeployReleaseOperationsCard",
         "toSymbol": "useState",
         "callExpression": "useState",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
       },
       {
-        "fromSymbol": "inspect",
-        "toSymbol": "setChecking",
-        "callExpression": "setChecking",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "fromSymbol": "DeployReleaseOperationsCard",
+        "toSymbol": "createRuntime",
+        "callExpression": "createRuntime",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
       },
       {
-        "fromSymbol": "inspect",
+        "fromSymbol": "DeployReleaseOperationsCard",
+        "toSymbol": "canExecuteProjectDeployRelease",
+        "callExpression": "canExecuteProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setOutcome",
+        "callExpression": "setOutcome",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setControlResult",
+        "callExpression": "setControlResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resetPreviewState",
         "toSymbol": "setError",
         "callExpression": "setError",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
       },
       {
-        "fromSymbol": "inspect",
-        "toSymbol": "setResult",
-        "callExpression": "setResult",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setConfirmExecute",
+        "callExpression": "setConfirmExecute",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
       },
       {
-        "fromSymbol": "inspect",
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setPendingResume",
+        "callExpression": "setPendingResume",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resetPreviewState",
+        "toSymbol": "setPendingControl",
+        "callExpression": "setPendingControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
+        "toSymbol": "setOutcome",
+        "callExpression": "setOutcome",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
+        "toSymbol": "setControlResult",
+        "callExpression": "setControlResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
         "toSymbol": "inspectProjectDeployRelease",
         "callExpression": "inspectProjectDeployRelease",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
       },
       {
-        "fromSymbol": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx",
-        "toSymbol": "inspect",
-        "callExpression": "inspect",
-        "sourcePath": "src/ui/admin/pages/deploy/DeployReadinessCard.tsx"
+        "fromSymbol": "previewRelease",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "previewRelease",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "canExecuteProjectDeployRelease",
+        "callExpression": "canExecuteProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "setConfirmExecute",
+        "callExpression": "setConfirmExecute",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "executeProjectDeployRelease",
+        "callExpression": "executeProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "setOutcome",
+        "callExpression": "setOutcome",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "onMutation",
+        "callExpression": "props.onMutation",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeRelease",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "setPendingResume",
+        "callExpression": "setPendingResume",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "resumeProjectDeployRelease",
+        "callExpression": "resumeProjectDeployRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "setOutcome",
+        "callExpression": "setOutcome",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "onMutation",
+        "callExpression": "props.onMutation",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "resumeRelease",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "setPendingControl",
+        "callExpression": "setPendingControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "setBusy",
+        "callExpression": "setBusy",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "setError",
+        "callExpression": "setError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "executeProjectDeployReleaseControl",
+        "callExpression": "executeProjectDeployReleaseControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "setPreview",
+        "callExpression": "setPreview",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "setControlResult",
+        "callExpression": "setControlResult",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "onMutation",
+        "callExpression": "props.onMutation",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "executeControl",
+        "toSymbol": "readError",
+        "callExpression": "readError",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "chooseResume",
+        "toSymbol": "setPendingResume",
+        "callExpression": "setPendingResume",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "chooseControl",
+        "toSymbol": "setPendingControl",
+        "callExpression": "setPendingControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "resetPreviewState",
+        "callExpression": "resetPreviewState",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "setEnvironment",
+        "callExpression": "setEnvironment",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "setAndroidTrack",
+        "callExpression": "setAndroidTrack",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "previewRelease",
+        "callExpression": "previewRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "setConfirmExecute",
+        "callExpression": "setConfirmExecute",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "executeRelease",
+        "callExpression": "executeRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "setPendingResume",
+        "callExpression": "setPendingResume",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "resumeRelease",
+        "callExpression": "resumeRelease",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "setPendingControl",
+        "callExpression": "setPendingControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
+        "toSymbol": "executeControl",
+        "callExpression": "executeControl",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx"
+      },
+      {
+        "fromSymbol": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
+        "toSymbol": "onResume",
+        "callExpression": "props.onResume",
+        "sourcePath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx"
       },
       {
         "fromSymbol": "DeploySummaryGrid",

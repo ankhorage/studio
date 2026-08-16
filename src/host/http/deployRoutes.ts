@@ -1,5 +1,7 @@
+import { randomUUID } from 'node:crypto';
+
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
+import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
   ProjectReleaseInput,
   ProjectReleaseInspection,
@@ -112,26 +114,75 @@ function registerReleaseRoutes(fastify: FastifyInstance, service: ProjectDeployS
       service.inspectRelease(projectId(req), req.body as ProjectDeployRuntimeInput),
     ),
   );
-  fastify.post('/api/projects/:id/deploy/release/execute', async (req, reply) =>
-    respond(reply, () => {
-      const body = req.body as {
-        readonly runtime: ProjectDeployRuntimeInput;
-        readonly inspection: ProjectReleaseInspection;
-        readonly plan: ReleasePlan;
-        readonly executionId: string;
-      };
-      return service.executeRelease({
-        projectId: projectId(req),
-        runtime: body.runtime,
-        inspection: body.inspection,
-        plan: body.plan,
-        executionId: body.executionId,
-      });
-    }),
-  );
+  registerReleaseMutationRoutes(fastify, service);
   fastify.get('/api/projects/:id/deploy/release/history', async (req, reply) =>
     respond(reply, () => service.listReleaseHistory(projectId(req))),
   );
+}
+
+function registerReleaseMutationRoutes(
+  fastify: FastifyInstance,
+  service: ProjectDeployService,
+): void {
+  fastify.post('/api/projects/:id/deploy/release/execute', async (req, reply) =>
+    respond(reply, () => executeReleaseRequest(service, req)),
+  );
+  fastify.post('/api/projects/:id/deploy/release/resume', async (req, reply) =>
+    respond(reply, () => resumeReleaseRequest(service, req)),
+  );
+  fastify.post('/api/projects/:id/deploy/release/control', async (req, reply) =>
+    respond(reply, () => executeReleaseControlRequest(service, req)),
+  );
+}
+
+async function executeReleaseRequest(
+  service: ProjectDeployService,
+  req: FastifyRequest,
+): Promise<unknown> {
+  const body = req.body as {
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly inspection: ProjectReleaseInspection;
+    readonly plan: ReleasePlan;
+  };
+  const executionId = randomUUID();
+  const result = await service.executeRelease({
+    projectId: projectId(req),
+    runtime: body.runtime,
+    inspection: body.inspection,
+    plan: body.plan,
+    executionId,
+  });
+  return { executionId, result };
+}
+
+async function resumeReleaseRequest(
+  service: ProjectDeployService,
+  req: FastifyRequest,
+): Promise<unknown> {
+  const body = req.body as {
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly previousExecutionId: string;
+  };
+  const executionId = randomUUID();
+  const result = await service.resumeRelease({
+    projectId: projectId(req),
+    runtime: body.runtime,
+    previousExecutionId: body.previousExecutionId,
+    executionId,
+  });
+  return { executionId, result };
+}
+
+function executeReleaseControlRequest(service: ProjectDeployService, req: FastifyRequest) {
+  const body = req.body as {
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly control: ReleaseLifecycleControl;
+  };
+  return service.executeReleaseControl({
+    projectId: projectId(req),
+    runtime: body.runtime,
+    control: body.control,
+  });
 }
 
 function ensureBinaryBodyParser(fastify: FastifyInstance): void {

@@ -1,5 +1,5 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
+import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
   ProjectReleaseExecutionResult,
   ProjectReleaseInput,
@@ -10,6 +10,7 @@ import type {
 import {
   createProjectReleasePlan,
   executeProjectRelease,
+  executeProjectReleaseControl,
   inspectProjectRelease,
   listProjectReleaseHistory,
   readProjectDeploymentConfig,
@@ -18,6 +19,7 @@ import {
   readProjectStoreListing,
   removeProjectStoreListingAsset,
   removeProjectStoreListingLocale,
+  resumeProjectRelease,
   updateProjectDeploymentConfig,
   writeProjectMonetization,
   writeProjectRelease,
@@ -157,6 +159,34 @@ export class ProjectDeployService {
       inspection: input.inspection,
       plan: input.plan,
       executionId: input.executionId,
+      ...access,
+    });
+  }
+
+  async resumeRelease(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly previousExecutionId: string;
+    readonly executionId: string;
+  }): Promise<ProjectReleaseExecutionResult> {
+    const access = await this.createAccess(input.projectId, input.runtime);
+    return resumeProjectRelease({
+      projectRoot: this.projectRoot(input.projectId),
+      previousExecutionId: input.previousExecutionId,
+      executionId: input.executionId,
+      ...access,
+    });
+  }
+
+  async executeReleaseControl(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly control: ReleaseLifecycleControl;
+  }) {
+    const access = await this.createAccess(input.projectId, input.runtime);
+    return executeProjectReleaseControl({
+      projectRoot: this.projectRoot(input.projectId),
+      control: input.control,
       ...access,
     });
   }

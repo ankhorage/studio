@@ -1,9 +1,20 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/deploy';
-import type { ProjectReleaseHistoryRecord, ProjectStoreListing } from '@ankhorage/deploy/project';
+import type {
+  MonetizationDesiredState,
+  ReleaseControlExecutionResult,
+  ReleaseDesiredState,
+  ReleaseLifecycleControl,
+  ReleasePlan,
+} from '@ankhorage/deploy';
+import type {
+  ProjectReleaseHistoryRecord,
+  ProjectReleaseInspection,
+  ProjectStoreListing,
+} from '@ankhorage/deploy/project';
 
 import { createProjectDeployRequest } from './createProjectDeployRequest';
 import { ProjectDeployClient } from './projectDeployClient';
+import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 
@@ -38,4 +49,29 @@ export function inspectProjectDeployRelease(input: {
   readonly runtime: ProjectDeployRuntimeInput;
 }): Promise<ProjectDeployReleaseInspectionResult> {
   return client.inspectRelease(input);
+}
+
+export function executeProjectDeployRelease(input: {
+  readonly projectId: string;
+  readonly runtime: ProjectDeployRuntimeInput;
+  readonly inspection: ProjectReleaseInspection;
+  readonly plan: ReleasePlan;
+}): Promise<ProjectDeployReleaseExecutionResponse> {
+  return client.executeRelease(input);
+}
+
+export function resumeProjectDeployRelease(input: {
+  readonly projectId: string;
+  readonly runtime: ProjectDeployRuntimeInput;
+  readonly previousExecutionId: string;
+}): Promise<ProjectDeployReleaseExecutionResponse> {
+  return client.resumeRelease(input);
+}
+
+export function executeProjectDeployReleaseControl(input: {
+  readonly projectId: string;
+  readonly runtime: ProjectDeployRuntimeInput;
+  readonly control: ReleaseLifecycleControl;
+}): Promise<ReleaseControlExecutionResult> {
+  return client.executeReleaseControl(input);
 }
