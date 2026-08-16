@@ -614,7 +614,7 @@ adminWebSmokeTest(
       ) as { version?: string };
       const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
 
-      expect(generatedZoraRange).toBe('^2.9.0');
+      expect(generatedZoraRange).toBe('^2.13.2');
       expect(typeof resolvedZoraPackage.version).toBe('string');
       expect(
         satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
@@ -1112,7 +1112,7 @@ async function verifyDesktopSelectionAndUnsupportedGeometry(
     };
     const target = findRenderedElement(wrapper);
     if (!(target instanceof HTMLElement)) return false;
-    target.style.width = \`\${target.getBoundingClientRect().width + 40}px\`;
+    target.style.width = \`${target.getBoundingClientRect().width + 40}px\`;
     return true;
   })()`);
   expect(resized).toBe(true);
@@ -1870,8 +1870,8 @@ export function SmokeLayoutBox({
     >
       {label ? <Text>{label}</Text> : null}
       {stateful ? (
-        <Text testID={testID ? \`\${testID}-private-state\` : undefined}>
-          {\`instance=\${registration.instanceId};private=\${privateCount}\`}
+        <Text testID={testID ? `${testID}-private-state` : undefined}>
+          {`instance=${registration.instanceId};private=${privateCount}`}
         </Text>
       ) : null}
       {children}
@@ -1899,7 +1899,7 @@ export function SmokeNestedScroll({
         onContentSizeChange={(width, height) => {
           if (testID) smokeScrollContentSizes.set(testID, { width, height });
         }}
-        testID={testID ? \`\${testID}-scroll-view\` : undefined}
+        testID={testID ? `${testID}-scroll-view` : undefined}
         contentContainerStyle={{ gap: 8, padding: 8 }}
         style={{ borderColor: '#94a3b8', borderWidth: 1 }}
       >
@@ -1940,10 +1940,10 @@ export function SmokeStudioProbe() {
   return (
     <Box gap="s" testID="studio-smoke-probe">
       <Text testID="studio-smoke-state">
-        {\`mode=\${studio.previewMode ? 'preview' : 'edit'};selection=\${studio.selectedNodeId ?? 'none'};changes=\${selectionChangeCount}\`}
+        {`mode=${studio.previewMode ? 'preview' : 'edit'};selection=${studio.selectedNodeId ?? 'none'};changes=${selectionChangeCount}`}
       </Text>
       <Text testID="studio-smoke-screen-state">
-        {\`pathname=\${pathname};activeScreen=\${studio.activeScreenId ?? 'none'};root=\${studio.rootNode?.id ?? 'none'}\`}
+        {`pathname=${pathname};activeScreen=${studio.activeScreenId ?? 'none'};root=${studio.rootNode?.id ?? 'none'}`}
       </Text>
       <Pressable
         onPress={studio.togglePreviewMode}
