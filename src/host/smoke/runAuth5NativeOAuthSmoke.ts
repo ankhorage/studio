@@ -25,7 +25,7 @@ console.log(
     '',
     'Next, from the Studio repository activate the smoke project Infra with a configured',
     'source project that owns the trusted Google Web credential:',
-    `  bun scripts/auth5-native-oauth-smoke-infra.ts ${fixture.workspaceRoot} --credentials-project <project-id>`,
+    `  bun run smoke:auth5-native:infra -- ${fixture.workspaceRoot} --credentials-project <project-id>`,
     '',
     'Then:',
     `  cd ${fixture.projectRoot}`,
