@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.4
+
+### Patch Changes
+
+- b38530b: Keep generated screen routes layout-transparent so authored ZORA screens own page scrolling and delegated viewport content receives bounded flex space.
+
 ## 1.12.3
 
 ### Patch Changes
