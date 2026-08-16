@@ -18,19 +18,26 @@ import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompati
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
-const CONTRACTS_VERSION = '^4.0.2';
+const CONTRACTS_VERSION = '^7.9.0';
 const DATA_SOURCES_VERSION = '^1.0.1';
-const RUNTIME_VERSION = '^1.0.0';
+const RUNTIME_VERSION = '^1.1.0';
+const STUDIO_VERSION = '^1.12.5';
 const UTILITY_VERSION = '^0.2.0';
-const SUPABASE_AUTH_VERSION = '^1.1.2';
+const SUPABASE_AUTH_VERSION = '^1.2.1';
 const SUPABASE_DB_VERSION = '^1.0.0';
-const ZORA_VERSION = '^2.9.0';
-const EXPO_RUNTIME_VERSION = '^2.5.0';
+const SUPABASE_STORAGE_VERSION = '^0.2.0';
+const ZORA_VERSION = '^2.13.2';
+const EXPO_RUNTIME_VERSION = '^2.5.1';
+const DEVTOOLS_VERSION = '^1.4.1';
+const EXPO_VERSION = '~54.0.36';
 const EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';
 const EXPO_FILE_SYSTEM_VERSION = '~19.0.23';
 const EXPO_IMAGE_PICKER_VERSION = '~17.0.11';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
+const EXPO_UPDATES_VERSION = '~29.0.19';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
+const BABEL_MODULE_RESOLVER_VERSION = '^5.0.2';
+const TYPESCRIPT_VERSION = '~5.9.3';
 const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 
 function serializeStringLiteral(value: string): string {
@@ -298,7 +305,7 @@ export function getPackageJson(args: {
       '@ankhorage/data-sources': DATA_SOURCES_VERSION,
       '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
-      '@ankhorage/studio': 'latest',
+      '@ankhorage/studio': STUDIO_VERSION,
       ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
       ...(authProvider === 'supabase'
         ? {
@@ -310,7 +317,9 @@ export function getPackageJson(args: {
       ...(databaseRuntimeProvider === 'supabase'
         ? { '@ankhorage/supabase-db': SUPABASE_DB_VERSION }
         : {}),
-      ...(storageProvider === 'supabase' ? { '@ankhorage/supabase-storage': 'latest' } : {}),
+      ...(storageProvider === 'supabase'
+        ? { '@ankhorage/supabase-storage': SUPABASE_STORAGE_VERSION }
+        : {}),
       '@ankhorage/zora': ZORA_VERSION,
       ...runtimeDependencies,
       ...(includeStudio
@@ -325,7 +334,7 @@ export function getPackageJson(args: {
       '@react-navigation/bottom-tabs': '^7.18.2',
       '@react-navigation/drawer': '^7.5.0',
       'babel-preset-expo': '^54.0.10',
-      expo: '~54.0.35',
+      expo: EXPO_VERSION,
       'expo-constants': '~18.0.13',
       'expo-font': '~14.0.12',
       'expo-linear-gradient': '~15.0.8',
@@ -334,7 +343,7 @@ export function getPackageJson(args: {
       'expo-router': '~6.0.24',
       'expo-splash-screen': '~31.0.10',
       'expo-status-bar': '^3.0.9',
-      'expo-updates': '~29.0.18',
+      'expo-updates': EXPO_UPDATES_VERSION,
       react: '19.1.0',
       'react-dom': '19.1.0',
       'react-native': '0.81.5',
@@ -348,12 +357,12 @@ export function getPackageJson(args: {
       'reanimated-color-picker': '^4.2.0',
     },
     devDependencies: {
-      '@ankhorage/devtools': '^1.0.6',
+      '@ankhorage/devtools': DEVTOOLS_VERSION,
       '@types/node': '^25.6.0',
       '@types/react': '~19.1.0',
       '@types/culori': '^4.0.1',
-      'babel-plugin-module-resolver': '^5.0.0',
-      typescript: '~5.9.2',
+      'babel-plugin-module-resolver': BABEL_MODULE_RESOLVER_VERSION,
+      typescript: TYPESCRIPT_VERSION,
     },
   };
 
