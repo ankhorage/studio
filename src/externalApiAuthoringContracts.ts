@@ -8,7 +8,7 @@ import type {
 export type ExternalApiProtocol = 'auto' | 'graphql' | 'openapi';
 
 export interface ExternalApiConnectRequest {
-  readonly sourceId: string;
+  readonly apiId: string;
   readonly url: string;
   readonly protocol: ExternalApiProtocol;
   readonly name?: string;
@@ -16,8 +16,8 @@ export interface ExternalApiConnectRequest {
   readonly credential?: CredentialRef;
 }
 
-export interface ManualRestSourceRequest {
-  readonly sourceId: string;
+export interface ManualRestApiRequest {
+  readonly apiId: string;
   readonly baseUrl: string;
   readonly endpointId: string;
   readonly path: string;
@@ -38,8 +38,7 @@ export interface ExternalApiDiscoveryAttempt {
 export type ExternalApiConnectResult =
   | {
       readonly ok: true;
-      readonly sourceId: string;
-      readonly kind: 'api';
+      readonly apiId: string;
       readonly protocol: 'graphql' | 'rest';
       readonly created: boolean;
       readonly attempts: readonly ExternalApiDiscoveryAttempt[];
@@ -52,7 +51,7 @@ export type ExternalApiConnectResult =
     };
 
 export interface ExternalApiOperationTestRequest {
-  readonly sourceId: string;
+  readonly apiId: string;
   readonly endpointId: string;
   readonly operationId: string;
   readonly values?: Readonly<Record<string, DataContractValue>>;
