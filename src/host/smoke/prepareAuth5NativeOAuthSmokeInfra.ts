@@ -11,10 +11,10 @@ import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 import type { TrustedOAuthSecretResolver } from '../secrets/trustedOAuthInfraEnvironment';
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
+import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest';
 
 const GOOGLE_PROVIDER_ID = 'google';
 const PUBLIC_ANON_KEY = 'EXPO_PUBLIC_SUPABASE_ANON_KEY';
-const SMOKE_GOOGLE_CREDENTIAL_REF = 'auth/oauth/google';
 
 export interface PrepareAuth5NativeOAuthSmokeInfraArgs {
   readonly credentialsProjectId: string;
@@ -58,10 +58,13 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
     );
   }
 
+  const smokeManifest = createAuth5NativeOAuthSmokeManifest();
+  const smokeCredentialRef = resolveGoogleCredentialRef(smokeManifest);
+  const callbackRoute = resolveOAuthCallbackRoute(smokeManifest);
   const anonKey = parseRequiredEnvValue(await dependencies.readSourcePublicEnv(), PUBLIC_ANON_KEY);
   const activation = await dependencies.activateSmokeInfrastructure({
     resolve: ({ projectId, ref }) => {
-      if (projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId || ref !== SMOKE_GOOGLE_CREDENTIAL_REF) {
+      if (projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId || ref !== smokeCredentialRef) {
         throw new Error(`Unexpected Auth 5 smoke OAuth secret request '${projectId}:${ref}'.`);
       }
       return Promise.resolve(credential);
@@ -73,9 +76,9 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
   );
 
   return {
-    androidCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.android.scheme}://auth/callback`,
+    androidCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.android.scheme}://${callbackRoute}`,
     gatewayUrl: activation.gatewayUrl,
-    iosCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme}://auth/callback`,
+    iosCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme}://${callbackRoute}`,
     projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
     target: activation.target,
   };
@@ -137,6 +140,14 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
     );
   }
   return ref;
+}
+
+function resolveOAuthCallbackRoute(manifest: AppManifest): string {
+  const callbackRoute = manifest.infra.auth?.oauth?.callbackRoute.trim();
+  if (!callbackRoute) {
+    throw new Error('Auth 5 smoke manifest must expose a canonical OAuth callbackRoute.');
+  }
+  return callbackRoute.replace(/^\/+|\/+$/gu, '');
 }
 
 function parseRequiredEnvValue(raw: string, key: string): string {
