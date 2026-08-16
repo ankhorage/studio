@@ -39,7 +39,7 @@ test('generates syntax-safe OAuth callback path normalization', () => {
 test('generates full-page Web OAuth and preserves the native system browser', () => {
   const runtime = createOAuthRuntime();
   const webTransportStart = runtime.indexOf('async function redirectWebAuthorization');
-  const callbackStart = runtime.indexOf('export async function completeOAuthCallback');
+  const callbackStart = runtime.indexOf('export function resolveOAuthCallbackUrl');
   const webTransport = runtime.slice(webTransportStart, callbackStart);
 
   expect(runtime).toContain("if (Platform.OS === 'web') {");
@@ -110,18 +110,29 @@ test('does not invent a native callback scheme when none is configured', () => {
   );
 });
 
-test('generates adapter-owned OAuth lifecycle coordination with a correlation-only marker', () => {
+test('reconstructs the canonical callback URL from router-owned search params', () => {
   const runtime = createOAuthRuntime();
 
-  expect(runtime).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';");
-  expect(runtime).toContain(
-    "const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
-  );
-  expect(runtime).toContain(
-    'interface StoredTransportAttempt {\n  version: 1;\n  attemptId: string;\n}',
-  );
+  expect(runtime).toContain('export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams)');
+  expect(runtime).toContain('const callbackUrl = new URL(resolveOAuthRedirectUri());');
+  expect(runtime).toContain('for (const [name, value] of Object.entries(params)) {');
+  expect(runtime).toContain("if (name === '#') continue;");
+  expect(runtime).toContain('callbackUrl.searchParams.append(name, item);');
+  expect(runtime).toContain('callbackUrl.searchParams.append(name, value);');
+  expect(runtime).toContain('return callbackUrl.toString();');
+});
+
+test('generates one canonical correlation marker without legacy transport state', () => {
+  const runtime = createOAuthRuntime();
+
+  expect(runtime).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';");
+  expect(runtime).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+  expect(runtime).not.toContain('ankh.auth.oauth.transport.v1');
+  expect(runtime).not.toContain('ankh.auth.oauth.transport.v2');
+  expect(runtime).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
+  expect(runtime).not.toContain('version: 1;');
   expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
   expect(runtime).toContain('getStoredAuthSession() && isCanonicalOAuthCallback(callbackUrl)');
-  expect(runtime).toContain('await clearLegacyTransportAttempt();');
   expect(runtime).toContain('await clearTransportAttempt();');
+  expect(runtime).not.toContain('clearLegacyTransportAttempt');
 });
