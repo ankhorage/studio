@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.7
+
+### Patch Changes
+
+- c3ab782: Refresh generated app dependency baselines to current Ankhorage package releases and current Expo SDK 54 patch versions, and replace floating `latest` dependencies with explicit compatible ranges.
+
 ## 1.12.6
 
 ### Patch Changes
