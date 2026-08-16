@@ -3,6 +3,8 @@ import { randomUUID } from 'node:crypto';
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
+  ProjectMonetizationInspection,
+  ProjectMonetizationPlan,
   ProjectReleaseInput,
   ProjectReleaseInspection,
   ProjectStoreListingAssetLocation,
@@ -100,6 +102,28 @@ function registerMonetizationRoutes(fastify: FastifyInstance, service: ProjectDe
       return service.writeMonetization(projectId(req), body.products ?? []);
     }),
   );
+  fastify.post('/api/projects/:id/deploy/monetization/inspect', async (req, reply) =>
+    respond(reply, () =>
+      service.inspectMonetization(projectId(req), req.body as ProjectDeployRuntimeInput),
+    ),
+  );
+  fastify.post('/api/projects/:id/deploy/monetization/execute', async (req, reply) =>
+    respond(reply, () => executeMonetizationRequest(service, req)),
+  );
+}
+
+function executeMonetizationRequest(service: ProjectDeployService, req: FastifyRequest) {
+  const body = req.body as {
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly inspection: ProjectMonetizationInspection;
+    readonly plan: ProjectMonetizationPlan;
+  };
+  return service.executeMonetization({
+    projectId: projectId(req),
+    runtime: body.runtime,
+    inspection: body.inspection,
+    plan: body.plan,
+  });
 }
 
 function registerReleaseRoutes(fastify: FastifyInstance, service: ProjectDeployService): void {

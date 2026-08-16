@@ -650,6 +650,7 @@ adminWebSmokeTest(
           '/ankh/modules',
           '/ankh/theme',
           '/ankh/auth/providers',
+          '/ankh/deploy',
         ]) {
           await page.navigateStudio(route);
           await Bun.sleep(ROUTE_SETTLE_MS);
@@ -660,7 +661,17 @@ adminWebSmokeTest(
                   (text) => text.includes('Scrollable Runtime Screen'),
                   HTTP_TIMEOUT_MS,
                 )
-              : await page.readBodyText();
+              : route === '/ankh/deploy'
+                ? await waitForBodyText(
+                    page,
+                    (text) =>
+                      text.includes('Deployment administration') &&
+                      text.includes('Prepared release desired state') &&
+                      text.includes('Monetization synchronization') &&
+                      text.includes('1.2.3'),
+                    HTTP_TIMEOUT_MS,
+                  )
+                : await page.readBodyText();
           expect(bodyText).not.toContain('Maximum update depth exceeded');
           if (route === '/dashboard') {
             if (!bodyText.includes('Scrollable Runtime Screen')) {
@@ -672,6 +683,14 @@ adminWebSmokeTest(
             expect(await page.readStudioSmokeState()).toBe('mode=edit;selection=none;changes=5');
             await verifyDesktopSelectionAndUnsupportedGeometry(page, 2, 5);
           }
+          if (route === '/ankh/deploy') {
+            expect(bodyText).toContain('Store listing locales');
+            expect(bodyText).toContain('Monetization desired state');
+            expect(bodyText).toContain('Monetization synchronization');
+            expect(bodyText).toContain('Release plan and execution');
+            expect(bodyText).toContain('smoke-execution-1');
+            expect(bodyText).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
+          }
           if (route.startsWith('/ankh')) {
             expect(
               await page.evaluate<boolean>(
@@ -681,6 +700,45 @@ adminWebSmokeTest(
           }
           expect(page.errors.join('\n')).not.toContain('Maximum update depth exceeded');
           expect(page.errors.join('\n')).not.toContain('Cannot read properties of undefined');
+        }
+
+        const deployUrl = new URL('/ankh/deploy', appUrl).toString();
+        const directDeployPage = await openChromePage(debugPort);
+        try {
+          await directDeployPage.blockHotReloadConnections();
+          await directDeployPage.navigate(deployUrl);
+          await directDeployPage.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+          expect(
+            new URL(await directDeployPage.evaluate<string>('globalThis.location.href')).pathname,
+          ).toBe('/ankh/deploy');
+          const directDeployBody = await waitForBodyText(
+            directDeployPage,
+            (text) =>
+              text.includes('Deployment administration') &&
+              text.includes('Prepared release desired state') &&
+              text.includes('Monetization synchronization') &&
+              text.includes('smoke-execution-1'),
+            HTTP_TIMEOUT_MS,
+          );
+          expect(directDeployBody).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
+
+          await directDeployPage.reload();
+          await directDeployPage.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
+          expect(
+            new URL(await directDeployPage.evaluate<string>('globalThis.location.href')).pathname,
+          ).toBe('/ankh/deploy');
+          const refreshedDeployBody = await waitForBodyText(
+            directDeployPage,
+            (text) =>
+              text.includes('Release plan and execution') &&
+              text.includes('Monetization synchronization') &&
+              text.includes('smoke-execution-1'),
+            HTTP_TIMEOUT_MS,
+          );
+          expect(refreshedDeployBody).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
+          expect(directDeployPage.errors).toEqual([]);
+        } finally {
+          directDeployPage.close();
         }
 
         await page.navigateStudio('/ankh/modules', expoOutput);
@@ -2027,11 +2085,13 @@ async function startSmokeStudioApi(args: {
   let { manifest } = args;
   const manifestPath = `/api/projects/${encodeURIComponent(projectId)}/manifest`;
   const modulesPath = `/api/projects/${encodeURIComponent(projectId)}/modules`;
+  const deployPath = `/api/projects/${encodeURIComponent(projectId)}/deploy`;
   const server = createHttpServer((request, response) => {
     void handleSmokeStudioApiRequest({
       manifest,
       manifestPath,
       modulesPath,
+      deployPath,
       request,
       response,
       updateManifest: (nextManifest) => {
@@ -2050,6 +2110,7 @@ async function handleSmokeStudioApiRequest(args: {
   readonly manifest: AppManifest;
   readonly manifestPath: string;
   readonly modulesPath: string;
+  readonly deployPath: string;
   readonly request: IncomingMessage;
   readonly response: ServerResponse;
   readonly updateManifest: (manifest: AppManifest) => void;
@@ -2076,6 +2137,14 @@ async function handleSmokeStudioApiRequest(args: {
     return;
   }
 
+  if (method === 'GET' && url.pathname.startsWith(`${args.deployPath}/`)) {
+    const ownerState = createSmokeDeployOwnerState(url.pathname.slice(args.deployPath.length + 1));
+    if (ownerState !== null) {
+      writeJsonResponse(args.response, 200, ownerState);
+      return;
+    }
+  }
+
   if (url.pathname !== args.manifestPath) {
     writeJsonResponse(args.response, 404, { error: 'Not found' });
     return;
@@ -2098,6 +2167,69 @@ async function handleSmokeStudioApiRequest(args: {
   }
 
   writeJsonResponse(args.response, 405, { error: 'Method not allowed' });
+}
+
+function createSmokeDeployOwnerState(suffix: string): unknown {
+  if (suffix === 'config') return { targets: { web: { enabled: true } } };
+  if (suffix === 'listing') {
+    return {
+      revision: 'listing-smoke-r1',
+      locales: [{ locale: 'en-US', name: 'Smoke Store' }],
+      assetSets: [],
+    };
+  }
+  if (suffix === 'monetization') {
+    return { revision: 'monetization-smoke-r1', products: [] };
+  }
+  if (suffix === 'release') {
+    return {
+      version: '1.2.3',
+      targets: ['web'],
+      notes: [{ locale: 'en-US', text: 'Smoke release' }],
+      rollout: { web: { mode: 'immediate' } },
+      revision: 'release-smoke-r1',
+    };
+  }
+  if (suffix === 'release/history') {
+    return [
+      {
+        schemaVersion: 1,
+        executionId: 'smoke-execution-1',
+        recordedAt: '2026-08-16T00:00:00.000Z',
+        desired: {
+          version: '1.2.3',
+          targets: ['web'],
+          notes: [],
+          rollout: { web: { mode: 'immediate' } },
+          revision: 'release-smoke-r1',
+        },
+        initialPlan: {
+          status: 'changes',
+          desiredRevision: 'release-smoke-r1',
+          currentRevision: 'current-smoke-r0',
+          steps: [],
+          diagnostics: [],
+        },
+        result: {
+          status: 'completed',
+          plan: {
+            status: 'changes',
+            desiredRevision: 'release-smoke-r1',
+            currentRevision: 'current-smoke-r0',
+            steps: [],
+            diagnostics: [],
+          },
+          currentRevision: 'current-smoke-r1',
+          executedStepIds: ['web:publish'],
+        },
+        execution: {
+          releaseRevision: 'release-smoke-r1',
+          steps: [],
+        },
+      },
+    ];
+  }
+  return null;
 }
 
 function createSmokeModuleStates(): readonly StudioModuleState[] {
@@ -2181,7 +2313,7 @@ function writeJsonResponse(response: ServerResponse, status: number, value: unkn
 
 function writeCorsHeaders(response: ServerResponse): void {
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  response.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  response.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, POST, PUT, OPTIONS');
   response.setHeader('Access-Control-Allow-Origin', '*');
 }
 
@@ -2298,6 +2430,12 @@ class ChromePage {
   async navigate(url: string): Promise<void> {
     const loaded = this.waitForLoad();
     await this.send('Page.navigate', { url });
+    await loaded;
+  }
+
+  async reload(): Promise<void> {
+    const loaded = this.waitForLoad();
+    await this.send('Page.reload', { ignoreCache: true });
     await loaded;
   }
 

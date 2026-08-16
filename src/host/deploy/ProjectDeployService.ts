@@ -1,6 +1,9 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type {
+  ProjectMonetizationExecutionResult,
+  ProjectMonetizationInspection,
+  ProjectMonetizationPlan,
   ProjectReleaseExecutionResult,
   ProjectReleaseInput,
   ProjectReleaseInspection,
@@ -8,9 +11,12 @@ import type {
   StoreListingLocale,
 } from '@ankhorage/deploy/project';
 import {
+  createProjectMonetizationPlan,
   createProjectReleasePlan,
+  executeProjectMonetizationSync,
   executeProjectRelease,
   executeProjectReleaseControl,
+  inspectProjectMonetization,
   inspectProjectRelease,
   listProjectReleaseHistory,
   readProjectDeploymentConfig,
@@ -27,11 +33,13 @@ import {
   writeProjectStoreListingLocale,
 } from '@ankhorage/deploy/project';
 
+import type { ProjectDeployMonetizationInspectionResult } from '../../projectDeployMonetizationInspectionResult';
 import type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 import { createProjectDeployAccess } from './createProjectDeployAccess';
+import { ProjectDeployMutationGuard } from './ProjectDeployMutationGuard';
 import type { ProjectDeployRuntimeInput } from './ProjectDeployRuntimeInput';
 import type { ProjectDeploySecretStore } from './ProjectDeploySecretStore';
 
@@ -46,6 +54,7 @@ export type { ProjectDeployReleaseInspectionResult } from '../../projectDeployRe
 export class ProjectDeployService {
   private readonly workspaceRoot: string;
   private readonly secretStore: ProjectDeploySecretStore;
+  private readonly mutationGuard = new ProjectDeployMutationGuard();
 
   constructor(options: ProjectDeployServiceOptions) {
     this.workspaceRoot = options.workspaceRoot;
@@ -119,6 +128,39 @@ export class ProjectDeployService {
     });
   }
 
+  async inspectMonetization(
+    projectId: string,
+    runtime: ProjectDeployRuntimeInput,
+  ): Promise<ProjectDeployMonetizationInspectionResult> {
+    const access = await this.createAccess(projectId, runtime);
+    const result = await inspectProjectMonetization({
+      projectRoot: this.projectRoot(projectId),
+      ...access,
+    });
+    if (!result.ok) return result;
+    return {
+      ok: true,
+      inspection: result.inspection,
+      plan: createProjectMonetizationPlan(result.inspection),
+    };
+  }
+
+  executeMonetization(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly inspection: ProjectMonetizationInspection;
+    readonly plan: ProjectMonetizationPlan;
+  }): Promise<ProjectMonetizationExecutionResult> {
+    return this.mutationGuard.run(input.projectId, async () => {
+      const access = await this.createAccess(input.projectId, input.runtime);
+      return executeProjectMonetizationSync({
+        inspection: input.inspection,
+        plan: input.plan,
+        ...access,
+      });
+    });
+  }
+
   readRelease(projectId: string) {
     return readProjectRelease({ projectRoot: this.projectRoot(projectId) });
   }
@@ -147,47 +189,53 @@ export class ProjectDeployService {
     };
   }
 
-  async executeRelease(input: {
+  executeRelease(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
     readonly inspection: ProjectReleaseInspection;
     readonly plan: ReleasePlan;
     readonly executionId: string;
   }): Promise<ProjectReleaseExecutionResult> {
-    const access = await this.createAccess(input.projectId, input.runtime);
-    return executeProjectRelease({
-      inspection: input.inspection,
-      plan: input.plan,
-      executionId: input.executionId,
-      ...access,
+    return this.mutationGuard.run(input.projectId, async () => {
+      const access = await this.createAccess(input.projectId, input.runtime);
+      return executeProjectRelease({
+        inspection: input.inspection,
+        plan: input.plan,
+        executionId: input.executionId,
+        ...access,
+      });
     });
   }
 
-  async resumeRelease(input: {
+  resumeRelease(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
     readonly previousExecutionId: string;
     readonly executionId: string;
   }): Promise<ProjectReleaseExecutionResult> {
-    const access = await this.createAccess(input.projectId, input.runtime);
-    return resumeProjectRelease({
-      projectRoot: this.projectRoot(input.projectId),
-      previousExecutionId: input.previousExecutionId,
-      executionId: input.executionId,
-      ...access,
+    return this.mutationGuard.run(input.projectId, async () => {
+      const access = await this.createAccess(input.projectId, input.runtime);
+      return resumeProjectRelease({
+        projectRoot: this.projectRoot(input.projectId),
+        previousExecutionId: input.previousExecutionId,
+        executionId: input.executionId,
+        ...access,
+      });
     });
   }
 
-  async executeReleaseControl(input: {
+  executeReleaseControl(input: {
     readonly projectId: string;
     readonly runtime: ProjectDeployRuntimeInput;
     readonly control: ReleaseLifecycleControl;
   }) {
-    const access = await this.createAccess(input.projectId, input.runtime);
-    return executeProjectReleaseControl({
-      projectRoot: this.projectRoot(input.projectId),
-      control: input.control,
-      ...access,
+    return this.mutationGuard.run(input.projectId, async () => {
+      const access = await this.createAccess(input.projectId, input.runtime);
+      return executeProjectReleaseControl({
+        projectRoot: this.projectRoot(input.projectId),
+        control: input.control,
+        ...access,
+      });
     });
   }
 
