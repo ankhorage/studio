@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.3
+
+### Patch Changes
+
+- 1ed5d42: Preserve the Auth 5 native OAuth smoke project's own Supabase gateway URL and anon key after Infra Up instead of substituting runtime values from the credential source project.
+
 ## 1.12.2
 
 ### Patch Changes
