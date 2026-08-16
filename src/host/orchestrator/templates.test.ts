@@ -4,20 +4,36 @@ import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompati
 import { getAppConfigTs, getBabelConfigJs, getIndexJs, getPackageJson } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
-  it('pins the canonical runtime, ZORA, utility, Supabase auth, and Expo persistence dependencies', () => {
+  it('pins the current generated app dependency baseline', () => {
+    const pkg = getPackageJson({ name: 'generated-app', includeStudio: true });
+    const dependencies = pkg.dependencies as Record<string, string>;
+    const devDependencies = pkg.devDependencies as Record<string, string>;
+
+    expect(dependencies['@ankhorage/contracts']).toBe('^7.9.0');
+    expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
+    expect(dependencies['@ankhorage/runtime']).toBe('^1.1.0');
+    expect(dependencies['@ankhorage/studio']).toBe('^1.12.5');
+    expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
+    expect(dependencies.expo).toBe('~54.0.36');
+    expect(dependencies['expo-updates']).toBe('~29.0.19');
+    expect(devDependencies['@ankhorage/devtools']).toBe('^1.4.1');
+    expect(devDependencies['babel-plugin-module-resolver']).toBe('^5.0.2');
+    expect(devDependencies.typescript).toBe('~5.9.3');
+    expect(Object.values(dependencies)).not.toContain('latest');
+  });
+
+  it('pins the current auth and persistence adapter dependencies', () => {
     const pkg = getPackageJson({
       name: 'oauth-app',
       authProvider: 'supabase',
+      storageProvider: 'supabase',
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/contracts']).toBe('^4.0.2');
-    expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.0');
-    expect(dependencies['@ankhorage/runtime']).toBe('^1.0.0');
     expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
-    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
-    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.1.2');
+    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.1');
+    expect(dependencies['@ankhorage/supabase-storage']).toBe('^0.2.0');
     expect(dependencies['expo-secure-store']).toBe('~15.0.8');
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
   });
@@ -31,15 +47,15 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(generatedDb.dependencies['@ankhorage/supabase-db']).toBe('^1.0.0');
     expect(plain.dependencies['@ankhorage/supabase-db']).toBeUndefined();
-    expect(plain.dependencies['@ankhorage/expo-runtime']).toBe('^2.5.0');
+    expect(plain.dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
   });
 
-  it('requires the first ZORA release that enforces interactionPolicy', () => {
+  it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
     const pkg = getPackageJson({ name: 'studio-enabled-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/zora']).toBe('^2.9.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.0');
+    expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
   });
 
   it('pins the intentional Expo SDK 54 Reanimated and Worklets compatibility pair', () => {
