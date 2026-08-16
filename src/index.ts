@@ -3,9 +3,7 @@ import type {
   AppManifest,
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
-  DataSourceDiagnostic,
   DataSourceRegistry,
-  GeneratedApiDefinition,
   MediaAsset,
   NavigatorType,
   ThemeConfig,
@@ -158,7 +156,7 @@ export type StudioAdminRouteId =
   | 'modules'
   | 'module-detail'
   | 'apis'
-  | 'api-data-sources'
+  | 'api-catalog'
   | 'api-operations'
   | 'auth'
   | 'auth-providers'
@@ -182,7 +180,7 @@ export type StudioAdminStaticRoutePath =
   | '/ankh/media'
   | '/ankh/modules'
   | '/ankh/apis'
-  | '/ankh/apis/data-sources'
+  | '/ankh/apis/catalog'
   | '/ankh/apis/operations'
   | '/ankh/auth'
   | '/ankh/auth/providers'
@@ -396,11 +394,6 @@ export interface StudioContextValue extends StudioSelectionState, StudioSessionS
   ) => Promise<StudioMediaIngestResult>;
   updateDataBindings: (dataBindings: ComponentDataBindingRegistry) => void;
   updateDataSources: (dataSources: DataSourceRegistry) => void;
-  upsertGeneratedApi: (
-    definition: GeneratedApiDefinition,
-    previousId?: string,
-  ) => readonly DataSourceDiagnostic[];
-  deleteGeneratedApi: (id: string) => void;
   deleteNode: (id: StudioNodeId) => void;
   insertFromCatalogEntry: (entry: InsertCatalogEntry) => boolean;
   moveNodeToPlacement: (nodeId: StudioNodeId, placement: NodePlacement) => boolean;
