@@ -6,7 +6,7 @@ export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInR
   const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
   return `import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text, useZoraTheme } from '@ankhorage/zora';
 
@@ -49,6 +49,13 @@ function completeOAuthCallbackOnce(callbackUrl: string) {
 export default function OAuthCallbackScreen() {
   const router = useRouter();
   const callbackParams = useLocalSearchParams<Record<string, string | string[] | undefined>>();
+  const callbackUrl = useMemo(() => {
+    try {
+      return resolveOAuthCallbackUrl(callbackParams);
+    } catch {
+      return null;
+    }
+  }, [callbackParams]);
   const { theme } = useZoraTheme();
   const handledOutcomeRef = useRef(false);
   const [message, setMessage] = useState('Completing secure sign in…');
@@ -57,10 +64,7 @@ export default function OAuthCallbackScreen() {
   useEffect(() => {
     let active = true;
     void (async () => {
-      let callbackUrl: string;
-      try {
-        callbackUrl = resolveOAuthCallbackUrl(callbackParams);
-      } catch {
+      if (!callbackUrl) {
         if (active && !handledOutcomeRef.current) {
           handledOutcomeRef.current = true;
           setFailed(true);
@@ -85,7 +89,7 @@ export default function OAuthCallbackScreen() {
     return () => {
       active = false;
     };
-  }, [callbackParams, router]);
+  }, [callbackUrl, router]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
