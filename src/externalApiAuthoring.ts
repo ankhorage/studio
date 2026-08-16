@@ -5,13 +5,11 @@ export type {
   ExternalApiOperationTestRequest,
   ExternalApiOperationTestResult,
   ExternalApiProtocol,
-  ManualRestSourceRequest,
+  ManualRestApiRequest,
 } from './externalApiAuthoringContracts';
+export { type ExternalApiIdResult, normalizeExternalApiId } from './normalizeExternalApiId';
 export {
-  type ExternalApiSourceIdResult,
-  normalizeExternalApiSourceId,
-} from './normalizeExternalApiSourceId';
-export {
-  type ExternalApiDataSourceUpsertResult,
-  upsertExternalApiDataSource,
-} from './upsertExternalApiDataSource';
+  type ExternalApiDefinition,
+  type ExternalApiUpsertResult,
+  upsertExternalApi,
+} from './upsertExternalApi';
