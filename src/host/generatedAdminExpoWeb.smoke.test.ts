@@ -614,7 +614,7 @@ adminWebSmokeTest(
       ) as { version?: string };
       const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
 
-      expect(generatedZoraRange).toBe('^2.9.0');
+      expect(generatedZoraRange).toBe('^2.13.2');
       expect(typeof resolvedZoraPackage.version).toBe('string');
       expect(
         satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
