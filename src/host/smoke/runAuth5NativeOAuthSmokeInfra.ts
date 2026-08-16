@@ -35,11 +35,7 @@ console.log(
     'Verify active GoTrue redirects:',
     "  kubectl exec -n supabase deploy/auth -- printenv | grep -E 'GOTRUE_(SITE_URL|URI_ALLOW_LIST)'",
     ...(gatewayPort
-      ? [
-          '',
-          'Android local-backend bridge:',
-          `  adb reverse tcp:${gatewayPort} tcp:${gatewayPort}`,
-        ]
+      ? ['', 'Android local-backend bridge:', `  adb reverse tcp:${gatewayPort} tcp:${gatewayPort}`]
       : []),
   ].join('\n'),
 );
