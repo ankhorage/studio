@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.1
+
+### Patch Changes
+
+- 360e326: Complete generated native OAuth callbacks from Expo Router search parameters so warm deep links reach PKCE session exchange reliably, and remove obsolete OAuth transport compatibility state.
+
 ## 1.12.0
 
 ### Minor Changes
