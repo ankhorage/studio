@@ -1,6 +1,7 @@
 graph LR
   module_knip_config_ts["knip.config.ts"]
   module_paradox_config_ts["paradox.config.ts"]
+  module_scripts_auth5_native_oauth_smoke_infra_ts["scripts/auth5-native-oauth-smoke-infra.ts"]
   module_scripts_auth5_native_oauth_smoke_ts["scripts/auth5-native-oauth-smoke.ts"]
   module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   module_src_app_CreateCategoriesScreen_tsx["src/app/CreateCategoriesScreen.tsx"]
@@ -198,8 +199,11 @@ graph LR
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"]
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"]
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"]
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts["src/host/smoke/runAuth5NativeOAuthSmoke.ts"]
+  module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts["src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"]
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   module_src_host_studioWorkspaceExpoWeb_smoke_test_ts["src/host/studioWorkspaceExpoWeb.smoke.test.ts"]
   module_src_host_templateRegistry_catalog_test_ts["src/host/templateRegistry/catalog.test.ts"]
@@ -417,6 +421,7 @@ graph LR
   module_src_workspacePlatform_test_ts["src/workspacePlatform.test.ts"]
   module_src_workspacePlatform_ts["src/workspacePlatform.ts"]
   module_src_workspaceSearch_ts["src/workspaceSearch.ts"]
+  module_scripts_auth5_native_oauth_smoke_infra_ts --> module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts
   module_scripts_auth5_native_oauth_smoke_ts --> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
   module_src_app_CreateCategoriesScreen_tsx --> module_src_app_workspace_WorkspacePrimitives_tsx
@@ -783,7 +788,18 @@ graph LR
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_templateRegistry_index_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_studioInfraUp_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
+  module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_studioInfraUp_ts

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.11.0",
+      "value": "v1.12.2",
       "color": "cb3837"
     },
     {
@@ -80,6 +80,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["default"]
+    },
+    {
+      "path": "scripts/auth5-native-oauth-smoke-infra.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"],
+      "exports": []
     },
     {
       "path": "scripts/auth5-native-oauth-smoke.ts",
@@ -1901,6 +1907,35 @@
       "exports": ["createAuth5NativeOAuthSmokeManifest"]
     },
     {
+      "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/projectPaths.ts",
+        "src/host/orchestrator/studioInfraUp.ts",
+        "src/host/secrets/projectSecretService.ts",
+        "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
+      ],
+      "exports": [
+        "Auth5NativeOAuthSmokeInfraDependencies",
+        "prepareAuth5NativeOAuthSmokeInfra",
+        "PrepareAuth5NativeOAuthSmokeInfraArgs",
+        "PrepareAuth5NativeOAuthSmokeInfraResult"
+      ]
+    },
+    {
       "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -1910,6 +1945,12 @@
       "path": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"],
       "exports": []
     },
     {
@@ -12762,7 +12803,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 83,
+        "line": 82,
         "column": 1
       }
     },
@@ -12771,7 +12812,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 103,
+        "line": 102,
         "column": 1
       }
     },
@@ -12780,7 +12821,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 140,
+        "line": 137,
         "column": 1
       }
     },
@@ -12789,7 +12830,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 171,
+        "line": 168,
         "column": 1
       }
     },
@@ -12798,7 +12839,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 203,
+        "line": 200,
         "column": 1
       }
     },
@@ -12807,7 +12848,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 276,
+        "line": 273,
         "column": 1
       }
     },
@@ -12816,7 +12857,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 302,
+        "line": 299,
         "column": 1
       }
     },
@@ -12825,7 +12866,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 318,
+        "line": 311,
         "column": 1
       }
     },
@@ -12834,7 +12875,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 322,
+        "line": 315,
         "column": 1
       }
     },
@@ -12843,7 +12884,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 330,
+        "line": 323,
         "column": 1
       }
     },
@@ -12852,7 +12893,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
-        "line": 334,
+        "line": 327,
         "column": 1
       }
     },
@@ -15670,6 +15711,60 @@
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
         "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "prepareAuth5NativeOAuthSmokeInfra",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "createDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveGoogleCredentialRef",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 121,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveOAuthCallbackRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 134,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRequiredEnvValue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "stripMatchingQuotes",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "line": 154,
         "column": 1
       }
     },
@@ -23367,6 +23462,11 @@
   "graphs": {
     "imports": [
       {
+        "fromPath": "scripts/auth5-native-oauth-smoke-infra.ts",
+        "toPath": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts",
+        "sourcePath": "scripts/auth5-native-oauth-smoke-infra.ts"
+      },
+      {
         "fromPath": "scripts/auth5-native-oauth-smoke.ts",
         "toPath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
         "sourcePath": "scripts/auth5-native-oauth-smoke.ts"
@@ -25962,9 +26062,64 @@
         "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
       },
       {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/orchestrator/projectPaths.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/orchestrator/studioInfraUp.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/secrets/projectSecretService.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/secrets/trustedOAuthInfraEnvironment.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
         "fromPath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
         "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
         "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts",
+        "toPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"
       },
       {
         "fromPath": "src/host/templateRegistry/catalog.test.ts",
@@ -45781,6 +45936,132 @@
         "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toSymbol": "createAuth5NativeOAuthSmokeManifest",
+        "callExpression": "createAuth5NativeOAuthSmokeManifest",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "activateSmokeInfrastructure",
+        "toSymbol": "resolve",
+        "callExpression": "secretResolver.resolve",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "activateSmokeInfrastructure",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "callExpression": "prepareAuth5NativeOAuthSmokeInfra",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "createDependencies",
+        "callExpression": "createDependencies",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "readSourceManifest",
+        "callExpression": "dependencies.readSourceManifest",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "resolveGoogleCredentialRef",
+        "callExpression": "resolveGoogleCredentialRef",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "resolveSourceCredential",
+        "callExpression": "dependencies.resolveSourceCredential",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "createAuth5NativeOAuthSmokeManifest",
+        "callExpression": "createAuth5NativeOAuthSmokeManifest",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "resolveOAuthCallbackRoute",
+        "callExpression": "resolveOAuthCallbackRoute",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "activateSmokeInfrastructure",
+        "callExpression": "dependencies.activateSmokeInfrastructure",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "readSmokePublicEnv",
+        "callExpression": "dependencies.readSmokePublicEnv",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "toSymbol": "parseRequiredEnvValue",
+        "callExpression": "parseRequiredEnvValue",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "createDependencies",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "readSmokePublicEnv",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "readSourceManifest",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "sourceProjectManager.getProjectManifest",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "resolveSourceCredential",
+        "toSymbol": "resolve",
+        "callExpression": "sourceSecretService.resolve",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "activateSmokeInfrastructure",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
+        "fromSymbol": "parseRequiredEnvValue",
+        "toSymbol": "stripMatchingQuotes",
+        "callExpression": "stripMatchingQuotes",
+        "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
+      },
+      {
         "fromSymbol": "prepareAuth5NativeOAuthSmokeWorkspace",
         "toSymbol": "mkdir",
         "callExpression": "mkdir",
@@ -45809,6 +46090,12 @@
         "toSymbol": "createAuth5NativeOAuthSmokeFixture",
         "callExpression": "createAuth5NativeOAuthSmokeFixture",
         "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts",
+        "toSymbol": "prepareAuth5NativeOAuthSmokeInfra",
+        "callExpression": "prepareAuth5NativeOAuthSmokeInfra",
+        "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"
       },
       {
         "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
