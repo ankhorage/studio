@@ -19,7 +19,7 @@ import { Text, useZoraTheme } from '@ankhorage/zora';
 import ankhConfig from '@root/ankh.config.json';
 import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 type SearchParams = Record<string, string | string[] | undefined> & {
@@ -78,18 +78,23 @@ export default function ${safeName}Screen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-        <ManifestProvider manifest={runtimeManifest}>
-          <RuntimeRendererConfigProvider value={runtimeRendererConfig}>
-            <RuntimeScreen
-              manifest={runtimeManifest}
-              screen={screenConfig}
-              stateAdapter={runtimeConfig.stateAdapter}
-            />
-          </RuntimeRendererConfigProvider>
-        </ManifestProvider>
-      </ScrollView>
+    <View
+      style={{
+        flex: 1,
+        minHeight: 0,
+        minWidth: 0,
+        backgroundColor: theme.colors.background,
+      }}
+    >
+      <ManifestProvider manifest={runtimeManifest}>
+        <RuntimeRendererConfigProvider value={runtimeRendererConfig}>
+          <RuntimeScreen
+            manifest={runtimeManifest}
+            screen={screenConfig}
+            stateAdapter={runtimeConfig.stateAdapter}
+          />
+        </RuntimeRendererConfigProvider>
+      </ManifestProvider>
     </View>
   );
 }
