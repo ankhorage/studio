@@ -1,11 +1,15 @@
 import type { AppManifest } from '@ankhorage/contracts';
-import type { ApiDataSourceConfig, DataSourceDiagnostic } from '@ankhorage/contracts/data';
+import type {
+  DataSourceDiagnostic,
+  ExternalGraphQlApiDefinition,
+  ExternalRestApiDefinition,
+} from '@ankhorage/contracts/data';
 import {
-  createManualRestDataSource,
-  discoverOpenApiDataSource,
+  createManualRestApi,
+  discoverOpenApi,
   type EndpointTestFetch,
   type ExternalApiFetch,
-  introspectGraphQlDataSource,
+  introspectGraphQlApi,
   testEndpoint,
 } from '@ankhorage/data-sources';
 
@@ -14,10 +18,10 @@ import type {
   ExternalApiConnectResult,
   ExternalApiOperationTestRequest,
   ExternalApiOperationTestResult,
-  ManualRestSourceRequest,
+  ManualRestApiRequest,
 } from '../../externalApiAuthoringContracts';
-import { normalizeExternalApiSourceId } from '../../normalizeExternalApiSourceId';
-import { upsertExternalApiDataSource } from '../../upsertExternalApiDataSource';
+import { normalizeExternalApiId } from '../../normalizeExternalApiId';
+import { upsertExternalApi } from '../../upsertExternalApi';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import type { ProjectSecretService } from '../secrets/projectSecretService';
 import { createProjectEndpointCredentialResolver } from './createProjectEndpointCredentialResolver';
@@ -29,6 +33,8 @@ interface ExternalApiProjectStore {
   getProjectManifest(projectId: string): Promise<AppManifest>;
   persistProjectManifest(args: { projectId: string; manifest: AppManifest }): Promise<unknown>;
 }
+
+type ExternalApiDefinition = ExternalGraphQlApiDefinition | ExternalRestApiDefinition;
 
 export class StudioExternalApiService {
   private readonly projectManager: ExternalApiProjectStore;
@@ -52,9 +58,9 @@ export class StudioExternalApiService {
     projectId: string,
     request: ExternalApiConnectRequest,
   ): Promise<ExternalApiConnectResult> {
-    const normalized = normalizeExternalApiSourceId(request.sourceId);
+    const normalized = normalizeExternalApiId(request.apiId);
     if (!normalized.ok) return invalidResult(normalized.message);
-    const input = { ...request, sourceId: normalized.sourceId };
+    const input = { ...request, apiId: normalized.apiId };
 
     if (input.protocol === 'graphql') return this.connectGraphQl(projectId, input, []);
     const openApi = await this.discoverOpenApi(input);
@@ -65,12 +71,12 @@ export class StudioExternalApiService {
 
   async createManualRest(
     projectId: string,
-    request: ManualRestSourceRequest,
+    request: ManualRestApiRequest,
   ): Promise<ExternalApiConnectResult> {
-    const normalized = normalizeExternalApiSourceId(request.sourceId);
+    const normalized = normalizeExternalApiId(request.apiId);
     if (!normalized.ok) return invalidResult(normalized.message);
-    const result = createManualRestDataSource({
-      id: normalized.sourceId,
+    const result = createManualRestApi({
+      id: normalized.apiId,
       baseUrl: request.baseUrl,
       name: clean(request.name),
       description: clean(request.description),
@@ -100,19 +106,15 @@ export class StudioExternalApiService {
     request: ExternalApiOperationTestRequest,
   ): Promise<ExternalApiOperationTestResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const source = manifest.dataSources?.[request.sourceId];
-    if (!source) return missingSourceResult(request.sourceId);
-    if (source.kind !== 'api' || source.origin !== 'external') {
-      return unsupportedTestSourceResult(request.sourceId);
-    }
+    const api = manifest.infra.apis?.find((candidate) => candidate.id === request.apiId);
+    if (!api) return missingApiResult(request.apiId);
+    if (api.origin !== 'external') return unsupportedTestApiResult(request.apiId);
+
     const credentialResolver = this.secretService
-      ? createProjectEndpointCredentialResolver({
-          projectId,
-          service: this.secretService,
-        })
+      ? createProjectEndpointCredentialResolver({ projectId, service: this.secretService })
       : undefined;
     const result = await testEndpoint({
-      dataSource: source,
+      api,
       endpointId: request.endpointId,
       operationId: request.operationId,
       values: request.values,
@@ -124,8 +126,8 @@ export class StudioExternalApiService {
   }
 
   private discoverOpenApi(request: ExternalApiConnectRequest) {
-    return discoverOpenApiDataSource({
-      id: request.sourceId,
+    return discoverOpenApi({
+      id: request.apiId,
       url: request.url,
       fetch: this.discoveryFetch,
       name: clean(request.name),
@@ -140,8 +142,8 @@ export class StudioExternalApiService {
     attempts: ExternalApiConnectResult['attempts'],
     previousDiagnostics: readonly DataSourceDiagnostic[] = [],
   ): Promise<ExternalApiConnectResult> {
-    const result = await introspectGraphQlDataSource({
-      id: request.sourceId,
+    const result = await introspectGraphQlApi({
+      id: request.apiId,
       endpointUrl: request.url,
       fetch: this.discoveryFetch,
       name: clean(request.name),
@@ -159,21 +161,20 @@ export class StudioExternalApiService {
 
   private async persist(
     projectId: string,
-    source: ApiDataSourceConfig,
+    api: ExternalApiDefinition,
     attempts: ExternalApiConnectResult['attempts'],
     diagnostics: readonly DataSourceDiagnostic[] = [],
   ): Promise<ExternalApiConnectResult> {
     const manifest = await this.projectManager.getProjectManifest(projectId);
-    const upsert = upsertExternalApiDataSource(manifest.dataSources ?? {}, source);
+    const upsert = upsertExternalApi(manifest.infra.apis ?? [], api);
     await this.projectManager.persistProjectManifest({
       projectId,
-      manifest: { ...manifest, dataSources: upsert.registry },
+      manifest: { ...manifest, infra: { ...manifest.infra, apis: upsert.apis } },
     });
     return {
       ok: true,
-      sourceId: source.id,
-      kind: source.kind,
-      protocol: source.protocol,
+      apiId: api.id,
+      protocol: api.protocol,
       created: upsert.created,
       attempts,
       diagnostics,
@@ -189,28 +190,28 @@ function invalidResult(message: string): ExternalApiConnectResult {
   };
 }
 
-function unsupportedTestSourceResult(sourceId: string): ExternalApiOperationTestResult {
+function unsupportedTestApiResult(apiId: string): ExternalApiOperationTestResult {
   return {
     ok: false,
     diagnostics: [
       {
         code: 'invalid-config',
-        dataSourceId: sourceId,
-        message: 'Studio HTTP operation testing supports external API sources only.',
+        apiId,
+        message: 'Studio operation testing supports external APIs only in Phase 1.',
         severity: 'error',
       },
     ],
   };
 }
 
-function missingSourceResult(sourceId: string): ExternalApiOperationTestResult {
+function missingApiResult(apiId: string): ExternalApiOperationTestResult {
   return {
     ok: false,
     diagnostics: [
       {
-        code: 'missing-data-source',
-        dataSourceId: sourceId,
-        message: `Data source '${sourceId}' could not be found.`,
+        code: 'missing-api',
+        apiId,
+        message: `API '${apiId}' could not be found.`,
         severity: 'error',
       },
     ],
@@ -219,6 +220,5 @@ function missingSourceResult(sourceId: string): ExternalApiOperationTestResult {
 
 function clean(value: string | undefined): string | undefined {
   const normalized = value?.trim();
-  if (!normalized) return undefined;
-  return normalized;
+  return normalized || undefined;
 }
