@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.12.6
+
+### Patch Changes
+
+- 20acea9: Use ZORA's canonical responsive contract and bounded SidebarLayout fill sizing in the Studio admin shell.
+
 ## 1.12.5
 
 ### Patch Changes
