@@ -28,7 +28,7 @@ Use an existing Studio project that has already stored the trusted Google **Web 
 From the Studio repository:
 
 ```bash
-bun scripts/auth5-native-oauth-smoke-infra.ts \
+bun run smoke:auth5-native:infra -- \
   /tmp/ankh-auth5-native-smoke \
   --credentials-project <configured-project-id>
 ```
@@ -36,7 +36,7 @@ bun scripts/auth5-native-oauth-smoke-infra.ts \
 For example, if `nutri` owns the configured Google Web credential:
 
 ```bash
-bun scripts/auth5-native-oauth-smoke-infra.ts \
+bun run smoke:auth5-native:infra -- \
   /tmp/ankh-auth5-native-smoke \
   --credentials-project nutri
 ```
