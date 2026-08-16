@@ -23,7 +23,7 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
     ok: true,
     data: { clientId: 'web-client-id', clientSecret: 'trusted-client-secret' },
   };
-  let resolvedSourceRef: string | null = null;
+  const resolvedSourceRefs: string[] = [];
   let writtenPublicEnv = '';
   let smokeResolverWasUsed = false;
 
@@ -38,7 +38,7 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
         ].join('\n'),
       ),
     resolveSourceCredential: (ref) => {
-      resolvedSourceRef = ref;
+      resolvedSourceRefs.push(ref);
       return Promise.resolve(credential);
     },
     activateSmokeInfrastructure: async (secretResolver) => {
@@ -65,7 +65,7 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
     dependencies,
   );
 
-  expect(resolvedSourceRef).toBe(SOURCE_CREDENTIAL_REF);
+  expect(resolvedSourceRefs).toEqual([SOURCE_CREDENTIAL_REF]);
   expect(smokeResolverWasUsed).toBe(true);
   expect(result).toEqual({
     androidCallback: 'ankh-auth5-android://auth/callback',
