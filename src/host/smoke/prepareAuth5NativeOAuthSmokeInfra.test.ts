@@ -11,7 +11,7 @@ import {
 const SOURCE_CREDENTIAL_REF = 'team/oauth/google';
 const SMOKE_CREDENTIAL_REF = 'auth/oauth/google';
 
-test('activates smoke-owned Infra with a trusted source credential and public-only app env', async () => {
+test('uses smoke-owned public runtime env after activating with a trusted source credential', async () => {
   const sourceManifest = createAuth5NativeOAuthSmokeManifest();
   const googleProvider = sourceManifest.infra.auth?.oauth?.providers.find(
     (provider) => provider.id === 'google',
@@ -24,19 +24,18 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
     data: { clientId: 'web-client-id', clientSecret: 'trusted-client-secret' },
   };
   const resolvedSourceRefs: string[] = [];
-  let writtenPublicEnv = '';
   let smokeResolverWasUsed = false;
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
-    readSourceManifest: () => Promise.resolve(sourceManifest),
-    readSourcePublicEnv: () =>
+    readSmokePublicEnv: () =>
       Promise.resolve(
         [
-          'EXPO_PUBLIC_SUPABASE_URL=http://source.example',
-          "EXPO_PUBLIC_SUPABASE_ANON_KEY='public-anon-key'",
-          'GOOGLE_CLIENT_SECRET=must-not-copy',
+          'EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19601',
+          'EXPO_PUBLIC_SUPABASE_ANON_KEY=smoke-public-anon-key',
+          '',
         ].join('\n'),
       ),
+    readSourceManifest: () => Promise.resolve(sourceManifest),
     resolveSourceCredential: (ref) => {
       resolvedSourceRefs.push(ref);
       return Promise.resolve(credential);
@@ -48,11 +47,7 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
       });
       expect(resolved).toEqual(credential);
       smokeResolverWasUsed = true;
-      return { gatewayUrl: 'http://127.0.0.1:19600', target: 'local' };
-    },
-    writeSmokePublicEnv: (content) => {
-      writtenPublicEnv = content;
-      return Promise.resolve();
+      return { target: 'local' };
     },
   };
 
@@ -69,23 +64,14 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
   expect(smokeResolverWasUsed).toBe(true);
   expect(result).toEqual({
     androidCallback: 'ankh-auth5-android://auth/callback',
-    gatewayUrl: 'http://127.0.0.1:19600',
+    gatewayUrl: 'http://127.0.0.1:19601',
     iosCallback: 'ankh-auth5-ios://auth/callback',
     projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
     target: 'local',
   });
-  expect(writtenPublicEnv).toBe(
-    [
-      'EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600',
-      'EXPO_PUBLIC_SUPABASE_ANON_KEY=public-anon-key',
-      '',
-    ].join('\n'),
-  );
-  expect(writtenPublicEnv).not.toContain('trusted-client-secret');
-  expect(writtenPublicEnv).not.toContain('GOOGLE_CLIENT_SECRET');
 });
 
-test('fails before Infra activation when the source public anon key is missing', async () => {
+test('fails after Infra activation when the smoke public anon key is missing', async () => {
   const sourceManifest = createAuth5NativeOAuthSmokeManifest();
   let activated = false;
   const credential: SecretStoreResult<SecretPayload> = {
@@ -94,14 +80,13 @@ test('fails before Infra activation when the source public anon key is missing',
   };
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
+    readSmokePublicEnv: () => Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19601\n'),
     readSourceManifest: () => Promise.resolve(sourceManifest),
-    readSourcePublicEnv: () => Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n'),
     resolveSourceCredential: () => Promise.resolve(credential),
     activateSmokeInfrastructure: () => {
       activated = true;
-      return Promise.resolve({ gatewayUrl: 'http://127.0.0.1:19600', target: 'local' });
+      return Promise.resolve({ target: 'local' });
     },
-    writeSmokePublicEnv: () => Promise.resolve(),
   };
 
   let caught: unknown;
@@ -120,5 +105,5 @@ test('fails before Infra activation when the source public anon key is missing',
 
   expect(caught).toBeInstanceOf(Error);
   expect((caught as Error).message).toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
-  expect(activated).toBe(false);
+  expect(activated).toBe(true);
 });

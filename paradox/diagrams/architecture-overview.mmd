@@ -6,6 +6,9 @@ graph TD
   package__ankhorage_studio -.-> module_knip_config_ts
   module_paradox_config_ts["paradox.config.ts"]
   package__ankhorage_studio -.-> module_paradox_config_ts
+  module_scripts_auth5_native_oauth_smoke_infra_ts["scripts/auth5-native-oauth-smoke-infra.ts"]
+  package__ankhorage_studio -.-> module_scripts_auth5_native_oauth_smoke_infra_ts
+  module_scripts_auth5_native_oauth_smoke_infra_ts --> module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts
   module_scripts_auth5_native_oauth_smoke_ts["scripts/auth5-native-oauth-smoke.ts"]
   package__ankhorage_studio -.-> module_scripts_auth5_native_oauth_smoke_ts
   module_scripts_auth5_native_oauth_smoke_ts --> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
@@ -766,11 +769,28 @@ graph TD
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_projectPaths_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_orchestrator_studioInfraUp_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts["src/host/smoke/runAuth5NativeOAuthSmoke.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
+  module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts["src/host/smoke/runAuth5NativeOAuthSmokeInfra.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts
+  module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_studioInfra_e2e_test_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts
