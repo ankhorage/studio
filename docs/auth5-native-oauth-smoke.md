@@ -8,8 +8,6 @@ From the Studio repository:
 
 ```bash
 bun run smoke:auth5-native:prepare -- /tmp/ankh-auth5-native-smoke
-cd /tmp/ankh-auth5-native-smoke/apps/auth5-native-oauth-smoke
-bun install
 ```
 
 The fixture is Google-only and intentionally contains no Google client secret. Its native callbacks are:
@@ -19,31 +17,85 @@ Android: ankh-auth5-android://auth/callback
 iOS:     ankh-auth5-ios://auth/callback
 ```
 
-Run Doctor against `ankh.config.json` and confirm both native targets are ready, their exact schemes are shown, and the development/standalone-build requirement is reported.
+Run Doctor against the generated `ankh.config.json` and confirm both native targets are ready, their exact schemes are shown, and the development/standalone-build requirement is reported.
 
-## Connect a configured Auth backend
+## Activate the smoke project's own Auth Infra
 
-Use an Auth backend that has already been configured through the normal Ankhorage Auth/Infra flow with one Google **Web application** client ID and secret. The backend remains the Google OAuth client.
+Do not point the fixture at another project's active Auth redirect configuration. The smoke manifest owns the callback schemes above, so its own Infra projection must be reconciled before native validation.
 
-Verify before launching the app:
+Use an existing Studio project that has already stored the trusted Google **Web application** client ID and secret through the normal Auth/Secret flow. That project is only the credential source; its manifest and redirect allowlist are not changed.
 
-- the provider-to-Auth-backend callback registered in Google is unchanged;
-- the backend redirect allowlist contains both native callbacks above;
-- `.env.local` in the generated app contains only the public runtime values `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY`;
-- no Google client secret, service-role key, provider token, or other trusted credential is copied into the generated app.
+From the Studio repository:
+
+```bash
+bun run smoke:auth5-native:infra -- \
+  /tmp/ankh-auth5-native-smoke \
+  --credentials-project <configured-project-id>
+```
+
+For example, if `nutri` owns the configured Google Web credential:
+
+```bash
+bun run smoke:auth5-native:infra -- \
+  /tmp/ankh-auth5-native-smoke \
+  --credentials-project nutri
+```
+
+The command:
+
+- resolves the source project's enabled Google `credentialsRef` through the existing trusted `ProjectSecretService`;
+- supplies that credential only to the smoke project's canonical `upProjectInfrastructure()` flow;
+- reconciles GoTrue from the smoke manifest and its Android/iOS deploy targets;
+- starts the smoke project's local Infra port-forward;
+- writes the generated app `.env.local` with only `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY`.
+
+No Google client secret, service-role key, provider token, or other trusted credential is copied into the generated app.
+
+Verify the active GoTrue configuration before opening the native app:
+
+```bash
+kubectl exec -n supabase deploy/auth -- \
+  printenv | grep -E 'GOTRUE_(SITE_URL|URI_ALLOW_LIST)'
+```
+
+The active allowlist must contain both:
+
+```text
+ankh-auth5-android://auth/callback
+ankh-auth5-ios://auth/callback
+```
+
+If it still contains only another app's native scheme, do not continue the smoke. Re-run the smoke Infra command and investigate the canonical Infra reconciliation rather than mutating Kubernetes manually.
+
+Confirm the gateway URL printed by the command is reachable, for example:
+
+```bash
+curl http://127.0.0.1:19600/auth/v1/settings
+```
+
+Use the actual gateway URL/port printed by the command if it differs.
 
 ## Android development build
 
-Use an Android emulator or device with the Android SDK configured:
+Bridge the printed local gateway port to the Android device/emulator before starting OAuth. For a gateway on port `19600`:
 
 ```bash
+adb reverse tcp:19600 tcp:19600
+adb reverse --list
+```
+
+Then:
+
+```bash
+cd /tmp/ankh-auth5-native-smoke/apps/auth5-native-oauth-smoke
+bun install
 bun run android
 ```
 
 Validate:
 
 1. Google sign-in opens the system authentication browser, not an embedded WebView.
-2. Successful authorization returns to `ankh-auth5-android://auth/callback`.
+2. Successful authorization returns to `ankh-auth5-android://auth/callback` instead of the GoTrue site URL.
 3. The PKCE code is exchanged once and the app reaches the authenticated state.
 4. Relaunching the app restores the normalized session.
 5. Cancelling authorization returns a recoverable cancelled outcome without a session.
@@ -55,6 +107,7 @@ Validate:
 On macOS with Xcode, use an iOS simulator or device:
 
 ```bash
+cd /tmp/ankh-auth5-native-smoke/apps/auth5-native-oauth-smoke
 bun run ios
 ```
 
