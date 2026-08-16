@@ -134,27 +134,34 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
     expect(oauthRuntime).not.toContain('window.closed');
     expect(oauthRuntime).toContain(
-      "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';",
+      "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
     );
+    expect(oauthRuntime).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+    expect(oauthRuntime).not.toContain('ankh.auth.oauth.transport.v1');
+    expect(oauthRuntime).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauthRuntime).toContain(
-      "const LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v1';",
+      'interface StoredTransportAttempt {\n  attemptId: string;\n}',
     );
-    expect(oauthRuntime).toContain(
-      'interface StoredTransportAttempt {\n  version: 1;\n  attemptId: string;\n}',
-    );
+    expect(oauthRuntime).toContain('export function resolveOAuthCallbackUrl(');
+    expect(oauthRuntime).toContain('callbackUrl.searchParams.append(name, value);');
     expect(oauthRuntime).not.toContain('provider: AuthOAuthProviderId;');
 
     const callback = await readProjectFile(created.path, callbackPath);
     expect(callback).not.toContain("from 'expo-web-browser'");
+    expect(callback).not.toContain("from 'expo-linking'");
     expect(callback).not.toContain('WebBrowser.maybeCompleteAuthSession()');
     expect(callback).not.toContain('window.closed');
-    expect(callback).toContain('const callbackUrl = Linking.useURL();');
-    expect(callback).toContain('callbackUrl ?? (await Linking.getInitialURL())');
+    expect(callback).not.toContain('Linking.useURL()');
+    expect(callback).not.toContain('Linking.getInitialURL()');
+    expect(callback).toContain(
+      'useLocalSearchParams<Record<string, string | string[] | undefined>>()',
+    );
+    expect(callback).toContain('callbackUrl = resolveOAuthCallbackUrl(callbackParams);');
     expect(callback).toContain(
       'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
     );
     expect(callback).toContain('const handledOutcomeRef = useRef(false);');
-    expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(deliveredUrl);');
+    expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(callbackUrl);');
     expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
