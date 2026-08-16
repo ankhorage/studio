@@ -1,0 +1,115 @@
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
+import { expect, test } from 'bun:test';
+
+import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
+import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmokeManifest';
+import {
+  type Auth5NativeOAuthSmokeInfraDependencies,
+  prepareAuth5NativeOAuthSmokeInfra,
+} from './prepareAuth5NativeOAuthSmokeInfra';
+
+const SOURCE_CREDENTIAL_REF = 'team/oauth/google';
+const SMOKE_CREDENTIAL_REF = 'auth/oauth/google';
+
+test('activates smoke-owned Infra with a trusted source credential and public-only app env', async () => {
+  const sourceManifest = createAuth5NativeOAuthSmokeManifest();
+  const googleProvider = sourceManifest.infra.auth?.oauth?.providers.find(
+    (provider) => provider.id === 'google',
+  );
+  if (!googleProvider) throw new Error('Google fixture provider is unavailable.');
+  googleProvider.credentialsRef = SOURCE_CREDENTIAL_REF;
+
+  const credential: SecretStoreResult<SecretPayload> = {
+    ok: true,
+    data: { clientId: 'web-client-id', clientSecret: 'trusted-client-secret' },
+  };
+  let resolvedSourceRef: string | null = null;
+  let writtenPublicEnv = '';
+  let smokeResolverWasUsed = false;
+
+  const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
+    readSourceManifest: async () => sourceManifest,
+    readSourcePublicEnv: async () =>
+      [
+        'EXPO_PUBLIC_SUPABASE_URL=http://source.example',
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY='public-anon-key'",
+        'GOOGLE_CLIENT_SECRET=must-not-copy',
+      ].join('\n'),
+    resolveSourceCredential: async (ref) => {
+      resolvedSourceRef = ref;
+      return credential;
+    },
+    activateSmokeInfrastructure: async (secretResolver) => {
+      const resolved = await secretResolver.resolve({
+        projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
+        ref: SMOKE_CREDENTIAL_REF,
+      });
+      expect(resolved).toEqual(credential);
+      smokeResolverWasUsed = true;
+      return { gatewayUrl: 'http://127.0.0.1:19600', target: 'local' };
+    },
+    writeSmokePublicEnv: async (content) => {
+      writtenPublicEnv = content;
+    },
+  };
+
+  const result = await prepareAuth5NativeOAuthSmokeInfra(
+    {
+      credentialsProjectId: 'nutri',
+      smokeWorkspaceRoot: '/tmp/auth5-smoke',
+      sourceWorkspaceRoot: '/workspace/studio',
+    },
+    dependencies,
+  );
+
+  expect(resolvedSourceRef).toBe(SOURCE_CREDENTIAL_REF);
+  expect(smokeResolverWasUsed).toBe(true);
+  expect(result).toEqual({
+    androidCallback: 'ankh-auth5-android://auth/callback',
+    gatewayUrl: 'http://127.0.0.1:19600',
+    iosCallback: 'ankh-auth5-ios://auth/callback',
+    projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
+    target: 'local',
+  });
+  expect(writtenPublicEnv).toBe(
+    [
+      'EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600',
+      'EXPO_PUBLIC_SUPABASE_ANON_KEY=public-anon-key',
+      '',
+    ].join('\n'),
+  );
+  expect(writtenPublicEnv).not.toContain('trusted-client-secret');
+  expect(writtenPublicEnv).not.toContain('GOOGLE_CLIENT_SECRET');
+});
+
+test('fails before Infra activation when the source public anon key is missing', async () => {
+  const sourceManifest = createAuth5NativeOAuthSmokeManifest();
+  let activated = false;
+  const credential: SecretStoreResult<SecretPayload> = {
+    ok: true,
+    data: { clientId: 'web-client-id', clientSecret: 'trusted-client-secret' },
+  };
+
+  const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
+    readSourceManifest: async () => sourceManifest,
+    readSourcePublicEnv: async () => 'EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n',
+    resolveSourceCredential: async () => credential,
+    activateSmokeInfrastructure: async () => {
+      activated = true;
+      return { gatewayUrl: 'http://127.0.0.1:19600', target: 'local' };
+    },
+    writeSmokePublicEnv: async () => undefined,
+  };
+
+  await expect(
+    prepareAuth5NativeOAuthSmokeInfra(
+      {
+        credentialsProjectId: 'nutri',
+        smokeWorkspaceRoot: '/tmp/auth5-smoke',
+        sourceWorkspaceRoot: '/workspace/studio',
+      },
+      dependencies,
+    ),
+  ).rejects.toThrow('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  expect(activated).toBe(false);
+});
