@@ -3,9 +3,14 @@ import { describe, expect, it } from 'bun:test';
 
 import { getScreenTsx } from './screen';
 
-const screenDef = {
+const screenDef: ScreenSpec = {
+  id: 'screen-home',
   name: 'Home',
-} as ScreenSpec;
+  root: {
+    id: 'screen-root',
+    type: 'Screen',
+  },
+};
 
 describe('getScreenTsx', () => {
   it('keeps generated routes layout-transparent so the authored screen owns scrolling', () => {
