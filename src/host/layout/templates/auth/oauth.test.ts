@@ -113,7 +113,9 @@ test('does not invent a native callback scheme when none is configured', () => {
 test('reconstructs the canonical callback URL from router-owned search params', () => {
   const runtime = createOAuthRuntime();
 
-  expect(runtime).toContain('export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams)');
+  expect(runtime).toContain(
+    'export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams)',
+  );
   expect(runtime).toContain('const callbackUrl = new URL(resolveOAuthRedirectUri());');
   expect(runtime).toContain('for (const [name, value] of Object.entries(params)) {');
   expect(runtime).toContain("if (name === '#') continue;");
