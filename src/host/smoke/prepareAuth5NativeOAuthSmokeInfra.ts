@@ -1,10 +1,9 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AppManifest } from '@ankhorage/contracts';
 import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
 
-import { ensureProjectInfraPortForward } from '../orchestrator/infraSession';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { upProjectInfrastructure } from '../orchestrator/studioInfraUp';
@@ -15,6 +14,7 @@ import { createAuth5NativeOAuthSmokeManifest } from './createAuth5NativeOAuthSmo
 
 const GOOGLE_PROVIDER_ID = 'google';
 const PUBLIC_ANON_KEY = 'EXPO_PUBLIC_SUPABASE_ANON_KEY';
+const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL';
 
 export interface PrepareAuth5NativeOAuthSmokeInfraArgs {
   readonly credentialsProjectId: string;
@@ -31,7 +31,6 @@ export interface PrepareAuth5NativeOAuthSmokeInfraResult {
 }
 
 interface SmokeInfraActivation {
-  readonly gatewayUrl: string;
   readonly target: string;
 }
 
@@ -39,10 +38,9 @@ export interface Auth5NativeOAuthSmokeInfraDependencies {
   activateSmokeInfrastructure(
     secretResolver: TrustedOAuthSecretResolver,
   ): Promise<SmokeInfraActivation>;
+  readSmokePublicEnv(): Promise<string>;
   readSourceManifest(): Promise<AppManifest>;
-  readSourcePublicEnv(): Promise<string>;
   resolveSourceCredential(ref: string): Promise<SecretStoreResult<SecretPayload>>;
-  writeSmokePublicEnv(content: string): Promise<void>;
 }
 
 export async function prepareAuth5NativeOAuthSmokeInfra(
@@ -61,7 +59,6 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
   const smokeManifest = createAuth5NativeOAuthSmokeManifest();
   const smokeCredentialRef = resolveGoogleCredentialRef(smokeManifest);
   const callbackRoute = resolveOAuthCallbackRoute(smokeManifest);
-  const anonKey = parseRequiredEnvValue(await dependencies.readSourcePublicEnv(), PUBLIC_ANON_KEY);
   const activation = await dependencies.activateSmokeInfrastructure({
     resolve: ({ projectId, ref }) => {
       if (projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId || ref !== smokeCredentialRef) {
@@ -71,13 +68,13 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
     },
   });
 
-  await dependencies.writeSmokePublicEnv(
-    serializePublicRuntimeEnv({ gatewayUrl: activation.gatewayUrl, anonKey }),
-  );
+  const smokePublicEnv = await dependencies.readSmokePublicEnv();
+  const gatewayUrl = parseRequiredEnvValue(smokePublicEnv, PUBLIC_SUPABASE_URL);
+  parseRequiredEnvValue(smokePublicEnv, PUBLIC_ANON_KEY);
 
   return {
     androidCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.android.scheme}://${callbackRoute}`,
-    gatewayUrl: activation.gatewayUrl,
+    gatewayUrl,
     iosCallback: `${AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme}://${callbackRoute}`,
     projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
     target: activation.target,
@@ -93,19 +90,16 @@ function createDependencies(
     projectManager: sourceProjectManager,
     workspaceRoot: args.sourceWorkspaceRoot,
   });
-  const sourceProjectPath = getProjectPath(args.sourceWorkspaceRoot, args.credentialsProjectId);
   const smokeProjectPath = getProjectPath(
     args.smokeWorkspaceRoot,
     AUTH5_NATIVE_OAUTH_SMOKE.projectId,
   );
 
   return {
+    readSmokePublicEnv: () => readFile(path.join(smokeProjectPath, '.env.local'), 'utf8'),
     readSourceManifest: () => sourceProjectManager.getProjectManifest(args.credentialsProjectId),
-    readSourcePublicEnv: () => readFile(path.join(sourceProjectPath, '.env.local'), 'utf8'),
     resolveSourceCredential: (ref) =>
       sourceSecretService.resolve({ projectId: args.credentialsProjectId, ref }),
-    writeSmokePublicEnv: (content) =>
-      writeFile(path.join(smokeProjectPath, '.env.local'), content, 'utf8'),
     activateSmokeInfrastructure: async (secretResolver) => {
       const result = await upProjectInfrastructure({
         projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
@@ -119,12 +113,7 @@ function createDependencies(
       if (!result.target) {
         throw new Error('Auth 5 smoke infrastructure did not resolve a target.');
       }
-      const forwarded = await ensureProjectInfraPortForward({
-        projectId: AUTH5_NATIVE_OAUTH_SMOKE.projectId,
-        projectPath: smokeProjectPath,
-        target: result.target,
-      });
-      return { gatewayUrl: forwarded.url, target: result.target };
+      return { target: result.target };
     },
   };
 }
@@ -159,7 +148,7 @@ function parseRequiredEnvValue(raw: string, key: string): string {
     const value = stripMatchingQuotes(normalized.slice(separator + 1).trim());
     if (value.length > 0) return value;
   }
-  throw new Error(`Configured source project is missing ${key} in .env.local.`);
+  throw new Error(`Auth 5 smoke project is missing ${key} in .env.local after Infra Up.`);
 }
 
 function stripMatchingQuotes(value: string): string {
@@ -169,15 +158,4 @@ function stripMatchingQuotes(value: string): string {
   return (first === '"' && last === '"') || (first === "'" && last === "'")
     ? value.slice(1, -1)
     : value;
-}
-
-function serializePublicRuntimeEnv(args: {
-  readonly anonKey: string;
-  readonly gatewayUrl: string;
-}) {
-  return [
-    `EXPO_PUBLIC_SUPABASE_URL=${args.gatewayUrl}`,
-    `EXPO_PUBLIC_SUPABASE_ANON_KEY=${args.anonKey}`,
-    '',
-  ].join('\n');
 }
