@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.12.4",
+      "value": "v1.12.5",
       "color": "cb3837"
     },
     {
@@ -12481,7 +12481,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2235,
+        "line": 2236,
         "column": 1
       }
     },
@@ -12490,7 +12490,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2268,
+        "line": 2269,
         "column": 1
       }
     },
@@ -12499,7 +12499,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2282,
+        "line": 2283,
         "column": 1
       }
     },
@@ -12508,7 +12508,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2291,
+        "line": 2292,
         "column": 1
       }
     },
@@ -12517,7 +12517,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2307,
+        "line": 2308,
         "column": 1
       }
     },
@@ -12526,7 +12526,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2314,
+        "line": 2315,
         "column": 1
       }
     },
@@ -12535,7 +12535,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2320,
+        "line": 2321,
         "column": 1
       }
     },
@@ -12544,7 +12544,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2333,
+        "line": 2334,
         "column": 1
       }
     },
@@ -12553,7 +12553,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2350,
+        "line": 2351,
         "column": 1
       }
     },
@@ -12562,7 +12562,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2367,
+        "line": 2368,
         "column": 1
       }
     },
@@ -12571,7 +12571,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2373,
+        "line": 2374,
         "column": 1
       }
     },
@@ -12580,7 +12580,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2379,
+        "line": 2380,
         "column": 1
       }
     },
@@ -12589,7 +12589,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2395,
+        "line": 2396,
         "column": 1
       }
     },
@@ -12598,7 +12598,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2951,
+        "line": 2952,
         "column": 1
       }
     },
@@ -12607,7 +12607,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2966,
+        "line": 2967,
         "column": 1
       }
     },
@@ -12616,7 +12616,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2970,
+        "line": 2971,
         "column": 1
       }
     },
@@ -12625,7 +12625,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2979,
+        "line": 2980,
         "column": 1
       }
     },
@@ -12634,7 +12634,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2990,
+        "line": 2991,
         "column": 1
       }
     },
@@ -20059,7 +20059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 24,
+        "line": 34,
         "column": 1
       }
     },
@@ -20068,7 +20068,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 37,
+        "line": 45,
         "column": 9
       }
     },
@@ -20077,7 +20077,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 51,
+        "line": 59,
         "column": 9
       }
     },
@@ -20086,7 +20086,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/AnkhAdminShell.tsx",
-        "line": 115,
+        "line": 128,
         "column": 1
       }
     },
@@ -46468,12 +46468,6 @@
         "fromSymbol": "AnkhAdminShell",
         "toSymbol": "useRouter",
         "callExpression": "useRouter",
-        "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
-      },
-      {
-        "fromSymbol": "AnkhAdminShell",
-        "toSymbol": "useWindowDimensions",
-        "callExpression": "useWindowDimensions",
         "sourcePath": "src/ui/admin/AnkhAdminShell.tsx"
       },
       {
