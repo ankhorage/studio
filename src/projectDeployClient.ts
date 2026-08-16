@@ -1,8 +1,19 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/deploy';
-import type { ProjectReleaseHistoryRecord, ProjectStoreListing } from '@ankhorage/deploy/project';
+import type {
+  MonetizationDesiredState,
+  ReleaseControlExecutionResult,
+  ReleaseDesiredState,
+  ReleaseLifecycleControl,
+  ReleasePlan,
+} from '@ankhorage/deploy';
+import type {
+  ProjectReleaseHistoryRecord,
+  ProjectReleaseInspection,
+  ProjectStoreListing,
+} from '@ankhorage/deploy/project';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
+import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRequest } from './projectDeployRequest';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
@@ -43,6 +54,63 @@ export class ProjectDeployClient {
         body: JSON.stringify(input.runtime),
       },
       parseInspection,
+    );
+  }
+
+  executeRelease(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly inspection: ProjectReleaseInspection;
+    readonly plan: ReleasePlan;
+  }): Promise<ProjectDeployReleaseExecutionResponse> {
+    return this.postReleaseAction(
+      input.projectId,
+      'release/execute',
+      { runtime: input.runtime, inspection: input.inspection, plan: input.plan },
+      parseExecutionResponse,
+    );
+  }
+
+  resumeRelease(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly previousExecutionId: string;
+  }): Promise<ProjectDeployReleaseExecutionResponse> {
+    return this.postReleaseAction(
+      input.projectId,
+      'release/resume',
+      { runtime: input.runtime, previousExecutionId: input.previousExecutionId },
+      parseExecutionResponse,
+    );
+  }
+
+  executeReleaseControl(input: {
+    readonly projectId: string;
+    readonly runtime: ProjectDeployRuntimeInput;
+    readonly control: ReleaseLifecycleControl;
+  }): Promise<ReleaseControlExecutionResult> {
+    return this.postReleaseAction(
+      input.projectId,
+      'release/control',
+      { runtime: input.runtime, control: input.control },
+      parseControlResult,
+    );
+  }
+
+  private postReleaseAction<T>(
+    projectId: string,
+    suffix: string,
+    body: unknown,
+    parse: (value: unknown) => T,
+  ): Promise<T> {
+    return this.requestJson(
+      projectPath(projectId, suffix),
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+      parse,
     );
   }
 
@@ -151,6 +219,75 @@ function parseInspection(value: unknown): ProjectDeployReleaseInspectionResult {
     invalid('Release inspection result');
   }
   return value as ProjectDeployReleaseInspectionResult;
+}
+
+function parseExecutionResponse(value: unknown): ProjectDeployReleaseExecutionResponse {
+  const record = asRecord(value);
+  if (record === null || typeof record.executionId !== 'string') {
+    invalid('Release execution');
+  }
+  parseProjectReleaseExecutionResult(record.result);
+  return value as ProjectDeployReleaseExecutionResponse;
+}
+
+function parseProjectReleaseExecutionResult(value: unknown): void {
+  const result = asRecord(value);
+  if (result === null || typeof result.ok !== 'boolean') invalid('Release execution result');
+  if (!result.ok) {
+    parseFailure(result.failure, 'Release execution failure');
+    return;
+  }
+  const execution = asRecord(result.execution);
+  const reconcile = asRecord(execution?.result);
+  if (
+    execution === null ||
+    typeof execution.historyRecorded !== 'boolean' ||
+    reconcile === null ||
+    !isReconcileStatus(reconcile.status) ||
+    typeof reconcile.currentRevision !== 'string' ||
+    !Array.isArray(reconcile.executedStepIds)
+  ) {
+    invalid('Release execution result');
+  }
+  if (execution.historyFailure !== undefined) {
+    parseFailure(execution.historyFailure, 'Release history failure');
+  }
+}
+
+function parseControlResult(value: unknown): ReleaseControlExecutionResult {
+  const result = asRecord(value);
+  if (
+    result === null ||
+    !isControlStatus(result.status) ||
+    typeof result.mutationAttempted !== 'boolean'
+  ) {
+    invalid('Release lifecycle control');
+  }
+  if (result.status !== 'completed' && typeof result.code !== 'string') {
+    invalid('Release lifecycle control');
+  }
+  return value as ReleaseControlExecutionResult;
+}
+
+function parseFailure(value: unknown, label: string): void {
+  const failure = asRecord(value);
+  if (failure === null || typeof failure.code !== 'string' || typeof failure.message !== 'string') {
+    invalid(label);
+  }
+}
+
+function isReconcileStatus(value: unknown): boolean {
+  return (
+    value === 'completed' ||
+    value === 'waiting' ||
+    value === 'blocked' ||
+    value === 'failed' ||
+    value === 'drifted'
+  );
+}
+
+function isControlStatus(value: unknown): boolean {
+  return value === 'completed' || value === 'blocked' || value === 'failed';
 }
 
 function isHistoryRecord(value: unknown): boolean {

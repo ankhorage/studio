@@ -60,12 +60,14 @@ remain server-owned in the project secret store. The pages keep provider health,
 credential linking, project-secret inventory, rotation, usage detection, guarded removal, and
 browser-safe secret responses.
 
-Deploy administration at `/ankh/deploy` is a read-only projection over `@ankhorage/deploy` owner
-APIs. It shows canonical target configuration, store-listing and monetization revisions, prepared
-release state, release history, and provider readiness. Readiness uses Deploy's own release
-inspection and plan objects with an explicitly selected secret environment; raw credential material
-remains server-only. This dashboard does not execute deployment mutations or define parallel Studio
-listing, product, release, plan, or history schemas.
+Deploy administration at `/ankh/deploy` consumes `@ankhorage/deploy` owner APIs for canonical
+target configuration, store-listing and monetization revisions, prepared release state, release
+history, readiness, planning, execution, resume, and lifecycle controls. Studio previews Deploy's
+exact inspection/plan objects, visibly marks irreversible plan steps, requires explicit confirmation,
+and sends the same inspected snapshot to Deploy execution without re-planning in the browser. Waiting,
+blocked, no-change, drifted, failed, completed, and history-recording outcomes remain owner-defined
+states. Raw credential material remains server-only, execution IDs are created by the trusted host,
+and Studio defines no parallel listing, product, release, plan, execution, or history semantics.
 
 Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
 the existing manifest theme state for the currently active rendered theme mode. It does not
