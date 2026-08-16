@@ -23,6 +23,7 @@ import { createProjectDeployRequest } from './createProjectDeployRequest';
 import { ProjectDeployClient } from './projectDeployClient';
 import type { ProjectDeployMonetizationInspectionResult } from './projectDeployMonetizationInspectionResult';
 import type { ProjectDeployReleaseExecutionResponse } from './projectDeployReleaseExecutionResponse';
+import type { ProjectDeployReleaseHistoryRecord } from './projectDeployReleaseHistoryRecord';
 import type { ProjectDeployReleaseInspectionResult } from './projectDeployReleaseInspectionResult';
 import type { ProjectDeployRuntimeInput } from './projectDeployRuntimeInput';
 
@@ -105,17 +106,25 @@ export function writeProjectDeployRelease(
   return client.writeRelease(projectId, release);
 }
 
-export function listProjectDeployReleaseHistory(
+export async function listProjectDeployReleaseHistory(
   projectId: string,
-): Promise<readonly ProjectReleaseHistoryRecord[]> {
-  return client.listReleaseHistory(projectId);
+): Promise<readonly ProjectDeployReleaseHistoryRecord[]> {
+  const records = await client.listReleaseHistory(projectId);
+  if (!records.every(hasResumableProjection)) {
+    throw new Error('The Studio host returned release history without resumability state.');
+  }
+  return records;
 }
 
-export function inspectProjectDeployRelease(input: {
+export async function inspectProjectDeployRelease(input: {
   readonly projectId: string;
   readonly runtime: ProjectDeployRuntimeInput;
 }): Promise<ProjectDeployReleaseInspectionResult> {
-  return client.inspectRelease(input);
+  const result = await client.inspectRelease(input);
+  if (result.ok && !Array.isArray(result.lifecycleControls)) {
+    throw new Error('The Studio host returned release inspection without lifecycle controls.');
+  }
+  return result;
 }
 
 export function executeProjectDeployRelease(input: {
@@ -141,4 +150,10 @@ export function executeProjectDeployReleaseControl(input: {
   readonly control: ReleaseLifecycleControl;
 }): Promise<ReleaseControlExecutionResult> {
   return client.executeReleaseControl(input);
+}
+
+function hasResumableProjection(
+  record: ProjectReleaseHistoryRecord,
+): record is ProjectDeployReleaseHistoryRecord {
+  return typeof (record as ProjectReleaseHistoryRecord & { readonly resumable?: unknown }).resumable === 'boolean';
 }
