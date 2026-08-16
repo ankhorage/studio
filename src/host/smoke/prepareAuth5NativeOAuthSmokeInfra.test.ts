@@ -80,8 +80,7 @@ test('fails after Infra activation when the smoke public anon key is missing', a
   };
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
-    readSmokePublicEnv: () =>
-      Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19601\n'),
+    readSmokePublicEnv: () => Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19601\n'),
     readSourceManifest: () => Promise.resolve(sourceManifest),
     resolveSourceCredential: () => Promise.resolve(credential),
     activateSmokeInfrastructure: () => {
