@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
 import { describe, expect, it } from 'bun:test';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 const NODE_ONLY_SOURCE_DIRECTORIES = new Set(['cli', 'host']);
 const DEPLOY_PACKAGE_PREFIX = '@ankhorage/deploy';
@@ -36,7 +36,7 @@ async function collectClientSourceFiles(root: string, directory: string): Promis
       files.push(...(await collectClientSourceFiles(root, path)));
       continue;
     }
-    if (!entry.isFile() || !/\.(?:ts|tsx)$/.test(entry.name) || entry.name.endsWith('.test.ts')) {
+    if (!entry.isFile() || !/\.(?:ts|tsx)$/.test(entry.name) || /\.test\.(?:ts|tsx)$/.test(entry.name)) {
       continue;
     }
     files.push(path);
