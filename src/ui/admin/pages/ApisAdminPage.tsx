@@ -3,10 +3,9 @@ import React from 'react';
 import { useStudio } from '../../../core/StudioContext';
 import type { StudioAdminRouteId } from '../../../index';
 import { AdminHeader, AdminScroll } from '../adminPagePrimitives';
-import { DataSourceCatalogCard } from './DataSourceCatalogCard';
-import { DataSourceOperationsCard } from './DataSourceOperationsCard';
+import { ApiCatalogCard } from './ApiCatalogCard';
+import { ApiOperationsCard } from './ApiOperationsCard';
 import { ExternalApiConnectCard } from './ExternalApiConnectCard';
-import { GeneratedApiAuthoringCard } from './GeneratedApiAuthoringCard';
 import { ManualRestSourceCard } from './ManualRestSourceCard';
 
 export type ApisAdminRouteId = Extract<
@@ -16,28 +15,21 @@ export type ApisAdminRouteId = Extract<
 
 export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId }) {
   const studio = useStudio();
-  const dataSources = studio.manifest?.dataSources ?? {};
+  const apis = studio.manifest?.infra.apis ?? [];
   const showAuthoring = routeId === 'apis';
-  const showSources = routeId === 'apis' || routeId === 'api-data-sources';
+  const showCatalog = routeId === 'apis' || routeId === 'api-data-sources';
   const showOperations = routeId === 'apis' || routeId === 'api-operations';
 
   return (
     <AdminScroll>
       <AdminHeader
-        title={
-          routeId === 'api-operations'
-            ? 'Operations'
-            : routeId === 'api-data-sources'
-              ? 'Data sources'
-              : 'APIs'
-        }
-        description="Connect external APIs or create generated REST/CRUD APIs, then inspect their canonical runtime operations."
+        title={routeId === 'api-operations' ? 'Operations' : routeId === 'api-data-sources' ? 'Catalog' : 'APIs'}
+        description="Connect external APIs, inspect their canonical definitions, and test runtime operations."
       />
-      {showAuthoring ? <GeneratedApiAuthoringCard /> : null}
       {showAuthoring ? <ExternalApiConnectCard /> : null}
       {showAuthoring ? <ManualRestSourceCard /> : null}
-      {showSources ? <DataSourceCatalogCard dataSources={dataSources} /> : null}
-      {showOperations ? <DataSourceOperationsCard dataSources={dataSources} /> : null}
+      {showCatalog ? <ApiCatalogCard apis={apis} /> : null}
+      {showOperations ? <ApiOperationsCard apis={apis} /> : null}
     </AdminScroll>
   );
 }
