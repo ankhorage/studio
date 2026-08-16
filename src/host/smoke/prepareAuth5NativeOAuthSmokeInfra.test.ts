@@ -95,8 +95,7 @@ test('fails before Infra activation when the source public anon key is missing',
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
     readSourceManifest: () => Promise.resolve(sourceManifest),
-    readSourcePublicEnv: () =>
-      Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n'),
+    readSourcePublicEnv: () => Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n'),
     resolveSourceCredential: () => Promise.resolve(credential),
     activateSmokeInfrastructure: () => {
       activated = true;
