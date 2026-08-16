@@ -28,16 +28,18 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
   let smokeResolverWasUsed = false;
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
-    readSourceManifest: async () => sourceManifest,
-    readSourcePublicEnv: async () =>
-      [
-        'EXPO_PUBLIC_SUPABASE_URL=http://source.example',
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY='public-anon-key'",
-        'GOOGLE_CLIENT_SECRET=must-not-copy',
-      ].join('\n'),
-    resolveSourceCredential: async (ref) => {
+    readSourceManifest: () => Promise.resolve(sourceManifest),
+    readSourcePublicEnv: () =>
+      Promise.resolve(
+        [
+          'EXPO_PUBLIC_SUPABASE_URL=http://source.example',
+          "EXPO_PUBLIC_SUPABASE_ANON_KEY='public-anon-key'",
+          'GOOGLE_CLIENT_SECRET=must-not-copy',
+        ].join('\n'),
+      ),
+    resolveSourceCredential: (ref) => {
       resolvedSourceRef = ref;
-      return credential;
+      return Promise.resolve(credential);
     },
     activateSmokeInfrastructure: async (secretResolver) => {
       const resolved = await secretResolver.resolve({
@@ -48,8 +50,9 @@ test('activates smoke-owned Infra with a trusted source credential and public-on
       smokeResolverWasUsed = true;
       return { gatewayUrl: 'http://127.0.0.1:19600', target: 'local' };
     },
-    writeSmokePublicEnv: async (content) => {
+    writeSmokePublicEnv: (content) => {
       writtenPublicEnv = content;
+      return Promise.resolve();
     },
   };
 
@@ -91,25 +94,32 @@ test('fails before Infra activation when the source public anon key is missing',
   };
 
   const dependencies: Auth5NativeOAuthSmokeInfraDependencies = {
-    readSourceManifest: async () => sourceManifest,
-    readSourcePublicEnv: async () => 'EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n',
-    resolveSourceCredential: async () => credential,
-    activateSmokeInfrastructure: async () => {
+    readSourceManifest: () => Promise.resolve(sourceManifest),
+    readSourcePublicEnv: () =>
+      Promise.resolve('EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:19600\n'),
+    resolveSourceCredential: () => Promise.resolve(credential),
+    activateSmokeInfrastructure: () => {
       activated = true;
-      return { gatewayUrl: 'http://127.0.0.1:19600', target: 'local' };
+      return Promise.resolve({ gatewayUrl: 'http://127.0.0.1:19600', target: 'local' });
     },
-    writeSmokePublicEnv: async () => undefined,
+    writeSmokePublicEnv: () => Promise.resolve(),
   };
 
-  await expect(
-    prepareAuth5NativeOAuthSmokeInfra(
+  let caught: unknown;
+  try {
+    await prepareAuth5NativeOAuthSmokeInfra(
       {
         credentialsProjectId: 'nutri',
         smokeWorkspaceRoot: '/tmp/auth5-smoke',
         sourceWorkspaceRoot: '/workspace/studio',
       },
       dependencies,
-    ),
-  ).rejects.toThrow('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+    );
+  } catch (error) {
+    caught = error;
+  }
+
+  expect(caught).toBeInstanceOf(Error);
+  expect((caught as Error).message).toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
   expect(activated).toBe(false);
 });
