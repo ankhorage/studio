@@ -15,7 +15,8 @@ test('generates a router-owned OAuth callback that completes once across effect 
   expect(callback).not.toContain('Linking.useURL()');
   expect(callback).not.toContain('Linking.getInitialURL()');
   expect(callback).toContain('useLocalSearchParams<Record<string, string | string[] | undefined>>()');
-  expect(callback).toContain('callbackUrl = resolveOAuthCallbackUrl(callbackParams);');
+  expect(callback).toContain('return resolveOAuthCallbackUrl(callbackParams);');
+  expect(callback).toContain('}, [callbackParams]);');
   expect(callback).toContain(
     'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
   );
