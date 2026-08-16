@@ -2196,6 +2196,7 @@ function createSmokeDeployOwnerState(suffix: string): unknown {
         schemaVersion: 1,
         executionId: 'smoke-execution-1',
         recordedAt: '2026-08-16T00:00:00.000Z',
+        resumable: false,
         desired: {
           version: '1.2.3',
           targets: ['web'],

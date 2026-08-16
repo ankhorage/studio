@@ -1,4 +1,3 @@
-import { isReleaseStepResumable } from '@ankhorage/deploy';
 import { Button, Text } from '@ankhorage/zora';
 import React from 'react';
 import { View } from 'react-native';
@@ -11,9 +10,7 @@ export function DeployResumeActions(props: {
   readonly onResume: (executionId: string) => void;
 }) {
   if (props.history.status !== 'ready') return null;
-  const records = props.history.data.filter((record) =>
-    record.execution.steps.some(isReleaseStepResumable),
-  );
+  const records = props.history.data.filter((record) => record.resumable);
   if (records.length === 0) return null;
   return (
     <View>

@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.12.2",
+      "value": "v1.12.4",
       "color": "cb3837"
     },
     {
@@ -855,6 +855,7 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/host/secrets/projectSecretService.ts",
         "src/projectDeployMonetizationInspectionResult.ts",
+        "src/projectDeployReleaseHistoryRecord.ts",
         "src/projectDeployReleaseInspectionResult.ts"
       ],
       "exports": [
@@ -1364,6 +1365,12 @@
         "src/host/modules/layout.ts"
       ],
       "exports": ["getRootLayoutImportRequirements", "getRootLayoutTsx"]
+    },
+    {
+      "path": "src/host/layout/templates/screen.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/templates/screen.ts"],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/screen.ts",
@@ -2393,6 +2400,12 @@
       ]
     },
     {
+      "path": "src/nativeClientDeployBoundary.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": []
+    },
+    {
       "path": "src/normalizeExternalApiSourceId.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -2469,6 +2482,7 @@
         "src/projectDeployClient.ts",
         "src/projectDeployMonetizationInspectionResult.ts",
         "src/projectDeployReleaseExecutionResponse.ts",
+        "src/projectDeployReleaseHistoryRecord.ts",
         "src/projectDeployReleaseInspectionResult.ts",
         "src/projectDeployRuntimeInput.ts"
       ],
@@ -2529,6 +2543,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["ProjectDeployReleaseExecutionResponse"]
+    },
+    {
+      "path": "src/projectDeployReleaseHistoryRecord.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["ProjectDeployReleaseHistoryRecord"]
     },
     {
       "path": "src/projectDeployReleaseInspectionResult.ts",
@@ -3611,7 +3631,7 @@
     {
       "path": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/projectDeployReleaseHistoryRecord.ts"],
       "exports": ["DeployLoadable", "ProjectDeployDashboardState"]
     },
     {
@@ -17560,6 +17580,42 @@
       }
     },
     {
+      "name": "collectClientSourceFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/nativeClientDeployBoundary.test.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasDeployRuntimeDependency",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/nativeClientDeployBoundary.test.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasRuntimeImport",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/nativeClientDeployBoundary.test.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDeploySpecifier",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/nativeClientDeployBoundary.test.ts",
+        "line": 80,
+        "column": 1
+      }
+    },
+    {
       "name": "normalizeExternalApiSourceId",
       "description": null,
       "sourceLocation": {
@@ -18005,7 +18061,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       }
     },
@@ -18014,7 +18070,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       }
     },
@@ -18023,7 +18079,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 39,
+        "line": 40,
         "column": 1
       }
     },
@@ -18032,7 +18088,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 46,
+        "line": 47,
         "column": 1
       }
     },
@@ -18041,7 +18097,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 53,
+        "line": 54,
         "column": 1
       }
     },
@@ -18050,7 +18106,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 61,
+        "line": 62,
         "column": 1
       }
     },
@@ -18059,7 +18115,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 68,
+        "line": 69,
         "column": 1
       }
     },
@@ -18068,7 +18124,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 74,
+        "line": 75,
         "column": 1
       }
     },
@@ -18077,7 +18133,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 81,
+        "line": 82,
         "column": 1
       }
     },
@@ -18086,7 +18142,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 88,
+        "line": 89,
         "column": 1
       }
     },
@@ -18095,7 +18151,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 97,
+        "line": 98,
         "column": 1
       }
     },
@@ -18104,7 +18160,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 101,
+        "line": 102,
         "column": 1
       }
     },
@@ -18113,7 +18169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 108,
+        "line": 109,
         "column": 1
       }
     },
@@ -18122,7 +18178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 114,
+        "line": 119,
         "column": 1
       }
     },
@@ -18131,7 +18187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 121,
+        "line": 130,
         "column": 1
       }
     },
@@ -18140,7 +18196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 130,
+        "line": 139,
         "column": 1
       }
     },
@@ -18149,7 +18205,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectDeployApi.ts",
-        "line": 138,
+        "line": 147,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasResumableProjection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/projectDeployApi.ts",
+        "line": 155,
         "column": 1
       }
     },
@@ -21272,7 +21337,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 65,
+        "line": 64,
         "column": 1
       }
     },
@@ -21281,7 +21346,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 101,
+        "line": 100,
         "column": 9
       }
     },
@@ -21290,7 +21355,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 111,
+        "line": 110,
         "column": 9
       }
     },
@@ -21299,7 +21364,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 128,
+        "line": 127,
         "column": 9
       }
     },
@@ -21308,7 +21373,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 150,
+        "line": 149,
         "column": 9
       }
     },
@@ -21317,7 +21382,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 171,
+        "line": 170,
         "column": 9
       }
     },
@@ -21326,7 +21391,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 192,
+        "line": 191,
         "column": 9
       }
     },
@@ -21335,7 +21400,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 196,
+        "line": 195,
         "column": 9
       }
     },
@@ -21344,7 +21409,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 294,
+        "line": 293,
         "column": 1
       }
     },
@@ -21353,7 +21418,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 307,
+        "line": 306,
         "column": 1
       }
     },
@@ -21362,7 +21427,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 317,
+        "line": 316,
         "column": 1
       }
     },
@@ -21371,7 +21436,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployReleaseOperationsCard.tsx",
-        "line": 325,
+        "line": 324,
         "column": 1
       }
     },
@@ -21380,7 +21445,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/admin/pages/deploy/DeployResumeActions.tsx",
-        "line": 8,
+        "line": 7,
         "column": 1
       }
     },
@@ -23943,6 +24008,11 @@
       },
       {
         "fromPath": "src/projectDeployApi.ts",
+        "toPath": "src/projectDeployReleaseHistoryRecord.ts",
+        "sourcePath": "src/projectDeployApi.ts"
+      },
+      {
+        "fromPath": "src/projectDeployApi.ts",
         "toPath": "src/projectDeployReleaseInspectionResult.ts",
         "sourcePath": "src/projectDeployApi.ts"
       },
@@ -25243,6 +25313,11 @@
       },
       {
         "fromPath": "src/host/deploy/ProjectDeployService.ts",
+        "toPath": "src/projectDeployReleaseHistoryRecord.ts",
+        "sourcePath": "src/host/deploy/ProjectDeployService.ts"
+      },
+      {
+        "fromPath": "src/host/deploy/ProjectDeployService.ts",
         "toPath": "src/projectDeployReleaseInspectionResult.ts",
         "sourcePath": "src/host/deploy/ProjectDeployService.ts"
       },
@@ -26462,6 +26537,11 @@
         "sourcePath": "src/host/layout/templates/rootLayout.ts"
       },
       {
+        "fromPath": "src/host/layout/templates/screen.test.ts",
+        "toPath": "src/host/layout/templates/screen.ts",
+        "sourcePath": "src/host/layout/templates/screen.test.ts"
+      },
+      {
         "fromPath": "src/host/layout/templates/screen.ts",
         "toPath": "src/host/layout/utils/escapeStringLiteral.ts",
         "sourcePath": "src/host/layout/templates/screen.ts"
@@ -27525,6 +27605,11 @@
         "fromPath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx",
         "toPath": "src/ui/admin/adminPagePrimitives.tsx",
         "sourcePath": "src/ui/admin/pages/deploy/DeployControlResultView.tsx"
+      },
+      {
+        "fromPath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts",
+        "toPath": "src/projectDeployReleaseHistoryRecord.ts",
+        "sourcePath": "src/ui/admin/pages/deploy/deployDashboardTypes.ts"
       },
       {
         "fromPath": "src/ui/admin/pages/deploy/DeployExecutionResultView.tsx",
@@ -30964,6 +31049,84 @@
         "toSymbol": "requiredField",
         "callExpression": "requiredField",
         "sourcePath": "src/moduleAdminModel.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "collectClientSourceFiles",
+        "callExpression": "collectClientSourceFiles",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "hasDeployRuntimeDependency",
+        "callExpression": "hasDeployRuntimeDependency",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "relative",
+        "callExpression": "relative",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "collectClientSourceFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "collectClientSourceFiles",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "collectClientSourceFiles",
+        "toSymbol": "collectClientSourceFiles",
+        "callExpression": "collectClientSourceFiles",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "isDeploySpecifier",
+        "callExpression": "isDeploySpecifier",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
+      },
+      {
+        "fromSymbol": "src/nativeClientDeployBoundary.test.ts",
+        "toSymbol": "hasRuntimeImport",
+        "callExpression": "hasRuntimeImport",
+        "sourcePath": "src/nativeClientDeployBoundary.test.ts"
       },
       {
         "fromSymbol": "src/projectAuthApi.test.ts",
@@ -47332,6 +47495,30 @@
         "toSymbol": "indentGeneratedBlock",
         "callExpression": "indentGeneratedBlock",
         "sourcePath": "src/host/layout/templates/rootLayout.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/screen.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/layout/templates/screen.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/screen.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/layout/templates/screen.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/screen.test.ts",
+        "toSymbol": "getScreenTsx",
+        "callExpression": "getScreenTsx",
+        "sourcePath": "src/host/layout/templates/screen.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/templates/screen.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/templates/screen.test.ts"
       },
       {
         "fromSymbol": "getScreenTsx",

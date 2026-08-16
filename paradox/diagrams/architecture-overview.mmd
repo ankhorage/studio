@@ -331,6 +331,7 @@ graph TD
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployMonetizationInspectionResult_ts
+  module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployReleaseHistoryRecord_ts
   module_src_host_deploy_ProjectDeployService_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_host_deploy_serializeProjectDeploySecret_ts["src/host/deploy/serializeProjectDeploySecret.ts"]
   package__ankhorage_studio -.-> module_src_host_deploy_serializeProjectDeploySecret_ts
@@ -541,6 +542,9 @@ graph TD
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_templates_utils_routes_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_layout_utils_escapeStringLiteral_ts
   module_src_host_layout_templates_rootLayout_ts --> module_src_host_modules_layout_ts
+  module_src_host_layout_templates_screen_test_ts["src/host/layout/templates/screen.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_templates_screen_test_ts
+  module_src_host_layout_templates_screen_test_ts --> module_src_host_layout_templates_screen_ts
   module_src_host_layout_templates_screen_ts["src/host/layout/templates/screen.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_screen_ts
   module_src_host_layout_templates_screen_ts --> module_src_host_layout_templates_utils_strings_ts
@@ -880,6 +884,8 @@ graph TD
   module_src_moduleAdminModel_ts["src/moduleAdminModel.ts"]
   package__ankhorage_studio -.-> module_src_moduleAdminModel_ts
   module_src_moduleAdminModel_ts --> module_src_moduleAdminContracts_ts
+  module_src_nativeClientDeployBoundary_test_ts["src/nativeClientDeployBoundary.test.ts"]
+  package__ankhorage_studio -.-> module_src_nativeClientDeployBoundary_test_ts
   module_src_normalizeExternalApiSourceId_ts["src/normalizeExternalApiSourceId.ts"]
   package__ankhorage_studio -.-> module_src_normalizeExternalApiSourceId_ts
   module_src_projectAuthApi_test_ts["src/projectAuthApi.test.ts"]
@@ -914,6 +920,7 @@ graph TD
   module_src_projectDeployApi_ts --> module_src_projectDeployClient_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseExecutionResponse_ts
+  module_src_projectDeployApi_ts --> module_src_projectDeployReleaseHistoryRecord_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
@@ -933,6 +940,8 @@ graph TD
   package__ankhorage_studio -.-> module_src_projectDeployMonetizationInspectionResult_ts
   module_src_projectDeployReleaseExecutionResponse_ts["src/projectDeployReleaseExecutionResponse.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployReleaseExecutionResponse_ts
+  module_src_projectDeployReleaseHistoryRecord_ts["src/projectDeployReleaseHistoryRecord.ts"]
+  package__ankhorage_studio -.-> module_src_projectDeployReleaseHistoryRecord_ts
   module_src_projectDeployReleaseInspectionResult_ts["src/projectDeployReleaseInspectionResult.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployReleaseInspectionResult_ts
   module_src_projectDeployRequest_ts["src/projectDeployRequest.ts"]
@@ -1256,6 +1265,7 @@ graph TD
   module_src_ui_admin_pages_deploy_DeployControlResultView_tsx --> module_src_ui_admin_adminPagePrimitives_tsx
   module_src_ui_admin_pages_deploy_deployDashboardTypes_ts["src/ui/admin/pages/deploy/deployDashboardTypes.ts"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_deployDashboardTypes_ts
+  module_src_ui_admin_pages_deploy_deployDashboardTypes_ts --> module_src_projectDeployReleaseHistoryRecord_ts
   module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx["src/ui/admin/pages/deploy/DeployExecutionResultView.tsx"]
   package__ankhorage_studio -.-> module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx
   module_src_ui_admin_pages_deploy_DeployExecutionResultView_tsx --> module_src_projectDeployReleaseExecutionResponse_ts

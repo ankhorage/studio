@@ -47,5 +47,6 @@ function resultFor(
       steps: [],
       diagnostics: [],
     },
+    lifecycleControls: [],
   };
 }

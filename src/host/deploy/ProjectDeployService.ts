@@ -1,5 +1,11 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
-import type { MonetizationProduct, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
+import {
+  isReleaseStepResumable,
+  listReleaseLifecycleControls,
+  type MonetizationProduct,
+  type ReleaseLifecycleControl,
+  type ReleasePlan,
+} from '@ankhorage/deploy';
 import type {
   ProjectMonetizationExecutionResult,
   ProjectMonetizationInspection,
@@ -34,6 +40,7 @@ import {
 } from '@ankhorage/deploy/project';
 
 import type { ProjectDeployMonetizationInspectionResult } from '../../projectDeployMonetizationInspectionResult';
+import type { ProjectDeployReleaseHistoryRecord } from '../../projectDeployReleaseHistoryRecord';
 import type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
@@ -186,6 +193,7 @@ export class ProjectDeployService {
       ok: true,
       inspection: result.inspection,
       plan: createProjectReleasePlan(result.inspection),
+      lifecycleControls: result.inspection.observed.targets.flatMap(listReleaseLifecycleControls),
     };
   }
 
@@ -239,8 +247,14 @@ export class ProjectDeployService {
     });
   }
 
-  listReleaseHistory(projectId: string) {
-    return listProjectReleaseHistory({ projectRoot: this.projectRoot(projectId) });
+  async listReleaseHistory(
+    projectId: string,
+  ): Promise<readonly ProjectDeployReleaseHistoryRecord[]> {
+    const records = await listProjectReleaseHistory({ projectRoot: this.projectRoot(projectId) });
+    return records.map((record) => ({
+      ...record,
+      resumable: record.execution.steps.some(isReleaseStepResumable),
+    }));
   }
 
   private projectRoot(projectId: string): string {

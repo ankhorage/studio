@@ -1,6 +1,8 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type { MonetizationDesiredState, ReleaseDesiredState } from '@ankhorage/deploy';
-import type { ProjectReleaseHistoryRecord, ProjectStoreListing } from '@ankhorage/deploy/project';
+import type { ProjectStoreListing } from '@ankhorage/deploy/project';
+
+import type { ProjectDeployReleaseHistoryRecord } from '../../../../projectDeployReleaseHistoryRecord';
 
 export type DeployLoadable<T> =
   | { readonly status: 'loading' }
@@ -12,5 +14,5 @@ export interface ProjectDeployDashboardState {
   readonly listing: DeployLoadable<ProjectStoreListing>;
   readonly monetization: DeployLoadable<MonetizationDesiredState>;
   readonly release: DeployLoadable<ReleaseDesiredState>;
-  readonly history: DeployLoadable<readonly ProjectReleaseHistoryRecord[]>;
+  readonly history: DeployLoadable<readonly ProjectDeployReleaseHistoryRecord[]>;
 }
