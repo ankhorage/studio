@@ -13,6 +13,7 @@ import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig';
 
 const GOOGLE_PROVIDER_ID = 'google';
 const PUBLIC_ANON_KEY = 'EXPO_PUBLIC_SUPABASE_ANON_KEY';
+const SMOKE_GOOGLE_CREDENTIAL_REF = 'auth/oauth/google';
 
 export interface PrepareAuth5NativeOAuthSmokeInfraArgs {
   readonly credentialsProjectId: string;
@@ -57,10 +58,12 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
   }
 
   const anonKey = parseRequiredEnvValue(await dependencies.readSourcePublicEnv(), PUBLIC_ANON_KEY);
-  const smokeCredentialRef = resolveGoogleCredentialRef(createSmokeManifestShape());
   const activation = await dependencies.activateSmokeInfrastructure({
     resolve: async ({ projectId, ref }) => {
-      if (projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId || ref !== smokeCredentialRef) {
+      if (
+        projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId ||
+        ref !== SMOKE_GOOGLE_CREDENTIAL_REF
+      ) {
         throw new Error(`Unexpected Auth 5 smoke OAuth secret request '${projectId}:${ref}'.`);
       }
       return credential;
@@ -134,32 +137,6 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
     throw new Error('Configured source project must expose an enabled Google OAuth credentialsRef.');
   }
   return ref;
-}
-
-function createSmokeManifestShape(): AppManifest {
-  return {
-    metadata: { name: 'Auth 5 Native OAuth Smoke', slug: AUTH5_NATIVE_OAUTH_SMOKE.projectId },
-    infra: {
-      auth: {
-        provider: 'supabase',
-        scope: 'global',
-        signIn: { identifiers: ['email'] },
-        oauth: {
-          enabled: true,
-          callbackRoute: 'auth/callback',
-          providers: [
-            {
-              id: 'google',
-              enabled: true,
-              credentialsRef: 'auth/oauth/google',
-            },
-          ],
-        },
-      },
-    },
-    navigator: { type: 'stack', routes: [] },
-    screens: {},
-  };
 }
 
 function parseRequiredEnvValue(raw: string, key: string): string {
