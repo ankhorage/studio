@@ -1,8 +1,4 @@
-import type {
-  DeploymentFailure,
-  ReleaseLifecycleControl,
-  ReleasePlan,
-} from '@ankhorage/deploy';
+import type { DeploymentFailure, ReleaseLifecycleControl, ReleasePlan } from '@ankhorage/deploy';
 import type { ProjectReleaseInspection } from '@ankhorage/deploy/project';
 
 export type ProjectDeployReleaseInspectionResult =

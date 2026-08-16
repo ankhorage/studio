@@ -247,7 +247,9 @@ export class ProjectDeployService {
     });
   }
 
-  async listReleaseHistory(projectId: string): Promise<readonly ProjectDeployReleaseHistoryRecord[]> {
+  async listReleaseHistory(
+    projectId: string,
+  ): Promise<readonly ProjectDeployReleaseHistoryRecord[]> {
     const records = await listProjectReleaseHistory({ projectRoot: this.projectRoot(projectId) });
     return records.map((record) => ({
       ...record,

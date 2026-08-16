@@ -15,7 +15,13 @@ describe('native Studio Deploy boundary', () => {
 
     for (const file of files) {
       const source = await readFile(file, 'utf8');
-      const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+      const ast = ts.createSourceFile(
+        file,
+        source,
+        ts.ScriptTarget.Latest,
+        true,
+        ts.ScriptKind.TSX,
+      );
       if (hasDeployRuntimeDependency(ast)) {
         violations.push(relative(process.cwd(), file));
       }
@@ -36,7 +42,11 @@ async function collectClientSourceFiles(root: string, directory: string): Promis
       files.push(...(await collectClientSourceFiles(root, path)));
       continue;
     }
-    if (!entry.isFile() || !/\.(?:ts|tsx)$/.test(entry.name) || /\.test\.(?:ts|tsx)$/.test(entry.name)) {
+    if (
+      !entry.isFile() ||
+      !/\.(?:ts|tsx)$/.test(entry.name) ||
+      /\.test\.(?:ts|tsx)$/.test(entry.name)
+    ) {
       continue;
     }
     files.push(path);
