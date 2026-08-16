@@ -2,11 +2,10 @@ import {
   APP_DEPLOY_ENVIRONMENT_IDS,
   type AppDeployEnvironmentId,
 } from '@ankhorage/contracts/deploy';
-import {
-  listReleaseLifecycleControls,
-  type AndroidDeploymentTrack,
-  type ReleaseControlExecutionResult,
-  type ReleaseLifecycleControl,
+import type {
+  AndroidDeploymentTrack,
+  ReleaseControlExecutionResult,
+  ReleaseLifecycleControl,
 } from '@ankhorage/deploy';
 import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
 import React, { useRef, useState } from 'react';
@@ -93,7 +92,7 @@ export function DeployReleaseOperationsCard(props: {
     !busy;
   const controls =
     successfulResult !== null && outcome === null && controlResult === null
-      ? successfulResult.inspection.observed.targets.flatMap(listReleaseLifecycleControls)
+      ? successfulResult.lifecycleControls
       : [];
   const irreversibleCount =
     successfulResult?.plan.steps.filter((step) => step.irreversible).length ?? 0;
