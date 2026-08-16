@@ -288,7 +288,7 @@ export function getPackageJson(args: {
   const pkgJson = {
     name,
     main: 'index.js',
-    packageManager: 'bun@1.3.13',
+    packageManager: 'bun@1.3.14',
     version: '1.0.0',
     scripts: {
       start: 'expo start',
