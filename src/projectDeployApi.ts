@@ -155,5 +155,6 @@ export function executeProjectDeployReleaseControl(input: {
 function hasResumableProjection(
   record: ProjectReleaseHistoryRecord,
 ): record is ProjectDeployReleaseHistoryRecord {
-  return typeof (record as ProjectReleaseHistoryRecord & { readonly resumable?: unknown }).resumable === 'boolean';
+  const projected = record as ProjectReleaseHistoryRecord & { readonly resumable?: unknown };
+  return typeof projected.resumable === 'boolean';
 }
