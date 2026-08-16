@@ -1,9 +1,7 @@
 import type {
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
-  DataSourceDiagnostic,
   DataSourceRegistry,
-  GeneratedApiDefinition,
   MediaAsset,
   NavigatorType,
   UiNode,
@@ -16,7 +14,6 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
-import { deleteStudioGeneratedApi, upsertStudioGeneratedApi } from '../generatedApiAuthoring';
 import {
   createNodeFromCatalogEntry,
   findNodeById,
@@ -281,26 +278,6 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
-  const upsertGeneratedApi = useCallback(
-    (definition: GeneratedApiDefinition, previousId?: string): readonly DataSourceDiagnostic[] => {
-      let diagnostics: readonly DataSourceDiagnostic[] = [];
-      updateManifest((current) => {
-        const result = upsertStudioGeneratedApi(current, definition, previousId);
-        ({ diagnostics } = result);
-        return result.ok ? result.manifest : current;
-      });
-      return diagnostics;
-    },
-    [updateManifest],
-  );
-
-  const deleteGeneratedApi = useCallback(
-    (id: string) => {
-      updateManifest((current) => deleteStudioGeneratedApi(current, id));
-    },
-    [updateManifest],
-  );
-
   const insertFromCatalogEntry = useCallback(
     (entry: InsertCatalogEntry): boolean => {
       if (entry.status !== 'enabled' || !entry.placement) return false;
@@ -474,8 +451,6 @@ export const StudioProvider = ({
         updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataSources(current, dataSources)),
-      upsertGeneratedApi,
-      deleteGeneratedApi,
       deleteNode,
       insertFromCatalogEntry,
       moveNodeToPlacement: moveSelectedNodeToPlacement,
@@ -523,8 +498,6 @@ export const StudioProvider = ({
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,
-      upsertGeneratedApi,
-      deleteGeneratedApi,
       deleteNode,
       insertFromCatalogEntry,
       moveSelectedNodeToPlacement,
