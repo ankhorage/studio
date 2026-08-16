@@ -1,5 +1,5 @@
-import type { ReleasePlan } from '@ankhorage/deploy';
-import type { ProjectReleaseInspection } from '@ankhorage/deploy/project';
+import type { MonetizationProduct, ReleasePlan } from '@ankhorage/deploy';
+import type { ProjectReleaseInput, ProjectReleaseInspection } from '@ankhorage/deploy/project';
 import { expect, test } from 'bun:test';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
@@ -13,6 +13,10 @@ test('public Deploy API module is import-safe without booting Expo or React Nati
   expect(typeof api.executeProjectDeployRelease).toBe('function');
   expect(typeof api.resumeProjectDeployRelease).toBe('function');
   expect(typeof api.executeProjectDeployReleaseControl).toBe('function');
+  expect(typeof api.writeProjectDeployListingLocale).toBe('function');
+  expect(typeof api.writeProjectDeployListingAsset).toBe('function');
+  expect(typeof api.writeProjectDeployMonetization).toBe('function');
+  expect(typeof api.writeProjectDeployRelease).toBe('function');
 });
 
 test('Deploy client consumes canonical owner responses through the request port', async () => {
@@ -136,6 +140,102 @@ test('Deploy client uses owner resume and lifecycle-control endpoints', async ()
     '/projects/demo/deploy/release/resume',
     '/projects/demo/deploy/release/control',
   ]);
+});
+
+test('Deploy client authors listing locale and semantic assets through owner routes', async () => {
+  const requests: { readonly path: string; readonly init?: RequestInit }[] = [];
+  const request: ProjectDeployRequest = (path, init) => {
+    requests.push({ path, init });
+    return Promise.resolve(Response.json({ revision: 'listing-r2', locales: [], assetSets: [] }));
+  };
+  const client = new ProjectDeployClient(request);
+
+  await client.writeListingLocale('demo project', { locale: 'en-US', name: 'Demo' });
+  await client.writeListingAsset(
+    'demo project',
+    {
+      kind: 'screenshot',
+      target: 'ios',
+      locale: 'en-US',
+      variant: 'phone 6.9',
+      filename: '01.png',
+    },
+    new Uint8Array([1, 2, 3]),
+  );
+  await client.removeListingAsset('demo project', {
+    kind: 'android-shared',
+    variant: 'icon',
+  });
+
+  expect(requests[0]?.path).toBe('/projects/demo%20project/deploy/listing/locale');
+  expect(requests[0]?.init?.method).toBe('PUT');
+  expect(requests[0]?.init?.body).toBe(JSON.stringify({ locale: 'en-US', name: 'Demo' }));
+  expect(requests[1]?.path).toContain('/projects/demo%20project/deploy/listing/asset?');
+  expect(requests[1]?.path).toContain('kind=screenshot');
+  expect(requests[1]?.path).toContain('target=ios');
+  expect(requests[1]?.path).toContain('locale=en-US');
+  expect(requests[1]?.path).toContain('variant=phone+6.9');
+  expect(requests[1]?.path).toContain('filename=01.png');
+  expect(requests[1]?.init?.method).toBe('PUT');
+  const assetBody = requests[1]?.init?.body;
+  expect(assetBody).toBeInstanceOf(ArrayBuffer);
+  if (!(assetBody instanceof ArrayBuffer)) {
+    throw new Error('Expected binary Deploy asset request body to be an ArrayBuffer.');
+  }
+  expect([...new Uint8Array(assetBody)]).toEqual([1, 2, 3]);
+  expect(requests[2]?.path).toContain('kind=android-shared');
+  expect(requests[2]?.path).toContain('variant=icon');
+  expect(requests[2]?.init?.method).toBe('DELETE');
+});
+
+test('Deploy client authors monetization and prepared release as canonical owner inputs', async () => {
+  const requests: { readonly path: string; readonly init?: RequestInit }[] = [];
+  const products: readonly MonetizationProduct[] = [
+    {
+      id: 'pro',
+      kind: 'non-consumable',
+      localizations: [{ locale: 'en-US', name: 'Pro', description: 'Pro unlock' }],
+      basePrice: { country: 'CH', currency: 'CHF', amount: '4.90' },
+    },
+  ];
+  const release: ProjectReleaseInput = {
+    version: '1.2.3',
+    targets: ['web'],
+    notes: [{ locale: 'en-US', text: 'Release' }],
+    rollout: { web: { mode: 'immediate' } },
+  };
+  const request: ProjectDeployRequest = (path, init) => {
+    requests.push({ path, init });
+    if (path.endsWith('/monetization')) {
+      return Promise.resolve(Response.json({ revision: 'money-r2', products }));
+    }
+    return Promise.resolve(Response.json({ revision: 'release-r2', ...release }));
+  };
+  const client = new ProjectDeployClient(request);
+
+  await client.writeMonetization('demo', products);
+  await client.writeRelease('demo', release);
+
+  expect(requests[0]?.path).toBe('/projects/demo/deploy/monetization');
+  expect(requests[0]?.init?.body).toBe(JSON.stringify({ products }));
+  expect(requests[1]?.path).toBe('/projects/demo/deploy/release');
+  expect(requests[1]?.init?.body).toBe(JSON.stringify(release));
+});
+
+test('Deploy authoring responses cannot smuggle secret-shaped fields into browser state', async () => {
+  const request: ProjectDeployRequest = () =>
+    Promise.resolve(
+      Response.json({
+        revision: 'money-r2',
+        products: [],
+        diagnostics: { secret: 'DEP12_SENTINEL_MUST_NOT_CROSS' },
+      }),
+    );
+  const client = new ProjectDeployClient(request);
+  const error = await captureProjectDeployApiError(() => client.writeMonetization('demo', []));
+  expect(error.status).toBe(502);
+  expect(error.message).toContain('forbidden secret-shaped field');
+  expect(error.message).not.toContain('DEP12_SENTINEL_MUST_NOT_CROSS');
 });
 
 function releaseInspection(): ProjectReleaseInspection {

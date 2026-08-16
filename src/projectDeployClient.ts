@@ -1,6 +1,7 @@
 import type { AppDeployManifest } from '@ankhorage/contracts/deploy';
 import type {
   MonetizationDesiredState,
+  MonetizationProduct,
   ReleaseControlExecutionResult,
   ReleaseDesiredState,
   ReleaseLifecycleControl,
@@ -8,8 +9,11 @@ import type {
 } from '@ankhorage/deploy';
 import type {
   ProjectReleaseHistoryRecord,
+  ProjectReleaseInput,
   ProjectReleaseInspection,
   ProjectStoreListing,
+  ProjectStoreListingAssetLocation,
+  StoreListingLocale,
 } from '@ankhorage/deploy/project';
 
 import { ProjectDeployApiError } from './projectDeployApiError';
@@ -30,12 +34,74 @@ export class ProjectDeployClient {
     return this.requestJson(projectPath(projectId, 'listing'), undefined, parseListing);
   }
 
+  writeListingLocale(projectId: string, locale: StoreListingLocale): Promise<ProjectStoreListing> {
+    return this.requestJson(
+      projectPath(projectId, 'listing/locale'),
+      jsonRequest('PUT', locale),
+      parseListing,
+    );
+  }
+
+  removeListingLocale(projectId: string, locale: string): Promise<ProjectStoreListing> {
+    return this.requestJson(
+      `${projectPath(projectId, 'listing/locale')}/${encodeURIComponent(locale)}`,
+      { method: 'DELETE' },
+      parseListing,
+    );
+  }
+
+  writeListingAsset(
+    projectId: string,
+    location: ProjectStoreListingAssetLocation,
+    data: Uint8Array,
+  ): Promise<ProjectStoreListing> {
+    return this.requestJson(
+      withAssetLocation(projectPath(projectId, 'listing/asset'), location),
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: copyToArrayBuffer(data),
+      },
+      parseListing,
+    );
+  }
+
+  removeListingAsset(
+    projectId: string,
+    location: ProjectStoreListingAssetLocation,
+  ): Promise<ProjectStoreListing> {
+    return this.requestJson(
+      withAssetLocation(projectPath(projectId, 'listing/asset'), location),
+      { method: 'DELETE' },
+      parseListing,
+    );
+  }
+
   readMonetization(projectId: string): Promise<MonetizationDesiredState> {
     return this.requestJson(projectPath(projectId, 'monetization'), undefined, parseMonetization);
   }
 
+  writeMonetization(
+    projectId: string,
+    products: readonly MonetizationProduct[],
+  ): Promise<MonetizationDesiredState> {
+    return this.requestJson(
+      projectPath(projectId, 'monetization'),
+      jsonRequest('PUT', { products }),
+      parseMonetization,
+    );
+  }
+
   readRelease(projectId: string): Promise<ReleaseDesiredState> {
     return this.requestJson(projectPath(projectId, 'release'), undefined, parseRelease);
+  }
+
+  writeRelease(projectId: string, release: ProjectReleaseInput): Promise<ReleaseDesiredState> {
+    return this.requestJson(
+      projectPath(projectId, 'release'),
+      jsonRequest('PUT', release),
+      parseRelease,
+    );
   }
 
   listReleaseHistory(projectId: string): Promise<readonly ProjectReleaseHistoryRecord[]> {
@@ -137,8 +203,34 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
+function copyToArrayBuffer(data: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(data.byteLength);
+  new Uint8Array(buffer).set(data);
+  return buffer;
+}
+
 function projectPath(projectId: string, suffix: string): string {
   return `/projects/${encodeURIComponent(projectId)}/deploy/${suffix}`;
+}
+
+function jsonRequest(method: 'POST' | 'PUT', body: unknown): RequestInit {
+  return {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  };
+}
+
+function withAssetLocation(path: string, location: ProjectStoreListingAssetLocation): string {
+  const query = new URLSearchParams();
+  query.set('kind', location.kind);
+  query.set('variant', location.variant);
+  if (location.kind === 'screenshot') {
+    query.set('target', location.target);
+    query.set('locale', location.locale);
+    query.set('filename', location.filename);
+  }
+  return `${path}?${query.toString()}`;
 }
 
 function parseConfig(value: unknown): AppDeployManifest | null {

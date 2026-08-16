@@ -9,7 +9,7 @@ import {
   type ReleaseLifecycleControl,
 } from '@ankhorage/deploy';
 import { Button, Card, ConfirmDialog, Select, Text } from '@ankhorage/zora';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { canExecuteProjectDeployRelease } from '../../../../canExecuteProjectDeployRelease';
 import {
@@ -78,6 +78,7 @@ export function DeployReleaseOperationsCard(props: {
   const [confirmExecute, setConfirmExecute] = useState(false);
   const [pendingResume, setPendingResume] = useState<PendingResume | null>(null);
   const [pendingControl, setPendingControl] = useState<PendingControl | null>(null);
+  const mutationInFlightRef = useRef(false);
 
   const needsAndroidTrack =
     props.release.status === 'ready' && props.release.data.targets.includes('android');
@@ -127,8 +128,8 @@ export function DeployReleaseOperationsCard(props: {
   const executeRelease = async () => {
     const current = preview;
     if (!current?.result.ok || !canExecuteProjectDeployRelease(current.result)) return;
+    if (!beginMutation(mutationInFlightRef, setBusy)) return;
     setConfirmExecute(false);
-    setBusy(true);
     setError(null);
     try {
       const response = await executeProjectDeployRelease({
@@ -142,15 +143,14 @@ export function DeployReleaseOperationsCard(props: {
     } catch (caught) {
       setError(readError(caught));
     } finally {
-      setBusy(false);
+      endMutation(mutationInFlightRef, setBusy);
     }
   };
 
   const resumeRelease = async () => {
     const current = pendingResume;
-    if (!current) return;
+    if (!current || !beginMutation(mutationInFlightRef, setBusy)) return;
     setPendingResume(null);
-    setBusy(true);
     setError(null);
     try {
       const response = await resumeProjectDeployRelease({
@@ -164,15 +164,14 @@ export function DeployReleaseOperationsCard(props: {
     } catch (caught) {
       setError(readError(caught));
     } finally {
-      setBusy(false);
+      endMutation(mutationInFlightRef, setBusy);
     }
   };
 
   const executeControl = async () => {
     const current = pendingControl;
-    if (!current) return;
+    if (!current || !beginMutation(mutationInFlightRef, setBusy)) return;
     setPendingControl(null);
-    setBusy(true);
     setError(null);
     try {
       const result = await executeProjectDeployReleaseControl({
@@ -186,7 +185,7 @@ export function DeployReleaseOperationsCard(props: {
     } catch (caught) {
       setError(readError(caught));
     } finally {
-      setBusy(false);
+      endMutation(mutationInFlightRef, setBusy);
     }
   };
 
@@ -303,6 +302,24 @@ function createRuntime(
     environment,
     ...(androidTrack === 'unselected' ? {} : { android: { track: androidTrack } }),
   };
+}
+
+function beginMutation(
+  ref: React.MutableRefObject<boolean>,
+  setBusy: React.Dispatch<React.SetStateAction<boolean>>,
+): boolean {
+  if (ref.current) return false;
+  ref.current = true;
+  setBusy(true);
+  return true;
+}
+
+function endMutation(
+  ref: React.MutableRefObject<boolean>,
+  setBusy: React.Dispatch<React.SetStateAction<boolean>>,
+): void {
+  ref.current = false;
+  setBusy(false);
 }
 
 function readError(error: unknown): string {

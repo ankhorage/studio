@@ -61,13 +61,21 @@ credential linking, project-secret inventory, rotation, usage detection, guarded
 browser-safe secret responses.
 
 Deploy administration at `/ankh/deploy` consumes `@ankhorage/deploy` owner APIs for canonical
-target configuration, store-listing and monetization revisions, prepared release state, release
-history, readiness, planning, execution, resume, and lifecycle controls. Studio previews Deploy's
-exact inspection/plan objects, visibly marks irreversible plan steps, requires explicit confirmation,
-and sends the same inspected snapshot to Deploy execution without re-planning in the browser. Waiting,
-blocked, no-change, drifted, failed, completed, and history-recording outcomes remain owner-defined
-states. Raw credential material remains server-only, execution IDs are created by the trusted host,
-and Studio defines no parallel listing, product, release, plan, execution, or history semantics.
+target configuration, store listing/locales/assets, monetization, prepared release state, release
+history, readiness, planning, execution, resume, and lifecycle controls. Locale and semantic asset
+mutations, the exact canonical product array, and `ProjectReleaseInput` are sent through Deploy's
+released project authoring APIs; Studio never constructs Deploy filesystem paths or persists a second
+deployment model. Saving authored desired state never mutates a provider.
+
+Studio previews Deploy's exact inspection/plan objects, visibly marks irreversible plan steps,
+requires explicit confirmation, and sends the same inspected snapshot to Deploy execution without
+re-planning in the browser. Waiting, blocked, no-change, drifted, failed, completed, and
+history-recording outcomes remain owner-defined states. Release execution/resume/lifecycle mutations
+are guarded against concurrent double submission in both browser orchestration and the trusted host.
+Immutable Deploy history exposes execution/time, desired/current/release revisions, executed and
+attempted steps, result code, and verification state without alternate Studio persistence. Raw
+credential material remains server-only, execution IDs are created by the trusted host, and browser
+responses continue through the secret-shaped response guard.
 
 Theme administration is a single `/ankh/theme` page that edits the canonical active theme through
 the existing manifest theme state for the currently active rendered theme mode. It does not
