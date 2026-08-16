@@ -10,6 +10,14 @@ From the Studio repository:
 bun run smoke:auth5-native:prepare -- /tmp/ankh-auth5-native-smoke
 ```
 
+Install the generated app dependencies before Infra Up so app-image export uses the Expo CLI owned by the generated app:
+
+```bash
+cd /tmp/ankh-auth5-native-smoke/apps/auth5-native-oauth-smoke
+bun install
+cd <studio-repository>
+```
+
 The fixture is Google-only and intentionally contains no Google client secret. Its native callbacks are:
 
 ```text
@@ -23,7 +31,7 @@ Run Doctor against the generated `ankh.config.json` and confirm both native targ
 
 Do not point the fixture at another project's active Auth redirect configuration. The smoke manifest owns the callback schemes above, so its own Infra projection must be reconciled before native validation.
 
-Use an existing Studio project that has already stored the trusted Google **Web application** client ID and secret through the normal Auth/Secret flow. That project is only the credential source; its manifest and redirect allowlist are not changed.
+Use an existing Studio project that has already stored the trusted Google **Web application** client ID and secret through the normal Auth/Secret flow. That project is only the credential source; its manifest, Supabase runtime values, and redirect allowlist are not reused or changed.
 
 From the Studio repository:
 
@@ -46,10 +54,10 @@ The command:
 - resolves the source project's enabled Google `credentialsRef` through the existing trusted `ProjectSecretService`;
 - supplies that credential only to the smoke project's canonical `upProjectInfrastructure()` flow;
 - reconciles GoTrue from the smoke manifest and its Android/iOS deploy targets;
-- starts the smoke project's local Infra port-forward;
-- writes the generated app `.env.local` with only `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY`.
+- lets the smoke project's generated Infra write its own `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` to the generated app;
+- reports that smoke-owned Supabase gateway URL for native bridging.
 
-No Google client secret, service-role key, provider token, or other trusted credential is copied into the generated app.
+No Google client secret, service-role key, provider token, source-project anon key, or other trusted credential is copied into the generated app.
 
 Verify the active GoTrue configuration before opening the native app:
 
@@ -67,20 +75,18 @@ ankh-auth5-ios://auth/callback
 
 If it still contains only another app's native scheme, do not continue the smoke. Re-run the smoke Infra command and investigate the canonical Infra reconciliation rather than mutating Kubernetes manually.
 
-Confirm the gateway URL printed by the command is reachable, for example:
+Confirm the exact gateway URL printed by the command is reachable:
 
 ```bash
-curl http://127.0.0.1:19600/auth/v1/settings
+curl <printed-gateway-url>/auth/v1/settings
 ```
-
-Use the actual gateway URL/port printed by the command if it differs.
 
 ## Android development build
 
-Bridge the printed local gateway port to the Android device/emulator before starting OAuth. For a gateway on port `19600`:
+Bridge the exact local gateway port printed by the smoke Infra command to the Android device/emulator:
 
 ```bash
-adb reverse tcp:19600 tcp:19600
+adb reverse tcp:<gateway-port> tcp:<gateway-port>
 adb reverse --list
 ```
 
@@ -88,7 +94,6 @@ Then:
 
 ```bash
 cd /tmp/ankh-auth5-native-smoke/apps/auth5-native-oauth-smoke
-bun install
 bun run android
 ```
 
