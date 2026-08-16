@@ -1,7 +1,8 @@
-import type { AppManifest } from '@ankhorage/contracts';
-import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+
+import type { AppManifest } from '@ankhorage/contracts';
+import type { SecretPayload, SecretStoreResult } from '@ankhorage/contracts/secrets';
 
 import { ensureProjectInfraPortForward } from '../orchestrator/infraSession';
 import { ProjectManager } from '../orchestrator/projectManager';
@@ -59,14 +60,11 @@ export async function prepareAuth5NativeOAuthSmokeInfra(
 
   const anonKey = parseRequiredEnvValue(await dependencies.readSourcePublicEnv(), PUBLIC_ANON_KEY);
   const activation = await dependencies.activateSmokeInfrastructure({
-    resolve: async ({ projectId, ref }) => {
-      if (
-        projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId ||
-        ref !== SMOKE_GOOGLE_CREDENTIAL_REF
-      ) {
+    resolve: ({ projectId, ref }) => {
+      if (projectId !== AUTH5_NATIVE_OAUTH_SMOKE.projectId || ref !== SMOKE_GOOGLE_CREDENTIAL_REF) {
         throw new Error(`Unexpected Auth 5 smoke OAuth secret request '${projectId}:${ref}'.`);
       }
-      return credential;
+      return Promise.resolve(credential);
     },
   });
 
@@ -134,7 +132,9 @@ function resolveGoogleCredentialRef(manifest: AppManifest): string {
   );
   const ref = provider?.credentialsRef?.trim();
   if (!ref) {
-    throw new Error('Configured source project must expose an enabled Google OAuth credentialsRef.');
+    throw new Error(
+      'Configured source project must expose an enabled Google OAuth credentialsRef.',
+    );
   }
   return ref;
 }
@@ -153,14 +153,17 @@ function parseRequiredEnvValue(raw: string, key: string): string {
 
 function stripMatchingQuotes(value: string): string {
   if (value.length < 2) return value;
-  const first = value[0];
+  const [first] = value;
   const last = value[value.length - 1];
   return (first === '"' && last === '"') || (first === "'" && last === "'")
     ? value.slice(1, -1)
     : value;
 }
 
-function serializePublicRuntimeEnv(args: { readonly anonKey: string; readonly gatewayUrl: string }) {
+function serializePublicRuntimeEnv(args: {
+  readonly anonKey: string;
+  readonly gatewayUrl: string;
+}) {
   return [
     `EXPO_PUBLIC_SUPABASE_URL=${args.gatewayUrl}`,
     `EXPO_PUBLIC_SUPABASE_ANON_KEY=${args.anonKey}`,
