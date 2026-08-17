@@ -8,6 +8,8 @@ import {
 } from '@ankhorage/contracts/deploy';
 import { resolveSupabaseOAuthSetupPlan } from '@ankhorage/supabase-auth';
 
+import { readOwnProperty } from './utils/readOwnProperty';
+
 export function resolveProjectAuthEnvironment(value: string | undefined): AppDeployEnvironmentId {
   return APP_DEPLOY_ENVIRONMENT_IDS.find((environment) => environment === value) ?? 'local';
 }
@@ -16,7 +18,9 @@ export function resolveProjectEnabledTargets(manifest: AppManifest): readonly Ap
   const targets = manifest.deploy?.targets;
   if (!targets) return ['web'];
 
-  return APP_DEPLOY_TARGET_IDS.filter((target) => targets[target]?.enabled === true);
+  return APP_DEPLOY_TARGET_IDS.filter(
+    (target) => readOwnProperty<{ readonly enabled?: boolean }>(targets, target)?.enabled === true,
+  );
 }
 
 export function resolveProjectOAuthSetupPlan(input: {
