@@ -124,7 +124,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(paths).toContain('src/app/ankh/modules/index.tsx');
     expect(paths).toContain('src/app/ankh/modules/[moduleId].tsx');
     expect(paths).toContain('src/app/ankh/apis/index.tsx');
-    expect(paths).toContain('src/app/ankh/apis/data-sources.tsx');
+    expect(paths).toContain('src/app/ankh/apis/catalog.tsx');
     expect(paths).toContain('src/app/ankh/apis/operations.tsx');
     expect(paths).toContain('src/app/ankh/auth/index.tsx');
     expect(paths).toContain('src/app/ankh/auth/providers.tsx');
@@ -155,7 +155,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).toContain('routeId="screen-detail"');
     expect(adminSources).toContain('routeId="modules"');
     expect(adminSources).toContain('routeId="module-detail"');
-    expect(adminSources).toContain('routeId="api-data-sources"');
+    expect(adminSources).toContain('routeId="api-catalog"');
     expect(adminSources).toContain('routeId="deploy"');
     expect(adminSources).not.toContain('return null;');
   });
