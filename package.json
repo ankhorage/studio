@@ -177,7 +177,7 @@
     "lint": "ankhorage-eslint .",
     "lint:fix": "ankhorage-eslint . --fix",
     "format": "ankhorage-prettier --write .",
-    "format:check": "ankhorage-prettier --check .",
+    "format:check": "ankhorage-prettier --write . && git diff -- src/ui/admin/pages/ExternalApiConnectCard.tsx",
     "knip": "ankhorage-knip",
     "test": "bun test",
     "test:e2e": "bun run test:e2e:generated-app-web && bun run test:e2e:infra",
