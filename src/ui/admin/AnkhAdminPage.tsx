@@ -53,7 +53,7 @@ const ADMIN_PAGE_RENDERERS = {
     <ModuleDetailAdminPage moduleId={resolveStudioModuleId(pathname)} />
   ),
   apis: ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
-  'api-data-sources': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
+  'api-catalog': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
   'api-operations': ({ routeId }) => <ApisAdminPage routeId={routeId as ApisAdminRouteId} />,
   auth: ({ routeId, studio }) => (
     <AuthAdminPage
