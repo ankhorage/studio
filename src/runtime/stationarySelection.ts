@@ -706,39 +706,45 @@ function StationaryTapSelector(props: {
     [requestIndicatorRefresh, syncActiveResizeTargets],
   );
 
-  const tapGesture = React.useMemo(() => {
-    return Gesture.Tap()
-      .maxDeltaX(5)
-      .maxDeltaY(5)
-      .maxDuration(500)
-      .runOnJS(true)
-      .onBegin(() => {
-        generationRef.current = coordinator.beginTransaction();
-        inputState.beginTransaction((nodeId) => {
-          coordinator.recordNode(nodeId, generationRef.current);
-        });
-      })
-      .onEnd((_event, success) => {
-        if (!success) {
-          return;
-        }
-
-        coordinator.commitSelection(
-          isEditModeRef.current,
-          selectedNodeIdRef.current,
-          (nodeId) => {
-            selectionCommitCountRef.current += 1;
-            selectNodeRef.current(nodeId);
-          },
-          generationRef.current,
-        );
-      })
-      .onFinalize(() => {
-        coordinator.clearTransaction(generationRef.current);
-        generationRef.current = 0;
-        inputState.clear();
-      });
+  const handleTapBegin = React.useCallback(() => {
+    generationRef.current = coordinator.beginTransaction();
+    inputState.beginTransaction((nodeId) => {
+      coordinator.recordNode(nodeId, generationRef.current);
+    });
   }, [coordinator, inputState]);
+
+  const handleTapEnd = React.useCallback(
+    (_event: unknown, success: boolean) => {
+      if (!success) {
+        return;
+      }
+
+      coordinator.commitSelection(
+        isEditModeRef.current,
+        selectedNodeIdRef.current,
+        (nodeId) => {
+          selectionCommitCountRef.current += 1;
+          selectNodeRef.current(nodeId);
+        },
+        generationRef.current,
+      );
+    },
+    [coordinator],
+  );
+
+  const handleTapFinalize = React.useCallback(() => {
+    coordinator.clearTransaction(generationRef.current);
+    generationRef.current = 0;
+    inputState.clear();
+  }, [coordinator, inputState]);
+
+  const tapGesture = React.useMemo(() => {
+    const gesture = Gesture.Tap().maxDeltaX(5).maxDeltaY(5).maxDuration(500).runOnJS(true);
+    gesture.onBegin(handleTapBegin);
+    gesture.onEnd(handleTapEnd);
+    gesture.onFinalize(handleTapFinalize);
+    return gesture;
+  }, [handleTapBegin, handleTapEnd, handleTapFinalize]);
 
   React.useEffect(() => {
     coordinator.clearTransaction();
