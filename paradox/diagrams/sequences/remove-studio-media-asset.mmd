@@ -2,8 +2,12 @@ sequenceDiagram
   participant participant_collectNodeUsages as collectNodeUsages
   participant participant_collectStudioMediaAssetUsages as collectStudioMediaAssetUsages
   participant participant_collectValueUsages as collectValueUsages
+  participant participant_deleteOwnProperty as deleteOwnProperty
+  participant participant_readOwnProperty as readOwnProperty
   participant participant_readStudioMediaAssetReference as readStudioMediaAssetReference
   participant participant_removeStudioMediaAsset as removeStudioMediaAsset
+  participant_removeStudioMediaAsset->>participant_readOwnProperty: readOwnProperty()
+  participant_readOwnProperty-->>participant_removeStudioMediaAsset: return
   participant_removeStudioMediaAsset->>participant_collectStudioMediaAssetUsages: collectStudioMediaAssetUsages()
   participant_collectStudioMediaAssetUsages->>participant_collectNodeUsages: collectNodeUsages()
   participant_collectNodeUsages->>participant_collectValueUsages: collectValueUsages()
@@ -16,3 +20,5 @@ sequenceDiagram
   participant_collectNodeUsages-->>participant_collectNodeUsages: return
   participant_collectNodeUsages-->>participant_collectStudioMediaAssetUsages: return
   participant_collectStudioMediaAssetUsages-->>participant_removeStudioMediaAsset: return
+  participant_removeStudioMediaAsset->>participant_deleteOwnProperty: deleteOwnProperty()
+  participant_deleteOwnProperty-->>participant_removeStudioMediaAsset: return

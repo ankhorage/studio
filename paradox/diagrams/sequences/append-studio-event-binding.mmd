@@ -1,8 +1,19 @@
 sequenceDiagram
   participant participant_appendStudioEventBinding as appendStudioEventBinding
+  participant participant_deleteOwnProperty as deleteOwnProperty
   participant participant_isEmptyBinding as isEmptyBinding
+  participant participant_readOwnProperty as readOwnProperty
+  participant participant_setOwnProperty as setOwnProperty
   participant participant_writeBinding as writeBinding
+  participant_appendStudioEventBinding->>participant_readOwnProperty: readOwnProperty()
+  participant_readOwnProperty-->>participant_appendStudioEventBinding: return
+  participant_appendStudioEventBinding->>participant_setOwnProperty: setOwnProperty()
+  participant_setOwnProperty-->>participant_appendStudioEventBinding: return
   participant_appendStudioEventBinding->>participant_writeBinding: writeBinding()
   participant_writeBinding->>participant_isEmptyBinding: isEmptyBinding()
   participant_isEmptyBinding-->>participant_writeBinding: return
+  participant_writeBinding->>participant_deleteOwnProperty: deleteOwnProperty()
+  participant_deleteOwnProperty-->>participant_writeBinding: return
+  participant_writeBinding->>participant_setOwnProperty: setOwnProperty()
+  participant_setOwnProperty-->>participant_writeBinding: return
   participant_writeBinding-->>participant_appendStudioEventBinding: return
