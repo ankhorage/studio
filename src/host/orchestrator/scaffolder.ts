@@ -380,7 +380,7 @@ function mergePackageJson(
     ...(existing?.dependencies ?? {}),
   };
   for (const dependencyName of managedDependencies) {
-    delete mergedDependencies[dependencyName];
+    Reflect.deleteProperty(mergedDependencies, dependencyName);
   }
   Object.assign(mergedDependencies, template.dependencies);
   if (!includeStudio) {
@@ -392,7 +392,7 @@ function mergePackageJson(
     ...(existing?.devDependencies ?? {}),
   };
   for (const dependencyName of managedDevDependencies) {
-    delete mergedDevDependencies[dependencyName];
+    Reflect.deleteProperty(mergedDevDependencies, dependencyName);
   }
   Object.assign(mergedDevDependencies, template.devDependencies);
 
@@ -416,16 +416,21 @@ function mergeScripts(
   };
 
   for (const scriptName of REQUIRED_MANAGED_SCRIPT_NAMES) {
-    mergedScripts[scriptName] = templateScripts[scriptName];
+    const requiredScript = findScript(templateScripts, scriptName);
+    if (requiredScript !== undefined) Object.assign(mergedScripts, { [scriptName]: requiredScript });
   }
   for (const scriptName of TARGET_SCRIPT_NAMES) {
-    const targetScript = templateScripts[scriptName];
+    const targetScript = findScript(templateScripts, scriptName);
     if (targetScript === undefined) {
-      delete mergedScripts[scriptName];
+      Reflect.deleteProperty(mergedScripts, scriptName);
     } else {
-      mergedScripts[scriptName] = targetScript;
+      Object.assign(mergedScripts, { [scriptName]: targetScript });
     }
   }
 
   return mergedScripts;
+}
+
+function findScript(scripts: PartialPackageScripts, scriptName: string): string | undefined {
+  return Object.entries(scripts).find(([candidate]) => candidate === scriptName)?.[1];
 }
