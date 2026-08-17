@@ -47,11 +47,14 @@ async function requestResult<TResult>(
   body: unknown,
   parse: (value: unknown) => TResult,
 ): Promise<TResult> {
-  const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/apis/${action}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+  const response = await fetch(
+    `${API_BASE}/projects/${encodeURIComponent(projectId)}/apis/${action}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+  );
   const value = await readJson(response);
   if (!response.ok && !isStructuredFailure(value)) {
     throw new ExternalApiApiError('The Studio external API request failed.', response.status);

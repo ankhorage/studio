@@ -44,7 +44,10 @@ function collectApiOperations(api: ApiDefinition): StudioBindingOperationOption[
       label: `${api.name ?? api.id} · ${operation.name ?? operation.id}`,
       apiLabel: describeApi(api),
       inputFields: collectOperationInputFields(api, operation),
-      responsePaths: collectStudioResponsePaths(resolveSlotSchema(api, operation.response), api.schemas),
+      responsePaths: collectStudioResponsePaths(
+        resolveSlotSchema(api, operation.response),
+        api.schemas,
+      ),
     })),
   );
 }

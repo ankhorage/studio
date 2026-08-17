@@ -146,7 +146,9 @@ describe('StudioExternalApiService', () => {
       protocol: 'graphql',
       endpointUrl: 'https://api.example.com/graphql',
     });
-    expect(store.read().infra.apis?.[0]?.endpoints.graphql?.operations['query.items']).toBeDefined();
+    expect(
+      store.read().infra.apis?.[0]?.endpoints.graphql?.operations['query.items'],
+    ).toBeDefined();
   });
 
   test('creates manual REST APIs through the canonical owner helper', async () => {

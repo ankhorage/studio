@@ -1,6 +1,5 @@
 export type ExternalApiIdResult =
-  | { readonly ok: true; readonly apiId: string }
-  | { readonly ok: false; readonly message: string };
+  { readonly ok: true; readonly apiId: string } | { readonly ok: false; readonly message: string };
 
 export function normalizeExternalApiId(value: string): ExternalApiIdResult {
   const apiId = value
