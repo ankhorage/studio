@@ -6,17 +6,20 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+import { deleteOwnProperty } from './utils/deleteOwnProperty';
+import { readOwnProperty } from './utils/readOwnProperty';
+import { setOwnProperty } from './utils/setOwnProperty';
+
 export function upsertStudioPropBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
   propName: string,
   binding: PropBinding,
 ): ComponentDataBindingRegistry {
-  const current = registry[node.id];
-  return writeBinding(registry, node, {
-    ...current,
-    props: { ...(current?.props ?? {}), [propName]: binding },
-  });
+  const current = readOwnProperty<ComponentDataBinding>(registry, node.id);
+  const props = { ...(current?.props ?? {}) };
+  setOwnProperty(props, propName, binding);
+  return writeBinding(registry, node, { ...current, props });
 }
 
 export function removeStudioPropBinding(
@@ -24,10 +27,10 @@ export function removeStudioPropBinding(
   node: UiNode,
   propName: string,
 ): ComponentDataBindingRegistry {
-  const current = registry[node.id];
-  if (!current?.props?.[propName]) return registry;
+  const current = readOwnProperty<ComponentDataBinding>(registry, node.id);
+  if (!current?.props || !readOwnProperty<PropBinding>(current.props, propName)) return registry;
   const props = { ...current.props };
-  delete props[propName];
+  deleteOwnProperty(props, propName);
   return writeBinding(registry, node, { ...current, props });
 }
 
@@ -37,14 +40,13 @@ export function appendStudioEventBinding(
   eventName: string,
   binding: EventBinding,
 ): ComponentDataBindingRegistry {
-  const current = registry[node.id];
-  return writeBinding(registry, node, {
-    ...current,
-    events: {
-      ...(current?.events ?? {}),
-      [eventName]: [...(current?.events?.[eventName] ?? []), binding],
-    },
-  });
+  const current = readOwnProperty<ComponentDataBinding>(registry, node.id);
+  const events = { ...(current?.events ?? {}) };
+  const bindings = current?.events
+    ? (readOwnProperty<readonly EventBinding[]>(current.events, eventName) ?? [])
+    : [];
+  setOwnProperty(events, eventName, [...bindings, binding]);
+  return writeBinding(registry, node, { ...current, events });
 }
 
 export function removeStudioEventBinding(
@@ -53,13 +55,15 @@ export function removeStudioEventBinding(
   eventName: string,
   bindingIndex: number,
 ): ComponentDataBindingRegistry {
-  const current = registry[node.id];
-  const bindings = current?.events?.[eventName];
-  if (!current || !bindings?.[bindingIndex]) return registry;
+  const current = readOwnProperty<ComponentDataBinding>(registry, node.id);
+  const bindings = current?.events
+    ? readOwnProperty<readonly EventBinding[]>(current.events, eventName)
+    : undefined;
+  if (!current || !bindings?.at(bindingIndex)) return registry;
   const events = { ...(current.events ?? {}) };
   const next = bindings.filter((_, index) => index !== bindingIndex);
-  if (next.length > 0) events[eventName] = next;
-  else delete events[eventName];
+  if (next.length > 0) setOwnProperty(events, eventName, next);
+  else deleteOwnProperty(events, eventName);
   return writeBinding(registry, node, { ...current, events });
 }
 
@@ -74,8 +78,8 @@ function writeBinding(
     componentId: node.id,
     componentType: node.type,
   };
-  if (isEmptyBinding(binding)) delete next[node.id];
-  else next[node.id] = binding;
+  if (isEmptyBinding(binding)) deleteOwnProperty(next, node.id);
+  else setOwnProperty(next, node.id, binding);
   return next;
 }
 
