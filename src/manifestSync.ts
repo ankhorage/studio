@@ -25,7 +25,7 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
   return JSON.stringify({
     navigator: manifest.navigator,
     screens: createRuntimeScreenSignatures(manifest),
-    generatedApis: manifest.generatedApis ?? {},
+    apis: manifest.infra.apis ?? [],
     dataBindings: manifest.dataBindings ?? {},
     dataSources: manifest.dataSources ?? {},
     auth: manifest.infra.auth ?? null,
