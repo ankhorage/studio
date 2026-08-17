@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.13.1
+
+### Patch Changes
+
+- 6259a3d: Use the released headless `@ankhorage/runtime/bindings` entrypoint for the generated Nutrition API acceptance path and require Runtime 2.1 or newer.
+
 ## 1.13.0
 
 ### Minor Changes
