@@ -100,11 +100,7 @@ export function ExternalApiConnectCard() {
             />
           </ExternalApiField>
           <ExternalApiField label="Credential kind">
-            <Input
-              value={credentialKind}
-              autoCapitalize="none"
-              onChangeText={setCredentialKind}
-            />
+            <Input value={credentialKind} autoCapitalize="none" onChangeText={setCredentialKind} />
           </ExternalApiField>
           <ExternalApiField label="Credential scope (optional)">
             <Input
