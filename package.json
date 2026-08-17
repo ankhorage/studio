@@ -163,8 +163,8 @@
       "studio.secrets.create",
       "studio.secrets.replace",
       "studio.secrets.remove",
-      "studio.data-sources.connect",
-      "studio.data-sources.test"
+      "studio.apis.connect",
+      "studio.apis.test"
     ]
   },
   "scripts": {
