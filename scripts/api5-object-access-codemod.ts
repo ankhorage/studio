@@ -64,7 +64,11 @@ replaceOnce(
   '      const studio = ports[offset + 2];',
   '      const studio = ports.at(offset + 2);',
 );
-replaceOnce(infraE2e, '      const db = ports[offset + 3];', '      const db = ports.at(offset + 3);');
+replaceOnce(
+  infraE2e,
+  '      const db = ports[offset + 3];',
+  '      const db = ports.at(offset + 3);',
+);
 
 const indexPath = 'src/index.ts';
 replaceOnce(
