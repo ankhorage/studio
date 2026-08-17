@@ -31,9 +31,8 @@
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.8.1",
-        "@ankhorage/devtools": "^1.5.1",
+        "@ankhorage/devtools": "1.5.1",
         "@ankhorage/paradox": "^0.1.21",
-        "@ankhorage/supabase-db": "^1.0.0",
         "@changesets/cli": "^2.31.0",
         "@types/bun": "^1.3.14",
         "@types/node": "^25.6.0",
@@ -124,8 +123,6 @@
     "@ankhorage/studio-app": ["@ankhorage/studio-app@workspace:apps/studio"],
 
     "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.1", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@supabase/supabase-js": "2.105.4" } }, "sha512-7cf1tHFrw5949UpRy6OENodeEnG8LuTuChaNijY3bmmK0GXXGttqd8qiByI++xTOGGVgEbQVM+8o8Wc8PMwj8Q=="],
-
-    "@ankhorage/supabase-db": ["@ankhorage/supabase-db@1.0.0", "", { "dependencies": { "@ankhorage/contracts": "^4.0.2" }, "peerDependencies": { "@supabase/supabase-js": "^2.105.3" }, "optionalPeers": ["@supabase/supabase-js"] }, "sha512-15RbeMcVDrJqFFTfXS3F0raS1JVyoU6p5BLYjmwbQvT//S8qklFu1auBm/9v4BVQRtPRYFK5k5ULBjmbcsgDcQ=="],
 
     "@ankhorage/supabase-storage": ["@ankhorage/supabase-storage@0.2.0", "", { "dependencies": { "@supabase/supabase-js": "^2.105.3" }, "peerDependencies": { "@ankhorage/contracts": "^7.4.0" }, "optionalPeers": ["@ankhorage/contracts"] }, "sha512-o5Fu4n9H0qPg5+8EHiwnjEyyBBHsFZWAIHi9Ula+QXbkh9LnIOK/wp6r934n2xG0OOuzbzgu63lAxyQnVzGn0g=="],
 
@@ -2144,8 +2141,6 @@
     "@ankhorage/expo-runtime/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
 
     "@ankhorage/supabase-auth/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
-
-    "@ankhorage/supabase-db/@ankhorage/contracts": ["@ankhorage/contracts@4.0.2", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-mxWLgJ4DYcSe5PRZBmbeqsyJXjBT5mlBkSoYqigNFw750OjiCjs9DfAxK3npapEASuy4uJWsIWdqLlld3KT/ww=="],
 
     "@ankhorage/supabase-vault/@ankhorage/contracts": ["@ankhorage/contracts@2.1.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.7" } }, "sha512-QGG0atpGDe9+BUWzWvV83Kj309TBOK76yBRbWOoQli8g0LY8QLb7Z4UquD+qVhtWJTp3Y1jHUTEttQ0WjdhY/Q=="],
 

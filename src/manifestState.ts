@@ -234,7 +234,7 @@ function resolveCanonicalStudioScreen(
   screenId: string,
 ): ScreenSpec | undefined {
   if (!hasCanonicalStudioScreenRegistryIdentity(manifest.screens)) return undefined;
-  return manifest.screens[screenId];
+  return Object.values(manifest.screens).find((screen) => screen.id === screenId);
 }
 
 /**
@@ -467,7 +467,9 @@ function appendRuntimeRoutePath(runtimePathPrefix: string[], route: RouteDefinit
 }
 
 function pathsEqual(first: readonly string[], second: readonly string[]): boolean {
-  return first.length === second.length && first.every((value, index) => value === second[index]);
+  return (
+    first.length === second.length && first.every((value, index) => value === second.at(index))
+  );
 }
 
 function formatParentPath(parentPath: readonly string[]): string {
@@ -1047,7 +1049,7 @@ export function addStudioManifestScreen(args: {
 
   const existingScreenIds = new Set(Object.values(manifest.screens).map((screen) => screen.id));
   let screenId = createId('Screen');
-  while (manifest.screens[screenId] || existingScreenIds.has(screenId)) {
+  while (Object.hasOwn(manifest.screens, screenId) || existingScreenIds.has(screenId)) {
     screenId = createId('Screen');
   }
 
@@ -1095,18 +1097,22 @@ export function deleteStudioManifestScreen(
     return { manifest, activeScreenId };
   }
   if (Object.keys(manifest.screens).length <= 1) return { manifest, activeScreenId };
-  const deletedScreen = manifest.screens[screenId];
+  const deletedScreen = resolveCanonicalStudioScreen(manifest, screenId);
   if (!deletedScreen) return { manifest, activeScreenId };
 
-  const { [screenId]: _deletedScreen, ...remainingScreens } = manifest.screens;
+  const remainingScreens = Object.fromEntries(
+    Object.entries(manifest.screens).filter(([registryKey]) => registryKey !== screenId),
+  );
   const remainingScreenIds = Object.keys(remainingScreens);
   const safeRoutes = removeScreenIdFromRoutes(manifest.navigator.routes, screenId);
 
-  const orderedScreenIds = listScreenIdsInRouteOrder(safeRoutes).filter(
-    (id) => !!remainingScreens[id],
+  const orderedScreenIds = listScreenIdsInRouteOrder(safeRoutes).filter((id) =>
+    Object.hasOwn(remainingScreens, id),
   );
   const nextActiveScreenId =
-    !activeScreenId || activeScreenId === screenId || !remainingScreens[activeScreenId]
+    !activeScreenId ||
+    activeScreenId === screenId ||
+    !Object.hasOwn(remainingScreens, activeScreenId)
       ? (orderedScreenIds[0] ?? remainingScreenIds[0] ?? null)
       : activeScreenId;
   const deletedNodeIds = collectNodeIds(deletedScreen.root);
@@ -1264,7 +1270,7 @@ function updateNodeInManifestTree(
   if (!root.children) return root;
 
   const nextChildren = root.children.map((child) => updateNodeInManifestTree(child, id, newProps));
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
+  const hasChanged = nextChildren.some((child, index) => child !== root.children?.at(index));
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
 
@@ -1280,7 +1286,7 @@ function removeNodeFromManifestTree(root: UiNode, nodeId: string): UiNode | null
   const nextChildren = root.children.map(
     (child) => removeNodeFromManifestTree(child, nodeId) ?? child,
   );
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
+  const hasChanged = nextChildren.some((child, index) => child !== root.children?.at(index));
   return hasChanged ? { ...root, children: nextChildren } : root;
 }
 

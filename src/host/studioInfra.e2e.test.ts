@@ -456,10 +456,10 @@ async function reserveHostPortSets(count: number): Promise<HostPorts[]> {
     }
     return Array.from({ length: count }, (_, index) => {
       const offset = index * 4;
-      const app = ports[offset];
-      const gateway = ports[offset + 1];
-      const studio = ports[offset + 2];
-      const db = ports[offset + 3];
+      const app = ports.at(offset);
+      const gateway = ports.at(offset + 1);
+      const studio = ports.at(offset + 2);
+      const db = ports.at(offset + 3);
       if (!app || !gateway || !studio || !db) throw new Error('Expected complete host port set.');
       return { app, gateway, studio, db };
     });
