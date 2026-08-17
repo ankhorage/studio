@@ -492,20 +492,6 @@ const runtimeComponentRegistry = createComponentRegistry(
   APP_EXTENSION_COMPONENT_REGISTRY,
 );
 
-function resolveZoraProviderTheme(
-  theme: AppManifest['themes'][number],
-  mode: NonNullable<AppManifest['activeThemeMode']>,
-) {
-  const modeConfig = theme[mode];
-  return {
-    id: theme.id,
-    name: theme.name,
-    appCategory: 'developer_tools' as const,
-    primaryColor: modeConfig.primaryColor,
-    harmony: modeConfig.harmony,
-  };
-}
-
 function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
   return {
     ...theme,
@@ -684,12 +670,7 @@ function StudioAppHeader({ appHeaderTitle }: { appHeaderTitle: string }) {
 
   return (
     <>
-      <AppBar
-        title={appHeaderTitle}
-        appMode={studioAppBar.appMode}
-        actions={studioAppBar.actions}
-        overflow={studioAppBar.overflow}
-      />
+      <AppBar title={appHeaderTitle} actions={studioAppBar.actions} />
       {studioAppBar.overlays}
     </>
   );
@@ -706,39 +687,13 @@ function GeneratedZoraProvider({
   theme: AppManifest['themes'][number];
   initialMode: NonNullable<AppManifest['activeThemeMode']>;
 }) {
-  const initialZoraTheme = useMemo(
-    () => resolveZoraProviderTheme(theme, initialMode),
-    [initialMode, theme],
-  );
+  const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
 
   return (
-    <ZoraProvider theme={initialZoraTheme} initialMode={initialMode}>
-      <GeneratedZoraThemeConfigSync theme={theme} />
+    <ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>
       {children}
     </ZoraProvider>
   );
-}
-
-function GeneratedZoraThemeConfigSync({
-  theme,
-}: {
-  theme: AppManifest['themes'][number];
-}) {
-  const { setThemeConfig } = useZoraTheme();
-  const setThemeConfigRef = useRef(setThemeConfig);
-  const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);
-  const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig), [themeConfig]);
-  const lastSyncedThemeConfigSignatureRef = useRef<string | null>(null);
-
-  setThemeConfigRef.current = setThemeConfig;
-
-  useEffect(() => {
-    if (lastSyncedThemeConfigSignatureRef.current === themeConfigSignature) return;
-    setThemeConfigRef.current(themeConfig);
-    lastSyncedThemeConfigSignatureRef.current = themeConfigSignature;
-  }, [themeConfig, themeConfigSignature]);
-
-  return null;
 }
 
 function GeneratedStatusBar() {

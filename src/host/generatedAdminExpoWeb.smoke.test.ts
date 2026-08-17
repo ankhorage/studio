@@ -630,9 +630,14 @@ adminWebSmokeTest(
           resolvedZoraPackage.version ?? '',
         ),
       ).toBe(true);
-      expect(rootLayout).toContain('function GeneratedZoraThemeConfigSync');
-      expect(rootLayout).toContain('lastSyncedThemeConfigSignatureRef');
-      expect(rootLayout).not.toContain('}, [setThemeConfig, themeConfig]);');
+      expect(rootLayout).toContain(
+        '<ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>',
+      );
+      expect(rootLayout).not.toContain('function GeneratedZoraThemeConfigSync');
+      expect(rootLayout).not.toContain('lastSyncedThemeConfigSignatureRef');
+      expect(rootLayout).not.toContain('setThemeConfig');
+      expect(rootLayout).not.toContain('appMode={studioAppBar.appMode}');
+      expect(rootLayout).not.toContain('overflow={studioAppBar.overflow}');
       expect(rootLayout).toContain('<SmokeNavigationProbe />');
 
       expoProcess = spawnExpoWeb(projectRoot, studioApi.apiBase);

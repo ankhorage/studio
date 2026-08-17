@@ -92,16 +92,17 @@ test('initializes the Studio provider with the runtime manifest', () => {
   expect(generated).toContain(
     '<GeneratedZoraProvider theme={activeStudioTheme} initialMode={activeStudioThemeMode}>',
   );
-  expect(generated).toContain('function GeneratedZoraThemeConfigSync');
-  expect(generated).toContain('...theme,');
-  expect(generated).toContain('const setThemeConfigRef = useRef(setThemeConfig);');
   expect(generated).toContain(
-    'const themeConfigSignature = useMemo(() => JSON.stringify(themeConfig)',
+    'const themeConfig = useMemo(() => resolveZoraSurfaceThemeConfig(theme), [theme]);',
   );
-  expect(generated).toContain('lastSyncedThemeConfigSignatureRef.current === themeConfigSignature');
-  expect(generated).toContain('setThemeConfigRef.current(themeConfig)');
-  expect(generated).toContain('}, [themeConfig, themeConfigSignature]);');
-  expect(generated).not.toContain('}, [setThemeConfig, themeConfig]);');
+  expect(generated).toContain('<ZoraProvider themeConfig={themeConfig} initialMode={initialMode}>');
+  expect(generated).not.toContain('function GeneratedZoraThemeConfigSync');
+  expect(generated).not.toContain('resolveZoraProviderTheme');
+  expect(generated).not.toContain('setThemeConfig');
+  expect(generated).not.toContain('useRef(');
+  expect(generated).toContain('<AppBar title={appHeaderTitle} actions={studioAppBar.actions} />');
+  expect(generated).not.toContain('appMode={studioAppBar.appMode}');
+  expect(generated).not.toContain('overflow={studioAppBar.overflow}');
   expect(generated).toContain('<GeneratedStatusBar />');
 });
 
