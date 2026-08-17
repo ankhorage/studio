@@ -2,6 +2,7 @@ import type { UiNode } from '@ankhorage/contracts';
 
 import type { CanvasDropZoneResolution, ValidCanvasDropZoneResolution } from './canvasDropZones';
 import type { PlacementKind } from './index';
+import { readOwnProperty } from './utils/readOwnProperty';
 
 export interface CanvasRect {
   readonly x: number;
@@ -134,7 +135,7 @@ export function resolveCanvasDragPreviewText(
 ): string | null {
   if (!props) return null;
   for (const key of ['children', 'text', 'title', 'label', 'description']) {
-    const value = props[key];
+    const value = readOwnProperty<unknown>(props, key);
     if (typeof value === 'string' && value.trim().length > 0) {
       return value.trim().slice(0, 80);
     }
