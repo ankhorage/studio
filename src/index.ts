@@ -638,7 +638,7 @@ export const removeNodeFromTree = (root: UiNode, nodeId: string): UiNode | null 
   }
 
   const nextChildren = root.children.map((child) => removeNodeFromTree(child, nodeId) ?? child);
-  const hasChanged = nextChildren.some((child, index) => child !== root.children?.[index]);
+  const hasChanged = nextChildren.some((child, index) => child !== root.children?.at(index));
 
   return hasChanged ? { ...root, children: nextChildren } : root;
 };
@@ -693,7 +693,7 @@ function removeNodeForMove(args: { node: UiNode; nodeId: string }): {
   const directIndex = children.findIndex((child) => child.id === nodeId);
 
   if (directIndex !== -1) {
-    const removedNode = children[directIndex];
+    const removedNode = children.at(directIndex);
     if (!removedNode) {
       return { node, removedNode: null };
     }
@@ -745,7 +745,7 @@ export function canAcceptChild(args: {
   componentMeta: StudioComponentMetaRegistry;
 }): boolean {
   const { parentType, childType, componentMeta } = args;
-  const meta = componentMeta[parentType];
+  const meta = Object.entries(componentMeta).find(([type]) => type === parentType)?.[1];
   if (!meta) return false;
 
   return meta.allowedChildren.includes(childType);
@@ -1209,7 +1209,7 @@ export const STUDIO_INSERT_RECIPES: readonly InsertRecipe[] = [
 ];
 
 export function getInsertCatalogCategoryLabel(category: string): string {
-  return CATEGORY_LABELS[category] ?? category;
+  return Object.entries(CATEGORY_LABELS).find(([key]) => key === category)?.[1] ?? category;
 }
 
 function resolveCategoryOrder(category: string): number {

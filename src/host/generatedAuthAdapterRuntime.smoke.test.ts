@@ -64,7 +64,7 @@ function isBabelCore(value: unknown): value is BabelCore {
 
 function readEnvString(name: string): string | undefined {
   const env = process.env as unknown as Record<string, string | undefined>;
-  const value = env[name];
+  const value = Object.entries(env).find(([key]) => key === name)?.[1];
   return typeof value === 'string' ? value : undefined;
 }
 

@@ -108,7 +108,9 @@ function createAdminSmokeManifest(): AppManifest {
     templateId: 'nutrition-catalog-scan',
   });
   const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
-  const catalogScreen = nutritionManifest.screens[catalogScreenId];
+  const catalogScreen = Object.values(nutritionManifest.screens).find(
+    (screen) => screen.id === catalogScreenId,
+  );
   if (!catalogScreen) throw new Error('Nutrition template is missing its catalog screen.');
 
   return {
@@ -1324,7 +1326,7 @@ function expectCapturedLayoutsToMatch(
   expect(actual.scrollContentSizes).toEqual(expected.scrollContentSizes);
   expect(Object.keys(actual.rects).sort()).toEqual(Object.keys(expected.rects).sort());
   for (const [testID, expectedRect] of Object.entries(expected.rects)) {
-    const actualRect = actual.rects[testID];
+    const actualRect = Object.entries(actual.rects).find(([key]) => key === testID)?.[1];
     expect(actualRect == null).toBe(expectedRect == null);
     if (!actualRect || !expectedRect) {
       continue;
@@ -1595,8 +1597,8 @@ function expectAppBarActionsHorizontal(
   const actionHeights = snapshot.actions.map((action) => action.rect.height);
   expect(snapshot.clusterHeight).toBeLessThanOrEqual(Math.max(...actionHeights) + 4);
   for (let index = 1; index < snapshot.actions.length; index += 1) {
-    const previous = snapshot.actions[index - 1];
-    const current = snapshot.actions[index];
+    const previous = snapshot.actions.at(index - 1);
+    const current = snapshot.actions.at(index);
     expect(previous).toBeDefined();
     expect(current).toBeDefined();
     if (previous && current) {
@@ -2373,7 +2375,7 @@ function resolveChromePath(): string {
 
 function readEnvString(name: string): string | undefined {
   const env = process.env as Record<string, string | undefined>;
-  const value = env[name];
+  const value = Object.entries(env).find(([key]) => key === name)?.[1];
   return typeof value === 'string' ? value : undefined;
 }
 

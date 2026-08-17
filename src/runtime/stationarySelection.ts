@@ -167,7 +167,7 @@ function areIndicatorRectsEqual(
   }
 
   return left.every((rect, index) => {
-    const candidate = right[index];
+    const candidate = right.at(index);
     if (!candidate) {
       return false;
     }
