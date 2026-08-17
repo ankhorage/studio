@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_setOwnProperty as setOwnProperty
+  participant participant_upsertStudioMediaAsset as upsertStudioMediaAsset
+  participant_upsertStudioMediaAsset->>participant_setOwnProperty: setOwnProperty()
+  participant_setOwnProperty-->>participant_upsertStudioMediaAsset: return

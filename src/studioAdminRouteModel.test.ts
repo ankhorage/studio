@@ -31,7 +31,7 @@ describe('studioAdminRouteModel', () => {
       'screen-detail',
       'media',
       'apis',
-      'api-data-sources',
+      'api-catalog',
       'api-operations',
       'modules',
       'module-detail',
@@ -65,7 +65,8 @@ describe('studioAdminRouteModel', () => {
     expect(resolveStudioAdminRouteId('/ankh/modules')).toBe('modules');
     expect(resolveStudioAdminRoutePath('/ankh/modules')).toBe('/ankh/modules');
     expect(resolveStudioAdminRouteId('/ankh/apis')).toBe('apis');
-    expect(resolveStudioAdminRouteId('/ankh/apis/data-sources')).toBe('api-data-sources');
+    expect(resolveStudioAdminRouteId('/ankh/apis/catalog')).toBe('api-catalog');
+    expect(resolveStudioAdminRouteId('/ankh/apis/data-sources')).toBeNull();
     expect(resolveStudioAdminRouteId('/ankh/apis/operations')).toBe('api-operations');
     expect(resolveStudioAdminRouteId('/ankh/auth')).toBe('auth');
     expect(resolveStudioAdminRouteId('/ankh/auth/providers')).toBe('auth-providers');

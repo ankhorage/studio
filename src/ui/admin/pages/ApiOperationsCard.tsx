@@ -1,34 +1,27 @@
-import type { DataSourceRegistry } from '@ankhorage/contracts/data';
+import type { ApiDefinitionList } from '@ankhorage/contracts/data';
 import { Button, Card, Text } from '@ankhorage/zora';
 import { useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import { useStudio } from '../../../core/StudioContext';
 import { testExternalApiOperation } from '../../../externalApiApi';
 import type { ExternalApiOperationTestResult } from '../../../externalApiAuthoringContracts';
-import { useStudio } from '../../../core/StudioContext';
-import {
-  collectDataSourceOperationRows,
-  type DataSourceOperationRow,
-} from './adminDataSourceOperations';
+import { type ApiOperationRow, collectApiOperationRows } from './adminApiOperations';
 import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
-export function DataSourceOperationsCard({
-  dataSources,
-}: {
-  readonly dataSources: DataSourceRegistry;
-}) {
+export function ApiOperationsCard({ apis }: { readonly apis: ApiDefinitionList }) {
   const studio = useStudio();
-  const rows = useMemo(() => collectDataSourceOperationRows(dataSources), [dataSources]);
+  const rows = useMemo(() => collectApiOperationRows(apis), [apis]);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [results, setResults] = useState<Record<string, ExternalApiOperationTestResult>>({});
 
   const run = useCallback(
-    async (row: DataSourceOperationRow, dryRun: boolean) => {
+    async (row: ApiOperationRow, dryRun: boolean) => {
       const key = operationKey(row);
       setBusyKey(key);
       try {
         const result = await testExternalApiOperation(studio.projectId, {
-          sourceId: row.sourceId,
+          apiId: row.apiId,
           endpointId: row.endpointId,
           operationId: row.operationId,
           dryRun,
@@ -45,7 +38,7 @@ export function DataSourceOperationsCard({
     <Card title="Operations">
       {rows.length === 0 ? (
         <Text color="neutral" emphasis="muted">
-          No runtime operations are configured.
+          No API operations are configured.
         </Text>
       ) : (
         <View style={externalApiAdminStyles.stack}>
@@ -56,8 +49,8 @@ export function DataSourceOperationsCard({
               <View key={key} style={externalApiAdminStyles.operation}>
                 <Text weight="semiBold">{row.name ?? row.operationId}</Text>
                 <Text color="neutral" emphasis="muted" variant="bodySmall">
-                  {row.sourceId} / {row.endpointId} · {row.method ?? row.protocol ?? 'operation'}{' '}
-                  {row.path ?? ''} · {row.kind}
+                  {row.apiId} / {row.endpointId} · {row.method ?? row.protocol} {row.path ?? ''} ·{' '}
+                  {row.intent}
                 </Text>
                 {row.testable ? (
                   <View style={externalApiAdminStyles.actions}>
@@ -74,7 +67,7 @@ export function DataSourceOperationsCard({
                   </View>
                 ) : (
                   <Text color="neutral" variant="caption">
-                    Generated database operation · executed by Runtime through its database adapter.
+                    Internal API execution is not available in Phase 1.
                   </Text>
                 )}
                 {result ? <OperationResult result={result} /> : null}
@@ -110,8 +103,8 @@ function OperationResult({ result }: { readonly result: ExternalApiOperationTest
   );
 }
 
-function operationKey(row: DataSourceOperationRow): string {
-  return `${row.sourceId}:${row.endpointId}:${row.operationId}`;
+function operationKey(row: ApiOperationRow): string {
+  return `${row.apiId}:${row.endpointId}:${row.operationId}`;
 }
 
 function formatData(value: unknown): string {

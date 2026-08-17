@@ -1,6 +1,6 @@
 import type {
+  ApiDefinitionList,
   ComponentDataBindingRegistry,
-  DataSourceRegistry,
   PropBinding,
   UiComponentMetaRegistry,
   UiNode,
@@ -55,10 +55,9 @@ const componentMeta: UiComponentMetaRegistry = {
   },
 };
 
-const dataSources: DataSourceRegistry = {
-  external: {
+const apis: ApiDefinitionList = [
+  {
     id: 'external',
-    kind: 'api',
     origin: 'external',
     protocol: 'rest',
     baseUrl: 'https://example.test',
@@ -82,21 +81,19 @@ const dataSources: DataSourceRegistry = {
       },
     },
   },
-  generated: {
-    id: 'generated',
-    kind: 'api',
-    origin: 'generated',
+  {
+    id: 'inventory',
+    origin: 'external',
     protocol: 'rest',
-    generatedApiId: 'generated',
-    adapter: { id: 'primary-db', kind: 'database' },
+    baseUrl: 'https://inventory.example.test',
     endpoints: {
       items: {
         id: 'items',
-        kind: 'database',
+        kind: 'http',
         operations: {
           'items.create': {
             id: 'items.create',
-            protocol: 'database',
+            protocol: 'http',
             intent: 'create',
             request: {
               schema: {
@@ -116,7 +113,7 @@ const dataSources: DataSourceRegistry = {
       },
     },
   },
-};
+];
 
 describe('binding authoring metadata', () => {
   test('derives only explicitly bindable props and events from component metadata', () => {
@@ -157,16 +154,16 @@ describe('binding registry mutations', () => {
 });
 
 describe('binding operations and schemas', () => {
-  test('enumerates external and generated operations through one canonical model', () => {
-    const options = collectStudioBindingOperationOptions(dataSources);
+  test('enumerates canonical API operations without data-source projection', () => {
+    const options = collectStudioBindingOperationOptions(apis);
     expect(options.map((option) => option.operation.operationId).sort()).toEqual([
       'items.create',
       'profile.read',
     ]);
-    const generated = options.find((option) => option.operation.operationId === 'items.create');
+    const inventory = options.find((option) => option.operation.operationId === 'items.create');
     const external = options.find((option) => option.operation.operationId === 'profile.read');
 
-    expect(generated?.inputFields).toMatchObject([
+    expect(inventory?.inputFields).toMatchObject([
       { name: 'name', required: true, value: { type: 'string' } },
       { name: 'count', required: false, value: { type: 'number' } },
     ]);
@@ -188,17 +185,17 @@ describe('binding operations and schemas', () => {
 
 describe('binding diagnostics', () => {
   test('diagnoses missing operations and incompatible response paths', () => {
-    const operations = collectStudioBindingOperationOptions(dataSources);
+    const operations = collectStudioBindingOperationOptions(apis);
     const missingRegistry = upsertStudioPropBinding({}, button, 'children', {
       source: {
         kind: 'operation',
-        operation: { dataSourceId: 'missing', endpointId: 'x', operationId: 'x.read' },
+        operation: { apiId: 'missing', endpointId: 'x', operationId: 'x.read' },
       },
     });
     const incompatibleRegistry = upsertStudioPropBinding({}, button, 'children', {
       source: {
         kind: 'operation',
-        operation: { dataSourceId: 'external', endpointId: 'profile', operationId: 'profile.read' },
+        operation: { apiId: 'external', endpointId: 'profile', operationId: 'profile.read' },
         path: 'age',
       },
     });

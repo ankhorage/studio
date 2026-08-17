@@ -2,7 +2,7 @@ import type { SecretMetadata } from '@ankhorage/contracts/secrets';
 import type { DeploymentCredentialReference } from '@ankhorage/deploy';
 import type { ProjectReleaseAccess } from '@ankhorage/deploy/project';
 
-import type { ProjectDeployRuntimeInput } from './ProjectDeployRuntimeInput';
+import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput';
 import type { ProjectDeploySecretStore } from './ProjectDeploySecretStore';
 import { serializeProjectDeploySecret } from './serializeProjectDeploySecret';
 

@@ -4,13 +4,13 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type {
   ExternalApiConnectRequest,
   ExternalApiOperationTestRequest,
-  ManualRestSourceRequest,
+  ManualRestApiRequest,
 } from '../../externalApiAuthoringContracts';
-import { StudioExternalApiService } from '../dataSources/studioExternalApiService';
+import { StudioExternalApiService } from '../apis/studioExternalApiService';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
-export function registerProjectDataSourceRoutes(
+export function registerProjectApiRoutes(
   fastify: FastifyInstance,
   options: {
     readonly projectManager: ProjectManager;
@@ -28,21 +28,21 @@ export function registerProjectDataSourceRoutes(
       }),
     });
 
-  fastify.post('/api/projects/:id/data-sources/connect', async (request, reply) => {
+  fastify.post('/api/projects/:id/apis/connect', async (request, reply) => {
     const body = readConnectRequest(request.body);
     if (!body) return invalidPayload(reply, 'External API connection payload is invalid.');
     return sendResult(reply, await service.connect(readProjectId(request), body));
   });
 
-  fastify.post('/api/projects/:id/data-sources/manual-rest', async (request, reply) => {
+  fastify.post('/api/projects/:id/apis/manual-rest', async (request, reply) => {
     const body = readManualRestRequest(request.body);
-    if (!body) return invalidPayload(reply, 'Manual REST data-source payload is invalid.');
+    if (!body) return invalidPayload(reply, 'Manual REST API payload is invalid.');
     return sendResult(reply, await service.createManualRest(readProjectId(request), body));
   });
 
-  fastify.post('/api/projects/:id/data-sources/test', async (request, reply) => {
+  fastify.post('/api/projects/:id/apis/test', async (request, reply) => {
     const body = readOperationTestRequest(request.body);
-    if (!body) return invalidPayload(reply, 'Data-source operation test payload is invalid.');
+    if (!body) return invalidPayload(reply, 'API operation test payload is invalid.');
     return sendResult(reply, await service.testOperation(readProjectId(request), body));
   });
 }
@@ -67,14 +67,14 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
   const protocol = record?.protocol;
   if (
     !record ||
-    typeof record.sourceId !== 'string' ||
+    typeof record.apiId !== 'string' ||
     typeof record.url !== 'string' ||
     (protocol !== 'auto' && protocol !== 'graphql' && protocol !== 'openapi')
   ) {
     return null;
   }
   return {
-    sourceId: record.sourceId,
+    apiId: record.apiId,
     url: record.url,
     protocol,
     name: readString(record.name),
@@ -83,11 +83,11 @@ function readConnectRequest(value: unknown): ExternalApiConnectRequest | null {
   };
 }
 
-function readManualRestRequest(value: unknown): ManualRestSourceRequest | null {
+function readManualRestRequest(value: unknown): ManualRestApiRequest | null {
   const record = readRecord(value);
   if (
     !record ||
-    typeof record.sourceId !== 'string' ||
+    typeof record.apiId !== 'string' ||
     typeof record.baseUrl !== 'string' ||
     typeof record.endpointId !== 'string' ||
     typeof record.path !== 'string' ||
@@ -98,7 +98,7 @@ function readManualRestRequest(value: unknown): ManualRestSourceRequest | null {
     return null;
   }
   return {
-    sourceId: record.sourceId,
+    apiId: record.apiId,
     baseUrl: record.baseUrl,
     endpointId: record.endpointId,
     path: record.path,
@@ -115,7 +115,7 @@ function readOperationTestRequest(value: unknown): ExternalApiOperationTestReque
   const record = readRecord(value);
   if (
     !record ||
-    typeof record.sourceId !== 'string' ||
+    typeof record.apiId !== 'string' ||
     typeof record.endpointId !== 'string' ||
     typeof record.operationId !== 'string'
   ) {
@@ -124,7 +124,7 @@ function readOperationTestRequest(value: unknown): ExternalApiOperationTestReque
   const values = readDataValues(record.values);
   if (record.values !== undefined && values === undefined) return null;
   return {
-    sourceId: record.sourceId,
+    apiId: record.apiId,
     endpointId: record.endpointId,
     operationId: record.operationId,
     values,

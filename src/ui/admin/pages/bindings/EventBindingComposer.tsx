@@ -22,7 +22,7 @@ import {
 
 const TARGET_OPTIONS = [
   { value: 'action', label: 'Action' },
-  { value: 'operation', label: 'Data-source operation' },
+  { value: 'operation', label: 'API operation' },
 ] as const;
 const INPUT_SOURCE_OPTIONS: readonly { value: StudioEventInputSourceKind; label: string }[] = [
   { value: 'event', label: 'Event payload' },
@@ -99,7 +99,7 @@ export function EventBindingComposer(props: {
       </View>
       {targetKind === 'operation' && selectedOperation ? (
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          {selectedOperation.sourceLabel}
+          {selectedOperation.apiLabel}
         </Text>
       ) : null}
       <EventInputDrafts

@@ -46,7 +46,7 @@ export function BindingsAdminPage({ nodeId }: { readonly nodeId: string | null }
   }
 
   const registry = studio.manifest.dataBindings ?? {};
-  const operations = collectStudioBindingOperationOptions(studio.manifest.dataSources ?? {});
+  const operations = collectStudioBindingOperationOptions(studio.manifest.infra.apis ?? []);
   const diagnostics = diagnoseStudioComponentBindings({
     node,
     registry,

@@ -35,7 +35,7 @@ export interface StudioBindingResponsePathOption {
 export interface StudioBindingOperationOption {
   readonly operation: BindingOperationRef;
   readonly label: string;
-  readonly sourceLabel: string;
+  readonly apiLabel: string;
   readonly inputFields: readonly StudioBindingInputFieldOption[];
   readonly responsePaths: readonly StudioBindingResponsePathOption[];
 }

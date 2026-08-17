@@ -1,6 +1,7 @@
 sequenceDiagram
   participant participant_collectObjectPaths as collectObjectPaths
   participant participant_collectStudioResponsePaths as collectStudioResponsePaths
+  participant participant_readOwnProperty as readOwnProperty
   participant participant_resolveSchemaFields as resolveSchemaFields
   participant participant_resolveSchemaRef as resolveSchemaRef
   participant participant_resolveSchemaType as resolveSchemaType
@@ -8,6 +9,8 @@ sequenceDiagram
   participant participant_resolveStudioSchemaValueMeta as resolveStudioSchemaValueMeta
   participant_collectStudioResponsePaths->>participant_resolveStudioSchemaValueMeta: resolveStudioSchemaValueMeta()
   participant_resolveStudioSchemaValueMeta->>participant_resolveSchemaRef: resolveSchemaRef()
+  participant_resolveSchemaRef->>participant_readOwnProperty: readOwnProperty()
+  participant_readOwnProperty-->>participant_resolveSchemaRef: return
   participant_resolveSchemaRef->>participant_resolveSchemaRef: resolveSchemaRef()
   participant_resolveSchemaRef-->>participant_resolveSchemaRef: return
   participant_resolveSchemaRef-->>participant_resolveStudioSchemaValueMeta: return

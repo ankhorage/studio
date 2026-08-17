@@ -11,18 +11,12 @@ import {
   getStudioAdminRouteDefinition,
   STUDIO_ADMIN_ROUTE_REGISTRY,
 } from '../../studioAdminRouteModel';
-import { resolveGeneratedDatabaseRuntime } from '../generatedDatabaseRuntime';
 import type { LayoutMutation } from '../modules/layout';
 import {
   type AuthGeneratedFilePlan,
   type EnabledAuthLayoutPlan,
   resolveAuthLayoutPlan,
 } from './auth/resolveAuthLayoutPlan';
-import {
-  GENERATED_DATABASE_ADAPTERS_EXPRESSION,
-  getGeneratedDatabaseRuntimeImports,
-  getGeneratedDatabaseRuntimeModuleDeclarations,
-} from './generatedDatabaseRuntimeSource';
 import { composeGeneratedImports } from './generatedImportComposer';
 import {
   buildNavigatorJsx,
@@ -54,7 +48,7 @@ export interface GeneratedAppFileGenerationOptions {
 function getPackageOwnedRuntimeImports(): string {
   return `import {
   createComponentRegistry,
-  createRuntimeDataSourceOperationExecutor,
+  createRuntimeApiOperationExecutor,
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';
@@ -141,9 +135,7 @@ export class GeneratedAppFileGenerator {
 
         if (authLayoutPlan.enabled && authScreenPlansByPath.has(targetPath)) {
           const authScreenPlan = authScreenPlansByPath.get(targetPath);
-          if (!authScreenPlan?.authMode) {
-            return;
-          }
+          if (!authScreenPlan?.authMode) return;
 
           files.push({
             path: targetPath,
@@ -260,7 +252,6 @@ export class GeneratedAppFileGenerator {
     const moduleImports = mutations.flatMap((m) => m.imports);
     const moduleHooks = mutations.flatMap((m) => m.hooks);
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
-    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
     const allImports = composeGeneratedImports([
       ...getRootLayoutImportRequirements(includeStudio),
@@ -292,7 +283,6 @@ export class GeneratedAppFileGenerator {
   subscribeToAuthSessionChanges,
 } from '@/auth/session';`,
       getPackageOwnedRuntimeImports(),
-      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -315,12 +305,9 @@ export class GeneratedAppFileGenerator {
       innerNavigation,
       includeStudio,
       authRuntime: authLayoutPlan,
-      databaseAdaptersExpression:
-        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,
       initialRouteNameOverride: '(app)',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(),
-        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime, true),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],
@@ -336,7 +323,6 @@ export class GeneratedAppFileGenerator {
     runtimePlan?: ExpoRuntimePlan,
   ): string {
     const rootNavigator = prepareNavigatorForGeneratedRoutes(manifest.navigator);
-
     const innerNavigation = buildNavigatorJsx({
       navigator: rootNavigator,
       manifest,
@@ -347,7 +333,6 @@ export class GeneratedAppFileGenerator {
     const needsZoraDrawerContent = innerNavigation.usesZoraDrawerContent;
     const needsZoraNavigationRouteMap = innerNavigation.usesZoraNavigationRouteMap;
     const runtimeLayoutIntegration = resolveExpoRuntimeLayoutIntegration(runtimePlan);
-    const databaseRuntime = resolveGeneratedDatabaseRuntime(manifest);
 
     const coreImports = [
       `import type { AppManifest${includeStudio ? ', NavigatorSpec, RouteDefinition' : ''} } from '@ankhorage/contracts';`,
@@ -379,7 +364,6 @@ export class GeneratedAppFileGenerator {
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       getPackageOwnedRuntimeImports(),
-      ...getGeneratedDatabaseRuntimeImports(databaseRuntime),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -399,7 +383,6 @@ export class GeneratedAppFileGenerator {
       ...coreImports,
       ...moduleImports,
     ]);
-
     const allHooks = moduleHooks.join('\n  ');
 
     return getRootLayoutTsx({
@@ -409,11 +392,8 @@ export class GeneratedAppFileGenerator {
       allHooks,
       innerNavigation,
       includeStudio,
-      databaseAdaptersExpression:
-        databaseRuntime === null ? undefined : GENERATED_DATABASE_ADAPTERS_EXPRESSION,
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
         getGeneratedRuntimeRegistryDeclarations(),
-        getGeneratedDatabaseRuntimeModuleDeclarations(databaseRuntime, false),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],
@@ -455,10 +435,7 @@ export class GeneratedAppFileGenerator {
 
   private getLayoutTemplate(node: NavigatorSpec, manifest: AppManifest, includeStudio: boolean) {
     const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
-    return getNestedLayoutTsx({
-      node,
-      navigator,
-    });
+    return getNestedLayoutTsx({ node, navigator });
   }
 }
 
@@ -494,13 +471,8 @@ function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
     (candidate) => candidate.parentId === routeId,
   );
 
-  if (segments.length === 0) {
-    return path.join('ankh', 'index.tsx');
-  }
-
-  if (hasChildren) {
-    return path.join('ankh', ...segments, 'index.tsx');
-  }
+  if (segments.length === 0) return path.join('ankh', 'index.tsx');
+  if (hasChildren) return path.join('ankh', ...segments, 'index.tsx');
 
   const fileName = `${segments[segments.length - 1]}.tsx`;
   return path.join('ankh', ...segments.slice(0, -1), fileName);
@@ -538,9 +510,7 @@ function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): Navigator
     routes: normalizedRoutes,
   };
 
-  if (normalizedNavigator.type !== 'tabs') {
-    return normalizedNavigator;
-  }
+  if (normalizedNavigator.type !== 'tabs') return normalizedNavigator;
 
   const visibleRoutes = normalizedNavigator.routes.filter(
     (route) => route.showInPrimaryNavigation !== false,
@@ -548,9 +518,7 @@ function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): Navigator
   const hiddenRoutes = normalizedNavigator.routes.filter(
     (route) => route.showInPrimaryNavigation === false,
   );
-  if (hiddenRoutes.length === 0) {
-    return normalizedNavigator;
-  }
+  if (hiddenRoutes.length === 0) return normalizedNavigator;
 
   return {
     type: 'stack',
@@ -590,10 +558,6 @@ function resolveValidGeneratedInitialRouteName(
   routes: readonly RouteDefinition[],
 ): string {
   const routeNames = new Set(routes.map((route) => route.name));
-
-  if (initialRouteName && routeNames.has(initialRouteName)) {
-    return initialRouteName;
-  }
-
+  if (initialRouteName && routeNames.has(initialRouteName)) return initialRouteName;
   return routes[0]?.name ?? 'index';
 }

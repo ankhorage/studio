@@ -9,7 +9,7 @@ export async function prepareAuth5NativeOAuthSmokeWorkspace(workspaceRoot: strin
       {
         name: '@ankhorage/auth5-native-oauth-smoke',
         private: true,
-        packageManager: 'bun@1.3.13',
+        packageManager: 'bun@1.3.14',
         workspaces: ['apps/*'],
       },
       null,

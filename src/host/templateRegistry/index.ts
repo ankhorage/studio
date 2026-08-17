@@ -26,7 +26,8 @@ function createProjectTemplateId(selection: ProjectTemplateSelection): string {
 }
 
 function createSeed(category: AppCategory): TemplateSeed {
-  const preset = CATEGORY_PRESETS[category];
+  const preset = Object.entries(CATEGORY_PRESETS).find(([id]) => id === category)?.[1];
+  if (!preset) throw new Error(`Unknown app category '${category}'.`);
 
   return {
     category,

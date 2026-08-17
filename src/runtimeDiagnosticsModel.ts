@@ -25,7 +25,7 @@ export function areRuntimeDiagnosticsEqual(
   }
 
   return left.every((diagnostic, index) => {
-    const other = right[index];
+    const other = right.at(index);
     if (!other) return false;
 
     return (

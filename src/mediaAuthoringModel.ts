@@ -7,6 +7,10 @@ import type {
   UiNode,
 } from '@ankhorage/contracts';
 
+import { deleteOwnProperty } from './utils/deleteOwnProperty';
+import { readOwnProperty } from './utils/readOwnProperty';
+import { setOwnProperty } from './utils/setOwnProperty';
+
 export interface StudioMediaUsage {
   readonly screenId: string;
   readonly nodeId: string;
@@ -63,7 +67,7 @@ export function createStudioMediaAssetReference(mediaId: string): MediaAssetRefe
 export function readStudioMediaAssetReference(value: unknown): MediaAssetReference | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return null;
   const keys = Reflect.ownKeys(value);
-  if (keys.length !== 1 || keys[0] !== 'mediaId') return null;
+  if (keys.length !== 1 || keys.at(0) !== 'mediaId') return null;
   const { mediaId } = value as { readonly mediaId?: unknown };
   return typeof mediaId === 'string' && mediaId.length > 0 ? { mediaId } : null;
 }
@@ -75,9 +79,9 @@ export function createStudioMediaAssetId(name: string, registry: MediaAssetRegis
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '') || 'media';
-  if (!registry[base]) return base;
+  if (!readOwnProperty<MediaAsset>(registry, base)) return base;
   let suffix = 2;
-  while (registry[`${base}-${suffix}`]) suffix += 1;
+  while (readOwnProperty<MediaAsset>(registry, `${base}-${suffix}`)) suffix += 1;
   return `${base}-${suffix}`;
 }
 
@@ -101,15 +105,9 @@ export function createStudioUrlMediaAsset(args: {
 }
 
 export function upsertStudioMediaAsset(manifest: AppManifest, asset: MediaAsset): AppManifest {
-  return {
-    ...manifest,
-    media: {
-      assets: {
-        ...(manifest.media?.assets ?? {}),
-        [asset.id]: asset,
-      },
-    },
-  };
+  const assets = { ...(manifest.media?.assets ?? {}) };
+  setOwnProperty(assets, asset.id, asset);
+  return { ...manifest, media: { assets } };
 }
 
 export function collectStudioMediaAssetUsages(
@@ -127,14 +125,14 @@ export function removeStudioMediaAsset(
   manifest: AppManifest,
   mediaId: string,
 ): StudioMediaAssetRemovalResult {
-  if (!manifest.media?.assets[mediaId]) {
+  if (!manifest.media || !readOwnProperty<MediaAsset>(manifest.media.assets, mediaId)) {
     return { ok: false, reason: 'not-found', usages: [] };
   }
   const usages = collectStudioMediaAssetUsages(manifest, mediaId);
   if (usages.length > 0) return { ok: false, reason: 'in-use', usages };
 
   const nextAssets = { ...manifest.media.assets };
-  delete nextAssets[mediaId];
+  deleteOwnProperty(nextAssets, mediaId);
   if (Object.keys(nextAssets).length > 0) {
     return { ok: true, manifest: { ...manifest, media: { assets: nextAssets } } };
   }

@@ -2,12 +2,12 @@ import { Button, Card, Input, Select, Text } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
+import { useStudio } from '../../../core/StudioContext';
 import { connectExternalApi } from '../../../externalApiApi';
 import type {
   ExternalApiConnectResult,
   ExternalApiProtocol,
 } from '../../../externalApiAuthoringContracts';
-import { useStudio } from '../../../core/StudioContext';
 import {
   ExternalApiDiagnosticList,
   ExternalApiField,
@@ -22,7 +22,7 @@ const PROTOCOL_OPTIONS = [
 
 export function ExternalApiConnectCard() {
   const studio = useStudio();
-  const [sourceId, setSourceId] = useState('');
+  const [apiId, setApiId] = useState('');
   const [url, setUrl] = useState('');
   const [name, setName] = useState('');
   const [protocol, setProtocol] = useState<ExternalApiProtocol>('auto');
@@ -38,7 +38,7 @@ export function ExternalApiConnectCard() {
     setMessage(null);
     try {
       const next = await connectExternalApi(studio.projectId, {
-        sourceId,
+        apiId,
         url,
         protocol,
         name: name.trim() || undefined,
@@ -54,7 +54,7 @@ export function ExternalApiConnectCard() {
       if (next.ok) {
         await studio.refetchManifest();
         setMessage(
-          `${next.created ? 'Connected' : 'Updated'} ${next.sourceId} as ${next.kind}/${next.protocol}.`,
+          `${next.created ? 'Connected' : 'Updated'} API ${next.apiId} as ${next.protocol}.`,
         );
       }
     } catch (error) {
@@ -62,14 +62,14 @@ export function ExternalApiConnectCard() {
     } finally {
       setBusy(false);
     }
-  }, [credentialId, credentialKind, credentialScope, name, protocol, sourceId, studio, url]);
+  }, [apiId, credentialId, credentialKind, credentialScope, name, protocol, studio, url]);
 
   return (
     <Card title="Connect external API">
       <View style={externalApiAdminStyles.stack}>
         <View style={externalApiAdminStyles.columns}>
-          <ExternalApiField label="Data-source ID">
-            <Input value={sourceId} autoCapitalize="none" onChangeText={setSourceId} />
+          <ExternalApiField label="API ID">
+            <Input value={apiId} autoCapitalize="none" onChangeText={setApiId} />
           </ExternalApiField>
           <ExternalApiField label="Protocol discovery">
             <Select value={protocol} options={PROTOCOL_OPTIONS} onValueChange={setProtocol} />
@@ -88,7 +88,7 @@ export function ExternalApiConnectCard() {
         </ExternalApiField>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
           OpenAPI probes direct and conventional schema locations. GraphQL introspection uses the
-          exact URL. Reusing an ID updates the canonical source.
+          exact URL. Reusing an API ID updates the canonical infra.apis entry.
         </Text>
         <View style={externalApiAdminStyles.columns}>
           <ExternalApiField label="Credential secret ref (optional)">
@@ -114,7 +114,7 @@ export function ExternalApiConnectCard() {
         <View style={externalApiAdminStyles.actions}>
           <Button
             loading={busy}
-            disabled={!sourceId.trim() || !url.trim()}
+            disabled={!apiId.trim() || !url.trim()}
             onPress={() => void connect()}
           >
             Connect API

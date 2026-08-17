@@ -9,10 +9,10 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/contracts']).toBe('^7.9.0');
-    expect(dependencies['@ankhorage/data-sources']).toBe('^1.0.1');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
-    expect(dependencies['@ankhorage/runtime']).toBe('^1.1.0');
+    expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
+    expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
+    expect(dependencies['@ankhorage/runtime']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/studio']).toBe('^1.12.5');
     expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
     expect(dependencies.expo).toBe('~54.0.36');
@@ -38,16 +38,12 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['expo-web-browser']).toBe('~15.0.11');
   });
 
-  it('adds the released Supabase DB adapter only for generated database runtime', () => {
-    const generatedDb = getPackageJson({
-      name: 'generated-db-app',
-      databaseRuntimeProvider: 'supabase',
-    });
-    const plain = getPackageJson({ name: 'plain-app' });
+  it('does not inject the removed generated database runtime adapter', () => {
+    const pkg = getPackageJson({ name: 'plain-app' });
 
-    expect(generatedDb.dependencies['@ankhorage/supabase-db']).toBe('^1.0.0');
-    expect(plain.dependencies['@ankhorage/supabase-db']).toBeUndefined();
-    expect(plain.dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
+    expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
+    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.0.0');
+    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
   });
 
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
@@ -55,7 +51,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.5.1');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
   });
 
   it('pins the intentional Expo SDK 54 Reanimated and Worklets compatibility pair', () => {

@@ -45,12 +45,6 @@ import {
   type StationarySelectionInputState,
 } from './stationarySelectionInputState.js';
 
-export type {
-  CommitSelectionResult,
-  StationarySelectionCoordinator,
-  TransactionState,
-} from './stationarySelectionCoordinator.js';
-
 type ViewRef = React.ElementRef<typeof View>;
 
 interface TrackerContextValue {
@@ -173,7 +167,7 @@ function areIndicatorRectsEqual(
   }
 
   return left.every((rect, index) => {
-    const candidate = right[index];
+    const candidate = right.at(index);
     if (!candidate) {
       return false;
     }
@@ -228,19 +222,11 @@ function StudioNodeTouchRecorder(props: {
   readonly children: React.ReactNode;
 }): React.JSX.Element {
   const ctx = React.useContext(TrackerContext);
-  const nodeIdRef = React.useRef(props.nodeId);
   const unregisterMeasurementRef = React.useRef<(() => void) | null>(null);
-
-  nodeIdRef.current = props.nodeId;
+  const { nodeId, recordSelection, showUnsupportedIndicator } = props;
 
   function recordInteraction(input: StationarySelectionInput): void {
-    if (!ctx || !props.recordSelection) {
-      return;
-    }
-
-    const nodeId = nodeIdRef.current;
-
-    if (!nodeId) {
+    if (!ctx || !recordSelection || !nodeId) {
       return;
     }
 
@@ -279,29 +265,28 @@ function StudioNodeTouchRecorder(props: {
     (view: ViewRef | null) => {
       unregisterMeasurementRef.current?.();
       unregisterMeasurementRef.current = null;
-      if (view && ctx && props.nodeId) {
+      if (view && ctx && nodeId) {
         unregisterMeasurementRef.current = ctx.registerRuntimeNode(
-          props.nodeId,
+          nodeId,
           Platform.OS === 'web'
             ? {
                 getResizeTargets: () => getWebDescendantResizeTargets(view),
                 measure: () => measureRuntimeNodeWebView(view),
-                showUnsupportedIndicator: props.showUnsupportedIndicator,
+                showUnsupportedIndicator,
                 source: 'runtime-recorder',
               }
             : {
                 measure: () => measureNativeRuntimeNodeView(view),
-                showUnsupportedIndicator: props.showUnsupportedIndicator,
+                showUnsupportedIndicator,
                 source: 'runtime-recorder',
               },
         );
       }
     },
-    [ctx, props.nodeId, props.showUnsupportedIndicator],
+    [ctx, nodeId, showUnsupportedIndicator],
   );
 
   const measurementContext = React.useMemo<RuntimeNodeMeasurementContextValue | null>(() => {
-    const { nodeId } = props;
     if (!ctx || !nodeId) {
       return null;
     }
@@ -311,7 +296,7 @@ function StudioNodeTouchRecorder(props: {
         if (Platform.OS !== 'web') {
           return ctx.registerRuntimeNode(
             nodeId,
-            createNativeRuntimeNodeMeasurement(view, props.showUnsupportedIndicator),
+            createNativeRuntimeNodeMeasurement(view, showUnsupportedIndicator),
           );
         }
 
@@ -323,13 +308,13 @@ function StudioNodeTouchRecorder(props: {
               : getWebDescendantResizeTargets(view);
           },
           measure: () => measureAuthoredWebView(view),
-          showUnsupportedIndicator: props.showUnsupportedIndicator,
+          showUnsupportedIndicator,
           source: 'authored-root',
         });
       },
       requestRefresh: ctx.requestIndicatorRefresh,
     };
-  }, [ctx, props.nodeId, props.showUnsupportedIndicator]);
+  }, [ctx, nodeId, showUnsupportedIndicator]);
 
   return React.createElement(
     RuntimeNodeMeasurementContext.Provider,
@@ -339,12 +324,12 @@ function StudioNodeTouchRecorder(props: {
       {
         ref: setViewRef,
         nativeID:
-          Platform.OS === 'web' && props.nodeId
-            ? `studio-runtime-node-${encodeURIComponent(props.nodeId)}`
+          Platform.OS === 'web' && nodeId
+            ? `studio-runtime-node-${encodeURIComponent(nodeId)}`
             : undefined,
         testID:
-          Platform.OS === 'web' && props.nodeId && props.showUnsupportedIndicator
-            ? `studio-unsupported-recorder-${props.nodeId}`
+          Platform.OS === 'web' && nodeId && showUnsupportedIndicator
+            ? `studio-unsupported-recorder-${nodeId}`
             : undefined,
         style: { display: 'contents' },
         onLayout: handleLayout,
@@ -415,6 +400,7 @@ function StationaryTapSelector(props: {
   readonly children: React.ReactNode;
 }): React.JSX.Element {
   const { theme } = useZoraTheme();
+  const { canvasInteraction } = props;
   const coordinatorRef = React.useRef<StationarySelectionCoordinator | null>(null);
   const rootViewRef = React.useRef<ViewRef | null>(null);
   const runtimeNodesRef = React.useRef(new Map<string, Set<RuntimeNodeMeasurement>>());
@@ -455,14 +441,15 @@ function StationaryTapSelector(props: {
   );
   const selectedIndicatorNodeId = shouldRenderSelectedChrome ? props.selectedNodeId : null;
   const measurementSelectedNodeId = props.isEditMode ? props.selectedNodeId : null;
-  const requestedActiveDragNodeId = props.canvasInteraction?.activeDragNodeId ?? null;
+  const requestedActiveDragNodeId = canvasInteraction?.activeDragNodeId ?? null;
   const canvasDragSession = resolveCanvasDragSession({
     activeDragNodeId: requestedActiveDragNodeId,
     isEditMode: props.isEditMode,
-    rootNode: props.canvasInteraction?.rootNode ?? null,
+    rootNode: canvasInteraction?.rootNode ?? null,
     selectedNodeId: props.selectedNodeId,
   });
   const { activeDragNodeId } = canvasDragSession;
+  const setActiveDragNodeId = canvasInteraction?.setActiveDragNodeId;
   measurementSelectedNodeIdRef.current = measurementSelectedNodeId;
   activeDragNodeIdRef.current = activeDragNodeId;
   selectNodeRef.current = props.selectNode;
@@ -628,7 +615,7 @@ function StationaryTapSelector(props: {
     const nextRects = await measureRuntimeNodeIndicators({
       isEditMode: isEditModeRef.current,
       activeDragNodeId: activeDragNodeIdRef.current,
-      canvasRootNodeId: props.canvasInteraction?.rootNode?.id,
+      canvasRootNodeId: canvasInteraction?.rootNode?.id,
       rootRect,
       runtimeNodes: runtimeNodesRef.current,
       selectedNodeId: measurementSelectedNodeIdRef.current,
@@ -643,7 +630,7 @@ function StationaryTapSelector(props: {
       areIndicatorRectsEqual(current, nextRects) ? current : nextRects,
     );
     return nextRects;
-  }, [props.canvasInteraction?.rootNode?.id]);
+  }, [canvasInteraction?.rootNode?.id]);
   refreshIndicatorRectsRef.current = refreshIndicatorRects;
 
   React.useEffect(() => {
@@ -669,13 +656,9 @@ function StationaryTapSelector(props: {
 
   React.useEffect(() => {
     if (canvasDragSession.shouldReset) {
-      props.canvasInteraction?.setActiveDragNodeId(null);
+      setActiveDragNodeId?.(null);
     }
-  }, [
-    canvasDragSession.shouldReset,
-    props.canvasInteraction?.setActiveDragNodeId,
-    requestedActiveDragNodeId,
-  ]);
+  }, [canvasDragSession.shouldReset, setActiveDragNodeId]);
 
   React.useEffect(() => {
     mountedRef.current = true;
@@ -787,16 +770,16 @@ function StationaryTapSelector(props: {
           style: { flex: 1, position: 'relative' },
         },
         props.children,
-        props.isEditMode && props.canvasInteraction
+        props.isEditMode && canvasInteraction
           ? React.createElement(StudioCanvasDndOverlay, {
               key: 'studio-canvas-dnd-overlay',
               activeDragNodeId,
-              componentMeta: props.canvasInteraction.componentMeta,
+              componentMeta: canvasInteraction.componentMeta,
               indicatorRects,
-              moveNodeToPlacement: props.canvasInteraction.moveNodeToPlacement,
-              rootNode: props.canvasInteraction.rootNode,
+              moveNodeToPlacement: canvasInteraction.moveNodeToPlacement,
+              rootNode: canvasInteraction.rootNode,
               selectedNodeId: props.selectedNodeId,
-              setActiveDragNodeId: props.canvasInteraction.setActiveDragNodeId,
+              setActiveDragNodeId: canvasInteraction.setActiveDragNodeId,
             })
           : null,
         ...(props.isEditMode

@@ -92,8 +92,8 @@ export function formatStudioBindingLiteral(value: BindingValue): string {
 }
 
 export function createStudioOperationKey(operation: BindingOperationRef): string {
-  const { dataSourceId, endpointId, operationId } = operation;
-  return `${dataSourceId}::${endpointId ?? ''}::${operationId}`;
+  const { apiId, endpointId, operationId } = operation;
+  return `${apiId}::${endpointId ?? ''}::${operationId}`;
 }
 
 export function findStudioOperationByKey(
@@ -145,8 +145,9 @@ function parseStructuredValue(input: string, fallback: BindingValue): BindingVal
 
 function isBindingValue(value: unknown): value is BindingValue {
   if (value === null) return true;
-  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
     return true;
+  }
   if (Array.isArray(value)) return value.every(isBindingValue);
   if (typeof value !== 'object') return false;
   return Object.values(value as Record<string, unknown>).every(isBindingValue);

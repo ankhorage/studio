@@ -104,6 +104,12 @@ function parseProjectList(value: unknown): StudioProjectSummary[] {
   return value;
 }
 
+async function requestProjects(): Promise<StudioProjectSummary[]> {
+  const response = await fetch(`${API_BASE}/projects`);
+  if (!response.ok) throw new Error('Failed to fetch projects');
+  return parseProjectList(await readJson(response));
+}
+
 function parseCreateProjectResponse(value: unknown): CreateProjectResponse {
   if (
     !isRecord(value) ||
@@ -182,12 +188,9 @@ export const useProjects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProjects = useCallback(async () => {
+  const loadProjects = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const res = await fetch(`${API_BASE}/projects`);
-      if (!res.ok) throw new Error('Failed to fetch projects');
-      const data = parseProjectList(await readJson(res));
+      const data = await requestProjects();
       setProjects(data);
       setError(null);
     } catch (err) {
@@ -197,6 +200,11 @@ export const useProjects = () => {
       setIsLoading(false);
     }
   }, []);
+
+  const refresh = useCallback(async () => {
+    setIsLoading(true);
+    await loadProjects();
+  }, [loadProjects]);
 
   const createProject = async (input: CreateProjectInput): Promise<CreateProjectResponse> => {
     const res = await fetch(`${API_BASE}/projects`, {
@@ -214,7 +222,7 @@ export const useProjects = () => {
     }
 
     const result = parseCreateProjectResponse(await readJson(res));
-    await fetchProjects();
+    await refresh();
     return result;
   };
 
@@ -223,7 +231,7 @@ export const useProjects = () => {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error('Failed to delete project');
-    await fetchProjects();
+    await refresh();
   };
 
   const syncProject = async (projectId: string): Promise<SyncProjectResponse> => {
@@ -253,14 +261,32 @@ export const useProjects = () => {
   };
 
   useEffect(() => {
-    void fetchProjects();
-  }, [fetchProjects]);
+    let active = true;
+    void requestProjects()
+      .then((data) => {
+        if (!active) return;
+        setProjects(data);
+        setError(null);
+      })
+      .catch((caught: unknown) => {
+        console.error(caught);
+        if (!active) return;
+        setError('Could not connect to the local Studio host. Run `ankh studio dev`.');
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return {
     projects,
     isLoading,
     error,
-    refresh: fetchProjects,
+    refresh,
     createProject,
     deleteProject,
     syncProject,

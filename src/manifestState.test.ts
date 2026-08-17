@@ -252,14 +252,17 @@ describe('manifestState', () => {
     const first = createManifest();
     const second = {
       ...first,
-      generatedApis: {
-        probe: {
-          id: 'probe',
-          protocol: 'rest',
-          basePath: '/api/probe',
-          database: { id: 'primary-db', kind: 'database' },
-          resources: [],
-        },
+      infra: {
+        ...first.infra,
+        apis: [
+          {
+            id: 'probe',
+            origin: 'external',
+            protocol: 'rest',
+            baseUrl: 'https://api.example.test',
+            endpoints: {},
+          },
+        ],
       },
     } as StudioManifest;
 

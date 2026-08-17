@@ -9,25 +9,31 @@ import {
 } from '../../../../projectDeployApi';
 import type { DeployLoadable, ProjectDeployDashboardState } from './deployDashboardTypes';
 
+interface LoadedDashboardState {
+  requestKey: string;
+  state: ProjectDeployDashboardState;
+}
+
 export function useProjectDeployDashboard(projectId: string) {
   const [refreshGeneration, setRefreshGeneration] = useState(0);
-  const [state, setState] = useState<ProjectDeployDashboardState>(loadingState);
+  const [loaded, setLoaded] = useState<LoadedDashboardState | null>(null);
+  const requestKey = `${projectId}:${refreshGeneration}`;
 
   useEffect(() => {
     let cancelled = false;
-    setState(loadingState);
-    void loadDashboard(projectId).then((next) => {
-      if (!cancelled) setState(next);
+    void loadDashboard(projectId).then((state) => {
+      if (!cancelled) setLoaded({ requestKey, state });
     });
     return () => {
       cancelled = true;
     };
-  }, [projectId, refreshGeneration]);
+  }, [projectId, requestKey]);
 
   const refresh = useCallback(() => {
     setRefreshGeneration((current) => current + 1);
   }, []);
 
+  const state = loaded?.requestKey === requestKey ? loaded.state : loadingState;
   return { state, refresh };
 }
 

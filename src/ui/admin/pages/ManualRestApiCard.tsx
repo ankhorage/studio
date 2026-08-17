@@ -3,9 +3,9 @@ import { Button, Card, Input, Select, Text } from '@ankhorage/zora';
 import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
-import { createManualRestSource } from '../../../externalApiApi';
-import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
 import { useStudio } from '../../../core/StudioContext';
+import { createManualRestApi } from '../../../externalApiApi';
+import type { ExternalApiConnectResult } from '../../../externalApiAuthoringContracts';
 import {
   ExternalApiDiagnosticList,
   ExternalApiField,
@@ -24,9 +24,9 @@ const INTENT_OPTIONS: readonly { value: DataOperationIntent; label: string }[] =
   { value: 'action', label: 'Action' },
 ];
 
-export function ManualRestSourceCard() {
+export function ManualRestApiCard() {
   const studio = useStudio();
-  const [sourceId, setSourceId] = useState('');
+  const [apiId, setApiId] = useState('');
   const [baseUrl, setBaseUrl] = useState('');
   const [endpointId, setEndpointId] = useState('root');
   const [path, setPath] = useState('/');
@@ -41,8 +41,8 @@ export function ManualRestSourceCard() {
     setBusy(true);
     setMessage(null);
     try {
-      const next = await createManualRestSource(studio.projectId, {
-        sourceId,
+      const next = await createManualRestApi(studio.projectId, {
+        apiId,
         baseUrl,
         endpointId,
         path,
@@ -53,25 +53,24 @@ export function ManualRestSourceCard() {
       setResult(next);
       if (next.ok) {
         await studio.refetchManifest();
-        setMessage(`${next.created ? 'Created' : 'Updated'} manual REST source ${next.sourceId}.`);
+        setMessage(`${next.created ? 'Created' : 'Updated'} manual REST API ${next.apiId}.`);
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Manual REST source creation failed.');
+      setMessage(error instanceof Error ? error.message : 'Manual REST API creation failed.');
     } finally {
       setBusy(false);
     }
-  }, [baseUrl, endpointId, intent, method, operationId, path, sourceId, studio]);
+  }, [apiId, baseUrl, endpointId, intent, method, operationId, path, studio]);
 
   return (
     <Card title="Manual external REST API">
       <View style={externalApiAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          Use this when no OpenAPI document exists. Additional operations can be introduced through
-          the same canonical REST definition architecture.
+          Use this when no OpenAPI document exists. The API is persisted directly in infra.apis.
         </Text>
         <View style={externalApiAdminStyles.columns}>
-          <ExternalApiField label="Data-source ID">
-            <Input value={sourceId} autoCapitalize="none" onChangeText={setSourceId} />
+          <ExternalApiField label="API ID">
+            <Input value={apiId} autoCapitalize="none" onChangeText={setApiId} />
           </ExternalApiField>
           <ExternalApiField label="Base URL">
             <Input value={baseUrl} autoCapitalize="none" onChangeText={setBaseUrl} />
@@ -99,10 +98,10 @@ export function ManualRestSourceCard() {
         <View style={externalApiAdminStyles.actions}>
           <Button
             loading={busy}
-            disabled={!sourceId.trim() || !baseUrl.trim() || !path.trim()}
+            disabled={!apiId.trim() || !baseUrl.trim() || !path.trim()}
             onPress={() => void save()}
           >
-            Save REST source
+            Save REST API
           </Button>
         </View>
         {message ? <Text variant="bodySmall">{message}</Text> : null}

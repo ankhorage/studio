@@ -1,13 +1,12 @@
-import type { DataSourceRegistry } from '@ankhorage/contracts';
+import type { ApiDefinitionList } from '@ankhorage/contracts/data';
 import { expect, test } from 'bun:test';
 
-import { collectDataSourceOperationRows } from './adminDataSourceOperations';
+import { collectApiOperationRows } from './adminApiOperations';
 
-test('collects operations through data sources, endpoints, and operations', () => {
-  const dataSources = {
-    crm: {
+test('collects operations through canonical APIs, endpoints, and operations', () => {
+  const apis: ApiDefinitionList = [
+    {
       id: 'crm',
-      kind: 'api',
       origin: 'external',
       protocol: 'rest',
       baseUrl: 'https://api.example.test',
@@ -19,47 +18,51 @@ test('collects operations through data sources, endpoints, and operations', () =
           operations: {
             'contacts.list': {
               id: 'contacts.list',
+              endpointId: 'contacts',
               protocol: 'http',
               intent: 'read',
               method: 'GET',
+              path: '/contacts',
             },
             'contacts.create': {
               id: 'contacts.create',
+              endpointId: 'contacts',
               protocol: 'http',
               intent: 'create',
               method: 'POST',
+              path: '/contacts',
             },
           },
         },
       },
     },
-  } satisfies DataSourceRegistry;
+  ];
 
-  expect(collectDataSourceOperationRows(dataSources)).toEqual([
+  expect(collectApiOperationRows(apis)).toEqual([
     {
-      sourceId: 'crm',
+      apiId: 'crm',
       endpointId: 'contacts',
       operationId: 'contacts.list',
       name: undefined,
-      kind: 'read',
+      intent: 'read',
       protocol: 'http',
       method: 'GET',
       path: '/contacts',
-      sourceOrigin: 'external',
-      sourceProtocol: 'rest',
+      apiOrigin: 'external',
+      apiProtocol: 'rest',
       testable: true,
     },
     {
-      sourceId: 'crm',
+      apiId: 'crm',
       endpointId: 'contacts',
       operationId: 'contacts.create',
       name: undefined,
-      kind: 'create',
+      intent: 'create',
       protocol: 'http',
       method: 'POST',
       path: '/contacts',
-      sourceOrigin: 'external',
-      sourceProtocol: 'rest',
+      apiOrigin: 'external',
+      apiProtocol: 'rest',
       testable: true,
     },
   ]);

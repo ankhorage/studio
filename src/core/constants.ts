@@ -1,5 +1,7 @@
 import Constants from 'expo-constants';
 
+import { readOwnProperty } from '../utils/readOwnProperty';
+
 const DEFAULT_API_BASE = 'http://localhost:3000/api';
 
 const getApiBase = (): string => {
@@ -18,7 +20,7 @@ const getApiBase = (): string => {
 };
 
 function readEnvString(name: string): string | undefined {
-  const value: unknown = process.env[name];
+  const value = readOwnProperty<unknown>(process.env, name);
   return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 

@@ -21,6 +21,15 @@ function createManifest(): StudioManifest {
     infra: {
       modules: [],
       modulesConfig: { preserved: true },
+      apis: [
+        {
+          id: 'source',
+          origin: 'external',
+          protocol: 'rest',
+          baseUrl: 'https://api.example.test',
+          endpoints: {},
+        },
+      ],
     },
     navigator: {
       type: 'stack',
@@ -47,16 +56,7 @@ function createManifest(): StudioManifest {
       },
     },
     dataBindings: { preserved: { componentId: 'details-title', props: {} } },
-    dataSources: {
-      source: {
-        id: 'source',
-        kind: 'api',
-        origin: 'external',
-        protocol: 'rest',
-        baseUrl: 'https://api.example.test',
-        endpoints: {},
-      },
-    },
+    dataSources: {},
     themes: [
       {
         id: 'theme-1',
@@ -122,15 +122,15 @@ describe('studioManifestDraftModel', () => {
     expect(updated.dataBindings).toEqual({
       preserved: { componentId: 'details-title', props: {} },
     });
-    expect(updated.dataSources).toEqual({
-      source: {
+    expect(updated.dataSources).toEqual({});
+    expect(updated.infra.apis).toEqual([
+      {
         id: 'source',
-        kind: 'api',
         origin: 'external',
         protocol: 'rest',
         baseUrl: 'https://api.example.test',
         endpoints: {},
       },
-    });
+    ]);
   });
 });

@@ -6,6 +6,7 @@ import {
   isRouteGroupSegment,
   resolveInitialScreenId,
 } from './manifestState';
+import { readOwnProperty } from './utils/readOwnProperty';
 
 export type { ScreenRouteEntry, ScreenRouteGroup } from './manifestState';
 export {
@@ -50,7 +51,9 @@ export function resolveScreenIdForPathname(
   let bestMatch: ScreenRouteMatch | null = null;
 
   for (const entry of collectScreenRouteEntries(navigator.routes)) {
-    const screen = screens?.[entry.screenId];
+    const screen = screens
+      ? readOwnProperty<AppManifest['screens'][string]>(screens, entry.screenId)
+      : undefined;
     if (screens && !screen) continue;
     const patternSegments = normalizeRoutePatternSegments(entry.routePath);
     const score = scoreRoutePatternMatch(patternSegments, pathnameSegments);
@@ -73,7 +76,7 @@ function normalizeRoutePatternSegments(routePath: readonly string[]): string[] {
     .filter(Boolean)
     .filter((segment) => !isRouteGroupSegment(segment));
 
-  while (segments[0] === 'index') segments.shift();
+  while (segments.at(0) === 'index') segments.shift();
   while (segments.at(-1) === 'index') segments.pop();
   return segments;
 }
@@ -88,7 +91,7 @@ function scoreRoutePatternMatch(
   let exactMatch = true;
 
   while (patternIndex < pattern.length) {
-    const routeSegment = pattern[patternIndex];
+    const routeSegment = pattern.at(patternIndex);
     if (!routeSegment) return null;
 
     if (OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {
@@ -108,7 +111,7 @@ function scoreRoutePatternMatch(
       continue;
     }
 
-    const pathnameSegment = pathname[pathnameIndex];
+    const pathnameSegment = pathname.at(pathnameIndex);
     if (!pathnameSegment) return null;
 
     if (DYNAMIC_ROUTE_SEGMENT_PATTERN.test(routeSegment)) {

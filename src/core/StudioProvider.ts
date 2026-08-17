@@ -1,9 +1,7 @@
 import type {
   AuthOAuthProviderConfig,
   ComponentDataBindingRegistry,
-  DataSourceDiagnostic,
   DataSourceRegistry,
-  GeneratedApiDefinition,
   MediaAsset,
   NavigatorType,
   UiNode,
@@ -16,7 +14,6 @@ import {
   type StudioAuthSettings,
   type StudioAuthSettingsMutation,
 } from '../authSettings';
-import { deleteStudioGeneratedApi, upsertStudioGeneratedApi } from '../generatedApiAuthoring';
 import {
   createNodeFromCatalogEntry,
   findNodeById,
@@ -149,9 +146,11 @@ export const StudioProvider = ({
 
   useEffect(() => {
     if (!locationActiveScreenId) return;
-    setRequestedActiveScreenId((current) =>
-      current === locationActiveScreenId ? current : locationActiveScreenId,
-    );
+    queueMicrotask(() => {
+      setRequestedActiveScreenId((current) =>
+        current === locationActiveScreenId ? current : locationActiveScreenId,
+      );
+    });
   }, [locationActiveScreenId]);
 
   const rootNode = useMemo<UiNode | null>(
@@ -162,7 +161,9 @@ export const StudioProvider = ({
   useEffect(() => {
     const nextSelectedNodeId = resolveStudioSelectedNodeId(rootNode, selectedNodeId);
     if (selectedNodeId !== nextSelectedNodeId) {
-      selectNode(nextSelectedNodeId);
+      queueMicrotask(() => {
+        selectNode(nextSelectedNodeId);
+      });
     }
   }, [rootNode, selectedNodeId]);
 
@@ -281,26 +282,6 @@ export const StudioProvider = ({
     [updateManifest],
   );
 
-  const upsertGeneratedApi = useCallback(
-    (definition: GeneratedApiDefinition, previousId?: string): readonly DataSourceDiagnostic[] => {
-      let diagnostics: readonly DataSourceDiagnostic[] = [];
-      updateManifest((current) => {
-        const result = upsertStudioGeneratedApi(current, definition, previousId);
-        ({ diagnostics } = result);
-        return result.ok ? result.manifest : current;
-      });
-      return diagnostics;
-    },
-    [updateManifest],
-  );
-
-  const deleteGeneratedApi = useCallback(
-    (id: string) => {
-      updateManifest((current) => deleteStudioGeneratedApi(current, id));
-    },
-    [updateManifest],
-  );
-
   const insertFromCatalogEntry = useCallback(
     (entry: InsertCatalogEntry): boolean => {
       if (entry.status !== 'enabled' || !entry.placement) return false;
@@ -379,7 +360,9 @@ export const StudioProvider = ({
     (screenId: StudioScreenId) => {
       const { current } = manifestRef;
       if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
-      const deletedRoot = current.screens[screenId]?.root;
+      const deletedRoot = Object.values(current.screens).find(
+        (screen) => screen.id === screenId,
+      )?.root;
       const result = deleteStudioManifestScreen(current, screenId, activeScreenId);
       if (result.manifest === current || !deletedRoot) return;
       updateManifest(() => result.manifest);
@@ -433,13 +416,9 @@ export const StudioProvider = ({
 
   const setActiveScreenId = useCallback((screenId: StudioScreenId) => {
     const { current } = manifestRef;
-    if (
-      !current ||
-      !hasCanonicalStudioScreenRegistryIdentity(current.screens) ||
-      current.screens[screenId]?.id !== screenId
-    ) {
-      return;
-    }
+    if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
+    const screen = Object.values(current.screens).find((candidate) => candidate.id === screenId);
+    if (!screen) return;
     setRequestedActiveScreenId(screenId);
   }, []);
 
@@ -474,8 +453,6 @@ export const StudioProvider = ({
         updateManifest((current) => updateStudioManifestDraftDataBindings(current, dataBindings)),
       updateDataSources: (dataSources: DataSourceRegistry) =>
         updateManifest((current) => updateStudioManifestDraftDataSources(current, dataSources)),
-      upsertGeneratedApi,
-      deleteGeneratedApi,
       deleteNode,
       insertFromCatalogEntry,
       moveNodeToPlacement: moveSelectedNodeToPlacement,
@@ -523,8 +500,6 @@ export const StudioProvider = ({
       updateAuthSettings,
       mutateAuthSettings,
       updateOAuthProviders,
-      upsertGeneratedApi,
-      deleteGeneratedApi,
       deleteNode,
       insertFromCatalogEntry,
       moveSelectedNodeToPlacement,
@@ -573,22 +548,25 @@ function useStudioManifestPersistence(args: {
     initialManifest ? createStudioManifestSignature(initialManifest) : null,
   );
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const coordinator = useMemo(
-    () =>
-      new StudioManifestPersistenceCoordinator({
-        projectId,
-        readManifest: () => manifestRef.current,
-        readLastPersistedSignature: () => lastPersistedSignatureRef.current,
-        setLastPersistedSignature: (signature) => {
-          lastPersistedSignatureRef.current = signature;
-        },
-        saveManifest: persistProjectManifest,
-        setSaveStatus,
-        setError,
-        toErrorMessage: toPersistenceMessage,
-      }),
-    [manifestRef, projectId, setError, setSaveStatus],
-  );
+  const coordinatorRef = useRef<StudioManifestPersistenceCoordinator | null>(null);
+
+  useEffect(() => {
+    coordinatorRef.current = new StudioManifestPersistenceCoordinator({
+      projectId,
+      readManifest: () => manifestRef.current,
+      readLastPersistedSignature: () => lastPersistedSignatureRef.current,
+      setLastPersistedSignature: (signature) => {
+        lastPersistedSignatureRef.current = signature;
+      },
+      saveManifest: persistProjectManifest,
+      setSaveStatus,
+      setError,
+      toErrorMessage: toPersistenceMessage,
+    });
+    return () => {
+      coordinatorRef.current = null;
+    };
+  }, [manifestRef, projectId, setError, setSaveStatus]);
 
   const loadManifest = useCallback(async () => {
     setIsLoading(true);
@@ -629,6 +607,8 @@ function useStudioManifestPersistence(args: {
 
   useEffect(() => {
     if (!hydratedRef.current || !manifest) return;
+    const coordinator = coordinatorRef.current;
+    if (!coordinator) return;
 
     const signature = createStudioManifestSignature(manifest);
     if (signature === lastPersistedSignatureRef.current) return;
@@ -648,15 +628,15 @@ function useStudioManifestPersistence(args: {
         debounceTimerRef.current = null;
       }
     };
-  }, [coordinator, manifest, setSaveStatus]);
+  }, [manifest, setSaveStatus]);
 
   const flushManifest = useCallback(async () => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
-    await coordinator.flushLatestSave();
-  }, [coordinator]);
+    await coordinatorRef.current?.flushLatestSave();
+  }, []);
 
   return { refetchManifest: loadManifest, flushManifest };
 }

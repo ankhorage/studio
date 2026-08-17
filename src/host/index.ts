@@ -1,3 +1,8 @@
+export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
+export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
+export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
+export { createTrustedExternalApiFetch } from './apis/createTrustedExternalApiFetch';
+export { StudioExternalApiService } from './apis/studioExternalApiService';
 export {
   type ProjectAuthHealthResult,
   ProjectAuthHealthService,
@@ -7,17 +12,12 @@ export {
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
-export { createTrustedEndpointTestFetch } from './dataSources/createTrustedEndpointTestFetch';
-export { createTrustedExternalApiFetch } from './dataSources/createTrustedExternalApiFetch';
-export { StudioExternalApiService } from './dataSources/studioExternalApiService';
-export type { ProjectDeployRuntimeInput } from './deploy/ProjectDeployRuntimeInput';
 export {
-  type ProjectDeployReleaseInspectionResult,
   ProjectDeployService,
   type ProjectDeployServiceOptions,
 } from './deploy/ProjectDeployService';
+export { registerProjectApiRoutes } from './http/apiRoutes';
 export { registerProjectAuthRoutes } from './http/authRoutes';
-export { registerProjectDataSourceRoutes } from './http/dataSourceRoutes';
 export { registerProjectDeployRoutes } from './http/deployRoutes';
 export { registerProjectMediaRoutes } from './http/mediaRoutes';
 export { registerProjectSecretRoutes } from './http/secretRoutes';

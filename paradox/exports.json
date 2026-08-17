@@ -8,7 +8,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 431,
+      "line": 424,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -26,7 +26,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 340,
+      "line": 338,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -80,7 +80,7 @@
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 34,
+      "line": 37,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -130,7 +130,7 @@
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 43,
+      "line": 44,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -168,7 +168,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1373,
+      "line": 1366,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -200,7 +200,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 749,
+      "line": 742,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -232,7 +232,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 578,
+      "line": 571,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -277,11 +277,11 @@
     "relatedSymbols": ["StudioBindingOperationOption"],
     "signatures": [
       {
-        "label": "(dataSources: Readonly<Record<string, DataSourceConfig>>) => readonly StudioBindingOperationOption[]",
+        "label": "(apis: ApiDefinitionList) => readonly StudioBindingOperationOption[]",
         "parameters": [
           {
-            "name": "dataSources",
-            "type": "Readonly<Record<string, DataSourceConfig>>",
+            "name": "apis",
+            "type": "ApiDefinitionList",
             "required": true,
             "description": null
           }
@@ -302,7 +302,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 115,
+      "line": 113,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -340,7 +340,7 @@
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 33,
+      "line": 34,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -378,7 +378,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1292,
+      "line": 1285,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -422,7 +422,7 @@
     "modulePath": "src/bindingOperationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingOperationModel.ts",
-      "line": 95,
+      "line": 94,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -498,7 +498,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 71,
+      "line": 75,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -536,7 +536,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 59,
+      "line": 63,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -568,7 +568,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 84,
+      "line": 88,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -632,7 +632,7 @@
     "modulePath": "src/bindingDiagnosticsModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingDiagnosticsModel.ts",
-      "line": 20,
+      "line": 21,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -664,7 +664,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 595,
+      "line": 588,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -740,7 +740,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 571,
+      "line": 564,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -772,7 +772,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1218,
+      "line": 1211,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -804,7 +804,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 318,
+      "line": 316,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -893,7 +893,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 300,
+      "line": 298,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -933,7 +933,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 277,
+      "line": 275,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -951,7 +951,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 328,
+      "line": 326,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -969,7 +969,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 306,
+      "line": 304,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1056,7 +1056,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 274,
+      "line": 272,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1074,7 +1074,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 275,
+      "line": 273,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1092,7 +1092,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 323,
+      "line": 321,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1186,7 +1186,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1011,
+      "line": 1004,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1218,7 +1218,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 954,
+      "line": 947,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1265,7 +1265,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 961,
+      "line": 954,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1298,7 +1298,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 285,
+      "line": 283,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1352,7 +1352,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 293,
+      "line": 291,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1399,7 +1399,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 280,
+      "line": 278,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1432,7 +1432,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 48,
+      "line": 52,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1470,7 +1470,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1147,
+      "line": 1140,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1502,7 +1502,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1038,
+      "line": 1031,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1549,7 +1549,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1045,
+      "line": 1038,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1582,7 +1582,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 235,
+      "line": 233,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1629,7 +1629,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 242,
+      "line": 240,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1647,7 +1647,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 255,
+      "line": 253,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1680,7 +1680,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 233,
+      "line": 231,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1698,7 +1698,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 267,
+      "line": 265,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -1716,7 +1716,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 260,
+      "line": 258,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2199,7 +2199,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 63,
+      "line": 67,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2231,7 +2231,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 635,
+      "line": 628,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2269,7 +2269,7 @@
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 50,
+      "line": 52,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2319,7 +2319,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 126,
+      "line": 124,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2357,7 +2357,7 @@
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 22,
+      "line": 25,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2401,7 +2401,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 909,
+      "line": 902,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2433,7 +2433,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1415,
+      "line": 1408,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2465,7 +2465,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 848,
+      "line": 841,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2497,7 +2497,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1079,
+      "line": 1072,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2681,7 +2681,7 @@
     "modulePath": "src/bindingSchemaModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingSchemaModel.ts",
-      "line": 14,
+      "line": 15,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2725,7 +2725,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1185,
+      "line": 1178,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2768,7 +2768,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 76,
+      "line": 74,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2786,7 +2786,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 68,
+      "line": 66,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2804,7 +2804,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 109,
+      "line": 107,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -2822,7 +2822,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 332,
+      "line": 330,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2862,7 +2862,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 330,
+      "line": 328,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2880,7 +2880,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 338,
+      "line": 336,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2898,7 +2898,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 153,
+      "line": 151,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2916,7 +2916,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 199,
+      "line": 197,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -2934,7 +2934,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 179,
+      "line": 177,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3271,6 +3271,13 @@
     "signatures": [],
     "members": [
       {
+        "name": "apiLabel",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "inputFields",
         "kind": "property",
         "type": "readonly StudioBindingInputFieldOption[]",
@@ -3295,13 +3302,6 @@
         "name": "responsePaths",
         "kind": "property",
         "type": "readonly StudioBindingResponsePathOption[]",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "sourceLabel",
-        "kind": "property",
-        "type": "string",
         "required": true,
         "description": null
       }
@@ -3357,7 +3357,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 364,
+      "line": 362,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3375,7 +3375,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 348,
+      "line": 346,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3408,7 +3408,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 353,
+      "line": 351,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3455,7 +3455,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 360,
+      "line": 358,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3473,7 +3473,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 379,
+      "line": 377,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3540,13 +3540,6 @@
         "name": "componentMeta",
         "kind": "property",
         "type": "StudioComponentMetaRegistry",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "deleteGeneratedApi",
-        "kind": "property",
-        "type": "(id: string) => void",
         "required": true,
         "description": null
       },
@@ -3838,13 +3831,6 @@
         "description": null
       },
       {
-        "name": "upsertGeneratedApi",
-        "kind": "property",
-        "type": "(definition: GeneratedApiDefinition, previousId?: string) => readonly DataSourceDiagnostic[]",
-        "required": true,
-        "description": null
-      },
-      {
         "name": "upsertMediaAsset",
         "kind": "property",
         "type": "(asset: MediaAsset) => void",
@@ -3863,7 +3849,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 372,
+      "line": 370,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -3881,7 +3867,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 362,
+      "line": 360,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4057,7 +4043,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 208,
+      "line": 206,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4075,7 +4061,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 16,
+      "line": 20,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4093,7 +4079,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 24,
+      "line": 28,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4335,7 +4321,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 10,
+      "line": 14,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4487,7 +4473,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 149,
+      "line": 147,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4683,7 +4669,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 147,
+      "line": 145,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4701,7 +4687,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 70,
+      "line": 68,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4741,7 +4727,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 152,
+      "line": 150,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4759,7 +4745,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 145,
+      "line": 143,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4866,7 +4852,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 143,
+      "line": 141,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4884,7 +4870,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 151,
+      "line": 149,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4902,7 +4888,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 148,
+      "line": 146,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4920,7 +4906,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 215,
+      "line": 213,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4974,7 +4960,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 146,
+      "line": 144,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -4992,7 +4978,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 223,
+      "line": 221,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5060,7 +5046,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 44,
+      "line": 48,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5244,7 +5230,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 210,
+      "line": 208,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5262,7 +5248,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 523,
+      "line": 516,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -5280,7 +5266,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 607,
+      "line": 600,
       "column": 14
     },
     "exportPaths": ["src/index.ts"],
@@ -5324,7 +5310,7 @@
     "modulePath": "src/mediaAuthoringModel.ts",
     "sourceLocation": {
       "filePath": "src/mediaAuthoringModel.ts",
-      "line": 103,
+      "line": 107,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5362,7 +5348,7 @@
     "modulePath": "src/bindingMutationModel.ts",
     "sourceLocation": {
       "filePath": "src/bindingMutationModel.ts",
-      "line": 9,
+      "line": 13,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5412,7 +5398,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 1235,
+      "line": 1228,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],
@@ -5450,7 +5436,7 @@
     "modulePath": "src/index.ts",
     "sourceLocation": {
       "filePath": "src/index.ts",
-      "line": 761,
+      "line": 754,
       "column": 1
     },
     "exportPaths": ["src/index.ts"],

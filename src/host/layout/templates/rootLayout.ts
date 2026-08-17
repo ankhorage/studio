@@ -1,7 +1,7 @@
 import type { AppManifest } from '@ankhorage/contracts';
 
-import type { GeneratedImportRequirement } from '../generatedImportComposer';
 import type { LayoutMutation } from '../../modules/layout';
+import type { GeneratedImportRequirement } from '../generatedImportComposer';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import type { BuiltNavigatorJsx } from './navigation';
 import { routeNameToGroupedHref, routeNameToHref } from './utils/routes';
@@ -23,7 +23,6 @@ interface GetRootLayoutTsxArgs {
   innerNavigation: BuiltNavigatorJsx;
   includeStudio: boolean;
   authRuntime?: RootLayoutAuthRuntimeConfig;
-  databaseAdaptersExpression?: string;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
   runtimeProviderEnd?: string[];
@@ -102,7 +101,6 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     innerNavigation,
     includeStudio,
     authRuntime,
-    databaseAdaptersExpression,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
     runtimeProviderEnd = [],
@@ -227,9 +225,7 @@ function resolveStudioAppHeaderTitle(args: {
       studioManifest ?? runtimeManifest,
       activeScreenId,
     );
-    if (previewTitle) {
-      return previewTitle;
-    }
+    if (previewTitle) return previewTitle;
   }
 
   return resolveAppHeaderTitle(runtimeManifest, pathname);
@@ -279,9 +275,7 @@ useEffect(() => {
     void refreshAuthSessionIfNeeded(authAdapter).catch(() => undefined);
   });
 
-  return () => {
-    subscription.remove();
-  };
+  return () => subscription.remove();
 }, []);
 
 useEffect(() => {
@@ -298,9 +292,7 @@ useEffect(() => {
   const postSignInPath = normalizeRoutePath(AUTH_POST_SIGN_IN_ROUTE_PATH);
 
   if (!authenticated && !isPublicRoute) {
-    if (currentPath !== signInPath) {
-      router.replace(AUTH_SIGN_IN_ROUTE_TARGET);
-    }
+    if (currentPath !== signInPath) router.replace(AUTH_SIGN_IN_ROUTE_TARGET);
     return;
   }
 
@@ -312,11 +304,10 @@ useEffect(() => {
   if (
     authenticated &&
     (activeTopLevelRoute === AUTH_SIGN_IN_ROUTE_SEGMENT ||
-      activeTopLevelRoute === AUTH_SIGN_UP_ROUTE_SEGMENT)
+      activeTopLevelRoute === AUTH_SIGN_UP_ROUTE_SEGMENT) &&
+    currentPath !== postSignInPath
   ) {
-    if (currentPath !== postSignInPath) {
-      router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
-    }
+    router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
   }
 }, [
   router,
@@ -334,7 +325,6 @@ useEffect(() => {
   const innerContentNode = authRuntime
     ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
-
   const innerContentSignature = authRuntime
     ? '{ authState, onReady }: { authState: GeneratedAuthNavigationState; onReady?: () => void }'
     : '';
@@ -353,7 +343,7 @@ useEffect(() => {
 `
       : '';
   const runtimeOperationHelpers = `
-async function runtimeDataSourceFetch(
+async function runtimeApiFetch(
   url: string,
   init: {
     readonly method: string;
@@ -377,14 +367,10 @@ ${
   useStoredAuthSessionCredentialResolver
     ? `
 function resolveRuntimeOperationCredential(credential: { readonly kind?: string } | undefined) {
-  if (credential?.kind !== 'bearer' && credential?.kind !== 'oauth2') {
-    return undefined;
-  }
+  if (credential?.kind !== 'bearer' && credential?.kind !== 'oauth2') return undefined;
 
   const session = getStoredAuthSession();
-  if (!session?.accessToken) {
-    return undefined;
-  }
+  if (!session?.accessToken) return undefined;
 
   return {
     headers: {
@@ -465,9 +451,7 @@ const shouldMountAppHeader =
     : '';
   const indentedHandleInnerContentReadyDeclaration =
     handleInnerContentReadyDeclaration.length > 0
-      ? `${indentGeneratedBlock(handleInnerContentReadyDeclaration)}
-
-`
+      ? `${indentGeneratedBlock(handleInnerContentReadyDeclaration)}\n\n`
       : '';
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
@@ -534,10 +518,7 @@ function resolveThemeMode(
   mode: AppManifest['activeThemeMode'],
   fallback: NonNullable<AppManifest['activeThemeMode']>,
 ): NonNullable<AppManifest['activeThemeMode']> {
-  if (mode === 'dark' || mode === 'light') {
-    return mode;
-  }
-
+  if (mode === 'dark' || mode === 'light') return mode;
   return fallback;
 }
 
@@ -553,16 +534,13 @@ ${indentedRootHookBlock}
   const activeTheme =
     runtimeManifest.themes.find((theme) => theme.id === runtimeManifest.activeThemeId) ??
     runtimeManifest.themes[0];
-  if (!activeTheme) {
-    return null;
-  }
+  if (!activeTheme) return null;
 
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
   const executeOperation = useMemo(
     () =>
-      createRuntimeDataSourceOperationExecutor({
-        ${databaseAdaptersExpression ? `databaseAdapters: ${databaseAdaptersExpression},` : ''}
-        fetch: runtimeDataSourceFetch,
+      createRuntimeApiOperationExecutor({
+        fetch: runtimeApiFetch,
         ${
           useStoredAuthSessionCredentialResolver
             ? 'credentialResolver: resolveRuntimeOperationCredential,'
@@ -627,49 +605,49 @@ function StudioShell({
     if (nextAppLocation) setLastNonAdminLocation(nextAppLocation);
   }, [appLocation, appPathname, setLastNonAdminLocation]);
 
-   const studioWrapNode = useMemo(
-     () =>
-       createStudioStationarySelectionWrapNode({
-         previewMode,
-         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-       }),
-     [previewMode],
-   );
-   const studioResolveNodeProps = useMemo(
-     () =>
-       createStudioInteractionPolicyResolver({
-         previewMode,
-         thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
-       }),
-     [previewMode],
-   );
-   const appHeaderTitle = resolveStudioAppHeaderTitle({
-     runtimeManifest,
-     studioManifest,
-     previewMode,
-     activeScreenId,
-     pathname: appPathname,
-   });
-   const header = shouldMountAppHeader ? (
-     <StudioAppHeader appHeaderTitle={appHeaderTitle} />
-   ) : undefined;
-   const studioRuntimeManifest = studioManifest ?? runtimeManifest;
-   const activeStudioTheme =
-     studioRuntimeManifest.themes.find(
-       (theme) => theme.id === studioRuntimeManifest.activeThemeId,
-     ) ?? activeTheme;
-   const activeStudioThemeMode = resolveThemeMode(
-     studioRuntimeManifest.activeThemeMode,
-     activeThemeMode,
-   );
-   const studioRuntimeConfig = useMemo(
-     () => ({
-       ...createStudioActionSuppressionConfig(previewMode),
-       wrapNode: studioWrapNode,
-       resolveNodeProps: studioResolveNodeProps,
-     }),
-     [previewMode, studioWrapNode, studioResolveNodeProps],
-   );
+  const studioWrapNode = useMemo(
+    () =>
+      createStudioStationarySelectionWrapNode({
+        previewMode,
+        thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+      }),
+    [previewMode],
+  );
+  const studioResolveNodeProps = useMemo(
+    () =>
+      createStudioInteractionPolicyResolver({
+        previewMode,
+        thirdPartySupport: APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+      }),
+    [previewMode],
+  );
+  const appHeaderTitle = resolveStudioAppHeaderTitle({
+    runtimeManifest,
+    studioManifest,
+    previewMode,
+    activeScreenId,
+    pathname: appPathname,
+  });
+  const header = shouldMountAppHeader ? (
+    <StudioAppHeader appHeaderTitle={appHeaderTitle} />
+  ) : undefined;
+  const studioRuntimeManifest = studioManifest ?? runtimeManifest;
+  const activeStudioTheme =
+    studioRuntimeManifest.themes.find(
+      (theme) => theme.id === studioRuntimeManifest.activeThemeId,
+    ) ?? activeTheme;
+  const activeStudioThemeMode = resolveThemeMode(
+    studioRuntimeManifest.activeThemeMode,
+    activeThemeMode,
+  );
+  const studioRuntimeConfig = useMemo(
+    () => ({
+      ...createStudioActionSuppressionConfig(previewMode),
+      wrapNode: studioWrapNode,
+      resolveNodeProps: studioResolveNodeProps,
+    }),
+    [previewMode, studioWrapNode, studioResolveNodeProps],
+  );
   const studioOutput = (
     <StationaryTapSelector
       canvasInteraction={{
@@ -765,7 +743,6 @@ function GeneratedZoraThemeConfigSync({
 
 function GeneratedStatusBar() {
   const { mode } = useZoraTheme();
-
   return <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />;
 }
 

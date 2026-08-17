@@ -1,3 +1,5 @@
+import { readOwnProperty } from '../utils/readOwnProperty';
+
 export type InteractionPolicy = 'enabled' | 'passive';
 export type ThirdPartyComponentSupport = Readonly<Record<string, true>>;
 
@@ -20,10 +22,7 @@ function classifyComponent(
     return 'zora-builtin';
   }
 
-  if (
-    Object.prototype.hasOwnProperty.call(thirdPartySupport, nodeType) &&
-    thirdPartySupport[nodeType] === true
-  ) {
+  if (readOwnProperty<true>(thirdPartySupport, nodeType) === true) {
     return 'third-party-supported';
   }
 
