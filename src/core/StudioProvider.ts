@@ -360,7 +360,7 @@ export const StudioProvider = ({
     (screenId: StudioScreenId) => {
       const { current } = manifestRef;
       if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
-      const deletedRoot = current.screens[screenId]?.root;
+      const deletedRoot = Object.values(current.screens).find((screen) => screen.id === screenId)?.root;
       const result = deleteStudioManifestScreen(current, screenId, activeScreenId);
       if (result.manifest === current || !deletedRoot) return;
       updateManifest(() => result.manifest);
@@ -414,13 +414,9 @@ export const StudioProvider = ({
 
   const setActiveScreenId = useCallback((screenId: StudioScreenId) => {
     const { current } = manifestRef;
-    if (
-      !current ||
-      !hasCanonicalStudioScreenRegistryIdentity(current.screens) ||
-      current.screens[screenId]?.id !== screenId
-    ) {
-      return;
-    }
+    if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
+    const screen = Object.values(current.screens).find((candidate) => candidate.id === screenId);
+    if (!screen) return;
     setRequestedActiveScreenId(screenId);
   }, []);
 
