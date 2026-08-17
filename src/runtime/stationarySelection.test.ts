@@ -23,25 +23,19 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('.runOnJS(true)');
   });
 
-  it('begins transaction in a referenced JS onBegin callback', () => {
-    expect(source).toContain('const handleTapBegin = React.useCallback(() => {');
-    expect(source).toContain('gesture.onBegin(handleTapBegin)');
-    expect(source).not.toContain('.onBegin(() => {');
+  it('begins transaction in onBegin', () => {
+    expect(source).toContain('.onBegin(() => {');
     expect(source).toContain('generationRef.current = coordinator.beginTransaction()');
   });
 
-  it('commits in a referenced JS onEnd callback only on success', () => {
-    expect(source).toContain('const handleTapEnd = React.useCallback(');
-    expect(source).toContain('gesture.onEnd(handleTapEnd)');
-    expect(source).not.toContain('.onEnd((_event, success) => {');
+  it('commits in onEnd only on success', () => {
+    expect(source).toContain('.onEnd((_event, success) => {');
     expect(source).toContain('if (!success) {');
     expect(source).toContain('coordinator.commitSelection(');
   });
 
-  it('finalizes in a referenced JS onFinalize callback', () => {
-    expect(source).toContain('const handleTapFinalize = React.useCallback(() => {');
-    expect(source).toContain('gesture.onFinalize(handleTapFinalize)');
-    expect(source).not.toContain('.onFinalize(() => {');
+  it('finalizes in onFinalize', () => {
+    expect(source).toContain('.onFinalize(() => {');
     expect(source).toContain('coordinator.clearTransaction(generationRef.current)');
   });
 
