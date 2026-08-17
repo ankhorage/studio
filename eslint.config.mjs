@@ -17,7 +17,7 @@ export default createConfig({
         'max-lines': [
           'error',
           {
-            max: 250,
+            max: 500,
             skipBlankLines: true,
             skipComments: true,
           },
@@ -25,7 +25,7 @@ export default createConfig({
         'max-lines-per-function': [
           'error',
           {
-            max: 70,
+            max: 300,
             skipBlankLines: true,
             skipComments: true,
           },

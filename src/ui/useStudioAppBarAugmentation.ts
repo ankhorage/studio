@@ -18,9 +18,9 @@ import {
 } from '../studioAdminRouteModel';
 import { createStudioSelectionContext } from '../studioSelectionModel';
 import { createStudioAppBarActions } from './createStudioAppBarActions';
+import { resolveStudioAppBarContextActions } from './studioAppBarModel';
 import { StudioDeleteDialog } from './StudioDeleteDialog';
 import { StudioInsertDialog } from './StudioInsertDialog';
-import { resolveStudioAppBarContextActions } from './studioAppBarModel';
 
 export interface StudioAppBarAugmentation {
   appMode?: unknown;
@@ -61,7 +61,9 @@ export function useStudioAppBarAugmentation(): StudioAppBarAugmentation {
   const isAdminPath = isStudioAdminPath(pathname);
 
   return {
-    actions: isAdminPath ? null : createStudioAppBarActions(contextActions, handlers, studio.previewMode),
+    actions: isAdminPath
+      ? null
+      : createStudioAppBarActions(contextActions, handlers, studio.previewMode),
     overlays:
       isAdminPath || studio.previewMode
         ? null
@@ -91,8 +93,7 @@ function resolveInsertCapabilities(entries: InsertEntries, selectedNodeId: strin
   return {
     canInsert: enabledEntries.length > 0,
     canInsertInside: enabledEntries.some(
-      (entry) =>
-        entry.placement?.kind === 'inside' && entry.placement.parentId === selectedNodeId,
+      (entry) => entry.placement?.kind === 'inside' && entry.placement.parentId === selectedNodeId,
     ),
   };
 }

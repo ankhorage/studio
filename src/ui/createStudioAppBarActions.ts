@@ -1,10 +1,7 @@
 import { IconButton } from '@ankhorage/zora';
 import React from 'react';
 
-import {
-  resolveStudioAppBarModeAction,
-  type StudioAppBarContextAction,
-} from './studioAppBarModel';
+import { resolveStudioAppBarModeAction, type StudioAppBarContextAction } from './studioAppBarModel';
 
 type AppBarHandlers = Readonly<{
   clearSelection: () => void;
@@ -53,7 +50,10 @@ export function createStudioAppBarActions(
   ];
 }
 
-function resolveContextActionHandler(id: StudioAppBarContextAction['id'], handlers: AppBarHandlers) {
+function resolveContextActionHandler(
+  id: StudioAppBarContextAction['id'],
+  handlers: AppBarHandlers,
+) {
   if (id === 'properties') return handlers.openProperties;
   if (id === 'bindings') return handlers.openBindings;
   if (id === 'insert') return handlers.openInsert;
