@@ -53,7 +53,9 @@ export function ExternalApiConnectCard() {
       setResult(next);
       if (next.ok) {
         await studio.refetchManifest();
-        setMessage(`${next.created ? 'Connected' : 'Updated'} API ${next.apiId} as ${next.protocol}.`);
+        setMessage(
+          `${next.created ? 'Connected' : 'Updated'} API ${next.apiId} as ${next.protocol}.`,
+        );
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'External API connection failed.');
@@ -98,7 +100,11 @@ export function ExternalApiConnectCard() {
             />
           </ExternalApiField>
           <ExternalApiField label="Credential kind">
-            <Input value={credentialKind} autoCapitalize="none" onChangeText={setCredentialKind} />
+            <Input
+              value={credentialKind}
+              autoCapitalize="none"
+              onChangeText={setCredentialKind}
+            />
           </ExternalApiField>
           <ExternalApiField label="Credential scope (optional)">
             <Input
@@ -110,7 +116,11 @@ export function ExternalApiConnectCard() {
           </ExternalApiField>
         </View>
         <View style={externalApiAdminStyles.actions}>
-          <Button loading={busy} disabled={!apiId.trim() || !url.trim()} onPress={() => void connect()}>
+          <Button
+            loading={busy}
+            disabled={!apiId.trim() || !url.trim()}
+            onPress={() => void connect()}
+          >
             Connect API
           </Button>
         </View>
