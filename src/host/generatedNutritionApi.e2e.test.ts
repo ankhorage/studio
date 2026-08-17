@@ -161,7 +161,9 @@ async function executeGeneratedBarcodeLookup(
   const endpoint = api
     ? Object.values(api.endpoints).find(({ id }) => id === operation.endpointId)
     : undefined;
-  if (!api || !endpoint) throw new Error('Generated Nutrition barcode API selection is incomplete.');
+  if (!api || !endpoint) {
+    throw new Error('Generated Nutrition barcode API selection is incomplete.');
+  }
 
   const result = await createRuntimeApiOperationExecutor({ fetch: endpointFetch })({
     api,
