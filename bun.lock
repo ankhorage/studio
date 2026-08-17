@@ -56,7 +56,7 @@
       "name": "@ankhorage/studio-app",
       "version": "1.0.1",
       "dependencies": {
-        "@ankhorage/studio": "file:../..",
+        "@ankhorage/studio": "latest",
         "@expo/vector-icons": "^15.0.3",
         "@react-native-picker/picker": "2.11.1",
         "babel-preset-expo": "^54.0.10",
@@ -118,7 +118,7 @@
 
     "@ankhorage/runtime": ["@ankhorage/runtime@2.1.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/data-sources": "^2.0.0" }, "peerDependencies": { "react": "19.1.0", "react-native": "0.81.5" } }, "sha512-hgw5KKFSmID+pfaVZogZQcF/dAmC9U0GefBCIW6aTKsRNRf4awJeomK6yWjp4RQEqocXsdXUEhQfKwioy+QBDQ=="],
 
-    "@ankhorage/studio": ["@ankhorage/studio@root:", {}],
+    "@ankhorage/studio": ["@ankhorage/studio@1.13.1", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8", "@ankhorage/contracts": "^8.0.0", "@ankhorage/data-sources": "^2.0.0", "@ankhorage/deploy": "^0.12.0", "@ankhorage/expo-runtime": "^2.6.0", "@ankhorage/infra": "^4.0.0", "@ankhorage/orchestrator": "^0.3.1", "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.0", "@ankhorage/orchestrator-module-expo-localization": "^0.5.2", "@ankhorage/react-native-reanimated-dnd-web": "^0.3.2", "@ankhorage/runtime": "^2.1.0", "@ankhorage/supabase-auth": "^1.2.1", "@ankhorage/supabase-storage": "^0.2.0", "@ankhorage/supabase-vault": "^0.2.4", "@ankhorage/templates": "^7.0.0", "@ankhorage/zora": "^2.13.2", "@ankhorage/zora-chess": "^0.1.2", "@ankhorage/zora-tabletop": "^0.0.5", "@fastify/cors": "^11.2.0", "expo-document-picker": "~14.0.8", "expo-file-system": "~19.0.23", "fastify": "^5.7.4", "react-native-gesture-handler": "~2.28.0" }, "peerDependencies": { "@expo/vector-icons": "^15.0.3", "@react-native-picker/picker": "2.11.1", "expo-constants": "~18.0.13", "expo-font": "~14.0.12", "expo-linear-gradient": "~15.0.8", "expo-router": "~6.0.22", "expo-status-bar": "^3.0.9", "react": "19.1.0", "react-native": "0.81.5", "react-native-safe-area-context": "~5.6.0" } }, "sha512-lYCev+/A7yopxTDeqznksDi7BiBo297lMhHLqLNem5iKH585F3RPjrE2QMvECdYUm5htTu9I/RsBqFFbyKW0nA=="],
 
     "@ankhorage/studio-app": ["@ankhorage/studio-app@workspace:apps/studio"],
 
