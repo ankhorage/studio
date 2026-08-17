@@ -1,4 +1,5 @@
 import type { StudioManifest } from './index';
+import { setOwnProperty } from './utils/setOwnProperty';
 
 interface RuntimeScreenSignature {
   id: string;
@@ -12,11 +13,11 @@ function createRuntimeScreenSignatures(
   return Object.entries(manifest.screens)
     .sort(([leftId], [rightId]) => leftId.localeCompare(rightId))
     .reduce<Record<string, RuntimeScreenSignature>>((acc, [screenId, screen]) => {
-      acc[screenId] = {
+      setOwnProperty(acc, screenId, {
         id: screen.id,
         name: screen.name,
         title: screen.title,
-      };
+      });
       return acc;
     }, {});
 }
