@@ -417,7 +417,8 @@ function mergeScripts(
 
   for (const scriptName of REQUIRED_MANAGED_SCRIPT_NAMES) {
     const requiredScript = findScript(templateScripts, scriptName);
-    if (requiredScript !== undefined) Object.assign(mergedScripts, { [scriptName]: requiredScript });
+    if (requiredScript !== undefined)
+      Object.assign(mergedScripts, { [scriptName]: requiredScript });
   }
   for (const scriptName of TARGET_SCRIPT_NAMES) {
     const targetScript = findScript(templateScripts, scriptName);

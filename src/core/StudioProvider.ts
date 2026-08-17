@@ -360,7 +360,9 @@ export const StudioProvider = ({
     (screenId: StudioScreenId) => {
       const { current } = manifestRef;
       if (!current || !hasCanonicalStudioScreenRegistryIdentity(current.screens)) return;
-      const deletedRoot = Object.values(current.screens).find((screen) => screen.id === screenId)?.root;
+      const deletedRoot = Object.values(current.screens).find(
+        (screen) => screen.id === screenId,
+      )?.root;
       const result = deleteStudioManifestScreen(current, screenId, activeScreenId);
       if (result.manifest === current || !deletedRoot) return;
       updateManifest(() => result.manifest);
