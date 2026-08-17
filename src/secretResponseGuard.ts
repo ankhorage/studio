@@ -42,7 +42,7 @@ function findRawSecretResponseKeyAtPath(
 
   if (Array.isArray(value)) {
     for (let index = 0; index < value.length; index += 1) {
-      const match = findRawSecretResponseKeyAtPath(value[index], `${path}[${index}]`, seen);
+      const match = findRawSecretResponseKeyAtPath(value.at(index), `${path}[${index}]`, seen);
       if (match) return match;
     }
     return null;
