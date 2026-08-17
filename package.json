@@ -19,7 +19,6 @@
   "types": "./dist/root.d.ts",
   "sideEffects": false,
   "workspaces": [
-    ".",
     "apps/*"
   ],
   "files": [
