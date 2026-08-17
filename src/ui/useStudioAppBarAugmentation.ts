@@ -99,6 +99,7 @@ function resolveInsertCapabilities(entries: InsertEntries, selectedNodeId: strin
 }
 
 function useStudioAppBarDialogs(studio: StudioContextType, selectedNodeId: string | null) {
+  const { deleteNode } = studio;
   const [insertVisible, setInsertVisible] = React.useState(false);
   const [deleteCandidateId, setDeleteCandidateId] = React.useState<StudioNodeId | null>(null);
   const openInsert = useCallback(() => setInsertVisible(true), []);
@@ -110,9 +111,9 @@ function useStudioAppBarDialogs(studio: StudioContextType, selectedNodeId: strin
     setDeleteCandidateId(null);
   }, []);
   const confirmDelete = useCallback(() => {
-    if (deleteCandidateId) studio.deleteNode(deleteCandidateId);
+    if (deleteCandidateId) deleteNode(deleteCandidateId);
     setDeleteCandidateId(null);
-  }, [deleteCandidateId, studio.deleteNode]);
+  }, [deleteCandidateId, deleteNode]);
 
   return {
     insertVisible,
@@ -136,40 +137,56 @@ function useStudioAppBarHandlers(args: {
   openDelete: () => void;
   openInsert: () => void;
 }) {
-  const { studio, pathname, router, selectedNodeId, parentNodeId } = args;
+  const {
+    studio,
+    pathname,
+    router,
+    selectedNodeId,
+    parentNodeId,
+    closeDialogs,
+    openDelete,
+    openInsert,
+  } = args;
+  const {
+    previewMode,
+    selectNode,
+    setActivePanelId,
+    setLastNonAdminLocation,
+    togglePreviewMode: togglePreview,
+  } = studio;
   const openAdministration = useCallback(() => {
     const appLocation = resolveStudioLastNonAdminLocation({
       pathname,
       navigableLocation: resolveStudioNavigableLocation(pathname),
     });
-    if (appLocation) studio.setLastNonAdminLocation(appLocation);
-    studio.setActivePanelId(null);
+    if (appLocation) setLastNonAdminLocation(appLocation);
+    setActivePanelId(null);
     router.push('/ankh');
-  }, [pathname, router, studio.setActivePanelId, studio.setLastNonAdminLocation]);
+  }, [pathname, router, setActivePanelId, setLastNonAdminLocation]);
   const openBindings = useCallback(() => {
     if (selectedNodeId) router.push(createStudioBindingsRoutePath(selectedNodeId));
   }, [router, selectedNodeId]);
   const openProperties = useCallback(() => {
     if (selectedNodeId) router.push(createStudioPropertiesRoutePath(selectedNodeId));
   }, [router, selectedNodeId]);
-  const clearSelection = useCallback(() => studio.selectNode(null), [studio.selectNode]);
+  const clearSelection = useCallback(() => selectNode(null), [selectNode]);
   const selectParent = useCallback(() => {
-    if (parentNodeId) studio.selectNode(parentNodeId);
-  }, [parentNodeId, studio.selectNode]);
+    if (parentNodeId) selectNode(parentNodeId);
+  }, [parentNodeId, selectNode]);
   const togglePreviewMode = useCallback(() => {
-    if (!studio.previewMode) {
-      args.closeDialogs();
-      studio.setActivePanelId(null);
+    if (!previewMode) {
+      closeDialogs();
+      setActivePanelId(null);
     }
-    studio.togglePreviewMode();
-  }, [args.closeDialogs, studio.previewMode, studio.setActivePanelId, studio.togglePreviewMode]);
+    togglePreview();
+  }, [closeDialogs, previewMode, setActivePanelId, togglePreview]);
 
   return {
     clearSelection,
     openAdministration,
     openBindings,
-    openDelete: args.openDelete,
-    openInsert: args.openInsert,
+    openDelete,
+    openInsert,
     openProperties,
     selectParent,
     togglePreviewMode,
