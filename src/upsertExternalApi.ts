@@ -4,7 +4,7 @@ import type {
   ExternalRestApiDefinition,
 } from '@ankhorage/contracts/data';
 
-export type ExternalApiDefinition = ExternalGraphQlApiDefinition | ExternalRestApiDefinition;
+type ExternalApiDefinition = ExternalGraphQlApiDefinition | ExternalRestApiDefinition;
 
 export interface ExternalApiUpsertResult {
   readonly apis: ApiDefinitionList;
