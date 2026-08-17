@@ -3,22 +3,22 @@ import { describe, expect, test } from 'bun:test';
 import {
   type ExternalApiConnectRequest,
   type ExternalApiConnectResult,
-  type ExternalApiDataSourceUpsertResult,
   type ExternalApiDiscoveryAttempt,
+  type ExternalApiIdResult,
   type ExternalApiOperationTestRequest,
   type ExternalApiOperationTestResult,
   type ExternalApiProtocol,
-  type ExternalApiSourceIdResult,
-  type ManualRestSourceRequest,
-  normalizeExternalApiSourceId,
-  upsertExternalApiDataSource,
+  type ExternalApiUpsertResult,
+  type ManualRestApiRequest,
+  normalizeExternalApiId,
+  upsertExternalApi,
 } from './externalApiAuthoring';
 
 describe('external API authoring public model', () => {
-  test('exports serializable authoring contracts', () => {
+  test('exports serializable canonical API authoring contracts', () => {
     const protocol: ExternalApiProtocol = 'auto';
     const request: ExternalApiConnectRequest = {
-      sourceId: 'inventory',
+      apiId: 'inventory',
       url: 'https://api.example.com',
       protocol,
     };
@@ -32,8 +32,8 @@ describe('external API authoring public model', () => {
       attempts: [attempt],
       diagnostics: [],
     };
-    const manualRequest: ManualRestSourceRequest = {
-      sourceId: 'inventory',
+    const manualRequest: ManualRestApiRequest = {
+      apiId: 'inventory',
       baseUrl: 'https://api.example.com',
       endpointId: 'items',
       path: '/items',
@@ -42,7 +42,7 @@ describe('external API authoring public model', () => {
       intent: 'read',
     };
     const testRequest: ExternalApiOperationTestRequest = {
-      sourceId: manualRequest.sourceId,
+      apiId: manualRequest.apiId,
       endpointId: manualRequest.endpointId,
       operationId: manualRequest.operationId,
       dryRun: true,
@@ -55,36 +55,34 @@ describe('external API authoring public model', () => {
     expect({ request, connectResult, manualRequest, testRequest, testResult }).toBeDefined();
   });
 
-  test('normalizes stable source IDs', () => {
-    const result: ExternalApiSourceIdResult =
-      normalizeExternalApiSourceId('  Inventory API / V1  ');
+  test('normalizes stable API IDs', () => {
+    const result: ExternalApiIdResult = normalizeExternalApiId('  Inventory API / V1  ');
     expect(result).toEqual({
       ok: true,
-      sourceId: 'inventory-api-v1',
+      apiId: 'inventory-api-v1',
     });
-    expect(normalizeExternalApiSourceId('---')).toEqual({
+    expect(normalizeExternalApiId('---')).toEqual({
       ok: false,
-      message: 'Data-source ID must contain at least one letter or number.',
+      message: 'API ID must contain at least one letter or number.',
     });
   });
 
-  test('upserts canonical data-source registries without parallel catalog state', () => {
-    const source = {
+  test('upserts canonical API lists without data-source projection', () => {
+    const api = {
       id: 'inventory',
-      kind: 'api',
       origin: 'external',
       protocol: 'rest',
       baseUrl: 'https://api.example.com',
       endpoints: {},
     } as const;
-    const created: ExternalApiDataSourceUpsertResult = upsertExternalApiDataSource({}, source);
-    const updated = upsertExternalApiDataSource(created.registry, {
-      ...source,
+    const created: ExternalApiUpsertResult = upsertExternalApi([], api);
+    const updated = upsertExternalApi(created.apis, {
+      ...api,
       name: 'Inventory',
     });
 
     expect(created.created).toBe(true);
     expect(updated.created).toBe(false);
-    expect(updated.registry.inventory?.name).toBe('Inventory');
+    expect(updated.apis[0]?.name).toBe('Inventory');
   });
 });
