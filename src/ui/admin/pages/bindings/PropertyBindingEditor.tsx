@@ -167,7 +167,7 @@ function PropertyBindingSourceFields(props: {
         />
       </Field>
       <Text color="neutral" emphasis="muted" variant="bodySmall">
-        {operation?.sourceLabel ?? 'The referenced operation is currently unavailable.'}
+        {operation?.apiLabel ?? 'The referenced operation is currently unavailable.'}
       </Text>
     </View>
   );
