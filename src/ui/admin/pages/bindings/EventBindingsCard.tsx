@@ -1,4 +1,4 @@
-import type { ComponentDataBindingRegistry, UiNode } from '@ankhorage/contracts';
+import type { ComponentDataBindingRegistry, EventBinding, UiNode } from '@ankhorage/contracts';
 import { Button, Card, Text, ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
 import { View } from 'react-native';
 
@@ -24,7 +24,7 @@ export function EventBindingsCard(props: {
     <Card title="Event / action bindings">
       <View style={bindingAdminStyles.stack}>
         <Text color="neutral" emphasis="muted" variant="bodySmall">
-          Component events come from ZORA metadata. Bind them to canonical actions or data-source
+          Component events come from ZORA metadata. Bind them to canonical actions or API
           operations; Runtime remains responsible for execution.
         </Text>
         {options.map((option) => (
@@ -90,25 +90,13 @@ function EventPayloadSummary(props: {
   );
 }
 
-function describeEventBinding(binding: {
-  readonly target:
-    | { readonly kind: 'action'; readonly type: string }
-    | {
-        readonly kind: 'operation';
-        readonly operation: {
-          readonly dataSourceId: string;
-          readonly endpointId?: string;
-          readonly operationId: string;
-        };
-      };
-  readonly input?: Readonly<Record<string, unknown>>;
-}): string {
+function describeEventBinding(binding: EventBinding): string {
   if (binding.target.kind === 'action') return `Action · ${binding.target.type}`;
-  const { dataSourceId, endpointId, operationId } = binding.target.operation;
-  return `Operation · ${dataSourceId} · ${endpointId ?? '<auto>'} · ${operationId}`;
+  const { apiId, endpointId, operationId } = binding.target.operation;
+  return `API operation · ${apiId} · ${endpointId ?? '<auto>'} · ${operationId}`;
 }
 
-function describeBindingInput(input: Readonly<Record<string, unknown>> | undefined): string {
+function describeBindingInput(input: EventBinding['input']): string {
   const keys = Object.keys(input ?? {});
   return keys.length > 0 ? `Inputs: ${keys.join(', ')}` : 'No mapped inputs';
 }
