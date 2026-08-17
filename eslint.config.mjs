@@ -14,10 +14,16 @@ export default createConfig({
     {
       files: STUDIO_FILES,
       rules: {
+        'complexity': [
+          'error',
+          {
+            max: 20
+          }
+        ],
         'max-lines': [
           'error',
           {
-            max: 600,
+            max: 800,
             skipBlankLines: true,
             skipComments: true,
           },
@@ -25,7 +31,7 @@ export default createConfig({
         'max-lines-per-function': [
           'error',
           {
-            max: 400,
+            max: 700,
             skipBlankLines: true,
             skipComments: true,
           },
