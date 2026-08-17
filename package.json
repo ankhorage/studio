@@ -177,7 +177,7 @@
     "lint": "ankhorage-eslint .",
     "lint:fix": "ankhorage-eslint . --fix",
     "format": "ankhorage-prettier --write .",
-    "format:check": "ankhorage-prettier --write . && git diff -- src/ui/admin/pages/ExternalApiConnectCard.tsx",
+    "format:check": "ankhorage-prettier --check .",
     "knip": "ankhorage-knip",
     "test": "bun test",
     "test:e2e": "bun run test:e2e:generated-app-web && bun run test:e2e:infra",
@@ -248,8 +248,7 @@
     "@types/bun": "^1.3.14",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
-    "typescript": "^5.9.3",
-    "@ankhorage/supabase-db": "^1.0.0"
+    "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.3.14"
 }
