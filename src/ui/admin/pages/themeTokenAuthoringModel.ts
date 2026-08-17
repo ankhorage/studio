@@ -4,6 +4,10 @@ import type {
   ThemeTypographyTokenOverrides,
 } from '@ankhorage/contracts';
 
+import { deleteOwnProperty } from '../../../utils/deleteOwnProperty';
+import { readOwnProperty } from '../../../utils/readOwnProperty';
+import { setOwnProperty } from '../../../utils/setOwnProperty';
+
 export type NumericThemeTokenFamily = 'spacing' | 'radii' | 'shadows';
 
 export function updateNumericThemeToken(args: {
@@ -12,8 +16,14 @@ export function updateNumericThemeToken(args: {
   readonly key: string;
   readonly value: number | undefined;
 }): ThemeGlobalTokenOverrides | undefined {
-  const nextFamily = updateRecordValue(args.tokens?.[args.family], args.key, args.value);
-  return normalizeGlobalTokens({ ...args.tokens, [args.family]: nextFamily });
+  const family = args.tokens
+    ? readOwnProperty<Readonly<Record<string, number>>>(args.tokens, args.family)
+    : undefined;
+  const nextFamily = updateRecordValue(family, args.key, args.value);
+  const nextTokens: ThemeGlobalTokenOverrides = { ...args.tokens };
+  if (nextFamily) setOwnProperty(nextTokens, args.family, nextFamily);
+  else deleteOwnProperty(nextTokens, args.family);
+  return normalizeGlobalTokens(nextTokens);
 }
 
 export function updateTypographySize(args: {
@@ -45,10 +55,12 @@ export function updateTypographyHeading(args: {
   readonly value: number | string | undefined;
 }): ThemeGlobalTokenOverrides | undefined {
   const headings = args.tokens?.typography?.headings;
-  const current = headings?.[args.level] ?? {};
+  const current = headings
+    ? (readOwnProperty<ThemeTypographyHeadingOverrides>(headings, args.level) ?? {})
+    : {};
   const nextHeading = { ...current };
-  if (args.value === undefined) delete nextHeading[args.field];
-  else Object.assign(nextHeading, { [args.field]: args.value });
+  if (args.value === undefined) deleteOwnProperty(nextHeading, args.field);
+  else setOwnProperty(nextHeading, args.field, args.value);
   const nextHeadings = updateRecordValue(
     headings,
     args.level,
@@ -73,8 +85,8 @@ function updateRecordValue<T>(
   value: T | undefined,
 ): Readonly<Record<string, T>> | undefined {
   const next = { ...record };
-  if (value === undefined) delete next[key];
-  else next[key] = value;
+  if (value === undefined) deleteOwnProperty(next, key);
+  else setOwnProperty(next, key, value);
   return Object.keys(next).length > 0 ? next : undefined;
 }
 
