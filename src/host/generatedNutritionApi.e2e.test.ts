@@ -4,7 +4,10 @@ import path from 'node:path';
 
 import type { DataSourceDiagnostic, UiNode } from '@ankhorage/contracts';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
-import { createRuntimeApiOperationExecutor, resolveRuntimeBindingValue } from '@ankhorage/runtime';
+import {
+  createRuntimeApiOperationExecutor,
+  resolveRuntimeBindingValue,
+} from '@ankhorage/runtime/bindings';
 import { expect, test } from 'bun:test';
 
 import { StudioExternalApiService } from './apis/studioExternalApiService';
