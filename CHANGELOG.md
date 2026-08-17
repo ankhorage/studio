@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.13.3
+
+### Patch Changes
+
+- 73b06b9: Generate Studio app headers and Zora providers against their current contracts, removing stale AppBar props and redundant theme synchronization from generated apps.
+
 ## 1.13.2
 
 ### Patch Changes
