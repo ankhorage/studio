@@ -17,7 +17,7 @@ const PRODUCTS_GRID_ID = 'food_drink-nutrition-catalog-scan-products-grid';
 
 type OperationRepeatSource = Extract<
   NonNullable<NonNullable<UiNode['repeat']>['source']>,
-  { readonly kind: 'operation' }
+  { readonly kind: 'operation' },
 >;
 
 interface RecordedRequest {
