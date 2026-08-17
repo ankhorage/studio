@@ -48,9 +48,8 @@ export function useTemplateCatalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCatalog = useCallback(async () => {
+  const loadCatalog = useCallback(async () => {
     try {
-      setIsLoading(true);
       const response = await fetch(`${API_BASE}/templates`);
       if (!response.ok) {
         throw new Error('Failed to fetch template catalog');
@@ -66,14 +65,19 @@ export function useTemplateCatalog() {
     }
   }, []);
 
+  const refresh = useCallback(async () => {
+    setIsLoading(true);
+    await loadCatalog();
+  }, [loadCatalog]);
+
   useEffect(() => {
-    void fetchCatalog();
-  }, [fetchCatalog]);
+    void loadCatalog();
+  }, [loadCatalog]);
 
   return {
     catalog,
     isLoading,
     error,
-    refresh: fetchCatalog,
+    refresh,
   };
 }
