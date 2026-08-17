@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { DataSourceDiagnostic, UiNode } from '@ankhorage/contracts';
+import type { BindingOperationRef, DataSourceDiagnostic, UiNode } from '@ankhorage/contracts';
 import type { EndpointTestFetch, EndpointTestFetchInit } from '@ankhorage/data-sources';
 import {
   createRuntimeApiOperationExecutor,
@@ -15,8 +15,12 @@ import { ProjectManager } from './orchestrator/projectManager';
 
 const NUTRITION_API_BASE_URL = 'https://api.ankhorage.com/v1/nutrition';
 const PRODUCTS_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products?limit=50&offset=0`;
+const BARCODE = '7612345678901';
+const BARCODE_REQUEST_URL = `${NUTRITION_API_BASE_URL}/products/by-barcode/${BARCODE}`;
 const CATALOG_SCREEN_ID = 'food_drink-nutrition-catalog-scan-catalog';
 const PRODUCTS_GRID_ID = 'food_drink-nutrition-catalog-scan-products-grid';
+const SCANNER_ID = 'food_drink-nutrition-catalog-scan-scan-scanner';
+const PRODUCT = { id: 'product-1', barcode: BARCODE, name: 'Acceptance Product' } as const;
 
 type OperationRepeatSource = Extract<
   NonNullable<NonNullable<UiNode['repeat']>['source']>,
@@ -41,11 +45,13 @@ test('generated Nutrition app executes canonical product bindings over external 
     );
     const manifest = await manager.getProjectManifest(created.id);
     const source = assertCanonicalNutritionManifest(manifest);
+    const barcodeOperation = assertBarcodeOperation(manifest);
     await assertGeneratedRuntimeSource(created.path);
     const requests: RecordedRequest[] = [];
     const endpointFetch = createRecordingFetch(requests);
 
     await executeGeneratedRuntimeBinding(manifest.infra.apis, source, endpointFetch);
+    await executeGeneratedBarcodeLookup(manifest.infra.apis, barcodeOperation, endpointFetch);
     await executeStudioApiOperation(manager, created.id, endpointFetch);
     assertExternalProductRequests(requests);
   } finally {
@@ -94,6 +100,33 @@ function assertCanonicalNutritionManifest(
   return source;
 }
 
+function assertBarcodeOperation(
+  manifest: Awaited<ReturnType<ProjectManager['getProjectManifest']>>,
+): BindingOperationRef {
+  const scannerBinding = Object.values(manifest.dataBindings ?? {}).find(
+    ({ componentId }) => componentId === SCANNER_ID,
+  );
+  const eventBinding = scannerBinding?.events?.barcodeScanned?.find(
+    ({ target }) => target.kind === 'operation',
+  );
+  if (eventBinding?.target.kind !== 'operation') {
+    throw new Error('Generated Nutrition scanner is missing its barcode lookup operation.');
+  }
+  expect(eventBinding.target.operation).toEqual({
+    apiId: 'nutrition',
+    endpointId: 'products',
+    operationId: 'products.getByBarcode',
+  });
+  expect(eventBinding.input).toMatchObject({
+    barcode: {
+      kind: 'source',
+      source: { kind: 'event', path: 'payload.value' },
+      transforms: ['trim'],
+    },
+  });
+  return eventBinding.target.operation;
+}
+
 async function assertGeneratedRuntimeSource(projectPath: string): Promise<void> {
   const rootLayout = await readFile(path.join(projectPath, 'src', 'app', '_layout.tsx'), 'utf8');
   expect(rootLayout).toContain('createRuntimeApiOperationExecutor');
@@ -116,9 +149,28 @@ async function executeGeneratedRuntimeBinding(
     diagnostics,
   );
   expect(diagnostics).toEqual([]);
-  expect(value).toEqual([
-    { id: 'product-1', barcode: '7612345678901', name: 'Acceptance Product' },
-  ]);
+  expect(value).toEqual([PRODUCT]);
+}
+
+async function executeGeneratedBarcodeLookup(
+  apis: Awaited<ReturnType<ProjectManager['getProjectManifest']>>['infra']['apis'],
+  operation: BindingOperationRef,
+  endpointFetch: EndpointTestFetch,
+): Promise<void> {
+  const api = apis?.find(({ id }) => id === operation.apiId);
+  const endpoint = api
+    ? Object.values(api.endpoints).find(({ id }) => id === operation.endpointId)
+    : undefined;
+  if (!api || !endpoint) throw new Error('Generated Nutrition barcode API selection is incomplete.');
+
+  const result = await createRuntimeApiOperationExecutor({ fetch: endpointFetch })({
+    api,
+    endpoint,
+    operation,
+    input: { barcode: BARCODE },
+  });
+  expect(result.ok).toBe(true);
+  if (result.ok) expect(result.data).toEqual({ product: PRODUCT });
 }
 
 async function executeStudioApiOperation(
@@ -138,23 +190,22 @@ async function executeStudioApiOperation(
 function createRecordingFetch(requests: RecordedRequest[]): EndpointTestFetch {
   return (url, init) => {
     requests.push({ url, init });
+    const data = url === BARCODE_REQUEST_URL ? { product: PRODUCT } : { products: [PRODUCT] };
     return Promise.resolve({
       status: 200,
       headers: { 'content-type': 'application/json' },
-      text: () =>
-        Promise.resolve(
-          JSON.stringify({
-            products: [{ id: 'product-1', barcode: '7612345678901', name: 'Acceptance Product' }],
-          }),
-        ),
+      text: () => Promise.resolve(JSON.stringify(data)),
     });
   };
 }
 
 function assertExternalProductRequests(requests: readonly RecordedRequest[]): void {
-  expect(requests).toHaveLength(2);
+  expect(requests.map(({ url }) => url)).toEqual([
+    PRODUCTS_REQUEST_URL,
+    BARCODE_REQUEST_URL,
+    PRODUCTS_REQUEST_URL,
+  ]);
   for (const request of requests) {
-    expect(request.url).toBe(PRODUCTS_REQUEST_URL);
     expect(request.init.method).toBe('GET');
     expect(request.url).not.toContain('127.0.0.1');
     expect(request.url).not.toContain('/rest/v1/');
