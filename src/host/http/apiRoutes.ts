@@ -6,7 +6,7 @@ import type {
   ExternalApiOperationTestRequest,
   ManualRestApiRequest,
 } from '../../externalApiAuthoringContracts';
-import { StudioExternalApiService } from '../dataSources/studioExternalApiService';
+import { StudioExternalApiService } from '../apis/studioExternalApiService';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 
