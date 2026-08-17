@@ -348,6 +348,10 @@ graph TD
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts["src/host/generatedNativeOAuthLifecycle.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts
   module_src_host_generatedNativeOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
+  module_src_host_generatedNutritionApi_e2e_test_ts["src/host/generatedNutritionApi.e2e.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_generatedNutritionApi_e2e_test_ts
+  module_src_host_generatedNutritionApi_e2e_test_ts --> module_src_host_apis_studioExternalApiService_ts
+  module_src_host_generatedNutritionApi_e2e_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_generatedOAuthLifecycle_e2e_test_ts["src/host/generatedOAuthLifecycle.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_generatedOAuthLifecycle_e2e_test_ts
   module_src_host_generatedOAuthLifecycle_e2e_test_ts --> module_src_host_layout_templates_auth_oauth_ts
@@ -394,6 +398,11 @@ graph TD
   module_src_host_http_moduleRoutes_ts["src/host/http/moduleRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_ts
   module_src_host_http_moduleRoutes_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_resolveStandaloneStudioHostOptions_test_ts["src/host/http/resolveStandaloneStudioHostOptions.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_resolveStandaloneStudioHostOptions_test_ts
+  module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --> module_src_host_http_resolveStandaloneStudioHostOptions_ts
+  module_src_host_http_resolveStandaloneStudioHostOptions_ts["src/host/http/resolveStandaloneStudioHostOptions.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_secretRoutes_ts["src/host/http/secretRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_secretRoutes_ts
   module_src_host_http_secretRoutes_ts --> module_src_host_orchestrator_projectManager_ts
@@ -427,6 +436,7 @@ graph TD
   module_src_host_http_serverWithSecrets_ts --> module_src_host_utils_workspaceRoot_ts
   module_src_host_http_standalone_ts["src/host/http/standalone.ts"]
   package__ankhorage_studio -.-> module_src_host_http_standalone_ts
+  module_src_host_http_standalone_ts --> module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_standalone_ts --> module_src_host_http_serverWithSecrets_ts
   module_src_host_index_ts["src/host/index.ts"]
   package__ankhorage_studio -.-> module_src_host_index_ts
@@ -460,6 +470,9 @@ graph TD
   module_src_host_layout_layoutGenerator_ts --> module_src_host_modules_layout_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_index_ts
   module_src_host_layout_layoutGenerator_ts --> module_src_studioAdminRouteModel_ts
+  module_src_host_layout_layoutGeneratorThemeImports_test_ts["src/host/layout/layoutGeneratorThemeImports.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_layout_layoutGeneratorThemeImports_test_ts
+  module_src_host_layout_layoutGeneratorThemeImports_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_layout_templates_auth_adapter_test_ts["src/host/layout/templates/auth/adapter.test.ts"]
   package__ankhorage_studio -.-> module_src_host_layout_templates_auth_adapter_test_ts
   module_src_host_layout_templates_auth_adapter_test_ts --> module_src_host_layout_templates_auth_adapter_ts
@@ -609,12 +622,6 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_orchestrator_appTargetGeneration_test_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_templates_ts
-  module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts["src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"]
-  package__ankhorage_studio -.-> module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts
-  module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
-  module_src_host_orchestrator_expoSdk54AnimationCompatibility_test_ts --> module_src_host_orchestrator_templates_ts
-  module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts["src/host/orchestrator/expoSdk54AnimationCompatibility.ts"]
-  package__ankhorage_studio -.-> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts["src/host/orchestrator/generatedAppFiles.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_test_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --> module_src_host_orchestrator_generatedAppFiles_ts
@@ -700,11 +707,9 @@ graph TD
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_orchestrator_templates_test_ts["src/host/orchestrator/templates.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_test_ts
-  module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_templates_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_templates_ts["src/host/orchestrator/templates.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_templates_ts
-  module_src_host_orchestrator_templates_ts --> module_src_host_orchestrator_expoSdk54AnimationCompatibility_ts
   module_src_host_orchestrator_workspaceRuntime_ts["src/host/orchestrator/workspaceRuntime.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_workspaceRuntime_ts
   module_src_host_secrets_bunSupabaseVaultClient_ts["src/host/secrets/bunSupabaseVaultClient.ts"]
