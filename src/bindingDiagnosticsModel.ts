@@ -16,6 +16,7 @@ import type {
 } from './bindingAuthoringContracts';
 import { findStudioBindingOperationOption } from './bindingOperationModel';
 import { assessStudioBindingCompatibility } from './bindingSchemaModel';
+import { readOwnProperty } from './utils/readOwnProperty';
 
 export function diagnoseStudioComponentBindings(args: {
   readonly node: UiNode;
@@ -24,9 +25,10 @@ export function diagnoseStudioComponentBindings(args: {
   readonly operations: readonly StudioBindingOperationOption[];
   readonly actionTypes: readonly string[];
 }): readonly StudioBindingDiagnostic[] {
-  const binding = args.registry[args.node.id];
+  const binding = readOwnProperty<ComponentDataBindingRegistry[string]>(args.registry, args.node.id);
   if (!binding) return [];
-  const meta = args.componentMeta[args.node.type]?.bindings;
+  const meta = readOwnProperty<UiComponentMetaRegistry[string]>(args.componentMeta, args.node.type)
+    ?.bindings;
   if (!meta) {
     return [
       diagnostic('missing-binding-meta', 'This component exposes no canonical binding metadata.'),
@@ -48,7 +50,9 @@ function diagnosePropBinding(
   binding: PropBinding,
   args: Parameters<typeof diagnoseStudioComponentBindings>[0],
 ): readonly StudioBindingDiagnostic[] {
-  const propMeta = args.componentMeta[args.node.type]?.bindings?.props?.[name];
+  const props = readOwnProperty<UiComponentMetaRegistry[string]>(args.componentMeta, args.node.type)
+    ?.bindings?.props;
+  const propMeta = props ? Object.entries(props).find(([key]) => key === name)?.[1] : undefined;
   if (!propMeta) {
     return [diagnostic('unknown-prop', `Property '${name}' is not bindable.`, `props.${name}`)];
   }
@@ -89,7 +93,11 @@ function diagnoseEventBinding(
   binding: EventBinding,
   args: Parameters<typeof diagnoseStudioComponentBindings>[0],
 ): readonly StudioBindingDiagnostic[] {
-  const eventMeta = args.componentMeta[args.node.type]?.bindings?.events?.[eventName];
+  const events = readOwnProperty<UiComponentMetaRegistry[string]>(args.componentMeta, args.node.type)
+    ?.bindings?.events;
+  const eventMeta = events
+    ? Object.entries(events).find(([key]) => key === eventName)?.[1]
+    : undefined;
   const path = `events.${eventName}.${index}`;
   if (!eventMeta) {
     return [diagnostic('unknown-event', `Event '${eventName}' is not bindable.`, path)];
@@ -116,7 +124,9 @@ function diagnoseEventInputs(
   path: string,
 ): readonly StudioBindingDiagnostic[] {
   return fields.flatMap((field) => {
-    const input = binding.input?.[field.name];
+    const input = binding.input
+      ? readOwnProperty<BindingInputValue>(binding.input, field.name)
+      : undefined;
     if (!input) {
       return field.required
         ? [
