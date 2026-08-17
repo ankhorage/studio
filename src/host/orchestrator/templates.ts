@@ -12,8 +12,6 @@ import {
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 
-import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility.js';
-
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
@@ -27,12 +25,12 @@ const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^2.13.2';
 const EXPO_RUNTIME_VERSION = '^2.6.0';
 const DEVTOOLS_VERSION = '^1.4.1';
-const EXPO_VERSION = '~54.0.36';
+const EXPO_VERSION = '~54.0.37';
 const EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';
 const EXPO_FILE_SYSTEM_VERSION = '~19.0.23';
 const EXPO_IMAGE_PICKER_VERSION = '~17.0.11';
 const EXPO_SECURE_STORE_VERSION = '~15.0.8';
-const EXPO_UPDATES_VERSION = '~29.0.19';
+const EXPO_UPDATES_VERSION = '~29.0.20';
 const EXPO_WEB_BROWSER_VERSION = '~15.0.11';
 const BABEL_MODULE_RESOLVER_VERSION = '^5.0.2';
 const TYPESCRIPT_VERSION = '~5.9.3';
@@ -257,7 +255,6 @@ export function getBabelConfigJs() {
           },
         },
       ],
-      '${EXPO_SDK_54_ANIMATION_COMPATIBILITY.babelPlugin}',
     ],
   };
 };
@@ -328,7 +325,7 @@ export function getPackageJson(args: {
       '@react-navigation/drawer': '^7.5.0',
       'babel-preset-expo': '^54.0.10',
       expo: EXPO_VERSION,
-      'expo-constants': '~18.0.13',
+      'expo-constants': '~18.0.14',
       'expo-font': '~14.0.12',
       'expo-linear-gradient': '~15.0.8',
       'expo-linking': '~8.0.12',
@@ -341,12 +338,12 @@ export function getPackageJson(args: {
       'react-dom': '19.1.0',
       'react-native': '0.81.5',
       'react-native-gesture-handler': '~2.28.0',
-      'react-native-reanimated': EXPO_SDK_54_ANIMATION_COMPATIBILITY.reanimated,
+      'react-native-reanimated': '~4.1.1',
       'react-native-safe-area-context': '~5.6.0',
       'react-native-screens': '~4.16.0',
       'react-native-svg': '~15.12.1',
       'react-native-web': '^0.21.2',
-      'react-native-worklets': EXPO_SDK_54_ANIMATION_COMPATIBILITY.worklets,
+      'react-native-worklets': '0.5.1',
       'reanimated-color-picker': '^4.2.0',
     },
     devDependencies: {
