@@ -550,32 +550,25 @@ function useStudioManifestPersistence(args: {
     initialManifest ? createStudioManifestSignature(initialManifest) : null,
   );
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const readManifest = useCallback(() => manifestRef.current, [manifestRef]);
-  const readLastPersistedSignature = useCallback(() => lastPersistedSignatureRef.current, []);
-  const setLastPersistedSignature = useCallback((signature: string | null) => {
-    lastPersistedSignatureRef.current = signature;
-  }, []);
-  const coordinator = useMemo(
-    () =>
-      new StudioManifestPersistenceCoordinator({
-        projectId,
-        readManifest,
-        readLastPersistedSignature,
-        setLastPersistedSignature,
-        saveManifest: persistProjectManifest,
-        setSaveStatus,
-        setError,
-        toErrorMessage: toPersistenceMessage,
-      }),
-    [
+  const coordinatorRef = useRef<StudioManifestPersistenceCoordinator | null>(null);
+
+  useEffect(() => {
+    coordinatorRef.current = new StudioManifestPersistenceCoordinator({
       projectId,
-      readLastPersistedSignature,
-      readManifest,
-      setError,
-      setLastPersistedSignature,
+      readManifest: () => manifestRef.current,
+      readLastPersistedSignature: () => lastPersistedSignatureRef.current,
+      setLastPersistedSignature: (signature) => {
+        lastPersistedSignatureRef.current = signature;
+      },
+      saveManifest: persistProjectManifest,
       setSaveStatus,
-    ],
-  );
+      setError,
+      toErrorMessage: toPersistenceMessage,
+    });
+    return () => {
+      coordinatorRef.current = null;
+    };
+  }, [manifestRef, projectId, setError, setSaveStatus]);
 
   const loadManifest = useCallback(async () => {
     setIsLoading(true);
@@ -616,6 +609,8 @@ function useStudioManifestPersistence(args: {
 
   useEffect(() => {
     if (!hydratedRef.current || !manifest) return;
+    const coordinator = coordinatorRef.current;
+    if (!coordinator) return;
 
     const signature = createStudioManifestSignature(manifest);
     if (signature === lastPersistedSignatureRef.current) return;
@@ -635,15 +630,15 @@ function useStudioManifestPersistence(args: {
         debounceTimerRef.current = null;
       }
     };
-  }, [coordinator, manifest, setSaveStatus]);
+  }, [manifest, setSaveStatus]);
 
   const flushManifest = useCallback(async () => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
       debounceTimerRef.current = null;
     }
-    await coordinator.flushLatestSave();
-  }, [coordinator]);
+    await coordinatorRef.current?.flushLatestSave();
+  }, []);
 
   return { refetchManifest: loadManifest, flushManifest };
 }

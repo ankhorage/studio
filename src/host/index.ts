@@ -1,3 +1,5 @@
+export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
+export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
 export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
 export { createTrustedExternalApiFetch } from './apis/createTrustedExternalApiFetch';
 export { StudioExternalApiService } from './apis/studioExternalApiService';
@@ -10,8 +12,6 @@ export {
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
-export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
-export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
 export {
   ProjectDeployService,
   type ProjectDeployServiceOptions,
