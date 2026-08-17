@@ -270,7 +270,7 @@ export class GeneratedAppFileGenerator {
       `import ankhConfig from '@root/ankh.config.json';`,
       `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import { useCallback, useEffect, useMemo, useRef, useState } from 'react';`,
+      `import { useCallback, useEffect, useMemo, useState } from 'react';`,
       `import { AppState } from 'react-native';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
@@ -360,7 +360,7 @@ export class GeneratedAppFileGenerator {
           ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
           : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import React, { useEffect, useMemo, useRef } from 'react';`,
+      `import React, { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       getPackageOwnedRuntimeImports(),
