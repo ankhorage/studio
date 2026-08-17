@@ -235,18 +235,18 @@ function parseFlow(value: unknown): ValidationResult<ManifestFlow> {
   if (!postSignInRoute.ok) return postSignInRoute;
 
   const optionalRoutes = [
-    'signUpRoute',
-    'signOutRoute',
-    'forgotPasswordRoute',
-    'otpRoute',
-    'unauthorizedRoute',
+    ['signUpRoute', record.signUpRoute],
+    ['signOutRoute', record.signOutRoute],
+    ['forgotPasswordRoute', record.forgotPasswordRoute],
+    ['otpRoute', record.otpRoute],
+    ['unauthorizedRoute', record.unauthorizedRoute],
   ] as const;
   const parsed: Partial<ManifestFlow> = {};
-  for (const key of optionalRoutes) {
-    if (record[key] === undefined) continue;
-    const route = readRoute(record[key], key);
+  for (const [key, routeValue] of optionalRoutes) {
+    if (routeValue === undefined) continue;
+    const route = readRoute(routeValue, key);
     if (!route.ok) return route;
-    parsed[key] = route.data;
+    Object.assign(parsed, { [key]: route.data });
   }
 
   return success({
