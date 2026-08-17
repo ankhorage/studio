@@ -176,7 +176,7 @@ function missingOperationDiagnostic(
   operation: BindingOperationRef,
   path: string,
 ): StudioBindingDiagnostic {
-  const ref = [operation.dataSourceId, operation.endpointId, operation.operationId]
+  const ref = [operation.apiId, operation.endpointId, operation.operationId]
     .filter((part): part is string => part !== undefined)
     .join(' · ');
   return diagnostic('missing-operation', `Operation '${ref}' is unavailable.`, path);
