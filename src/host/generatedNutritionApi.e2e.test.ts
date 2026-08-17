@@ -17,7 +17,7 @@ const PRODUCTS_GRID_ID = 'food_drink-nutrition-catalog-scan-products-grid';
 
 type OperationRepeatSource = Extract<
   NonNullable<NonNullable<UiNode['repeat']>['source']>,
-  { readonly kind: 'operation' },
+  { readonly kind: 'operation' }
 >;
 
 interface RecordedRequest {
@@ -27,8 +27,6 @@ interface RecordedRequest {
 
 test('generated Nutrition app executes canonical product bindings over external HTTP', async () => {
   const workspaceRoot = await createWorkspaceRoot();
-  const previousSupabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
-  process.env.EXPO_PUBLIC_SUPABASE_URL = 'http://127.0.0.1:54321';
 
   try {
     const manager = new ProjectManager(workspaceRoot);
@@ -48,7 +46,6 @@ test('generated Nutrition app executes canonical product bindings over external 
     await executeStudioApiOperation(manager, created.id, endpointFetch);
     assertExternalProductRequests(requests);
   } finally {
-    restoreSupabaseUrl(previousSupabaseUrl);
     await rm(workspaceRoot, { recursive: true, force: true });
   }
 });
@@ -144,9 +141,7 @@ function createRecordingFetch(requests: RecordedRequest[]): EndpointTestFetch {
       text: () =>
         Promise.resolve(
           JSON.stringify({
-            products: [
-              { id: 'product-1', barcode: '7612345678901', name: 'Acceptance Product' },
-            ],
+            products: [{ id: 'product-1', barcode: '7612345678901', name: 'Acceptance Product' }],
           }),
         ),
     });
@@ -171,12 +166,4 @@ function findNode(root: UiNode, nodeId: string): UiNode | undefined {
     pending.push(...(node.children ?? []));
   }
   return undefined;
-}
-
-function restoreSupabaseUrl(previous: string | undefined): void {
-  if (previous === undefined) {
-    delete process.env.EXPO_PUBLIC_SUPABASE_URL;
-    return;
-  }
-  process.env.EXPO_PUBLIC_SUPABASE_URL = previous;
 }
