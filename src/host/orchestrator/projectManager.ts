@@ -12,7 +12,6 @@ import {
   ProjectCreationValidationError,
   validateProjectCreationInput,
 } from '../../projectIdentity';
-import { resolveGeneratedDatabaseRuntime } from '../generatedDatabaseRuntime';
 import { GeneratedAppFileGenerator } from '../layout/layoutGenerator';
 import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
@@ -108,7 +107,6 @@ export class ProjectManager {
     await this.scaffolder.scaffoldProject(projectPath, name, slug, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(scaffoldManifest),
-      databaseRuntimeProvider: resolveGeneratedDatabaseRuntime(scaffoldManifest)?.provider ?? null,
       runtimePlan: resolveExpoRuntimePlan(scaffoldManifest),
       storageProvider: resolveGeneratedStorageProvider(scaffoldManifest),
       splashScreen: scaffoldManifest.splashScreen ?? null,
@@ -293,7 +291,6 @@ export class ProjectManager {
     await this.scaffolder.syncProjectScaffold(projectPath, manifest.metadata.name, projectId, {
       includeStudio,
       authProvider: resolveGeneratedAuthProvider(manifest),
-      databaseRuntimeProvider: resolveGeneratedDatabaseRuntime(manifest)?.provider ?? null,
       runtimePlan,
       storageProvider: resolveGeneratedStorageProvider(manifest),
       splashScreen: manifest.splashScreen ?? null,
