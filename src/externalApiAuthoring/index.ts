@@ -6,10 +6,10 @@ export type {
   ExternalApiOperationTestResult,
   ExternalApiProtocol,
   ManualRestApiRequest,
-} from './externalApiAuthoringContracts';
-export { type ExternalApiIdResult, normalizeExternalApiId } from './normalizeExternalApiId';
+} from '../externalApiAuthoringContracts';
+export { type ExternalApiIdResult, normalizeExternalApiId } from '../normalizeExternalApiId';
 export {
   type ExternalApiDefinition,
   type ExternalApiUpsertResult,
   upsertExternalApi,
-} from './upsertExternalApi';
+} from '../upsertExternalApi';
