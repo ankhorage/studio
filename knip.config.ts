@@ -26,9 +26,7 @@ export default createKnipConfig({
       ignoreFiles: ['paradox.config.ts'],
     },
     'apps/studio': {
-      entry: ['babel.config.js'],
       project: ['**/*.js', '**/*.ts', '**/*.tsx'],
-      ignoreDependencies: ['babel-preset-expo', 'babel-plugin-module-resolver'],
     },
   },
 });
