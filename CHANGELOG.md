@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 1.13.2
+
+### Patch Changes
+
+- 630697a: Make the standalone Studio development host reachable from same-LAN iOS and Android clients while keeping web localhost access, and render embedded Studio load errors with native-safe text.
+
 ## 1.13.1
 
 ### Patch Changes
