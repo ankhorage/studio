@@ -41,7 +41,7 @@ describe('generated OAuth scaffold templates', () => {
   it('does not inject the removed generated database runtime adapter', () => {
     const pkg = getPackageJson({ name: 'plain-app' });
 
-    expect(pkg.dependencies['@ankhorage/supabase-db']).toBeUndefined();
+    expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
     expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.0.0');
     expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
   });

@@ -19,7 +19,7 @@ describe('binding mutation acceptance', () => {
     const operation = upsertStudioPropBinding(context, button, 'children', {
       source: {
         kind: 'operation',
-        operation: { dataSourceId: 'catalog', endpointId: 'items', operationId: 'items.read' },
+        operation: { apiId: 'catalog', endpointId: 'items', operationId: 'items.read' },
         path: 'title',
       },
     });
@@ -38,7 +38,7 @@ describe('binding mutation acceptance', () => {
     const withOperation = appendStudioEventBinding(withAction, button, 'press', {
       target: {
         kind: 'operation',
-        operation: { dataSourceId: 'generated', endpointId: 'items', operationId: 'items.create' },
+        operation: { apiId: 'catalog', endpointId: 'items', operationId: 'items.create' },
       },
       input: {
         name: { kind: 'source', source: { kind: 'event', path: 'value' } },
