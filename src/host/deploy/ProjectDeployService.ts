@@ -42,12 +42,12 @@ import {
 import type { ProjectDeployMonetizationInspectionResult } from '../../projectDeployMonetizationInspectionResult';
 import type { ProjectDeployReleaseHistoryRecord } from '../../projectDeployReleaseHistoryRecord';
 import type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
+import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
 import { ProjectSecretService } from '../secrets/projectSecretService';
 import { createProjectDeployAccess } from './createProjectDeployAccess';
 import { ProjectDeployMutationGuard } from './ProjectDeployMutationGuard';
-import type { ProjectDeployRuntimeInput } from './ProjectDeployRuntimeInput';
 import type { ProjectDeploySecretStore } from './ProjectDeploySecretStore';
 
 export interface ProjectDeployServiceOptions {
@@ -55,8 +55,6 @@ export interface ProjectDeployServiceOptions {
   readonly workspaceRoot: string;
   readonly secretStore?: ProjectDeploySecretStore;
 }
-
-export type { ProjectDeployReleaseInspectionResult } from '../../projectDeployReleaseInspectionResult';
 
 export class ProjectDeployService {
   private readonly workspaceRoot: string;

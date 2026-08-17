@@ -35,9 +35,9 @@ function createProjectStore(initial = createManifest()) {
   return {
     manager: {
       getProjectManifest: () => Promise.resolve(manifest),
-      persistProjectManifest: (args: { readonly manifest: StudioManifest }) => {
-        manifest = args.manifest;
-        return Promise.resolve(args.manifest);
+      persistProjectManifest: ({ manifest: nextManifest }: { readonly manifest: StudioManifest }) => {
+        manifest = nextManifest;
+        return Promise.resolve(nextManifest);
       },
     },
     read: () => manifest,

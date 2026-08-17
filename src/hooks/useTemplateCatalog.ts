@@ -43,6 +43,14 @@ function parseTemplateCatalog(value: unknown): TemplateCatalog {
   return { categories: value.categories };
 }
 
+async function requestTemplateCatalog(): Promise<TemplateCatalog> {
+  const response = await fetch(`${API_BASE}/templates`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch template catalog');
+  }
+  return parseTemplateCatalog(await response.json());
+}
+
 export function useTemplateCatalog() {
   const [catalog, setCatalog] = useState<TemplateCatalog>({ categories: [] });
   const [isLoading, setIsLoading] = useState(true);
@@ -50,12 +58,7 @@ export function useTemplateCatalog() {
 
   const loadCatalog = useCallback(async () => {
     try {
-      const response = await fetch(`${API_BASE}/templates`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch template catalog');
-      }
-
-      setCatalog(parseTemplateCatalog(await response.json()));
+      setCatalog(await requestTemplateCatalog());
       setError(null);
     } catch (caught) {
       console.error(caught);
@@ -71,8 +74,26 @@ export function useTemplateCatalog() {
   }, [loadCatalog]);
 
   useEffect(() => {
-    void loadCatalog();
-  }, [loadCatalog]);
+    let active = true;
+    void requestTemplateCatalog()
+      .then((nextCatalog) => {
+        if (!active) return;
+        setCatalog(nextCatalog);
+        setError(null);
+      })
+      .catch((caught: unknown) => {
+        console.error(caught);
+        if (!active) return;
+        setError('Could not load templates from the local Studio host.');
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return {
     catalog,

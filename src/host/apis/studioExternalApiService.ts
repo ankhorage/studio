@@ -220,5 +220,5 @@ function missingApiResult(apiId: string): ExternalApiOperationTestResult {
 
 function clean(value: string | undefined): string | undefined {
   const normalized = value?.trim();
-  return normalized || undefined;
+  return normalized === '' ? undefined : normalized;
 }

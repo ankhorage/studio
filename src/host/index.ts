@@ -10,9 +10,9 @@ export {
   type CreateStudioHostOptions,
   type StudioHost,
 } from './createStudioHost';
-export type { ProjectDeployRuntimeInput } from './deploy/ProjectDeployRuntimeInput';
+export type { ProjectDeployRuntimeInput } from '../projectDeployRuntimeInput';
+export type { ProjectDeployReleaseInspectionResult } from '../projectDeployReleaseInspectionResult';
 export {
-  type ProjectDeployReleaseInspectionResult,
   ProjectDeployService,
   type ProjectDeployServiceOptions,
 } from './deploy/ProjectDeployService';

@@ -146,9 +146,11 @@ export const StudioProvider = ({
 
   useEffect(() => {
     if (!locationActiveScreenId) return;
-    setRequestedActiveScreenId((current) =>
-      current === locationActiveScreenId ? current : locationActiveScreenId,
-    );
+    queueMicrotask(() => {
+      setRequestedActiveScreenId((current) =>
+        current === locationActiveScreenId ? current : locationActiveScreenId,
+      );
+    });
   }, [locationActiveScreenId]);
 
   const rootNode = useMemo<UiNode | null>(
@@ -159,7 +161,9 @@ export const StudioProvider = ({
   useEffect(() => {
     const nextSelectedNodeId = resolveStudioSelectedNodeId(rootNode, selectedNodeId);
     if (selectedNodeId !== nextSelectedNodeId) {
-      selectNode(nextSelectedNodeId);
+      queueMicrotask(() => {
+        selectNode(nextSelectedNodeId);
+      });
     }
   }, [rootNode, selectedNodeId]);
 
@@ -546,21 +550,31 @@ function useStudioManifestPersistence(args: {
     initialManifest ? createStudioManifestSignature(initialManifest) : null,
   );
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const readManifest = useCallback(() => manifestRef.current, [manifestRef]);
+  const readLastPersistedSignature = useCallback(() => lastPersistedSignatureRef.current, []);
+  const setLastPersistedSignature = useCallback((signature: string | null) => {
+    lastPersistedSignatureRef.current = signature;
+  }, []);
   const coordinator = useMemo(
     () =>
       new StudioManifestPersistenceCoordinator({
         projectId,
-        readManifest: () => manifestRef.current,
-        readLastPersistedSignature: () => lastPersistedSignatureRef.current,
-        setLastPersistedSignature: (signature) => {
-          lastPersistedSignatureRef.current = signature;
-        },
+        readManifest,
+        readLastPersistedSignature,
+        setLastPersistedSignature,
         saveManifest: persistProjectManifest,
         setSaveStatus,
         setError,
         toErrorMessage: toPersistenceMessage,
       }),
-    [manifestRef, projectId, setError, setSaveStatus],
+    [
+      projectId,
+      readLastPersistedSignature,
+      readManifest,
+      setError,
+      setLastPersistedSignature,
+      setSaveStatus,
+    ],
   );
 
   const loadManifest = useCallback(async () => {

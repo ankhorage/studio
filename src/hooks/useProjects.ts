@@ -104,6 +104,12 @@ function parseProjectList(value: unknown): StudioProjectSummary[] {
   return value;
 }
 
+async function requestProjects(): Promise<StudioProjectSummary[]> {
+  const response = await fetch(`${API_BASE}/projects`);
+  if (!response.ok) throw new Error('Failed to fetch projects');
+  return parseProjectList(await readJson(response));
+}
+
 function parseCreateProjectResponse(value: unknown): CreateProjectResponse {
   if (
     !isRecord(value) ||
@@ -184,9 +190,7 @@ export const useProjects = () => {
 
   const loadProjects = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE}/projects`);
-      if (!res.ok) throw new Error('Failed to fetch projects');
-      const data = parseProjectList(await readJson(res));
+      const data = await requestProjects();
       setProjects(data);
       setError(null);
     } catch (err) {
@@ -257,8 +261,26 @@ export const useProjects = () => {
   };
 
   useEffect(() => {
-    void loadProjects();
-  }, [loadProjects]);
+    let active = true;
+    void requestProjects()
+      .then((data) => {
+        if (!active) return;
+        setProjects(data);
+        setError(null);
+      })
+      .catch((caught: unknown) => {
+        console.error(caught);
+        if (!active) return;
+        setError('Could not connect to the local Studio host. Run `ankh studio dev`.');
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return {
     projects,

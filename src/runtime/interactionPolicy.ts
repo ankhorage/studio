@@ -7,8 +7,6 @@ import {
   createInteractionPolicyResolver,
 } from './interactionPolicyCore.js';
 
-export type { InteractionPolicy, ThirdPartyComponentSupport } from './interactionPolicyCore.js';
-
 export interface StudioInteractionPolicyResolverArgs {
   readonly previewMode: boolean;
   readonly thirdPartySupport?: ThirdPartyComponentSupport;

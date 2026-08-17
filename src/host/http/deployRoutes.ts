@@ -12,7 +12,7 @@ import type {
 } from '@ankhorage/deploy/project';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
-import type { ProjectDeployRuntimeInput } from '../deploy/ProjectDeployRuntimeInput';
+import type { ProjectDeployRuntimeInput } from '../../projectDeployRuntimeInput';
 import { ProjectDeployService } from '../deploy/ProjectDeployService';
 import type { ProjectManager } from '../orchestrator/projectManager';
 
