@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.12.7",
+      "value": "v1.13.3",
       "color": "cb3837"
     },
     {
@@ -878,6 +878,15 @@
       "exports": []
     },
     {
+      "path": "src/host/generatedNutritionApi.e2e.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/apis/studioExternalApiService.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/generatedOAuthLifecycle.e2e.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/layout/templates/auth/oauth.ts"],
@@ -967,6 +976,18 @@
       "exports": ["registerProjectModuleRoutes"]
     },
     {
+      "path": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/http/resolveStandaloneStudioHostOptions.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/http/resolveStandaloneStudioHostOptions.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["resolveStandaloneStudioHostOptions"]
+    },
+    {
       "path": "src/host/http/secretRoutes.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1019,7 +1040,10 @@
     {
       "path": "src/host/http/standalone.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/http/serverWithSecrets.ts"],
+      "dependencies": [
+        "src/host/http/resolveStandaloneStudioHostOptions.ts",
+        "src/host/http/serverWithSecrets.ts"
+      ],
       "exports": []
     },
     {
@@ -1154,6 +1178,12 @@
         "src/studioAdminRouteModel.ts"
       ],
       "exports": ["GeneratedAppFileGenerationOptions", "GeneratedAppFileGenerator", "GeneratedFile"]
+    },
+    {
+      "path": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/layout/layoutGenerator.ts"],
+      "exports": []
     },
     {
       "path": "src/host/layout/templates/auth/adapter.test.ts",
@@ -1527,21 +1557,6 @@
       "exports": []
     },
     {
-      "path": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-        "src/host/orchestrator/templates.ts"
-      ],
-      "exports": []
-    },
-    {
-      "path": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": ["EXPO_SDK_54_ANIMATION_COMPATIBILITY"]
-    },
-    {
       "path": "src/host/orchestrator/generatedAppFiles.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/generatedAppFiles.ts"],
@@ -1716,16 +1731,13 @@
     {
       "path": "src/host/orchestrator/templates.test.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-        "src/host/orchestrator/templates.ts"
-      ],
+      "dependencies": ["src/host/orchestrator/templates.ts"],
       "exports": []
     },
     {
       "path": "src/host/orchestrator/templates.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/orchestrator/expoSdk54AnimationCompatibility.ts"],
+      "dependencies": [],
       "exports": [
         "GeneratedAuthProvider",
         "GeneratedStorageProvider",
@@ -12023,7 +12035,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 842,
+        "line": 847,
         "column": 1
       }
     },
@@ -12032,7 +12044,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1086,
+        "line": 1091,
         "column": 1
       }
     },
@@ -12041,7 +12053,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1314,
+        "line": 1319,
         "column": 1
       }
     },
@@ -12050,7 +12062,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1341,
+        "line": 1346,
         "column": 1
       }
     },
@@ -12059,7 +12071,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1360,
+        "line": 1365,
         "column": 1
       }
     },
@@ -12068,7 +12080,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1380,
+        "line": 1385,
         "column": 1
       }
     },
@@ -12077,7 +12089,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1399,
+        "line": 1404,
         "column": 1
       }
     },
@@ -12086,7 +12098,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1420,
+        "line": 1425,
         "column": 1
       }
     },
@@ -12095,7 +12107,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1424,
+        "line": 1429,
         "column": 1
       }
     },
@@ -12104,7 +12116,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1444,
+        "line": 1449,
         "column": 1
       }
     },
@@ -12113,7 +12125,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1465,
+        "line": 1470,
         "column": 1
       }
     },
@@ -12122,7 +12134,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1487,
+        "line": 1492,
         "column": 1
       }
     },
@@ -12131,7 +12143,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1526,
+        "line": 1531,
         "column": 1
       }
     },
@@ -12140,7 +12152,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1540,
+        "line": 1545,
         "column": 1
       }
     },
@@ -12149,7 +12161,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1569,
+        "line": 1574,
         "column": 1
       }
     },
@@ -12158,7 +12170,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1576,
+        "line": 1581,
         "column": 1
       }
     },
@@ -12167,7 +12179,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1583,
+        "line": 1588,
         "column": 1
       }
     },
@@ -12176,7 +12188,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1592,
+        "line": 1597,
         "column": 1
       }
     },
@@ -12185,7 +12197,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1617,
+        "line": 1622,
         "column": 1
       }
     },
@@ -12194,7 +12206,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1624,
+        "line": 1629,
         "column": 1
       }
     },
@@ -12203,7 +12215,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1663,
+        "line": 1668,
         "column": 1
       }
     },
@@ -12212,7 +12224,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1697,
+        "line": 1702,
         "column": 1
       }
     },
@@ -12221,7 +12233,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 1726,
+        "line": 1731,
         "column": 1
       }
     },
@@ -12230,7 +12242,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2004,
+        "line": 2009,
         "column": 1
       }
     },
@@ -12239,7 +12251,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2027,
+        "line": 2032,
         "column": 1
       }
     },
@@ -12248,7 +12260,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2044,
+        "line": 2049,
         "column": 1
       }
     },
@@ -12257,7 +12269,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2060,
+        "line": 2065,
         "column": 1
       }
     },
@@ -12266,7 +12278,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2082,
+        "line": 2087,
         "column": 1
       }
     },
@@ -12275,7 +12287,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2111,
+        "line": 2116,
         "column": 1
       }
     },
@@ -12284,7 +12296,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2174,
+        "line": 2179,
         "column": 1
       }
     },
@@ -12293,7 +12305,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2238,
+        "line": 2243,
         "column": 1
       }
     },
@@ -12302,7 +12314,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2271,
+        "line": 2276,
         "column": 1
       }
     },
@@ -12311,7 +12323,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2285,
+        "line": 2290,
         "column": 1
       }
     },
@@ -12320,7 +12332,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2294,
+        "line": 2299,
         "column": 1
       }
     },
@@ -12329,7 +12341,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2310,
+        "line": 2315,
         "column": 1
       }
     },
@@ -12338,7 +12350,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2317,
+        "line": 2322,
         "column": 1
       }
     },
@@ -12347,7 +12359,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2323,
+        "line": 2328,
         "column": 1
       }
     },
@@ -12356,7 +12368,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2336,
+        "line": 2341,
         "column": 1
       }
     },
@@ -12365,7 +12377,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2353,
+        "line": 2358,
         "column": 1
       }
     },
@@ -12374,7 +12386,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2370,
+        "line": 2375,
         "column": 1
       }
     },
@@ -12383,7 +12395,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2376,
+        "line": 2381,
         "column": 1
       }
     },
@@ -12392,7 +12404,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2382,
+        "line": 2387,
         "column": 1
       }
     },
@@ -12401,7 +12413,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2398,
+        "line": 2403,
         "column": 1
       }
     },
@@ -12410,7 +12422,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2954,
+        "line": 2959,
         "column": 1
       }
     },
@@ -12419,7 +12431,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2969,
+        "line": 2974,
         "column": 1
       }
     },
@@ -12428,7 +12440,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2973,
+        "line": 2978,
         "column": 1
       }
     },
@@ -12437,7 +12449,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2982,
+        "line": 2987,
         "column": 1
       }
     },
@@ -12446,7 +12458,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
-        "line": 2993,
+        "line": 2998,
         "column": 1
       }
     },
@@ -12609,6 +12621,96 @@
       "sourceLocation": {
         "filePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts",
         "line": 270,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertCanonicalNutritionManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertBarcodeOperation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertGeneratedRuntimeSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeGeneratedRuntimeBinding",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeGeneratedBarcodeLookup",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "executeStudioApiOperation",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRecordingFetch",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 192,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertExternalProductRequests",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 204,
+        "column": 1
+      }
+    },
+    {
+      "name": "findNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "line": 218,
         "column": 1
       }
     },
@@ -13131,6 +13233,15 @@
       "sourceLocation": {
         "filePath": "src/host/http/moduleRoutes.ts",
         "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStandaloneStudioHostOptions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/http/resolveStandaloneStudioHostOptions.ts",
+        "line": 4,
         "column": 1
       }
     },
@@ -13797,6 +13908,33 @@
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
         "line": 556,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "generateRootLayout",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "line": 61,
         "column": 1
       }
     },
@@ -15119,7 +15257,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 41,
+        "line": 39,
         "column": 1
       }
     },
@@ -15128,7 +15266,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 49,
+        "line": 47,
         "column": 1
       }
     },
@@ -15137,7 +15275,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 91,
+        "line": 89,
         "column": 1
       }
     },
@@ -15146,7 +15284,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 105,
+        "line": 103,
         "column": 1
       }
     },
@@ -15155,7 +15293,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 118,
+        "line": 116,
         "column": 1
       }
     },
@@ -15164,7 +15302,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 140,
+        "line": 138,
         "column": 1
       }
     },
@@ -15173,7 +15311,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 162,
+        "line": 160,
         "column": 1
       }
     },
@@ -15182,7 +15320,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 174,
+        "line": 172,
         "column": 1
       }
     },
@@ -15191,7 +15329,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 202,
+        "line": 200,
         "column": 1
       }
     },
@@ -15200,7 +15338,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 235,
+        "line": 233,
         "column": 1
       }
     },
@@ -15209,7 +15347,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 243,
+        "line": 241,
         "column": 1
       }
     },
@@ -15218,7 +15356,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 267,
+        "line": 264,
         "column": 1
       }
     },
@@ -15227,7 +15365,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 365,
+        "line": 362,
         "column": 1
       }
     },
@@ -15236,7 +15374,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 389,
+        "line": 386,
         "column": 1
       }
     },
@@ -15245,7 +15383,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 394,
+        "line": 391,
         "column": 1
       }
     },
@@ -15254,7 +15392,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 399,
+        "line": 396,
         "column": 1
       }
     },
@@ -22445,7 +22583,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/AnkhStudio.ts",
-        "line": 23,
+        "line": 24,
         "column": 14
       }
     },
@@ -22634,7 +22772,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 34,
+        "line": 32,
         "column": 1
       }
     },
@@ -22643,7 +22781,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 74,
+        "line": 72,
         "column": 1
       }
     },
@@ -22652,7 +22790,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 91,
+        "line": 89,
         "column": 1
       }
     },
@@ -22661,7 +22799,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 101,
+        "line": 99,
         "column": 1
       }
     },
@@ -22670,7 +22808,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 130,
+        "line": 128,
         "column": 1
       }
     },
@@ -22679,7 +22817,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/ui/useStudioAppBarAugmentation.ts",
-        "line": 196,
+        "line": 194,
         "column": 1
       }
     },
@@ -24319,6 +24457,16 @@
         "sourcePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts"
       },
       {
+        "fromPath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toPath": "src/host/apis/studioExternalApiService.ts",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
         "fromPath": "src/host/generatedOAuthLifecycle.e2e.test.ts",
         "toPath": "src/host/layout/templates/auth/oauth.ts",
         "sourcePath": "src/host/generatedOAuthLifecycle.e2e.test.ts"
@@ -25134,6 +25282,11 @@
         "sourcePath": "src/host/http/moduleRoutes.ts"
       },
       {
+        "fromPath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+        "toPath": "src/host/http/resolveStandaloneStudioHostOptions.ts",
+        "sourcePath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts"
+      },
+      {
         "fromPath": "src/host/http/secretRoutes.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/http/secretRoutes.ts"
@@ -25250,6 +25403,11 @@
       },
       {
         "fromPath": "src/host/http/standalone.ts",
+        "toPath": "src/host/http/resolveStandaloneStudioHostOptions.ts",
+        "sourcePath": "src/host/http/standalone.ts"
+      },
+      {
+        "fromPath": "src/host/http/standalone.ts",
         "toPath": "src/host/http/serverWithSecrets.ts",
         "sourcePath": "src/host/http/standalone.ts"
       },
@@ -25302,6 +25460,11 @@
         "fromPath": "src/host/layout/layoutGenerator.ts",
         "toPath": "src/host/layout/templates/utils/routes.ts",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromPath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toPath": "src/host/layout/layoutGenerator.ts",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
       },
       {
         "fromPath": "src/host/manifestSystem/index.ts",
@@ -25422,16 +25585,6 @@
         "fromPath": "src/host/orchestrator/appTargetGeneration.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toPath": "src/host/orchestrator/templates.ts",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/generatedAppFiles.test.ts",
@@ -25660,18 +25813,8 @@
       },
       {
         "fromPath": "src/host/orchestrator/templates.test.ts",
-        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-        "sourcePath": "src/host/orchestrator/templates.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/templates.test.ts",
         "toPath": "src/host/orchestrator/templates.ts",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
-      },
-      {
-        "fromPath": "src/host/orchestrator/templates.ts",
-        "toPath": "src/host/orchestrator/expoSdk54AnimationCompatibility.ts",
-        "sourcePath": "src/host/orchestrator/templates.ts"
       },
       {
         "fromPath": "src/host/secrets/projectSecretService.test.ts",
@@ -36718,6 +36861,186 @@
         "sourcePath": "src/host/generatedNativeOAuthLifecycle.e2e.test.ts"
       },
       {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "createWorkspaceRoot",
+        "callExpression": "createWorkspaceRoot",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "createProject",
+        "callExpression": "manager.createProject",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "manager.getProjectManifest",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "assertCanonicalNutritionManifest",
+        "callExpression": "assertCanonicalNutritionManifest",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "assertBarcodeOperation",
+        "callExpression": "assertBarcodeOperation",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "assertGeneratedRuntimeSource",
+        "callExpression": "assertGeneratedRuntimeSource",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "createRecordingFetch",
+        "callExpression": "createRecordingFetch",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "executeGeneratedRuntimeBinding",
+        "callExpression": "executeGeneratedRuntimeBinding",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "executeGeneratedBarcodeLookup",
+        "callExpression": "executeGeneratedBarcodeLookup",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "executeStudioApiOperation",
+        "callExpression": "executeStudioApiOperation",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "assertExternalProductRequests",
+        "callExpression": "assertExternalProductRequests",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/generatedNutritionApi.e2e.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceRoot",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertCanonicalNutritionManifest",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertCanonicalNutritionManifest",
+        "toSymbol": "findNode",
+        "callExpression": "findNode",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertBarcodeOperation",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedRuntimeSource",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedRuntimeSource",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeGeneratedRuntimeBinding",
+        "toSymbol": "resolveRuntimeBindingValue",
+        "callExpression": "resolveRuntimeBindingValue",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeGeneratedRuntimeBinding",
+        "toSymbol": "createRuntimeApiOperationExecutor",
+        "callExpression": "createRuntimeApiOperationExecutor",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeGeneratedRuntimeBinding",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeGeneratedBarcodeLookup",
+        "toSymbol": "createRuntimeApiOperationExecutor",
+        "callExpression": "createRuntimeApiOperationExecutor",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeGeneratedBarcodeLookup",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeStudioApiOperation",
+        "toSymbol": "testOperation",
+        "callExpression": "service.testOperation",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "executeStudioApiOperation",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertExternalProductRequests",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/generatedNutritionApi.e2e.test.ts"
+      },
+      {
         "fromSymbol": "src/host/generatedOAuthLifecycle.e2e.test.ts",
         "toSymbol": "afterEach",
         "callExpression": "afterEach",
@@ -41368,6 +41691,30 @@
         "sourcePath": "src/host/http/moduleRoutes.ts"
       },
       {
+        "fromSymbol": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/resolveStandaloneStudioHostOptions.test.ts",
+        "toSymbol": "resolveStandaloneStudioHostOptions",
+        "callExpression": "resolveStandaloneStudioHostOptions",
+        "sourcePath": "src/host/http/resolveStandaloneStudioHostOptions.test.ts"
+      },
+      {
         "fromSymbol": "src/host/http/secretRoutes.ts",
         "toSymbol": "sendSecretResult",
         "callExpression": "sendSecretResult",
@@ -41666,6 +42013,12 @@
         "toSymbol": "registerProjectDeployRoutes",
         "callExpression": "registerProjectDeployRoutes",
         "sourcePath": "src/host/http/serverWithSecrets.ts"
+      },
+      {
+        "fromSymbol": "src/host/http/standalone.ts",
+        "toSymbol": "resolveStandaloneStudioHostOptions",
+        "callExpression": "resolveStandaloneStudioHostOptions",
+        "sourcePath": "src/host/http/standalone.ts"
       },
       {
         "fromSymbol": "src/host/http/standalone.ts",
@@ -42188,6 +42541,48 @@
         "toSymbol": "prepareNavigatorForGeneratedRoutes",
         "callExpression": "prepareNavigatorForGeneratedRoutes",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
+      },
+      {
+        "fromSymbol": "createAuthManifest",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "generateRootLayout",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator()\n      .generateFiles",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toSymbol": "generateRootLayout",
+        "callExpression": "generateRootLayout",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
+        "toSymbol": "createAuthManifest",
+        "callExpression": "createAuthManifest",
+        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
       },
       {
         "fromSymbol": "src/host/manifestSystem/index.ts",
@@ -42734,42 +43129,6 @@
         "toSymbol": "createDefaultAppDeployManifest",
         "callExpression": "createDefaultAppDeployManifest",
         "sourcePath": "src/host/orchestrator/appTargetGeneration.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "it",
-        "callExpression": "it",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "getPackageJson",
-        "callExpression": "getPackageJson",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts",
-        "toSymbol": "getBabelConfigJs",
-        "callExpression": "getBabelConfigJs",
-        "sourcePath": "src/host/orchestrator/expoSdk54AnimationCompatibility.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/generatedAppFiles.test.ts",
