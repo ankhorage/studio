@@ -145,8 +145,8 @@
       "import": "./dist/host/index.js"
     },
     "./externalApiAuthoring": {
-      "types": "./dist/externalApiAuthoring.d.ts",
-      "import": "./dist/externalApiAuthoring.js"
+      "types": "./dist/externalApiAuthoring/index.d.ts",
+      "import": "./dist/externalApiAuthoring/index.js"
     }
   },
   "ankh": {
