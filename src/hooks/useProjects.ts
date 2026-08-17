@@ -182,9 +182,8 @@ export const useProjects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProjects = useCallback(async () => {
+  const loadProjects = useCallback(async () => {
     try {
-      setIsLoading(true);
       const res = await fetch(`${API_BASE}/projects`);
       if (!res.ok) throw new Error('Failed to fetch projects');
       const data = parseProjectList(await readJson(res));
@@ -197,6 +196,11 @@ export const useProjects = () => {
       setIsLoading(false);
     }
   }, []);
+
+  const refresh = useCallback(async () => {
+    setIsLoading(true);
+    await loadProjects();
+  }, [loadProjects]);
 
   const createProject = async (input: CreateProjectInput): Promise<CreateProjectResponse> => {
     const res = await fetch(`${API_BASE}/projects`, {
@@ -214,7 +218,7 @@ export const useProjects = () => {
     }
 
     const result = parseCreateProjectResponse(await readJson(res));
-    await fetchProjects();
+    await refresh();
     return result;
   };
 
@@ -223,7 +227,7 @@ export const useProjects = () => {
       method: 'DELETE',
     });
     if (!res.ok) throw new Error('Failed to delete project');
-    await fetchProjects();
+    await refresh();
   };
 
   const syncProject = async (projectId: string): Promise<SyncProjectResponse> => {
@@ -253,14 +257,14 @@ export const useProjects = () => {
   };
 
   useEffect(() => {
-    void fetchProjects();
-  }, [fetchProjects]);
+    void loadProjects();
+  }, [loadProjects]);
 
   return {
     projects,
     isLoading,
     error,
-    refresh: fetchProjects,
+    refresh,
     createProject,
     deleteProject,
     syncProject,
