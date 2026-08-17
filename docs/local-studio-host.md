@@ -8,7 +8,7 @@
 ankh studio dev
 ```
 
-This starts the loopback-only HTTP host on `127.0.0.1:3000` and the first-party Expo Studio app. `ANKHORAGE_STUDIO_HOST_PORT` configures the standalone host script.
+This starts the local HTTP host on `0.0.0.0:3000` and the first-party Expo Studio app. `0.0.0.0` is the development listen address only: web clients continue to use `localhost:3000`, while iOS and Android development clients on the same LAN can use the development machine's LAN address on port `3000`. `ANKHORAGE_STUDIO_HOST_PORT` configures the standalone host script.
 
 ## Workspace
 
@@ -52,7 +52,7 @@ results remain owned by the module package. HTTP clients invoke this boundary th
 `POST /api/projects/<project-id>/modules/<module-id>/admin/<operation>`; this does not create a
 module-specific Studio route or service.
 
-The host binds to loopback by default, validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, and bounds command output returned by HTTP.
+The standalone development host listens on all IPv4 interfaces so one running host is reachable from web, iOS, and Android development clients on the same LAN. Browser origins remain restricted by the Studio host origin policy to loopback and private local-network origins. The host validates project IDs, rejects paths outside `apps/`, writes draft and project manifests atomically, and bounds command output returned by HTTP.
 
 For local Infra, Studio consumes `@ankhorage/infra` 1.0.0 generated app-owned Minikube projects. Each app slug maps to its own Minikube profile, generated Infra owns the `app`, `supabase`, and provider namespaces, and generated Infra owns `kubectl port-forward` process lifecycle through `infra/minikube/scripts/port-forward.sh`. Studio orchestrates generated lifecycle scripts and, on shutdown, asks registered projects' generated `port-forward.sh stop all` scripts to stop forwards; it does not run host Supabase or terminate arbitrary forward PIDs itself.
 
@@ -90,5 +90,6 @@ That gated test exercises Studio orchestration against generated Infra without a
 ## Troubleshooting
 
 - Port conflict: stop the process using port 3000 or set `ANKHORAGE_STUDIO_HOST_PORT` for the standalone host.
+- Native Studio connection failure: keep the native development client and development machine on the same LAN and verify that the client resolves the Studio API to the development machine's LAN address on port 3000. `EXPO_PUBLIC_API_URL` remains the explicit client override.
 - Package installation failure: run `bun install` at the Studio repository root and inspect the command output.
 - Dashboard connection failure: start both services with `ankh studio dev`.

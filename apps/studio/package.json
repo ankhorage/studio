@@ -3,6 +3,7 @@
   "main": "index.js",
   "version": "1.0.1",
   "private": true,
+  "_comment": "Keep @ankhorage/studio on the published package. Generated apps are moving standalone; do not restore file:../.. here.",
   "scripts": {
     "prepare:root-package": "bun run --cwd ../.. build",
     "build": "bun run prepare:root-package && bun x tsc -p tsconfig.json",
@@ -15,7 +16,7 @@
     "export:web": "bun run prepare:root-package && expo export --platform web --output-dir dist-web"
   },
   "dependencies": {
-    "@ankhorage/studio": "file:../..",
+    "@ankhorage/studio": "latest",
     "@expo/vector-icons": "^15.0.3",
     "babel-preset-expo": "^54.0.10",
     "expo": "~54.0.36",

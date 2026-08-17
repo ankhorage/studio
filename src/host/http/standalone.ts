@@ -1,10 +1,6 @@
+import { resolveStandaloneStudioHostOptions } from './resolveStandaloneStudioHostOptions';
 import { startStudioHostServerWithSecrets } from './serverWithSecrets';
 
-const rawPortValue: unknown = process.env.ANKHORAGE_STUDIO_HOST_PORT;
-const portValue = typeof rawPortValue === 'string' ? rawPortValue : undefined;
-const port = portValue === undefined ? 3000 : Number.parseInt(portValue, 10);
-if (!Number.isInteger(port) || port < 1 || port > 65_535) {
-  throw new Error(`Invalid ANKHORAGE_STUDIO_HOST_PORT: ${portValue}`);
-}
+const options = resolveStandaloneStudioHostOptions(process.env.ANKHORAGE_STUDIO_HOST_PORT);
 
-await startStudioHostServerWithSecrets({ port, host: '127.0.0.1' });
+await startStudioHostServerWithSecrets(options);
