@@ -1,8 +1,6 @@
-export {
-  createTrustedEndpointTestFetch,
-  createTrustedExternalApiFetch,
-  StudioExternalApiService,
-} from './apis/studioExternalApiService';
+export { createTrustedEndpointTestFetch } from './apis/createTrustedEndpointTestFetch';
+export { createTrustedExternalApiFetch } from './apis/createTrustedExternalApiFetch';
+export { StudioExternalApiService } from './apis/studioExternalApiService';
 export {
   type ProjectAuthHealthResult,
   ProjectAuthHealthService,
