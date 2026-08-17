@@ -10,6 +10,7 @@ import type {
   StudioBindingCompatibility,
   StudioBindingResponsePathOption,
 } from './bindingAuthoringContracts';
+import { readOwnProperty } from './utils/readOwnProperty';
 
 export function resolveStudioSchemaValueMeta(
   schema: DataSchema | undefined,
@@ -81,8 +82,9 @@ function resolveSchemaRef(
   seen: ReadonlySet<string>,
 ): DataSchema | undefined {
   const refId = schema?.ref?.id;
-  if (!refId || !schemas?.[refId] || seen.has(refId)) return schema;
-  return resolveSchemaRef(schemas[refId], schemas, new Set([...seen, refId]));
+  if (!refId || !schemas || seen.has(refId)) return schema;
+  const referenced = readOwnProperty<DataSchema>(schemas, refId);
+  return referenced ? resolveSchemaRef(referenced, schemas, new Set([...seen, refId])) : schema;
 }
 
 function resolveSchemaFields(
@@ -117,7 +119,7 @@ function resolveSchemaType(schema: DataSchema): UiBindableValueMeta['type'] {
 
 function resolveSingleSchemaType(type: DataSchema['type']): DataSchemaPrimitiveType | undefined {
   if (typeof type === 'string') return type;
-  return type?.length === 1 ? type[0] : undefined;
+  return type?.length === 1 ? type.at(0) : undefined;
 }
 
 function isObjectLike(type: UiBindableValueMeta['type']): boolean {
