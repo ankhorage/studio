@@ -8,43 +8,43 @@ import {
   resolveStudioAppBarModeAction,
 } from './studioAppBarModel';
 
+function readUiSource(fileName: string): string {
+  return readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), fileName), 'utf8');
+}
+
 test('uses the URL as the admin route source of truth', () => {
-  const source = readFileSync(
-    path.join(path.dirname(fileURLToPath(import.meta.url)), 'useStudioAppBarAugmentation.ts'),
-    'utf8',
-  );
+  const source = readUiSource('useStudioAppBarAugmentation.ts');
+  const actionSource = readUiSource('createStudioAppBarActions.ts');
 
   expect(source).toContain('usePathname()');
   expect(source).toContain('useRouter()');
   expect(source).toContain("router.push('/ankh')");
   expect(source).toContain('createStudioBindingsRoutePath');
   expect(source).toContain('resolveStudioLastNonAdminLocation');
-  expect(source).toContain('studio.setLastNonAdminLocation(appLocation)');
-  expect(source).toContain('Administration');
-  expect(source).toContain("key: 'preview-mode'");
-  expect(source).toContain('studio.togglePreviewMode');
+  expect(source).toContain('setLastNonAdminLocation(appLocation)');
+  expect(actionSource).toContain("label: 'Administration'");
+  expect(actionSource).toContain("key: 'preview-mode'");
+  expect(actionSource).toContain('handlers.togglePreviewMode');
   expect(source).toContain('isStudioAdminPath(pathname)');
   expect(source).not.toContain('setActiveRoute');
 });
 
 test('returns keyed AppBar actions as flat direct children in intentional order', () => {
-  const source = readFileSync(
-    path.join(path.dirname(fileURLToPath(import.meta.url)), 'useStudioAppBarAugmentation.ts'),
-    'utf8',
-  );
+  const source = readUiSource('useStudioAppBarAugmentation.ts');
+  const actionSource = readUiSource('createStudioAppBarActions.ts');
 
-  expect(source).toContain("key: 'administration'");
-  expect(source).toContain("key: 'preview-mode'");
-  expect(source).toContain('...contextActions.map((action) =>');
-  expect(source).toContain('key: action.id');
+  expect(actionSource).toContain("key: 'administration'");
+  expect(actionSource).toContain("key: 'preview-mode'");
+  expect(actionSource).toContain('...contextActions.map((action) =>');
+  expect(actionSource).toContain('key: action.id');
   expect(source).toContain('isAdminPath || studio.previewMode');
   expect(source).toContain('StudioInsertDialog');
   expect(source).toContain('StudioDeleteDialog');
-  expect(source.indexOf("key: 'administration'")).toBeLessThan(
-    source.indexOf("key: 'preview-mode'"),
+  expect(actionSource.indexOf("key: 'administration'")).toBeLessThan(
+    actionSource.indexOf("key: 'preview-mode'"),
   );
-  expect(source.indexOf("key: 'preview-mode'")).toBeLessThan(
-    source.indexOf('...contextActions.map((action) =>'),
+  expect(actionSource.indexOf("key: 'preview-mode'")).toBeLessThan(
+    actionSource.indexOf('...contextActions.map((action) =>'),
   );
 });
 
@@ -77,15 +77,12 @@ test('suppresses all authoring context actions in Preview', () => {
 });
 
 test('does not mount authoring overlays while Preview is active', () => {
-  const source = readFileSync(
-    path.join(path.dirname(fileURLToPath(import.meta.url)), 'useStudioAppBarAugmentation.ts'),
-    'utf8',
-  );
+  const source = readUiSource('useStudioAppBarAugmentation.ts');
 
   expect(source).toContain('isAdminPath || studio.previewMode');
   expect(source).toContain('setInsertVisible(false)');
   expect(source).toContain('setDeleteCandidateId(null)');
-  expect(source).toContain('studio.setActivePanelId(null)');
+  expect(source).toContain('setActivePanelId(null)');
 });
 
 test('resolves contextual app bar actions for selected nodes', () => {
