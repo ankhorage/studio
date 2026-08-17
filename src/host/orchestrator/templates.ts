@@ -12,22 +12,20 @@ import {
   resolveExpoRuntimeNativeSchemeMap,
 } from '@ankhorage/expo-runtime/planning';
 
-import type { GeneratedDatabaseRuntimeProvider } from '../generatedDatabaseRuntime';
 import { EXPO_SDK_54_ANIMATION_COMPATIBILITY } from './expoSdk54AnimationCompatibility.js';
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const EXPO_MODULES_CORE_VERSION = '~3.0.30';
-const CONTRACTS_VERSION = '^7.9.0';
-const DATA_SOURCES_VERSION = '^1.0.1';
-const RUNTIME_VERSION = '^1.1.0';
+const CONTRACTS_VERSION = '^8.0.0';
+const DATA_SOURCES_VERSION = '^2.0.0';
+const RUNTIME_VERSION = '^2.0.0';
 const STUDIO_VERSION = '^1.12.5';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.1';
-const SUPABASE_DB_VERSION = '^1.0.0';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^2.13.2';
-const EXPO_RUNTIME_VERSION = '^2.5.1';
+const EXPO_RUNTIME_VERSION = '^2.6.0';
 const DEVTOOLS_VERSION = '^1.4.1';
 const EXPO_VERSION = '~54.0.36';
 const EXPO_DOCUMENT_PICKER_VERSION = '~14.0.8';
@@ -270,7 +268,6 @@ export function getPackageJson(args: {
   name: string;
   includeStudio?: boolean;
   authProvider?: GeneratedAuthProvider;
-  databaseRuntimeProvider?: GeneratedDatabaseRuntimeProvider | null;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
   targets?: AppDeployTargets;
@@ -279,7 +276,6 @@ export function getPackageJson(args: {
     name,
     includeStudio = false,
     authProvider = null,
-    databaseRuntimeProvider = null,
     storageProvider = null,
     runtimePlan,
     targets = LEGACY_WEB_ONLY_TARGETS,
@@ -313,9 +309,6 @@ export function getPackageJson(args: {
             'expo-secure-store': EXPO_SECURE_STORE_VERSION,
             'expo-web-browser': EXPO_WEB_BROWSER_VERSION,
           }
-        : {}),
-      ...(databaseRuntimeProvider === 'supabase'
-        ? { '@ankhorage/supabase-db': SUPABASE_DB_VERSION }
         : {}),
       ...(storageProvider === 'supabase'
         ? { '@ankhorage/supabase-storage': SUPABASE_STORAGE_VERSION }
