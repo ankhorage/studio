@@ -132,7 +132,7 @@ describe('stationarySelection RN integration', () => {
     expect(source).toContain('props.isEditMode && canvasInteraction');
     expect(source).toContain('resolveCanvasDragSession({');
     expect(source).toContain('activeDragNodeId,');
-    expect(source).toContain('setActiveDragNodeId(null)');
+    expect(source).toContain('setActiveDragNodeId?.(null)');
   });
 
   it('measures roots only on web without adding them to the stationary interaction path', () => {
