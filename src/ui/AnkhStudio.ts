@@ -8,6 +8,7 @@ import {
   RuntimeRendererConfigProvider,
 } from '@ankhorage/runtime';
 import React, { useMemo } from 'react';
+import { Text } from 'react-native';
 
 import { API_BASE } from '../core/constants';
 import { useStudio } from '../core/StudioContext';
@@ -35,7 +36,7 @@ export const AnkhStudio = ({ children, bundledMediaRegistry = {} }: AnkhStudioPr
     [resolveMediaAsset, studio.manifest?.media?.assets],
   );
 
-  if (studio.error) return React.createElement(React.Fragment, null, studio.error);
+  if (studio.error) return React.createElement(Text, null, studio.error);
   if (studio.isLoading || !studio.manifest) return null;
 
   return React.createElement(RuntimeRendererConfigProvider, { value: mediaConfig, children });
