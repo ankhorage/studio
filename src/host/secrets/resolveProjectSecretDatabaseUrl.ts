@@ -1,5 +1,7 @@
 import { resolveProjectInfrastructureDatabaseUrl } from '@ankhorage/infra/project';
 
+import { readOwnProperty } from '../../utils/readOwnProperty';
+
 const TRUSTED_HOST_DATABASE_URL_KEY = 'ANKH_SECRET_STORE_DATABASE_URL';
 
 export interface ResolveProjectSecretDatabaseUrlInput {
@@ -12,8 +14,12 @@ export async function resolveProjectSecretDatabaseUrl(
   input: ResolveProjectSecretDatabaseUrlInput,
 ): Promise<string> {
   const rawTrustedHostValue: unknown =
-    input.processEnvironment?.[TRUSTED_HOST_DATABASE_URL_KEY] ??
-    process.env.ANKH_SECRET_STORE_DATABASE_URL;
+    (input.processEnvironment
+      ? readOwnProperty<string | undefined>(
+          input.processEnvironment,
+          TRUSTED_HOST_DATABASE_URL_KEY,
+        )
+      : undefined) ?? process.env.ANKH_SECRET_STORE_DATABASE_URL;
   const trustedHostValue =
     typeof rawTrustedHostValue === 'string' ? rawTrustedHostValue.trim() : undefined;
   if (trustedHostValue) return trustedHostValue;
