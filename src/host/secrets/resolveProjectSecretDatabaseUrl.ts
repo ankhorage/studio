@@ -15,10 +15,7 @@ export async function resolveProjectSecretDatabaseUrl(
 ): Promise<string> {
   const rawTrustedHostValue: unknown =
     (input.processEnvironment
-      ? readOwnProperty<string | undefined>(
-          input.processEnvironment,
-          TRUSTED_HOST_DATABASE_URL_KEY,
-        )
+      ? readOwnProperty<string | undefined>(input.processEnvironment, TRUSTED_HOST_DATABASE_URL_KEY)
       : undefined) ?? process.env.ANKH_SECRET_STORE_DATABASE_URL;
   const trustedHostValue =
     typeof rawTrustedHostValue === 'string' ? rawTrustedHostValue.trim() : undefined;
