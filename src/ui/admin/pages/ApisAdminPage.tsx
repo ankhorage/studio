@@ -23,7 +23,13 @@ export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId 
   return (
     <AdminScroll>
       <AdminHeader
-        title={routeId === 'api-operations' ? 'Operations' : routeId === 'api-catalog' ? 'Catalog' : 'APIs'}
+        title={
+          routeId === 'api-operations'
+            ? 'Operations'
+            : routeId === 'api-catalog'
+              ? 'Catalog'
+              : 'APIs'
+        }
         description="Connect external APIs, inspect their canonical definitions, and test runtime operations."
       />
       {showAuthoring ? <ExternalApiConnectCard /> : null}
