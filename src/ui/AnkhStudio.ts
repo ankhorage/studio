@@ -36,6 +36,21 @@ export const AnkhStudio = ({ children, bundledMediaRegistry = {} }: AnkhStudioPr
     [resolveMediaAsset, studio.manifest?.media?.assets],
   );
 
+  React.useEffect(() => {
+    console.info('[studio-native-debug] AnkhStudio mounted');
+    return () => {
+      console.info('[studio-native-debug] AnkhStudio unmounting');
+    };
+  }, []);
+
+  React.useEffect(() => {
+    console.info('[studio-native-debug] AnkhStudio state', {
+      error: studio.error,
+      hasManifest: studio.manifest !== null,
+      isLoading: studio.isLoading,
+    });
+  }, [studio.error, studio.isLoading, studio.manifest]);
+
   if (studio.error) return React.createElement(Text, null, studio.error);
   if (studio.isLoading || !studio.manifest) return null;
 
