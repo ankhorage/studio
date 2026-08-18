@@ -14,10 +14,10 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/runtime']).toBe('^2.1.0');
     expect(dependencies['@ankhorage/studio']).toBe('^1.13.4');
     expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
-    expect(dependencies.expo).toBe('~54.0.37');
-    expect(dependencies['expo-constants']).toBe('~18.0.14');
+    expect(dependencies.expo).toBe('~54.0.36');
+    expect(dependencies['expo-constants']).toBe('~18.0.13');
     expect(dependencies['expo-splash-screen']).toBe('~31.0.13');
-    expect(dependencies['expo-updates']).toBe('~29.0.20');
+    expect(dependencies['expo-updates']).toBe('~29.0.19');
     expect(dependencies['expo-modules-core']).toBeUndefined();
     expect(devDependencies['@ankhorage/devtools']).toBe('^1.5.2');
     expect(devDependencies['babel-plugin-module-resolver']).toBe('^5.0.2');
@@ -56,18 +56,18 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
   });
 
-  it('uses the Expo SDK 54 supported animation dependencies without custom Babel wiring', () => {
+  it('uses the Android-validated animation dependencies and Worklets Babel plugin', () => {
     const pkg = getPackageJson({ name: 'native-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
     const babelConfig = getBabelConfigJs();
 
-    expect(dependencies['react-native-reanimated']).toBe('~4.1.1');
-    expect(dependencies['react-native-worklets']).toBe('0.5.1');
+    expect(dependencies['react-native-reanimated']).toBe('4.3.0');
+    expect(dependencies['react-native-worklets']).toBe('0.8.3');
     expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
       pkg.dependencies,
     );
     expect(babelConfig).toContain("presets: ['babel-preset-expo']");
-    expect(babelConfig).not.toContain("'react-native-worklets/plugin'");
+    expect(babelConfig).toContain("'react-native-worklets/plugin'");
     expect(babelConfig).not.toContain("'react-native-reanimated/plugin'");
   });
 
