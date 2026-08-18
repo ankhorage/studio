@@ -2,4 +2,4 @@
 '@ankhorage/studio': patch
 ---
 
-Refresh generated app dependency versions to the current Ankhorage package releases and Expo SDK 54-supported native package baseline. Remove the redundant direct `expo-modules-core` dependency while keeping Reanimated `~4.1.1` with Worklets `0.5.1` under Expo's Babel preset configuration.
+Refresh generated Ankhorage package versions, keep the Expo Doctor cleanup that removes the redundant direct `expo-modules-core` dependency, and restore the Android-validated pre-1.13.4 animation stack: Reanimated `4.3.0`, Worklets `0.8.3`, and the explicit `react-native-worklets/plugin` Babel wiring.
