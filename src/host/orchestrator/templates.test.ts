@@ -11,13 +11,15 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
-    expect(dependencies['@ankhorage/runtime']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/studio']).toBe('^1.12.5');
+    expect(dependencies['@ankhorage/runtime']).toBe('^2.1.0');
+    expect(dependencies['@ankhorage/studio']).toBe('^1.13.4');
     expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
     expect(dependencies.expo).toBe('~54.0.37');
     expect(dependencies['expo-constants']).toBe('~18.0.14');
+    expect(dependencies['expo-splash-screen']).toBe('~31.0.13');
     expect(dependencies['expo-updates']).toBe('~29.0.20');
-    expect(devDependencies['@ankhorage/devtools']).toBe('^1.4.1');
+    expect(dependencies['expo-modules-core']).toBeUndefined();
+    expect(devDependencies['@ankhorage/devtools']).toBe('^1.5.2');
     expect(devDependencies['babel-plugin-module-resolver']).toBe('^5.0.2');
     expect(devDependencies.typescript).toBe('~5.9.3');
     expect(Object.values(dependencies)).not.toContain('latest');
@@ -42,7 +44,7 @@ describe('generated OAuth scaffold templates', () => {
     const pkg = getPackageJson({ name: 'plain-app' });
 
     expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
-    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.0.0');
+    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.1.0');
     expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
   });
 
