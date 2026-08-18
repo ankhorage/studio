@@ -759,8 +759,70 @@ function StationaryTapSelector(props: {
     String(selectionCommitCountRef.current),
   ].join(':');
 
-  // StationaryTapSelector ganz am Ende temporär:
-  return React.createElement(React.Fragment, null, props.children);
+  return React.createElement(
+    TrackerContext.Provider,
+    { value: contextValue },
+    React.createElement(
+      GestureDetector,
+      { gesture: tapGesture },
+      React.createElement(
+        View,
+        {
+          ref: setRootViewRef,
+          nativeID: selectionStateId,
+          onLayout: requestIndicatorRefresh,
+          onTouchMove: requestScrollIndicatorRefresh,
+          testID: 'studio-stationary-selection-root',
+          style: { flex: 1, position: 'relative' },
+        },
+        props.children,
+        props.isEditMode && canvasInteraction
+          ? React.createElement(StudioCanvasDndOverlay, {
+              key: 'studio-canvas-dnd-overlay',
+              activeDragNodeId,
+              componentMeta: canvasInteraction.componentMeta,
+              indicatorRects,
+              moveNodeToPlacement: canvasInteraction.moveNodeToPlacement,
+              rootNode: canvasInteraction.rootNode,
+              selectedNodeId: props.selectedNodeId,
+              setActiveDragNodeId: canvasInteraction.setActiveDragNodeId,
+            })
+          : null,
+        ...(props.isEditMode
+          ? indicatorRects.filter((rect) => rect.showUnsupportedIndicator)
+          : []
+        ).map((rect) =>
+          React.createElement(View, {
+            key: `unsupported:${rect.nodeId}`,
+            nativeID: `studio-unsupported-indicator-${encodeURIComponent(rect.nodeId)}`,
+            testID: `studio-unsupported-indicator-${rect.nodeId}`,
+            pointerEvents: 'none',
+            style: {
+              position: 'absolute',
+              left: rect.x,
+              top: rect.y,
+              width: rect.width,
+              height: rect.height,
+              borderWidth: 1,
+              borderColor: '#ef4444',
+              borderStyle: 'dashed',
+            },
+          }),
+        ),
+        ...(shouldRenderSelectedChrome
+          ? indicatorRects.filter((rect) => rect.nodeId === selectedIndicatorNodeId)
+          : []
+        ).map((rect) =>
+          React.createElement(View, {
+            key: `selected:${rect.nodeId}`,
+            nativeID: `studio-selected-indicator-${encodeURIComponent(rect.nodeId)}`,
+            testID: `studio-selected-indicator-${rect.nodeId}`,
+            ...createSelectedIndicatorViewProps(rect, theme.semantics.action.primary.base),
+          }),
+        ),
+      ),
+    ),
+  );
 }
 
 export { StationaryTapSelector };
