@@ -14,11 +14,10 @@ import {
 
 export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
-const EXPO_MODULES_CORE_VERSION = '~3.0.30';
 const CONTRACTS_VERSION = '^8.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.0.0';
-const STUDIO_VERSION = '^1.12.5';
+const STUDIO_VERSION = '^1.13.4';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.1';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
@@ -255,6 +254,7 @@ export function getBabelConfigJs() {
           },
         },
       ],
+      'react-native-worklets/plugin',
     ],
   };
 };
@@ -321,7 +321,7 @@ export function getPackageJson(args: {
             'expo-image-picker': EXPO_IMAGE_PICKER_VERSION,
           }
         : {}),
-      '@react-navigation/bottom-tabs': '^7.18.2',
+      '@react-navigation/bottom-tabs': '^7.4.0',
       '@react-navigation/drawer': '^7.5.0',
       'babel-preset-expo': '^54.0.10',
       expo: EXPO_VERSION,
@@ -329,16 +329,15 @@ export function getPackageJson(args: {
       'expo-font': '~14.0.12',
       'expo-linear-gradient': '~15.0.8',
       'expo-linking': '~8.0.12',
-      'expo-modules-core': EXPO_MODULES_CORE_VERSION,
       'expo-router': '~6.0.24',
-      'expo-splash-screen': '~31.0.10',
+      'expo-splash-screen': '^31.0.13',
       'expo-status-bar': '^3.0.9',
       'expo-updates': EXPO_UPDATES_VERSION,
       react: '19.1.0',
       'react-dom': '19.1.0',
       'react-native': '0.81.5',
       'react-native-gesture-handler': '~2.28.0',
-      'react-native-reanimated': '~4.1.1',
+      'react-native-reanimated': '^4.5.3',
       'react-native-safe-area-context': '~5.6.0',
       'react-native-screens': '~4.16.0',
       'react-native-svg': '~15.12.1',
