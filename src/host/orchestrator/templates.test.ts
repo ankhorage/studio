@@ -1,6 +1,50 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
 import { describe, expect, it } from 'bun:test';
 
-import { getAppConfigTs, getBabelConfigJs, getIndexJs, getPackageJson } from './templates';
+import {
+  getAppConfigTs,
+  getBabelConfigJs,
+  getIndexJs,
+  getMetroConfigJs,
+  getPackageJson,
+} from './templates';
+
+const NATIVE_SINGLETON_PACKAGES = [
+  'react',
+  'react-native',
+  'react-native-gesture-handler',
+  'react-native-reanimated',
+  'react-native-worklets',
+] as const;
+
+describe('generated Metro config', () => {
+  it('resolves native singletons from the consuming Expo app root', () => {
+    const metroConfig = getMetroConfigJs();
+
+    expect(metroConfig).toContain(
+      "const appResolutionAnchor = path.join(__dirname, 'package.json')",
+    );
+    expect(metroConfig).toContain('{ ...context, originModulePath: appResolutionAnchor }');
+    expect(metroConfig).toContain('moduleName.startsWith(`${packageName}/`)');
+    for (const packageName of NATIVE_SINGLETON_PACKAGES) {
+      expect(metroConfig).toContain(`  '${packageName}',`);
+    }
+    expect(metroConfig).not.toContain('apps/nutrition');
+    expect(metroConfig).not.toContain('/Users/');
+  });
+
+  it('keeps apps/studio on the generated-app singleton strategy', async () => {
+    const repositoryRoot = path.resolve(import.meta.dir, '..', '..', '..');
+    const studioMetroConfig = await readFile(
+      path.join(repositoryRoot, 'apps', 'studio', 'metro.config.js'),
+      'utf8',
+    );
+
+    expect(studioMetroConfig).toBe(getMetroConfigJs());
+  });
+});
 
 describe('generated OAuth scaffold templates', () => {
   it('pins the current generated app dependency baseline', () => {
@@ -63,6 +107,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['react-native-reanimated']).toBe('4.3.0');
     expect(dependencies['react-native-worklets']).toBe('0.8.3');
+    expect(dependencies['react-native-gesture-handler']).toBe('~2.28.0');
     expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
       pkg.dependencies,
     );
