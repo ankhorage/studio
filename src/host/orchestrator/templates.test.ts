@@ -4,6 +4,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'bun:test';
 
 import {
+  getAndroidRunTs,
   getAppConfigTs,
   getBabelConfigJs,
   getIndexJs,
@@ -114,6 +115,27 @@ describe('generated OAuth scaffold templates', () => {
     expect(babelConfig).toContain("presets: ['babel-preset-expo']");
     expect(babelConfig).toContain("'react-native-worklets/plugin'");
     expect(babelConfig).not.toContain("'react-native-reanimated/plugin'");
+  });
+
+  it('generates a portable Android loopback bridge for local Supabase', () => {
+    const pkg = getPackageJson({
+      name: 'native-app',
+      targets: { android: { enabled: true, package: 'com.example.app', scheme: 'example-app' } },
+    });
+    const androidRun = getAndroidRunTs();
+
+    expect(pkg.scripts.android).toBe('bun scripts/ankh-android.ts');
+    expect(androidRun).toContain("const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL'");
+    expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
+    expect(androidRun).toContain("await runCommand('adb', ['reverse', tcpPort, tcpPort])");
+    expect(androidRun).toContain('await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) })');
+    expect(androidRun).toContain('Local Supabase gateway is unavailable at');
+    expect(androidRun).toContain('Run Infrastructure Up and verify its port-forward');
+    expect(androidRun).toContain("await runCommand(expoExecutable, ['run:android'");
+    expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+    expect(androidRun).not.toContain('10.0.2.2');
+    expect(androidRun).not.toContain('apps/nutrition');
+    expect(androidRun).not.toContain('/Users/');
   });
 
   it('omits auth-specific packages when auth is not generated', () => {

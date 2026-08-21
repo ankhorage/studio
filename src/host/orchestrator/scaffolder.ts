@@ -16,6 +16,7 @@ import { syncGeneratedAppFiles } from './generatedAppFiles';
 import {
   type GeneratedAuthProvider,
   type GeneratedStorageProvider,
+  getAndroidRunTs,
   getAppConfigTs,
   getBabelConfigJs,
   getEslintConfigMjs,
@@ -80,6 +81,7 @@ export class ProjectScaffolder {
       runtimePlan,
       targets,
     );
+    await this.syncAndroidRunScript(projectPath, targets);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -142,6 +144,7 @@ export class ProjectScaffolder {
     );
 
     await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
+    await this.syncAndroidRunScript(projectPath, targets);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -204,6 +207,17 @@ export class ProjectScaffolder {
       getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
       'utf8',
     );
+  }
+
+  private async syncAndroidRunScript(dir: string, targets: AppDeployTargets) {
+    const scriptPath = path.join(dir, 'scripts', 'ankh-android.ts');
+    if (!targets.android?.enabled) {
+      await fs.rm(scriptPath, { force: true });
+      return;
+    }
+
+    await fs.mkdir(path.dirname(scriptPath), { recursive: true });
+    await fs.writeFile(scriptPath, getAndroidRunTs(), 'utf8');
   }
 
   private async writeMetroConfig(dir: string) {

@@ -287,6 +287,115 @@ export function getBabelConfigJs() {
 `;
 }
 
+export function getAndroidRunTs() {
+  return `import { spawn } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL';
+const LOOPBACK_HOSTNAMES = new Set(['127.0.0.1', '::1', '[::1]', 'localhost']);
+const projectRoot = process.cwd();
+
+const supabaseUrl = await readEnvValue(path.join(projectRoot, '.env.local'), PUBLIC_SUPABASE_URL);
+if (supabaseUrl) await prepareAndroidLoopbackBridge(supabaseUrl);
+
+const expoExecutable = path.join(
+  projectRoot,
+  'node_modules',
+  '.bin',
+  process.platform === 'win32' ? 'expo.cmd' : 'expo',
+);
+await runCommand(expoExecutable, ['run:android', ...process.argv.slice(2)]);
+
+async function prepareAndroidLoopbackBridge(value: string): Promise<void> {
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch (error) {
+    throw new Error(\`\${PUBLIC_SUPABASE_URL} is not a valid URL. Run Infrastructure Up again.\`, {
+      cause: error,
+    });
+  }
+
+  if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return;
+
+  const port = resolveUrlPort(url);
+  await assertLocalGatewayReachable(url);
+  const tcpPort = \`tcp:\${port}\`;
+  await runCommand('adb', ['reverse', tcpPort, tcpPort]);
+  console.info(\`[android-dev] Bridged Android loopback \${tcpPort} to \${url.origin}.\`);
+}
+
+function resolveUrlPort(url: URL): string {
+  if (url.port) return url.port;
+  if (url.protocol === 'http:') return '80';
+  if (url.protocol === 'https:') return '443';
+  throw new Error(\`\${PUBLIC_SUPABASE_URL} must use HTTP or HTTPS.\`);
+}
+
+async function assertLocalGatewayReachable(url: URL): Promise<void> {
+  const healthUrl = new URL('/auth/v1/health', url.origin);
+  try {
+    await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) });
+  } catch (error) {
+    throw new Error(
+      \`Local Supabase gateway is unavailable at \${url.origin}. Run Infrastructure Up and verify its port-forward before starting Android.\`,
+      { cause: error },
+    );
+  }
+}
+
+async function readEnvValue(filePath: string, key: string): Promise<string | undefined> {
+  let content: string;
+  try {
+    content = await readFile(filePath, 'utf8');
+  } catch (error) {
+    if ((error as { code?: unknown }).code === 'ENOENT') return undefined;
+    throw error;
+  }
+
+  for (const line of content.split(/\\r?\\n/u)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const separator = trimmed.indexOf('=');
+    if (separator < 1) continue;
+    const candidateKey = trimmed.slice(0, separator).replace(/^export\\s+/u, '').trim();
+    if (candidateKey !== key) continue;
+    return stripMatchingQuotes(trimmed.slice(separator + 1).trim());
+  }
+
+  return undefined;
+}
+
+function stripMatchingQuotes(value: string): string {
+  const first = value.at(0);
+  const last = value.at(-1);
+  return value.length >= 2 && first === last && (first === "'" || first === '"')
+    ? value.slice(1, -1)
+    : value;
+}
+
+async function runCommand(command: string, args: readonly string[]): Promise<void> {
+  const child = spawn(command, args, {
+    cwd: projectRoot,
+    env: process.env,
+    stdio: 'inherit',
+  });
+  const exitCode = await new Promise<number>((resolve, reject) => {
+    child.once('error', reject);
+    child.once('exit', (code, signal) => {
+      if (signal) {
+        reject(new Error(\`\${command} exited from signal \${signal}.\`));
+        return;
+      }
+      resolve(code ?? 1);
+    });
+  });
+  if (exitCode !== 0) throw new Error(\`\${command} exited with code \${exitCode}.\`);
+}
+`;
+}
+
 export function getPackageJson(args: {
   name: string;
   includeStudio?: boolean;
@@ -311,7 +420,7 @@ export function getPackageJson(args: {
     version: '1.0.0',
     scripts: {
       start: 'expo start',
-      ...(targets.android?.enabled ? { android: 'expo run:android' } : {}),
+      ...(targets.android?.enabled ? { android: 'bun scripts/ankh-android.ts' } : {}),
       ...(targets.ios?.enabled ? { ios: 'expo run:ios' } : {}),
       ...(targets.web?.enabled ? { web: 'expo start --web' } : {}),
       lint: 'ankhorage-eslint . --max-warnings=0',
