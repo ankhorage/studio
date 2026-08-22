@@ -293,8 +293,10 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL';
+const PUBLIC_STUDIO_API_URL = 'EXPO_PUBLIC_API_URL';
 const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL';
 const DEFAULT_STUDIO_HOST_URL = 'http://127.0.0.1:3000';
+const DEFAULT_STUDIO_API_URL = 'http://127.0.0.1:3000/api';
 const LOOPBACK_HOSTNAMES = new Set(['127.0.0.1', '::1', '[::1]', 'localhost']);
 const ADB_TRACK_READY_TIMEOUT_MS = 5_000;
 const ADB_REVERSE_ATTEMPTS = 5;
@@ -302,10 +304,14 @@ const ADB_REVERSE_RETRY_DELAY_MS = 100;
 const projectId = ${JSON.stringify(args.projectId)};
 const projectRoot = process.cwd();
 
-const supabaseUrl = await readEnvValue(path.join(projectRoot, '.env.local'), PUBLIC_SUPABASE_URL);
-const androidBridgePort = supabaseUrl
+const environmentPath = path.join(projectRoot, '.env.local');
+const supabaseUrl = await readEffectiveEnvValue(environmentPath, PUBLIC_SUPABASE_URL);
+const studioApiUrl = await readEffectiveEnvValue(environmentPath, PUBLIC_STUDIO_API_URL);
+const supabaseMapping = supabaseUrl
   ? await prepareAndroidLoopbackBridge(supabaseUrl)
   : undefined;
+const studioApiMapping = await prepareStudioApiBridge(studioApiUrl ?? DEFAULT_STUDIO_API_URL);
+const reverseMappings = deduplicateReverseMappings([supabaseMapping, studioApiMapping]);
 const expoArgs = process.argv.slice(2);
 
 const expoExecutable = path.join(
@@ -314,12 +320,19 @@ const expoExecutable = path.join(
   '.bin',
   process.platform === 'win32' ? 'expo.cmd' : 'expo',
 );
-const androidBridge = androidBridgePort
-  ? await startAndroidBridgeSupervisor(androidBridgePort, expoArgs)
+const androidBridge = reverseMappings.length > 0
+  ? await startAndroidBridgeSupervisor(reverseMappings, expoArgs)
   : undefined;
 await runExpoCommand(expoExecutable, ['run:android', ...expoArgs], androidBridge);
 
-async function prepareAndroidLoopbackBridge(value: string): Promise<string | undefined> {
+interface AndroidReverseMapping {
+  readonly local: string;
+  readonly remote: string;
+}
+
+async function prepareAndroidLoopbackBridge(
+  value: string,
+): Promise<AndroidReverseMapping | undefined> {
   let url: URL;
   try {
     url = new URL(value);
@@ -331,7 +344,7 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<string | und
 
   if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return undefined;
 
-  const port = resolveUrlPort(url);
+  const port = resolveUrlPort(url, PUBLIC_SUPABASE_URL);
   if (!(await isLocalGatewayReachable(url))) {
     await ensureStudioInfrastructureRuntime();
     if (!(await isLocalGatewayReachable(url))) {
@@ -340,7 +353,42 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<string | und
       );
     }
   }
-  return port;
+  return createTcpReverseMapping(port);
+}
+
+async function prepareStudioApiBridge(value: string): Promise<AndroidReverseMapping | undefined> {
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch (error) {
+    throw new Error(\`\${PUBLIC_STUDIO_API_URL} is not a valid URL: \${value}\`, {
+      cause: error,
+    });
+  }
+
+  if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return undefined;
+  const port = resolveUrlPort(url, PUBLIC_STUDIO_API_URL);
+
+  if (!(await isStudioHostReachable(url))) {
+    throw new Error(
+      \`Studio Host is unavailable at \${url.origin}. Start \\\`bun run dev:host\\\` and try again.\`,
+    );
+  }
+  return createTcpReverseMapping(port);
+}
+
+function createTcpReverseMapping(port: string): AndroidReverseMapping {
+  return { local: \`tcp:\${port}\`, remote: \`tcp:\${port}\` };
+}
+
+function deduplicateReverseMappings(
+  mappings: readonly (AndroidReverseMapping | undefined)[],
+): readonly AndroidReverseMapping[] {
+  const unique = new Map<string, AndroidReverseMapping>();
+  for (const mapping of mappings) {
+    if (mapping) unique.set(\`\${mapping.local}:\${mapping.remote}\`, mapping);
+  }
+  return [...unique.values()];
 }
 
 interface AndroidTransport {
@@ -356,10 +404,9 @@ interface AndroidBridgeSupervisor {
 }
 
 async function startAndroidBridgeSupervisor(
-  port: string,
+  mappings: readonly AndroidReverseMapping[],
   expoArgs: readonly string[],
 ): Promise<AndroidBridgeSupervisor> {
-  const tcpPort = \`tcp:\${port}\`;
   const requestedDevice = resolveRequestedAndroidDevice(expoArgs);
   const tracker = spawn('adb', ['track-devices', '-l'], {
     cwd: projectRoot,
@@ -441,10 +488,10 @@ async function startAndroidBridgeSupervisor(
           if (transport.serial !== selectedSerial) continue;
           if (latestTransports.get(transport.key) !== transport) continue;
           if (verifiedTransports.has(transport.key)) continue;
-          if (await ensureTransportReverse(transport, tcpPort, () => latestTransports)) {
+          if (await ensureTransportReverses(transport, mappings, () => latestTransports)) {
             verifiedTransports.add(transport.key);
             console.info(
-              \`[android-dev] Bridged Android transport \${transport.serial} (transport_id \${transport.transportId}) \${tcpPort}.\`,
+              \`[android-dev] Bridged Android transport \${transport.serial} (transport_id \${transport.transportId}) \${mappings.map((mapping) => \`\${mapping.local} -> \${mapping.remote}\`).join(', ')}.\`,
             );
           }
         }
@@ -594,26 +641,39 @@ function parseAndroidTransports(snapshot: string): readonly AndroidTransport[] {
   return transports;
 }
 
+async function ensureTransportReverses(
+  transport: AndroidTransport,
+  mappings: readonly AndroidReverseMapping[],
+  getLatestTransports: () => ReadonlyMap<string, AndroidTransport>,
+): Promise<boolean> {
+  for (const mapping of mappings) {
+    if (!(await ensureTransportReverse(transport, mapping, getLatestTransports))) return false;
+  }
+  return true;
+}
+
 async function ensureTransportReverse(
   transport: AndroidTransport,
-  tcpPort: string,
+  mapping: AndroidReverseMapping,
   getLatestTransports: () => ReadonlyMap<string, AndroidTransport>,
 ): Promise<boolean> {
   let lastError: Error | undefined;
   for (let attempt = 1; attempt <= ADB_REVERSE_ATTEMPTS; attempt += 1) {
     if (!getLatestTransports().has(transport.key)) return false;
     try {
-      if (!(await hasTransportReverse(transport.serial, tcpPort))) {
+      if (!(await hasTransportReverse(transport.serial, mapping))) {
         await runCapturedCommand('adb', [
           '-s',
           transport.serial,
           'reverse',
-          tcpPort,
-          tcpPort,
+          mapping.local,
+          mapping.remote,
         ]);
       }
-      if (await hasTransportReverse(transport.serial, tcpPort)) return true;
-      throw new Error(\`adb reverse --list did not contain \${tcpPort} -> \${tcpPort}.\`);
+      if (await hasTransportReverse(transport.serial, mapping)) return true;
+      throw new Error(
+        \`adb reverse --list did not contain \${mapping.local} -> \${mapping.remote}.\`,
+      );
     } catch (error) {
       lastError = toError(error);
       if (!getLatestTransports().has(transport.key)) return false;
@@ -626,11 +686,14 @@ async function ensureTransportReverse(
   );
 }
 
-async function hasTransportReverse(serial: string, tcpPort: string): Promise<boolean> {
+async function hasTransportReverse(
+  serial: string,
+  mapping: AndroidReverseMapping,
+): Promise<boolean> {
   const result = await runCapturedCommand('adb', ['-s', serial, 'reverse', '--list']);
   return result.stdout.split(/\\r?\\n/u).some((line) => {
     const fields = line.trim().split(/\\s+/u);
-    return fields.at(-2) === tcpPort && fields.at(-1) === tcpPort;
+    return fields.at(-2) === mapping.local && fields.at(-1) === mapping.remote;
   });
 }
 
@@ -677,11 +740,11 @@ async function runCapturedCommand(
   return { stdout, stderr };
 }
 
-function resolveUrlPort(url: URL): string {
+function resolveUrlPort(url: URL, environmentKey: string): string {
   if (url.port) return url.port;
   if (url.protocol === 'http:') return '80';
   if (url.protocol === 'https:') return '443';
-  throw new Error(\`\${PUBLIC_SUPABASE_URL} must use HTTP or HTTPS.\`);
+  throw new Error(\`\${environmentKey} must use HTTP or HTTPS.\`);
 }
 
 async function isLocalGatewayReachable(url: URL): Promise<boolean> {
@@ -689,6 +752,16 @@ async function isLocalGatewayReachable(url: URL): Promise<boolean> {
   try {
     await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) });
     return true;
+  } catch {
+    return false;
+  }
+}
+
+async function isStudioHostReachable(url: URL): Promise<boolean> {
+  const healthUrl = new URL('/health', url.origin);
+  try {
+    const response = await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) });
+    return response.ok;
   } catch {
     return false;
   }
@@ -760,6 +833,15 @@ async function readEnvValue(filePath: string, key: string): Promise<string | und
   }
 
   return undefined;
+}
+
+async function readEffectiveEnvValue(
+  filePath: string,
+  key: string,
+): Promise<string | undefined> {
+  const processValue = process.env[key];
+  if (typeof processValue === 'string' && processValue.length > 0) return processValue;
+  return readEnvValue(filePath, key);
 }
 
 function stripMatchingQuotes(value: string): string {

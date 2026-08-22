@@ -16,6 +16,104 @@ afterEach(async () => {
 });
 
 describe('generated Android development launcher', () => {
+  it('bridges the default loopback Studio API on port 3000', async () => {
+    const studio = await startDefaultStudioHost();
+    try {
+      const harness = await createHarness({ apiUrl: null });
+      const result = await runHarness(harness, ['--device', 'emulator-5554']);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe(
+        '-s\nemulator-5554\nreverse\ntcp:3000\ntcp:3000\n',
+      );
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe(
+        'run:android\n--device\nemulator-5554\n',
+      );
+    } finally {
+      if (studio) await studio.stop(true);
+    }
+  });
+
+  it('bridges local Supabase and Studio API mappings together', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+    const studio = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
+
+    try {
+      const harness = await createHarness({
+        apiUrl: `${studio.url.origin}/api`,
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      const result = await runHarness(harness, ['--device', 'emulator-5554']);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readRecordedReverseMappings(harness.adbRecordPath)).toEqual([
+        `tcp:${gateway.port} tcp:${gateway.port}`,
+        `tcp:${studio.port} tcp:${studio.port}`,
+      ]);
+    } finally {
+      await Promise.all([gateway.stop(true), studio.stop(true)]);
+    }
+  });
+
+  it('uses an explicit loopback Studio API port instead of hardcoding port 3000', async () => {
+    const studio = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
+
+    try {
+      const harness = await createHarness({ apiUrl: `${studio.url.origin}/api` });
+      const result = await runHarness(harness, []);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readRecordedReverseMappings(harness.adbRecordPath)).toEqual([
+        `tcp:${studio.port} tcp:${studio.port}`,
+      ]);
+    } finally {
+      await studio.stop(true);
+    }
+  });
+
+  it('bridges only the local Studio API when Supabase is hosted', async () => {
+    const studio = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
+
+    try {
+      const harness = await createHarness({
+        apiUrl: `${studio.url.origin}/api`,
+        supabaseUrl: 'https://project.supabase.co',
+      });
+      const result = await runHarness(harness, []);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readRecordedReverseMappings(harness.adbRecordPath)).toEqual([
+        `tcp:${studio.port} tcp:${studio.port}`,
+      ]);
+    } finally {
+      await studio.stop(true);
+    }
+  });
+
+  it('fails actionably before ADB and Expo when a local Studio Host is unavailable', async () => {
+    const studioPort = await reserveUnavailablePort();
+    const harness = await createHarness({ apiUrl: `http://127.0.0.1:${studioPort}/api` });
+    const result = await runHarness(harness, []);
+
+    expect(result.exitCode).not.toBe(0);
+    expect(result.stderr).toContain(`Studio Host is unavailable at http://127.0.0.1:${studioPort}`);
+    expect(result.stderr).toContain('Start `bun run dev:host` and try again');
+    expect(await exists(harness.adbRecordPath)).toBe(false);
+    expect(await exists(harness.expoRecordPath)).toBe(false);
+  });
+
   it('accepts any response from a reachable local gateway and skips Studio recovery', async () => {
     const gatewayRequests: string[] = [];
     const studioRequests: string[] = [];
@@ -60,21 +158,32 @@ describe('generated Android development launcher', () => {
       port: 0,
       fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
     });
+    const studio = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
 
     try {
       const harness = await createHarness({
+        apiUrl: `${studio.url.origin}/api`,
         supabaseUrl: `http://127.0.0.1:${gateway.port}`,
       });
       await writeMultipleDeviceAdb(path.join(harness.toolBinPath, 'adb'));
       const result = await runHarness(harness, ['--device', 'emulator-5554']);
 
       expect(result.exitCode).toBe(0);
-      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe(
+        [
+          `emulator-5554:41:tcp:${gateway.port}:tcp:${gateway.port}`,
+          `emulator-5554:41:tcp:${studio.port}:tcp:${studio.port}`,
+          '',
+        ].join('\n'),
+      );
       expect(await readFile(harness.expoRecordPath, 'utf8')).toBe(
         'run:android\n--device\nemulator-5554\n',
       );
     } finally {
-      await gateway.stop(true);
+      await Promise.all([gateway.stop(true), studio.stop(true)]);
     }
   });
 
@@ -92,7 +201,9 @@ describe('generated Android development launcher', () => {
       const result = await runHarness(harness, ['--device=target_avd']);
 
       expect(result.exitCode).toBe(0);
-      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe(
+        `emulator-5554:41:tcp:${gateway.port}:tcp:${gateway.port}\n`,
+      );
       expect(await readFile(harness.expoRecordPath, 'utf8')).toBe(
         'run:android\n--device=target_avd\n',
       );
@@ -137,7 +248,9 @@ describe('generated Android development launcher', () => {
       const result = await runHarness(harness, []);
 
       expect(result.exitCode).toBe(0);
-      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe(
+        `emulator-5554:41:tcp:${gateway.port}:tcp:${gateway.port}\n`,
+      );
       expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
     } finally {
       await gateway.stop(true);
@@ -172,26 +285,37 @@ describe('generated Android development launcher', () => {
       port: 0,
       fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
     });
+    const studio = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
 
     try {
       const harness = await createTransportReplacementHarness({
+        apiUrl: `${studio.url.origin}/api`,
         supabaseUrl: `http://127.0.0.1:${gateway.port}`,
       });
       const result = await runHarness(harness, ['--device', 'emulator-5554']);
 
       expect(result.exitCode).toBe(0);
       expect(await readFile(harness.mappingPath, 'utf8')).toBe(
-        `42\ntcp:${gateway.port}\ntcp:${gateway.port}\n`,
+        [
+          `42 tcp:${gateway.port} tcp:${gateway.port}`,
+          `42 tcp:${studio.port} tcp:${studio.port}`,
+          '',
+        ].join('\n'),
       );
       expect((await readFile(harness.eventsPath, 'utf8')).trim().split('\n')).toEqual([
-        'reverse:41',
+        `reverse:41:tcp:${gateway.port}`,
+        `reverse:41:tcp:${studio.port}`,
         'expo:start',
         'transport:42',
-        'reverse:42',
+        `reverse:42:tcp:${gateway.port}`,
+        `reverse:42:tcp:${studio.port}`,
         'expo:open',
       ]);
     } finally {
-      await gateway.stop(true);
+      await Promise.all([gateway.stop(true), studio.stop(true)]);
     }
   });
 
@@ -377,7 +501,7 @@ describe('generated Android development launcher', () => {
     }
   });
 
-  it('runs Expo normally without a Supabase URL', async () => {
+  it('runs Expo without ADB when both configured services are hosted', async () => {
     const harness = await createHarness({});
     const result = await runHarness(harness, []);
 
@@ -429,6 +553,7 @@ interface TransportReplacementHarness extends Harness {
 }
 
 async function createHarness(args: {
+  readonly apiUrl?: string | null;
   readonly projectId?: string;
   readonly studioHostUrl?: string;
   readonly supabaseUrl?: string;
@@ -455,6 +580,9 @@ async function createHarness(args: {
   await writeFile(
     path.join(rootPath, '.env.local'),
     [
+      ...(args.apiUrl === null
+        ? []
+        : [`EXPO_PUBLIC_API_URL=${args.apiUrl ?? 'https://studio-api.example.com/api'}`]),
       ...(args.supabaseUrl ? [`EXPO_PUBLIC_SUPABASE_URL=${args.supabaseUrl}`] : []),
       'EXPO_PUBLIC_SUPABASE_ANON_KEY=public-anon-key-must-stay-private',
       '',
@@ -480,7 +608,7 @@ async function writeBasicAdb(filePath: string): Promise<void> {
   await writeFile(
     filePath,
     `#!/usr/bin/env bun
-import { readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
 const mappingPath = requiredEnv('ADB_MAPPING_PATH');
@@ -499,11 +627,24 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
   if (args[1] === 'emulator-5554') process.stdout.write('target_avd\\nOK\\n');
   else process.exit(1);
 } else if (args[0] === '-s' && args[2] === 'reverse' && args[3] === '--list') {
-  const mapping = readFileSync(mappingPath, 'utf8');
-  if (mapping) process.stdout.write(\`host-1 \${mapping}\`);
+  const mappings = readFileSync(mappingPath, 'utf8').trim();
+  if (mappings) {
+    process.stdout.write(
+      mappings
+        .split('\\n')
+        .map((mapping) => \`host-1 \${mapping}\\n\`)
+        .join(''),
+    );
+  }
 } else if (args[0] === '-s' && args[2] === 'reverse') {
-  writeFileSync(recordPath, args.join('\\n') + '\\n');
-  writeFileSync(mappingPath, \`\${args[3]} \${args[4]}\\n\`);
+  appendFileSync(recordPath, args.join('\\n') + '\\n');
+  const mappings = readFileSync(mappingPath, 'utf8')
+    .trim()
+    .split('\\n')
+    .filter(Boolean)
+    .filter((mapping) => !mapping.startsWith(args[3] + ' '));
+  mappings.push(\`\${args[3]} \${args[4]}\`);
+  writeFileSync(mappingPath, mappings.join('\\n') + '\\n');
   process.stdout.write(args[3].replace('tcp:', '') + '\\n');
 } else {
   process.exit(2);
@@ -563,7 +704,7 @@ async function writeMultipleDeviceAdb(filePath: string): Promise<void> {
   await writeFile(
     filePath,
     `#!/usr/bin/env bun
-import { readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
 const mappingPath = requiredEnv('ADB_MAPPING_PATH');
@@ -586,9 +727,15 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
   if (args[1] === 'emulator-5554') process.stdout.write('target_avd\\nOK\\n');
   else process.exit(1);
 } else if (args[0] === '-s' && args[2] === 'reverse' && args[3] === '--list') {
-  const mapping = readFileSync(mappingPath, 'utf8');
-  if (mapping.startsWith(args[1] + '\\n')) {
-    process.stdout.write(\`host-1 \${mapping.split('\\n').slice(1).join(' ')}\`);
+  const mappings = readFileSync(mappingPath, 'utf8').trim();
+  if (mappings) {
+    process.stdout.write(
+      mappings
+        .split('\\n')
+        .filter((mapping) => mapping.startsWith(args[1] + ' '))
+        .map((mapping) => \`host-1 \${mapping.split(' ').slice(1).join(' ')}\\n\`)
+        .join(''),
+    );
   }
 } else if (args[0] === '-s' && args[2] === 'reverse') {
   if (args[1] === 'usb-phone-1') {
@@ -597,8 +744,17 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
     process.exit(1);
   }
   const transport = args[1] === 'emulator-5554' ? '41' : '55';
-  writeFileSync(recordPath, args[1] + ':' + transport + '\\n');
-  writeFileSync(mappingPath, [args[1], args[3], args[4], ''].join('\\n'));
+  appendFileSync(
+    recordPath,
+    [args[1], transport, args[3], args[4]].join(':') + '\\n',
+  );
+  const mappings = readFileSync(mappingPath, 'utf8')
+    .trim()
+    .split('\\n')
+    .filter(Boolean)
+    .filter((mapping) => !mapping.startsWith(args[1] + ' ' + args[3] + ' '));
+  mappings.push([args[1], args[3], args[4]].join(' '));
+  writeFileSync(mappingPath, mappings.join('\\n') + '\\n');
   process.stdout.write(args[3].replace('tcp:', '') + '\\n');
 } else {
   process.exit(2);
@@ -625,6 +781,7 @@ async function writeExecutable(filePath: string, recordEnvironmentKey: string): 
 }
 
 async function createTransportReplacementHarness(args: {
+  readonly apiUrl: string;
   readonly supabaseUrl: string;
 }): Promise<TransportReplacementHarness> {
   const harness = await createHarness(args);
@@ -647,6 +804,7 @@ async function createTransportReplacementHarness(args: {
       ADB_EVENTS_PATH: eventsPath,
       ADB_MAPPING_PATH: mappingPath,
       ADB_TRANSPORT_PATH: transportPath,
+      EXPECTED_MAPPING_COUNT: '2',
     },
   };
 }
@@ -688,13 +846,24 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
   const transport = readFileSync(transportPath, 'utf8').trim();
   if (command[0] !== 'reverse') process.exit(2);
   if (command[1] === '--list') {
-    const mapping = readFileSync(mappingPath, 'utf8').trim().split('\\n');
-    if (mapping[0] === transport && mapping.length === 3) {
-      process.stdout.write(\`host-\${transport} \${mapping[1]} \${mapping[2]}\\n\`);
-    }
+    const mappings = readFileSync(mappingPath, 'utf8')
+      .trim()
+      .split('\\n')
+      .filter((mapping) => mapping.startsWith(transport + ' '));
+    process.stdout.write(
+      mappings
+        .map((mapping) => \`host-\${transport} \${mapping.split(' ').slice(1).join(' ')}\\n\`)
+        .join(''),
+    );
   } else {
-    writeFileSync(mappingPath, [transport, command[1], command[2], ''].join('\\n'));
-    appendFileSync(eventsPath, \`reverse:\${transport}\\n\`);
+    const mappings = readFileSync(mappingPath, 'utf8')
+      .trim()
+      .split('\\n')
+      .filter(Boolean)
+      .filter((mapping) => !mapping.startsWith(transport + ' ' + command[1] + ' '));
+    mappings.push([transport, command[1], command[2]].join(' '));
+    writeFileSync(mappingPath, mappings.join('\\n') + '\\n');
+    appendFileSync(eventsPath, \`reverse:\${transport}:\${command[1]}\\n\`);
     process.stdout.write(command[1].replace('tcp:', '') + '\\n');
   }
 }
@@ -723,20 +892,25 @@ const expoRecordPath = requiredEnv('EXPO_RECORD_PATH');
 
 writeFileSync(expoRecordPath, process.argv.slice(2).join('\\n') + '\\n');
 appendFileSync(eventsPath, 'expo:start\\n');
-await waitForMapping('41');
+await waitForMappings('41');
 writeFileSync(mappingPath, '');
 writeFileSync(transportPath, '42\\n');
 appendFileSync(eventsPath, 'transport:42\\n');
-await waitForMapping('42');
+await waitForMappings('42');
 appendFileSync(eventsPath, 'expo:open\\n');
 
-async function waitForMapping(transport) {
+async function waitForMappings(transport) {
+  const expectedCount = Number.parseInt(requiredEnv('EXPECTED_MAPPING_COUNT'), 10);
   const deadline = Date.now() + 2_000;
   while (Date.now() < deadline) {
-    if (readFileSync(mappingPath, 'utf8').startsWith(transport + '\\n')) return;
+    const mappings = readFileSync(mappingPath, 'utf8')
+      .trim()
+      .split('\\n')
+      .filter((mapping) => mapping.startsWith(transport + ' '));
+    if (mappings.length === expectedCount) return;
     await Bun.sleep(10);
   }
-  throw new Error(\`Reverse mapping was not installed on transport \${transport}.\`);
+  throw new Error(\`Reverse mappings were not installed on transport \${transport}.\`);
 }
 
 function requiredEnv(name) {
@@ -754,11 +928,14 @@ async function runHarness(
   harness: Harness,
   args: readonly string[],
 ): Promise<{ readonly exitCode: number; readonly stderr: string }> {
+  const environment = { ...process.env };
+  delete environment.EXPO_PUBLIC_API_URL;
+  delete environment.EXPO_PUBLIC_SUPABASE_URL;
   const child = Bun.spawn({
     cmd: [process.execPath, harness.scriptPath, ...args],
     cwd: harness.rootPath,
     env: {
-      ...process.env,
+      ...environment,
       PATH: `${harness.toolBinPath}:${process.env.PATH ?? ''}`,
       ADB_RECORD_PATH: harness.adbRecordPath,
       EXPO_RECORD_PATH: harness.expoRecordPath,
@@ -770,6 +947,30 @@ async function runHarness(
   });
   const [exitCode, stderr] = await Promise.all([child.exited, new Response(child.stderr).text()]);
   return { exitCode, stderr };
+}
+
+async function startDefaultStudioHost(): Promise<ReturnType<typeof Bun.serve> | undefined> {
+  try {
+    return Bun.serve({
+      port: 3000,
+      fetch: () => Response.json({ status: 'ok' }),
+    });
+  } catch (error) {
+    if ((error as { code?: unknown }).code !== 'EADDRINUSE') throw error;
+    const response = await fetch('http://127.0.0.1:3000/health');
+    if (!response.ok) throw error;
+    return undefined;
+  }
+}
+
+async function readRecordedReverseMappings(filePath: string): Promise<readonly string[]> {
+  const fields = (await readFile(filePath, 'utf8')).trim().split('\n');
+  const mappings: string[] = [];
+  for (let index = 0; index < fields.length; index += 5) {
+    expect(fields.slice(index, index + 3)).toEqual(['-s', 'emulator-5554', 'reverse']);
+    mappings.push(`${fields[index + 3]} ${fields[index + 4]}`);
+  }
+  return mappings;
 }
 
 async function reserveUnavailablePort(): Promise<number> {

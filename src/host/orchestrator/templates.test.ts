@@ -117,7 +117,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(babelConfig).not.toContain("'react-native-reanimated/plugin'");
   });
 
-  it('generates a portable Android loopback bridge for local Supabase', () => {
+  it('generates a portable Android loopback bridge for local services', () => {
     const pkg = getPackageJson({
       name: 'native-app',
       targets: { android: { enabled: true, package: 'com.example.app', scheme: 'example-app' } },
@@ -126,6 +126,8 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(pkg.scripts.android).toBe('bun scripts/ankh-android.ts');
     expect(androidRun).toContain("const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL'");
+    expect(androidRun).toContain("const PUBLIC_STUDIO_API_URL = 'EXPO_PUBLIC_API_URL'");
+    expect(androidRun).toContain("const DEFAULT_STUDIO_API_URL = 'http://127.0.0.1:3000/api'");
     expect(androidRun).toContain("const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL'");
     expect(androidRun).toContain('const projectId = "native-app"');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
@@ -133,19 +135,20 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain('resolveRequestedAndroidDevice(expoArgs)');
     expect(androidRun).toContain('transport.serial !== selectedSerial');
     expect(androidRun).toContain("field.startsWith('transport_id:')");
-    expect(androidRun).toContain("'reverse',\n          tcpPort,\n          tcpPort");
+    expect(androidRun).toContain("'reverse',\n          mapping.local,\n          mapping.remote");
     expect(androidRun).toContain("['-s', serial, 'reverse', '--list']");
     expect(androidRun).toContain('await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) })');
+    expect(androidRun).toContain("const healthUrl = new URL('/health', url.origin)");
+    expect(androidRun).toContain('Studio Host is unavailable at');
     expect(androidRun).toContain('/infra/runtime/ensure');
     expect(androidRun).toContain('Run Infrastructure Up and try again');
     expect(androidRun).toContain("await runExpoCommand(expoExecutable, ['run:android'");
     expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
-    expect(androidRun).not.toContain('EXPO_PUBLIC_API_URL');
     expect(androidRun).not.toContain("from '@ankhorage/infra");
     expect(androidRun).not.toContain('kubectl');
     expect(androidRun).not.toContain('supabase-gateway');
     expect(androidRun).not.toContain('10.0.2.2');
-    expect(androidRun).not.toContain("'tcp:3000'");
+    expect(androidRun).toContain('deduplicateReverseMappings([supabaseMapping, studioApiMapping])');
     expect(androidRun).not.toContain("'tcp:8081'");
     expect(androidRun).not.toContain('apps/nutrition');
     expect(androidRun).not.toContain('/Users/');
