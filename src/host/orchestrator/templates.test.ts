@@ -122,7 +122,7 @@ describe('generated OAuth scaffold templates', () => {
       name: 'native-app',
       targets: { android: { enabled: true, package: 'com.example.app', scheme: 'example-app' } },
     });
-    const androidRun = getAndroidRunTs({ projectId: 'native-app' });
+    const androidRun = getAndroidRunTs({ projectId: 'native-app', includeStudio: true });
 
     expect(pkg.scripts.android).toBe('bun scripts/ankh-android.ts');
     expect(androidRun).toContain("const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL'");
@@ -130,6 +130,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain("const DEFAULT_STUDIO_API_URL = 'http://127.0.0.1:3000/api'");
     expect(androidRun).toContain("const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL'");
     expect(androidRun).toContain('const projectId = "native-app"');
+    expect(androidRun).toContain('const includeStudio = true');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
     expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");
     expect(androidRun).toContain('resolveRequestedAndroidDevice(expoArgs)');
@@ -152,6 +153,14 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).not.toContain("'tcp:8081'");
     expect(androidRun).not.toContain('apps/nutrition');
     expect(androidRun).not.toContain('/Users/');
+  });
+
+  it('records standalone Android launchers without inventing a Studio API dependency', () => {
+    const androidRun = getAndroidRunTs({ projectId: 'standalone-app', includeStudio: false });
+
+    expect(androidRun).toContain('const includeStudio = false');
+    expect(androidRun).toContain('const studioApiUrl = includeStudio');
+    expect(androidRun).toContain('const studioApiMapping = includeStudio');
   });
 
   it('omits auth-specific packages when auth is not generated', () => {

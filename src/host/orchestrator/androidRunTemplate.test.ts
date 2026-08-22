@@ -34,6 +34,72 @@ describe('generated Android development launcher', () => {
     }
   });
 
+  it('runs a standalone app without a Studio Host or port 3000 reverse', async () => {
+    const unavailableStudioPort = await reserveUnavailablePort();
+    const harness = await createHarness({
+      apiUrl: null,
+      includeStudio: false,
+      studioHostUrl: `http://127.0.0.1:${unavailableStudioPort}`,
+    });
+    const result = await runHarness(harness, []);
+
+    expect(result.exitCode).toBe(0);
+    expect(await exists(harness.adbRecordPath)).toBe(false);
+    expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
+  });
+
+  it('ignores the embedded Studio API override for a standalone app', async () => {
+    const unavailableStudioPort = await reserveUnavailablePort();
+    const harness = await createHarness({
+      apiUrl: `http://127.0.0.1:${unavailableStudioPort}/api`,
+      includeStudio: false,
+    });
+    const result = await runHarness(harness, []);
+
+    expect(result.exitCode).toBe(0);
+    expect(await exists(harness.adbRecordPath)).toBe(false);
+    expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
+  });
+
+  it('keeps local Supabase bridging independent for a standalone app', async () => {
+    const gatewayRequests: string[] = [];
+    const studioRequests: string[] = [];
+    const gateway = Bun.serve({
+      port: 0,
+      fetch(request) {
+        gatewayRequests.push(new URL(request.url).pathname);
+        return Response.json({ message: 'missing API key' }, { status: 401 });
+      },
+    });
+    const studio = Bun.serve({
+      port: 0,
+      fetch(request) {
+        studioRequests.push(new URL(request.url).pathname);
+        return Response.json({ error: 'recovery should not run' }, { status: 500 });
+      },
+    });
+
+    try {
+      const harness = await createHarness({
+        apiUrl: null,
+        includeStudio: false,
+        studioHostUrl: studio.url.origin,
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      const result = await runHarness(harness, []);
+
+      expect(result.exitCode).toBe(0);
+      expect(gatewayRequests).toEqual(['/auth/v1/health']);
+      expect(studioRequests).toEqual([]);
+      expect(await readRecordedReverseMappings(harness.adbRecordPath)).toEqual([
+        `tcp:${gateway.port} tcp:${gateway.port}`,
+      ]);
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
+    } finally {
+      await Promise.all([gateway.stop(true), studio.stop(true)]);
+    }
+  });
+
   it('bridges local Supabase and Studio API mappings together', async () => {
     const gateway = Bun.serve({
       port: 0,
@@ -408,6 +474,8 @@ describe('generated Android development launcher', () => {
 
     try {
       const harness = await createHarness({
+        apiUrl: null,
+        includeStudio: false,
         projectId: 'canonical-project-id',
         supabaseUrl: `http://127.0.0.1:${gatewayPort}`,
         studioHostUrl: studio.url.origin,
@@ -527,13 +595,55 @@ describe('generated Android development launcher', () => {
     });
 
     const launcherPath = path.join(projectPath, 'scripts', 'ankh-android.ts');
-    expect(await readFile(launcherPath, 'utf8')).toBe(getAndroidRunTs({ projectId: 'fixture' }));
+    expect(await readFile(launcherPath, 'utf8')).toBe(
+      getAndroidRunTs({ projectId: 'fixture', includeStudio: true }),
+    );
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
       targets: { web: { enabled: true } },
     });
 
     expect(await exists(launcherPath)).toBe(false);
+  });
+
+  it('rewrites the launcher symmetrically when Studio inclusion changes', async () => {
+    const rootPath = await mkdtemp(path.join(os.tmpdir(), 'ankh-android-studio-sync-'));
+    temporaryDirectories.push(rootPath);
+    const projectPath = path.join(rootPath, 'apps', 'fixture');
+    const scaffolder = new ProjectScaffolder(rootPath);
+    const targets = {
+      android: {
+        enabled: true as const,
+        package: 'com.example.fixture',
+        scheme: 'fixture',
+      },
+    };
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      includeStudio: true,
+      targets,
+    });
+
+    const launcherPath = path.join(projectPath, 'scripts', 'ankh-android.ts');
+    expect(await readFile(launcherPath, 'utf8')).toBe(
+      getAndroidRunTs({ projectId: 'fixture', includeStudio: true }),
+    );
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      includeStudio: false,
+      targets,
+    });
+    expect(await readFile(launcherPath, 'utf8')).toBe(
+      getAndroidRunTs({ projectId: 'fixture', includeStudio: false }),
+    );
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      includeStudio: true,
+      targets,
+    });
+    expect(await readFile(launcherPath, 'utf8')).toBe(
+      getAndroidRunTs({ projectId: 'fixture', includeStudio: true }),
+    );
   });
 });
 
@@ -554,6 +664,7 @@ interface TransportReplacementHarness extends Harness {
 
 async function createHarness(args: {
   readonly apiUrl?: string | null;
+  readonly includeStudio?: boolean;
   readonly projectId?: string;
   readonly studioHostUrl?: string;
   readonly supabaseUrl?: string;
@@ -574,7 +685,10 @@ async function createHarness(args: {
   await mkdir(toolBinPath, { recursive: true });
   await writeFile(
     scriptPath,
-    getAndroidRunTs({ projectId: args.projectId ?? 'project-one' }),
+    getAndroidRunTs({
+      projectId: args.projectId ?? 'project-one',
+      includeStudio: args.includeStudio ?? true,
+    }),
     'utf8',
   );
   await writeFile(

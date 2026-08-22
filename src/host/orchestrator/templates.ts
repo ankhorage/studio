@@ -287,7 +287,10 @@ export function getBabelConfigJs() {
 `;
 }
 
-export function getAndroidRunTs(args: { readonly projectId: string }) {
+export function getAndroidRunTs(args: {
+  readonly projectId: string;
+  readonly includeStudio: boolean;
+}) {
   return `import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -302,15 +305,20 @@ const ADB_TRACK_READY_TIMEOUT_MS = 5_000;
 const ADB_REVERSE_ATTEMPTS = 5;
 const ADB_REVERSE_RETRY_DELAY_MS = 100;
 const projectId = ${JSON.stringify(args.projectId)};
+const includeStudio = ${JSON.stringify(args.includeStudio)};
 const projectRoot = process.cwd();
 
 const environmentPath = path.join(projectRoot, '.env.local');
 const supabaseUrl = await readEffectiveEnvValue(environmentPath, PUBLIC_SUPABASE_URL);
-const studioApiUrl = await readEffectiveEnvValue(environmentPath, PUBLIC_STUDIO_API_URL);
+const studioApiUrl = includeStudio
+  ? await readEffectiveEnvValue(environmentPath, PUBLIC_STUDIO_API_URL)
+  : undefined;
 const supabaseMapping = supabaseUrl
   ? await prepareAndroidLoopbackBridge(supabaseUrl)
   : undefined;
-const studioApiMapping = await prepareStudioApiBridge(studioApiUrl ?? DEFAULT_STUDIO_API_URL);
+const studioApiMapping = includeStudio
+  ? await prepareStudioApiBridge(studioApiUrl ?? DEFAULT_STUDIO_API_URL)
+  : undefined;
 const reverseMappings = deduplicateReverseMappings([supabaseMapping, studioApiMapping]);
 const expoArgs = process.argv.slice(2);
 
