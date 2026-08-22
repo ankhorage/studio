@@ -13,7 +13,7 @@ import {
 import { expect, test } from 'bun:test';
 
 import {
-  ensureProjectInfraPortForward,
+  ensureProjectWebLaunchSession,
   stopAllProjectInfraPortForwards,
 } from './orchestrator/infraSession';
 import { ProjectManager } from './orchestrator/projectManager';
@@ -95,12 +95,12 @@ infraE2eTest(
         await readFile(path.join(second.projectPath, 'infra', 'minikube', '.env'), 'utf8'),
       ).not.toContain(fakeGoogleOAuthCredentials.clientSecret);
 
-      const firstLaunch = await ensureProjectInfraPortForward({
+      const firstLaunch = await ensureProjectWebLaunchSession({
         projectId: first.projectId,
         projectPath: first.projectPath,
         target: 'minikube',
       });
-      const firstLaunchAgain = await ensureProjectInfraPortForward({
+      const firstLaunchAgain = await ensureProjectWebLaunchSession({
         projectId: first.projectId,
         projectPath: first.projectPath,
         target: 'minikube',

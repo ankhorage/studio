@@ -8,10 +8,7 @@ import Fastify from 'fastify';
 
 import { isAppCategory, isAppManifest } from '../../contractGuards';
 import { ProjectCreationValidationError } from '../../projectIdentity';
-import {
-  ensureProjectInfraPortForward,
-  stopAllProjectInfraPortForwards,
-} from '../orchestrator/infraSession';
+import { stopAllProjectInfraPortForwards } from '../orchestrator/infraSession';
 import { ModuleManager } from '../orchestrator/moduleManager';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { getProjectPath } from '../orchestrator/projectPaths';
@@ -21,6 +18,7 @@ import { trimOutputForApi } from '../utils/trimOutput';
 import { resolveWorkspaceRoot } from '../utils/workspaceRoot';
 import { registerProjectMediaRoutes } from './mediaRoutes';
 import { registerProjectModuleRoutes } from './moduleRoutes';
+import { registerProjectRuntimeRoutes } from './projectRuntimeRoutes';
 import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
@@ -66,6 +64,7 @@ export async function createStudioHostServer(args: {
   });
 
   registerProjectMediaRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
+  registerProjectRuntimeRoutes(fastify, { projectManager, workspaceRoot: projectRoot });
 
   // --- PROJECT ROUTES ---
 
@@ -271,37 +270,6 @@ export async function createStudioHostServer(args: {
           stderrLength: responseOutput.stderrLength,
         });
       }
-      const message = err instanceof Error ? err.message : String(err);
-      reply.status(500).send({ error: message });
-    }
-  });
-
-  fastify.post('/api/projects/:id/launch', async (req: FastifyRequest, reply) => {
-    const { id } = req.params as { id: string };
-    try {
-      const status = await projectManager.getInfrastructureStatus(id);
-      if (status.skipped) {
-        return { success: true, skipped: status.skipped };
-      }
-      if (!status.target) {
-        throw new Error(
-          `Project '${id}' has no infrastructure target. Run infra generation first.`,
-        );
-      }
-
-      const portForward = await ensureProjectInfraPortForward({
-        projectId: id,
-        projectPath: getProjectPath(projectRoot, id),
-        target: status.target,
-      });
-
-      return {
-        success: true,
-        target: status.target,
-        url: portForward.url,
-        started: portForward.started,
-      };
-    } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       reply.status(500).send({ error: message });
     }

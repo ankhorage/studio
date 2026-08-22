@@ -16,6 +16,7 @@ import { syncGeneratedAppFiles } from './generatedAppFiles';
 import {
   type GeneratedAuthProvider,
   type GeneratedStorageProvider,
+  getAndroidRunTs,
   getAppConfigTs,
   getBabelConfigJs,
   getEslintConfigMjs,
@@ -80,6 +81,7 @@ export class ProjectScaffolder {
       runtimePlan,
       targets,
     );
+    await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -134,14 +136,10 @@ export class ProjectScaffolder {
       zoraExtensions,
     );
 
-    const nextPackageJson = mergePackageJson(
-      existingPackageJson,
-      templatePackageJson,
-      includeStudio,
-      targets,
-    );
+    const nextPackageJson = mergePackageJson(existingPackageJson, templatePackageJson, targets);
 
     await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
+    await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -204,6 +202,22 @@ export class ProjectScaffolder {
       getAppConfigTs({ name, slug, targets, splashScreen, runtimePlan }),
       'utf8',
     );
+  }
+
+  private async syncAndroidRunScript(
+    dir: string,
+    targets: AppDeployTargets,
+    projectId: string,
+    includeStudio: boolean,
+  ) {
+    const scriptPath = path.join(dir, 'scripts', 'ankh-android.ts');
+    if (!targets.android?.enabled) {
+      await fs.rm(scriptPath, { force: true });
+      return;
+    }
+
+    await fs.mkdir(path.dirname(scriptPath), { recursive: true });
+    await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
   }
 
   private async writeMetroConfig(dir: string) {
@@ -342,7 +356,6 @@ function withZoraExtensionDependencies(
 function mergePackageJson(
   existing: ExtendedPackageJsonShape | null,
   template: ExtendedPackageJsonShape,
-  includeStudio: boolean,
   targets: AppDeployTargets,
 ) {
   const baseTemplate = getPackageJson({ name: template.name, includeStudio: false, targets });
@@ -383,10 +396,6 @@ function mergePackageJson(
     Reflect.deleteProperty(mergedDependencies, dependencyName);
   }
   Object.assign(mergedDependencies, template.dependencies);
-  if (!includeStudio) {
-    delete mergedDependencies['@expo/vector-icons'];
-    delete mergedDependencies['@react-native-picker/picker'];
-  }
 
   const mergedDevDependencies: Record<string, string> = {
     ...(existing?.devDependencies ?? {}),

@@ -1,22 +1,15 @@
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 import { readOwnProperty } from '../utils/readOwnProperty';
-
-const DEFAULT_API_BASE = 'http://localhost:3000/api';
+import { resolveStudioApiBase } from './apiBase';
 
 const getApiBase = (): string => {
-  const envApiBase = readEnvString('EXPO_PUBLIC_API_URL');
-  if (envApiBase !== undefined) {
-    return envApiBase;
-  }
-
-  const hostUri = readExpoHostUri();
-  if (hostUri !== null) {
-    const [ip] = hostUri.split(':');
-    return `http://${ip}:3000/api`;
-  }
-
-  return DEFAULT_API_BASE;
+  return resolveStudioApiBase({
+    explicitApiBase: readEnvString('EXPO_PUBLIC_API_URL'),
+    expoHostUri: readExpoHostUri(),
+    platform: Platform.OS,
+  });
 };
 
 function readEnvString(name: string): string | undefined {
