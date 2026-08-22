@@ -296,11 +296,16 @@ const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL';
 const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL';
 const DEFAULT_STUDIO_HOST_URL = 'http://127.0.0.1:3000';
 const LOOPBACK_HOSTNAMES = new Set(['127.0.0.1', '::1', '[::1]', 'localhost']);
+const ADB_TRACK_READY_TIMEOUT_MS = 5_000;
+const ADB_REVERSE_ATTEMPTS = 5;
+const ADB_REVERSE_RETRY_DELAY_MS = 100;
 const projectId = ${JSON.stringify(args.projectId)};
 const projectRoot = process.cwd();
 
 const supabaseUrl = await readEnvValue(path.join(projectRoot, '.env.local'), PUBLIC_SUPABASE_URL);
-if (supabaseUrl) await prepareAndroidLoopbackBridge(supabaseUrl);
+const androidBridgePort = supabaseUrl
+  ? await prepareAndroidLoopbackBridge(supabaseUrl)
+  : undefined;
 
 const expoExecutable = path.join(
   projectRoot,
@@ -308,9 +313,12 @@ const expoExecutable = path.join(
   '.bin',
   process.platform === 'win32' ? 'expo.cmd' : 'expo',
 );
-await runCommand(expoExecutable, ['run:android', ...process.argv.slice(2)]);
+const androidBridge = androidBridgePort
+  ? await startAndroidBridgeSupervisor(androidBridgePort)
+  : undefined;
+await runExpoCommand(expoExecutable, ['run:android', ...process.argv.slice(2)], androidBridge);
 
-async function prepareAndroidLoopbackBridge(value: string): Promise<void> {
+async function prepareAndroidLoopbackBridge(value: string): Promise<string | undefined> {
   let url: URL;
   try {
     url = new URL(value);
@@ -320,7 +328,7 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<void> {
     });
   }
 
-  if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return;
+  if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return undefined;
 
   const port = resolveUrlPort(url);
   if (!(await isLocalGatewayReachable(url))) {
@@ -331,9 +339,277 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<void> {
       );
     }
   }
+  return port;
+}
+
+interface AndroidTransport {
+  readonly key: string;
+  readonly serial: string;
+  readonly transportId: string;
+}
+
+interface AndroidBridgeSupervisor {
+  readonly failure: Promise<never>;
+  stop(): Promise<void>;
+}
+
+async function startAndroidBridgeSupervisor(port: string): Promise<AndroidBridgeSupervisor> {
   const tcpPort = \`tcp:\${port}\`;
-  await runCommand('adb', ['reverse', tcpPort, tcpPort]);
-  console.info(\`[android-dev] Bridged Android loopback \${tcpPort} to \${url.origin}.\`);
+  const tracker = spawn('adb', ['track-devices', '-l'], {
+    cwd: projectRoot,
+    env: process.env,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  let bufferedOutput = Buffer.alloc(0);
+  let latestTransports = new Map<string, AndroidTransport>();
+  const verifiedTransports = new Set<string>();
+  let trackerStderr = '';
+  let stopping = false;
+  let failed = false;
+  let readySettled = false;
+  let stopPromise: Promise<void> | undefined;
+  let processing = Promise.resolve();
+  let resolveReady!: () => void;
+  let rejectReady!: (error: Error) => void;
+  let rejectFailure!: (error: Error) => void;
+
+  const ready = new Promise<void>((resolve, reject) => {
+    resolveReady = resolve;
+    rejectReady = reject;
+  });
+  const failure = new Promise<never>((_resolve, reject) => {
+    rejectFailure = reject;
+  });
+  void failure.catch(() => undefined);
+  const trackerExit = new Promise<void>((resolve) => {
+    tracker.once('close', (code, signal) => {
+      resolve();
+      if (stopping || failed) return;
+      const detail = trackerStderr.trim();
+      failSupervisor(
+        new Error(
+          \`ADB transport tracking stopped unexpectedly\${signal ? \` from signal \${signal}\` : \` with code \${code ?? 1}\`}\${detail ? \`: \${detail}\` : '.'}\`,
+        ),
+      );
+    });
+  });
+
+  tracker.once('error', failSupervisor);
+  tracker.stderr?.setEncoding('utf8');
+  tracker.stderr?.on('data', (chunk: string) => {
+    trackerStderr = (trackerStderr + chunk).slice(-4_096);
+  });
+  tracker.stdout?.on('data', (chunk: Buffer | string) => {
+    if (stopping || failed) return;
+    bufferedOutput = Buffer.concat([
+      bufferedOutput,
+      Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk),
+    ]);
+    let frames: readonly string[];
+    try {
+      const parsed = readAdbTrackFrames(bufferedOutput);
+      bufferedOutput = parsed.remaining;
+      frames = parsed.frames;
+    } catch (error) {
+      failSupervisor(error);
+      return;
+    }
+
+    for (const frame of frames) {
+      let transports: readonly AndroidTransport[];
+      try {
+        transports = parseAndroidTransports(frame);
+      } catch (error) {
+        failSupervisor(error);
+        return;
+      }
+      latestTransports = new Map(transports.map((transport) => [transport.key, transport]));
+      processing = processing.then(async () => {
+        for (const key of verifiedTransports) {
+          if (!latestTransports.has(key)) verifiedTransports.delete(key);
+        }
+        for (const transport of transports) {
+          if (latestTransports.get(transport.key) !== transport) continue;
+          if (verifiedTransports.has(transport.key)) continue;
+          if (await ensureTransportReverse(transport, tcpPort, () => latestTransports)) {
+            verifiedTransports.add(transport.key);
+            console.info(
+              \`[android-dev] Bridged Android transport \${transport.serial} (transport_id \${transport.transportId}) \${tcpPort}.\`,
+            );
+          }
+        }
+        settleReady();
+      });
+      void processing.catch(failSupervisor);
+    }
+  });
+
+  const readyTimeout = setTimeout(() => {
+    failSupervisor(
+      new Error(
+        \`ADB did not provide an initial transport snapshot within \${ADB_TRACK_READY_TIMEOUT_MS}ms. Ensure adb is installed and try again.\`,
+      ),
+    );
+  }, ADB_TRACK_READY_TIMEOUT_MS);
+  try {
+    await ready;
+  } catch (error) {
+    await stop();
+    throw error;
+  } finally {
+    clearTimeout(readyTimeout);
+  }
+
+  return { failure, stop };
+
+  function settleReady(): void {
+    if (readySettled) return;
+    readySettled = true;
+    resolveReady();
+  }
+
+  function failSupervisor(error: unknown): void {
+    if (stopping || failed) return;
+    failed = true;
+    const resolvedError = toError(error);
+    if (!readySettled) {
+      readySettled = true;
+      rejectReady(resolvedError);
+    }
+    rejectFailure(resolvedError);
+    if (tracker.exitCode === null && tracker.signalCode === null) tracker.kill('SIGTERM');
+  }
+
+  function stop(): Promise<void> {
+    stopPromise ??= (async () => {
+      stopping = true;
+      if (tracker.exitCode === null && tracker.signalCode === null) tracker.kill('SIGTERM');
+      await trackerExit;
+      await processing.catch(() => undefined);
+    })();
+    return stopPromise;
+  }
+}
+
+function readAdbTrackFrames(buffer: Buffer): {
+  readonly frames: readonly string[];
+  readonly remaining: Buffer;
+} {
+  const frames: string[] = [];
+  let offset = 0;
+  while (buffer.length - offset >= 4) {
+    const header = buffer.subarray(offset, offset + 4).toString('ascii');
+    if (!/^[0-9a-f]{4}$/iu.test(header)) {
+      throw new Error(\`ADB transport tracking returned an invalid frame header: \${header}.\`);
+    }
+    const length = Number.parseInt(header, 16);
+    if (buffer.length - offset - 4 < length) break;
+    const start = offset + 4;
+    frames.push(buffer.subarray(start, start + length).toString('utf8'));
+    offset = start + length;
+  }
+  return { frames, remaining: buffer.subarray(offset) };
+}
+
+function parseAndroidTransports(snapshot: string): readonly AndroidTransport[] {
+  const transports: AndroidTransport[] = [];
+  for (const line of snapshot.split(/\\r?\\n/u)) {
+    const fields = line.trim().split(/\\s+/u);
+    if (fields.length < 2 || fields[1] !== 'device') continue;
+    const serial = fields[0];
+    const transportField = fields.find((field) => field.startsWith('transport_id:'));
+    const transportId = transportField?.slice('transport_id:'.length);
+    if (!serial || !transportId || !/^\\d+$/u.test(transportId)) {
+      throw new Error(
+        \`ADB did not report a transport_id for authorized Android device '\${serial ?? 'unknown'}'. Update Android platform-tools and try again.\`,
+      );
+    }
+    transports.push({ key: \`\${serial}:\${transportId}\`, serial, transportId });
+  }
+  return transports;
+}
+
+async function ensureTransportReverse(
+  transport: AndroidTransport,
+  tcpPort: string,
+  getLatestTransports: () => ReadonlyMap<string, AndroidTransport>,
+): Promise<boolean> {
+  let lastError: Error | undefined;
+  for (let attempt = 1; attempt <= ADB_REVERSE_ATTEMPTS; attempt += 1) {
+    if (!getLatestTransports().has(transport.key)) return false;
+    try {
+      if (!(await hasTransportReverse(transport.serial, tcpPort))) {
+        await runCapturedCommand('adb', [
+          '-s',
+          transport.serial,
+          'reverse',
+          tcpPort,
+          tcpPort,
+        ]);
+      }
+      if (await hasTransportReverse(transport.serial, tcpPort)) return true;
+      throw new Error(\`adb reverse --list did not contain \${tcpPort} -> \${tcpPort}.\`);
+    } catch (error) {
+      lastError = toError(error);
+      if (!getLatestTransports().has(transport.key)) return false;
+      if (attempt < ADB_REVERSE_ATTEMPTS) await delay(ADB_REVERSE_RETRY_DELAY_MS);
+    }
+  }
+  throw new Error(
+    \`Could not bridge Android device \${transport.serial} (transport_id \${transport.transportId}) after \${ADB_REVERSE_ATTEMPTS} attempts: \${lastError?.message ?? 'unknown ADB error'}\`,
+    { cause: lastError },
+  );
+}
+
+async function hasTransportReverse(serial: string, tcpPort: string): Promise<boolean> {
+  const result = await runCapturedCommand('adb', ['-s', serial, 'reverse', '--list']);
+  return result.stdout.split(/\\r?\\n/u).some((line) => {
+    const fields = line.trim().split(/\\s+/u);
+    return fields.at(-2) === tcpPort && fields.at(-1) === tcpPort;
+  });
+}
+
+interface CapturedCommandResult {
+  readonly stdout: string;
+  readonly stderr: string;
+}
+
+async function runCapturedCommand(
+  command: string,
+  args: readonly string[],
+): Promise<CapturedCommandResult> {
+  const child = spawn(command, args, {
+    cwd: projectRoot,
+    env: process.env,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  let stdout = '';
+  let stderr = '';
+  child.stdout?.setEncoding('utf8');
+  child.stderr?.setEncoding('utf8');
+  child.stdout?.on('data', (chunk: string) => {
+    stdout += chunk;
+  });
+  child.stderr?.on('data', (chunk: string) => {
+    stderr += chunk;
+  });
+  const exitCode = await new Promise<number>((resolve, reject) => {
+    child.once('error', reject);
+    child.once('exit', (code, signal) => {
+      if (signal) {
+        reject(new Error(\`\${command} exited from signal \${signal}.\`));
+        return;
+      }
+      resolve(code ?? 1);
+    });
+  });
+  if (exitCode !== 0) {
+    const detail = stderr.trim() || stdout.trim();
+    throw new Error(
+      \`\${command} \${args.join(' ')} exited with code \${exitCode}\${detail ? \`: \${detail}\` : '.'}\`,
+    );
+  }
+  return { stdout, stderr };
 }
 
 function resolveUrlPort(url: URL): string {
@@ -429,23 +705,73 @@ function stripMatchingQuotes(value: string): string {
     : value;
 }
 
-async function runCommand(command: string, args: readonly string[]): Promise<void> {
+async function runExpoCommand(
+  command: string,
+  args: readonly string[],
+  androidBridge?: AndroidBridgeSupervisor,
+): Promise<void> {
   const child = spawn(command, args, {
     cwd: projectRoot,
     env: process.env,
     stdio: 'inherit',
   });
-  const exitCode = await new Promise<number>((resolve, reject) => {
-    child.once('error', reject);
-    child.once('exit', (code, signal) => {
-      if (signal) {
-        reject(new Error(\`\${command} exited from signal \${signal}.\`));
-        return;
-      }
-      resolve(code ?? 1);
-    });
-  });
-  if (exitCode !== 0) throw new Error(\`\${command} exited with code \${exitCode}.\`);
+  const exit = new Promise<{ readonly code: number; readonly signal?: NodeJS.Signals }>(
+    (resolve, reject) => {
+      child.once('error', reject);
+      child.once('exit', (code, signal) => {
+        if (signal) {
+          resolve({ code: code ?? 1, signal });
+          return;
+        }
+        resolve({ code: code ?? 1 });
+      });
+    },
+  );
+  const stopFromSignal = (signal: NodeJS.Signals) => {
+    void androidBridge?.stop();
+    if (child.exitCode === null && child.signalCode === null) child.kill(signal);
+  };
+  const onSigint = () => stopFromSignal('SIGINT');
+  const onSigterm = () => stopFromSignal('SIGTERM');
+  process.once('SIGINT', onSigint);
+  process.once('SIGTERM', onSigterm);
+
+  try {
+    const expoOutcome = exit.then((result) => ({ kind: 'expo' as const, result }));
+    const outcome = androidBridge
+      ? await Promise.race([
+          expoOutcome,
+          androidBridge.failure.catch((error: unknown) => ({
+            kind: 'bridge' as const,
+            error: toError(error),
+          })),
+        ])
+      : await expoOutcome;
+
+    if (outcome.kind === 'bridge') {
+      if (child.exitCode === null && child.signalCode === null) child.kill('SIGTERM');
+      await exit;
+      throw outcome.error;
+    }
+    if (outcome.result.signal) {
+      throw new Error(\`\${command} exited from signal \${outcome.result.signal}.\`);
+    }
+    if (outcome.result.code !== 0) {
+      throw new Error(\`\${command} exited with code \${outcome.result.code}.\`);
+    }
+  } finally {
+    process.off('SIGINT', onSigint);
+    process.off('SIGTERM', onSigterm);
+    await androidBridge?.stop();
+  }
+}
+
+function delay(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+function toError(error: unknown): Error {
+  return error instanceof Error ? error : new Error(String(error));
 }
 `;
 }

@@ -129,11 +129,14 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain("const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL'");
     expect(androidRun).toContain('const projectId = "native-app"');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
-    expect(androidRun).toContain("await runCommand('adb', ['reverse', tcpPort, tcpPort])");
+    expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");
+    expect(androidRun).toContain("field.startsWith('transport_id:')");
+    expect(androidRun).toContain("'reverse',\n          tcpPort,\n          tcpPort");
+    expect(androidRun).toContain("['-s', serial, 'reverse', '--list']");
     expect(androidRun).toContain('await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) })');
     expect(androidRun).toContain('/infra/runtime/ensure');
     expect(androidRun).toContain('Run Infrastructure Up and try again');
-    expect(androidRun).toContain("await runCommand(expoExecutable, ['run:android'");
+    expect(androidRun).toContain("await runExpoCommand(expoExecutable, ['run:android'");
     expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
     expect(androidRun).not.toContain('EXPO_PUBLIC_API_URL');
     expect(androidRun).not.toContain("from '@ankhorage/infra");

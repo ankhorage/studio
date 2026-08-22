@@ -54,7 +54,9 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
 
     expect(appConfig).toContain(`scheme: '${AUTH5_NATIVE_OAUTH_SMOKE.android.scheme}'`);
     expect(appConfig).toContain(`scheme: '${AUTH5_NATIVE_OAUTH_SMOKE.ios.scheme}'`);
-    expect(androidRun).toContain("await runCommand('adb', ['reverse', tcpPort, tcpPort])");
+    expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");
+    expect(androidRun).toContain("'-s',\n          transport.serial,\n          'reverse'");
+    expect(androidRun).toContain("['-s', serial, 'reverse', '--list']");
     expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
     expect(oauthRuntime).toContain('resolveExpoOAuthBrowserRuntimeReadiness()');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
