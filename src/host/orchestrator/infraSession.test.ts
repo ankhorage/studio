@@ -1,7 +1,11 @@
 import { InfraScriptExecutionError } from '@ankhorage/infra/project';
 import { describe, expect, test } from 'bun:test';
 
-import { ensureProjectInfrastructureRuntimeSession } from './infraSession';
+import {
+  ensureProjectInfrastructureRuntimeSession,
+  ensureProjectWebLaunchSession,
+  type InfraSessionDependencies,
+} from './infraSession';
 
 const session = {
   projectId: 'project-one',
@@ -10,46 +14,77 @@ const session = {
 } as const;
 
 describe('Studio infrastructure runtime session', () => {
-  test('ensures the complete runtime when the app forward is already running', async () => {
-    const calls: string[] = [];
+  test('ensures the topology-agnostic runtime without touching app-forward APIs', async () => {
+    let ensureRuntimeCalls = 0;
 
     const result = await ensureProjectInfrastructureRuntimeSession(session, {
       resolveProjectInfrastructurePortForward: () => {
-        calls.push('resolve-app-endpoint');
-        return Promise.resolve({ localPort: 4173, url: 'http://127.0.0.1:4173' });
+        throw new Error('MUST NOT BE CALLED');
       },
       runProjectInfrastructureLifecycle: () => {
-        calls.push('read-app-status');
-        return Promise.resolve({ stdout: 'app: running\n', stderr: '' });
+        throw new Error('MUST NOT BE CALLED');
       },
       ensureProjectInfrastructureRuntime: () => {
-        calls.push('ensure-runtime');
+        ensureRuntimeCalls += 1;
         return Promise.resolve({ stdout: '', stderr: '' });
       },
     });
 
-    expect(calls).toEqual(['resolve-app-endpoint', 'read-app-status', 'ensure-runtime']);
-    expect(result).toEqual({ started: false, url: 'http://127.0.0.1:4173' });
+    expect(result).toBeUndefined();
+    expect(ensureRuntimeCalls).toBe(1);
   });
 
-  test('preserves Infra failure details and adds regeneration guidance', async () => {
+  for (const scenario of [
+    { status: 'app: running\n', started: false },
+    { status: 'app: stopped\n', started: true },
+  ] as const) {
+    test(`launch reports started=${scenario.started} for ${scenario.status.trim()}`, async () => {
+      const calls: string[] = [];
+
+      const result = await ensureProjectWebLaunchSession(session, {
+        resolveProjectInfrastructurePortForward: () => {
+          calls.push('resolve-app-endpoint');
+          return Promise.resolve({ localPort: 4173, url: 'http://127.0.0.1:4173' });
+        },
+        runProjectInfrastructureLifecycle: () => {
+          calls.push('read-app-status');
+          return Promise.resolve({ stdout: scenario.status, stderr: '' });
+        },
+        ensureProjectInfrastructureRuntime: () => {
+          calls.push('ensure-runtime');
+          return Promise.resolve({ stdout: '', stderr: '' });
+        },
+      });
+
+      expect(calls).toEqual(['resolve-app-endpoint', 'read-app-status', 'ensure-runtime']);
+      expect(result).toEqual({
+        started: scenario.started,
+        url: 'http://127.0.0.1:4173',
+      });
+    });
+  }
+
+  test('preserves Infra failure details and adds regeneration guidance once', async () => {
     const failure = new InfraScriptExecutionError({
       exitCode: 1,
       message:
         "Failed to ensure infrastructure runtime for project 'project-one': unknown group runtime",
       stderr: 'unknown group runtime',
-      stdout: '',
+      stdout: 'runtime output',
     });
+    const dependencies: InfraSessionDependencies = {
+      resolveProjectInfrastructurePortForward: () => {
+        throw new Error('MUST NOT BE CALLED');
+      },
+      runProjectInfrastructureLifecycle: () => {
+        throw new Error('MUST NOT BE CALLED');
+      },
+      ensureProjectInfrastructureRuntime: () => Promise.reject(failure),
+    };
 
     let rejected: unknown;
     try {
-      await ensureProjectInfrastructureRuntimeSession(session, {
-        resolveProjectInfrastructurePortForward: () =>
-          Promise.resolve({ localPort: 4173, url: 'http://127.0.0.1:4173' }),
-        runProjectInfrastructureLifecycle: () =>
-          Promise.resolve({ stdout: 'app: stopped\n', stderr: '' }),
-        ensureProjectInfrastructureRuntime: () => Promise.reject(failure),
-      });
+      await ensureProjectInfrastructureRuntimeSession(session, dependencies);
     } catch (error) {
       rejected = error;
     }
@@ -60,8 +95,11 @@ describe('Studio infrastructure runtime session', () => {
     }
     expect(rejected.exitCode).toBe(1);
     expect(rejected.stderr).toBe('unknown group runtime');
-    expect(rejected.message).toContain(
-      "Run Infrastructure Up to regenerate project 'project-one' infrastructure before launching it.",
-    );
+    expect(rejected.stdout).toBe('runtime output');
+    expect(rejected.cause).toBe(failure);
+    const guidance =
+      "Run Infrastructure Up to regenerate project 'project-one' infrastructure before retrying.";
+    expect(rejected.message).toContain(failure.message);
+    expect(rejected.message.split(guidance)).toHaveLength(2);
   });
 });

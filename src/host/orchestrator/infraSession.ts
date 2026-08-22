@@ -13,7 +13,7 @@ interface PortForwardSession {
 
 const portForwardSessions = new Map<string, PortForwardSession>();
 
-interface InfraSessionDependencies {
+export interface InfraSessionDependencies {
   readonly ensureProjectInfrastructureRuntime: typeof ensureProjectInfrastructureRuntime;
   readonly resolveProjectInfrastructurePortForward: typeof resolveProjectInfrastructurePortForward;
   readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
@@ -28,6 +28,19 @@ const defaultDependencies: InfraSessionDependencies = {
 export async function ensureProjectInfrastructureRuntimeSession(
   args: PortForwardSession,
   dependencies: InfraSessionDependencies = defaultDependencies,
+): Promise<void> {
+  try {
+    await dependencies.ensureProjectInfrastructureRuntime(args);
+  } catch (error) {
+    throw withInfrastructureUpGuidance(error, args.projectId);
+  }
+
+  portForwardSessions.set(sessionKey(args), args);
+}
+
+export async function ensureProjectWebLaunchSession(
+  args: PortForwardSession,
+  dependencies: InfraSessionDependencies = defaultDependencies,
 ): Promise<{
   readonly started: boolean;
   readonly url: string;
@@ -40,13 +53,8 @@ export async function ensureProjectInfrastructureRuntimeSession(
   });
   const started = !/\bapp:\s+running\b/u.test(status.stdout);
 
-  try {
-    await dependencies.ensureProjectInfrastructureRuntime(args);
-  } catch (error) {
-    throw withInfrastructureUpGuidance(error, args.projectId);
-  }
+  await ensureProjectInfrastructureRuntimeSession(args, dependencies);
 
-  portForwardSessions.set(sessionKey(args), args);
   return { started, url: endpoint.url };
 }
 
@@ -74,14 +82,16 @@ function sessionKey(args: PortForwardSession): string {
 }
 
 function withInfrastructureUpGuidance(error: unknown, projectId: string): Error {
-  const guidance = `Run Infrastructure Up to regenerate project '${projectId}' infrastructure before launching it.`;
+  const guidance = `Run Infrastructure Up to regenerate project '${projectId}' infrastructure before retrying.`;
   if (error instanceof InfraScriptExecutionError) {
-    return new InfraScriptExecutionError({
+    const guidedError = new InfraScriptExecutionError({
       exitCode: error.exitCode,
       message: `${error.message} ${guidance}`,
       stderr: error.stderr,
       stdout: error.stdout,
     });
+    guidedError.cause = error;
+    return guidedError;
   }
 
   const message = error instanceof Error ? error.message : String(error);

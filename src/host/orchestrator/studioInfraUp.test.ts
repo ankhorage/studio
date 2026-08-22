@@ -42,7 +42,7 @@ describe('Studio Infrastructure Up', () => {
         },
         ensureProjectInfrastructureRuntimeSession: (args) => {
           calls.push(['runtime', args]);
-          return Promise.resolve({ started: false, url: 'http://127.0.0.1:48123' });
+          return Promise.resolve();
         },
       },
     );
