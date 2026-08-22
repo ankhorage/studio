@@ -287,13 +287,16 @@ export function getBabelConfigJs() {
 `;
 }
 
-export function getAndroidRunTs() {
+export function getAndroidRunTs(args: { readonly projectId: string }) {
   return `import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL';
+const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL';
+const DEFAULT_STUDIO_HOST_URL = 'http://127.0.0.1:3000';
 const LOOPBACK_HOSTNAMES = new Set(['127.0.0.1', '::1', '[::1]', 'localhost']);
+const projectId = ${JSON.stringify(args.projectId)};
 const projectRoot = process.cwd();
 
 const supabaseUrl = await readEnvValue(path.join(projectRoot, '.env.local'), PUBLIC_SUPABASE_URL);
@@ -320,7 +323,14 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<void> {
   if (!LOOPBACK_HOSTNAMES.has(url.hostname)) return;
 
   const port = resolveUrlPort(url);
-  await assertLocalGatewayReachable(url);
+  if (!(await isLocalGatewayReachable(url))) {
+    await ensureStudioInfrastructureRuntime();
+    if (!(await isLocalGatewayReachable(url))) {
+      throw new Error(
+        \`Studio reported that infrastructure runtime recovery succeeded, but the local Supabase gateway is still unavailable at \${url.origin}. Run Infrastructure Up and try again.\`,
+      );
+    }
+  }
   const tcpPort = \`tcp:\${port}\`;
   await runCommand('adb', ['reverse', tcpPort, tcpPort]);
   console.info(\`[android-dev] Bridged Android loopback \${tcpPort} to \${url.origin}.\`);
@@ -333,15 +343,59 @@ function resolveUrlPort(url: URL): string {
   throw new Error(\`\${PUBLIC_SUPABASE_URL} must use HTTP or HTTPS.\`);
 }
 
-async function assertLocalGatewayReachable(url: URL): Promise<void> {
+async function isLocalGatewayReachable(url: URL): Promise<boolean> {
   const healthUrl = new URL('/auth/v1/health', url.origin);
   try {
     await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureStudioInfrastructureRuntime(): Promise<void> {
+  const studioHostValue = process.env[STUDIO_HOST_URL] ?? DEFAULT_STUDIO_HOST_URL;
+  let endpoint: URL;
+  try {
+    endpoint = new URL(
+      \`/api/projects/\${encodeURIComponent(projectId)}/infra/runtime/ensure\`,
+      studioHostValue,
+    );
+  } catch (error) {
+    throw new Error(\`\${STUDIO_HOST_URL} is not a valid URL: \${studioHostValue}\`, {
+      cause: error,
+    });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      method: 'POST',
+      signal: AbortSignal.timeout(30_000),
+    });
   } catch (error) {
     throw new Error(
-      \`Local Supabase gateway is unavailable at \${url.origin}. Run Infrastructure Up and verify its port-forward before starting Android.\`,
+      \`Could not ask the Studio host at \${endpoint.origin} to restore project '\${projectId}' infrastructure runtime. Start the Studio host, run Infrastructure Up if needed, and try again.\`,
       { cause: error },
     );
+  }
+
+  if (response.ok) return;
+
+  const detail = await readErrorDetail(response);
+  throw new Error(
+    \`Studio could not restore project '\${projectId}' infrastructure runtime (HTTP \${response.status})\${detail ? \`: \${detail}\` : '.'} Run Infrastructure Up and try again.\`,
+  );
+}
+
+async function readErrorDetail(response: Response): Promise<string | undefined> {
+  try {
+    const body: unknown = await response.json();
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) return undefined;
+    const error = Reflect.get(body, 'error');
+    return typeof error === 'string' && error.trim() ? error.trim() : undefined;
+  } catch {
+    return undefined;
   }
 }
 

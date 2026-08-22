@@ -4,9 +4,24 @@ import {
   resolveTrustedOAuthInfraEnvironmentForUp,
   type TrustedOAuthSecretResolver,
 } from '../secrets/trustedOAuthInfraEnvironment';
-import { registerProjectInfraPortForwardOwner } from './infraSession';
+import { ensureProjectInfrastructureRuntimeSession } from './infraSession';
 import type { ProjectManager } from './projectManager';
 import { getProjectPath } from './projectPaths';
+
+type StudioInfraProjectManager = Pick<
+  ProjectManager,
+  'getInfrastructureStatus' | 'getProjectManifest' | 'regenerateInfrastructure'
+>;
+
+interface StudioInfraUpDependencies {
+  readonly ensureProjectInfrastructureRuntimeSession: typeof ensureProjectInfrastructureRuntimeSession;
+  readonly runProjectInfrastructureLifecycle: typeof runProjectInfrastructureLifecycle;
+}
+
+const defaultDependencies: StudioInfraUpDependencies = {
+  ensureProjectInfrastructureRuntimeSession,
+  runProjectInfrastructureLifecycle,
+};
 
 export interface StudioInfraUpResult {
   readonly target?: string;
@@ -22,12 +37,15 @@ export interface StudioInfraUpResult {
       };
 }
 
-export async function upProjectInfrastructure(args: {
-  readonly projectId: string;
-  readonly projectManager: ProjectManager;
-  readonly workspaceRoot: string;
-  readonly secretResolver?: TrustedOAuthSecretResolver;
-}): Promise<StudioInfraUpResult> {
+export async function upProjectInfrastructure(
+  args: {
+    readonly projectId: string;
+    readonly projectManager: StudioInfraProjectManager;
+    readonly workspaceRoot: string;
+    readonly secretResolver?: TrustedOAuthSecretResolver;
+  },
+  dependencies: StudioInfraUpDependencies = defaultDependencies,
+): Promise<StudioInfraUpResult> {
   const regenerated = await args.projectManager.regenerateInfrastructure(args.projectId);
   if (regenerated.skipped) {
     return {
@@ -52,7 +70,7 @@ export async function upProjectInfrastructure(args: {
   });
   const projectPath = getProjectPath(args.workspaceRoot, args.projectId);
 
-  await runProjectInfrastructureLifecycle({
+  await dependencies.runProjectInfrastructureLifecycle({
     projectId: args.projectId,
     projectPath,
     target: status.target,
@@ -62,7 +80,7 @@ export async function upProjectInfrastructure(args: {
       ...trustedOAuth.env,
     },
   });
-  await registerProjectInfraPortForwardOwner({
+  await dependencies.ensureProjectInfrastructureRuntimeSession({
     projectId: args.projectId,
     projectPath,
     target: status.target,

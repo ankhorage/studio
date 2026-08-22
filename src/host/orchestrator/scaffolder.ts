@@ -81,7 +81,7 @@ export class ProjectScaffolder {
       runtimePlan,
       targets,
     );
-    await this.syncAndroidRunScript(projectPath, targets);
+    await this.syncAndroidRunScript(projectPath, targets, slug);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -144,7 +144,7 @@ export class ProjectScaffolder {
     );
 
     await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
-    await this.syncAndroidRunScript(projectPath, targets);
+    await this.syncAndroidRunScript(projectPath, targets, slug);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
@@ -209,7 +209,7 @@ export class ProjectScaffolder {
     );
   }
 
-  private async syncAndroidRunScript(dir: string, targets: AppDeployTargets) {
+  private async syncAndroidRunScript(dir: string, targets: AppDeployTargets, projectId: string) {
     const scriptPath = path.join(dir, 'scripts', 'ankh-android.ts');
     if (!targets.android?.enabled) {
       await fs.rm(scriptPath, { force: true });
@@ -217,7 +217,7 @@ export class ProjectScaffolder {
     }
 
     await fs.mkdir(path.dirname(scriptPath), { recursive: true });
-    await fs.writeFile(scriptPath, getAndroidRunTs(), 'utf8');
+    await fs.writeFile(scriptPath, getAndroidRunTs({ projectId }), 'utf8');
   }
 
   private async writeMetroConfig(dir: string) {

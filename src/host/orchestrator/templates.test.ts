@@ -122,18 +122,26 @@ describe('generated OAuth scaffold templates', () => {
       name: 'native-app',
       targets: { android: { enabled: true, package: 'com.example.app', scheme: 'example-app' } },
     });
-    const androidRun = getAndroidRunTs();
+    const androidRun = getAndroidRunTs({ projectId: 'native-app' });
 
     expect(pkg.scripts.android).toBe('bun scripts/ankh-android.ts');
     expect(androidRun).toContain("const PUBLIC_SUPABASE_URL = 'EXPO_PUBLIC_SUPABASE_URL'");
+    expect(androidRun).toContain("const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL'");
+    expect(androidRun).toContain('const projectId = "native-app"');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
     expect(androidRun).toContain("await runCommand('adb', ['reverse', tcpPort, tcpPort])");
     expect(androidRun).toContain('await fetch(healthUrl, { signal: AbortSignal.timeout(5_000) })');
-    expect(androidRun).toContain('Local Supabase gateway is unavailable at');
-    expect(androidRun).toContain('Run Infrastructure Up and verify its port-forward');
+    expect(androidRun).toContain('/infra/runtime/ensure');
+    expect(androidRun).toContain('Run Infrastructure Up and try again');
     expect(androidRun).toContain("await runCommand(expoExecutable, ['run:android'");
     expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+    expect(androidRun).not.toContain('EXPO_PUBLIC_API_URL');
+    expect(androidRun).not.toContain("from '@ankhorage/infra");
+    expect(androidRun).not.toContain('kubectl');
+    expect(androidRun).not.toContain('supabase-gateway');
     expect(androidRun).not.toContain('10.0.2.2');
+    expect(androidRun).not.toContain("'tcp:3000'");
+    expect(androidRun).not.toContain("'tcp:8081'");
     expect(androidRun).not.toContain('apps/nutrition');
     expect(androidRun).not.toContain('/Users/');
   });
