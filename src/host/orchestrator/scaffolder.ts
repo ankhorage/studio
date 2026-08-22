@@ -136,12 +136,7 @@ export class ProjectScaffolder {
       zoraExtensions,
     );
 
-    const nextPackageJson = mergePackageJson(
-      existingPackageJson,
-      templatePackageJson,
-      includeStudio,
-      targets,
-    );
+    const nextPackageJson = mergePackageJson(existingPackageJson, templatePackageJson, targets);
 
     await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
@@ -361,7 +356,6 @@ function withZoraExtensionDependencies(
 function mergePackageJson(
   existing: ExtendedPackageJsonShape | null,
   template: ExtendedPackageJsonShape,
-  includeStudio: boolean,
   targets: AppDeployTargets,
 ) {
   const baseTemplate = getPackageJson({ name: template.name, includeStudio: false, targets });
@@ -402,10 +396,6 @@ function mergePackageJson(
     Reflect.deleteProperty(mergedDependencies, dependencyName);
   }
   Object.assign(mergedDependencies, template.dependencies);
-  if (!includeStudio) {
-    delete mergedDependencies['@expo/vector-icons'];
-    delete mergedDependencies['@react-native-picker/picker'];
-  }
 
   const mergedDevDependencies: Record<string, string> = {
     ...(existing?.devDependencies ?? {}),

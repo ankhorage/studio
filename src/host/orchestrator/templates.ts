@@ -981,11 +981,11 @@ export function getPackageJson(args: {
         ? { '@ankhorage/supabase-storage': SUPABASE_STORAGE_VERSION }
         : {}),
       '@ankhorage/zora': ZORA_VERSION,
+      '@expo/vector-icons': '^15.0.3',
+      '@react-native-picker/picker': '2.11.1',
       ...runtimeDependencies,
       ...(includeStudio
         ? {
-            '@expo/vector-icons': '^15.0.3',
-            '@react-native-picker/picker': '2.11.1',
             'expo-document-picker': EXPO_DOCUMENT_PICKER_VERSION,
             'expo-file-system': EXPO_FILE_SYSTEM_VERSION,
             'expo-image-picker': EXPO_IMAGE_PICKER_VERSION,
