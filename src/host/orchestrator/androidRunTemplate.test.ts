@@ -55,6 +55,118 @@ describe('generated Android development launcher', () => {
     }
   });
 
+  it('bridges only an explicit target when an unrelated device would reject reverse', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+
+    try {
+      const harness = await createHarness({
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      await writeMultipleDeviceAdb(path.join(harness.toolBinPath, 'adb'));
+      const result = await runHarness(harness, ['--device', 'emulator-5554']);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe(
+        'run:android\n--device\nemulator-5554\n',
+      );
+    } finally {
+      await gateway.stop(true);
+    }
+  });
+
+  it('resolves Expo emulator names to their ADB serials', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+
+    try {
+      const harness = await createHarness({
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      await writeMultipleDeviceAdb(path.join(harness.toolBinPath, 'adb'));
+      const result = await runHarness(harness, ['--device=target_avd']);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe(
+        'run:android\n--device=target_avd\n',
+      );
+    } finally {
+      await gateway.stop(true);
+    }
+  });
+
+  it('bridges the only authorized device when no target is explicit', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+
+    try {
+      const harness = await createHarness({
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      const result = await runHarness(harness, []);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe(
+        `-s\nemulator-5554\nreverse\ntcp:${gateway.port}\ntcp:${gateway.port}\n`,
+      );
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
+    } finally {
+      await gateway.stop(true);
+    }
+  });
+
+  it('matches Expo by selecting the first attached device when no target is explicit', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+
+    try {
+      const harness = await createHarness({
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      await writeMultipleDeviceAdb(path.join(harness.toolBinPath, 'adb'));
+      const result = await runHarness(harness, []);
+
+      expect(result.exitCode).toBe(0);
+      expect(await readFile(harness.adbRecordPath, 'utf8')).toBe('emulator-5554:41\n');
+      expect(await readFile(harness.expoRecordPath, 'utf8')).toBe('run:android\n');
+    } finally {
+      await gateway.stop(true);
+    }
+  });
+
+  it('rejects interactive Expo device selection before starting ADB or Expo', async () => {
+    const gateway = Bun.serve({
+      port: 0,
+      fetch: () => Response.json({ message: 'missing API key' }, { status: 401 }),
+    });
+
+    try {
+      const harness = await createHarness({
+        supabaseUrl: `http://127.0.0.1:${gateway.port}`,
+      });
+      const result = await runHarness(harness, ['--device']);
+
+      expect(result.exitCode).not.toBe(0);
+      expect(result.stderr).toContain(
+        'Interactive Expo device selection cannot be supervised safely',
+      );
+      expect(await exists(harness.adbRecordPath)).toBe(false);
+      expect(await exists(harness.expoRecordPath)).toBe(false);
+    } finally {
+      await gateway.stop(true);
+    }
+  });
+
   it('bridges a replacement transport with the same serial before Expo opens the app', async () => {
     const gateway = Bun.serve({
       port: 0,
@@ -65,7 +177,7 @@ describe('generated Android development launcher', () => {
       const harness = await createTransportReplacementHarness({
         supabaseUrl: `http://127.0.0.1:${gateway.port}`,
       });
-      const result = await runHarness(harness, []);
+      const result = await runHarness(harness, ['--device', 'emulator-5554']);
 
       expect(result.exitCode).toBe(0);
       expect(await readFile(harness.mappingPath, 'utf8')).toBe(
@@ -383,6 +495,9 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
   process.once('SIGINT', stop);
   process.once('SIGTERM', stop);
   setInterval(() => undefined, 60_000);
+} else if (args[0] === '-s' && args[2] === 'emu' && args[3] === 'avd' && args[4] === 'name') {
+  if (args[1] === 'emulator-5554') process.stdout.write('target_avd\\nOK\\n');
+  else process.exit(1);
 } else if (args[0] === '-s' && args[2] === 'reverse' && args[3] === '--list') {
   const mapping = readFileSync(mappingPath, 'utf8');
   if (mapping) process.stdout.write(\`host-1 \${mapping}\`);
@@ -429,6 +544,62 @@ if (args[0] === 'track-devices' && args[1] === '-l') {
 } else if (args[0] === '-s' && args[2] === 'reverse') {
   process.stderr.write('reverse unavailable\\n');
   process.exit(1);
+} else {
+  process.exit(2);
+}
+
+function requiredEnv(name) {
+  const value = process.env[name];
+  if (!value) throw new Error(\`Missing \${name}.\`);
+  return value;
+}
+`,
+    'utf8',
+  );
+  await chmod(filePath, 0o755);
+}
+
+async function writeMultipleDeviceAdb(filePath: string): Promise<void> {
+  await writeFile(
+    filePath,
+    `#!/usr/bin/env bun
+import { readFileSync, writeFileSync } from 'node:fs';
+
+const args = process.argv.slice(2);
+const mappingPath = requiredEnv('ADB_MAPPING_PATH');
+const recordPath = requiredEnv('ADB_RECORD_PATH');
+
+if (args[0] === 'track-devices' && args[1] === '-l') {
+  const payload = [
+    'emulator-5554 device product:test model:target_emulator device:test transport_id:41',
+    'usb-phone-1 device usb:1 product:test model:unrelated_phone device:test transport_id:55',
+    '',
+  ].join('\\n');
+  const bytes = Buffer.from(payload, 'utf8');
+  process.stdout.write(bytes.length.toString(16).padStart(4, '0'));
+  process.stdout.write(bytes);
+  const stop = () => process.exit(0);
+  process.once('SIGINT', stop);
+  process.once('SIGTERM', stop);
+  setInterval(() => undefined, 60_000);
+} else if (args[0] === '-s' && args[2] === 'emu' && args[3] === 'avd' && args[4] === 'name') {
+  if (args[1] === 'emulator-5554') process.stdout.write('target_avd\\nOK\\n');
+  else process.exit(1);
+} else if (args[0] === '-s' && args[2] === 'reverse' && args[3] === '--list') {
+  const mapping = readFileSync(mappingPath, 'utf8');
+  if (mapping.startsWith(args[1] + '\\n')) {
+    process.stdout.write(\`host-1 \${mapping.split('\\n').slice(1).join(' ')}\`);
+  }
+} else if (args[0] === '-s' && args[2] === 'reverse') {
+  if (args[1] === 'usb-phone-1') {
+    writeFileSync(recordPath, 'UNRELATED REVERSE INVOKED\\n');
+    process.stderr.write('reverse unavailable on unrelated device\\n');
+    process.exit(1);
+  }
+  const transport = args[1] === 'emulator-5554' ? '41' : '55';
+  writeFileSync(recordPath, args[1] + ':' + transport + '\\n');
+  writeFileSync(mappingPath, [args[1], args[3], args[4], ''].join('\\n'));
+  process.stdout.write(args[3].replace('tcp:', '') + '\\n');
 } else {
   process.exit(2);
 }

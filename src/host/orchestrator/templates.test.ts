@@ -130,6 +130,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain('const projectId = "native-app"');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
     expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");
+    expect(androidRun).toContain('resolveRequestedAndroidDevice(expoArgs)');
+    expect(androidRun).toContain('transport.serial !== selectedSerial');
     expect(androidRun).toContain("field.startsWith('transport_id:')");
     expect(androidRun).toContain("'reverse',\n          tcpPort,\n          tcpPort");
     expect(androidRun).toContain("['-s', serial, 'reverse', '--list']");

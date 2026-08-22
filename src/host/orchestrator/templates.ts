@@ -306,6 +306,7 @@ const supabaseUrl = await readEnvValue(path.join(projectRoot, '.env.local'), PUB
 const androidBridgePort = supabaseUrl
   ? await prepareAndroidLoopbackBridge(supabaseUrl)
   : undefined;
+const expoArgs = process.argv.slice(2);
 
 const expoExecutable = path.join(
   projectRoot,
@@ -314,9 +315,9 @@ const expoExecutable = path.join(
   process.platform === 'win32' ? 'expo.cmd' : 'expo',
 );
 const androidBridge = androidBridgePort
-  ? await startAndroidBridgeSupervisor(androidBridgePort)
+  ? await startAndroidBridgeSupervisor(androidBridgePort, expoArgs)
   : undefined;
-await runExpoCommand(expoExecutable, ['run:android', ...process.argv.slice(2)], androidBridge);
+await runExpoCommand(expoExecutable, ['run:android', ...expoArgs], androidBridge);
 
 async function prepareAndroidLoopbackBridge(value: string): Promise<string | undefined> {
   let url: URL;
@@ -344,6 +345,7 @@ async function prepareAndroidLoopbackBridge(value: string): Promise<string | und
 
 interface AndroidTransport {
   readonly key: string;
+  readonly model: string | undefined;
   readonly serial: string;
   readonly transportId: string;
 }
@@ -353,8 +355,12 @@ interface AndroidBridgeSupervisor {
   stop(): Promise<void>;
 }
 
-async function startAndroidBridgeSupervisor(port: string): Promise<AndroidBridgeSupervisor> {
+async function startAndroidBridgeSupervisor(
+  port: string,
+  expoArgs: readonly string[],
+): Promise<AndroidBridgeSupervisor> {
   const tcpPort = \`tcp:\${port}\`;
+  const requestedDevice = resolveRequestedAndroidDevice(expoArgs);
   const tracker = spawn('adb', ['track-devices', '-l'], {
     cwd: projectRoot,
     env: process.env,
@@ -362,6 +368,7 @@ async function startAndroidBridgeSupervisor(port: string): Promise<AndroidBridge
   });
   let bufferedOutput = Buffer.alloc(0);
   let latestTransports = new Map<string, AndroidTransport>();
+  let selectedSerial: string | undefined;
   const verifiedTransports = new Set<string>();
   let trackerStderr = '';
   let stopping = false;
@@ -425,10 +432,13 @@ async function startAndroidBridgeSupervisor(port: string): Promise<AndroidBridge
       }
       latestTransports = new Map(transports.map((transport) => [transport.key, transport]));
       processing = processing.then(async () => {
+        const currentTransports = [...latestTransports.values()];
+        selectedSerial ??= await resolveAndroidTargetSerial(currentTransports, requestedDevice);
         for (const key of verifiedTransports) {
           if (!latestTransports.has(key)) verifiedTransports.delete(key);
         }
-        for (const transport of transports) {
+        for (const transport of currentTransports) {
+          if (transport.serial !== selectedSerial) continue;
           if (latestTransports.get(transport.key) !== transport) continue;
           if (verifiedTransports.has(transport.key)) continue;
           if (await ensureTransportReverse(transport, tcpPort, () => latestTransports)) {
@@ -491,6 +501,59 @@ async function startAndroidBridgeSupervisor(port: string): Promise<AndroidBridge
   }
 }
 
+function resolveRequestedAndroidDevice(args: readonly string[]): string | undefined {
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index];
+    const assignment = /^(?:--device|-d)=(.*)$/u.exec(argument);
+    if (assignment) {
+      const value = assignment[1];
+      if (value) return value;
+      throw new Error(
+        'Android bridge supervision requires a device value. Use --device <device-name>.',
+      );
+    }
+    if (argument !== '--device' && argument !== '-d') continue;
+    const value = args[index + 1];
+    if (value && !value.startsWith('-')) return value;
+    throw new Error(
+      'Interactive Expo device selection cannot be supervised safely. Use --device <device-name>.',
+    );
+  }
+  return undefined;
+}
+
+async function resolveAndroidTargetSerial(
+  transports: readonly AndroidTransport[],
+  requestedDevice: string | undefined,
+): Promise<string | undefined> {
+  if (!requestedDevice) {
+    // Expo SDK 54 selects the first attached device when --device is omitted.
+    return transports[0]?.serial;
+  }
+
+  const directMatch = transports.find(
+    (transport) =>
+      transport.serial === requestedDevice ||
+      (!transport.serial.startsWith('emulator-') && transport.model === requestedDevice),
+  );
+  if (directMatch) return directMatch.serial;
+
+  for (const transport of transports) {
+    if (!transport.serial.startsWith('emulator-')) continue;
+    const result = await runCapturedCommand('adb', [
+      '-s',
+      transport.serial,
+      'emu',
+      'avd',
+      'name',
+    ]);
+    const avdName = result.stdout.split(/\\r?\\n/u).find((line) => line.trim())?.trim();
+    if (avdName === requestedDevice) return transport.serial;
+  }
+
+  return undefined;
+}
+
 function readAdbTrackFrames(buffer: Buffer): {
   readonly frames: readonly string[];
   readonly remaining: Buffer;
@@ -517,6 +580,8 @@ function parseAndroidTransports(snapshot: string): readonly AndroidTransport[] {
     const fields = line.trim().split(/\\s+/u);
     if (fields.length < 2 || fields[1] !== 'device') continue;
     const serial = fields[0];
+    const modelField = fields.find((field) => field.startsWith('model:'));
+    const model = modelField?.slice('model:'.length);
     const transportField = fields.find((field) => field.startsWith('transport_id:'));
     const transportId = transportField?.slice('transport_id:'.length);
     if (!serial || !transportId || !/^\\d+$/u.test(transportId)) {
@@ -524,7 +589,7 @@ function parseAndroidTransports(snapshot: string): readonly AndroidTransport[] {
         \`ADB did not report a transport_id for authorized Android device '\${serial ?? 'unknown'}'. Update Android platform-tools and try again.\`,
       );
     }
-    transports.push({ key: \`\${serial}:\${transportId}\`, serial, transportId });
+    transports.push({ key: \`\${serial}:\${transportId}\`, model, serial, transportId });
   }
   return transports;
 }
