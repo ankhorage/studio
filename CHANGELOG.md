@@ -1,5 +1,15 @@
 # @ankhorage/studio
 
+## 1.13.5
+
+### Patch Changes
+
+- 85ce343: Prepare generated Android development builds for loopback-only local services by resolving the default Studio API through device loopback, checking Studio Host availability before Expo starts, and supervising verified Studio API and Supabase reverse mappings on every replacement transport for Expo's selected device.
+- 85ce343: Resolve React Native animation singletons from each consuming Expo app root and require hosts to provide Gesture Handler as a peer.
+- 85ce343: Refresh generated Ankhorage package versions, keep the Expo Doctor cleanup that removes the redundant direct `expo-modules-core` dependency, and restore the Android-validated pre-1.13.4 animation stack: Reanimated `4.3.0`, Worklets `0.8.3`, and the explicit `react-native-worklets/plugin` Babel wiring.
+- 85ce343: Require `@ankhorage/infra` 4.1.1 and keep Studio's runtime recovery boundary topology-agnostic so generated Minikube forwards derive from configured deploy targets and survive profile restarts without targeting absent services.
+- 85ce343: Keep generated standalone Android apps independent from the Studio Host by omitting the implicit Studio API health check and reverse mapping when `includeStudio` is disabled, while retaining the ZORA runtime peers required by standalone apps.
+
 ## 1.13.4
 
 ### Patch Changes
