@@ -17,8 +17,9 @@ export type GeneratedAuthProvider = 'supabase' | null;
 export type GeneratedStorageProvider = 'supabase' | null;
 const CONTRACTS_VERSION = '^8.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
+const PERMISSIONS_VERSION = '^0.2.2';
 const RUNTIME_VERSION = '^2.2.0';
-const STUDIO_VERSION = '^1.13.5';
+const STUDIO_VERSION = '^2.0.0';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.1';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
@@ -192,12 +193,17 @@ export function getAppConfigTs({
   const targetSections = serializeTargetSections({ targets, runtimePlan });
   return `import type { ConfigContext, ExpoConfig } from 'expo/config';
 
-export default ({ config }: ConfigContext): ExpoConfig => {
+function omitManagedTargetConfig(config: ConfigContext['config']) {
   const baseConfig = { ...config };
   delete baseConfig.scheme;
   delete baseConfig.android;
   delete baseConfig.ios;
   delete baseConfig.web;
+  return baseConfig;
+}
+
+export default ({ config }: ConfigContext): ExpoConfig => {
+  const baseConfig = omitManagedTargetConfig(config);
 
   return {
     ...baseConfig,
@@ -903,6 +909,7 @@ export function getPackageJson(args: {
       '@ankhorage/contracts': CONTRACTS_VERSION,
       '@ankhorage/data-sources': DATA_SOURCES_VERSION,
       '@ankhorage/expo-runtime': EXPO_RUNTIME_VERSION,
+      '@ankhorage/permissions': PERMISSIONS_VERSION,
       '@ankhorage/runtime': RUNTIME_VERSION,
       ...(includeStudio ? { '@ankhorage/studio': STUDIO_VERSION } : {}),
       ...(authProvider !== null ? { '@ankhorage/utility': UTILITY_VERSION } : {}),
@@ -935,6 +942,7 @@ export function getPackageJson(args: {
       '@react-navigation/bottom-tabs': '^7.18.2',
       '@react-navigation/drawer': '^7.5.0',
       ...createPlatformDependencyMap([
+        EXPO_PLATFORM.packages.camera,
         EXPO_PLATFORM.runtime.expo,
         EXPO_PLATFORM.runtime.react,
         EXPO_PLATFORM.runtime.reactDom,

@@ -33,8 +33,20 @@ export function composeGeneratedImports(inputs: readonly GeneratedImportInput[])
   const requirements = inputs.flatMap((input) =>
     typeof input === 'string' ? parseGeneratedImportFragment(input) : [input],
   );
-  const merged = mergeGeneratedImportRequirements(requirements);
-  return merged.flatMap(renderGeneratedImportRequirement).join('\n');
+  const merged = mergeGeneratedImportRequirements(requirements).sort(compareImportRequirements);
+  const packageImports = merged.filter((requirement) => !requirement.source.startsWith('@/'));
+  const appImports = merged.filter((requirement) => requirement.source.startsWith('@/'));
+  return [packageImports, appImports]
+    .filter((group) => group.length > 0)
+    .map((group) => group.flatMap(renderGeneratedImportRequirement).join('\n'))
+    .join('\n\n');
+}
+
+function compareImportRequirements(
+  left: MutableImportRequirement,
+  right: MutableImportRequirement,
+): number {
+  return left.source.localeCompare(right.source);
 }
 
 function parseGeneratedImportFragment(fragment: string): GeneratedImportRequirement[] {
@@ -248,11 +260,8 @@ function registerLocalBinding(bindings: Map<string, string>, local: string, owne
 
 function renderGeneratedImportRequirement(requirement: MutableImportRequirement): string[] {
   const statements: string[] = [];
-  const valueNamed = [...requirement.namedImports.values()].filter(
-    (entry) => entry.typeOnly !== true,
-  );
-  const typeNamed = [...requirement.namedImports.values()].filter(
-    (entry) => entry.typeOnly === true,
+  const namedImports = [...requirement.namedImports.values()].sort((left, right) =>
+    (left.local ?? left.imported).localeCompare(right.local ?? right.imported),
   );
 
   if (requirement.namespaceImport) {
@@ -263,11 +272,10 @@ function renderGeneratedImportRequirement(requirement: MutableImportRequirement)
         `* as ${requirement.namespaceImport}`,
       ),
     );
-  } else if (requirement.defaultImport || valueNamed.length > 0 || typeNamed.length > 0) {
-    const named = [
-      ...valueNamed.map(renderNamedImport),
-      ...typeNamed.map((entry) => `type ${renderNamedImport(entry)}`),
-    ];
+  } else if (requirement.defaultImport || namedImports.length > 0) {
+    const named = namedImports.map((entry) =>
+      entry.typeOnly === true ? `type ${renderNamedImport(entry)}` : renderNamedImport(entry),
+    );
     statements.push(
       renderImportStatement(
         requirement.source,
@@ -301,7 +309,9 @@ function renderImportStatement(
 }
 
 function renderNamedClause(entries: readonly string[]): string {
-  return entries.length > 0 ? `{ ${entries.join(', ')} }` : '';
+  if (entries.length === 0) return '';
+  const compact = entries.join(', ');
+  return compact.length > 80 ? `{\n  ${entries.join(',\n  ')},\n}` : `{ ${compact} }`;
 }
 
 function renderNamedImport(entry: GeneratedNamedImport): string {

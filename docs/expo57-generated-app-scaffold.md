@@ -22,7 +22,8 @@ The scaffold consumes these released owners:
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
 bridge; Studio-enabled output adds the published Studio package and its authoring-only picker
-dependencies.
+dependencies. Studio-enabled output requires `@ankhorage/studio@^2.0.0`; the Expo 57 peer-surface
+change is a breaking package release and cannot resolve an Expo 54-era Studio 1.x package.
 
 ## Direct Ankhorage dependency audit
 
@@ -122,7 +123,8 @@ packages (with only the Studio candidate itself packed when necessary), and vali
 package root:
 
 ```bash
-bun install --frozen-lockfile
+bun install --frozen-lockfile --linker=hoisted
+bun run lint
 expo install --check
 expo-doctor
 bun run typecheck
@@ -135,6 +137,15 @@ expo prebuild --clean --no-install
 
 Native export and clean prebuild validate JavaScript bundling and CNG/config generation; they are not
 claims of native binary compilation.
+
+The package-owned `test:acceptance:expo57-generated-app` runner creates this fixture through
+`ProjectManager` for every pull request and push to `main`. Its dedicated CI job selects Node 24,
+starts from a cold frozen install, and executes the app-owned lint and platform commands from the
+generated project directory. The hoisted linker gives Expo Doctor one physical installation of each
+native module, and the generated baseline includes Expo Runtime's public-entry peer closure
+(`@ankhorage/permissions` and `expo-camera`) so TypeScript and Metro can traverse that released
+entrypoint. The Studio edit-selection/Gesture Handler regression is deliberately outside this
+standalone scaffold gate and retains its focused follow-up boundary.
 
 The 2026-08-23 acceptance fixture was created and regenerated only through `ProjectManager`. Its
 single-stack route topology deliberately exercises the #310 scaffold boundary without performing

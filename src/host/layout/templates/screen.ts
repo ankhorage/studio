@@ -19,7 +19,7 @@ import { Text, useZoraTheme } from '@ankhorage/zora';
 import ankhConfig from '@root/ankh.config.json';
 import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 type SearchParams = Record<string, string | string[]>;
@@ -36,6 +36,24 @@ function resolveScreenIdParam(value: string | string[] | undefined): string | un
   return undefined;
 }
 
+function MissingScreen({
+  backgroundStyle,
+  currentScreenId,
+}: {
+  backgroundStyle: { backgroundColor: string };
+  currentScreenId: string;
+}) {
+  return (
+    <View style={[styles.surface, backgroundStyle]}>
+      <View style={styles.missingScreenMessage}>
+        <Text align="center" color="danger" variant="bodySmall">
+          Screen configuration not found for ID: {currentScreenId}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 export default function ${safeName}Screen() {
   const { theme } = useZoraTheme();
   const manifestContext = useOptionalManifestContext();
@@ -49,7 +67,13 @@ export default function ${safeName}Screen() {
     resolveScreenIdParam(local.screenId) ??
     resolveScreenIdParam(global.screenId) ??
     '${escapeStringLiteral(screenId)}';
-  const screenConfig = runtimeManifest.screens[currentScreenId];
+  const screenConfig = Object.values(runtimeManifest.screens).find(
+    (candidate) => candidate.id === currentScreenId,
+  );
+  const backgroundStyle = useMemo(
+    () => ({ backgroundColor: theme.colors.background }),
+    [theme.colors.background],
+  );
   const runtimeRendererConfig = useMemo(
     () => ({
       ...runtimeConfig,
@@ -64,26 +88,11 @@ export default function ${safeName}Screen() {
   );
 
   if (!screenConfig) {
-    return (
-      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-        <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
-          <Text align="center" color="danger" variant="bodySmall">
-            Screen configuration not found for ID: {currentScreenId}
-          </Text>
-        </View>
-      </View>
-    );
+    return <MissingScreen backgroundStyle={backgroundStyle} currentScreenId={currentScreenId} />;
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        minHeight: 0,
-        minWidth: 0,
-        backgroundColor: theme.colors.background,
-      }}
-    >
+    <View style={[styles.surface, backgroundStyle]}>
       <ManifestProvider manifest={runtimeManifest}>
         <RuntimeRendererConfigProvider value={runtimeRendererConfig}>
           <RuntimeScreen
@@ -96,5 +105,17 @@ export default function ${safeName}Screen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  missingScreenMessage: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  surface: {
+    flex: 1,
+    minHeight: 0,
+    minWidth: 0,
+  },
+});
 `;
 }

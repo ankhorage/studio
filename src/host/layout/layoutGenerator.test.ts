@@ -220,9 +220,14 @@ describe('GeneratedAppFileGenerator', () => {
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const screen = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
 
-    expect(rootLayout).toContain(
-      "import { AppShell, ZoraProvider, ZORA_COMPONENT_REGISTRY, ZORA_COMPONENT_META, useZoraTheme, AppBar } from '@ankhorage/zora';",
-    );
+    expect(rootLayout).toContain(`import {
+  AppBar,
+  AppShell,
+  useZoraTheme,
+  ZORA_COMPONENT_META,
+  ZORA_COMPONENT_REGISTRY,
+  ZoraProvider,
+} from '@ankhorage/zora';`);
     expect(rootLayout).toContain('createComponentRegistry');
     expect(rootLayout).toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
     expect(rootLayout).toContain('STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
@@ -275,6 +280,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain(
       'const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;',
     );
+    expect(rootLayout).not.toContain('createComponentRegistry');
     expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
     expect(rootLayout).not.toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
   });

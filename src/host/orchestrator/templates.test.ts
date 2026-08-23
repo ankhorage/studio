@@ -12,10 +12,14 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.2');
     expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(dependencies['@ankhorage/studio']).toBe('^1.13.5');
+    expect(dependencies['@ankhorage/studio']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
+    expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
+      EXPO_PLATFORM.packages.camera.version,
+    );
     expect(dependencies[EXPO_PLATFORM.packages.constants.name]).toBe(
       EXPO_PLATFORM.packages.constants.version,
     );

@@ -47,8 +47,7 @@ export interface GeneratedAppFileGenerationOptions {
 
 function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
   const runtimeImports = `import {
-  createComponentRegistry,
-  createRuntimeApiOperationExecutor,
+  ${includeStudio ? 'createComponentRegistry,\n  ' : ''}createRuntimeApiOperationExecutor,
   ${includeStudio ? '' : 'type RuntimeActionExecutor,\n  '}
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
@@ -63,8 +62,11 @@ ${
     : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';`
 }
 import {
-  APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
-  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
+  APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,${
+    includeStudio
+      ? '\n  APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,'
+      : ''
+  }
 } from '@/generated/appExtensionRegistry';`;
 
   return runtimeImports;
@@ -73,8 +75,6 @@ import {
 function getGeneratedRuntimeRegistryDeclarations(includeStudio: boolean): string {
   if (!includeStudio) {
     return `const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;
-const APP_EXTENSION_INTERACTION_POLICY_SUPPORT =
-  GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT;
 
 function useGeneratedRuntimeAction() {
   const router = useRouter();
@@ -384,7 +384,7 @@ export class GeneratedAppFileGenerator {
           ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Drawer } from 'expo-router/drawer';`
           : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import React, { useEffect, useMemo } from 'react';`,
+      `import React, { ${includeStudio ? 'useEffect, ' : ''}useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
       getPackageOwnedRuntimeImports(includeStudio),
