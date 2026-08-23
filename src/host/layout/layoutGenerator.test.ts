@@ -257,6 +257,26 @@ describe('GeneratedAppFileGenerator', () => {
     expect(screen).toContain('<RuntimeScreen');
     expect(screen).toContain('screen={screenConfig}');
     expect(screen).toContain('<RuntimeRendererConfigProvider value={runtimeRendererConfig}>');
+    expect(screen).toContain('useLocalSearchParams<SearchParams>()');
+    expect(screen).toContain('useGlobalSearchParams<SearchParams>()');
+  });
+
+  test('binds standalone runtime actions through the released Expo Runtime owner', () => {
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), [], {
+      includeStudio: false,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+
+    expect(rootLayout).toContain(
+      "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';",
+    );
+    expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
+    expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');
+    expect(rootLayout).toContain(
+      'const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;',
+    );
+    expect(rootLayout).not.toContain("from '@ankhorage/studio/runtime'");
+    expect(rootLayout).not.toContain('STUDIO_APP_EXTENSION_COMPONENT_REGISTRY');
   });
 
   test('derives Studio admin route files from the canonical registry', () => {

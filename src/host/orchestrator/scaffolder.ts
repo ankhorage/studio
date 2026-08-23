@@ -18,10 +18,7 @@ import {
   type GeneratedStorageProvider,
   getAndroidRunTs,
   getAppConfigTs,
-  getBabelConfigJs,
   getEslintConfigMjs,
-  getIndexJs,
-  getMetroConfigJs,
   getPackageJson,
   getPrettierRcJs,
   getTsConfigJson,
@@ -86,9 +83,7 @@ export class ProjectScaffolder {
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
-    await this.writeMetroConfig(projectPath);
-    await this.writeBabelConfig(projectPath);
-    await this.writeIndex(projectPath);
+    await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -144,9 +139,7 @@ export class ProjectScaffolder {
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
-    await this.writeMetroConfig(projectPath);
-    await this.writeBabelConfig(projectPath);
-    await this.writeIndex(projectPath);
+    await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -220,16 +213,12 @@ export class ProjectScaffolder {
     await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
   }
 
-  private async writeMetroConfig(dir: string) {
-    await fs.writeFile(path.join(dir, 'metro.config.js'), getMetroConfigJs(), 'utf8');
-  }
-
-  private async writeBabelConfig(dir: string) {
-    await fs.writeFile(path.join(dir, 'babel.config.js'), getBabelConfigJs(), 'utf8');
-  }
-
-  private async writeIndex(dir: string) {
-    await fs.writeFile(path.join(dir, 'index.js'), getIndexJs(), 'utf8');
+  private async removeGeneratedExpoOverrides(dir: string) {
+    await Promise.all(
+      ['babel.config.js', 'index.js', 'metro.config.js'].map((fileName) =>
+        fs.rm(path.join(dir, fileName), { force: true }),
+      ),
+    );
   }
 
   private async writePackageJson(

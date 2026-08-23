@@ -1,7 +1,5 @@
-import { Icon, Text, useZoraTheme, ZoraProvider } from '@ankhorage/zora';
-import { Ionicons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
-import { Stack, router, usePathname } from 'expo-router';
+import { Icon, type IconProps, Text, useZoraTheme, ZoraProvider } from '@ankhorage/zora';
+import { router, Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
@@ -11,18 +9,6 @@ import { useWorkspaceActions } from '../hooks/useWorkspaceActions';
 import { resolveWorkspaceParentPath } from './workspace/navigation';
 
 export function StudioApp() {
-  const [fontsLoaded] = useFonts({
-    ...Ionicons.font,
-  });
-
-  if (!fontsLoaded) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#3B82F6" />
-      </View>
-    );
-  }
-
   return (
     <SafeAreaProvider>
       <ZoraProvider initialMode="dark">
@@ -140,7 +126,9 @@ function AppBarBrand() {
   );
 }
 
-function IconButton(props: { label: string; iconName: string; onPress: () => void }) {
+type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
+
+function IconButton(props: { label: string; iconName: IoniconsIconName; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
 
@@ -190,13 +178,6 @@ function WorkspaceMenuItem(props: { disabled: boolean; onPress: () => void }) {
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#121212',
-    elevation: 0,
-  },
   root: {
     flex: 1,
     elevation: 0,

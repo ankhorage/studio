@@ -156,8 +156,14 @@ graph TD
   module_src_contractGuards_test_ts --> module_src_contractGuards_ts
   module_src_contractGuards_ts["src/contractGuards.ts"]
   package__ankhorage_studio -.-> module_src_contractGuards_ts
+  module_src_core_apiBase_test_ts["src/core/apiBase.test.ts"]
+  package__ankhorage_studio -.-> module_src_core_apiBase_test_ts
+  module_src_core_apiBase_test_ts --> module_src_core_apiBase_ts
+  module_src_core_apiBase_ts["src/core/apiBase.ts"]
+  package__ankhorage_studio -.-> module_src_core_apiBase_ts
   module_src_core_constants_ts["src/core/constants.ts"]
   package__ankhorage_studio -.-> module_src_core_constants_ts
+  module_src_core_constants_ts --> module_src_core_apiBase_ts
   module_src_core_constants_ts --> module_src_utils_readOwnProperty_ts
   module_src_core_mediaAuthoringHostClient_ts["src/core/mediaAuthoringHostClient.ts"]
   package__ankhorage_studio -.-> module_src_core_mediaAuthoringHostClient_ts
@@ -398,6 +404,14 @@ graph TD
   module_src_host_http_moduleRoutes_ts["src/host/http/moduleRoutes.ts"]
   package__ankhorage_studio -.-> module_src_host_http_moduleRoutes_ts
   module_src_host_http_moduleRoutes_ts --> module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_projectRuntimeRoutes_test_ts["src/host/http/projectRuntimeRoutes.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_projectRuntimeRoutes_test_ts
+  module_src_host_http_projectRuntimeRoutes_test_ts --> module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_projectRuntimeRoutes_ts["src/host/http/projectRuntimeRoutes.ts"]
+  package__ankhorage_studio -.-> module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_projectRuntimeRoutes_ts --> module_src_host_orchestrator_infraSession_ts
+  module_src_host_http_projectRuntimeRoutes_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_projectRuntimeRoutes_ts --> module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts["src/host/http/resolveStandaloneStudioHostOptions.test.ts"]
   package__ankhorage_studio -.-> module_src_host_http_resolveStandaloneStudioHostOptions_test_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --> module_src_host_http_resolveStandaloneStudioHostOptions_ts
@@ -414,6 +428,7 @@ graph TD
   module_src_host_http_server_ts --> module_src_contractGuards_ts
   module_src_host_http_server_ts --> module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_moduleRoutes_ts
+  module_src_host_http_server_ts --> module_src_host_http_projectRuntimeRoutes_ts
   module_src_host_http_server_ts --> module_src_host_http_security_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_infraSession_ts
   module_src_host_http_server_ts --> module_src_host_orchestrator_moduleManager_ts
@@ -618,6 +633,10 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --> module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts["src/host/orchestrator/androidRunTemplate.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_androidRunTemplate_test_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts["src/host/orchestrator/appTargetGeneration.test.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_appTargetGeneration_test_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --> module_src_host_orchestrator_projectTargets_ts
@@ -629,8 +648,15 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_media_projectBundledMediaRegistry_ts
   module_src_host_orchestrator_generatedAppFiles_ts --> module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts["src/host/orchestrator/generatedDependencyContract.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_generatedDependencyContract_test_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --> module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedRouteCleanup_ts["src/host/orchestrator/generatedRouteCleanup.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_infraSession_test_ts["src/host/orchestrator/infraSession.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_infraSession_test_ts
+  module_src_host_orchestrator_infraSession_test_ts --> module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_infraSession_ts["src/host/orchestrator/infraSession.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_moduleManager_ts["src/host/orchestrator/moduleManager.ts"]
@@ -699,6 +725,9 @@ graph TD
   module_src_host_orchestrator_semverRange_test_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_orchestrator_semverRange_ts["src/host/orchestrator/semverRange.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_semverRange_ts
+  module_src_host_orchestrator_studioInfraUp_test_ts["src/host/orchestrator/studioInfraUp.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_orchestrator_studioInfraUp_test_ts
+  module_src_host_orchestrator_studioInfraUp_test_ts --> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts["src/host/orchestrator/studioInfraUp.ts"]
   package__ankhorage_studio -.-> module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts --> module_src_host_orchestrator_infraSession_ts

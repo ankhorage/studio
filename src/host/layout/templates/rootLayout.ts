@@ -25,6 +25,7 @@ interface GetRootLayoutTsxArgs {
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
+  runtimeActionHookName?: string;
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
   useStoredAuthSessionCredentialResolver?: boolean;
@@ -38,6 +39,7 @@ export function getRootLayoutImportRequirements(
       source: 'react',
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
+        ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
         ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
     },
@@ -103,6 +105,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     authRuntime,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
+    runtimeActionHookName = 'useRuntimeAction',
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
     useStoredAuthSessionCredentialResolver = false,
@@ -382,7 +385,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeAction } = useRuntimeAction();
+  const runtimeContentDeclaration = `const { executeAction } = ${runtimeActionHookName}();
 
   const generatedRuntimeConfig = useMemo(
     () => ({

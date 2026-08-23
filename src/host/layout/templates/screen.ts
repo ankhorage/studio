@@ -22,9 +22,7 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
-type SearchParams = Record<string, string | string[] | undefined> & {
-  screenId?: string | string[];
-};
+type SearchParams = Record<string, string | string[]>;
 
 function resolveScreenIdParam(value: string | string[] | undefined): string | undefined {
   if (typeof value === 'string') {

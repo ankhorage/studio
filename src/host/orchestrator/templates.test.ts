@@ -1,51 +1,7 @@
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
-
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { describe, expect, it } from 'bun:test';
 
-import {
-  getAndroidRunTs,
-  getAppConfigTs,
-  getBabelConfigJs,
-  getIndexJs,
-  getMetroConfigJs,
-  getPackageJson,
-} from './templates';
-
-const NATIVE_SINGLETON_PACKAGES = [
-  'react',
-  'react-native',
-  'react-native-gesture-handler',
-  'react-native-reanimated',
-  'react-native-worklets',
-] as const;
-
-describe('generated Metro config', () => {
-  it('resolves native singletons from the consuming Expo app root', () => {
-    const metroConfig = getMetroConfigJs();
-
-    expect(metroConfig).toContain(
-      "const appResolutionAnchor = path.join(__dirname, 'package.json')",
-    );
-    expect(metroConfig).toContain('{ ...context, originModulePath: appResolutionAnchor }');
-    expect(metroConfig).toContain('moduleName.startsWith(`${packageName}/`)');
-    for (const packageName of NATIVE_SINGLETON_PACKAGES) {
-      expect(metroConfig).toContain(`  '${packageName}',`);
-    }
-    expect(metroConfig).not.toContain('apps/nutrition');
-    expect(metroConfig).not.toContain('/Users/');
-  });
-
-  it('keeps apps/studio on the generated-app singleton strategy', async () => {
-    const repositoryRoot = path.resolve(import.meta.dir, '..', '..', '..');
-    const studioMetroConfig = await readFile(
-      path.join(repositoryRoot, 'apps', 'studio', 'metro.config.js'),
-      'utf8',
-    );
-
-    expect(studioMetroConfig).toBe(getMetroConfigJs());
-  });
-});
+import { getAndroidRunTs, getAppConfigTs, getPackageJson } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
   it('pins the current generated app dependency baseline', () => {
@@ -55,18 +11,29 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
-    expect(dependencies['@ankhorage/runtime']).toBe('^2.1.0');
-    expect(dependencies['@ankhorage/studio']).toBe('^1.13.4');
-    expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
-    expect(dependencies.expo).toBe('~54.0.36');
-    expect(dependencies['expo-constants']).toBe('~18.0.13');
-    expect(dependencies['expo-splash-screen']).toBe('~31.0.13');
-    expect(dependencies['expo-updates']).toBe('~29.0.19');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
+    expect(dependencies['@ankhorage/studio']).toBe('^1.13.5');
+    expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
+    expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
+    expect(dependencies[EXPO_PLATFORM.packages.constants.name]).toBe(
+      EXPO_PLATFORM.packages.constants.version,
+    );
+    expect(dependencies[EXPO_PLATFORM.packages.splashScreen.name]).toBe(
+      EXPO_PLATFORM.packages.splashScreen.version,
+    );
+    expect(dependencies['expo-updates']).toBeUndefined();
     expect(dependencies['expo-modules-core']).toBeUndefined();
-    expect(devDependencies['@ankhorage/devtools']).toBe('^1.5.2');
-    expect(devDependencies['babel-plugin-module-resolver']).toBe('^5.0.2');
-    expect(devDependencies.typescript).toBe('~5.9.3');
+    expect(dependencies['@expo/vector-icons']).toBeUndefined();
+    expect(dependencies['babel-preset-expo']).toBeUndefined();
+    expect(devDependencies['@ankhorage/devtools']).toBe('^1.6.0');
+    expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
+      EXPO_PLATFORM.tooling.expoDoctor.version,
+    );
+    expect(devDependencies['babel-plugin-module-resolver']).toBeUndefined();
+    expect(devDependencies[EXPO_PLATFORM.tooling.typescript.name]).toBe(
+      EXPO_PLATFORM.tooling.typescript.version,
+    );
     expect(Object.values(dependencies)).not.toContain('latest');
   });
 
@@ -81,40 +48,47 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
     expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.1');
     expect(dependencies['@ankhorage/supabase-storage']).toBe('^0.2.0');
-    expect(dependencies['expo-secure-store']).toBe('~15.0.8');
-    expect(dependencies['expo-web-browser']).toBe('~15.0.11');
+    expect(dependencies[EXPO_PLATFORM.packages.secureStore.name]).toBe(
+      EXPO_PLATFORM.packages.secureStore.version,
+    );
+    expect(dependencies[EXPO_PLATFORM.packages.webBrowser.name]).toBe(
+      EXPO_PLATFORM.packages.webBrowser.version,
+    );
   });
 
   it('does not inject the removed generated database runtime adapter', () => {
     const pkg = getPackageJson({ name: 'plain-app' });
 
     expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
-    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.1.0');
-    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
+    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.2.0');
+    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
   });
 
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
     const pkg = getPackageJson({ name: 'studio-enabled-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/zora']).toBe('^2.13.2');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^2.6.0');
+    expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
   });
 
-  it('uses the Android-validated animation dependencies and Worklets Babel plugin', () => {
+  it('uses the owner-projected animation stack without explicit Babel configuration', () => {
     const pkg = getPackageJson({ name: 'native-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
-    const babelConfig = getBabelConfigJs();
 
-    expect(dependencies['react-native-reanimated']).toBe('4.3.0');
-    expect(dependencies['react-native-worklets']).toBe('0.8.3');
-    expect(dependencies['react-native-gesture-handler']).toBe('~2.28.0');
+    expect(dependencies[EXPO_PLATFORM.animation.reanimated.name]).toBe(
+      EXPO_PLATFORM.animation.reanimated.version,
+    );
+    expect(dependencies[EXPO_PLATFORM.animation.worklets.name]).toBe(
+      EXPO_PLATFORM.animation.worklets.version,
+    );
+    expect(dependencies[EXPO_PLATFORM.animation.gestureHandler.name]).toBe(
+      EXPO_PLATFORM.animation.gestureHandler.version,
+    );
     expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
       pkg.dependencies,
     );
-    expect(babelConfig).toContain("presets: ['babel-preset-expo']");
-    expect(babelConfig).toContain("'react-native-worklets/plugin'");
-    expect(babelConfig).not.toContain("'react-native-reanimated/plugin'");
+    expect(pkg.main).toBe('expo-router/entry');
   });
 
   it('generates a portable Android loopback bridge for local services', () => {
@@ -134,6 +108,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
     expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");
     expect(androidRun).toContain('resolveRequestedAndroidDevice(expoArgs)');
+    expect(androidRun).toContain('let bufferedOutput: Buffer = Buffer.alloc(0)');
+    expect(androidRun).toContain('if (argument === undefined) continue;');
     expect(androidRun).toContain('transport.serial !== selectedSerial');
     expect(androidRun).toContain("field.startsWith('transport_id:')");
     expect(androidRun).toContain("'reverse',\n          mapping.local,\n          mapping.remote");
@@ -199,11 +175,18 @@ describe('generated OAuth scaffold templates', () => {
     expect(appConfig).not.toContain('com.ankh.renamedoauthapp');
   });
 
-  it('uses the canonical Expo Router entry for cold deep links', () => {
-    const entry = getIndexJs();
+  it('enables the default Expo Router and compiler configuration', () => {
+    const pkg = getPackageJson({ name: 'generated-app' });
+    const appConfig = getAppConfigTs({
+      name: 'Generated App',
+      slug: 'generated-app',
+      targets: { web: { enabled: true } },
+    });
 
-    expect(entry).toBe("import 'expo-router/entry';\n");
-    expect(entry).not.toContain('ExpoRoot');
-    expect(entry).not.toContain('require.context');
+    expect(pkg.main).toBe('expo-router/entry');
+    expect(appConfig).toContain("'expo-router'");
+    expect(appConfig).toContain('reactCompiler: true');
+    expect(appConfig).toContain('typedRoutes: true');
+    expect(appConfig).toContain("output: 'static'");
   });
 });

@@ -45,25 +45,48 @@ export interface GeneratedAppFileGenerationOptions {
   runtimePlan?: ExpoRuntimePlan;
 }
 
-function getPackageOwnedRuntimeImports(): string {
-  return `import {
+function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
+  const runtimeImports = `import {
   createComponentRegistry,
   createRuntimeApiOperationExecutor,
+  ${includeStudio ? '' : 'type RuntimeActionExecutor,\n  '}
   RuntimeRendererConfigProvider,
   useOptionalManifestContext,
 } from '@ankhorage/runtime';
-import {
+${
+  includeStudio
+    ? `import {
   STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
   useRuntimeAction,
-} from '@ankhorage/studio/runtime';
+} from '@ankhorage/studio/runtime';`
+    : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';`
+}
 import {
   APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
   APP_EXTENSION_INTERACTION_POLICY_SUPPORT as GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
 } from '@/generated/appExtensionRegistry';`;
+
+  return runtimeImports;
 }
 
-function getGeneratedRuntimeRegistryDeclarations(): string {
+function getGeneratedRuntimeRegistryDeclarations(includeStudio: boolean): string {
+  if (!includeStudio) {
+    return `const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;
+const APP_EXTENSION_INTERACTION_POLICY_SUPPORT =
+  GENERATED_APP_EXTENSION_INTERACTION_POLICY_SUPPORT;
+
+function useGeneratedRuntimeAction() {
+  const router = useRouter();
+  const { mode, setMode } = useZoraTheme();
+  const executeAction = useCallback<RuntimeActionExecutor>(
+    ({ action }) => executeExpoRuntimeAction({ action, router, mode, setMode }),
+    [mode, router, setMode],
+  );
+  return { executeAction };
+}`;
+  }
+
   return `const APP_EXTENSION_COMPONENT_REGISTRY = createComponentRegistry(
   STUDIO_APP_EXTENSION_COMPONENT_REGISTRY,
   GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,
@@ -282,7 +305,7 @@ export class GeneratedAppFileGenerator {
   refreshAuthSessionIfNeeded,
   subscribeToAuthSessionChanges,
 } from '@/auth/session';`,
-      getPackageOwnedRuntimeImports(),
+      getPackageOwnedRuntimeImports(includeStudio),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -306,8 +329,9 @@ export class GeneratedAppFileGenerator {
       includeStudio,
       authRuntime: authLayoutPlan,
       initialRouteNameOverride: '(app)',
+      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
-        getGeneratedRuntimeRegistryDeclarations(),
+        getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],
@@ -355,15 +379,15 @@ export class GeneratedAppFileGenerator {
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
       rootNavigator.type === 'tabs'
-        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`
+        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`
         : rootNavigator.type === 'drawer'
-          ? `${includeStudio ? `import { useGlobalSearchParams, usePathname } from 'expo-router';\n` : ''}import { Drawer } from 'expo-router/drawer';`
-          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ''} } from 'expo-router';`,
+          ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Drawer } from 'expo-router/drawer';`
+          : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import React, { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
-      getPackageOwnedRuntimeImports(),
+      getPackageOwnedRuntimeImports(includeStudio),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
         : '',
@@ -392,8 +416,9 @@ export class GeneratedAppFileGenerator {
       allHooks,
       innerNavigation,
       includeStudio,
+      runtimeActionHookName: includeStudio ? undefined : 'useGeneratedRuntimeAction',
       runtimeModuleDeclarations: mergeRuntimeModuleDeclarations(
-        getGeneratedRuntimeRegistryDeclarations(),
+        getGeneratedRuntimeRegistryDeclarations(includeStudio),
         ...runtimeLayoutIntegration.moduleDeclarations,
       ),
       runtimeProviderEnd: [...runtimeLayoutIntegration.providerEnd],

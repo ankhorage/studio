@@ -107,6 +107,12 @@ function createAdminSmokeManifest(): AppManifest {
     category: 'food_drink',
     templateId: 'nutrition-catalog-scan',
   });
+  const expo57RouteIcons: Readonly<Record<string, string>> = {
+    products: 'cube-outline',
+    profile: 'person-circle-outline',
+    scan: 'scan-outline',
+    stats: 'bar-chart-outline',
+  };
   const catalogScreenId = 'food_drink-nutrition-catalog-scan-catalog';
   const catalogScreen = Object.values(nutritionManifest.screens).find(
     (screen) => screen.id === catalogScreenId,
@@ -144,7 +150,18 @@ function createAdminSmokeManifest(): AppManifest {
     navigator: {
       ...nutritionManifest.navigator,
       routes: [
-        ...nutritionManifest.navigator.routes,
+        ...nutritionManifest.navigator.routes.map((route) => ({
+          ...route,
+          ...(route.icon
+            ? {
+                icon: {
+                  ...route.icon,
+                  name: expo57RouteIcons[route.name] ?? 'ellipse-outline',
+                  provider: 'Ionicons',
+                },
+              }
+            : {}),
+        })),
         {
           name: 'dashboard',
           label: 'Dashboard',
@@ -616,7 +633,7 @@ adminWebSmokeTest(
       ) as { version?: string };
       const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
 
-      expect(generatedZoraRange).toBe('^2.13.2');
+      expect(generatedZoraRange).toBe('^3.0.0');
       expect(typeof resolvedZoraPackage.version).toBe('string');
       expect(
         satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
@@ -643,6 +660,7 @@ adminWebSmokeTest(
       expoProcess = spawnExpoWeb(projectRoot, studioApi.apiBase);
       collectProcessOutput(expoProcess, expoOutput);
       const appUrl = await waitForExpoWebUrl(expoOutput, HTTP_TIMEOUT_MS);
+      await waitForHttp(appUrl, HTTP_TIMEOUT_MS, () => formatProcessOutput(expoOutput));
 
       const chromePath = resolveChromePath();
       chromeProcess = spawnChrome(chromePath, debugPort);
@@ -855,23 +873,17 @@ async function verifyNestedNutritionSelection(
   const scanScreenId = 'food_drink-nutrition-catalog-scan-scan';
   const scanScreenRootId = 'food_drink-nutrition-catalog-scan-scan-screen';
   const previewNavigationNodeId = 'nutrition-preview-navigation-action';
-  const rootScreenState = {
-    pathname: '/',
+  const productsScreenState = {
+    pathname: '/products',
     activeScreenId: catalogScreenId,
     rootNodeId: productsScreenRootId,
-  } satisfies StudioScreenStateExpectation;
-  const productsScreenState = {
-    ...rootScreenState,
-    pathname: '/products',
   } satisfies StudioScreenStateExpectation;
 
   await page.navigate(appUrl);
   await page.waitForStudioNavigationReady(HTTP_TIMEOUT_MS, expoOutput);
-  await page.waitForStudioScreenState(rootScreenState, HTTP_TIMEOUT_MS, expoOutput);
+  await page.waitForStudioScreenState(productsScreenState, HTTP_TIMEOUT_MS, expoOutput);
   expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
 
-  await page.navigateStudio('/products', expoOutput, 'replace');
-  await page.waitForStudioScreenState(productsScreenState, HTTP_TIMEOUT_MS, expoOutput);
   await waitForBodyText(page, (text) => text.includes('Catalog products'), HTTP_TIMEOUT_MS);
   expect(await page.readSelectionRootId()).toBe('studio-stationary-selection-root:edit:none:0');
   const initialAppBarLabels = ['Administration', 'Preview'];
@@ -2331,7 +2343,7 @@ async function waitForExpoWebUrl(output: readonly string[], timeoutMs: number): 
 
   while (Date.now() - start < timeoutMs) {
     const match = output.join('').match(urlPattern)?.[0];
-    if (match) return match.replace('localhost', '127.0.0.1');
+    if (match) return match;
     await Bun.sleep(500);
   }
 

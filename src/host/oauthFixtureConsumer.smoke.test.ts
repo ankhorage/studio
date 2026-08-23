@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { createOAuthFixtureManifest, OAUTH_CALLBACK_ROUTE } from '@ankhorage/templates';
 import { expect, test } from 'bun:test';
 
@@ -107,8 +108,12 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^8.0.0');
     expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.1');
-    expect(packageJson.dependencies?.['expo-secure-store']).toBe('~15.0.8');
-    expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');
+    expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.secureStore.name]).toBe(
+      EXPO_PLATFORM.packages.secureStore.version,
+    );
+    expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.webBrowser.name]).toBe(
+      EXPO_PLATFORM.packages.webBrowser.version,
+    );
 
     const appConfig = await readProjectFile(created.path, 'app.config.ts');
     expect(appConfig).toContain("scheme: 'ankh-oauthfixtureconsumer'");

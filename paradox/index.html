@@ -406,6 +406,12 @@
               </button>
             </li>
             <li>
+              <button class="nav-button" type="button" data-target="src/core/apiBase.ts">
+                src/core/apiBase.ts
+                <small>1 function</small>
+              </button>
+            </li>
+            <li>
               <button class="nav-button" type="button" data-target="src/core/constants.ts">
                 src/core/constants.ts
                 <small>3 functions</small>
@@ -749,6 +755,26 @@
               <button class="nav-button" type="button" data-target="src/host/http/moduleRoutes.ts">
                 src/host/http/moduleRoutes.ts
                 <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/http/projectRuntimeRoutes.test.ts"
+              >
+                src/host/http/projectRuntimeRoutes.test.ts
+                <small>2 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/host/http/projectRuntimeRoutes.ts"
+              >
+                src/host/http/projectRuntimeRoutes.ts
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -1219,6 +1245,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/androidRunTemplate.test.ts"
+              >
+                src/host/orchestrator/androidRunTemplate.test.ts
+                <small>14 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/generatedAppFiles.test.ts"
               >
                 src/host/orchestrator/generatedAppFiles.test.ts
@@ -1239,6 +1275,16 @@
               <button
                 class="nav-button"
                 type="button"
+                data-target="src/host/orchestrator/generatedDependencyContract.test.ts"
+              >
+                src/host/orchestrator/generatedDependencyContract.test.ts
+                <small>4 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
                 data-target="src/host/orchestrator/generatedRouteCleanup.ts"
               >
                 src/host/orchestrator/generatedRouteCleanup.ts
@@ -1252,7 +1298,7 @@
                 data-target="src/host/orchestrator/infraSession.ts"
               >
                 src/host/orchestrator/infraSession.ts
-                <small>4 functions</small>
+                <small>5 functions</small>
               </button>
             </li>
             <li>
@@ -1402,7 +1448,7 @@
                 data-target="src/host/orchestrator/templates.ts"
               >
                 src/host/orchestrator/templates.ts
-                <small>16 functions</small>
+                <small>15 functions</small>
               </button>
             </li>
             <li>
@@ -2897,7 +2943,7 @@
             <div class="summary">
               <div><strong>147</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>413</strong><span class="muted">modules</span></div>
+              <div><strong>421</strong><span class="muted">modules</span></div>
               <div><strong>1</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -3434,13 +3480,28 @@
                 <code>isColorHarmony</code>
               </p>
             </article>
+            <article class="item" data-search="src/core/apiBase.test.ts src/core/apiBase.ts">
+              <h3>src/core/apiBase.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/core/apiBase.ts</code></p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article class="item" data-search="src/core/apiBase.ts resolveStudioApiBase">
+              <h3>src/core/apiBase.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>resolveStudioApiBase</code></p>
+            </article>
             <article
               class="item"
-              data-search="src/core/constants.ts src/utils/readOwnProperty.ts API_BASE"
+              data-search="src/core/constants.ts src/core/apiBase.ts src/utils/readOwnProperty.ts API_BASE"
             >
               <h3>src/core/constants.ts</h3>
               <p class="muted">Referenced module</p>
-              <p><strong>Dependencies:</strong> <code>src/utils/readOwnProperty.ts</code></p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/core/apiBase.ts</code>,
+                <code>src/utils/readOwnProperty.ts</code>
+              </p>
               <p><strong>Exports:</strong> <code>API_BASE</code></p>
             </article>
             <article
@@ -4158,6 +4219,30 @@
             </article>
             <article
               class="item"
+              data-search="src/host/http/projectRuntimeRoutes.test.ts src/host/http/projectRuntimeRoutes.ts"
+            >
+              <h3>src/host/http/projectRuntimeRoutes.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/http/projectRuntimeRoutes.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/http/projectRuntimeRoutes.ts src/host/orchestrator/infraSession.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts registerProjectRuntimeRoutes"
+            >
+              <h3>src/host/http/projectRuntimeRoutes.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/infraSession.ts</code>,
+                <code>src/host/orchestrator/projectManager.ts</code>,
+                <code>src/host/orchestrator/projectPaths.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <code>registerProjectRuntimeRoutes</code></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/http/resolveStandaloneStudioHostOptions.test.ts src/host/http/resolveStandaloneStudioHostOptions.ts"
             >
               <h3>src/host/http/resolveStandaloneStudioHostOptions.test.ts</h3>
@@ -4197,14 +4282,16 @@
             </article>
             <article
               class="item"
-              data-search="src/host/http/server.ts src/contractGuards.ts src/host/http/mediaRoutes.ts src/host/http/moduleRoutes.ts src/host/http/security.ts src/host/orchestrator/infraSession.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/studioInfraUp.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts src/projectIdentity.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
+              data-search="src/host/http/server.ts src/contractGuards.ts src/host/http/mediaRoutes.ts src/host/http/moduleRoutes.ts src/host/http/projectRuntimeRoutes.ts src/host/http/security.ts src/host/orchestrator/infraSession.ts src/host/orchestrator/moduleManager.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/orchestrator/studioInfraUp.ts src/host/templateRegistry/index.ts src/host/utils/trimOutput.ts src/host/utils/workspaceRoot.ts src/projectIdentity.ts createStudioHostServer startStudioHostServer StartStudioHostServerOptions"
             >
               <h3>src/host/http/server.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/contractGuards.ts</code>,
                 <code>src/host/http/mediaRoutes.ts</code>,
-                <code>src/host/http/moduleRoutes.ts</code>, <code>src/host/http/security.ts</code>,
+                <code>src/host/http/moduleRoutes.ts</code>,
+                <code>src/host/http/projectRuntimeRoutes.ts</code>,
+                <code>src/host/http/security.ts</code>,
                 <code>src/host/orchestrator/infraSession.ts</code>,
                 <code>src/host/orchestrator/moduleManager.ts</code>,
                 <code>src/host/orchestrator/projectManager.ts</code>,
@@ -4954,6 +5041,18 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/androidRunTemplate.test.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts"
+            >
+              <h3>src/host/orchestrator/androidRunTemplate.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/scaffolder.ts</code>,
+                <code>src/host/orchestrator/templates.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/appTargetGeneration.test.ts src/host/orchestrator/projectTargets.ts src/host/orchestrator/templates.ts"
             >
               <h3>src/host/orchestrator/appTargetGeneration.test.ts</h3>
@@ -4994,6 +5093,18 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/generatedDependencyContract.test.ts src/host/orchestrator/scaffolder.ts src/host/orchestrator/templates.ts"
+            >
+              <h3>src/host/orchestrator/generatedDependencyContract.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/scaffolder.ts</code>,
+                <code>src/host/orchestrator/templates.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/generatedRouteCleanup.ts syncGeneratedRouteFiles"
             >
               <h3>src/host/orchestrator/generatedRouteCleanup.ts</h3>
@@ -5003,14 +5114,25 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/infraSession.ts ensureProjectInfraPortForward registerProjectInfraPortForwardOwner stopAllProjectInfraPortForwards"
+              data-search="src/host/orchestrator/infraSession.test.ts src/host/orchestrator/infraSession.ts"
+            >
+              <h3>src/host/orchestrator/infraSession.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/infraSession.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/host/orchestrator/infraSession.ts ensureProjectInfrastructureRuntimeSession ensureProjectWebLaunchSession InfraSessionDependencies stopAllProjectInfraPortForwards"
             >
               <h3>src/host/orchestrator/infraSession.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
-                <strong>Exports:</strong> <code>ensureProjectInfraPortForward</code>,
-                <code>registerProjectInfraPortForwardOwner</code>,
+                <strong>Exports:</strong> <code>ensureProjectInfrastructureRuntimeSession</code>,
+                <code>ensureProjectWebLaunchSession</code>, <code>InfraSessionDependencies</code>,
                 <code>stopAllProjectInfraPortForwards</code>
               </p>
             </article>
@@ -5200,6 +5322,17 @@
             </article>
             <article
               class="item"
+              data-search="src/host/orchestrator/studioInfraUp.test.ts src/host/orchestrator/studioInfraUp.ts"
+            >
+              <h3>src/host/orchestrator/studioInfraUp.test.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p>
+                <strong>Dependencies:</strong> <code>src/host/orchestrator/studioInfraUp.ts</code>
+              </p>
+              <p><strong>Exports:</strong> <span class="empty">None</span></p>
+            </article>
+            <article
+              class="item"
               data-search="src/host/orchestrator/studioInfraUp.ts src/host/orchestrator/infraSession.ts src/host/orchestrator/projectManager.ts src/host/orchestrator/projectPaths.ts src/host/secrets/trustedOAuthInfraEnvironment.ts StudioInfraUpResult upProjectInfrastructure"
             >
               <h3>src/host/orchestrator/studioInfraUp.ts</h3>
@@ -5226,17 +5359,17 @@
             </article>
             <article
               class="item"
-              data-search="src/host/orchestrator/templates.ts GeneratedAuthProvider GeneratedStorageProvider getAppConfigTs getBabelConfigJs getEslintConfigMjs getIndexJs getMetroConfigJs getPackageJson getPrettierRcJs getTsConfigJson"
+              data-search="src/host/orchestrator/templates.ts GeneratedAuthProvider GeneratedStorageProvider getAndroidRunTs getAppConfigTs getEslintConfigMjs getPackageJson getPrettierRcJs getTsConfigJson"
             >
               <h3>src/host/orchestrator/templates.ts</h3>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p>
                 <strong>Exports:</strong> <code>GeneratedAuthProvider</code>,
-                <code>GeneratedStorageProvider</code>, <code>getAppConfigTs</code>,
-                <code>getBabelConfigJs</code>, <code>getEslintConfigMjs</code>,
-                <code>getIndexJs</code>, <code>getMetroConfigJs</code>, <code>getPackageJson</code>,
-                <code>getPrettierRcJs</code>, <code>getTsConfigJson</code>
+                <code>GeneratedStorageProvider</code>, <code>getAndroidRunTs</code>,
+                <code>getAppConfigTs</code>, <code>getEslintConfigMjs</code>,
+                <code>getPackageJson</code>, <code>getPrettierRcJs</code>,
+                <code>getTsConfigJson</code>
               </p>
             </article>
             <article
@@ -14599,8 +14732,14 @@
                 module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
                 module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_contractGuards_ts
+                module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_apiBase_test_ts
+                module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
+                module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_core_apiBase_ts
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_constants_ts
+                module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
                 module_src_core_constants_ts --&gt; module_src_utils_readOwnProperty_ts
                 module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_core_mediaAuthoringHostClient_ts
@@ -14941,6 +15080,18 @@
                 package__ankhorage_studio -.-&gt; module_src_host_http_moduleRoutes_ts
                 module_src_host_http_moduleRoutes_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_http_projectRuntimeRoutes_test_ts
+                module_src_host_http_projectRuntimeRoutes_test_ts --&gt;
+                module_src_host_http_projectRuntimeRoutes_ts
+                module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_http_projectRuntimeRoutes_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_infraSession_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_projectPaths_ts
                 module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_http_resolveStandaloneStudioHostOptions_test_ts
@@ -14961,6 +15112,7 @@
                 module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_mediaRoutes_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_moduleRoutes_ts
+                module_src_host_http_server_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_security_ts
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_infraSession_ts
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -15251,6 +15403,13 @@
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_androidRunTemplate_test_ts
+                module_src_host_orchestrator_androidRunTemplate_test_ts --&gt;
+                module_src_host_orchestrator_scaffolder_ts
+                module_src_host_orchestrator_androidRunTemplate_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_orchestrator_appTargetGeneration_test_ts
@@ -15269,9 +15428,20 @@
                 module_src_host_media_projectBundledMediaRegistry_ts
                 module_src_host_orchestrator_generatedAppFiles_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
+                package__ankhorage_studio -.-&gt;
+                module_src_host_orchestrator_generatedDependencyContract_test_ts
+                module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt;
+                module_src_host_orchestrator_scaffolder_ts
+                module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
                 package__ankhorage_studio -.-&gt;
                 module_src_host_orchestrator_generatedRouteCleanup_ts
+                module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraSession_test_ts
+                module_src_host_orchestrator_infraSession_test_ts --&gt;
+                module_src_host_orchestrator_infraSession_ts
                 module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraSession_ts
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
@@ -15375,6 +15545,10 @@
                 module_src_host_orchestrator_semverRange_ts
                 module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_semverRange_ts
+                module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
+                package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_test_ts
+                module_src_host_orchestrator_studioInfraUp_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
                 package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_orchestrator_studioInfraUp_ts --&gt;
@@ -16783,8 +16957,14 @@ graph TD
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_contractGuards_ts
+  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_apiBase_test_ts
+  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
+  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_core_apiBase_ts
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_constants_ts
+  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
   module_src_core_constants_ts --&gt; module_src_utils_readOwnProperty_ts
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_core_mediaAuthoringHostClient_ts
@@ -17025,6 +17205,14 @@ graph TD
   module_src_host_http_moduleRoutes_ts[&quot;src/host/http/moduleRoutes.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_moduleRoutes_ts
   module_src_host_http_moduleRoutes_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_projectRuntimeRoutes_test_ts
+  module_src_host_http_projectRuntimeRoutes_test_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_infraSession_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_http_resolveStandaloneStudioHostOptions_test_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --&gt; module_src_host_http_resolveStandaloneStudioHostOptions_ts
@@ -17041,6 +17229,7 @@ graph TD
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_moduleRoutes_ts
+  module_src_host_http_server_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_security_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -17245,6 +17434,10 @@ graph TD
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_androidRunTemplate_test_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --&gt; module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_appTargetGeneration_test_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
@@ -17256,8 +17449,15 @@ graph TD
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_media_projectBundledMediaRegistry_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedDependencyContract_test_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt; module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_generatedRouteCleanup_ts
+  module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraSession_test_ts
+  module_src_host_orchestrator_infraSession_test_ts --&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
@@ -17326,6 +17526,9 @@ graph TD
   module_src_host_orchestrator_semverRange_test_ts --&gt; module_src_host_orchestrator_semverRange_ts
   module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_semverRange_ts
+  module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
+  package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_test_ts
+  module_src_host_orchestrator_studioInfraUp_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
   package__ankhorage_studio -.-&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_infraSession_ts
@@ -18273,6 +18476,8 @@ graph TD
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
                 module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
+                module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+                module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
                 module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
@@ -18328,6 +18533,8 @@ graph TD
                 module_src_host_http_mediaRoutes_ts[&quot;src/host/http/mediaRoutes.ts&quot;]
                 module_src_host_http_moduleRoutes_test_ts[&quot;src/host/http/moduleRoutes.test.ts&quot;]
                 module_src_host_http_moduleRoutes_ts[&quot;src/host/http/moduleRoutes.ts&quot;]
+                module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+                module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
                 module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
                 module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
                 module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
@@ -18391,10 +18598,13 @@ graph TD
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
                 module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
+                module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
+                module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
                 module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
                 module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
@@ -18410,6 +18620,7 @@ graph TD
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
                 module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
+                module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
                 module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
                 module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
@@ -18733,7 +18944,9 @@ graph TD
                 module_src_host_http_server_ts module_src_cli_index_ts --&gt;
                 module_src_host_templateRegistry_index_ts module_src_cli_index_ts --&gt;
                 module_src_host_utils_workspaceRoot_ts module_src_contractGuards_test_ts --&gt;
-                module_src_contractGuards_ts module_src_core_constants_ts --&gt;
+                module_src_contractGuards_ts module_src_core_apiBase_test_ts --&gt;
+                module_src_core_apiBase_ts module_src_core_constants_ts --&gt;
+                module_src_core_apiBase_ts module_src_core_constants_ts --&gt;
                 module_src_utils_readOwnProperty_ts module_src_core_mediaAuthoringHostClient_ts
                 --&gt; module_src_core_constants_ts module_src_core_mediaAuthoringHostClient_ts
                 --&gt; module_src_core_mediaRemovalCoordinator_ts
@@ -18939,6 +19152,14 @@ graph TD
                 module_src_host_http_moduleRoutes_test_ts --&gt; module_src_moduleAdminContracts_ts
                 module_src_host_http_moduleRoutes_ts --&gt;
                 module_src_host_orchestrator_moduleManager_ts
+                module_src_host_http_projectRuntimeRoutes_test_ts --&gt;
+                module_src_host_http_projectRuntimeRoutes_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_infraSession_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_projectManager_ts
+                module_src_host_http_projectRuntimeRoutes_ts --&gt;
+                module_src_host_orchestrator_projectPaths_ts
                 module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --&gt;
                 module_src_host_http_resolveStandaloneStudioHostOptions_ts
                 module_src_host_http_secretRoutes_ts --&gt;
@@ -18947,6 +19168,7 @@ graph TD
                 module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_mediaRoutes_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_moduleRoutes_ts
+                module_src_host_http_server_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
                 module_src_host_http_server_ts --&gt; module_src_host_http_security_ts
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_infraSession_ts
                 module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -19095,6 +19317,10 @@ graph TD
                 module_src_host_orchestrator_projectManager_ts
                 module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt;
                 module_src_host_templateRegistry_index_ts
+                module_src_host_orchestrator_androidRunTemplate_test_ts --&gt;
+                module_src_host_orchestrator_scaffolder_ts
+                module_src_host_orchestrator_androidRunTemplate_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
                 module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
                 module_src_host_orchestrator_projectTargets_ts
                 module_src_host_orchestrator_appTargetGeneration_test_ts --&gt;
@@ -19105,6 +19331,12 @@ graph TD
                 module_src_host_media_projectBundledMediaRegistry_ts
                 module_src_host_orchestrator_generatedAppFiles_ts --&gt;
                 module_src_host_zoraExtensions_index_ts
+                module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt;
+                module_src_host_orchestrator_scaffolder_ts
+                module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt;
+                module_src_host_orchestrator_templates_ts
+                module_src_host_orchestrator_infraSession_test_ts --&gt;
+                module_src_host_orchestrator_infraSession_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
                 module_src_host_modules_adminRuntime_ts
                 module_src_host_orchestrator_moduleManager_ts --&gt;
@@ -19173,6 +19405,8 @@ graph TD
                 module_src_host_zoraExtensions_index_ts
                 module_src_host_orchestrator_semverRange_test_ts --&gt;
                 module_src_host_orchestrator_semverRange_ts
+                module_src_host_orchestrator_studioInfraUp_test_ts --&gt;
+                module_src_host_orchestrator_studioInfraUp_ts
                 module_src_host_orchestrator_studioInfraUp_ts --&gt;
                 module_src_host_orchestrator_infraSession_ts
                 module_src_host_orchestrator_studioInfraUp_ts --&gt;
@@ -19913,6 +20147,8 @@ graph LR
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
+  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
@@ -19968,6 +20204,8 @@ graph LR
   module_src_host_http_mediaRoutes_ts[&quot;src/host/http/mediaRoutes.ts&quot;]
   module_src_host_http_moduleRoutes_test_ts[&quot;src/host/http/moduleRoutes.test.ts&quot;]
   module_src_host_http_moduleRoutes_ts[&quot;src/host/http/moduleRoutes.ts&quot;]
+  module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+  module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
@@ -20031,10 +20269,13 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
+  module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
+  module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
   module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
@@ -20050,6 +20291,7 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
   module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
+  module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
   module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
   module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
@@ -20351,6 +20593,8 @@ graph LR
   module_src_cli_index_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_cli_index_ts --&gt; module_src_host_utils_workspaceRoot_ts
   module_src_contractGuards_test_ts --&gt; module_src_contractGuards_ts
+  module_src_core_apiBase_test_ts --&gt; module_src_core_apiBase_ts
+  module_src_core_constants_ts --&gt; module_src_core_apiBase_ts
   module_src_core_constants_ts --&gt; module_src_utils_readOwnProperty_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_constants_ts
   module_src_core_mediaAuthoringHostClient_ts --&gt; module_src_core_mediaRemovalCoordinator_ts
@@ -20483,12 +20727,17 @@ graph LR
   module_src_host_http_moduleRoutes_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_http_moduleRoutes_test_ts --&gt; module_src_moduleAdminContracts_ts
   module_src_host_http_moduleRoutes_ts --&gt; module_src_host_orchestrator_moduleManager_ts
+  module_src_host_http_projectRuntimeRoutes_test_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_infraSession_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
+  module_src_host_http_projectRuntimeRoutes_ts --&gt; module_src_host_orchestrator_projectPaths_ts
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts --&gt; module_src_host_http_resolveStandaloneStudioHostOptions_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_http_secretRoutes_ts --&gt; module_src_host_secrets_projectSecretService_ts
   module_src_host_http_server_ts --&gt; module_src_contractGuards_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_mediaRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_moduleRoutes_ts
+  module_src_host_http_server_ts --&gt; module_src_host_http_projectRuntimeRoutes_ts
   module_src_host_http_server_ts --&gt; module_src_host_http_security_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_http_server_ts --&gt; module_src_host_orchestrator_moduleManager_ts
@@ -20577,11 +20826,16 @@ graph LR
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_moduleManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_oauthFixtureConsumer_smoke_test_ts --&gt; module_src_host_templateRegistry_index_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --&gt; module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_androidRunTemplate_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_projectTargets_ts
   module_src_host_orchestrator_appTargetGeneration_test_ts --&gt; module_src_host_orchestrator_templates_ts
   module_src_host_orchestrator_generatedAppFiles_test_ts --&gt; module_src_host_orchestrator_generatedAppFiles_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_media_projectBundledMediaRegistry_ts
   module_src_host_orchestrator_generatedAppFiles_ts --&gt; module_src_host_zoraExtensions_index_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt; module_src_host_orchestrator_scaffolder_ts
+  module_src_host_orchestrator_generatedDependencyContract_test_ts --&gt; module_src_host_orchestrator_templates_ts
+  module_src_host_orchestrator_infraSession_test_ts --&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_adminRuntime_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_catalog_ts
   module_src_host_orchestrator_moduleManager_ts --&gt; module_src_host_modules_runtime_LocalFsTargetAdapter_ts
@@ -20620,6 +20874,7 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_templateRegistry_index_ts
   module_src_host_orchestrator_scaffolder_ts --&gt; module_src_host_zoraExtensions_index_ts
   module_src_host_orchestrator_semverRange_test_ts --&gt; module_src_host_orchestrator_semverRange_ts
+  module_src_host_orchestrator_studioInfraUp_test_ts --&gt; module_src_host_orchestrator_studioInfraUp_ts
   module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_infraSession_ts
   module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_projectManager_ts
   module_src_host_orchestrator_studioInfraUp_ts --&gt; module_src_host_orchestrator_projectPaths_ts
@@ -21099,6 +21354,8 @@ graph LR
                 module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
                 module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
                 module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
+                module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+                module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
                 module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
                 module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
                 module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
@@ -21154,6 +21411,8 @@ graph LR
                 module_src_host_http_mediaRoutes_ts[&quot;src/host/http/mediaRoutes.ts&quot;]
                 module_src_host_http_moduleRoutes_test_ts[&quot;src/host/http/moduleRoutes.test.ts&quot;]
                 module_src_host_http_moduleRoutes_ts[&quot;src/host/http/moduleRoutes.ts&quot;]
+                module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+                module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
                 module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
                 module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
                 module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
@@ -21217,10 +21476,13 @@ graph LR
                 module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
                 module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
                 module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+                module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
                 module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
                 module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
+                module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
                 module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
+                module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
                 module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
                 module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
                 module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
@@ -21236,6 +21498,7 @@ graph LR
                 module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
                 module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
                 module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
+                module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
                 module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
                 module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
                 module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
@@ -21912,6 +22175,8 @@ graph LR
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_contractGuards_test_ts[&quot;src/contractGuards.test.ts&quot;]
   module_src_contractGuards_ts[&quot;src/contractGuards.ts&quot;]
+  module_src_core_apiBase_test_ts[&quot;src/core/apiBase.test.ts&quot;]
+  module_src_core_apiBase_ts[&quot;src/core/apiBase.ts&quot;]
   module_src_core_constants_ts[&quot;src/core/constants.ts&quot;]
   module_src_core_mediaAuthoringHostClient_ts[&quot;src/core/mediaAuthoringHostClient.ts&quot;]
   module_src_core_mediaRemovalCoordinator_test_ts[&quot;src/core/mediaRemovalCoordinator.test.ts&quot;]
@@ -21967,6 +22232,8 @@ graph LR
   module_src_host_http_mediaRoutes_ts[&quot;src/host/http/mediaRoutes.ts&quot;]
   module_src_host_http_moduleRoutes_test_ts[&quot;src/host/http/moduleRoutes.test.ts&quot;]
   module_src_host_http_moduleRoutes_ts[&quot;src/host/http/moduleRoutes.ts&quot;]
+  module_src_host_http_projectRuntimeRoutes_test_ts[&quot;src/host/http/projectRuntimeRoutes.test.ts&quot;]
+  module_src_host_http_projectRuntimeRoutes_ts[&quot;src/host/http/projectRuntimeRoutes.ts&quot;]
   module_src_host_http_resolveStandaloneStudioHostOptions_test_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.test.ts&quot;]
   module_src_host_http_resolveStandaloneStudioHostOptions_ts[&quot;src/host/http/resolveStandaloneStudioHostOptions.ts&quot;]
   module_src_host_http_secretRoutes_ts[&quot;src/host/http/secretRoutes.ts&quot;]
@@ -22030,10 +22297,13 @@ graph LR
   module_src_host_modules_layout_ts[&quot;src/host/modules/layout.ts&quot;]
   module_src_host_modules_runtime_LocalFsTargetAdapter_ts[&quot;src/host/modules/runtime/LocalFsTargetAdapter.ts&quot;]
   module_src_host_oauthFixtureConsumer_smoke_test_ts[&quot;src/host/oauthFixtureConsumer.smoke.test.ts&quot;]
+  module_src_host_orchestrator_androidRunTemplate_test_ts[&quot;src/host/orchestrator/androidRunTemplate.test.ts&quot;]
   module_src_host_orchestrator_appTargetGeneration_test_ts[&quot;src/host/orchestrator/appTargetGeneration.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_test_ts[&quot;src/host/orchestrator/generatedAppFiles.test.ts&quot;]
   module_src_host_orchestrator_generatedAppFiles_ts[&quot;src/host/orchestrator/generatedAppFiles.ts&quot;]
+  module_src_host_orchestrator_generatedDependencyContract_test_ts[&quot;src/host/orchestrator/generatedDependencyContract.test.ts&quot;]
   module_src_host_orchestrator_generatedRouteCleanup_ts[&quot;src/host/orchestrator/generatedRouteCleanup.ts&quot;]
+  module_src_host_orchestrator_infraSession_test_ts[&quot;src/host/orchestrator/infraSession.test.ts&quot;]
   module_src_host_orchestrator_infraSession_ts[&quot;src/host/orchestrator/infraSession.ts&quot;]
   module_src_host_orchestrator_moduleManager_ts[&quot;src/host/orchestrator/moduleManager.ts&quot;]
   module_src_host_orchestrator_projectCreationSafety_test_ts[&quot;src/host/orchestrator/projectCreationSafety.test.ts&quot;]
@@ -22049,6 +22319,7 @@ graph LR
   module_src_host_orchestrator_scaffolder_ts[&quot;src/host/orchestrator/scaffolder.ts&quot;]
   module_src_host_orchestrator_semverRange_test_ts[&quot;src/host/orchestrator/semverRange.test.ts&quot;]
   module_src_host_orchestrator_semverRange_ts[&quot;src/host/orchestrator/semverRange.ts&quot;]
+  module_src_host_orchestrator_studioInfraUp_test_ts[&quot;src/host/orchestrator/studioInfraUp.test.ts&quot;]
   module_src_host_orchestrator_studioInfraUp_ts[&quot;src/host/orchestrator/studioInfraUp.ts&quot;]
   module_src_host_orchestrator_templates_test_ts[&quot;src/host/orchestrator/templates.test.ts&quot;]
   module_src_host_orchestrator_templates_ts[&quot;src/host/orchestrator/templates.ts&quot;]
@@ -23880,12 +24151,12 @@ sequenceDiagram
             <h2>src/app/StudioApp.tsx</h2>
             <article class="item" data-search="StudioApp src/app/StudioApp.tsx ">
               <h3>StudioApp</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:13:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:11:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="StudioAppRootContent src/app/StudioApp.tsx ">
               <h3>StudioAppRootContent</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:35:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:21:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -23893,27 +24164,27 @@ sequenceDiagram
               data-search="handleInstallWorkspacePackages src/app/StudioApp.tsx "
             >
               <h3>handleInstallWorkspacePackages</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:45:3</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:31:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="handleBack src/app/StudioApp.tsx ">
               <h3>handleBack</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:57:3</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:43:3</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="AppBarBrand src/app/StudioApp.tsx ">
               <h3>AppBarBrand</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:124:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:110:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="IconButton src/app/StudioApp.tsx ">
               <h3>IconButton</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:143:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:131:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="WorkspaceMenuItem src/app/StudioApp.tsx ">
               <h3>WorkspaceMenuItem</h3>
-              <p class="muted"><code>src/app/StudioApp.tsx:167:1</code></p>
+              <p class="muted"><code>src/app/StudioApp.tsx:155:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -23990,7 +24261,7 @@ sequenceDiagram
               data-search="WorkspaceScreen src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>WorkspaceScreen</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:20:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:22:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -23998,7 +24269,7 @@ sequenceDiagram
               data-search="ThemedWorkspaceTextInput src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>ThemedWorkspaceTextInput</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:45:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:47:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24006,7 +24277,7 @@ sequenceDiagram
               data-search="ProjectOverviewCard src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>ProjectOverviewCard</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:75:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:77:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24014,7 +24285,7 @@ sequenceDiagram
               data-search="CategoryCard src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>CategoryCard</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:113:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:115:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24022,7 +24293,7 @@ sequenceDiagram
               data-search="TemplateCard src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>TemplateCard</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:147:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:149:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24030,7 +24301,7 @@ sequenceDiagram
               data-search="SearchResults src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>SearchResults</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:180:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:182:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24038,7 +24309,7 @@ sequenceDiagram
               data-search="LifecycleAction src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>LifecycleAction</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:219:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:221:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24046,7 +24317,7 @@ sequenceDiagram
               data-search="PrimaryAction src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>PrimaryAction</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:263:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:265:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24054,7 +24325,7 @@ sequenceDiagram
               data-search="SecondaryAction src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>SecondaryAction</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:297:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:299:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24062,7 +24333,7 @@ sequenceDiagram
               data-search="SegmentedControl src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>SegmentedControl</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:321:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:323:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24070,7 +24341,7 @@ sequenceDiagram
               data-search="SegmentedOption src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>SegmentedOption</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:345:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:347:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24078,7 +24349,7 @@ sequenceDiagram
               data-search="MetadataRows src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>MetadataRows</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:378:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:380:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24086,7 +24357,7 @@ sequenceDiagram
               data-search="InlineMessage src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>InlineMessage</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:395:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:397:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24094,7 +24365,7 @@ sequenceDiagram
               data-search="LoadingState src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>LoadingState</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:408:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:410:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24102,7 +24373,7 @@ sequenceDiagram
               data-search="EmptyState src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>EmptyState</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:420:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:422:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24110,7 +24381,7 @@ sequenceDiagram
               data-search="formatCategory src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>formatCategory</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:440:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:442:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -24118,7 +24389,7 @@ sequenceDiagram
               data-search="formatDate src/app/workspace/WorkspacePrimitives.tsx "
             >
               <h3>formatDate</h3>
-              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:447:1</code></p>
+              <p class="muted"><code>src/app/workspace/WorkspacePrimitives.tsx:449:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -24792,6 +25063,16 @@ sequenceDiagram
             </article>
           </section>
         </section>
+        <section id="view-src-core-apibase-ts" class="view" data-view="src/core/apiBase.ts" hidden>
+          <section class="panel">
+            <h2>src/core/apiBase.ts</h2>
+            <article class="item" data-search="resolveStudioApiBase src/core/apiBase.ts ">
+              <h3>resolveStudioApiBase</h3>
+              <p class="muted"><code>src/core/apiBase.ts:4:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
         <section
           id="view-src-core-constants-ts"
           class="view"
@@ -24807,12 +25088,12 @@ sequenceDiagram
             </article>
             <article class="item" data-search="readEnvString src/core/constants.ts ">
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/core/constants.ts:22:1</code></p>
+              <p class="muted"><code>src/core/constants.ts:15:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="readExpoHostUri src/core/constants.ts ">
               <h3>readExpoHostUri</h3>
-              <p class="muted"><code>src/core/constants.ts:27:1</code></p>
+              <p class="muted"><code>src/core/constants.ts:20:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -25885,12 +26166,12 @@ sequenceDiagram
               data-search="createScrollableRuntimeScreenRoot src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createScrollableRuntimeScreenRoot</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:186:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:203:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="visit src/host/generatedAdminExpoWeb.smoke.test.ts ">
               <h3>visit</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:430:9</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:447:9</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25898,7 +26179,7 @@ sequenceDiagram
               data-search="verifyNestedNutritionSelection src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>verifyNestedNutritionSelection</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:847:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:865:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25906,7 +26187,7 @@ sequenceDiagram
               data-search="verifyDesktopSelectionAndUnsupportedGeometry src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>verifyDesktopSelectionAndUnsupportedGeometry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1091:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1103:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25914,7 +26195,7 @@ sequenceDiagram
               data-search="expectCapturedLayoutsToMatch src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>expectCapturedLayoutsToMatch</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1319:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1331:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25922,7 +26203,7 @@ sequenceDiagram
               data-search="waitForUnsupportedGeometry src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForUnsupportedGeometry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1346:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1358:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25930,7 +26211,7 @@ sequenceDiagram
               data-search="waitForSelectedGeometry src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForSelectedGeometry</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1365:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1377:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25938,7 +26219,7 @@ sequenceDiagram
               data-search="waitForStudioSmokeState src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForStudioSmokeState</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1385:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1397:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25946,7 +26227,7 @@ sequenceDiagram
               data-search="waitForSelectedNodeAtChangeCount src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForSelectedNodeAtChangeCount</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1404:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1416:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25954,7 +26235,7 @@ sequenceDiagram
               data-search="formatStudioScreenState src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatStudioScreenState</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1425:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1437:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25962,7 +26243,7 @@ sequenceDiagram
               data-search="waitForStudioNavigationReady src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForStudioNavigationReady</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1429:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1441:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25970,7 +26251,7 @@ sequenceDiagram
               data-search="waitForStudioScreenState src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForStudioScreenState</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1449:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1461:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25978,7 +26259,7 @@ sequenceDiagram
               data-search="invokeStudioNavigation src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>invokeStudioNavigation</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1470:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1482:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25986,7 +26267,7 @@ sequenceDiagram
               data-search="waitForRuntimeNodeInteractionReady src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForRuntimeNodeInteractionReady</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1492:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1504:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -25994,7 +26275,7 @@ sequenceDiagram
               data-search="snapshotsHaveMatchingTarget src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>snapshotsHaveMatchingTarget</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1531:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1543:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26002,7 +26283,7 @@ sequenceDiagram
               data-search="waitForSelectionRootId src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForSelectionRootId</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1545:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1557:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26010,7 +26291,7 @@ sequenceDiagram
               data-search="expectRectToMatch src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>expectRectToMatch</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1574:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1586:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26018,7 +26299,7 @@ sequenceDiagram
               data-search="expectSelectedRectToMatch src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>expectSelectedRectToMatch</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1581:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1593:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26026,7 +26307,7 @@ sequenceDiagram
               data-search="selectedRectMatches src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>selectedRectMatches</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1588:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1600:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26034,7 +26315,7 @@ sequenceDiagram
               data-search="expectAppBarActionsHorizontal src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>expectAppBarActionsHorizontal</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1597:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1609:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26042,7 +26323,7 @@ sequenceDiagram
               data-search="rectsOverlap src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>rectsOverlap</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1622:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1634:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26050,7 +26331,7 @@ sequenceDiagram
               data-search="createGeneratedAdminProject src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createGeneratedAdminProject</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1629:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1641:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26058,7 +26339,7 @@ sequenceDiagram
               data-search="installGeneratedProjectDependencies src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>installGeneratedProjectDependencies</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1668:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1680:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26066,7 +26347,7 @@ sequenceDiagram
               data-search="stageLocalStudioPackage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stageLocalStudioPackage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1702:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1714:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26074,7 +26355,7 @@ sequenceDiagram
               data-search="writeSmokeRuntimeExtensions src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeRuntimeExtensions</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1731:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:1743:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26082,7 +26363,7 @@ sequenceDiagram
               data-search="writeSmokeMetroConfig src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeSmokeMetroConfig</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2009:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2021:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26090,7 +26371,7 @@ sequenceDiagram
               data-search="installSmokeNavigationProbe src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>installSmokeNavigationProbe</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2032:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2044:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26098,7 +26379,7 @@ sequenceDiagram
               data-search="reservePort src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>reservePort</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2049:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2061:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26106,7 +26387,7 @@ sequenceDiagram
               data-search="spawnExpoWeb src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnExpoWeb</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2065:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2077:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26114,7 +26395,7 @@ sequenceDiagram
               data-search="startSmokeStudioApi src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>startSmokeStudioApi</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2087:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2099:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26122,7 +26403,7 @@ sequenceDiagram
               data-search="handleSmokeStudioApiRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>handleSmokeStudioApiRequest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2116:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2128:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26130,7 +26411,7 @@ sequenceDiagram
               data-search="createSmokeDeployOwnerState src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createSmokeDeployOwnerState</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2179:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2191:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26138,7 +26419,7 @@ sequenceDiagram
               data-search="createSmokeModuleStates src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>createSmokeModuleStates</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2243:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2255:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26146,7 +26427,7 @@ sequenceDiagram
               data-search="listenOnLocalhost src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>listenOnLocalhost</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2276:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2288:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26154,7 +26435,7 @@ sequenceDiagram
               data-search="closeHttpServer src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>closeHttpServer</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2290:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2302:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26162,7 +26443,7 @@ sequenceDiagram
               data-search="readJsonRequest src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readJsonRequest</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2299:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2311:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26170,7 +26451,7 @@ sequenceDiagram
               data-search="writeJsonResponse src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeJsonResponse</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2315:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2327:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26178,7 +26459,7 @@ sequenceDiagram
               data-search="writeCorsHeaders src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>writeCorsHeaders</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2322:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2334:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26186,7 +26467,7 @@ sequenceDiagram
               data-search="waitForExpoWebUrl src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForExpoWebUrl</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2328:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2340:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26194,7 +26475,7 @@ sequenceDiagram
               data-search="waitForHttp src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForHttp</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2341:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2353:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26202,7 +26483,7 @@ sequenceDiagram
               data-search="waitForBodyText src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>waitForBodyText</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2358:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2370:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26210,7 +26491,7 @@ sequenceDiagram
               data-search="resolveChromePath src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>resolveChromePath</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2375:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2387:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26218,7 +26499,7 @@ sequenceDiagram
               data-search="readEnvString src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>readEnvString</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2381:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2393:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26226,7 +26507,7 @@ sequenceDiagram
               data-search="spawnChrome src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>spawnChrome</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2387:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2399:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26234,7 +26515,7 @@ sequenceDiagram
               data-search="openChromePage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>openChromePage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2403:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2415:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26242,7 +26523,7 @@ sequenceDiagram
               data-search="parseChromeProtocolMessage src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>parseChromeProtocolMessage</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2959:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2971:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26250,7 +26531,7 @@ sequenceDiagram
               data-search="isRecord src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2974:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2986:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26258,7 +26539,7 @@ sequenceDiagram
               data-search="stopProcess src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>stopProcess</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2978:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2990:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26266,7 +26547,7 @@ sequenceDiagram
               data-search="collectProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>collectProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2987:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2999:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -26274,7 +26555,7 @@ sequenceDiagram
               data-search="formatProcessOutput src/host/generatedAdminExpoWeb.smoke.test.ts "
             >
               <h3>formatProcessOutput</h3>
-              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:2998:1</code></p>
+              <p class="muted"><code>src/host/generatedAdminExpoWeb.smoke.test.ts:3010:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -27039,6 +27320,58 @@ sequenceDiagram
           </section>
         </section>
         <section
+          id="view-src-host-http-projectruntimeroutes-test-ts"
+          class="view"
+          data-view="src/host/http/projectRuntimeRoutes.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/http/projectRuntimeRoutes.test.ts</h2>
+            <article
+              class="item"
+              data-search="createServer src/host/http/projectRuntimeRoutes.test.ts "
+            >
+              <h3>createServer</h3>
+              <p class="muted"><code>src/host/http/projectRuntimeRoutes.test.ts:165:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="throwingDependencies src/host/http/projectRuntimeRoutes.test.ts "
+            >
+              <h3>throwingDependencies</h3>
+              <p class="muted"><code>src/host/http/projectRuntimeRoutes.test.ts:187:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-http-projectruntimeroutes-ts"
+          class="view"
+          data-view="src/host/http/projectRuntimeRoutes.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/http/projectRuntimeRoutes.ts</h2>
+            <article
+              class="item"
+              data-search="registerProjectRuntimeRoutes src/host/http/projectRuntimeRoutes.ts "
+            >
+              <h3>registerProjectRuntimeRoutes</h3>
+              <p class="muted"><code>src/host/http/projectRuntimeRoutes.ts:13:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="handleProjectRuntimeRequest src/host/http/projectRuntimeRoutes.ts "
+            >
+              <h3>handleProjectRuntimeRequest</h3>
+              <p class="muted"><code>src/host/http/projectRuntimeRoutes.ts:41:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
           id="view-src-host-http-resolvestandalonestudiohostoptions-ts"
           class="view"
           data-view="src/host/http/resolveStandaloneStudioHostOptions.ts"
@@ -27137,17 +27470,17 @@ sequenceDiagram
               data-search="resolveProjectTemplateSelection src/host/http/server.ts "
             >
               <h3>resolveProjectTemplateSelection</h3>
-              <p class="muted"><code>src/host/http/server.ts:28:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:26:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="createStudioHostServer src/host/http/server.ts ">
               <h3>createStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:46:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:44:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="startStudioHostServer src/host/http/server.ts ">
               <h3>startStudioHostServer</h3>
-              <p class="muted"><code>src/host/http/server.ts:381:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:349:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27155,7 +27488,7 @@ sequenceDiagram
               data-search="formatRuntimeOutputForResponse src/host/http/server.ts "
             >
               <h3>formatRuntimeOutputForResponse</h3>
-              <p class="muted"><code>src/host/http/server.ts:395:1</code></p>
+              <p class="muted"><code>src/host/http/server.ts:363:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -27649,7 +27982,7 @@ sequenceDiagram
               data-search="getGeneratedRuntimeRegistryDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>getGeneratedRuntimeRegistryDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:66:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:73:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27657,7 +27990,7 @@ sequenceDiagram
               data-search="mergeRuntimeModuleDeclarations src/host/layout/layoutGenerator.ts "
             >
               <h3>mergeRuntimeModuleDeclarations</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:77:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:100:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27665,12 +27998,12 @@ sequenceDiagram
               data-search="addStudioAdminRouteFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>addStudioAdminRouteFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:100:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:123:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="walk src/host/layout/layoutGenerator.ts ">
               <h3>walk</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:112:11</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:135:11</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27678,7 +28011,7 @@ sequenceDiagram
               data-search="getStudioAdminLayoutTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:442:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:467:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27686,7 +28019,7 @@ sequenceDiagram
               data-search="createStudioAdminRouteGeneratedFiles src/host/layout/layoutGenerator.ts "
             >
               <h3>createStudioAdminRouteGeneratedFiles</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:456:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:481:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27694,7 +28027,7 @@ sequenceDiagram
               data-search="resolveStudioAdminRouteFilePath src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveStudioAdminRouteFilePath</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:463:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:488:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27702,12 +28035,12 @@ sequenceDiagram
               data-search="getStudioAdminRouteTsx src/host/layout/layoutGenerator.ts "
             >
               <h3>getStudioAdminRouteTsx</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:481:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:506:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="normalizeRel src/host/layout/layoutGenerator.ts ">
               <h3>normalizeRel</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:495:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:520:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27715,7 +28048,7 @@ sequenceDiagram
               data-search="prepareNavigatorForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareNavigatorForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:499:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:524:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27723,7 +28056,7 @@ sequenceDiagram
               data-search="prepareRouteForGeneratedRoutes src/host/layout/layoutGenerator.ts "
             >
               <h3>prepareRouteForGeneratedRoutes</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:543:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:568:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27731,7 +28064,7 @@ sequenceDiagram
               data-search="normalizeGeneratedRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>normalizeGeneratedRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:551:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:576:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -27739,7 +28072,7 @@ sequenceDiagram
               data-search="resolveValidGeneratedInitialRouteName src/host/layout/layoutGenerator.ts "
             >
               <h3>resolveValidGeneratedInitialRouteName</h3>
-              <p class="muted"><code>src/host/layout/layoutGenerator.ts:556:1</code></p>
+              <p class="muted"><code>src/host/layout/layoutGenerator.ts:581:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28165,7 +28498,7 @@ sequenceDiagram
               data-search="getRootLayoutImportRequirements src/host/layout/templates/rootLayout.ts "
             >
               <h3>getRootLayoutImportRequirements</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:33:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:34:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28173,7 +28506,7 @@ sequenceDiagram
               data-search="serializeStringArrayLiteral src/host/layout/templates/rootLayout.ts "
             >
               <h3>serializeStringArrayLiteral</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:84:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:86:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28181,7 +28514,7 @@ sequenceDiagram
               data-search="indentGeneratedBlock src/host/layout/templates/rootLayout.ts "
             >
               <h3>indentGeneratedBlock</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:88:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:90:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28189,7 +28522,7 @@ sequenceDiagram
               data-search="getRootLayoutTsx src/host/layout/templates/rootLayout.ts "
             >
               <h3>getRootLayoutTsx</h3>
-              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:95:1</code></p>
+              <p class="muted"><code>src/host/layout/templates/rootLayout.ts:97:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28755,7 +29088,7 @@ sequenceDiagram
               data-search="collectRelativeFiles src/host/oauthFixtureConsumer.smoke.test.ts "
             >
               <h3>collectRelativeFiles</h3>
-              <p class="muted"><code>src/host/oauthFixtureConsumer.smoke.test.ts:16:1</code></p>
+              <p class="muted"><code>src/host/oauthFixtureConsumer.smoke.test.ts:17:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28763,7 +29096,157 @@ sequenceDiagram
               data-search="readProjectFile src/host/oauthFixtureConsumer.smoke.test.ts "
             >
               <h3>readProjectFile</h3>
-              <p class="muted"><code>src/host/oauthFixtureConsumer.smoke.test.ts:31:1</code></p>
+              <p class="muted"><code>src/host/oauthFixtureConsumer.smoke.test.ts:32:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-orchestrator-androidruntemplate-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/androidRunTemplate.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/androidRunTemplate.test.ts</h2>
+            <article
+              class="item"
+              data-search="createHarness src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>createHarness</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:665:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeBasicAdb src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeBasicAdb</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:721:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeFailingAdb src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeFailingAdb</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:778:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeMultipleDeviceAdb src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeMultipleDeviceAdb</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:817:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeExecutable src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeExecutable</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:888:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createTransportReplacementHarness src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>createTransportReplacementHarness</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:897:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeStatefulAdb src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeStatefulAdb</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:926:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="writeReplacementExpo src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>writeReplacementExpo</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:996:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="runHarness src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>runHarness</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1041:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="startDefaultStudioHost src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>startDefaultStudioHost</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1066:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readRecordedReverseMappings src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>readRecordedReverseMappings</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1080:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="reserveUnavailablePort src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>reserveUnavailablePort</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1090:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="exists src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>exists</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1098:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="isProcessAlive src/host/orchestrator/androidRunTemplate.test.ts "
+            >
+              <h3>isProcessAlive</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/androidRunTemplate.test.ts:1108:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28799,7 +29282,7 @@ sequenceDiagram
               data-search="syncGeneratedAppFiles src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>syncGeneratedAppFiles</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:24:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:17:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28807,7 +29290,7 @@ sequenceDiagram
               data-search="createGeneratedAppExtensionRegistrySource src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>createGeneratedAppExtensionRegistrySource</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:62:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:55:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28815,7 +29298,7 @@ sequenceDiagram
               data-search="formatRegistryKey src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>formatRegistryKey</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:122:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:115:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28823,7 +29306,7 @@ sequenceDiagram
               data-search="removePath src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>removePath</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:130:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:123:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28831,7 +29314,7 @@ sequenceDiagram
               data-search="assertNoForbiddenSpecifiers src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>assertNoForbiddenSpecifiers</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:134:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:127:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28839,7 +29322,7 @@ sequenceDiagram
               data-search="listSourceFiles src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>listSourceFiles</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:153:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:146:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28847,7 +29330,57 @@ sequenceDiagram
               data-search="isMissingPathError src/host/orchestrator/generatedAppFiles.ts "
             >
               <h3>isMissingPathError</h3>
-              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:176:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/generatedAppFiles.ts:169:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-host-orchestrator-generateddependencycontract-test-ts"
+          class="view"
+          data-view="src/host/orchestrator/generatedDependencyContract.test.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/host/orchestrator/generatedDependencyContract.test.ts</h2>
+            <article
+              class="item"
+              data-search="createScaffoldHarness src/host/orchestrator/generatedDependencyContract.test.ts "
+            >
+              <h3>createScaffoldHarness</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:89:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="readGeneratedDependencies src/host/orchestrator/generatedDependencyContract.test.ts "
+            >
+              <h3>readGeneratedDependencies</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:99:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectRuntimePeers src/host/orchestrator/generatedDependencyContract.test.ts "
+            >
+              <h3>expectRuntimePeers</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:107:1</code>
+              </p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="expectStudioAuthoringDependencies src/host/orchestrator/generatedDependencyContract.test.ts "
+            >
+              <h3>expectStudioAuthoringDependencies</h3>
+              <p class="muted">
+                <code>src/host/orchestrator/generatedDependencyContract.test.ts:128:1</code>
+              </p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -28952,18 +29485,18 @@ sequenceDiagram
             <h2>src/host/orchestrator/infraSession.ts</h2>
             <article
               class="item"
-              data-search="ensureProjectInfraPortForward src/host/orchestrator/infraSession.ts "
+              data-search="ensureProjectInfrastructureRuntimeSession src/host/orchestrator/infraSession.ts "
             >
-              <h3>ensureProjectInfraPortForward</h3>
-              <p class="muted"><code>src/host/orchestrator/infraSession.ts:14:1</code></p>
+              <h3>ensureProjectInfrastructureRuntimeSession</h3>
+              <p class="muted"><code>src/host/orchestrator/infraSession.ts:28:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
               class="item"
-              data-search="registerProjectInfraPortForwardOwner src/host/orchestrator/infraSession.ts "
+              data-search="ensureProjectWebLaunchSession src/host/orchestrator/infraSession.ts "
             >
-              <h3>registerProjectInfraPortForwardOwner</h3>
-              <p class="muted"><code>src/host/orchestrator/infraSession.ts:38:1</code></p>
+              <h3>ensureProjectWebLaunchSession</h3>
+              <p class="muted"><code>src/host/orchestrator/infraSession.ts:41:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -28971,12 +29504,20 @@ sequenceDiagram
               data-search="stopAllProjectInfraPortForwards src/host/orchestrator/infraSession.ts "
             >
               <h3>stopAllProjectInfraPortForwards</h3>
-              <p class="muted"><code>src/host/orchestrator/infraSession.ts:46:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraSession.ts:61:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="sessionKey src/host/orchestrator/infraSession.ts ">
               <h3>sessionKey</h3>
-              <p class="muted"><code>src/host/orchestrator/infraSession.ts:65:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/infraSession.ts:80:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="withInfrastructureUpGuidance src/host/orchestrator/infraSession.ts "
+            >
+              <h3>withInfrastructureUpGuidance</h3>
+              <p class="muted"><code>src/host/orchestrator/infraSession.ts:84:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -29373,7 +29914,7 @@ sequenceDiagram
             <h2>src/host/orchestrator/scaffolder.ts</h2>
             <article class="item" data-search="exists src/host/orchestrator/scaffolder.ts ">
               <h3>exists</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:320:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:323:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29381,7 +29922,7 @@ sequenceDiagram
               data-search="withZoraExtensionDependencies src/host/orchestrator/scaffolder.ts "
             >
               <h3>withZoraExtensionDependencies</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:329:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:332:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29389,17 +29930,17 @@ sequenceDiagram
               data-search="mergePackageJson src/host/orchestrator/scaffolder.ts "
             >
               <h3>mergePackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:342:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:345:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="mergeScripts src/host/orchestrator/scaffolder.ts ">
               <h3>mergeScripts</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:409:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:407:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="findScript src/host/orchestrator/scaffolder.ts ">
               <h3>findScript</h3>
-              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:435:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/scaffolder.ts:433:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -29451,7 +29992,7 @@ sequenceDiagram
               data-search="upProjectInfrastructure src/host/orchestrator/studioInfraUp.ts "
             >
               <h3>upProjectInfrastructure</h3>
-              <p class="muted"><code>src/host/orchestrator/studioInfraUp.ts:25:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/studioInfraUp.ts:40:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -29469,7 +30010,7 @@ sequenceDiagram
               data-search="serializeStringLiteral src/host/orchestrator/templates.ts "
             >
               <h3>serializeStringLiteral</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:39:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:30:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29477,7 +30018,7 @@ sequenceDiagram
               data-search="serializeJsValue src/host/orchestrator/templates.ts "
             >
               <h3>serializeJsValue</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:47:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:38:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29485,7 +30026,7 @@ sequenceDiagram
               data-search="serializeSplashScreenPlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeSplashScreenPlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:89:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:80:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29493,7 +30034,7 @@ sequenceDiagram
               data-search="serializeRuntimePlugin src/host/orchestrator/templates.ts "
             >
               <h3>serializeRuntimePlugin</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:103:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:90:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29501,7 +30042,7 @@ sequenceDiagram
               data-search="serializePluginsWithRuntimePlan src/host/orchestrator/templates.ts "
             >
               <h3>serializePluginsWithRuntimePlan</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:116:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:94:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29509,7 +30050,7 @@ sequenceDiagram
               data-search="serializeAndroidConfig src/host/orchestrator/templates.ts "
             >
               <h3>serializeAndroidConfig</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:138:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:117:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29517,7 +30058,7 @@ sequenceDiagram
               data-search="serializeIosConfig src/host/orchestrator/templates.ts "
             >
               <h3>serializeIosConfig</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:160:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:139:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29525,33 +30066,22 @@ sequenceDiagram
               data-search="serializeTargetSections src/host/orchestrator/templates.ts "
             >
               <h3>serializeTargetSections</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:172:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:151:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getAppConfigTs src/host/orchestrator/templates.ts ">
               <h3>getAppConfigTs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:200:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:179:1</code></p>
               <p class="empty">No description available.</p>
             </article>
-            <article
-              class="item"
-              data-search="getMetroConfigJs src/host/orchestrator/templates.ts "
-            >
-              <h3>getMetroConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:233:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="getBabelConfigJs src/host/orchestrator/templates.ts "
-            >
-              <h3>getBabelConfigJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:241:1</code></p>
+            <article class="item" data-search="getAndroidRunTs src/host/orchestrator/templates.ts ">
+              <h3>getAndroidRunTs</h3>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:217:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPackageJson src/host/orchestrator/templates.ts ">
               <h3>getPackageJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:264:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:862:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -29559,22 +30089,25 @@ sequenceDiagram
               data-search="getEslintConfigMjs src/host/orchestrator/templates.ts "
             >
               <h3>getEslintConfigMjs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:362:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:969:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getPrettierRcJs src/host/orchestrator/templates.ts ">
               <h3>getPrettierRcJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:386:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article class="item" data-search="getIndexJs src/host/orchestrator/templates.ts ">
-              <h3>getIndexJs</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:391:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:993:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article class="item" data-search="getTsConfigJson src/host/orchestrator/templates.ts ">
               <h3>getTsConfigJson</h3>
-              <p class="muted"><code>src/host/orchestrator/templates.ts:396:1</code></p>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:998:1</code></p>
+              <p class="empty">No description available.</p>
+            </article>
+            <article
+              class="item"
+              data-search="createPlatformDependencyMap src/host/orchestrator/templates.ts "
+            >
+              <h3>createPlatformDependencyMap</h3>
+              <p class="muted"><code>src/host/orchestrator/templates.ts:1020:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -29890,7 +30423,7 @@ sequenceDiagram
             >
               <h3>readText</h3>
               <p class="muted">
-                <code>src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts:68:1</code>
+                <code>src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts:77:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>
@@ -29900,7 +30433,7 @@ sequenceDiagram
             >
               <h3>readJson</h3>
               <p class="muted">
-                <code>src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts:72:1</code>
+                <code>src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts:81:1</code>
               </p>
               <p class="empty">No description available.</p>
             </article>

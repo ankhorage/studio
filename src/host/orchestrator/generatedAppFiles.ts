@@ -12,14 +12,7 @@ export interface GeneratedAppFilesOptions {
 }
 
 const FORBIDDEN_SPECIFIER_PATTERN = /['"]@ankh\//;
-const GENERATED_APP_SCAN_FILES = [
-  'package.json',
-  'tsconfig.json',
-  'babel.config.js',
-  'metro.config.js',
-  'app.config.ts',
-  'index.js',
-];
+const GENERATED_APP_SCAN_FILES = ['package.json', 'tsconfig.json', 'app.config.ts'];
 
 export async function syncGeneratedAppFiles(
   targetProjectPath: string,
