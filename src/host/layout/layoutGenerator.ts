@@ -86,8 +86,6 @@ function useGeneratedRuntimeAction() {
     ({ action }) =>
       executeExpoRuntimeAction({
         action,
-        // Runtime action paths are manifest-driven, while Expo's route union is generated later.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         router: { push: (href) => router.push(href as Href) },
         mode,
         setMode,

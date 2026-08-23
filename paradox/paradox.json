@@ -15691,7 +15691,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 996,
+        "line": 1007,
         "column": 1
       }
     },
@@ -15700,7 +15700,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1001,
+        "line": 1012,
         "column": 1
       }
     },
@@ -15709,7 +15709,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1023,
+        "line": 1034,
         "column": 1
       }
     },
@@ -46584,14 +46584,20 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getPackageJson",
-        "callExpression": "getPackageJson",
+        "toSymbol": "getEslintConfigMjs",
+        "callExpression": "getEslintConfigMjs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {

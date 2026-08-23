@@ -989,6 +989,17 @@ export default createConfig({
     'dist/**',
     '.expo/**',
   ],
+  overrides: [
+    {
+      files: ['src/app/_layout.tsx'],
+      rules: {
+        '@typescript-eslint/no-unnecessary-type-assertion': [
+          'error',
+          { typesToIgnore: ['Href'] },
+        ],
+      },
+    },
+  ],
 });
 `;
 }
