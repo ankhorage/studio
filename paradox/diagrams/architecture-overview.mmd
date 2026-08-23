@@ -15,6 +15,9 @@ graph TD
   module_scripts_expo57_generated_app_acceptance_ts["scripts/expo57-generated-app-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_expo57_generated_app_acceptance_ts
   module_scripts_expo57_generated_app_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
+  module_scripts_expo57_generated_navigation_acceptance_ts["scripts/expo57-generated-navigation-acceptance.ts"]
+  package__ankhorage_studio -.-> module_scripts_expo57_generated_navigation_acceptance_ts
+  module_scripts_expo57_generated_navigation_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
   module_src_ankhAdmin_public_test_ts["src/ankhAdmin.public.test.ts"]
   package__ankhorage_studio -.-> module_src_ankhAdmin_public_test_ts
   module_src_ankhAdmin_public_test_ts --> module_src_root_ts
@@ -772,6 +775,8 @@ graph TD
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_ChromeNavigationSession_ts["src/host/smoke/ChromeNavigationSession.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -787,6 +792,12 @@ graph TD
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts["src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts
+  module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_layout_layoutGenerator_ts
+  module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_createExpo57NavigationFixtureManifest_ts["src/host/smoke/createExpo57NavigationFixtureManifest.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -812,6 +823,11 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_studioInfra_e2e_test_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts

@@ -44,3 +44,28 @@ test('keeps theme-independent navigator declarations at module scope', () => {
   expect(optionsDeclaration).toBeLessThan(componentStart);
   expect(output).not.toContain('useZoraTheme');
 });
+
+test('imports JavaScript tabs from the stable Router-owned entry point', () => {
+  const output = getNestedLayoutTsx({ node: NODE, navigator: createNavigator(false) });
+
+  expect(output).toContain("import { Tabs } from 'expo-router/js-tabs';");
+  expect(output).not.toContain("import { Tabs } from 'expo-router';");
+  expect(output).not.toContain('@react-navigation/');
+});
+
+test('imports custom navigation types from Router-owned entry points', () => {
+  const tabs = getNestedLayoutTsx({
+    node: NODE,
+    navigator: { ...createNavigator(false), usesZoraTabBar: true },
+  });
+  const drawer = getNestedLayoutTsx({
+    node: { ...NODE, type: 'drawer' },
+    navigator: { ...createNavigator(false), jsx: '<Drawer />', usesZoraDrawerContent: true },
+  });
+
+  expect(tabs).toContain("import type { BottomTabBarProps } from 'expo-router/js-tabs';");
+  expect(drawer).toContain(
+    "import type { DrawerContentComponentProps } from 'expo-router/drawer';",
+  );
+  expect(`${tabs}\n${drawer}`).not.toContain('@react-navigation/');
+});

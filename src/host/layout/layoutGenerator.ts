@@ -17,7 +17,10 @@ import {
   type EnabledAuthLayoutPlan,
   resolveAuthLayoutPlan,
 } from './auth/resolveAuthLayoutPlan';
-import { composeGeneratedImports } from './generatedImportComposer';
+import {
+  composeGeneratedImports,
+  type GeneratedImportRequirement,
+} from './generatedImportComposer';
 import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
@@ -80,7 +83,15 @@ function useGeneratedRuntimeAction() {
   const router = useRouter();
   const { mode, setMode } = useZoraTheme();
   const executeAction = useCallback<RuntimeActionExecutor>(
-    ({ action }) => executeExpoRuntimeAction({ action, router, mode, setMode }),
+    ({ action }) =>
+      executeExpoRuntimeAction({
+        action,
+        // Runtime action paths are manifest-driven, while Expo's route union is generated later.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        router: { push: (href) => router.push(href as Href) },
+        mode,
+        setMode,
+      }),
     [mode, router, setMode],
   );
   return { executeAction };
@@ -291,6 +302,14 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
+      ...(!includeStudio
+        ? [
+            {
+              source: 'expo-router',
+              namedImports: [{ imported: 'Href', typeOnly: true }],
+            },
+          ]
+        : []),
       `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
       `import { useCallback, useEffect, useMemo, useState } from 'react';`,
@@ -378,8 +397,16 @@ export class GeneratedAppFileGenerator {
         .filter(Boolean)
         .join(', ')} } from '@ankhorage/zora';`,
       `import ankhConfig from '@root/ankh.config.json';`,
+      ...(!includeStudio
+        ? [
+            {
+              source: 'expo-router',
+              namedImports: [{ imported: 'Href', typeOnly: true }],
+            } satisfies GeneratedImportRequirement,
+          ]
+        : []),
       rootNavigator.type === 'tabs'
-        ? `import { Tabs${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`
+        ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Tabs } from 'expo-router/js-tabs';`
         : rootNavigator.type === 'drawer'
           ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Drawer } from 'expo-router/drawer';`
           : `import { Stack${includeStudio ? ', useGlobalSearchParams, usePathname' : ', useRouter'} } from 'expo-router';`,

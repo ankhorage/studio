@@ -937,8 +937,6 @@ export function getPackageJson(args: {
             EXPO_PLATFORM.packages.imagePicker,
           ])
         : {}),
-      '@react-navigation/bottom-tabs': '^7.18.2',
-      '@react-navigation/drawer': '^7.5.0',
       ...createPlatformDependencyMap([
         EXPO_PLATFORM.runtime.expo,
         EXPO_PLATFORM.runtime.react,

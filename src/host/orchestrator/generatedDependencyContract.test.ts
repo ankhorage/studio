@@ -84,6 +84,19 @@ describe('generated app dependency contract', () => {
     expect(files).not.toContain('index.js');
     expect(files).not.toContain('metro.config.js');
   });
+
+  it('ignores generated Expo state without replacing app-owned ignore rules', async () => {
+    const { projectPath, scaffolder } = await createScaffoldHarness();
+    await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
+    await writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/');
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
+
+    expect(await readFile(path.join(projectPath, '.gitignore'), 'utf8')).toBe(
+      'app-owned-cache/\n.expo/\n',
+    );
+  });
 });
 
 async function createScaffoldHarness() {

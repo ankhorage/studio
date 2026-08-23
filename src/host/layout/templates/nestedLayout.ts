@@ -31,16 +31,14 @@ export function getNestedLayoutTsx(args: { node: NavigatorSpec; navigator: Built
           .filter(Boolean)
           .join(', ')} } from '@ankhorage/zora';`
       : '',
-    navigator.usesZoraTabBar
-      ? `import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';`
-      : '',
+    navigator.usesZoraTabBar ? `import type { BottomTabBarProps } from 'expo-router/js-tabs';` : '',
     navigator.usesZoraDrawerContent
-      ? `import type { DrawerContentComponentProps } from '@react-navigation/drawer';`
+      ? `import type { DrawerContentComponentProps } from 'expo-router/drawer';`
       : '',
     node.type === 'drawer'
       ? `import { Drawer } from 'expo-router/drawer';`
       : node.type === 'tabs'
-        ? `import { Tabs } from 'expo-router';`
+        ? `import { Tabs } from 'expo-router/js-tabs';`
         : `import { Stack } from 'expo-router';`,
   ]);
 

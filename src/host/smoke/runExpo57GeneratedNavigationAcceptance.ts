@@ -1,0 +1,586 @@
+import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
+import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:net';
+import path from 'node:path';
+
+import { ProjectManager } from '../orchestrator/projectManager';
+import { ChromeNavigationSession } from './ChromeNavigationSession';
+import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
+
+const COMMAND_TIMEOUT_MS = 180_000;
+const FORBIDDEN_REACT_NAVIGATION_IMPORT =
+  /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
+const HTTP_TIMEOUT_MS = 120_000;
+const ROUTER_REWRITE_DISABLED = '1';
+
+export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
+  const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
+  let staticServer: ReturnType<typeof Bun.serve> | null = null;
+
+  try {
+    await createWorkspaceAsync(workspaceRoot);
+    const manager = new ProjectManager(workspaceRoot);
+    const standalone = await createProjectAsync(manager, {
+      auth: false,
+      includeStudio: false,
+      name: 'Expo 57 Navigation Standalone',
+    });
+    await writeNavigationProbeAsync(standalone.path);
+    const studio = await createProjectAsync(manager, {
+      auth: true,
+      includeStudio: true,
+      name: 'Expo 57 Navigation Studio',
+    });
+    await createWorkspaceLockfileAsync(workspaceRoot);
+    await runCommandAsync({
+      args: ['install', '--frozen-lockfile', '--linker=hoisted'],
+      command: 'bun',
+      cwd: workspaceRoot,
+      label: 'Cold frozen navigation workspace install',
+    });
+
+    await assertGeneratedNavigationContractAsync(standalone);
+    await runGeneratedProjectChecksAsync(standalone);
+    await runDevelopmentNavigationSmokeAsync(standalone.path);
+    staticServer = createStaticExportServer(standalone.path);
+    if (staticServer.port === undefined) throw new Error('Static export server has no TCP port.');
+    await runStaticExportSmokeAsync(staticServer.port);
+    await staticServer.stop(true);
+    staticServer = null;
+
+    await assertGeneratedNavigationContractAsync(studio);
+    await runGeneratedProjectChecksAsync(studio);
+    await assertReleasedStudioPackageAsync(workspaceRoot, studio);
+  } finally {
+    await staticServer?.stop(true);
+    await rm(workspaceRoot, { force: true, recursive: true });
+  }
+}
+
+async function assertGeneratedNavigationContractAsync(project: NavigationProject): Promise<void> {
+  const packageJson = JSON.parse(
+    await readFile(path.join(project.path, 'package.json'), 'utf8'),
+  ) as { readonly dependencies?: Readonly<Record<string, string>> };
+  const dependencies = packageJson.dependencies ?? {};
+
+  for (const dependency of Object.keys(dependencies)) {
+    if (dependency.startsWith('@react-navigation/')) {
+      throw new Error(`${project.id} directly declares forbidden dependency ${dependency}.`);
+    }
+  }
+
+  const sourceFiles = await listSourceFilesAsync(path.join(project.path, 'src'));
+  let generatedSource = '';
+  for (const file of sourceFiles) {
+    const source = await readFile(file, 'utf8');
+    generatedSource += source;
+    if (FORBIDDEN_REACT_NAVIGATION_IMPORT.test(source)) {
+      throw new Error(`${project.id} contains a forbidden React Navigation import in ${file}.`);
+    }
+  }
+
+  for (const forbiddenFile of ['babel.config.js', 'metro.config.js']) {
+    if (await pathExistsAsync(path.join(project.path, forbiddenFile))) {
+      throw new Error(`${project.id} unexpectedly generated compatibility file ${forbiddenFile}.`);
+    }
+  }
+
+  if (!generatedSource.includes("from 'expo-router/js-tabs'")) {
+    throw new Error(`${project.id} does not consume Router-owned JavaScript tabs.`);
+  }
+  if (!generatedSource.includes("from 'expo-router/drawer'")) {
+    throw new Error(`${project.id} does not consume Router-owned Drawer APIs.`);
+  }
+  if (!generatedSource.includes('<ZoraTabBar {...props} routeMap={routeMap} />')) {
+    throw new Error(`${project.id} does not generate the direct custom ZORA tab bridge.`);
+  }
+  if (!generatedSource.includes('<ZoraDrawerContent {...props} routeMap={routeMap} />')) {
+    throw new Error(`${project.id} does not generate the direct custom ZORA drawer bridge.`);
+  }
+  const appRoot = path.join(project.path, 'src', 'app', ...(project.auth ? ['(app)'] : []));
+  const hiddenRoute = path.join(appRoot, 'hidden-tabs', 'secret.tsx');
+  const hiddenTabsLayout = path.join(appRoot, 'hidden-tabs', '(tabs)', '_layout.tsx');
+  if (!(await pathExistsAsync(hiddenRoute)) || !(await pathExistsAsync(hiddenTabsLayout))) {
+    throw new Error(
+      `${project.id} does not preserve its hidden route outside the visible tab group.`,
+    );
+  }
+  if ((await readFile(hiddenTabsLayout, 'utf8')).includes('name="secret"')) {
+    throw new Error(`${project.id} exposes its hidden route in the visible tab navigator.`);
+  }
+  if (generatedSource.includes('Parameters<typeof Zora')) {
+    throw new Error(`${project.id} still contains a ZORA navigation compatibility cast.`);
+  }
+
+  if (project.auth) {
+    for (const expected of [
+      '<Stack.Protected',
+      'name="(app)"',
+      'name="(auth)"',
+      "initialRouteName: '(app)'",
+    ]) {
+      if (!generatedSource.includes(expected)) {
+        throw new Error(`${project.id} is missing protected-route evidence: ${expected}`);
+      }
+    }
+  }
+}
+
+async function assertReleasedStudioPackageAsync(
+  workspaceRoot: string,
+  studioProject: NavigationProject,
+): Promise<void> {
+  const generatedPackage = JSON.parse(
+    await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
+  ) as { readonly dependencies?: Readonly<Record<string, string>> };
+  const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
+  if (studioRange !== '^2.0.0') {
+    throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
+  }
+
+  const installedPackagePath = path.join(
+    workspaceRoot,
+    'node_modules',
+    '@ankhorage',
+    'studio',
+    'package.json',
+  );
+  const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
+    readonly version?: unknown;
+  };
+  if (installedPackage.version !== '2.0.0') {
+    throw new Error(
+      `Studio-enabled navigation fixture must consume released Studio 2.0.0, received ${String(installedPackage.version)}.`,
+    );
+  }
+
+  const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
+  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.0"')) {
+    throw new Error('Studio fixture lockfile does not contain the released registry resolution.');
+  }
+}
+
+async function assertRouterTypesAsync(project: NavigationProject): Promise<void> {
+  const routerTypesPath = path.join(project.path, '.expo', 'types', 'router.d.ts');
+  const routerTypesStat = await stat(routerTypesPath);
+  if (!routerTypesStat.isFile() || routerTypesStat.size === 0) {
+    throw new Error(`${project.id} did not generate non-empty Router declarations.`);
+  }
+
+  const routerTypes = await readFile(routerTypesPath, 'utf8');
+  for (const routeEvidence of [
+    'profile/[id]',
+    'catalog/settings',
+    '(tabs)',
+    'hidden-tabs/secret',
+  ]) {
+    if (!routerTypes.includes(routeEvidence)) {
+      throw new Error(`${project.id} Router declarations are missing ${routeEvidence}.`);
+    }
+  }
+}
+
+async function generateRouterTypesAsync(project: NavigationProject): Promise<void> {
+  console.log(`\n==> ${project.id} Expo Router typed-route generation`);
+  const expoPort = await reservePortAsync();
+  const output: string[] = [];
+  const expoProcess = spawn('bun', ['x', 'expo', 'start', '--port', String(expoPort), '--clear'], {
+    cwd: project.path,
+    detached: true,
+    env: {
+      ...process.env,
+      BROWSER: 'none',
+      CI: '1',
+      EXPO_NO_TELEMETRY: '1',
+      EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+    },
+  });
+  collectProcessOutput(expoProcess, output);
+  const routerTypesPath = path.join(project.path, '.expo', 'types', 'router.d.ts');
+  const start = Date.now();
+
+  try {
+    while (Date.now() - start < HTTP_TIMEOUT_MS) {
+      if (await pathExistsAsync(routerTypesPath)) return;
+      if (expoProcess.exitCode !== null) {
+        throw new Error(
+          `${project.id} Expo Router type generation exited with ${expoProcess.exitCode}.\n${output.join('').slice(-8_000)}`,
+        );
+      }
+      await Bun.sleep(250);
+    }
+    throw new Error(
+      `${project.id} timed out generating Expo Router declarations.\n${output.join('').slice(-8_000)}`,
+    );
+  } finally {
+    stopProcess(expoProcess);
+  }
+}
+
+async function createProjectAsync(
+  manager: ProjectManager,
+  options: { readonly auth: boolean; readonly includeStudio: boolean; readonly name: string },
+): Promise<NavigationProject> {
+  const created = await manager.createProject(
+    options.name,
+    { category: 'developer_tools', templateId: 'default' },
+    undefined,
+    { includeStudio: options.includeStudio },
+  );
+  const baseManifest = await manager.getProjectManifest(created.id);
+  const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
+    auth: options.auth,
+    name: options.name,
+    slug: created.id,
+  });
+  await manager.saveProjectManifest({ projectId: created.id, manifest, mutations: [] });
+  return { ...options, id: created.id, path: created.path };
+}
+
+async function writeNavigationProbeAsync(projectRoot: string): Promise<void> {
+  await writeFile(
+    path.join(projectRoot, 'src', 'app', 'navigation-probe.tsx'),
+    `import { Text } from '@ankhorage/zora';
+import { router } from 'expo-router';
+
+const navigationProbe = {
+  about: () => router.push('/about'),
+  catalog: () => router.push('/catalog'),
+  home: () => router.replace('/'),
+  profile: () =>
+    router.push({ pathname: '/profile/[id]', params: { id: 'ada', source: 'internal' } }),
+  settings: () => router.push({ pathname: '/catalog/settings', params: { tab: 'advanced' } }),
+};
+const navigationGlobal = globalThis as typeof globalThis & {
+  __ankhExpo57NavigationProbe?: typeof navigationProbe;
+};
+navigationGlobal.__ankhExpo57NavigationProbe = navigationProbe;
+
+export default function NavigationProbe() {
+  return <Text>Navigation Probe Ready</Text>;
+}
+`,
+    'utf8',
+  );
+}
+
+function createStaticExportServer(projectRoot: string): ReturnType<typeof Bun.serve> {
+  const outputRoot = path.join(projectRoot, 'dist');
+  return Bun.serve({
+    hostname: '127.0.0.1',
+    port: 0,
+    async fetch(request) {
+      const url = new URL(request.url);
+      const relativePath = resolveStaticExportPath(url.pathname);
+      const targetPath = path.resolve(outputRoot, relativePath);
+      if (!targetPath.startsWith(`${outputRoot}${path.sep}`) && targetPath !== outputRoot) {
+        return new Response('Not found', { status: 404 });
+      }
+      const file = Bun.file(targetPath);
+      if (!(await file.exists())) return new Response('Not found', { status: 404 });
+      return new Response(file);
+    },
+  });
+}
+
+async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
+  await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
+  await writeFile(
+    path.join(workspaceRoot, 'package.json'),
+    `${JSON.stringify(
+      {
+        name: '@ankhorage/expo57-navigation-acceptance',
+        packageManager: 'bun@1.3.14',
+        private: true,
+        workspaces: ['apps/*'],
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
+}
+
+async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void> {
+  await runCommandAsync({
+    args: ['install', '--linker=hoisted', '--lockfile-only', '--os=*', '--cpu=*'],
+    command: 'bun',
+    cwd: workspaceRoot,
+    label: 'Create generated navigation workspace lockfile',
+  });
+}
+
+async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
+  const entries = await readdir(rootPath, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const entryPath = path.join(rootPath, entry.name);
+    if (entry.isDirectory()) files.push(...(await listSourceFilesAsync(entryPath)));
+    else if (entry.isFile() && /\.[cm]?[jt]sx?$/u.test(entry.name)) files.push(entryPath);
+  }
+  return files;
+}
+
+async function pathExistsAsync(targetPath: string): Promise<boolean> {
+  try {
+    await stat(targetPath);
+    return true;
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
+    throw error;
+  }
+}
+
+async function reservePortAsync(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address();
+      if (typeof address !== 'object' || address === null) {
+        server.close(() => reject(new Error('Could not reserve a navigation smoke port.')));
+        return;
+      }
+      server.close(() => resolve(address.port));
+    });
+  });
+}
+
+function resolveStaticExportPath(pathname: string): string {
+  if (pathname === '/') return 'index.html';
+  const decoded = decodeURIComponent(pathname).replace(/^\/+|\/+$/gu, '');
+  if (path.extname(decoded)) return decoded;
+  return `${decoded}.html`;
+}
+
+async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
+  console.log(`\n==> ${options.label}`);
+  const childProcess = Bun.spawn([options.command, ...options.args], {
+    cwd: options.cwd,
+    env: {
+      ...Bun.env,
+      CI: '1',
+      EXPO_NO_TELEMETRY: '1',
+      TMPDIR: '/tmp',
+      ...(options.routerCommand
+        ? { EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED }
+        : {}),
+    },
+    stderr: 'inherit',
+    stdout: options.captureOutput ? 'pipe' : 'inherit',
+  });
+  const timeout = setTimeout(() => childProcess.kill(), COMMAND_TIMEOUT_MS);
+  const output = options.captureOutput ? await new Response(childProcess.stdout).text() : '';
+  const exitCode = await childProcess.exited;
+  clearTimeout(timeout);
+  if (exitCode !== 0) throw new Error(`${options.label} failed with exit code ${exitCode}.`);
+  return output;
+}
+
+async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<void> {
+  const expoPort = await reservePortAsync();
+  const chromePort = await reservePortAsync();
+  const output: string[] = [];
+  const expoProcess = spawn(
+    'bun',
+    ['x', 'expo', 'start', '--web', '--port', String(expoPort), '--clear'],
+    {
+      cwd: projectRoot,
+      detached: true,
+      env: {
+        ...process.env,
+        BROWSER: 'none',
+        CI: '1',
+        EXPO_NO_TELEMETRY: '1',
+        EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+      },
+    },
+  );
+  collectProcessOutput(expoProcess, output);
+  let chrome: ChromeNavigationSession | null = null;
+
+  try {
+    const rootUrl = `http://127.0.0.1:${expoPort}`;
+    await waitForHttpAsync(rootUrl, () => output.join('').slice(-8_000));
+    chrome = await ChromeNavigationSession.createAsync(chromePort);
+
+    await chrome.navigateAsync(`${rootUrl}/navigation-probe`);
+    await chrome.waitForBodyTextAsync('Navigation Probe Ready');
+    await chrome.waitForNavigationProbeAsync();
+    await chrome.invokeNavigationProbeAsync('home');
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.invokeNavigationProbeAsync('profile');
+    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.goForwardAsync();
+    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
+
+    await chrome.invokeNavigationProbeAsync('settings');
+    await chrome.waitForLocationAsync({ pathname: '/catalog/settings', search: '?tab=advanced' });
+    await chrome.waitForBodyTextAsync('Catalog Settings Route');
+
+    await chrome.navigateAsync(`${rootUrl}/profile/grace?source=direct`);
+    await chrome.waitForLocationAsync({ pathname: '/profile/grace', search: '?source=direct' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+    assertNoBrowserErrors(chrome.errors, 'development navigation');
+  } finally {
+    chrome?.close();
+    stopProcess(expoProcess);
+  }
+}
+
+async function runGeneratedProjectChecksAsync(project: NavigationProject): Promise<void> {
+  await generateRouterTypesAsync(project);
+  await assertRouterTypesAsync(project);
+
+  const commands: readonly AcceptanceCommand[] = [
+    project.auth
+      ? {
+          args: [
+            'x',
+            'ankhorage-eslint',
+            'src/app/(app)/(tabs)/_layout.tsx',
+            'src/app/(app)/(tabs)/catalog/_layout.tsx',
+            'src/app/(app)/hidden-tabs/_layout.tsx',
+            'src/app/(app)/hidden-tabs/(tabs)/_layout.tsx',
+            '--max-warnings=0',
+          ],
+          command: 'bun',
+          cwd: project.path,
+          label: `${project.id} navigation lint (auth scaffold remains owned by #312)`,
+        }
+      : { args: ['run', 'lint'], command: 'bun', cwd: project.path, label: `${project.id} lint` },
+    {
+      args: ['x', 'expo', 'install', '--check'],
+      command: 'bun',
+      cwd: project.path,
+      label: `${project.id} Expo dependency compatibility`,
+    },
+    {
+      args: ['run', 'doctor'],
+      command: 'bun',
+      cwd: project.path,
+      label: `${project.id} Expo Doctor`,
+    },
+  ];
+  for (const command of commands) await runCommandAsync(command);
+
+  await runCommandAsync({
+    args: ['run', 'typecheck'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} TypeScript 6 with generated Router declarations`,
+  });
+  await runCommandAsync({
+    args: ['x', 'react-compiler-healthcheck@latest'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} React Compiler healthcheck`,
+  });
+
+  for (const platform of ['web', 'android', 'ios'] as const) {
+    await runCommandAsync({
+      args: [
+        'x',
+        'expo',
+        'export',
+        '--platform',
+        platform,
+        ...(platform === 'web' ? [] : ['--output-dir', `dist-${platform}`]),
+        '--clear',
+      ],
+      command: 'bun',
+      cwd: project.path,
+      label:
+        platform === 'web'
+          ? `${project.id} rewrite-disabled static Web export`
+          : `${project.id} rewrite-disabled ${platform} JavaScript export`,
+      routerCommand: true,
+    });
+  }
+}
+
+async function runStaticExportSmokeAsync(port: number): Promise<void> {
+  const chromePort = await reservePortAsync();
+  const chrome = await ChromeNavigationSession.createAsync(chromePort);
+  try {
+    const rootUrl = `http://127.0.0.1:${port}`;
+    await chrome.navigateAsync(`${rootUrl}/navigation-probe`);
+    await chrome.waitForBodyTextAsync('Navigation Probe Ready');
+    await chrome.waitForNavigationProbeAsync();
+    await chrome.invokeNavigationProbeAsync('about');
+    await chrome.waitForLocationAsync({ pathname: '/about' });
+    await chrome.waitForBodyTextAsync('Static About Route');
+    await chrome.invokeNavigationProbeAsync('home');
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForBodyTextAsync('Navigation Home');
+    assertNoBrowserErrors(chrome.errors, 'served static export');
+  } finally {
+    chrome.close();
+  }
+}
+
+async function waitForHttpAsync(url: string, diagnostics: () => string): Promise<void> {
+  const start = Date.now();
+  while (Date.now() - start < HTTP_TIMEOUT_MS) {
+    try {
+      const response = await fetch(url);
+      if (response.status < 500) return;
+    } catch {
+      await Bun.sleep(500);
+    }
+  }
+  throw new Error(`Timed out waiting for ${url}.\n${diagnostics()}`);
+}
+
+function assertNoBrowserErrors(errors: readonly string[], label: string): void {
+  const source = errors.join('\n');
+  for (const forbidden of [
+    'Maximum update depth exceeded',
+    'Cannot read properties of undefined',
+    'Unable to resolve module',
+    '@react-navigation/',
+  ]) {
+    if (source.includes(forbidden)) {
+      throw new Error(`${label} reported ${forbidden}:\n${source}`);
+    }
+  }
+}
+
+function collectProcessOutput(
+  processToCollect: ChildProcessWithoutNullStreams,
+  output: string[],
+): void {
+  processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
+  processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
+}
+
+function stopProcess(processToStop: ChildProcessWithoutNullStreams): void {
+  if (!processToStop.pid) return;
+  try {
+    globalThis.process.kill(-processToStop.pid, 'SIGTERM');
+  } catch {
+    processToStop.kill('SIGTERM');
+  }
+}
+
+interface AcceptanceCommand {
+  readonly args: readonly string[];
+  readonly captureOutput?: boolean;
+  readonly command: string;
+  readonly cwd: string;
+  readonly label: string;
+  readonly routerCommand?: boolean;
+}
+
+interface NavigationProject {
+  readonly auth: boolean;
+  readonly id: string;
+  readonly includeStudio: boolean;
+  readonly name: string;
+  readonly path: string;
+}

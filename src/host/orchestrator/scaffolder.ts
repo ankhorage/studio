@@ -83,6 +83,7 @@ export class ProjectScaffolder {
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
+    await this.ensureExpoGitIgnore(projectPath);
     await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
@@ -139,6 +140,7 @@ export class ProjectScaffolder {
     await this.writeTsConfig(projectPath);
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
+    await this.ensureExpoGitIgnore(projectPath);
     await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
@@ -272,6 +274,15 @@ export class ProjectScaffolder {
 
   private async writePrettierConfig(dir: string) {
     await fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8');
+  }
+
+  private async ensureExpoGitIgnore(dir: string) {
+    const gitIgnorePath = path.join(dir, '.gitignore');
+    const existing = (await exists(gitIgnorePath)) ? await fs.readFile(gitIgnorePath, 'utf8') : '';
+    if (existing.split(/\r?\n/gu).includes('.expo/')) return;
+
+    const separator = existing.length > 0 && !existing.endsWith('\n') ? '\n' : '';
+    await fs.writeFile(gitIgnorePath, `${existing}${separator}.expo/\n`, 'utf8');
   }
 
   private async copyDefaultAssets(targetProjectPath: string) {

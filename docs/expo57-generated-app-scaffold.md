@@ -27,7 +27,7 @@ change is a breaking package release and cannot resolve an Expo 54-era Studio 1.
 
 ## Direct Ankhorage dependency audit
 
-The registry audit was performed on 2026-08-23. Each direct `@ankhorage/*` dependency in the Studio
+The registry audit was repeated on 2026-08-24. Each direct `@ankhorage/*` dependency in the Studio
 root package is classified below.
 
 ### Update required for Expo 57
@@ -58,17 +58,15 @@ come through the root workspace package and the released dependency graph audite
 
 ### Separate owner or roadmap step
 
-- `@ankhorage/ankh@^0.8.1` already admits the current compatible 0.8 release line; CLI evolution is
-  not an Expo scaffold responsibility.
-- `@ankhorage/paradox@^0.1.21` already admits the current compatible 0.1 release line; docs tooling
-  evolution is independent of the Expo scaffold.
-- The remaining direct `@react-navigation/*` application imports and their package dependencies are
-  intentionally left visible for `[expo 8]` / issue #311. This migration adds no alias or shim.
+- `@ankhorage/ankh@^0.8.1` admits the current `0.8.2` patch; changing the tooling floor is not a
+  navigation-owner requirement.
+- `@ankhorage/paradox@^0.1.21` admits the current `0.1.22` patch; changing the docs-tooling floor is
+  independent of generated navigation.
 
 ## Canonical platform projection
 
 The generated package map reads package names and versions directly from `EXPO_PLATFORM`. The
-released 3.0.0 projection used by this migration is:
+released 3.0.1 projection used by this migration is:
 
 ```text
 Expo                         ~57.0.15
@@ -93,24 +91,24 @@ Studio contains no second Expo/RN/tooling version table.
 The comparison fixture was created with the actual Expo command
 `create-expo-app@latest --template default@sdk-57` on 2026-08-23.
 
-| Area                      | Decision                                                                                                                                                                                             |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `package.json/main`       | Migrate to direct `expo-router/entry`; no wrapper entry file is generated.                                                                                                                           |
-| Router config plugin      | Migrate to the default `expo-router` config plugin. Runtime-plan plugins and an optional splash plugin remain capability-driven additions.                                                           |
-| Typed routes              | Migrate to `experiments.typedRoutes: true` and include `.expo/types/**/*.ts` plus `expo-env.d.ts` in TypeScript.                                                                                     |
-| React Compiler            | Migrate to `experiments.reactCompiler: true`. Expo 57 owns the automatic Babel setup; no broad opt-out is generated.                                                                                 |
-| Babel                     | Migrate to the Expo default: no `babel.config.js`, module-resolver alias or explicit Worklets plugin. Expo resolves the required `@` and `@root` TypeScript paths.                                   |
-| Metro                     | Migrate to the Expo default: no `metro.config.js` or singleton `resolveRequest`. Expo SDK 52+ automatically supports Bun workspaces and symlinks.                                                    |
-| TypeScript                | Use the platform-owned `~6.0.3` with additional Ankhorage strictness, Node types for generated scripts and the `@`/`@root` source aliases.                                                           |
-| Expo modules              | Use only modules required by Router, generated Runtime capabilities, optional Studio authoring and optional auth. Expo default showcase-only packages are intentionally omitted.                     |
-| ZORA native peers         | Replace deprecated `@expo/vector-icons` with the released ZORA 3/Surface 3 `@react-native-vector-icons/*` peer contract.                                                                             |
-| Static web                | Keep `web.output: 'static'` and an app-owned `expo export --platform web` script.                                                                                                                    |
-| CNG                       | Keep `android/` and `ios/` absent from source. App config and released config plugins feed clean `expo prebuild`; generated native files are disposable output.                                      |
-| Android                   | Expo 57 owns API 24 minimum, compile/target SDK 36 and edge-to-edge defaults. Ankhorage adds only manifest-derived package identity, scheme and permissions.                                         |
-| iOS                       | Expo 57 owns the iOS 16.4/Xcode 26.4 native baseline. Ankhorage adds only manifest-derived bundle identity and scheme.                                                                               |
-| App presentation defaults | Orientation, example-template icons and showcase UI remain intentionally app/template-owned rather than hard-coded platform policy. Existing generated icon assets and web favicon remain supported. |
-| Navigation implementation | Existing navigation generation remains unchanged and visible for issue #311; no compatibility alias is introduced here.                                                                              |
-| Project-root isolation    | Workspace/lockfile ownership remains unchanged for issue #180. A clean disposable fixture is acceptance evidence only.                                                                               |
+| Area                      | Decision                                                                                                                                                                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `package.json/main`       | Migrate to direct `expo-router/entry`; no wrapper entry file is generated.                                                                                                                                                                        |
+| Router config plugin      | Migrate to the default `expo-router` config plugin. Runtime-plan plugins and an optional splash plugin remain capability-driven additions.                                                                                                        |
+| Typed routes              | Migrate to `experiments.typedRoutes: true` and include `.expo/types/**/*.ts` plus `expo-env.d.ts` in TypeScript.                                                                                                                                  |
+| React Compiler            | Migrate to `experiments.reactCompiler: true`. Expo 57 owns the automatic Babel setup; no broad opt-out is generated.                                                                                                                              |
+| Babel                     | Migrate to the Expo default: no `babel.config.js`, module-resolver alias or explicit Worklets plugin. Expo resolves the required `@` and `@root` TypeScript paths.                                                                                |
+| Metro                     | Migrate to the Expo default: no `metro.config.js` or singleton `resolveRequest`. Expo SDK 52+ automatically supports Bun workspaces and symlinks.                                                                                                 |
+| TypeScript                | Use the platform-owned `~6.0.3` with additional Ankhorage strictness, Node types for generated scripts and the `@`/`@root` source aliases.                                                                                                        |
+| Expo modules              | Use only modules required by Router, generated Runtime capabilities, optional Studio authoring and optional auth. Expo default showcase-only packages are intentionally omitted.                                                                  |
+| ZORA native peers         | Replace deprecated `@expo/vector-icons` with the released ZORA 3/Surface 3 `@react-native-vector-icons/*` peer contract.                                                                                                                          |
+| Static web                | Keep `web.output: 'static'` and an app-owned `expo export --platform web` script.                                                                                                                                                                 |
+| CNG                       | Keep `android/` and `ios/` absent from source. App config and released config plugins feed clean `expo prebuild`; generated native files are disposable output.                                                                                   |
+| Android                   | Expo 57 owns API 24 minimum, compile/target SDK 36 and edge-to-edge defaults. Ankhorage adds only manifest-derived package identity, scheme and permissions.                                                                                      |
+| iOS                       | Expo 57 owns the iOS 16.4/Xcode 26.4 native baseline. Ankhorage adds only manifest-derived bundle identity and scheme.                                                                                                                            |
+| App presentation defaults | Orientation, example-template icons and showcase UI remain intentionally app/template-owned rather than hard-coded platform policy. Existing generated icon assets and web favicon remain supported.                                              |
+| Navigation implementation | Stack and hooks come from `expo-router`, JavaScript Tabs and their props from `expo-router/js-tabs`, and Drawer plus its content props from `expo-router/drawer`. Generated source and manifests own no direct `@react-navigation/*` integration. |
+| Project-root isolation    | Workspace/lockfile ownership remains unchanged for issue #180. A clean disposable fixture is acceptance evidence only.                                                                                                                            |
 
 The Babel and Metro removals follow Expo's default-first configuration guidance. A custom file must
 return only when a current generated-app reproduction proves that Expo defaults fail and the
@@ -150,17 +148,32 @@ edit-selection/Gesture Handler regression is deliberately outside this standalon
 retains its focused follow-up boundary.
 
 The 2026-08-23 acceptance fixture was created and regenerated only through `ProjectManager`. Its
-single-stack route topology deliberately exercises the #310 scaffold boundary without performing
-the deferred navigation-owner migration in issue #311. From a cold frozen Bun install it passed
+single-stack route topology exercises the #310 scaffold boundary. From a cold frozen Bun install it passed
 Expo dependency validation, Expo Doctor (21/21), TypeScript 6 and React Compiler healthcheck (4/4
 components). Its app-owned CLI served hydrated Web HTML, emitted ten static routes, bundled Android
 and iOS JavaScript, and completed clean CNG prebuild. The generated native output retained Expo 57's
 edge-to-edge Android setting and iOS 16.4 deployment target.
+
+The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
+matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
+registry owner packages, and covers Stack, JavaScript Tabs, Drawer, nested navigators, hidden routes,
+dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned Expo CLI first
+generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6 run. Every Router
+start/export command disables the React Navigation compatibility rewrite. The runner performs
+static Web, Android and iOS exports for both generation modes, checks Expo Doctor and the React
+Compiler, drives typed internal Router pushes plus browser Back/Forward against the development
+server, and separately serves `dist` to prove static HTML hydration and internal navigation. The
+Studio+Auth fixture scopes its lint assertion to generated navigation layouts because the broader
+auth scaffold remains owned by issue #312; its full TypeScript, Doctor, compiler and platform export
+checks still run. Android/iOS exports prove bundling only. No native development-build environment
+is available in this CI job, so Drawer gestures and native Back remain explicitly unclaimed.
 
 ## Architectural impact
 
 Generated apps and `apps/studio` now share Expo's ordinary Router entry, compiler, Babel, Metro,
 TypeScript, web and CNG defaults. Studio contributes authoring capabilities through released Runtime,
 ZORA, adapter and module contracts instead of maintaining an upgraded copy of the Expo platform.
+Generated navigation now also consumes the same stable Expo Router 57 entry points and typed-route
+toolchain an ordinary Expo app uses, while ZORA navigation UI remains the shared app-facing layer.
 This narrows the architectural distance between the first-party Studio app and any generated
-Ankhorage app without implementing issue #311, #265 or #180.
+Ankhorage app without implementing issue #265 or #180.
