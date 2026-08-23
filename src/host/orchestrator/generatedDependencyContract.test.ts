@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -67,6 +67,23 @@ describe('generated app dependency contract', () => {
     expectRuntimePeers(studioDependencies, standaloneDependencies);
     expectStudioAuthoringDependencies(studioDependencies, 'defined');
   });
+
+  it('removes obsolete Expo default overrides when synchronizing a scaffold', async () => {
+    const { projectPath, scaffolder } = await createScaffoldHarness();
+    await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
+    await Promise.all(
+      ['babel.config.js', 'index.js', 'metro.config.js'].map((fileName) =>
+        writeFile(path.join(projectPath, fileName), 'obsolete'),
+      ),
+    );
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
+
+    const files = await readdir(projectPath);
+    expect(files).not.toContain('babel.config.js');
+    expect(files).not.toContain('index.js');
+    expect(files).not.toContain('metro.config.js');
+  });
 });
 
 async function createScaffoldHarness() {
@@ -89,27 +106,28 @@ async function readGeneratedDependencies(projectPath: string): Promise<Record<st
 
 function expectRuntimePeers(
   {
-    '@expo/vector-icons': vectorIcons,
     '@react-native-picker/picker': nativePicker,
+    '@react-native-vector-icons/ionicons': ionicons,
   }: Record<string, string>,
   expected?: Record<string, string>,
 ) {
   if (expected === undefined) {
-    expect(vectorIcons).toBeDefined();
     expect(nativePicker).toBeDefined();
+    expect(ionicons).toBeDefined();
     return;
   }
 
   const {
-    '@expo/vector-icons': expectedVectorIcons,
     '@react-native-picker/picker': expectedNativePicker,
+    '@react-native-vector-icons/ionicons': expectedIonicons,
   } = expected;
-  expect(vectorIcons).toBe(expectedVectorIcons);
   expect(nativePicker).toBe(expectedNativePicker);
+  expect(ionicons).toBe(expectedIonicons);
 }
 
 function expectStudioAuthoringDependencies(
   {
+    '@ankhorage/studio': studio,
     'expo-document-picker': documentPicker,
     'expo-file-system': fileSystem,
     'expo-image-picker': imagePicker,
@@ -117,12 +135,14 @@ function expectStudioAuthoringDependencies(
   expected: 'defined' | undefined,
 ) {
   if (expected === 'defined') {
+    expect(studio).toBeDefined();
     expect(documentPicker).toBeDefined();
     expect(fileSystem).toBeDefined();
     expect(imagePicker).toBeDefined();
     return;
   }
 
+  expect(studio).toBeUndefined();
   expect(documentPicker).toBeUndefined();
   expect(fileSystem).toBeUndefined();
   expect(imagePicker).toBeUndefined();

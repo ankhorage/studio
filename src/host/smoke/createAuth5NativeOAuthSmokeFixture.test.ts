@@ -2,6 +2,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { expect, test } from 'bun:test';
 
 import { AUTH5_NATIVE_OAUTH_SMOKE } from './auth5NativeOAuthSmokeConfig.js';
@@ -47,8 +48,10 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
 
     expect(packageJson.scripts?.android).toBe('bun scripts/ankh-android.ts');
     expect(packageJson.scripts?.ios).toBe('expo run:ios');
-    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^2.6.0');
-    expect(packageJson.dependencies?.['expo-web-browser']).toBe('~15.0.11');
+    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.1');
+    expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.webBrowser.name]).toBe(
+      EXPO_PLATFORM.packages.webBrowser.version,
+    );
     expect(packageJson.dependencies?.['@react-native-google-signin/google-signin']).toBeUndefined();
     expect(packageJson.dependencies?.['expo-apple-authentication']).toBeUndefined();
 

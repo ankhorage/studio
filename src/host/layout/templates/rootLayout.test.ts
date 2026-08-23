@@ -25,20 +25,19 @@ test('declares generated runtime registries before composing them', () => {
     includeStudio: false,
     runtimeModuleDeclarations: `const ZORA_COMPONENT_REGISTRY = {};
 const APP_EXTENSION_COMPONENT_REGISTRY = {};
-const createComponentRegistry = () => ({});`,
+`,
   });
 
   const registryDeclarationIndex = generated.indexOf('const ZORA_COMPONENT_REGISTRY = {};');
-  const registryCompositionIndex = generated.indexOf(
-    'const runtimeComponentRegistry = createComponentRegistry(',
-  );
+  const registryCompositionIndex = generated.indexOf('const runtimeComponentRegistry = {');
 
   expect(registryDeclarationIndex).toBeGreaterThanOrEqual(0);
   expect(registryCompositionIndex).toBeGreaterThan(registryDeclarationIndex);
-  expect(generated).toContain(`const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);`);
+  expect(generated).toContain(`const runtimeComponentRegistry = {
+  ...ZORA_COMPONENT_REGISTRY,
+  ...APP_EXTENSION_COMPONENT_REGISTRY,
+};`);
+  expect(generated).not.toContain('createComponentRegistry');
 });
 
 test('initializes the Studio provider with the runtime manifest', () => {
@@ -72,6 +71,10 @@ test('initializes the Studio provider with the runtime manifest', () => {
   });
 
   expect(generated).toContain('initialManifest={runtimeManifest}');
+  expect(generated).toContain(`const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);`);
   expect(generated).toContain('componentMeta={ZORA_COMPONENT_META}');
   expect(generated).toContain(
     'activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}',
@@ -176,7 +179,7 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).not.toContain('wrapStudioRuntimeNode');
 });
 
-test('keeps non-Studio generated output unchanged', () => {
+test('keeps non-Studio generated output Studio-independent', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -198,8 +201,9 @@ test('keeps non-Studio generated output unchanged', () => {
     includeStudio: false,
   });
 
-  expect(generated).toContain('const runtimeComponentRegistry = createComponentRegistry(');
+  expect(generated).toContain('const runtimeComponentRegistry = {');
   expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
+  expect(generated).not.toContain('createComponentRegistry');
   expect(generated).not.toContain('useStudio');
   expect(generated).not.toContain('StationaryTapSelector');
   expect(generated).not.toContain('disableActions');

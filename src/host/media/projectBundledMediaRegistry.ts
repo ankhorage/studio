@@ -13,9 +13,16 @@ export async function syncProjectBundledMediaRegistry(projectPath: string): Prom
     path: toPortablePath(path.relative(projectPath, filePath)),
     requirePath: toRequirePath(path.relative(path.dirname(registryPath), filePath)),
   }));
+  const source =
+    entries.length > 0
+      ? getExpoBundledMediaRegistrySource(entries)
+      : `import type { ExpoBundledMediaRegistry } from '@ankhorage/expo-runtime/bundled-media';
+
+export const bundledMediaRegistry: ExpoBundledMediaRegistry = {};
+`;
 
   await fs.mkdir(path.dirname(registryPath), { recursive: true });
-  await fs.writeFile(registryPath, getExpoBundledMediaRegistrySource(entries), 'utf8');
+  await fs.writeFile(registryPath, source, 'utf8');
 }
 
 async function listFiles(rootPath: string): Promise<string[]> {

@@ -8,7 +8,7 @@ const repoRoot = process.cwd();
 test('Studio app shell mounts a real Expo Router Stack navigator', async () => {
   const source = await readFile(path.join(repoRoot, 'src/app/StudioApp.tsx'), 'utf8');
 
-  expect(source).toContain("import { Stack, router, usePathname } from 'expo-router';");
+  expect(source).toContain("import { router, Stack, usePathname } from 'expo-router';");
   expect(source).toContain('<Stack screenOptions={{ headerShown: false }} />');
   expect(source).not.toContain('<Slot');
 });

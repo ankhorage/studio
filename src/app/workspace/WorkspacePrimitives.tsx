@@ -1,13 +1,13 @@
 import type { AppCategory } from '@ankhorage/contracts';
-import { Heading, Icon, Text, useZoraTheme } from '@ankhorage/zora';
+import { Heading, Icon, type IconProps, Text, useZoraTheme } from '@ankhorage/zora';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
-  type TextInputProps,
   TextInput,
+  type TextInputProps,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,6 +16,8 @@ import type { StudioProjectSummary } from '../../projectWorkspaceContracts';
 import type { TemplateCatalogCategory, TemplateEntry } from '../../templateCatalogContracts';
 
 export { styles };
+
+type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
 
 export function WorkspaceScreen(props: {
   title: string;
@@ -217,7 +219,7 @@ export function SearchResults(props: {
 }
 
 export function LifecycleAction(props: {
-  iconName: string;
+  iconName: IoniconsIconName;
   label: string;
   detail: string;
   loading: boolean;
@@ -261,7 +263,7 @@ export function LifecycleAction(props: {
 }
 
 export function PrimaryAction(props: {
-  iconName: string;
+  iconName: IoniconsIconName;
   label: string;
   disabled?: boolean;
   onPress: () => void;

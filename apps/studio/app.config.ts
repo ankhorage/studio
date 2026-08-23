@@ -8,9 +8,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ...config.android,
     package: config.android?.package ?? 'com.ankhorage.studio',
   },
-  plugins: [...(config.plugins ?? [])],
+  plugins: ['expo-router', ...(config.plugins ?? [])],
   experiments: {
     ...config.experiments,
-    autolinkingModuleResolution: true,
+    reactCompiler: true,
+    typedRoutes: true,
   },
 });

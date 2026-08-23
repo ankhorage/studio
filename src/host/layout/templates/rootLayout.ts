@@ -25,6 +25,7 @@ interface GetRootLayoutTsxArgs {
   authRuntime?: RootLayoutAuthRuntimeConfig;
   initialRouteNameOverride?: string;
   runtimeModuleDeclarations?: string;
+  runtimeActionHookName?: string;
   runtimeProviderEnd?: string[];
   runtimeProviderStart?: string[];
   useStoredAuthSessionCredentialResolver?: boolean;
@@ -38,6 +39,7 @@ export function getRootLayoutImportRequirements(
       source: 'react',
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
+        ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
         ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
     },
@@ -103,6 +105,7 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
     authRuntime,
     initialRouteNameOverride,
     runtimeModuleDeclarations,
+    runtimeActionHookName = 'useRuntimeAction',
     runtimeProviderEnd = [],
     runtimeProviderStart = [],
     useStoredAuthSessionCredentialResolver = false,
@@ -320,7 +323,8 @@ useEffect(() => {
 `
     : '';
   const rootHookBlock = [allHooks, authRuntimeHook.trim()].filter(Boolean).join('\n\n');
-  const indentedRootHookBlock = rootHookBlock.length > 0 ? indentGeneratedBlock(rootHookBlock) : '';
+  const indentedRootHookBlock =
+    rootHookBlock.length > 0 ? `${indentGeneratedBlock(rootHookBlock)}\n\n` : '';
 
   const innerContentNode = authRuntime
     ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
@@ -382,7 +386,7 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     : ''
 }
 `;
-  const runtimeContentDeclaration = `const { executeAction } = useRuntimeAction();
+  const runtimeContentDeclaration = `const { executeAction } = ${runtimeActionHookName}();
 
   const generatedRuntimeConfig = useMemo(
     () => ({
@@ -456,7 +460,7 @@ const shouldMountAppHeader =
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={rootViewStyle}>
       <StudioProvider
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
@@ -480,17 +484,33 @@ const shouldMountAppHeader =
     : '';
   const indentedStudioShellBlock =
     studioShellBlock.length > 0 ? `\n${indentGeneratedBlock(studioShellBlock)}\n` : '\n';
-  const indentedInnerNavigationJsx = indentGeneratedBlock(innerNavigation.jsx, '    ');
+  const indentedInnerNavigationJsx = `    ${innerNavigation.jsx}`;
+  const generatedAppShell =
+    finalJsx === '{output}'
+      ? '<AppShell>{output}</AppShell>'
+      : `<AppShell>
+          ${finalJsx}
+        </AppShell>`;
+  const runtimeCredentialResolver = useStoredAuthSessionCredentialResolver
+    ? '\n        credentialResolver: resolveRuntimeOperationCredential,'
+    : '';
+  const runtimeComponentRegistryDeclaration = includeStudio
+    ? `const runtimeComponentRegistry = createComponentRegistry(
+  ZORA_COMPONENT_REGISTRY,
+  APP_EXTENSION_COMPONENT_REGISTRY,
+);`
+    : `const runtimeComponentRegistry = {
+  ...ZORA_COMPONENT_REGISTRY,
+  ...APP_EXTENSION_COMPONENT_REGISTRY,
+};`;
   return `
 ${allImports}
 
 ${moduleLevelDeclarations}
 
 const fallbackManifest = ankhConfig as unknown as AppManifest;
-const runtimeComponentRegistry = createComponentRegistry(
-  ZORA_COMPONENT_REGISTRY,
-  APP_EXTENSION_COMPONENT_REGISTRY,
-);
+${runtimeComponentRegistryDeclaration}
+const rootViewStyle = { flex: 1 } as const;
 
 function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
   return {
@@ -513,25 +533,16 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-${indentedRootHookBlock}
-
-  const manifestContext = useOptionalManifestContext();
+${indentedRootHookBlock}  const manifestContext = useOptionalManifestContext();
   const runtimeManifest = manifestContext?.manifest ?? fallbackManifest;${indentedStudioRuntimeLines}
   const activeTheme =
     runtimeManifest.themes.find((theme) => theme.id === runtimeManifest.activeThemeId) ??
     runtimeManifest.themes[0];
-  if (!activeTheme) return null;
-
   const activeThemeMode = resolveThemeMode(runtimeManifest.activeThemeMode, 'light');
   const executeOperation = useMemo(
     () =>
       createRuntimeApiOperationExecutor({
-        fetch: runtimeApiFetch,
-        ${
-          useStoredAuthSessionCredentialResolver
-            ? 'credentialResolver: resolveRuntimeOperationCredential,'
-            : ''
-        }
+        fetch: runtimeApiFetch,${runtimeCredentialResolver}
       }),
     [],
   );
@@ -539,17 +550,17 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
 
   ${outputDeclaration}
 
+  if (!activeTheme) return null;
+
   const shell = (
     <GeneratedZoraProvider theme={activeTheme} initialMode={activeThemeMode}>
       <SafeAreaProvider>
-        <AppShell>
-          ${finalJsx}
-        </AppShell>
+        ${generatedAppShell}
         <GeneratedStatusBar />
       </SafeAreaProvider>
     </GeneratedZoraProvider>
   );
-${indentedStudioShellBlock}  return <GestureHandlerRootView style={{ flex: 1 }}>{shell}</GestureHandlerRootView>;
+${indentedStudioShellBlock}  return <GestureHandlerRootView style={rootViewStyle}>{shell}</GestureHandlerRootView>;
 }${
     includeStudio
       ? `

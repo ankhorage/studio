@@ -162,6 +162,11 @@ Not allowed:
 
 ## Tests and validation
 
+`eslint.local.config.mjs` contains exact-file TSX migration exceptions exposed by the Devtools 1.6
+canonical React Native profile. Treat those exceptions as existing debt: new or materially modified
+TSX should satisfy the canonical rule whenever practical, and the exception file lists must not
+expand to land unrelated work.
+
 Run the relevant checks before handing off.
 
 Preferred full validation:

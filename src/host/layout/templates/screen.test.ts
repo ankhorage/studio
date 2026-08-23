@@ -21,5 +21,8 @@ describe('getScreenTsx', () => {
     expect(source).toContain('minHeight: 0');
     expect(source).toContain('minWidth: 0');
     expect(source).toContain('<RuntimeScreen');
+    expect(source).toContain('Object.values(runtimeManifest.screens).find(');
+    expect(source).toContain('StyleSheet.create({');
+    expect(source).not.toContain('style={{');
   });
 });

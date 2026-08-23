@@ -1,4 +1,4 @@
-import { IconButton } from '@ankhorage/zora';
+import { IconButton, type IconButtonProps } from '@ankhorage/zora';
 import React from 'react';
 
 import { resolveStudioAppBarModeAction, type StudioAppBarContextAction } from './studioAppBarModel';
@@ -62,7 +62,7 @@ function resolveContextActionHandler(
   return handlers.clearSelection;
 }
 
-function resolveContextActionIcon(id: StudioAppBarContextAction['id']): { name: string } {
+function resolveContextActionIcon(id: StudioAppBarContextAction['id']): IconButtonProps['icon'] {
   if (id === 'properties') return { name: 'options-outline' };
   if (id === 'bindings') return { name: 'git-branch-outline' };
   if (id === 'insert') return { name: 'add-outline' };

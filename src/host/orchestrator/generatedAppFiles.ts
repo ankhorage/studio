@@ -12,14 +12,7 @@ export interface GeneratedAppFilesOptions {
 }
 
 const FORBIDDEN_SPECIFIER_PATTERN = /['"]@ankh\//;
-const GENERATED_APP_SCAN_FILES = [
-  'package.json',
-  'tsconfig.json',
-  'babel.config.js',
-  'metro.config.js',
-  'app.config.ts',
-  'index.js',
-];
+const GENERATED_APP_SCAN_FILES = ['package.json', 'tsconfig.json', 'app.config.ts'];
 
 export async function syncGeneratedAppFiles(
   targetProjectPath: string,
@@ -102,17 +95,20 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     .map((componentName) => `  ${formatRegistryKey(componentName)}: true,`)
     .join('\n');
 
+  const componentRegistry = registryEntries
+    ? `export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {\n${registryEntries}\n};`
+    : 'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {};';
+  const interactionPolicySupport = interactionPolicySupportEntries
+    ? `export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {\n${interactionPolicySupportEntries}\n} as const;`
+    : 'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {} as const;';
+
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
     ...[...importLines].sort(),
     '',
-    'export const APP_EXTENSION_COMPONENT_REGISTRY: ComponentRegistry = {',
-    registryEntries,
-    '};',
+    componentRegistry,
     '',
-    'export const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {',
-    interactionPolicySupportEntries,
-    '} as const;',
+    interactionPolicySupport,
     '',
   ]
     .filter((line, index, lines) => line.length > 0 || lines[index - 1]?.length !== 0)
