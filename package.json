@@ -209,7 +209,7 @@
     "@ankhorage/contracts": "^8.0.0",
     "@ankhorage/data-sources": "^2.0.0",
     "@ankhorage/deploy": "^0.12.0",
-    "@ankhorage/expo-runtime": "^3.0.0",
+    "@ankhorage/expo-runtime": "^3.0.1",
     "@ankhorage/infra": "^4.1.1",
     "@ankhorage/orchestrator": "^0.3.1",
     "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",

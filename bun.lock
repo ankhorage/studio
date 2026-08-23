@@ -9,7 +9,7 @@
         "@ankhorage/contracts": "^8.0.0",
         "@ankhorage/data-sources": "^2.0.0",
         "@ankhorage/deploy": "^0.12.0",
-        "@ankhorage/expo-runtime": "^3.0.0",
+        "@ankhorage/expo-runtime": "^3.0.1",
         "@ankhorage/infra": "^4.1.1",
         "@ankhorage/orchestrator": "^0.3.1",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",
@@ -101,7 +101,7 @@
 
     "@ankhorage/doctor": ["@ankhorage/doctor@0.10.0", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@ankhorage/supabase-auth": "^1.2.0" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-y32CA/X1AjL+R4pSjVouF7rc9aczQrDoB8LDhh61ttLzgzpfH7WDNtLvXiRIli4b8FP3Y/V5uVbOyfI/xfutxA=="],
 
-    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.2", "@ankhorage/zora": "^3.0.0", "expo": "~57.0.15", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.2" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-R8fq0y5vRc/UPhJWEW1gl+ZMJuM9mSZfBHNj6enJweMQoYkqVd1dvrgWY5i+KwKgH+OaodeljWlpXhdmeqKJeg=="],
+    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.1", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.2", "@ankhorage/zora": "^3.0.0", "expo": "~57.0.15", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.2" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-ryFLz2vTwsXR+Kz8adD8FkWV2dfU6/YL39QzGh77ovh26eZPOSeXde9IAKhEsMhseeM03E5cZTyXniHP6XSXaA=="],
 
     "@ankhorage/infra": ["@ankhorage/infra@4.1.1", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/supabase-vault": "^0.2.4" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-+LmFoa8S4zqnxRgB9AEWLrpCA1efvEJhQgWaTBhU78GpqR9GLzJwH8YqrHjXnX2B7wT/dZU+seVx91QFKTMutA=="],
 
@@ -1978,6 +1978,10 @@
     "@ankhorage/deploy/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
 
     "@ankhorage/doctor/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
+
+    "@ankhorage/orchestrator-module-expo-google-fonts/@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.2", "@ankhorage/zora": "^3.0.0", "expo": "~57.0.15", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.2" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-R8fq0y5vRc/UPhJWEW1gl+ZMJuM9mSZfBHNj6enJweMQoYkqVd1dvrgWY5i+KwKgH+OaodeljWlpXhdmeqKJeg=="],
+
+    "@ankhorage/orchestrator-module-expo-localization/@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.2", "@ankhorage/zora": "^3.0.0", "expo": "~57.0.15", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.2" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-R8fq0y5vRc/UPhJWEW1gl+ZMJuM9mSZfBHNj6enJweMQoYkqVd1dvrgWY5i+KwKgH+OaodeljWlpXhdmeqKJeg=="],
 
     "@ankhorage/studio/@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@2.6.0", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@ankhorage/permissions": "^0.2.1" }, "peerDependencies": { "@ankhorage/zora": "^2.8.7", "expo": "~54.0.34", "expo-camera": "~17.0.10", "expo-constants": "~18.0.13", "expo-document-picker": "~14.0.8", "expo-file-system": "~19.0.23", "expo-image-picker": "~17.0.11", "react": "19.1.0", "react-native": "0.81.5" }, "optionalPeers": ["expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker"] }, "sha512-D6nuuOPL2IWEohBVVxkYK5G/m1ww3HGKQxs2apJI0xGiezxUh3494Iju9xl5DoH+I8yxx2IrcJAkiLZ0Na7Pqw=="],
 

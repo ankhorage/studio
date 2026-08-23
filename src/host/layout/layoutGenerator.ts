@@ -59,7 +59,7 @@ ${
   STUDIO_APP_EXTENSION_INTERACTION_POLICY_SUPPORT,
   useRuntimeAction,
 } from '@ankhorage/studio/runtime';`
-    : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';`
+    : `import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';`
 }
 import {
   APP_EXTENSION_COMPONENT_REGISTRY as GENERATED_APP_EXTENSION_COMPONENT_REGISTRY,${

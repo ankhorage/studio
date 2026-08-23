@@ -1,6 +1,6 @@
 import type { AppCategory, AppManifest, SplashScreenSpec } from '@ankhorage/contracts';
 import type { AppDeployManifest, AppDeployTargets } from '@ankhorage/contracts/deploy';
-import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime';
+import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { promises as fs } from 'fs';
 import path from 'path';
 

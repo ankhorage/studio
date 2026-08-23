@@ -48,7 +48,7 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
 
     expect(packageJson.scripts?.android).toBe('bun scripts/ankh-android.ts');
     expect(packageJson.scripts?.ios).toBe('expo run:ios');
-    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.0');
+    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.1');
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.webBrowser.name]).toBe(
       EXPO_PLATFORM.packages.webBrowser.version,
     );

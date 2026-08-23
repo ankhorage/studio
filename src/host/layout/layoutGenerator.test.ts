@@ -273,7 +273,7 @@ describe('GeneratedAppFileGenerator', () => {
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
 
     expect(rootLayout).toContain(
-      "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';",
+      "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
     );
     expect(rootLayout).toContain('function useGeneratedRuntimeAction()');
     expect(rootLayout).toContain('const { executeAction } = useGeneratedRuntimeAction();');

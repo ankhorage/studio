@@ -15546,7 +15546,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 31,
+        "line": 30,
         "column": 1
       }
     },
@@ -15555,7 +15555,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 39,
+        "line": 38,
         "column": 1
       }
     },
@@ -15564,7 +15564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 81,
+        "line": 80,
         "column": 1
       }
     },
@@ -15573,7 +15573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 91,
+        "line": 90,
         "column": 1
       }
     },
@@ -15582,7 +15582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 95,
+        "line": 94,
         "column": 1
       }
     },
@@ -15591,7 +15591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 118,
+        "line": 117,
         "column": 1
       }
     },
@@ -15600,7 +15600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 140,
+        "line": 139,
         "column": 1
       }
     },
@@ -15609,7 +15609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 152,
+        "line": 151,
         "column": 1
       }
     },
@@ -15618,7 +15618,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 180,
+        "line": 179,
         "column": 1
       }
     },
@@ -15627,7 +15627,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 223,
+        "line": 222,
         "column": 1
       }
     },
@@ -15636,7 +15636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 868,
+        "line": 867,
         "column": 1
       }
     },
@@ -15645,7 +15645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 977,
+        "line": 974,
         "column": 1
       }
     },
@@ -15654,7 +15654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1001,
+        "line": 998,
         "column": 1
       }
     },
@@ -15663,7 +15663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1006,
+        "line": 1003,
         "column": 1
       }
     },
@@ -15672,7 +15672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1028,
+        "line": 1025,
         "column": 1
       }
     },
@@ -16005,7 +16005,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 8,
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertCameraFreeInstalledGraphAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 22,
         "column": 1
       }
     },
@@ -16014,7 +16023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 20,
+        "line": 46,
         "column": 1
       }
     },
@@ -16023,7 +16032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 74,
+        "line": 100,
         "column": 1
       }
     },
@@ -16032,7 +16041,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 83,
+        "line": 109,
         "column": 1
       }
     },
@@ -16041,7 +16050,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 91,
+        "line": 117,
         "column": 1
       }
     },
@@ -16050,7 +16059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 152,
+        "line": 180,
         "column": 1
       }
     },
@@ -47134,6 +47143,18 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
+        "fromSymbol": "assertCameraFreeInstalledGraphAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertCameraFreeInstalledGraphAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
         "fromSymbol": "createGeneratedProjectAsync",
         "toSymbol": "mkdir",
         "callExpression": "mkdir",
@@ -47179,6 +47200,12 @@
         "fromSymbol": "runAcceptanceChecksAsync",
         "toSymbol": "runCommandAsync",
         "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runAcceptanceChecksAsync",
+        "toSymbol": "assertCameraFreeInstalledGraphAsync",
+        "callExpression": "assertCameraFreeInstalledGraphAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {

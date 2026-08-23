@@ -11,7 +11,7 @@ The scaffold consumes these released owners:
 
 | Owner                                              | Generated or Studio range | Role                                                                             |
 | -------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| `@ankhorage/expo-runtime`                          | `^3.0.0`                  | Expo 57 platform projection, planning and adapters                               |
+| `@ankhorage/expo-runtime`                          | `^3.0.1`                  | Expo 57 platform projection, planning and focused action bridge                  |
 | `@ankhorage/runtime`                               | `^2.2.0`                  | manifest rendering and bindings                                                  |
 | `@ankhorage/zora`                                  | `^3.0.0`                  | app UI; brings `@ankhorage/surface@^3.0.0` through its released dependency graph |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.4.0`                  | Studio authoring drag-and-drop                                                   |
@@ -34,7 +34,7 @@ root package is classified below.
 
 | Dependency                                         | Previous  | Decision                                         |
 | -------------------------------------------------- | --------- | ------------------------------------------------ |
-| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.0` platform owner       |
+| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.1` platform owner       |
 | `@ankhorage/runtime`                               | `^2.1.0`  | update to released `^2.2.0` runtime owner        |
 | `@ankhorage/zora`                                  | `^2.13.2` | update to released `^3.0.0` Expo 57 UI owner     |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.3.2`  | update to released `^0.4.0` animation owner      |
@@ -142,10 +142,12 @@ The package-owned `test:acceptance:expo57-generated-app` runner creates this fix
 `ProjectManager` for every pull request and push to `main`. Its dedicated CI job selects Node 24,
 starts from a cold frozen install, and executes the app-owned lint and platform commands from the
 generated project directory. The hoisted linker gives Expo Doctor one physical installation of each
-native module, and the generated baseline includes Expo Runtime's public-entry peer closure
-(`@ankhorage/permissions` and `expo-camera`) so TypeScript and Metro can traverse that released
-entrypoint. The Studio edit-selection/Gesture Handler regression is deliberately outside this
-standalone scaffold gate and retains its focused follow-up boundary.
+native module. Standalone layouts import the focused
+`@ankhorage/expo-runtime/action-bridge` entrypoint, so camera-free manifests do not declare or
+install `@ankhorage/permissions` or `expo-camera`; the acceptance runner asserts both the generated
+manifest and installed dependency graph stay free of both packages. The Studio
+edit-selection/Gesture Handler regression is deliberately outside this standalone scaffold gate and
+retains its focused follow-up boundary.
 
 The 2026-08-23 acceptance fixture was created and regenerated only through `ProjectManager`. Its
 single-stack route topology deliberately exercises the #310 scaffold boundary without performing

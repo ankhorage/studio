@@ -1,4 +1,4 @@
-import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';
+import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';
 import type { RuntimeActionHandlers } from '@ankhorage/runtime';
 
 interface RouterLike {

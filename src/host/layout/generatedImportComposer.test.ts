@@ -36,10 +36,11 @@ test('renders generated imports in app lint order and formats long named clauses
   const generated = composeGeneratedImports([
     "import { useOptionalManifestContext, createRuntimeApiOperationExecutor, RuntimeRendererConfigProvider, type RuntimeActionExecutor } from '@ankhorage/runtime';",
     "import { bundledMediaRegistry } from '@/generated/bundledMediaRegistry';",
-    "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';",
+    "import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';",
   ]);
 
-  expect(generated).toBe(`import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime';
+  expect(generated)
+    .toBe(`import { executeExpoRuntimeAction } from '@ankhorage/expo-runtime/action-bridge';
 import {
   createRuntimeApiOperationExecutor,
   type RuntimeActionExecutor,

@@ -1,9 +1,11 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+
+const CAMERA_DEPENDENCIES = ['@ankhorage/permissions', 'expo-camera'] as const;
 
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
@@ -14,6 +16,30 @@ export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
     await runAcceptanceChecksAsync(projectRoot);
   } finally {
     await rm(workspaceRoot, { force: true, recursive: true });
+  }
+}
+
+async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise<void> {
+  const packageJson = JSON.parse(
+    await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
+  ) as { readonly dependencies?: Record<string, string> };
+  const installedGraph = await runCommandAsync({
+    args: ['pm', 'ls', '--all'],
+    captureOutput: true,
+    command: 'bun',
+    cwd: projectRoot,
+    label: 'Inspect camera-free installed dependency graph',
+  });
+
+  for (const dependency of CAMERA_DEPENDENCIES) {
+    if (Object.hasOwn(packageJson.dependencies ?? {}, dependency)) {
+      throw new Error(`Camera-free generated package unexpectedly declares ${dependency}.`);
+    }
+    if (installedGraph.includes(dependency)) {
+      throw new Error(
+        `Camera-free installed dependency graph unexpectedly contains ${dependency}.`,
+      );
+    }
   }
 }
 
@@ -89,13 +115,15 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
 }
 
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
+  await runCommandAsync({
+    args: ['install', '--frozen-lockfile', '--linker=hoisted'],
+    command: 'bun',
+    cwd: projectRoot,
+    label: 'Cold frozen install',
+  });
+  await assertCameraFreeInstalledGraphAsync(projectRoot);
+
   const commands: readonly AcceptanceCommand[] = [
-    {
-      args: ['install', '--frozen-lockfile', '--linker=hoisted'],
-      command: 'bun',
-      cwd: projectRoot,
-      label: 'Cold frozen install',
-    },
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
     {
       args: ['x', 'expo', 'install', '--check'],
@@ -149,7 +177,7 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   for (const command of commands) await runCommandAsync(command);
 }
 
-async function runCommandAsync(options: AcceptanceCommand): Promise<void> {
+async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
   console.log(`\n==> ${options.label}`);
   const childProcess = Bun.spawn([options.command, ...options.args], {
     cwd: options.cwd,
@@ -159,14 +187,17 @@ async function runCommandAsync(options: AcceptanceCommand): Promise<void> {
       TMPDIR: '/tmp',
     },
     stderr: 'inherit',
-    stdout: 'inherit',
+    stdout: options.captureOutput ? 'pipe' : 'inherit',
   });
+  const output = options.captureOutput ? await new Response(childProcess.stdout).text() : '';
   const exitCode = await childProcess.exited;
   if (exitCode !== 0) throw new Error(`${options.label} failed with exit code ${exitCode}.`);
+  return output;
 }
 
 interface AcceptanceCommand {
   readonly args: readonly string[];
+  readonly captureOutput?: boolean;
   readonly command: string;
   readonly cwd: string;
   readonly label: string;

@@ -1,3 +1,4 @@
+import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { describe, expect, it } from 'bun:test';
 
@@ -11,15 +12,13 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
-    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.2');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
+    expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
     expect(dependencies['@ankhorage/studio']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
-    expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
-      EXPO_PLATFORM.packages.camera.version,
-    );
+    expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.constants.name]).toBe(
       EXPO_PLATFORM.packages.constants.version,
     );
@@ -60,12 +59,43 @@ describe('generated OAuth scaffold templates', () => {
     );
   });
 
+  it('adds camera dependencies only when the runtime plan requires them', () => {
+    const runtimePlan: ExpoRuntimePlan = {
+      capabilities: [],
+      dependencies: [
+        { name: '@ankhorage/permissions', reasons: ['permission:camera'], version: '^0.2.2' },
+        {
+          name: EXPO_PLATFORM.packages.camera.name,
+          reasons: ['permission:camera'],
+          version: EXPO_PLATFORM.packages.camera.version,
+        },
+      ],
+      diagnostics: [],
+      impliedPermissions: [],
+      nativeConfig: { androidPermissions: [], configHints: [], plugins: [] },
+      needsPermissionsProvider: true,
+      permissions: [{ permission: 'camera' }],
+      providers: ['permissions'],
+      runtimeAdapters: [],
+      usesExpoRuntimeRegistry: true,
+    };
+    const dependencies = getPackageJson({ name: 'camera-app', runtimePlan }).dependencies as Record<
+      string,
+      string
+    >;
+
+    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.2');
+    expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
+      EXPO_PLATFORM.packages.camera.version,
+    );
+  });
+
   it('does not inject the removed generated database runtime adapter', () => {
     const pkg = getPackageJson({ name: 'plain-app' });
 
     expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
     expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
+    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
   });
 
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
@@ -73,7 +103,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
