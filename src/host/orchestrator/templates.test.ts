@@ -25,7 +25,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(dependencies['@ankhorage/studio']).toBe('^2.0.0');
+    expect(dependencies['@ankhorage/studio']).toBe('^2.0.1');
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();

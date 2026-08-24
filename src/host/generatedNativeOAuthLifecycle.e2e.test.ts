@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from 'bun:test';
 import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
 
 const SESSION_STORAGE_KEY = 'generated.native.oauth.session';
-const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
+const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
 const CALLBACK_URL = 'ankh-ios://auth/callback';
 const EXPO_GO_MESSAGE =
   'Brokered OAuth requires a development or standalone build with the configured app scheme; Expo Go cannot provide a stable OAuth callback scheme.';

@@ -4,6 +4,7 @@ import path from 'node:path';
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const CAMERA_DEPENDENCIES = ['@ankhorage/permissions', 'expo-camera'] as const;
 
@@ -23,7 +24,7 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
   const packageJson = JSON.parse(
     await readFile(path.join(projectRoot, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Record<string, string> };
-  const installedGraph = await runCommandAsync({
+  const installedGraph = await runAcceptanceCommandAsync({
     args: ['pm', 'ls', '--all'],
     captureOutput: true,
     command: 'bun',
@@ -98,7 +99,7 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
 }
 
 async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void> {
-  await runCommandAsync({
+  await runAcceptanceCommandAsync({
     args: ['install', '--linker=hoisted', '--lockfile-only', '--os=*', '--cpu=*'],
     command: 'bun',
     cwd: workspaceRoot,
@@ -115,7 +116,7 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
 }
 
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
-  await runCommandAsync({
+  await runAcceptanceCommandAsync({
     args: ['install', '--frozen-lockfile', '--linker=hoisted'],
     command: 'bun',
     cwd: projectRoot,
@@ -123,7 +124,7 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   });
   await assertCameraFreeInstalledGraphAsync(projectRoot);
 
-  const commands: readonly AcceptanceCommand[] = [
+  const commands = [
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
     {
       args: ['x', 'expo', 'install', '--check'],
@@ -174,31 +175,5 @@ async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
     },
   ];
 
-  for (const command of commands) await runCommandAsync(command);
-}
-
-async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
-  console.log(`\n==> ${options.label}`);
-  const childProcess = Bun.spawn([options.command, ...options.args], {
-    cwd: options.cwd,
-    env: {
-      ...Bun.env,
-      CI: '1',
-      TMPDIR: '/tmp',
-    },
-    stderr: 'inherit',
-    stdout: options.captureOutput ? 'pipe' : 'inherit',
-  });
-  const output = options.captureOutput ? await new Response(childProcess.stdout).text() : '';
-  const exitCode = await childProcess.exited;
-  if (exitCode !== 0) throw new Error(`${options.label} failed with exit code ${exitCode}.`);
-  return output;
-}
-
-interface AcceptanceCommand {
-  readonly args: readonly string[];
-  readonly captureOutput?: boolean;
-  readonly command: string;
-  readonly cwd: string;
-  readonly label: string;
+  for (const command of commands) await runAcceptanceCommandAsync(command);
 }

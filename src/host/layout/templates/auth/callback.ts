@@ -48,7 +48,7 @@ function completeOAuthCallbackOnce(callbackUrl: string) {
 
 export default function OAuthCallbackScreen() {
   const router = useRouter();
-  const callbackParams = useLocalSearchParams<Record<string, string | string[] | undefined>>();
+  const callbackParams = useLocalSearchParams<Record<string, string | string[]>>();
   const callbackUrl = useMemo(() => {
     try {
       return resolveOAuthCallbackUrl(callbackParams);
@@ -116,7 +116,7 @@ export default function OAuthCallbackScreen() {
             onPress={() => router.replace(SIGN_IN_ROUTE)}
             style={[styles.button, { backgroundColor: theme.colors.primary }]}
           >
-            <Text color="inverse" weight="semiBold">
+            <Text emphasis="inverse" weight="semiBold">
               Return to sign in
             </Text>
           </Pressable>

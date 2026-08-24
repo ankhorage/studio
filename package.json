@@ -181,6 +181,7 @@
     "knip": "ankhorage-knip",
     "test": "bun test",
     "test:acceptance:expo57-generated-app": "bun scripts/expo57-generated-app-acceptance.ts",
+    "test:acceptance:expo57-generated-capabilities": "bun scripts/expo57-generated-capability-acceptance.ts",
     "test:acceptance:expo57-generated-navigation": "bun scripts/expo57-generated-navigation-acceptance.ts",
     "test:e2e": "bun run test:e2e:generated-app-web && bun run test:e2e:infra",
     "test:e2e:generated-app-web": "CHROME_PATH=\"${CHROME_PATH:-$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || printf '%s' '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')}\" ANKH_STUDIO_ADMIN_WEB_SMOKE=1 bun test src/host/generatedAdminExpoWeb.smoke.test.ts",

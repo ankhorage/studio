@@ -156,9 +156,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).not.toContain('window.closed');
     expect(callback).not.toContain('Linking.useURL()');
     expect(callback).not.toContain('Linking.getInitialURL()');
-    expect(callback).toContain(
-      'useLocalSearchParams<Record<string, string | string[] | undefined>>()',
-    );
+    expect(callback).toContain('useLocalSearchParams<Record<string, string | string[]>>()');
     expect(callback).toContain('return resolveOAuthCallbackUrl(callbackParams);');
     expect(callback).toContain('}, [callbackParams]);');
     expect(callback).toContain(
