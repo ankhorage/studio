@@ -11,6 +11,17 @@ import {
 } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
+  it('keeps generated Expo config plugin data outside the default export function', () => {
+    const appConfig = getAppConfigTs({
+      name: 'Generated app',
+      slug: 'generated-app',
+      targets: { web: { enabled: true } },
+    });
+
+    expect(appConfig).toContain("const GENERATED_PLUGINS: NonNullable<ExpoConfig['plugins']>");
+    expect(appConfig).toContain('...(config.plugins ?? []), ...GENERATED_PLUGINS');
+  });
+
   it('formats generated JSON and YAML serializers with their canonical output styles', () => {
     const prettierConfig = getPrettierRcJs();
 

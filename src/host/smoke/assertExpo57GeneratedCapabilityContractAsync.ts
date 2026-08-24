@@ -85,15 +85,24 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   }
 
   const oauthRuntime = await readFile(path.join(projectRoot, 'src', 'auth', 'oauth.ts'), 'utf8');
-  for (const expected of [
-    "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
-    'WebBrowser.openAuthSessionAsync(',
-    'Linking.createURL(callbackPath, { scheme: nativeScheme })',
-    'oauth.completeAuthorization({',
-  ]) {
+  const oauthCompletion = await readFile(
+    path.join(projectRoot, 'src', 'auth', 'oauth-completion.ts'),
+    'utf8',
+  );
+  const oauthState = await readFile(
+    path.join(projectRoot, 'src', 'auth', 'oauth-state.ts'),
+    'utf8',
+  );
+  for (const expected of ['WebBrowser.openAuthSessionAsync(', 'oauth.completeAuthorization({']) {
     if (!oauthRuntime.includes(expected)) {
       throw new Error(`Generated capability OAuth runtime is missing ${expected}.`);
     }
+  }
+  if (!oauthCompletion.includes('Linking.createURL(callbackPath, { scheme: nativeScheme })')) {
+    throw new Error('Generated capability OAuth completion is missing its native redirect URI.');
+  }
+  if (!oauthState.includes("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';")) {
+    throw new Error('Generated capability OAuth state is missing its correlation marker.');
   }
   if (oauthRuntime.includes('access_token') || oauthRuntime.includes('setSession(')) {
     throw new Error('Generated capability OAuth runtime bypasses the canonical auth adapter.');

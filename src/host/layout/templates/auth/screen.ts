@@ -3,14 +3,11 @@ import { escapeStringLiteral } from '../../utils/escapeStringLiteral';
 import { routeNameToGroupedHref } from '../utils/routes';
 import { toSafeComponentName } from '../utils/strings';
 
-const AUTH_SCREEN_CONTAINER_PADDING = 24;
-const AUTH_SCREEN_CARD_MAX_WIDTH = 560;
-
 function serializeStringArrayLiteral(values: readonly string[]): string {
   return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
 }
 
-export function getAuthScreenTsx(args: {
+interface AuthScreenTemplateArgs {
   initialMode: 'signIn' | 'signUp';
   screenName: string;
   title?: string;
@@ -22,126 +19,307 @@ export function getAuthScreenTsx(args: {
   signUpOptionalFields: string[];
   signUpPolicy: 'autoSignIn' | 'requireVerification';
   oauthProviders?: readonly GeneratedOAuthProviderPlan[];
-}) {
-  const {
-    initialMode,
-    screenName,
-    title,
-    signInRoute,
-    signUpRoute,
-    postSignInRoute,
-    signInIdentifiers,
-    signUpRequiredFields,
-    signUpOptionalFields,
-    signUpPolicy,
-    oauthProviders = [],
-  } = args;
-  const safeName = toSafeComponentName(screenName);
-  const oauthEnabled = oauthProviders.length > 0;
-  const postSignInTarget = routeNameToGroupedHref(postSignInRoute, 'app');
-  const signUpSessionMessage =
-    signUpPolicy === 'autoSignIn'
-      ? `        await setStoredAuthSession(result.data);
-        router.replace(POST_SIGN_IN_ROUTE);`
-      : `        await clearStoredAuthSession();
-        router.replace(SIGN_IN_ROUTE);`;
-  const oauthImport = oauthEnabled
+}
+
+export function getAuthScreenTsx(args: AuthScreenTemplateArgs) {
+  const safeName = toSafeComponentName(args.screenName);
+  return `import { GeneratedAuthScreen } from '@/screens/auth-screen';
+
+export default function ${safeName}Screen() {
+  return <GeneratedAuthScreen initialMode="${args.initialMode}" title="${escapeStringLiteral(args.title ?? args.screenName)}" />;
+}
+`;
+}
+
+export function getAuthScreenRuntimeTsx(
+  args: Omit<AuthScreenTemplateArgs, 'initialMode' | 'screenName' | 'title'>,
+) {
+  const oauthEnabled = (args.oauthProviders?.length ?? 0) > 0;
+  const oauthImports = oauthEnabled
     ? `import { generatedOAuthProviderItems, startOAuthAuthorization } from '@/auth/oauth';\n`
     : '';
-  const oauthState = oauthEnabled
-    ? `  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);\n`
-    : '';
-  const oauthHandler = oauthEnabled
-    ? `
-  async function handleOAuthProviderPress(providerId: string) {
-    if (loading || oauthLoadingProvider !== null) return;
-    setError(null);
-    setInfo(null);
-    setOAuthLoadingProvider(providerId);
-    try {
-      const outcome = await startOAuthAuthorization(providerId);
-      if (outcome.status === 'authenticated') {
-        router.replace(POST_SIGN_IN_ROUTE);
-        return;
-      }
-      if (outcome.status === 'cancelled') {
-        setInfo(outcome.message);
-        return;
-      }
-      setError(outcome.message);
-    } catch (caught) {
-      setError(getErrorMessage(caught));
-    } finally {
-      setOAuthLoadingProvider(null);
-    }
-  }
-`
-    : '';
-  const oauthJsx = oauthEnabled
-    ? `
-          <OAuthProviderList
-            disabled={loading}
-            onProviderPress={handleOAuthProviderPress}
-            providers={generatedOAuthProviderItems.map((provider) => ({
-              ...provider,
-              disabled: oauthLoadingProvider !== null && oauthLoadingProvider !== provider.id,
-              loading: oauthLoadingProvider === provider.id,
-            }))}
-          />
-          <View style={styles.separatorRow}>
-            <View style={[styles.separatorLine, { backgroundColor: theme.colors.border }]} />
-            <Text emphasis="muted" variant="bodySmall">
-              or continue with password
-            </Text>
-            <View style={[styles.separatorLine, { backgroundColor: theme.colors.border }]} />
-          </View>
-`
-    : '';
-  const zoraOAuthImport = oauthEnabled ? '  OAuthProviderList,\n' : '';
-  const formLoading = oauthEnabled ? 'loading || oauthLoadingProvider !== null' : 'loading';
+  const oauthZoraImport = oauthEnabled ? '  OAuthProviderList,\n' : '';
+  const oauthController = oauthEnabled
+    ? getOAuthControllerSource()
+    : `
+  function handleOAuthProviderPress(): Promise<void> {
+    return Promise.resolve();
+  }`;
+  const oauthView = oauthEnabled ? getOAuthViewSource() : '';
+  const formLoading = oauthEnabled
+    ? 'controller.loading || controller.oauthLoadingProvider !== null'
+    : 'controller.loading';
+  const postSignInTarget = routeNameToGroupedHref(args.postSignInRoute, 'app');
 
   return `import type { AppManifest } from '@ankhorage/contracts';
-import type { AuthIdentifier, AuthSession } from '@ankhorage/contracts/auth';
+import { ManifestProvider } from '@ankhorage/runtime';
 import {
-  type AuthIdentifierKind,
-${zoraOAuthImport}  SignInForm,
+${oauthZoraImport}  SignInForm,
   type SignInFormValues,
   SignUpForm,
-  type SignUpFormField,
   type SignUpFormValues,
   Text,
   useZoraTheme,
 } from '@ankhorage/zora';
-import { ManifestProvider } from '@ankhorage/runtime';
-import { isEmail, isPhone, isUsername } from '@ankhorage/utility/regex';
 import ankhConfig from '@root/ankh.config.json';
 import { Stack, useRouter } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { authAdapter } from '@/auth/adapter';
-${oauthImport}import { clearStoredAuthSession, setStoredAuthSession } from '@/auth/session';
+import {
+  type AuthSubmitValues,
+  buildAuthIdentifierInput,
+  buildSignUpFields,
+  buildSignUpProfile,
+  getFormValue,
+  isAuthSession,
+  resolveAuthIdentifiers,
+  resolveIdentifierFieldDefinition,
+  validateAuthSubmitValues,
+} from '@/auth/form';
+${oauthImports}import { clearStoredAuthSession, setStoredAuthSession } from '@/auth/session';
 
-const SIGN_IN_IDENTIFIERS: string[] = ${serializeStringArrayLiteral(signInIdentifiers)};
-const SIGN_UP_REQUIRED_FIELDS: string[] = ${serializeStringArrayLiteral(signUpRequiredFields)};
-const SIGN_UP_OPTIONAL_FIELDS: string[] = ${serializeStringArrayLiteral(signUpOptionalFields)};
-const SIGN_IN_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signInRoute, 'auth'))}';
-const SIGN_UP_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(signUpRoute, 'auth'))}';
+const SIGN_IN_IDENTIFIERS: string[] = ${serializeStringArrayLiteral(args.signInIdentifiers)};
+const SIGN_UP_REQUIRED_FIELDS: string[] = ${serializeStringArrayLiteral(args.signUpRequiredFields)};
+const SIGN_UP_OPTIONAL_FIELDS: string[] = ${serializeStringArrayLiteral(args.signUpOptionalFields)};
+const SIGN_IN_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'))}';
+const SIGN_UP_ROUTE = '${escapeStringLiteral(routeNameToGroupedHref(args.signUpRoute, 'auth'))}';
 const POST_SIGN_IN_ROUTE = '${escapeStringLiteral(postSignInTarget)}';
+const AUTO_SIGN_IN_AFTER_SIGN_UP = ${String(args.signUpPolicy === 'autoSignIn')};
 const fallbackManifest = ankhConfig as unknown as AppManifest;
-const authScreenOptions = {
-  title: '${escapeStringLiteral(title ?? screenName)}',
-};
 
 type AuthMode = 'signIn' | 'signUp';
 
-interface AuthSubmitValues {
+interface AuthScreenController {
+  authIdentifiers: ReturnType<typeof resolveAuthIdentifiers>;
+  error: string | null;
+  handleOAuthProviderPress: (providerId: string) => Promise<void>;
+  handleSignInSubmit: (values: SignInFormValues) => Promise<void>;
+  handleSignUpSubmit: (values: SignUpFormValues) => Promise<void>;
+  identifierField: ReturnType<typeof resolveIdentifierFieldDefinition>;
+  info: string | null;
+  loading: boolean;
   mode: AuthMode;
-  identifier: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  displayName: string;
+  oauthLoadingProvider: string | null;
+  showSignIn: () => void;
+  showSignUp: () => void;
+  signUpFields: ReturnType<typeof buildSignUpFields>;
+}
+
+export function GeneratedAuthScreen({
+  initialMode,
+  title,
+}: {
+  initialMode: AuthMode;
+  title: string;
+}) {
+  const controller = useAuthScreenController(initialMode);
+  const { theme } = useZoraTheme();
+  return (
+    <ManifestProvider manifest={fallbackManifest}>
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <Stack.Screen options={{ title }} />
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: theme.colors.surface, borderColor: theme.colors.border },
+          ]}
+        >
+          <AuthScreenContent borderColor={theme.colors.border} controller={controller} />
+        </View>
+      </View>
+    </ManifestProvider>
+  );
+}
+
+function useAuthScreenController(initialMode: AuthMode): AuthScreenController {
+  const router = useRouter();
+  const [mode, setMode] = useState<AuthMode>(initialMode);
+  const [loading, setLoading] = useState(false);
+  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
+  const identifierField = useMemo(() => resolveIdentifierFieldDefinition(SIGN_IN_IDENTIFIERS), []);
+  const authIdentifiers = useMemo(() => resolveAuthIdentifiers(SIGN_IN_IDENTIFIERS), []);
+  const signUpFields = useMemo(
+    () =>
+      buildSignUpFields({
+        identifierField,
+        configuredFields: [...new Set([...SIGN_UP_REQUIRED_FIELDS, ...SIGN_UP_OPTIONAL_FIELDS])],
+        requiredFields: SIGN_UP_REQUIRED_FIELDS,
+      }),
+    [identifierField],
+  );
+  const showMode = (nextMode: AuthMode) => {
+    setMode(nextMode);
+    setError(null);
+    setInfo(null);
+    router.replace(nextMode === 'signIn' ? SIGN_IN_ROUTE : SIGN_UP_ROUTE);
+  };
+  const submit = (values: AuthSubmitValues) =>
+    submitAuthFormAsync({ router, setError, setInfo, setLoading, values });
+  const handleSignInSubmit = (values: SignInFormValues) => submit(createSignInSubmitValues(values));
+  const handleSignUpSubmit = (values: SignUpFormValues) => submit(createSignUpSubmitValues(values));${oauthController}
+  return {
+    authIdentifiers,
+    error,
+    handleOAuthProviderPress,
+    handleSignInSubmit,
+    handleSignUpSubmit,
+    identifierField,
+    info,
+    loading,
+    mode,
+    oauthLoadingProvider,
+    showSignIn: () => showMode('signIn'),
+    showSignUp: () => showMode('signUp'),
+    signUpFields,
+  };
+}
+
+function AuthScreenContent({
+  borderColor,
+  controller,
+}: {
+  borderColor: string;
+  controller: AuthScreenController;
+}) {
+  return (
+    <>
+      <Text variant="lead" weight="semiBold">
+        {controller.mode === 'signIn' ? 'Sign in' : 'Create account'}
+      </Text>
+      <Text emphasis="muted" variant="bodySmall">
+        {controller.identifierField.helper}
+      </Text>${oauthView}
+      <AuthForm controller={controller} />
+      {controller.info ? (
+        <Text color="success" variant="bodySmall">
+          {controller.info}
+        </Text>
+      ) : null}
+    </>
+  );
+}
+
+function AuthForm({ controller }: { controller: AuthScreenController }) {
+  if (controller.mode === 'signIn') {
+    return (
+      <SignInForm
+        error={controller.error}
+        identifierLabel={controller.identifierField.label}
+        identifiers={controller.authIdentifiers}
+        loading={${formLoading}}
+        onSignUp={controller.showSignUp}
+        onSubmit={controller.handleSignInSubmit}
+        signUpLabel="Need an account? Sign up"
+        submitLabel="Sign in"
+      />
+    );
+  }
+  return (
+    <SignUpForm
+      error={controller.error}
+      fields={controller.signUpFields}
+      loading={${formLoading}}
+      onSignIn={controller.showSignIn}
+      onSubmit={controller.handleSignUpSubmit}
+      signInLabel="Already have an account? Sign in"
+      submitLabel="Create account"
+    />
+  );
+}
+
+async function submitAuthFormAsync(args: {
+  router: ReturnType<typeof useRouter>;
+  setError: (message: string | null) => void;
+  setInfo: (message: string | null) => void;
+  setLoading: (loading: boolean) => void;
+  values: AuthSubmitValues;
+}): Promise<void> {
+  const { router, setError, setInfo, setLoading, values } = args;
+  setError(null);
+  setInfo(null);
+  const validationError = validateAuthSubmitValues(
+    values,
+    SIGN_IN_IDENTIFIERS,
+    SIGN_UP_REQUIRED_FIELDS,
+  );
+  if (validationError) {
+    setError(validationError);
+    return;
+  }
+  const identifier = buildAuthIdentifierInput(values.identifier, SIGN_IN_IDENTIFIERS);
+  if (!identifier) {
+    setError('Unable to resolve the configured sign-in identifier.');
+    return;
+  }
+  setLoading(true);
+  try {
+    if (values.mode === 'signIn') await signInAsync(identifier, values.password, router, setError);
+    else await signUpAsync(identifier, values, router, setError);
+  } catch (caught) {
+    setError(getErrorMessage(caught));
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function signInAsync(
+  identifier: NonNullable<ReturnType<typeof buildAuthIdentifierInput>>,
+  password: string,
+  router: ReturnType<typeof useRouter>,
+  setError: (message: string) => void,
+): Promise<void> {
+  const result = await authAdapter.signIn({ identifier, password });
+  if (!result.ok) return setError(result.error.message);
+  if (!result.data) return setError('Sign in succeeded without a session.');
+  await setStoredAuthSession(result.data);
+  router.replace(POST_SIGN_IN_ROUTE);
+}
+
+async function signUpAsync(
+  identifier: NonNullable<ReturnType<typeof buildAuthIdentifierInput>>,
+  values: AuthSubmitValues,
+  router: ReturnType<typeof useRouter>,
+  setError: (message: string) => void,
+): Promise<void> {
+  const result = await authAdapter.signUp({
+    identifier,
+    password: values.password,
+    profile: buildSignUpProfile(values),
+  });
+  if (!result.ok) return setError(result.error.message);
+  if (isAuthSession(result.data) && AUTO_SIGN_IN_AFTER_SIGN_UP) {
+    await setStoredAuthSession(result.data);
+    router.replace(POST_SIGN_IN_ROUTE);
+    return;
+  }
+  await clearStoredAuthSession();
+  router.replace(SIGN_IN_ROUTE);
+}
+
+function createSignInSubmitValues(values: SignInFormValues): AuthSubmitValues {
+  return {
+    mode: 'signIn',
+    identifier: values.identifier,
+    password: values.secret,
+    firstName: '',
+    lastName: '',
+    displayName: '',
+  };
+}
+
+function createSignUpSubmitValues(values: SignUpFormValues): AuthSubmitValues {
+  return {
+    mode: 'signUp',
+    identifier: getFormValue(values, 'identifier'),
+    password: getFormValue(values, 'password'),
+    firstName: getFormValue(values, 'firstName'),
+    lastName: getFormValue(values, 'lastName'),
+    displayName: getFormValue(values, 'displayName'),
+  };
 }
 
 function getErrorMessage(caught: unknown): string {
@@ -150,227 +328,18 @@ function getErrorMessage(caught: unknown): string {
   return 'Unknown auth error';
 }
 
-export default function ${safeName}Screen() {
-  const router = useRouter();
-  const { theme } = useZoraTheme();
-
-  const [mode, setMode] = useState<AuthMode>('${initialMode}');
-  const [loading, setLoading] = useState(false);
-${oauthState}  const [error, setError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
-
-  const identifierField = useMemo(() => resolveIdentifierFieldDefinition(SIGN_IN_IDENTIFIERS), []);
-  const authIdentifiers = useMemo(() => resolveAuthIdentifiers(SIGN_IN_IDENTIFIERS), []);
-  const signUpFields = useMemo(
-    () =>
-      buildSignUpFields({
-        identifierField,
-        configuredFields: unique([...SIGN_UP_REQUIRED_FIELDS, ...SIGN_UP_OPTIONAL_FIELDS]),
-        requiredFields: SIGN_UP_REQUIRED_FIELDS,
-      }),
-    [identifierField],
-  );
-
-  function showSignIn() {
-    setMode('signIn');
-    setError(null);
-    setInfo(null);
-    router.replace(SIGN_IN_ROUTE);
-  }
-
-  function showSignUp() {
-    setMode('signUp');
-    setError(null);
-    setInfo(null);
-    router.replace(SIGN_UP_ROUTE);
-  }
-
-  async function handleSignInSubmit(values: SignInFormValues) {
-    await submitAuthForm({
-      mode: 'signIn',
-      identifier: values.identifier,
-      password: values.secret,
-      firstName: '',
-      lastName: '',
-      displayName: '',
-    });
-  }
-
-  async function handleSignUpSubmit(values: SignUpFormValues) {
-    await submitAuthForm({
-      mode: 'signUp',
-      identifier: getFormValue(values, 'identifier'),
-      password: getFormValue(values, 'password'),
-      firstName: getFormValue(values, 'firstName'),
-      lastName: getFormValue(values, 'lastName'),
-      displayName: getFormValue(values, 'displayName'),
-    });
-  }
-${oauthHandler}
-  async function submitAuthForm(values: AuthSubmitValues) {
-    const { mode, identifier, password, firstName, lastName, displayName } = values;
-
-    setError(null);
-    setInfo(null);
-
-    const trimmedIdentifier = identifier.trim();
-    const normalizedPassword = password;
-    if (!trimmedIdentifier || normalizedPassword.length === 0) {
-      setError('Enter both credentials before continuing.');
-      return;
-    }
-
-    const identifierValidationError = validateIdentifier(trimmedIdentifier, SIGN_IN_IDENTIFIERS);
-    if (identifierValidationError) {
-      setError(identifierValidationError);
-      return;
-    }
-
-    if (normalizedPassword.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-
-    if (mode === 'signUp') {
-      const signUpValidationError = validateSignUpInput({
-        identifier: trimmedIdentifier,
-        password: normalizedPassword,
-        requiredFields: SIGN_UP_REQUIRED_FIELDS,
-        firstName,
-        lastName,
-        displayName,
-      });
-      if (signUpValidationError) {
-        setError(signUpValidationError);
-        return;
-      }
-    }
-
-    const authIdentifier = buildAuthIdentifierInput(trimmedIdentifier, SIGN_IN_IDENTIFIERS);
-    if (!authIdentifier) {
-      setError('Unable to resolve the configured sign-in identifier.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      if (mode === 'signIn') {
-        const result = await authAdapter.signIn({
-          identifier: authIdentifier,
-          password: normalizedPassword,
-        });
-
-        if (!result.ok) {
-          setError(result.error.message);
-          return;
-        }
-
-        if (!result.data) {
-          setError('Sign in succeeded without a session.');
-          return;
-        }
-
-        await setStoredAuthSession(result.data);
-        router.replace(POST_SIGN_IN_ROUTE);
-        return;
-      }
-
-      const result = await authAdapter.signUp({
-        identifier: authIdentifier,
-        password: normalizedPassword,
-        profile: buildSignUpProfile({
-          firstName,
-          lastName,
-          displayName,
-        }),
-      });
-
-      if (!result.ok) {
-        setError(result.error.message);
-        return;
-      }
-
-      if (isAuthSession(result.data)) {
-${signUpSessionMessage}
-        return;
-      }
-
-      router.replace(SIGN_IN_ROUTE);
-    } catch (caught) {
-      setError(getErrorMessage(caught));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <ManifestProvider manifest={fallbackManifest}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: theme.colors.background,
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: ${AUTH_SCREEN_CONTAINER_PADDING},
-        }}
-      >
-        <Stack.Screen options={authScreenOptions} />
-        <View
-          style={[
-            styles.card,
-            {
-              backgroundColor: theme.colors.surface,
-              borderColor: theme.colors.border,
-            },
-          ]}
-        >
-          <Text variant="lead" weight="semiBold">
-            {mode === 'signIn' ? 'Sign in' : 'Create account'}
-          </Text>
-          <Text emphasis="muted" variant="bodySmall">
-            {identifierField.helper}
-          </Text>
-${oauthJsx}
-          {mode === 'signIn' ? (
-            <SignInForm
-              error={error}
-              identifierLabel={identifierField.label}
-              identifiers={authIdentifiers}
-              loading={${formLoading}}
-              onSignUp={showSignUp}
-              onSubmit={handleSignInSubmit}
-              signUpLabel="Need an account? Sign up"
-              submitLabel="Sign in"
-            />
-          ) : (
-            <SignUpForm
-              error={error}
-              fields={signUpFields}
-              loading={${formLoading}}
-              onSignIn={showSignIn}
-              onSubmit={handleSignUpSubmit}
-              signInLabel="Already have an account? Sign in"
-              submitLabel="Create account"
-            />
-          )}
-
-          {info ? (
-            <Text color="success" variant="bodySmall">
-              {info}
-            </Text>
-          ) : null}
-        </View>
-      </View>
-    </ManifestProvider>
-  );
-}
-
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24,
+  },
   card: {
     borderRadius: 24,
     borderWidth: 1,
     gap: 16,
-    maxWidth: ${AUTH_SCREEN_CARD_MAX_WIDTH},
+    maxWidth: 560,
     padding: 24,
     width: '100%',
   },
@@ -384,257 +353,47 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
-
-function buildAuthIdentifierInput(
-  identifier: string,
-  identifiers: string[],
-): AuthIdentifier | null {
-  const normalizedIdentifier = identifier.trim();
-  const resolvedIdentifiers = resolveAuthIdentifiers(identifiers);
-
-  if (resolvedIdentifiers.includes('email') && isEmail(normalizedIdentifier)) {
-    return { kind: 'email' as const, value: normalizedIdentifier };
-  }
-  if (resolvedIdentifiers.includes('phone') && isPhone(normalizedIdentifier)) {
-    return { kind: 'phone' as const, value: normalizedIdentifier };
-  }
-  if (resolvedIdentifiers.includes('username') && isUsername(normalizedIdentifier)) {
-    return { kind: 'username' as const, value: normalizedIdentifier };
-  }
-
-  const [fallbackKind] = resolvedIdentifiers;
-  return fallbackKind ? { kind: fallbackKind, value: normalizedIdentifier } : null;
-}
-
-function buildSignUpProfile(args: { firstName: string; lastName: string; displayName: string }) {
-  const { firstName, lastName, displayName } = args;
-  const profile: Record<string, string> = {};
-  if (firstName.trim()) profile.firstName = firstName.trim();
-  if (lastName.trim()) profile.lastName = lastName.trim();
-  if (displayName.trim()) profile.displayName = displayName.trim();
-  return Object.keys(profile).length > 0 ? profile : undefined;
-}
-
-function isAuthSession(value: unknown): value is AuthSession {
-  if (!isRecord(value)) return false;
-  const { accessToken, user } = value;
-  if (typeof accessToken !== 'string' || accessToken.length === 0) return false;
-  if (!isRecord(user)) return false;
-  const { id: userId } = user;
-  return typeof userId === 'string' && userId.length > 0;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function getFormValue(values: SignUpFormValues, name: string): string {
-  return values[name] ?? '';
-}
-
-function buildSignUpFields(args: {
-  identifierField: ReturnType<typeof resolveIdentifierFieldDefinition>;
-  configuredFields: string[];
-  requiredFields: string[];
-}): SignUpFormField[] {
-  const { identifierField, configuredFields, requiredFields } = args;
-  const fields: SignUpFormField[] = [
-    {
-      name: 'identifier',
-      label: identifierField.label,
-      helperText: identifierField.helper,
-      placeholder: identifierField.placeholder,
-      type: identifierField.type,
-      autoCapitalize: 'none',
-      keyboardType: identifierField.keyboardType,
-      required:
-        hasConfiguredSignUpField(requiredFields, 'email') ||
-        hasConfiguredSignUpField(requiredFields, 'phone') ||
-        hasConfiguredSignUpField(requiredFields, 'username'),
-    },
-    {
-      name: 'password',
-      label: 'Password',
-      type: 'password',
-      required: hasConfiguredSignUpField(requiredFields, 'password'),
-    },
-  ];
-
-  if (hasConfiguredSignUpField(configuredFields, 'firstname')) {
-    fields.push({
-      name: 'firstName',
-      label: 'First name',
-      type: 'text',
-      required: hasConfiguredSignUpField(requiredFields, 'firstname'),
-    });
-  }
-  if (hasConfiguredSignUpField(configuredFields, 'lastname')) {
-    fields.push({
-      name: 'lastName',
-      label: 'Last name',
-      type: 'text',
-      required: hasConfiguredSignUpField(requiredFields, 'lastname'),
-    });
-  }
-  if (hasConfiguredSignUpField(configuredFields, 'displayname')) {
-    fields.push({
-      name: 'displayName',
-      label: 'Display name',
-      type: 'text',
-      required: hasConfiguredSignUpField(requiredFields, 'displayname'),
-    });
-  }
-  return fields;
-}
-
-function hasConfiguredSignUpField(fields: string[], field: string): boolean {
-  return fields.some((value) => value.trim().toLowerCase() === field);
-}
-
-function resolveAuthIdentifiers(identifiers: string[]): AuthIdentifierKind[] {
-  const resolved: AuthIdentifierKind[] = [];
-  for (const identifier of identifiers) {
-    const normalized = identifier.trim().toLowerCase();
-    if (isAuthIdentifierKind(normalized) && !resolved.includes(normalized)) {
-      resolved.push(normalized);
-    }
-  }
-  return resolved.length > 0 ? resolved : ['email'];
-}
-
-function isAuthIdentifierKind(value: string): value is AuthIdentifierKind {
-  return value === 'email' || value === 'phone' || value === 'username';
-}
-
-function resolveIdentifierFieldDefinition(identifiers: string[]) {
-  const set = new Set(identifiers.map((identifier) => identifier.trim().toLowerCase()));
-  const supportsEmail = set.has('email');
-  const supportsPhone = set.has('phone');
-  const supportsUsername = set.has('username');
-
-  if (supportsEmail && !supportsPhone && !supportsUsername) {
-    return {
-      label: 'Email',
-      placeholder: 'hello@example.com',
-      helper: 'Use your email to continue.',
-      type: 'email' as const,
-      keyboardType: 'email-address' as const,
-    };
-  }
-  if (supportsPhone && !supportsEmail && !supportsUsername) {
-    return {
-      label: 'Phone',
-      placeholder: '+1 555 123 4567',
-      helper: 'Use your phone to continue.',
-      type: 'tel' as const,
-      keyboardType: 'phone-pad' as const,
-    };
-  }
-  if (supportsUsername && !supportsEmail && !supportsPhone) {
-    return {
-      label: 'Username',
-      placeholder: 'your-username',
-      helper: 'Use your username to continue.',
-      type: 'text' as const,
-      keyboardType: 'default' as const,
-    };
-  }
-  return {
-    label: supportsUsername ? 'Identifier' : 'Email or phone',
-    placeholder: 'Email or phone',
-    helper: 'Use your configured identifier to continue.',
-    type: 'text' as const,
-    keyboardType: 'default' as const,
-  };
-}
-
-function validateIdentifier(identifier: string, identifiers: string[]): string | null {
-  const normalizedIdentifier = identifier.trim();
-  const set = new Set(identifiers.map((entry) => entry.trim().toLowerCase()));
-  const allowed: { label: string; matches: boolean }[] = [];
-  if (set.has('email'))
-    allowed.push({ label: 'email address', matches: isEmail(normalizedIdentifier) });
-  if (set.has('phone'))
-    allowed.push({ label: 'phone number', matches: isPhone(normalizedIdentifier) });
-  if (set.has('username'))
-    allowed.push({ label: 'username', matches: isUsername(normalizedIdentifier) });
-  if (allowed.length === 0 || allowed.some((entry) => entry.matches)) return null;
-  if (allowed.length === 1 && allowed[0]?.label === 'username') {
-    return 'Username must be at least 3 characters and use letters, numbers, dot, underscore, or dash.';
-  }
-  if (allowed.length === 1) return 'Use a valid ' + (allowed[0]?.label ?? 'identifier') + '.';
-  if (allowed.length === 2) {
-    return (
-      'Use a valid ' +
-      (allowed[0]?.label ?? 'identifier') +
-      ' or ' +
-      (allowed[1]?.label ?? 'identifier') +
-      '.'
-    );
-  }
-  return (
-    'Use a valid ' +
-    (allowed[0]?.label ?? 'identifier') +
-    ', ' +
-    (allowed[1]?.label ?? 'identifier') +
-    ', or ' +
-    (allowed[2]?.label ?? 'identifier') +
-    '.'
-  );
-}
-
-function validateSignUpInput(args: {
-  identifier: string;
-  password: string;
-  requiredFields: string[];
-  firstName: string;
-  lastName: string;
-  displayName: string;
-}): string | null {
-  const { identifier, password, requiredFields, firstName, lastName, displayName } = args;
-  const missing: string[] = [];
-  for (const field of requiredFields) {
-    const normalized = field.trim().toLowerCase();
-    switch (normalized) {
-      case 'email':
-      case 'username':
-      case 'phone':
-        if (!identifier.trim()) missing.push(fieldLabel(normalized));
-        break;
-      case 'password':
-        if (password.length === 0) missing.push('password');
-        break;
-      case 'firstname':
-        if (!firstName.trim()) missing.push('first name');
-        break;
-      case 'lastname':
-        if (!lastName.trim()) missing.push('last name');
-        break;
-      case 'displayname':
-        if (!displayName.trim()) missing.push('display name');
-        break;
-      default:
-        break;
-    }
-  }
-  return missing.length > 0 ? 'Complete required fields: ' + missing.join(', ') + '.' : null;
-}
-
-function fieldLabel(normalized: string): string {
-  switch (normalized) {
-    case 'email':
-      return 'email';
-    case 'phone':
-      return 'phone';
-    case 'username':
-      return 'username';
-    default:
-      return normalized;
-  }
-}
-
-function unique(values: string[]): string[] {
-  return [...new Set(values)];
-}
 `;
+}
+
+function getOAuthControllerSource(): string {
+  return `
+  async function handleOAuthProviderPress(providerId: string) {
+    if (loading || oauthLoadingProvider !== null) return;
+    setError(null);
+    setInfo(null);
+    setOAuthLoadingProvider(providerId);
+    try {
+      const outcome = await startOAuthAuthorization(providerId);
+      if (outcome.status === 'authenticated') router.replace(POST_SIGN_IN_ROUTE);
+      else if (outcome.status === 'cancelled') setInfo(outcome.message);
+      else setError(outcome.message);
+    } catch (caught) {
+      setError(getErrorMessage(caught));
+    } finally {
+      setOAuthLoadingProvider(null);
+    }
+  }`;
+}
+
+function getOAuthViewSource(): string {
+  return `
+      <OAuthProviderList
+        disabled={controller.loading}
+        onProviderPress={controller.handleOAuthProviderPress}
+        providers={generatedOAuthProviderItems.map((provider) => ({
+          ...provider,
+          disabled:
+            controller.oauthLoadingProvider !== null &&
+            controller.oauthLoadingProvider !== provider.id,
+          loading: controller.oauthLoadingProvider === provider.id,
+        }))}
+      />
+      <View style={styles.separatorRow}>
+        <View style={[styles.separatorLine, { backgroundColor: borderColor }]} />
+        <Text emphasis="muted" variant="bodySmall">
+          or continue with password
+        </Text>
+        <View style={[styles.separatorLine, { backgroundColor: borderColor }]} />
+      </View>`;
 }

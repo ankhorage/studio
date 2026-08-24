@@ -173,8 +173,9 @@ events make uncaught exceptions, `console.error`, assertions, non-allowlisted wa
 errors/warnings and React hydration/recoverable-render mismatches fail acceptance. The only warning
 allowlist contains the exact React Native Web `pointerEvents`, `shadow*` and `textShadow*`
 deprecation messages emitted by released ZORA/Surface styles. The Studio+Auth fixture scopes
-its lint assertion to generated navigation layouts because the broader auth scaffold remains owned
-by issue #312; its full TypeScript, Doctor, compiler and platform export checks still run.
+its lint assertion to generated navigation layouts; the dedicated #312 capability job separately
+runs pristine, full-project Auth/capability format and lint checks with a source-nonmutation
+assertion, followed by served static Auth/capability hydration evidence.
 Android/iOS exports prove bundling only. No native development-build environment is available in
 this CI job, so Drawer gestures and native Back remain explicitly unclaimed.
 

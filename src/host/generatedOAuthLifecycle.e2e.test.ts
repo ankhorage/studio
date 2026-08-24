@@ -6,6 +6,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
+import { getAuthOAuthCompletionTs } from './layout/templates/auth/oauthCompletion';
+import { getAuthOAuthStateTs } from './layout/templates/auth/oauthState';
 
 const SESSION_STORAGE_KEY = 'generated.oauth.session';
 const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
@@ -277,6 +279,11 @@ async function writeDocument(documentRoot: string): Promise<void> {
   await Promise.all([
     writeFile(path.join(documentRoot, 'oauth.ts'), createGeneratedOAuthSource()),
     writeFile(
+      path.join(documentRoot, 'oauth-completion.ts'),
+      createGeneratedOAuthCompletionSource(),
+    ),
+    writeFile(path.join(documentRoot, 'oauth-state.ts'), createGeneratedOAuthStateSource()),
+    writeFile(
       path.join(documentRoot, 'runtimeReadiness.ts'),
       `export function resolveExpoOAuthBrowserRuntimeReadiness(): never {\n` +
         `  throw new Error('Native OAuth runtime preflight must not run on Web.');\n` +
@@ -364,11 +371,23 @@ function createGeneratedOAuthSource(): string {
       "from '@ankhorage/expo-runtime/oauth-browser-runtime';",
       "from './runtimeReadiness.ts';",
     )
-    .replace("from 'expo-linking';", "from './linking.ts';")
     .replace("from 'expo-web-browser';", "from './webBrowser.ts';")
     .replace("from 'react-native';", "from './platform.ts';")
+    .replace("from './adapter';", "from './adapter.ts';");
+}
+
+function createGeneratedOAuthCompletionSource(): string {
+  return getAuthOAuthCompletionTs({ callbackRoute: '/auth/callback', nativeSchemes: {} })
+    .replace("from 'expo-linking';", "from './linking.ts';")
+    .replace("from 'react-native';", "from './platform.ts';")
     .replace("from './adapter';", "from './adapter.ts';")
+    .replace("from './oauth';", "from './oauth.ts';")
+    .replace("from './oauth-state';", "from './oauth-state.ts';")
     .replace("from './session';", "from './session.ts';");
+}
+
+function createGeneratedOAuthStateSource(): string {
+  return getAuthOAuthStateTs().replace("from './session';", "from './session.ts';");
 }
 
 function readTransportMarker(values: ReadonlyMap<string, string>): { attemptId: string } {

@@ -2,9 +2,7 @@ import type { AppManifest } from '@ankhorage/contracts';
 
 import type { LayoutMutation } from '../../modules/layout';
 import type { GeneratedImportRequirement } from '../generatedImportComposer';
-import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import type { BuiltNavigatorJsx } from './navigation';
-import { routeNameToGroupedHref, routeNameToHref } from './utils/routes';
 
 interface RootLayoutAuthRuntimeConfig {
   signInRoute: string;
@@ -40,7 +38,6 @@ export function getRootLayoutImportRequirements(
       namedImports: [
         { imported: 'ReactNode', typeOnly: true },
         ...(!includeStudio ? [{ imported: 'useCallback' }] : []),
-        ...(includeStudio ? [{ imported: 'useState' }] : []),
       ],
     },
     ...(includeStudio
@@ -83,10 +80,6 @@ export function getRootLayoutImportRequirements(
   ];
 }
 
-function serializeStringArrayLiteral(values: readonly string[]): string {
-  return `[${values.map((value) => `'${escapeStringLiteral(value)}'`).join(', ')}]`;
-}
-
 function indentGeneratedBlock(content: string, indent = '  '): string {
   return content
     .split('\n')
@@ -120,61 +113,6 @@ export function getRootLayoutTsx(args: GetRootLayoutTsxArgs) {
 
   const finalJsx = providersStart ? `{${providersStart}{output}${providersEnd}}` : '{output}';
   const studioFinalJsx = finalJsx.replace('{output}', '{studioOutput}');
-
-  const authRuntimeConstants = authRuntime
-    ? `
-const AUTH_SIGN_IN_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signInRouteName)}';
-const AUTH_SIGN_UP_ROUTE_SEGMENT = '${escapeStringLiteral(authRuntime.signUpRouteName)}';
-const AUTH_SIGN_IN_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.signInRoute))}';
-const AUTH_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGroupedHref(authRuntime.signInRoute, 'auth'))}';
-const AUTH_POST_SIGN_IN_ROUTE_PATH = '${escapeStringLiteral(routeNameToHref(authRuntime.postSignInRoute))}';
-const AUTH_POST_SIGN_IN_ROUTE_TARGET = '${escapeStringLiteral(routeNameToGroupedHref(authRuntime.postSignInRoute, 'app'))}';
-const AUTH_PUBLIC_ROUTES = ${serializeStringArrayLiteral(authRuntime.publicRoutes)};
-const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV === 'true';
-
-type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';
-
-function isGeneratedAuthEnforced(): boolean {
-  return !__DEV__ || !AUTH_DISABLE_IN_DEV;
-}
-
-function normalizeRoutePath(pathname: string): string {
-  const normalized = pathname.replace(/\\\/+$/, '');
-  return normalized === '' ? '/' : normalized;
-}
-
-function getTopLevelRoute(pathname: string): string {
-  const normalized = normalizeRoutePath(pathname);
-  if (normalized === '/') return 'index';
-  const [, topLevelRoute = 'index'] = normalized.split('/');
-  return topLevelRoute;
-}
-
-function getRootNavigationKey(state: { key?: string } | null | undefined): string {
-  return state?.key ?? '';
-}
-${
-  includeStudio
-    ? `
-function isAuthRoute(pathname: string): boolean {
-  const activeTopLevelRoute = getTopLevelRoute(pathname);
-  return (
-    activeTopLevelRoute === AUTH_SIGN_IN_ROUTE_SEGMENT ||
-    activeTopLevelRoute === AUTH_SIGN_UP_ROUTE_SEGMENT
-  );
-}
-
-function shouldMountAuthenticatedAppHeader(pathname: string, isAuthRuntimeReady: boolean): boolean {
-  if (!isGeneratedAuthEnforced()) return true;
-  if (!isAuthRuntimeReady) return false;
-  if (!isAuthenticated()) return false;
-  return !isAuthRoute(pathname);
-}
-`
-    : ''
-}
-`
-    : '';
 
   const appHeaderHelpers = `
 function findRouteByScreenId(navigator: NavigatorSpec, screenId: string): RouteDefinition | null {
@@ -236,89 +174,13 @@ function resolveStudioAppHeaderTitle(args: {
 `;
 
   const authRuntimeHook = authRuntime
-    ? `
-const router = useRouter();
-const rootNavigationState = useRootNavigationState();
-const pathname = usePathname();
-const rootNavigationKey = getRootNavigationKey(rootNavigationState);
-const [authSessionVersion, setAuthSessionVersion] = useState(0);
-const [isAuthRuntimeReady, setIsAuthRuntimeReady] = useState(false);
-const [isInnerContentReady, setIsInnerContentReady] = useState(false);
-const authState = useMemo<GeneratedAuthNavigationState>(() => {
-  if (!isGeneratedAuthEnforced()) return 'authenticated';
-  if (!isAuthRuntimeReady) return 'pending';
-  return isAuthenticated() ? 'authenticated' : 'unauthenticated';
-}, [authSessionVersion, isAuthRuntimeReady]);
-
-useEffect(() => {
-  const mountController = new AbortController();
-
-  void (async () => {
-    await bootstrapAuthSession();
-    await refreshAuthSessionIfNeeded(authAdapter);
-    if (mountController.signal.aborted) return;
-    setIsAuthRuntimeReady(true);
-    setAuthSessionVersion((value) => value + 1);
-  })();
-
-  return () => {
-    mountController.abort();
-  };
-}, []);
-
-useEffect(() => {
-  return subscribeToAuthSessionChanges(() => {
-    setAuthSessionVersion((value) => value + 1);
-  });
-}, []);
-
-useEffect(() => {
-  const subscription = AppState.addEventListener('change', (nextState) => {
-    if (nextState !== 'active') return;
-    void refreshAuthSessionIfNeeded(authAdapter).catch(() => undefined);
-  });
-
-  return () => subscription.remove();
-}, []);
-
-useEffect(() => {
-  if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
-${includeStudio ? '  if (isStudioAdminPath(pathname)) return;\n' : ''}
-  if (!isGeneratedAuthEnforced()) return;
-
-  const authenticated = isAuthenticated();
-  const activeTopLevelRoute = getTopLevelRoute(pathname);
-  const isPublicRoute = AUTH_PUBLIC_ROUTES.includes(activeTopLevelRoute);
-  const currentPath = normalizeRoutePath(pathname);
-  const signInPath = normalizeRoutePath(AUTH_SIGN_IN_ROUTE_PATH);
-  const postSignInPath = normalizeRoutePath(AUTH_POST_SIGN_IN_ROUTE_PATH);
-
-  if (!authenticated && !isPublicRoute) {
-    if (currentPath !== signInPath) router.replace(AUTH_SIGN_IN_ROUTE_TARGET);
-    return;
-  }
-
-  if (authenticated && currentPath === '/' && postSignInPath !== '/') {
-    router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
-    return;
-  }
-
-  if (
-    authenticated &&
-    (activeTopLevelRoute === AUTH_SIGN_IN_ROUTE_SEGMENT ||
-      activeTopLevelRoute === AUTH_SIGN_UP_ROUTE_SEGMENT) &&
-    currentPath !== postSignInPath
-  ) {
-    router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);
-  }
-}, [
-  router,
-  isInnerContentReady,
-  rootNavigationKey,
-  pathname,
-  authSessionVersion,
-  isAuthRuntimeReady,
-]);
+    ? includeStudio
+      ? `
+const { authState, handleInnerContentReady, isAuthRuntimeReady, pathname } =
+  useGeneratedAuthNavigation({ isRouteGuardDisabled: isStudioAdminPath });
+`
+      : `
+const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
 `
     : '';
   const rootHookBlock = [allHooks, authRuntimeHook.trim()].filter(Boolean).join('\n\n');
@@ -426,7 +288,6 @@ function resolveRuntimeOperationCredential(credential: { readonly kind?: string 
     runtimeModuleDeclarations?.trim(),
     'const bundledMediaResolver = createExpoBundledMediaResolver(bundledMediaRegistry);',
     runtimeOperationHelpers.trim(),
-    authRuntimeConstants.trim(),
     includeStudio ? appHeaderHelpers.trim() : '',
     includeStudio ? 'const studioMediaPicker = createExpoMediaPickerAdapter();' : '',
     innerNavigation.declarations.trim(),
@@ -447,11 +308,7 @@ const shouldMountAppHeader =
     : '';
   const indentedStudioRuntimeLines =
     studioRuntimeLines.length > 0 ? `\n${indentGeneratedBlock(studioRuntimeLines)}\n` : '\n';
-  const handleInnerContentReadyDeclaration = authRuntime
-    ? `const handleInnerContentReady = useCallback(() => {
-  setIsInnerContentReady(true);
-}, []);`
-    : '';
+  const handleInnerContentReadyDeclaration = '';
   const indentedHandleInnerContentReadyDeclaration =
     handleInnerContentReadyDeclaration.length > 0
       ? `${indentGeneratedBlock(handleInnerContentReadyDeclaration)}\n\n`

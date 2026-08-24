@@ -239,11 +239,11 @@ function normalizeMetadata(value: unknown): Record<string, unknown> | null {
     return null;
   }
 
-  const metadata: Record<string, unknown> = {};
-  for (const key of Object.keys(value)) {
-    metadata[key] = Reflect.get(value, key);
-  }
-  return metadata;
+  const entries = Object.keys(value).map((key): readonly [string, unknown] => [
+    key,
+    Reflect.get(value, key),
+  ]);
+  return Object.fromEntries(entries);
 }
 
 async function readPlatformStorage(key: string): Promise<string | null> {

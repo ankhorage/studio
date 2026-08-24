@@ -126,28 +126,29 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
 
     const oauthRuntime = await readProjectFile(created.path, 'src/auth/oauth.ts');
-    expect(oauthRuntime).toContain(`const OAUTH_CALLBACK_ROUTE = '${OAUTH_CALLBACK_ROUTE}';`);
+    const oauthCompletion = await readProjectFile(created.path, 'src/auth/oauth-completion.ts');
+    const oauthState = await readProjectFile(created.path, 'src/auth/oauth-state.ts');
+    expect(oauthCompletion).toContain(`const OAUTH_CALLBACK_ROUTE = '${OAUTH_CALLBACK_ROUTE}';`);
     expect(oauthRuntime).toContain("id: 'google'");
     expect(oauthRuntime).toContain("id: 'apple'");
     expect(oauthRuntime).toContain("Platform.OS === 'web'");
-    expect(oauthRuntime).toContain('new URL(`/${callbackPath}`');
-    expect(oauthRuntime).toContain("android: 'ankh-oauthfixtureconsumer'");
-    expect(oauthRuntime).toContain("ios: 'ankh-oauthfixtureconsumer'");
-    expect(oauthRuntime).toContain('Linking.createURL(callbackPath, { scheme: nativeScheme })');
-    expect(oauthRuntime).toContain("Reflect.get(location, 'assign')");
-    expect(oauthRuntime).toContain('Reflect.apply(assign, location, [args.authorizationUrl]);');
+    expect(oauthCompletion).toContain('new URL(`/${callbackPath}`');
+    expect(oauthCompletion).toContain("android: 'ankh-oauthfixtureconsumer'");
+    expect(oauthCompletion).toContain("ios: 'ankh-oauthfixtureconsumer'");
+    expect(oauthCompletion).toContain('Linking.createURL(callbackPath, { scheme: nativeScheme })');
+    expect(oauthRuntime).toContain('location.assign(args.authorizationUrl);');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
     expect(oauthRuntime).not.toContain('window.closed');
-    expect(oauthRuntime).toContain(
+    expect(oauthState).toContain(
       "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
     );
-    expect(oauthRuntime).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
-    expect(oauthRuntime).not.toContain('ankh.auth.oauth.transport.v1');
-    expect(oauthRuntime).not.toContain('ankh.auth.oauth.transport.v2');
-    expect(oauthRuntime).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
-    expect(oauthRuntime).toContain('export function resolveOAuthCallbackUrl(');
-    expect(oauthRuntime).toContain('callbackUrl.searchParams.append(name, value);');
-    expect(oauthRuntime).not.toContain('provider: AuthOAuthProviderId;');
+    expect(oauthState).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v1');
+    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v2');
+    expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
+    expect(oauthCompletion).toContain('export function resolveOAuthCallbackUrl(');
+    expect(oauthCompletion).toContain('callbackUrl.searchParams.append(name, value);');
+    expect(oauthState).not.toContain('provider: AuthOAuthProviderId;');
 
     const callback = await readProjectFile(created.path, callbackPath);
     expect(callback).not.toContain("from 'expo-web-browser'");
@@ -157,8 +158,10 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).not.toContain('Linking.useURL()');
     expect(callback).not.toContain('Linking.getInitialURL()');
     expect(callback).toContain('useLocalSearchParams<Record<string, string | string[]>>()');
-    expect(callback).toContain('return resolveOAuthCallbackUrl(callbackParams);');
-    expect(callback).toContain('}, [callbackParams]);');
+    expect(callback).toContain('return resolveOAuthCallbackUrl(params);');
+    expect(callback).toContain(
+      'const callbackUrl = useMemo(() => resolveCallbackUrl(callbackParams), [callbackParams]);',
+    );
     expect(callback).toContain(
       'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
     );
@@ -167,10 +170,12 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
-    expect(signInScreen).toContain('OAuthProviderList');
-    expect(signInScreen).toContain('generatedOAuthProviderItems');
-    expect(signInScreen).toContain('startOAuthAuthorization(providerId)');
-    expect(signInScreen).toContain('or continue with password');
+    const authScreenRuntime = await readProjectFile(created.path, 'src/screens/auth-screen.tsx');
+    expect(signInScreen).toContain('GeneratedAuthScreen');
+    expect(authScreenRuntime).toContain('OAuthProviderList');
+    expect(authScreenRuntime).toContain('generatedOAuthProviderItems');
+    expect(authScreenRuntime).toContain('startOAuthAuthorization(providerId)');
+    expect(authScreenRuntime).toContain('or continue with password');
 
     const session = await readProjectFile(created.path, 'src/auth/session.ts');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store';");

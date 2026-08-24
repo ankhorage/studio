@@ -6,6 +6,8 @@ import { pathToFileURL } from 'node:url';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
+import { getAuthOAuthCompletionTs } from './layout/templates/auth/oauthCompletion';
+import { getAuthOAuthStateTs } from './layout/templates/auth/oauthState';
 
 const SESSION_STORAGE_KEY = 'generated.native.oauth.session';
 const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
@@ -171,6 +173,8 @@ async function writeDocument(root: string): Promise<void> {
   await mkdir(root, { recursive: true });
   await Promise.all([
     writeFile(path.join(root, 'oauth.ts'), createGeneratedOAuthSource()),
+    writeFile(path.join(root, 'oauth-completion.ts'), createGeneratedOAuthCompletionSource()),
+    writeFile(path.join(root, 'oauth-state.ts'), createGeneratedOAuthStateSource()),
     writeFile(path.join(root, 'session.ts'), createSessionSource()),
     writeFile(path.join(root, 'adapter.ts'), createAdapterSource()),
     writeFile(
@@ -214,11 +218,26 @@ function createGeneratedOAuthSource(): string {
       "from '@ankhorage/expo-runtime/oauth-browser-runtime';",
       "from './runtimeReadiness.ts';",
     )
-    .replace("from 'expo-linking';", "from './linking.ts';")
     .replace("from 'expo-web-browser';", "from './webBrowser.ts';")
     .replace("from 'react-native';", "from './platform.ts';")
+    .replace("from './adapter';", "from './adapter.ts';");
+}
+
+function createGeneratedOAuthCompletionSource(): string {
+  return getAuthOAuthCompletionTs({
+    callbackRoute: '/auth/callback',
+    nativeSchemes: { ios: 'ankh-ios' },
+  })
+    .replace("from 'expo-linking';", "from './linking.ts';")
+    .replace("from 'react-native';", "from './platform.ts';")
     .replace("from './adapter';", "from './adapter.ts';")
+    .replace("from './oauth';", "from './oauth.ts';")
+    .replace("from './oauth-state';", "from './oauth-state.ts';")
     .replace("from './session';", "from './session.ts';");
+}
+
+function createGeneratedOAuthStateSource(): string {
+  return getAuthOAuthStateTs().replace("from './session';", "from './session.ts';");
 }
 
 function createSessionSource(): string {
