@@ -68,14 +68,16 @@ describe('generated auth root bootstrap', () => {
     const files = generateAuthFiles('index');
     const paths = files.map((file) => file.path);
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const authNavigation =
+      files.find((file) => file.path === 'src/auth/navigation.ts')?.content ?? '';
 
     expect(paths).not.toContain('src/app/index.tsx');
     expect(paths).toContain('src/app/(app)/(tabs)/index.tsx');
     expect(paths).toContain('src/app/(app)/sign-out.tsx');
-    expect(rootLayout).toContain(
+    expect(authNavigation).toContain(
       "type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';",
     );
-    expect(rootLayout).toContain("if (!isAuthRuntimeReady) return 'pending';");
+    expect(authNavigation).toContain("if (!ready) return 'pending';");
     expect(rootLayout).toContain('<InnerContent authState={authState}');
     expect(rootLayout).not.toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
@@ -99,6 +101,8 @@ describe('generated auth root bootstrap', () => {
     const paths = files.map((file) => file.path);
     const rootEntry = files.find((file) => file.path === 'src/app/index.tsx')?.content ?? '';
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+    const authNavigation =
+      files.find((file) => file.path === 'src/auth/navigation.ts')?.content ?? '';
     const appLayout =
       files.find((file) => file.path === 'src/app/(app)/_layout.tsx')?.content ?? '';
     const tabsLayout =
@@ -111,8 +115,8 @@ describe('generated auth root bootstrap', () => {
     expect(rootEntry).not.toContain('Redirect');
     expect(rootEntry).not.toContain('withAnchor');
     expect(rootEntry).not.toContain('initial=');
-    expect(rootLayout).toContain("authenticated && currentPath === '/' && postSignInPath !== '/'");
-    expect(rootLayout).toContain('router.replace(AUTH_POST_SIGN_IN_ROUTE_TARGET);');
+    expect(authNavigation).toContain("currentPath === '/' && postSignInPath !== '/'");
+    expect(authNavigation).toContain('AUTH_POST_SIGN_IN_ROUTE_TARGET');
     expect(rootLayout).toContain("initialRouteName: '(app)'");
     expect(appLayout).toContain("initialRouteName: '(tabs)'");
     expect(tabsLayout).toContain("initialRouteName: 'products'");

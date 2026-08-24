@@ -25,8 +25,13 @@ import {
   buildNavigatorJsx,
   type BuiltNavigatorJsx,
   getAuthAdapterTs,
+  getAuthFormTs,
+  getAuthNavigationTs,
   getAuthOAuthCallbackTsx,
+  getAuthOAuthCompletionTs,
   getAuthOAuthRuntimeTs,
+  getAuthOAuthStateTs,
+  getAuthScreenRuntimeTsx,
   getAuthScreenTsx,
   getAuthSessionTs,
   getIndexRedirectRouteTsx,
@@ -261,13 +266,17 @@ export class GeneratedAppFileGenerator {
       ? `
       <Stack.Screen key="ankh" name="ankh" />`
       : '';
+    const oauthCallbackStackScreen = authLayoutPlan.oauth
+      ? `
+      <Stack.Screen key="oauth-callback" name="${authLayoutPlan.oauth.callbackRouteName}" />`
+      : '';
     const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
       <Stack.Protected guard={authState === 'authenticated'}>
         <Stack.Screen key="app" name="(app)" />
       </Stack.Protected>
       <Stack.Protected guard={authState === 'unauthenticated'}>
         <Stack.Screen key="auth" name="(auth)" />
-      </Stack.Protected>${studioAdminStackScreen}
+      </Stack.Protected>${oauthCallbackStackScreen}${studioAdminStackScreen}
     </Stack>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {
@@ -308,20 +317,15 @@ export class GeneratedAppFileGenerator {
             },
           ]
         : []),
-      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, ' : ''}usePathname, useRootNavigationState, useRouter } from 'expo-router';`,
+      `import { Stack, ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';`,
       `import { StatusBar } from 'expo-status-bar';`,
-      `import { useCallback, useEffect, useMemo, useState } from 'react';`,
-      `import { AppState } from 'react-native';`,
+      `import { useEffect, useMemo } from 'react';`,
       `import { GestureHandlerRootView } from 'react-native-gesture-handler';`,
       `import { SafeAreaProvider } from 'react-native-safe-area-context';`,
-      `import { authAdapter } from '@/auth/adapter';`,
-      `import {
-  bootstrapAuthSession,
-  getStoredAuthSession,
-  isAuthenticated,
-  refreshAuthSessionIfNeeded,
-  subscribeToAuthSessionChanges,
-} from '@/auth/session';`,
+      `import { type GeneratedAuthNavigationState, ${
+        includeStudio ? 'shouldMountAuthenticatedAppHeader, ' : ''
+      }useGeneratedAuthNavigation } from '@/auth/navigation';`,
+      `import { getStoredAuthSession } from '@/auth/session';`,
       getPackageOwnedRuntimeImports(includeStudio),
       includeStudio
         ? `import { StudioProvider, AnkhStudio, useStudio, useStudioAppBarAugmentation } from '@ankhorage/studio';`
@@ -465,6 +469,10 @@ export class GeneratedAppFileGenerator {
         return getAuthAdapterTs({
           oauthProviders: authLayoutPlan.oauth?.providers.map((provider) => provider.id),
         });
+      case 'form':
+        return getAuthFormTs();
+      case 'navigation':
+        return getAuthNavigationTs(authLayoutPlan);
       case 'session':
         return getAuthSessionTs();
       case 'oauth-runtime':
@@ -474,6 +482,30 @@ export class GeneratedAppFileGenerator {
         return getAuthOAuthRuntimeTs({
           ...authLayoutPlan.oauth,
           nativeSchemes: resolveExpoRuntimeNativeSchemeMap(manifest.deploy?.targets ?? {}),
+        });
+      case 'oauth-completion':
+        if (!authLayoutPlan.oauth) {
+          throw new Error('OAuth completion generation requires an OAuth layout plan.');
+        }
+        return getAuthOAuthCompletionTs({
+          callbackRoute: authLayoutPlan.oauth.callbackRoute,
+          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(manifest.deploy?.targets ?? {}),
+        });
+      case 'oauth-state':
+        return getAuthOAuthStateTs();
+      case 'screen-runtime':
+        return getAuthScreenRuntimeTsx({
+          signInRoute: authLayoutPlan.signInRoute,
+          signUpRoute: authLayoutPlan.signUpRoute,
+          postSignInRoute: authLayoutPlan.postSignInRoute,
+          signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
+          signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+            'email',
+            'password',
+          ],
+          signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
+          signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+          oauthProviders: authLayoutPlan.oauth?.providers,
         });
       case 'oauth-callback':
         return getAuthOAuthCallbackTsx({

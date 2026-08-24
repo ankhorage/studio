@@ -18,7 +18,7 @@ export type GeneratedStorageProvider = 'supabase' | null;
 const CONTRACTS_VERSION = '^8.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
-const STUDIO_VERSION = '^2.0.1';
+const STUDIO_VERSION = '^2.0.2';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.2';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
@@ -84,11 +84,11 @@ function serializeSplashScreenPlugin(
     return null;
   }
 
-  return serializeJsValue(['expo-splash-screen', splashScreen], 3);
+  return serializeJsValue(['expo-splash-screen', splashScreen], 1);
 }
 
 function serializeRuntimePlugin(plugin: ExpoRuntimeConfigPluginOutput): string {
-  return serializeJsValue(plugin, 3);
+  return serializeJsValue(plugin, 1);
 }
 
 function serializePluginsWithRuntimePlan(args: {
@@ -104,14 +104,7 @@ function serializePluginsWithRuntimePlan(args: {
     entries.push(splashPlugin);
   }
 
-  if (entries.length === 0) {
-    return '[...(config.plugins ?? [])]';
-  }
-
-  return `[
-      ...(config.plugins ?? []),
-      ${entries.join(',\n      ')},
-    ]`;
+  return `[${entries.length > 0 ? `\n  ${entries.join(',\n  ')},\n` : ''}]`;
 }
 
 function serializeAndroidConfig(args: {
@@ -190,7 +183,10 @@ export function getAppConfigTs({
   runtimePlan?: ExpoRuntimePlan;
 }) {
   const targetSections = serializeTargetSections({ targets, runtimePlan });
+  const generatedPlugins = serializePluginsWithRuntimePlan({ splashScreen, runtimePlan });
   return `import type { ConfigContext, ExpoConfig } from 'expo/config';
+
+const GENERATED_PLUGINS: NonNullable<ExpoConfig['plugins']> = ${generatedPlugins};
 
 function omitManagedTargetConfig(config: ConfigContext['config']) {
   const baseConfig = { ...config };
@@ -208,7 +204,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ...baseConfig,
     name: ${serializeStringLiteral(name)},
     slug: ${serializeStringLiteral(slug)},
-    plugins: ${serializePluginsWithRuntimePlan({ splashScreen, runtimePlan })},
+    plugins: [...(config.plugins ?? []), ...GENERATED_PLUGINS],
     experiments: {
       ...config.experiments,
       reactCompiler: true,

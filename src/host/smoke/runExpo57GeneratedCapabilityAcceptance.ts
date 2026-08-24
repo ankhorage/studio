@@ -1,15 +1,21 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertExpo57GeneratedCapabilityContractAsync } from './assertExpo57GeneratedCapabilityContractAsync';
 import { assertExpo57GeneratedCapabilityNativePrebuildAsync } from './assertExpo57GeneratedCapabilityNativePrebuildAsync';
 import { assertExpo57GeneratedCapabilityOwnerGraphAsync } from './assertExpo57GeneratedCapabilityOwnerGraphAsync';
+import { assertNoBrowserErrors } from './assertNoBrowserErrors';
+import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityFixtureManifest';
+import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
+import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 240_000;
+const OAUTH_CLOCK_OFFSET_STORAGE_KEY = 'ankh.acceptance.oauth-clock-offset-ms';
+const OAUTH_EXPIRED_CLOCK_OFFSET_MS = 11 * 60 * 1_000;
 const ROUTER_REWRITE_DISABLED = '1';
 
 export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<void> {
@@ -84,23 +90,14 @@ async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void
 }
 
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
+  const sourceBeforeStaticChecks = await snapshotSourceTreeAsync(projectRoot);
   const setupCommands = [
     {
       args: ['run', 'format:check'],
       command: 'bun',
       label: 'Generated capability format check',
     },
-    {
-      args: [
-        'x',
-        'ankhorage-eslint',
-        'src/generated/appExtensionRegistry.ts',
-        'src/generated/expo/ExpoBarcodeScannerView.tsx',
-        '--max-warnings=0',
-      ],
-      command: 'bun',
-      label: 'Generated capability adapter lint',
-    },
+    { args: ['run', 'lint'], command: 'bun', label: 'Generated capability project lint' },
     {
       args: ['x', 'expo', 'install', '--check'],
       command: 'bun',
@@ -109,6 +106,7 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
     { args: ['run', 'doctor'], command: 'bun', label: 'Generated capability Expo Doctor' },
   ] as const;
   for (const command of setupCommands) await runGeneratedCommandAsync(projectRoot, command);
+  await assertSourceTreeUnchangedAsync(projectRoot, sourceBeforeStaticChecks);
 
   await generateExpoRouterTypesAsync({
     env: { EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED },
@@ -118,13 +116,30 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   });
   await assertRouterTypesAsync(projectRoot);
 
-  const buildCommands = [
-    { args: ['run', 'typecheck'], command: 'bun', label: 'Generated capability TypeScript 6' },
-    {
+  await runGeneratedCommandAsync(projectRoot, {
+    args: ['run', 'typecheck'],
+    command: 'bun',
+    label: 'Generated capability TypeScript 6',
+  });
+
+  const authStub = createAuthStubServer();
+  try {
+    if (authStub.port === undefined) throw new Error('Capability Auth stub has no TCP port.');
+    await runGeneratedCommandAsync(projectRoot, {
       args: ['x', 'expo', 'export', '--platform', 'web', '--clear'],
       command: 'bun',
+      env: {
+        EXPO_PUBLIC_SUPABASE_ANON_KEY: 'capability-acceptance-anon-key',
+        EXPO_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${authStub.port}`,
+      },
       label: 'Generated capability Web export',
-    },
+    });
+    await runGeneratedCapabilityBrowserAcceptanceAsync(projectRoot, authStub);
+  } finally {
+    await authStub.stop(true);
+  }
+
+  const buildCommands = [
     {
       args: ['x', 'react-compiler-healthcheck@latest'],
       command: 'bun',
@@ -158,6 +173,191 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   for (const command of buildCommands) await runGeneratedCommandAsync(projectRoot, command);
 }
 
+function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
+  authorizationCount: number;
+  tokenExchangeCount: number;
+} {
+  const server = Bun.serve({
+    hostname: '127.0.0.1',
+    port: 0,
+    fetch(request) {
+      const { pathname } = new URL(request.url);
+      const corsHeaders = {
+        'access-control-allow-headers':
+          request.headers.get('access-control-request-headers') ??
+          'authorization, apikey, content-type, x-client-info, x-supabase-api-version',
+        'access-control-allow-methods': 'GET, POST, OPTIONS',
+        'access-control-allow-origin': '*',
+      };
+      if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+      if (pathname === '/favicon.ico')
+        return new Response(null, { headers: corsHeaders, status: 204 });
+      if (pathname === '/auth/v1/authorize') {
+        server.authorizationCount += 1;
+        return new Response('Deterministic OAuth provider handoff', { headers: corsHeaders });
+      }
+      if (pathname === '/auth/v1/token' && request.method === 'POST') {
+        server.tokenExchangeCount += 1;
+        return Response.json(
+          {
+            access_token: 'capability-browser-access-token',
+            expires_in: 3600,
+            refresh_token: 'capability-browser-refresh-token',
+            token_type: 'bearer',
+            user: {
+              app_metadata: {},
+              aud: 'authenticated',
+              email: 'capability-browser@example.com',
+              id: 'capability-browser-user',
+              user_metadata: {},
+            },
+          },
+          { headers: corsHeaders },
+        );
+      }
+      return Response.json({ error: 'Unexpected acceptance Auth request.' }, { status: 404 });
+    },
+  }) as ReturnType<typeof Bun.serve> & {
+    authorizationCount: number;
+    tokenExchangeCount: number;
+  };
+  server.authorizationCount = 0;
+  server.tokenExchangeCount = 0;
+  return server;
+}
+
+async function runGeneratedCapabilityBrowserAcceptanceAsync(
+  projectRoot: string,
+  authStub: ReturnType<typeof createAuthStubServer>,
+): Promise<void> {
+  const staticServer = createStaticExportServer(projectRoot);
+  let chrome: ChromeNavigationSession | null = null;
+  try {
+    if (staticServer.port === undefined)
+      throw new Error('Capability static server has no TCP port.');
+    const rootUrl = `http://127.0.0.1:${staticServer.port}`;
+    chrome = await ChromeNavigationSession.createAsync(
+      await reserveTcpPortAsync('capability Chrome debug'),
+    );
+    await chrome.installDateNowOffsetAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY);
+    await chrome.installObservedBodyTextHistoryAsync();
+
+    await chrome.navigateAsync(`${rootUrl}/sign-in`);
+    await chrome.waitForBodyTextAsync('Sign in');
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+    await chrome.reloadAsync();
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+
+    await chrome.navigateAsync(`${rootUrl}/sign-up`);
+    await chrome.waitForBodyTextAsync('Create account');
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Create account');
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/sign-in' });
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Sign in');
+    await chrome.goForwardAsync();
+    await chrome.waitForLocationAsync({ pathname: '/sign-up' });
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Create account');
+
+    await startBrowserOAuthAttemptAsync(chrome, rootUrl, authStub);
+    await chrome.navigateAsync(`${rootUrl}/sign-in`);
+    await chrome.setLocalStorageItemAsync(
+      OAUTH_CLOCK_OFFSET_STORAGE_KEY,
+      String(OAUTH_EXPIRED_CLOCK_OFFSET_MS),
+    );
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=expired-code`);
+    await chrome.waitForBodyTextAsync('The OAuth authorization attempt expired.');
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
+    await chrome.reloadAsync();
+    await chrome.waitForBodyTextAsync(
+      'The OAuth authorization attempt was not found or has expired.',
+    );
+
+    await startBrowserOAuthAttemptAsync(chrome, rootUrl, authStub);
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForBodyTextAsync('Camera access is required to scan barcodes.');
+    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+
+    const completedExchangeCount = authStub.tokenExchangeCount;
+    if (completedExchangeCount !== 1) {
+      throw new Error(
+        `Generated OAuth completion performed ${completedExchangeCount} token exchange(s).`,
+      );
+    }
+
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=mismatched-code`);
+    await chrome.waitForBodyTextAsync(
+      'The OAuth callback does not match the completed authorization callback.',
+    );
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
+
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
+    await chrome.waitForObservedBodyTextAsync(
+      'This OAuth callback was already completed. Continuing…',
+    );
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+    await chrome.reloadAsync();
+    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+
+    if (authStub.tokenExchangeCount !== completedExchangeCount) {
+      throw new Error(
+        'Generated OAuth mismatched/replay browser evidence performed an additional token exchange.',
+      );
+    }
+    assertNoBrowserErrors(chrome.errors, 'served generated Auth/capability export');
+  } finally {
+    chrome?.close();
+    await staticServer.stop(true);
+  }
+}
+
+async function startBrowserOAuthAttemptAsync(
+  chrome: ChromeNavigationSession,
+  rootUrl: string,
+  authStub: ReturnType<typeof createAuthStubServer>,
+): Promise<void> {
+  const authorizationCountBefore = authStub.authorizationCount;
+  await chrome.clearLocalStorageAsync();
+  await chrome.setLocalStorageItemAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY, '0');
+  await chrome.navigateAsync(`${rootUrl}/sign-in`);
+  await chrome.waitForHydratedRoleAndNameAsync('button', 'Continue with Google');
+  await chrome.clickByRoleAndNameAsync('button', 'Continue with Google');
+  await chrome.waitForLocationAsync({ pathname: '/auth/v1/authorize' });
+  await chrome.waitForBodyTextAsync('Deterministic OAuth provider handoff');
+  if (authStub.authorizationCount !== authorizationCountBefore + 1) {
+    throw new Error('Generated OAuth authorization did not reach the deterministic Auth stub.');
+  }
+}
+
+async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string, Uint8Array>> {
+  const sourceRoot = path.join(projectRoot, 'src');
+  const entries = await readdir(sourceRoot, { recursive: true });
+  const files = new Map<string, Uint8Array>();
+  for (const entry of entries.sort()) {
+    const absolutePath = path.join(sourceRoot, entry);
+    if (!(await stat(absolutePath)).isFile()) continue;
+    files.set(entry, await readFile(absolutePath));
+  }
+  return files;
+}
+
+async function assertSourceTreeUnchangedAsync(
+  projectRoot: string,
+  expected: ReadonlyMap<string, Uint8Array>,
+): Promise<void> {
+  const actual = await snapshotSourceTreeAsync(projectRoot);
+  if (actual.size !== expected.size) {
+    throw new Error('Generated capability static checks changed the source file set.');
+  }
+  for (const [filePath, expectedContent] of expected) {
+    const actualContent = actual.get(filePath);
+    if (!actualContent || !Buffer.from(actualContent).equals(expectedContent)) {
+      throw new Error(`Generated capability static checks changed source file ${filePath}.`);
+    }
+  }
+}
+
 async function assertRouterTypesAsync(projectRoot: string): Promise<void> {
   const routerTypes = await readFile(
     path.join(projectRoot, '.expo', 'types', 'router.d.ts'),
@@ -173,7 +373,12 @@ async function assertRouterTypesAsync(projectRoot: string): Promise<void> {
 
 async function runGeneratedCommandAsync(
   projectRoot: string,
-  command: { readonly args: readonly string[]; readonly command: string; readonly label: string },
+  command: {
+    readonly args: readonly string[];
+    readonly command: string;
+    readonly env?: Readonly<Record<string, string>>;
+    readonly label: string;
+  },
 ): Promise<void> {
   await runAcceptanceCommandAsync({
     ...command,
@@ -181,6 +386,7 @@ async function runGeneratedCommandAsync(
     env: {
       EXPO_NO_TELEMETRY: '1',
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+      ...command.env,
     },
     timeoutMs: COMMAND_TIMEOUT_MS,
   });

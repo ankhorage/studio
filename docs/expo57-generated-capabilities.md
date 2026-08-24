@@ -21,11 +21,27 @@ The current acceptance slice proves:
   generated extension registry;
 - no generated `expo-av`, `expo-permissions`, `expo/fetch`, legacy OAuth transport key or legacy
   FileSystem read API;
+- a pristine generated source tree passes its complete app-owned `format:check` and `lint` scripts,
+  and those checks do not change any source file;
 - Expo Router declarations exist before TypeScript 6 runs;
 - Expo dependency compatibility, Expo Doctor, React Compiler health, Web export, Android/iOS
   JavaScript exports and clean CNG prebuild;
 - Android and iOS prebuild output contains the expected app schemes and app-owned permission
-  declarations.
+  declarations;
+- the served static Web export hydrates direct `/sign-in`, `/sign-up`, `/auth/callback` and `/`
+  requests, survives reload plus Back/Forward, rejects an expired OAuth attempt without a token
+  exchange, keeps only the callback route reachable after authentication, rejects a mismatched
+  callback even with a valid session, treats the exact completed replay idempotently without a
+  second exchange, exposes that replay-specific completion in the hydrated callback UI, and renders
+  the controlled Web camera-permission fallback.
+
+The registry baseline asserted by this slice is `@ankhorage/expo-runtime@3.0.3`,
+`@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.2`, with Expo and Expo Router
+`~57.0.15`. Browser acceptance uses a deterministic local Auth transport that contains no real
+credentials. Pending, expired and completed correlation state is created through the released
+adapter's public authorization/completion flow; the harness does not reproduce owner-private
+storage keys, schemas or callback fingerprints. The single valid completion must exchange exactly
+once, while mismatched and replayed callbacks must not reach the token endpoint again.
 
 Focused CI tests separately execute deterministic global-fetch/auth behavior, OAuth success,
 single-exchange replay, missing/malformed/mismatched/expired correlation rejection, cancellation
@@ -37,9 +53,6 @@ This acceptance is build/configuration evidence. It does not claim native permis
 Secure Store behavior, system picker UI, camera preview, native OAuth return, or process-restart
 behavior without an actual rebuilt development client. Xcode and iOS Simulator runtimes are
 available in the current implementation environment; no Android emulator/device is currently
-connected. Full generated auth lint cleanup, an iOS development-client run, Android runtime
-evidence, and the capability Web browser/hydration smoke remain #312 work. The complete
-permission-state matrix remains blocked on
-[ankhorage/permissions#16](https://github.com/ankhorage/permissions/issues/16), which owns Expo
-adapter normalization for the already-portable blocked/limited states, iOS notification
-authorization detail, and settings recovery.
+connected. An iOS development-client run and Android device/emulator runtime evidence remain open
+before #312 can close. Bundle, static export and CNG prebuild evidence do not replace those native
+runtime checks.

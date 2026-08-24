@@ -54,6 +54,12 @@ export class ChromeNavigationSession {
       await session.sendAsync('Page.enable');
       await session.sendAsync('Runtime.enable');
       await session.sendAsync('Log.enable');
+      await session.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+        source: `window.addEventListener('unhandledrejection', (event) => {
+  const reason = event.reason instanceof Error ? event.reason.stack ?? event.reason.message : String(event.reason);
+  console.error('[unhandledrejection]', reason);
+});`,
+      });
       return session;
     } catch (error) {
       stopProcess(process);
@@ -72,7 +78,10 @@ export class ChromeNavigationSession {
   }
 
   async clickByRoleAndNameAsync(role: string, name: string): Promise<void> {
-    const expression = createRoleAndNameExpression(role, name, true);
+    const expression = createRoleAndNameExpression(role, name, {
+      click: true,
+      requireHydration: true,
+    });
     await this.waitForBooleanAsync(expression, `${role} named "${name}" to become clickable`);
   }
 
@@ -107,13 +116,85 @@ export class ChromeNavigationSession {
     await this.evaluateAsync('(() => { history.forward(); return true; })()');
   }
 
+  async installDateNowOffsetAsync(storageKey: string): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const originalDateNow = Date.now.bind(Date);
+  Date.now = () => {
+    try {
+      const offset = Number.parseInt(localStorage.getItem(${JSON.stringify(storageKey)}) ?? '0', 10);
+      return originalDateNow() + (Number.isFinite(offset) ? offset : 0);
+    } catch {
+      return originalDateNow();
+    }
+  };
+})();`,
+    });
+  }
+
+  async installObservedBodyTextHistoryAsync(): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const observedBodyText = [];
+  Object.defineProperty(globalThis, '__ankhObservedBodyText', {
+    configurable: false,
+    value: observedBodyText,
+  });
+  const recordBodyText = () => {
+    const bodyText = document.body?.innerText ?? '';
+    if (bodyText.length > 0 && observedBodyText.at(-1) !== bodyText) observedBodyText.push(bodyText);
+  };
+  new MutationObserver(recordBodyText).observe(document, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
+  document.addEventListener('DOMContentLoaded', recordBodyText, { once: true });
+})();`,
+    });
+  }
+
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
-    return this.evaluateAsync<boolean>(createRoleAndNameExpression(role, name, false));
+    return this.evaluateAsync<boolean>(
+      createRoleAndNameExpression(role, name, { click: false, requireHydration: false }),
+    );
   }
 
   async navigateAsync(url: string): Promise<void> {
     await this.sendAsync('Page.navigate', { url });
     await this.waitForLoadAsync();
+  }
+
+  async reloadAsync(): Promise<void> {
+    await this.sendAsync('Page.reload');
+    await this.waitForLoadAsync();
+  }
+
+  async setLocalStorageItemAsync(key: string, value: string): Promise<void> {
+    await this.evaluateAsync(
+      `(() => { localStorage.setItem(${JSON.stringify(key)}, ${JSON.stringify(value)}); return true; })()`,
+    );
+  }
+
+  async waitForHydratedRoleAndNameAsync(role: string, name: string): Promise<void> {
+    const expression = createRoleAndNameExpression(role, name, {
+      click: false,
+      requireHydration: true,
+    });
+    await this.waitForBooleanAsync(expression, `hydrated ${role} named "${name}"`);
+  }
+
+  async waitForHydratedTestIdAsync(testId: string): Promise<void> {
+    const expression = `(() => {
+  const element = [...document.querySelectorAll('[data-testid]')].find(
+    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
+  );
+  if (!(element instanceof HTMLElement)) return false;
+  return Object.keys(element).some(
+    (key) => key.startsWith('__reactProps$') || key.startsWith('__reactFiber$'),
+  );
+})()`;
+    await this.waitForBooleanAsync(expression, `testID "${testId}" to hydrate`);
   }
 
   async waitForBodyTextAsync(expectedText: string, timeoutMs = HTTP_TIMEOUT_MS): Promise<string> {
@@ -127,6 +208,19 @@ export class ChromeNavigationSession {
     throw new Error(
       `Timed out waiting for body text "${expectedText}". Last body text:\n${bodyText}`,
     );
+  }
+
+  async waitForObservedBodyTextAsync(
+    expectedText: string,
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
+    const expression = `(() => {
+  const history = Reflect.get(globalThis, '__ankhObservedBodyText');
+  return Array.isArray(history) && history.some(
+    (bodyText) => typeof bodyText === 'string' && bodyText.includes(${JSON.stringify(expectedText)}),
+  );
+})()`;
+    await this.waitForBooleanAsync(expression, `observed body text "${expectedText}"`, timeoutMs);
   }
 
   async waitForLocationAsync(
@@ -206,9 +300,13 @@ export class ChromeNavigationSession {
     });
   }
 
-  private async waitForBooleanAsync(expression: string, description: string): Promise<void> {
+  private async waitForBooleanAsync(
+    expression: string,
+    description: string,
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
     const start = Date.now();
-    while (Date.now() - start < HTTP_TIMEOUT_MS) {
+    while (Date.now() - start < timeoutMs) {
       if (await this.evaluateAsync<boolean>(expression)) return;
       await Bun.sleep(250);
     }
@@ -224,7 +322,11 @@ export class ChromeNavigationSession {
   }
 }
 
-function createRoleAndNameExpression(role: string, name: string, click: boolean): string {
+function createRoleAndNameExpression(
+  role: string,
+  name: string,
+  options: { readonly click: boolean; readonly requireHydration: boolean },
+): string {
   return `(() => {
   const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
   const hasHydratedClickHandler = (element) => {
@@ -239,7 +341,8 @@ function createRoleAndNameExpression(role: string, name: string, click: boolean)
     return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
   });
   if (!(element instanceof HTMLElement)) return false;
-  ${click ? 'if (!hasHydratedClickHandler(element)) return false;\n  element.click();' : ''}
+  ${options.requireHydration ? 'if (!hasHydratedClickHandler(element)) return false;' : ''}
+  ${options.click ? 'element.click();' : ''}
   return true;
 })()`;
 }

@@ -1,6 +1,8 @@
 import { expect, test } from 'bun:test';
 
 import { getAuthOAuthRuntimeTs } from './oauth';
+import { getAuthOAuthCompletionTs } from './oauthCompletion';
+import { getAuthOAuthStateTs } from './oauthState';
 
 function createOAuthRuntime(
   nativeSchemes: { readonly android?: string; readonly ios?: string } = {
@@ -24,12 +26,22 @@ function createOAuthRuntime(
   });
 }
 
+function createOAuthCompletion(
+  nativeSchemes: { readonly android?: string; readonly ios?: string } = {
+    android: 'ankh-android',
+    ios: 'ankh-ios',
+  },
+): string {
+  return getAuthOAuthCompletionTs({ callbackRoute: '/auth/callback', nativeSchemes });
+}
+
 test('generates syntax-safe OAuth callback path normalization', () => {
-  const runtime = createOAuthRuntime();
+  const runtime = createOAuthCompletion();
 
   expect(runtime).toContain('let callbackPath = OAUTH_CALLBACK_ROUTE;');
-  expect(runtime).toContain("while (callbackPath.startsWith('/')) {");
-  expect(runtime).toContain('callbackPath = callbackPath.slice(1);');
+  expect(runtime).toContain(
+    "while (callbackPath.startsWith('/')) callbackPath = callbackPath.slice(1);",
+  );
   expect(runtime).not.toContain("replace(/^/+/, '')");
 
   const transpiler = new Bun.Transpiler({ loader: 'ts' });
@@ -60,13 +72,11 @@ test('serializes free-form OAuth query parameter names as syntax-safe properties
 test('generates full-page Web OAuth and preserves the native system browser', () => {
   const runtime = createOAuthRuntime();
   const webTransportStart = runtime.indexOf('async function redirectWebAuthorization');
-  const callbackStart = runtime.indexOf('export function resolveOAuthCallbackUrl');
-  const webTransport = runtime.slice(webTransportStart, callbackStart);
+  const webTransport = runtime.slice(webTransportStart);
 
   expect(runtime).toContain("if (Platform.OS === 'web') {");
   expect(runtime).toContain('return redirectWebAuthorization({');
-  expect(webTransport).toContain("Reflect.get(location, 'assign')");
-  expect(webTransport).toContain('Reflect.apply(assign, location, [args.authorizationUrl]);');
+  expect(webTransport).toContain('location.assign(args.authorizationUrl);');
   expect(webTransport).toContain('return waitForFullPageNavigation();');
   expect(webTransport).not.toContain('openAuthSessionAsync');
   expect(webTransport).not.toContain('window.closed');
@@ -87,7 +97,7 @@ test('preflights native OAuth before the adapter creates an authorization attemp
   const preflight = runtime.indexOf(
     'const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();',
   );
-  const adapterStart = runtime.indexOf('const started = await oauth.startAuthorization({');
+  const adapterStart = runtime.indexOf('const started = await context.oauth.startAuthorization({');
 
   expect(runtime).toContain("if (Platform.OS !== 'web') {");
   expect(preflight).toBeGreaterThan(-1);
@@ -97,18 +107,16 @@ test('preflights native OAuth before the adapter creates an authorization attemp
 });
 
 test('derives the Web callback from the current browser origin', () => {
-  const runtime = createOAuthRuntime();
+  const runtime = createOAuthCompletion();
 
-  expect(runtime).toContain(
-    "const origin = location ? Reflect.get(location, 'origin') : undefined;",
-  );
+  expect(runtime).toContain('const origin = getBrowserLocation()?.origin;');
   expect(runtime).toContain('return new URL(`/${callbackPath}`, origin).toString();');
   expect(runtime).not.toMatch(/localhost:\d+/u);
   expect(runtime).not.toContain('window.closed');
 });
 
 test('derives native callbacks from canonical platform schemes', () => {
-  const runtime = createOAuthRuntime({
+  const runtime = createOAuthCompletion({
     android: 'ankh-android-auth',
     ios: 'ankh-ios-auth',
   });
@@ -122,7 +130,7 @@ test('derives native callbacks from canonical platform schemes', () => {
 });
 
 test('does not invent a native callback scheme when none is configured', () => {
-  const runtime = createOAuthRuntime({});
+  const runtime = createOAuthCompletion({});
 
   expect(runtime).toContain('android: undefined');
   expect(runtime).toContain('ios: undefined');
@@ -132,7 +140,7 @@ test('does not invent a native callback scheme when none is configured', () => {
 });
 
 test('reconstructs the canonical callback URL from router-owned search params', () => {
-  const runtime = createOAuthRuntime();
+  const runtime = createOAuthCompletion();
 
   expect(runtime).toContain(
     'export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams)',
@@ -146,7 +154,7 @@ test('reconstructs the canonical callback URL from router-owned search params', 
 });
 
 test('generates one canonical correlation marker without legacy transport state', () => {
-  const runtime = createOAuthRuntime();
+  const runtime = `${createOAuthRuntime()}\n${createOAuthCompletion()}\n${getAuthOAuthStateTs()}`;
 
   expect(runtime).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';");
   expect(runtime).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
@@ -157,6 +165,7 @@ test('generates one canonical correlation marker without legacy transport state'
   expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
   expect(runtime).not.toContain('isCanonicalOAuthCallback');
   expect(runtime).toContain("completed.error.code === 'callback_already_completed'");
+  expect(runtime).toContain("completion: 'already-completed'");
   expect(runtime).toContain("completed.error.code === 'invalid_callback'");
   expect(runtime).toContain('await clearTransportAttempt();');
   expect(runtime).not.toContain('clearLegacyTransportAttempt');

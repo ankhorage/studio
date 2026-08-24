@@ -11,7 +11,12 @@ import path from 'path';
 
 const APP_ROOT_REL = 'src/app';
 const AUTH_ADAPTER_FILE_PATH = 'src/auth/adapter.ts';
+const AUTH_FORM_FILE_PATH = 'src/auth/form.ts';
+const AUTH_NAVIGATION_FILE_PATH = 'src/auth/navigation.ts';
+const AUTH_OAUTH_COMPLETION_FILE_PATH = 'src/auth/oauth-completion.ts';
 const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
+const AUTH_OAUTH_STATE_FILE_PATH = 'src/auth/oauth-state.ts';
+const AUTH_SCREEN_RUNTIME_FILE_PATH = 'src/screens/auth-screen.tsx';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
 const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
 const DEFAULT_SIGN_IN_SCREEN_ID = 'screen-auth-sign-in';
@@ -25,7 +30,17 @@ export interface ResolveAuthLayoutPlanInput {
 }
 
 type AuthGeneratedFileKind =
-  'adapter' | 'session' | 'sign-out' | 'auth-screen' | 'oauth-runtime' | 'oauth-callback';
+  | 'adapter'
+  | 'form'
+  | 'navigation'
+  | 'session'
+  | 'sign-out'
+  | 'auth-screen'
+  | 'oauth-runtime'
+  | 'oauth-completion'
+  | 'oauth-state'
+  | 'oauth-callback'
+  | 'screen-runtime';
 
 export interface AuthGeneratedFilePlan {
   path: string;
@@ -274,16 +289,36 @@ function buildGeneratedFilePlans(
       path: AUTH_SESSION_FILE_PATH,
       kind: 'session',
     },
+    {
+      path: AUTH_NAVIGATION_FILE_PATH,
+      kind: 'navigation',
+    },
+    {
+      path: AUTH_FORM_FILE_PATH,
+      kind: 'form',
+    },
+    {
+      path: AUTH_SCREEN_RUNTIME_FILE_PATH,
+      kind: 'screen-runtime',
+    },
   ];
 
   if (oauth) {
     generatedFiles.push(
       {
+        path: AUTH_OAUTH_COMPLETION_FILE_PATH,
+        kind: 'oauth-completion',
+      },
+      {
+        path: AUTH_OAUTH_STATE_FILE_PATH,
+        kind: 'oauth-state',
+      },
+      {
         path: AUTH_OAUTH_RUNTIME_FILE_PATH,
         kind: 'oauth-runtime',
       },
       {
-        path: normalizeRel(path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`)),
+        path: normalizeRel(path.join(APP_ROOT_REL, `${oauth.callbackRouteName}.tsx`)),
         kind: 'oauth-callback',
         routeName: oauth.callbackRouteName,
       },

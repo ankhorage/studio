@@ -125,7 +125,19 @@ describe('resolveAuthLayoutPlan', () => {
       kind: 'oauth-runtime',
     });
     expect(plan.generatedFiles).toContainEqual({
-      path: 'src/app/(auth)/auth/callback.tsx',
+      path: 'src/auth/navigation.ts',
+      kind: 'navigation',
+    });
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/auth/oauth-completion.ts',
+      kind: 'oauth-completion',
+    });
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/auth/oauth-state.ts',
+      kind: 'oauth-state',
+    });
+    expect(plan.generatedFiles).toContainEqual({
+      path: 'src/app/auth/callback.tsx',
       kind: 'oauth-callback',
       routeName: 'auth/callback',
     });

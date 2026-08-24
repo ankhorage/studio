@@ -8,16 +8,7 @@ interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
 }
 
 export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
-  const callbackRoute = escapeStringLiteral(args.callbackRoute);
   const providers = serializeOAuthProviders(args.providers);
-  const androidScheme =
-    args.nativeSchemes.android === undefined
-      ? 'undefined'
-      : `'${escapeStringLiteral(args.nativeSchemes.android)}'`;
-  const iosScheme =
-    args.nativeSchemes.ios === undefined
-      ? 'undefined'
-      : `'${escapeStringLiteral(args.nativeSchemes.ios)}'`;
 
   return `import type {
   AuthOAuthCompletionResult,
@@ -28,20 +19,19 @@ import {
   resolveExpoOAuthBrowserResult,
 } from '@ankhorage/expo-runtime/oauth-browser';
 import { resolveExpoOAuthBrowserRuntimeReadiness } from '@ankhorage/expo-runtime/oauth-browser-runtime';
-import * as Linking from 'expo-linking';
+import type { OAuthProviderIconSpec } from '@ankhorage/zora';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 
 import { authAdapter } from './adapter';
-import { authSessionStorage, getStoredAuthSession } from './session';
+import {
+  completeOAuthCallback,
+  resolveOAuthCallbackUrl,
+  resolveOAuthRedirectUri,
+} from './oauth-completion';
+import { clearTransportAttempt, writeTransportAttempt } from './oauth-state';
 
-const OAUTH_CALLBACK_ROUTE = '${callbackRoute}';
-const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
-const GENERATED_OAUTH_PROVIDERS = ${providers} as const;
-const GENERATED_NATIVE_SCHEMES = {
-  android: ${androidScheme},
-  ios: ${iosScheme},
-} as const;
+const GENERATED_OAUTH_PROVIDERS: readonly GeneratedOAuthProvider[] = ${providers};
 
 export const generatedOAuthProviderItems = GENERATED_OAUTH_PROVIDERS.map((provider) => ({
   id: provider.id,
@@ -50,17 +40,35 @@ export const generatedOAuthProviderItems = GENERATED_OAUTH_PROVIDERS.map((provid
 }));
 
 export type GeneratedOAuthTransportOutcome =
-  | { status: 'authenticated' }
+  | { status: 'authenticated'; completion: 'fresh' | 'already-completed' }
   | { status: 'cancelled'; message: string }
   | { status: 'error'; message: string; recoverable: boolean };
 
-interface StoredTransportAttempt {
-  attemptId: string;
+interface GeneratedOAuthProvider {
+  readonly id: 'google' | 'apple';
+  readonly label: string;
+  readonly scopes: readonly string[];
+  readonly queryParams: Readonly<Record<string, string>>;
+  readonly icon?: OAuthProviderIconSpec;
 }
 
-export type OAuthCallbackRouteParams = Readonly<Record<string, string | string[] | undefined>>;
+export { completeOAuthCallback, resolveOAuthCallbackUrl };
 
 let activeAuthorization: Promise<GeneratedOAuthTransportOutcome> | null = null;
+
+type GeneratedOAuthAdapter = NonNullable<(typeof authAdapter)['oauth']>;
+
+interface OAuthAuthorizationContext {
+  oauth: GeneratedOAuthAdapter;
+  provider: GeneratedOAuthProvider;
+  redirectUri: string;
+}
+
+interface StartedOAuthAuthorization {
+  attemptId: string;
+  authorizationUrl: string;
+  redirectUri: string;
+}
 
 export function startOAuthAuthorization(
   providerId: string,
@@ -72,86 +80,119 @@ export function startOAuthAuthorization(
 }
 
 async function runOAuthAuthorization(providerId: string): Promise<GeneratedOAuthTransportOutcome> {
-  const oauth = authAdapter.oauth;
+  const resolved = resolveAuthorizationContext(providerId);
+  if ('outcome' in resolved) return resolved.outcome;
+  const started = await startAuthorizationAttemptAsync(resolved.context);
+  if ('outcome' in started) return started.outcome;
+  return completeAuthorizationTransportAsync(resolved.context.oauth, started.authorization);
+}
+
+function resolveAuthorizationContext(
+  providerId: string,
+): { context: OAuthAuthorizationContext } | { outcome: GeneratedOAuthTransportOutcome } {
+  const { oauth } = authAdapter;
   if (!oauth) {
     return {
-      status: 'error',
-      message: 'OAuth is not available in this app configuration.',
-      recoverable: true,
+      outcome: {
+        status: 'error',
+        message: 'OAuth is not available in this app configuration.',
+        recoverable: true,
+      },
     };
   }
 
   const provider = GENERATED_OAUTH_PROVIDERS.find((entry) => entry.id === providerId);
   if (!provider) {
     return {
-      status: 'error',
-      message: 'This OAuth provider is not enabled.',
-      recoverable: true,
+      outcome: {
+        status: 'error',
+        message: 'This OAuth provider is not enabled.',
+        recoverable: true,
+      },
     };
   }
 
-  let redirectUri: string;
   try {
-    redirectUri = resolveOAuthRedirectUri();
+    return { context: { oauth, provider, redirectUri: resolveOAuthRedirectUri() } };
   } catch {
     return {
-      status: 'error',
-      message: 'The OAuth redirect URI could not be resolved in this environment.',
-      recoverable: true,
+      outcome: {
+        status: 'error',
+        message: 'The OAuth redirect URI could not be resolved in this environment.',
+        recoverable: true,
+      },
     };
   }
+}
 
+async function startAuthorizationAttemptAsync(
+  context: OAuthAuthorizationContext,
+): Promise<
+  { authorization: StartedOAuthAuthorization } | { outcome: GeneratedOAuthTransportOutcome }
+> {
   if (Platform.OS !== 'web') {
     const runtimeReadiness = resolveExpoOAuthBrowserRuntimeReadiness();
     if (runtimeReadiness.status !== 'ready') {
       return {
-        status: 'error',
-        message: runtimeReadiness.message,
-        recoverable: true,
+        outcome: {
+          status: 'error',
+          message: runtimeReadiness.message,
+          recoverable: true,
+        },
       };
     }
   }
 
-  const started = await oauth.startAuthorization({
-    provider: provider.id,
-    redirectUri,
-    scopes: provider.scopes,
-    queryParams: provider.queryParams,
+  const started = await context.oauth.startAuthorization({
+    provider: context.provider.id,
+    redirectUri: context.redirectUri,
+    scopes: [...context.provider.scopes],
+    queryParams: { ...context.provider.queryParams },
   });
   if (!started.ok) {
     return {
-      status: 'error',
-      message: started.error.message,
-      recoverable: started.error.recoverable,
+      outcome: {
+        status: 'error',
+        message: started.error.message,
+        recoverable: started.error.recoverable,
+      },
     };
   }
 
   try {
-    await writeTransportAttempt({
-      attemptId: started.data.attemptId,
-    });
+    await writeTransportAttempt({ attemptId: started.data.attemptId });
   } catch {
-    await cancelOAuthAttempt(started.data.attemptId, 'user_cancelled');
+    await cancelOAuthAttempt(context.oauth, started.data.attemptId, 'user_cancelled');
     await clearTransportAttempt();
     return {
-      status: 'error',
-      message: 'The OAuth authorization attempt could not be persisted.',
-      recoverable: true,
+      outcome: {
+        status: 'error',
+        message: 'The OAuth authorization attempt could not be persisted.',
+        recoverable: true,
+      },
     };
   }
 
+  return { authorization: started.data };
+}
+
+async function completeAuthorizationTransportAsync(
+  oauth: GeneratedOAuthAdapter,
+  started: StartedOAuthAuthorization,
+): Promise<GeneratedOAuthTransportOutcome> {
   if (Platform.OS === 'web') {
     return redirectWebAuthorization({
-      attemptId: started.data.attemptId,
-      authorizationUrl: started.data.authorizationUrl,
+      attemptId: started.attemptId,
+      authorizationUrl: started.authorizationUrl,
+      oauth,
     });
   }
 
   let browserResponse;
   try {
     const browserResult = await WebBrowser.openAuthSessionAsync(
-      started.data.authorizationUrl,
-      started.data.redirectUri,
+      started.authorizationUrl,
+      started.redirectUri,
     );
     browserResponse = resolveExpoOAuthBrowserResult(browserResult);
   } catch {
@@ -165,7 +206,7 @@ async function runOAuthAuthorization(providerId: string): Promise<GeneratedOAuth
   let completed: AuthOAuthCompletionResult;
   try {
     completed = await oauth.completeAuthorization({
-      attemptId: started.data.attemptId,
+      attemptId: started.attemptId,
       response: browserResponse,
     });
   } catch {
@@ -183,11 +224,11 @@ async function runOAuthAuthorization(providerId: string): Promise<GeneratedOAuth
 async function redirectWebAuthorization(args: {
   attemptId: string;
   authorizationUrl: string;
+  oauth: GeneratedOAuthAdapter;
 }): Promise<GeneratedOAuthTransportOutcome> {
   const location = getBrowserLocation();
-  const assign = location ? Reflect.get(location, 'assign') : undefined;
-  if (typeof assign !== 'function') {
-    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
+  if (!hasBrowserLocationAssign(location)) {
+    await cancelOAuthAttempt(args.oauth, args.attemptId, 'browser_dismissed');
     await clearTransportAttempt();
     return {
       status: 'error',
@@ -197,10 +238,10 @@ async function redirectWebAuthorization(args: {
   }
 
   try {
-    Reflect.apply(assign, location, [args.authorizationUrl]);
+    location.assign(args.authorizationUrl);
     return waitForFullPageNavigation();
   } catch {
-    await cancelOAuthAttempt(args.attemptId, 'browser_dismissed');
+    await cancelOAuthAttempt(args.oauth, args.attemptId, 'browser_dismissed');
     await clearTransportAttempt();
     return {
       status: 'error',
@@ -216,112 +257,20 @@ function waitForFullPageNavigation(): Promise<never> {
   });
 }
 
-export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): string {
-  const callbackUrl = new URL(resolveOAuthRedirectUri());
-  for (const [name, value] of Object.entries(params)) {
-    if (name === '#') continue;
-    if (Array.isArray(value)) {
-      for (const item of value) callbackUrl.searchParams.append(name, item);
-      continue;
-    }
-    if (typeof value === 'string') callbackUrl.searchParams.append(name, value);
-  }
-  return callbackUrl.toString();
+function getBrowserLocation(): Readonly<Record<string, unknown>> | null {
+  const location: unknown = Reflect.get(globalThis, 'location');
+  return isRecord(location) ? location : null;
 }
 
-export async function completeOAuthCallback(
-  callbackUrl: string,
-): Promise<GeneratedOAuthTransportOutcome> {
-  const oauth = authAdapter.oauth;
-  if (!oauth) {
-    return {
-      status: 'error',
-      message: 'OAuth is not available in this app configuration.',
-      recoverable: true,
-    };
-  }
-
-  const attempt = await readTransportAttempt();
-  if (!attempt) {
-    return {
-      status: 'error',
-      message: 'The OAuth authorization attempt was not found or has expired.',
-      recoverable: true,
-    };
-  }
-
-  let completed: AuthOAuthCompletionResult;
-  try {
-    completed = await oauth.completeAuthorization({
-      attemptId: attempt.attemptId,
-      response: { type: 'callback', url: callbackUrl },
-    });
-  } catch {
-    await clearTransportAttempt();
-    return {
-      status: 'error',
-      message: 'The OAuth callback could not be completed.',
-      recoverable: true,
-    };
-  }
-
-  const storedSession = getStoredAuthSession();
-
-  if (
-    !completed.ok &&
-    completed.status === 'error' &&
-    completed.error.code === 'callback_already_completed' &&
-    storedSession
-  ) {
-    return { status: 'authenticated' };
-  }
-
-  const preservesCompletedAttempt =
-    completed.ok ||
-    (!completed.ok &&
-      completed.status === 'error' &&
-      completed.error.code === 'invalid_callback' &&
-      storedSession !== null);
-  if (!preservesCompletedAttempt) await clearTransportAttempt();
-
-  return toTransportOutcome(completed);
-}
-
-function resolveOAuthRedirectUri(): string {
-  let callbackPath = OAUTH_CALLBACK_ROUTE;
-  while (callbackPath.startsWith('/')) {
-    callbackPath = callbackPath.slice(1);
-  }
-  if (Platform.OS === 'web') {
-    const location = getBrowserLocation();
-    const origin = location ? Reflect.get(location, 'origin') : undefined;
-    if (typeof origin === 'string' && origin.length > 0) {
-      return new URL(\`/\${callbackPath}\`, origin).toString();
-    }
-    throw new Error('Web OAuth requires a canonical browser origin.');
-  }
-
-  const nativeScheme =
-    Platform.OS === 'android'
-      ? GENERATED_NATIVE_SCHEMES.android
-      : Platform.OS === 'ios'
-        ? GENERATED_NATIVE_SCHEMES.ios
-        : undefined;
-  if (!nativeScheme) {
-    throw new Error('Native OAuth requires a configured application scheme.');
-  }
-
-  return Linking.createURL(callbackPath, { scheme: nativeScheme });
-}
-
-function getBrowserLocation(): object | null {
-  const location = Reflect.get(globalThis, 'location');
-  return typeof location === 'object' && location !== null ? location : null;
+function hasBrowserLocationAssign(
+  location: Readonly<Record<string, unknown>> | null,
+): location is Readonly<Record<string, unknown>> & { assign: (url: string) => void } {
+  return location !== null && typeof location.assign === 'function';
 }
 
 function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTransportOutcome {
   if (result.ok) {
-    return { status: 'authenticated' };
+    return { status: 'authenticated', completion: 'fresh' };
   }
   if (result.status === 'cancelled') {
     return {
@@ -340,11 +289,10 @@ function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTr
 }
 
 async function cancelOAuthAttempt(
+  oauth: GeneratedOAuthAdapter,
   attemptId: string,
   reason: AuthOAuthTransportCancellationReason,
 ): Promise<void> {
-  const oauth = authAdapter.oauth;
-  if (!oauth) return;
   try {
     await oauth.completeAuthorization({
       attemptId,
@@ -352,40 +300,6 @@ async function cancelOAuthAttempt(
     });
   } catch {
     // Best-effort cleanup must not replace the original transport error.
-  }
-}
-
-async function writeTransportAttempt(attempt: StoredTransportAttempt): Promise<void> {
-  await authSessionStorage.setItem(OAUTH_TRANSPORT_ATTEMPT_KEY, JSON.stringify(attempt));
-}
-
-async function readTransportAttempt(): Promise<StoredTransportAttempt | null> {
-  const raw = await authSessionStorage.getItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
-  if (!raw) return null;
-  try {
-    const value: unknown = JSON.parse(raw);
-    if (isRecord(value)) {
-      const attemptId = Reflect.get(value, 'attemptId');
-      if (typeof attemptId === 'string' && attemptId.trim().length > 0) {
-        return { attemptId };
-      }
-    }
-  } catch {
-    // Invalid transport state is cleaned below without exposing its contents.
-  }
-  await clearTransportAttempt();
-  return null;
-}
-
-async function clearTransportAttempt(): Promise<void> {
-  await safeRemoveTransportItem(OAUTH_TRANSPORT_ATTEMPT_KEY);
-}
-
-async function safeRemoveTransportItem(key: string): Promise<void> {
-  try {
-    await authSessionStorage.removeItem(key);
-  } catch {
-    // Cleanup failures are intentionally not surfaced with persisted state.
   }
 }
 

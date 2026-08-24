@@ -5,10 +5,10 @@ export function getAuthOAuthCallbackTsx(args: { signInRoute: string; postSignInR
   const signInTarget = escapeStringLiteral(routeNameToGroupedHref(args.signInRoute, 'auth'));
   const postSignInTarget = escapeStringLiteral(routeNameToGroupedHref(args.postSignInRoute, 'app'));
 
-  return `import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+  return `import { Text, useZoraTheme } from '@ankhorage/zora';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
-import { Text, useZoraTheme } from '@ankhorage/zora';
 
 import { completeOAuthCallback, resolveOAuthCallbackUrl } from '@/auth/oauth';
 
@@ -24,7 +24,7 @@ interface ActiveCallbackCompletion {
 let activeCallbackCompletion: ActiveCallbackCompletion | null = null;
 
 function completeOAuthCallbackOnce(callbackUrl: string) {
-  if (!activeCallbackCompletion || activeCallbackCompletion.callbackUrl !== callbackUrl) {
+  if (activeCallbackCompletion?.callbackUrl !== callbackUrl) {
     const completion: ActiveCallbackCompletion = {
       callbackUrl,
       promise: completeOAuthCallback(callbackUrl),
@@ -43,50 +43,37 @@ function completeOAuthCallbackOnce(callbackUrl: string) {
   return activeCallbackCompletion.promise;
 }
 
-export default function OAuthCallbackScreen() {
+function useOAuthCallbackOutcome(callbackUrl: string | null) {
   const router = useRouter();
-  const callbackParams = useLocalSearchParams<Record<string, string | string[]>>();
-  const callbackUrl = useMemo(() => {
-    try {
-      return resolveOAuthCallbackUrl(callbackParams);
-    } catch {
-      return null;
-    }
-  }, [callbackParams]);
-  const { theme } = useZoraTheme();
   const handledOutcomeRef = useRef(false);
   const [message, setMessage] = useState('Completing secure sign in…');
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    let active = true;
-    void (async () => {
-      if (!callbackUrl) {
-        if (active && !handledOutcomeRef.current) {
-          handledOutcomeRef.current = true;
-          setFailed(true);
-          setMessage('The OAuth callback URL could not be resolved.');
-        }
-        return;
-      }
-
-      const outcome = await completeOAuthCallbackOnce(callbackUrl);
-      if (!active || handledOutcomeRef.current) return;
-      handledOutcomeRef.current = true;
-
-      if (outcome.status === 'authenticated') {
-        router.replace(POST_SIGN_IN_ROUTE);
-        return;
-      }
-
-      setFailed(true);
-      setMessage(outcome.message);
-    })();
+    const controller = new AbortController();
+    void completeCallbackRouteAsync({
+      callbackUrl,
+      handledOutcomeRef,
+      router,
+      setFailed,
+      setMessage,
+      signal: controller.signal,
+    });
 
     return () => {
-      active = false;
+      controller.abort();
     };
   }, [callbackUrl, router]);
+
+  return { failed, message };
+}
+
+export default function OAuthCallbackScreen() {
+  const router = useRouter();
+  const callbackParams = useLocalSearchParams<Record<string, string | string[]>>();
+  const callbackUrl = useMemo(() => resolveCallbackUrl(callbackParams), [callbackParams]);
+  const { failed, message } = useOAuthCallbackOutcome(callbackUrl);
+  const { theme } = useZoraTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -121,6 +108,60 @@ export default function OAuthCallbackScreen() {
       </View>
     </View>
   );
+}
+
+async function completeCallbackRouteAsync(args: {
+  callbackUrl: string | null;
+  handledOutcomeRef: { current: boolean };
+  router: ReturnType<typeof useRouter>;
+  setFailed: (failed: boolean) => void;
+  setMessage: (message: string) => void;
+  signal: AbortSignal;
+}): Promise<void> {
+  const { callbackUrl, handledOutcomeRef, router, setFailed, setMessage, signal } = args;
+  if (!callbackUrl) {
+    if (!signal.aborted && !handledOutcomeRef.current) {
+      handledOutcomeRef.current = true;
+      setFailed(true);
+      setMessage('The OAuth callback URL could not be resolved.');
+    }
+    return;
+  }
+
+  const outcome = await completeOAuthCallbackOnce(callbackUrl);
+  if (signal.aborted || handledOutcomeRef.current) return;
+  handledOutcomeRef.current = true;
+  if (outcome.status === 'authenticated') {
+    if (outcome.completion === 'already-completed') {
+      setMessage('This OAuth callback was already completed. Continuing…');
+      await waitForCallbackStatusPaintAsync();
+      if (hasCallbackAborted(signal)) return;
+    }
+    router.replace(POST_SIGN_IN_ROUTE);
+    return;
+  }
+  setFailed(true);
+  setMessage(outcome.message);
+}
+
+function resolveCallbackUrl(params: Record<string, string | string[]>): string | null {
+  try {
+    return resolveOAuthCallbackUrl(params);
+  } catch {
+    return null;
+  }
+}
+
+function hasCallbackAborted(signal: AbortSignal): boolean {
+  return signal.aborted;
+}
+
+function waitForCallbackStatusPaintAsync(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
 }
 
 const styles = StyleSheet.create({

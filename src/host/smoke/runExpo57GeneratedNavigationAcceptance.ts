@@ -1,13 +1,14 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
-import { createServer } from 'node:net';
 import path from 'node:path';
 
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
+import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
+import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 180_000;
@@ -157,7 +158,7 @@ async function assertReleasedStudioPackageAsync(
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange !== '^2.0.1') {
+  if (studioRange !== '^2.0.2') {
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
@@ -171,14 +172,14 @@ async function assertReleasedStudioPackageAsync(
   const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
     readonly version?: unknown;
   };
-  if (installedPackage.version !== '2.0.1') {
+  if (installedPackage.version !== '2.0.2') {
     throw new Error(
-      `Studio-enabled navigation fixture must consume released Studio 2.0.1, received ${String(installedPackage.version)}.`,
+      `Studio-enabled navigation fixture must consume released Studio 2.0.2, received ${String(installedPackage.version)}.`,
     );
   }
 
   const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
-  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.1"')) {
+  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.2"')) {
     throw new Error('Studio fixture lockfile does not contain the released registry resolution.');
   }
 }
@@ -243,25 +244,6 @@ async function createProjectAsync(
   return { ...options, id: created.id, path: created.path };
 }
 
-function createStaticExportServer(projectRoot: string): ReturnType<typeof Bun.serve> {
-  const outputRoot = path.join(projectRoot, 'dist');
-  return Bun.serve({
-    hostname: '127.0.0.1',
-    port: 0,
-    async fetch(request) {
-      const url = new URL(request.url);
-      const relativePath = resolveStaticExportPath(url.pathname);
-      const targetPath = path.resolve(outputRoot, relativePath);
-      if (!targetPath.startsWith(`${outputRoot}${path.sep}`) && targetPath !== outputRoot) {
-        return new Response('Not found', { status: 404 });
-      }
-      const file = Bun.file(targetPath);
-      if (!(await file.exists())) return new Response('Not found', { status: 404 });
-      return new Response(file);
-    },
-  });
-}
-
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
@@ -308,28 +290,6 @@ async function pathExistsAsync(targetPath: string): Promise<boolean> {
     if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
     throw error;
   }
-}
-
-async function reservePortAsync(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer();
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', () => {
-      const address = server.address();
-      if (typeof address !== 'object' || address === null) {
-        server.close(() => reject(new Error('Could not reserve a navigation smoke port.')));
-        return;
-      }
-      server.close(() => resolve(address.port));
-    });
-  });
-}
-
-function resolveStaticExportPath(pathname: string): string {
-  if (pathname === '/') return 'index.html';
-  const decoded = decodeURIComponent(pathname).replace(/^\/+|\/+$/gu, '');
-  if (path.extname(decoded)) return decoded;
-  return `${decoded}.html`;
 }
 
 async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
@@ -392,8 +352,8 @@ async function runDevelopmentWebAsync(
   projectRoot: string,
   smoke: (chrome: ChromeNavigationSession, rootUrl: string) => Promise<void>,
 ): Promise<void> {
-  const expoPort = await reservePortAsync();
-  const chromePort = await reservePortAsync();
+  const expoPort = await reserveTcpPortAsync('navigation smoke');
+  const chromePort = await reserveTcpPortAsync('navigation Chrome debug');
   const output: string[] = [];
   const expoProcess = spawn(
     'bun',
@@ -530,7 +490,7 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
 }
 
 async function runStaticExportSmokeAsync(port: number): Promise<void> {
-  const chromePort = await reservePortAsync();
+  const chromePort = await reserveTcpPortAsync('static navigation Chrome debug');
   const chrome = await ChromeNavigationSession.createAsync(chromePort);
   try {
     const rootUrl = `http://127.0.0.1:${port}`;

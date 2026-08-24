@@ -178,7 +178,9 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).not.toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
-    expect(rootLayout).toContain('if (isStudioAdminPath(pathname)) return;');
+    expect(rootLayout).toContain(
+      'useGeneratedAuthNavigation({ isRouteGuardDisabled: isStudioAdminPath })',
+    );
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');
@@ -201,9 +203,10 @@ describe('GeneratedAppFileGenerator', () => {
     const reactImports = rootLayout.match(/^import .* from 'react';$/gmu) ?? [];
 
     expect(reactImports).toHaveLength(1);
-    expect(reactImports[0]).toContain('useState');
+    expect(reactImports[0]).toContain('useEffect');
+    expect(reactImports[0]).not.toContain('useState');
     expect(reactImports[0]).toContain('type ReactNode');
-    expect(reactImports[0]?.match(/\buseState\b/gu)?.length).toBe(1);
+    expect(reactImports[0]?.match(/\buseEffect\b/gu)?.length).toBe(1);
   });
 
   test('generates canonical ZORA registry ownership for the running app runtime path', () => {
@@ -308,35 +311,40 @@ describe('GeneratedAppFileGenerator', () => {
         includeStudio: false,
       },
     );
-    const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
+    const callbackFiles = files.filter((file) => file.path === 'src/app/auth/callback.tsx');
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
+    const navigation = files.find((file) => file.path === 'src/auth/navigation.ts')?.content ?? '';
     const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
+    const oauthCompletion =
+      files.find((file) => file.path === 'src/auth/oauth-completion.ts')?.content ?? '';
+    const oauthState = files.find((file) => file.path === 'src/auth/oauth-state.ts')?.content ?? '';
     const session = files.find((file) => file.path === 'src/auth/session.ts')?.content ?? '';
-    const authScreens = files
-      .filter((file) => file.path.includes('(auth)') && file.path.endsWith('.tsx'))
-      .map((file) => file.content)
-      .join('\n');
+    const authScreen =
+      files.find((file) => file.path === 'src/screens/auth-screen.tsx')?.content ?? '';
     const allGeneratedSource = files.map((file) => file.content).join('\n');
 
     expect(callbackFiles).toHaveLength(1);
-    expect(rootLayout).toContain("AppState.addEventListener('change'");
-    expect(rootLayout).toContain('await bootstrapAuthSession()');
+    expect(rootLayout).toContain('<Stack.Screen key="oauth-callback" name="auth/callback" />');
+    expect(navigation).toContain("AppState.addEventListener('change'");
+    expect(navigation).toContain('await bootstrapAuthSession()');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
     expect(adapter).toContain("['google']");
     expect(oauth).toContain('WebBrowser.openAuthSessionAsync');
-    expect(oauth).toContain('Linking.createURL');
-    expect(oauth).toContain('callback_already_completed');
+    expect(oauthCompletion).toContain('Linking.createURL');
+    expect(oauthCompletion).toContain('callback_already_completed');
     expect(oauth).toContain('cancelOAuthAttempt');
-    expect(oauth).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';");
-    expect(oauth).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
-    expect(oauth).not.toContain('version === 1');
-    expect(oauth).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
-    expect(oauth).not.toContain('ankh.auth.oauth.transport.v1');
-    expect(oauth).not.toContain('ankh.auth.oauth.transport.v2');
+    expect(oauthState).toContain(
+      "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
+    );
+    expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
+    expect(oauthState).not.toContain('version === 1');
+    expect(oauthState).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
+    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v1');
+    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
-    expect(authScreens).toContain('OAuthProviderList');
-    expect(authScreens).toContain('startOAuthAuthorization');
+    expect(authScreen).toContain('OAuthProviderList');
+    expect(authScreen).toContain('startOAuthAuthorization');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store'");
     expect(session).toContain("Platform.OS === 'ios' || Platform.OS === 'android'");
     expect(session).toContain("if (Platform.OS === 'web')");
@@ -368,7 +376,7 @@ describe('GeneratedAppFileGenerator', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', manifest, [], {
       includeStudio: false,
     });
-    const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
+    const oauth = files.find((file) => file.path === 'src/auth/oauth-completion.ts')?.content ?? '';
 
     expect(oauth).toContain("android: 'ankh-android-auth'");
     expect(oauth).toContain("ios: 'ankh-ios-auth'");
@@ -462,6 +470,7 @@ describe('GeneratedAppFileGenerator', () => {
 
     expect(paths).not.toContain('src/auth/oauth.ts');
     expect(paths).not.toContain('src/app/(auth)/auth/callback.tsx');
+    expect(paths).not.toContain('src/app/auth/callback.tsx');
     expect(files.map((file) => file.content).join('\n')).not.toContain('OAuthProviderList');
   });
 });
