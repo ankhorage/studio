@@ -77,4 +77,30 @@ describe('Expo 57 generated navigation acceptance fixture', () => {
     expect(source).toContain("from '@ankhorage/studio'");
     expect(source).not.toContain('@react-navigation/');
   });
+
+  test.each(['tabs', 'drawer'] as const)('covers a root %s navigator', (rootNavigator) => {
+    const manifest = createExpo57NavigationFixtureManifest(BASE_MANIFEST, {
+      auth: false,
+      name: `Root ${rootNavigator}`,
+      rootNavigator,
+      slug: `root-${rootNavigator}`,
+    });
+    const files = new GeneratedAppFileGenerator().generateFiles('/tmp/navigation', manifest, [], {
+      includeStudio: false,
+    });
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content;
+
+    expect(rootLayout).toBeDefined();
+    expect(rootLayout).toContain(
+      rootNavigator === 'tabs' ? "from 'expo-router/js-tabs'" : "from 'expo-router/drawer'",
+    );
+    expect(rootLayout).toContain(
+      rootNavigator === 'tabs' ? 'BottomTabBarProps' : 'DrawerContentComponentProps',
+    );
+    expect(rootLayout).toContain(
+      rootNavigator === 'tabs' ? '<ZoraTabBar {...props}' : '<ZoraDrawerContent {...props}',
+    );
+    expect(rootLayout).toContain('type Href');
+    expect(rootLayout).not.toContain('@react-navigation/');
+  });
 });

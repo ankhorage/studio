@@ -403,6 +403,10 @@ export class GeneratedAppFileGenerator {
             } satisfies GeneratedImportRequirement,
           ]
         : []),
+      needsZoraTabBar ? `import type { BottomTabBarProps } from 'expo-router/js-tabs';` : '',
+      needsZoraDrawerContent
+        ? `import type { DrawerContentComponentProps } from 'expo-router/drawer';`
+        : '',
       rootNavigator.type === 'tabs'
         ? `import { ${includeStudio ? 'useGlobalSearchParams, usePathname' : 'useRouter'} } from 'expo-router';\nimport { Tabs } from 'expo-router/js-tabs';`
         : rootNavigator.type === 'drawer'

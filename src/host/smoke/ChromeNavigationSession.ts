@@ -3,6 +3,8 @@ import { access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { getChromeNavigationIssue } from './getChromeNavigationIssue';
+
 const HTTP_TIMEOUT_MS = 120_000;
 
 export class ChromeNavigationSession {
@@ -51,6 +53,7 @@ export class ChromeNavigationSession {
       await session.waitForSocketAsync();
       await session.sendAsync('Page.enable');
       await session.sendAsync('Runtime.enable');
+      await session.sendAsync('Log.enable');
       return session;
     } catch (error) {
       stopProcess(process);
@@ -64,15 +67,31 @@ export class ChromeNavigationSession {
     this.socket.onmessage = (event) => this.handleMessage(event.data);
   }
 
-  async invokeNavigationProbeAsync(command: string): Promise<void> {
-    const invoked = await this.evaluateAsync<boolean>(`(() => {
-  const probe = globalThis.__ankhExpo57NavigationProbe;
-  const action = probe?.[${JSON.stringify(command)}];
-  if (typeof action !== 'function') return false;
-  action();
+  async clearLocalStorageAsync(): Promise<void> {
+    await this.evaluateAsync('(() => { localStorage.clear(); return true; })()');
+  }
+
+  async clickByRoleAndNameAsync(role: string, name: string): Promise<void> {
+    const expression = createRoleAndNameExpression(role, name, true);
+    await this.waitForBooleanAsync(expression, `${role} named "${name}" to become clickable`);
+  }
+
+  async clickByTestIdAsync(testId: string): Promise<void> {
+    const expression = `(() => {
+  const hasHydratedClickHandler = (element) => {
+    const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
+    return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
+  };
+  const element = [...document.querySelectorAll('[data-testid]')].find(
+    (candidate) => candidate.getAttribute('data-testid') === ${JSON.stringify(testId)},
+  );
+  if (!(element instanceof HTMLElement)) return false;
+  const control = element.closest('[role="button"]') ?? element;
+  if (!(control instanceof HTMLElement) || !hasHydratedClickHandler(control)) return false;
+  control.click();
   return true;
-})()`);
-    if (!invoked) throw new Error(`Navigation probe command "${command}" is unavailable.`);
+})()`;
+    await this.waitForBooleanAsync(expression, `testID "${testId}" to become clickable`);
   }
 
   close(): void {
@@ -86,6 +105,10 @@ export class ChromeNavigationSession {
 
   async goForwardAsync(): Promise<void> {
     await this.evaluateAsync('(() => { history.forward(); return true; })()');
+  }
+
+  async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
+    return this.evaluateAsync<boolean>(createRoleAndNameExpression(role, name, false));
   }
 
   async navigateAsync(url: string): Promise<void> {
@@ -104,18 +127,6 @@ export class ChromeNavigationSession {
     throw new Error(
       `Timed out waiting for body text "${expectedText}". Last body text:\n${bodyText}`,
     );
-  }
-
-  async waitForNavigationProbeAsync(timeoutMs = HTTP_TIMEOUT_MS): Promise<void> {
-    const start = Date.now();
-    while (Date.now() - start < timeoutMs) {
-      const ready = await this.evaluateAsync<boolean>(
-        "typeof globalThis.__ankhExpo57NavigationProbe === 'object'",
-      );
-      if (ready) return;
-      await Bun.sleep(250);
-    }
-    throw new Error('Timed out waiting for the hydrated Expo Router navigation probe.');
   }
 
   async waitForLocationAsync(
@@ -166,9 +177,8 @@ export class ChromeNavigationSession {
       return;
     }
 
-    if (message.method === 'Runtime.exceptionThrown' || message.method === 'Log.entryAdded') {
-      this.errors.push(JSON.stringify(message.params));
-    }
+    const issue = getChromeNavigationIssue(message.method, message.params);
+    if (issue) this.errors.push(issue);
   }
 
   private sendAsync(method: string, params?: Readonly<Record<string, unknown>>): Promise<unknown> {
@@ -196,6 +206,15 @@ export class ChromeNavigationSession {
     });
   }
 
+  private async waitForBooleanAsync(expression: string, description: string): Promise<void> {
+    const start = Date.now();
+    while (Date.now() - start < HTTP_TIMEOUT_MS) {
+      if (await this.evaluateAsync<boolean>(expression)) return;
+      await Bun.sleep(250);
+    }
+    throw new Error(`Timed out waiting for ${description}.`);
+  }
+
   private waitForSocketAsync(): Promise<void> {
     if (this.socket.readyState === WebSocket.OPEN) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -203,6 +222,26 @@ export class ChromeNavigationSession {
       this.socket.onerror = () => reject(new Error('Chrome DevTools socket failed to open.'));
     });
   }
+}
+
+function createRoleAndNameExpression(role: string, name: string, click: boolean): string {
+  return `(() => {
+  const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
+  const hasHydratedClickHandler = (element) => {
+    const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
+    return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
+  };
+  const element = [...document.querySelectorAll('[role]')].find((candidate) => {
+    if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
+    const ariaLabel = candidate.getAttribute('aria-label');
+    if (ariaLabel !== null) return normalize(ariaLabel) === ${JSON.stringify(name)};
+    const visibleText = normalize(candidate.textContent ?? '');
+    return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+  });
+  if (!(element instanceof HTMLElement)) return false;
+  ${click ? 'if (!hasHydratedClickHandler(element)) return false;\n  element.click();' : ''}
+  return true;
+})()`;
 }
 
 async function canAccessAsync(filePath: string): Promise<boolean> {

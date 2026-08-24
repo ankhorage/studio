@@ -200,6 +200,8 @@ graph LR
   module_src_host_secrets_resolveProjectSecretDatabaseUrl_ts["src/host/secrets/resolveProjectSecretDatabaseUrl.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts["src/host/secrets/trustedOAuthInfraEnvironment.test.ts"]
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts["src/host/secrets/trustedOAuthInfraEnvironment.ts"]
+  module_src_host_smoke_assertNoBrowserErrors_test_ts["src/host/smoke/assertNoBrowserErrors.test.ts"]
+  module_src_host_smoke_assertNoBrowserErrors_ts["src/host/smoke/assertNoBrowserErrors.ts"]
   module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
   module_src_host_smoke_ChromeNavigationSession_ts["src/host/smoke/ChromeNavigationSession.ts"]
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
@@ -207,6 +209,8 @@ graph LR
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts["src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"]
   module_src_host_smoke_createExpo57NavigationFixtureManifest_ts["src/host/smoke/createExpo57NavigationFixtureManifest.ts"]
+  module_src_host_smoke_getChromeNavigationIssue_test_ts["src/host/smoke/getChromeNavigationIssue.test.ts"]
+  module_src_host_smoke_getChromeNavigationIssue_ts["src/host/smoke/getChromeNavigationIssue.ts"]
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"]
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"]
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"]
@@ -796,6 +800,8 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_test_ts --> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_assertNoBrowserErrors_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
+  module_src_host_smoke_ChromeNavigationSession_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts --> module_src_host_orchestrator_moduleManager_ts
@@ -807,6 +813,7 @@ graph LR
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_getChromeNavigationIssue_test_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
@@ -821,6 +828,7 @@ graph LR
   module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts

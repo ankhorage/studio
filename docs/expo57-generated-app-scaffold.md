@@ -156,17 +156,27 @@ edge-to-edge Android setting and iOS 16.4 deployment target.
 
 The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
-registry owner packages, and covers Stack, JavaScript Tabs, Drawer, nested navigators, hidden routes,
-dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned Expo CLI first
-generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6 run. Every Router
-start/export command disables the React Navigation compatibility rewrite. The runner performs
-static Web, Android and iOS exports for both generation modes, checks Expo Doctor and the React
-Compiler, drives typed internal Router pushes plus browser Back/Forward against the development
-server, and separately serves `dist` to prove static HTML hydration and internal navigation. The
-Studio+Auth fixture scopes its lint assertion to generated navigation layouts because the broader
-auth scaffold remains owned by issue #312; its full TypeScript, Doctor, compiler and platform export
-checks still run. Android/iOS exports prove bundling only. No native development-build environment
-is available in this CI job, so Drawer gestures and native Back remain explicitly unclaimed.
+registry owner packages, and covers root and nested Stack, JavaScript Tabs and Drawer navigators,
+hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
+Expo CLI first generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6
+run. Every Router start/export command disables the React Navigation compatibility rewrite. The
+runner performs static Web, Android and iOS exports for both full generation modes, checks Expo
+Doctor and the React Compiler, then drives the generated manifest Button, `ZoraTabBar` and
+`ZoraDrawerContent` controls in Chrome. These interactions prove the Runtime action through the
+narrow `Href` adapter into Expo Router, dynamic/search params, Drawer selection, Tabs navigation and
+browser Back/Forward. A fresh signed-out Auth fixture enters a protected URL and verifies the Router
+fallback plus absence of protected content without exercising Auth transport. This dedicated
+non-Studio Auth runtime fixture shares the same cold lockfile/install; keeping the Studio fixture's
+development-only `/ankh` administration out of the guard assertion makes the fallback deterministic.
+The static `dist` check also clicks a generated manifest Button after hydration. Chrome DevTools Runtime and Log
+events make uncaught exceptions, `console.error`, assertions, non-allowlisted warnings, browser log
+errors/warnings and React hydration/recoverable-render mismatches fail acceptance. The only warning
+allowlist contains the exact React Native Web `pointerEvents`, `shadow*` and `textShadow*`
+deprecation messages emitted by released ZORA/Surface styles. The Studio+Auth fixture scopes
+its lint assertion to generated navigation layouts because the broader auth scaffold remains owned
+by issue #312; its full TypeScript, Doctor, compiler and platform export checks still run.
+Android/iOS exports prove bundling only. No native development-build environment is available in
+this CI job, so Drawer gestures and native Back remain explicitly unclaimed.
 
 ## Architectural impact
 

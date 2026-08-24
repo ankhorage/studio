@@ -773,10 +773,16 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_assertNoBrowserErrors_test_ts["src/host/smoke/assertNoBrowserErrors.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertNoBrowserErrors_test_ts
+  module_src_host_smoke_assertNoBrowserErrors_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
+  module_src_host_smoke_assertNoBrowserErrors_ts["src/host/smoke/assertNoBrowserErrors.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
   module_src_host_smoke_ChromeNavigationSession_ts["src/host/smoke/ChromeNavigationSession.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_ChromeNavigationSession_ts
+  module_src_host_smoke_ChromeNavigationSession_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts["src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -798,6 +804,11 @@ graph TD
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_ts["src/host/smoke/createExpo57NavigationFixtureManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_getChromeNavigationIssue_test_ts["src/host/smoke/getChromeNavigationIssue.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_getChromeNavigationIssue_test_ts
+  module_src_host_smoke_getChromeNavigationIssue_test_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
+  module_src_host_smoke_getChromeNavigationIssue_ts["src/host/smoke/getChromeNavigationIssue.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_getChromeNavigationIssue_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -826,6 +837,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]

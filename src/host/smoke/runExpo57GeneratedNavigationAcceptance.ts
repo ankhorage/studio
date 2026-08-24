@@ -4,6 +4,7 @@ import { createServer } from 'node:net';
 import path from 'node:path';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
 
@@ -25,11 +26,27 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       includeStudio: false,
       name: 'Expo 57 Navigation Standalone',
     });
-    await writeNavigationProbeAsync(standalone.path);
     const studio = await createProjectAsync(manager, {
       auth: true,
       includeStudio: true,
       name: 'Expo 57 Navigation Studio',
+    });
+    const authRuntime = await createProjectAsync(manager, {
+      auth: true,
+      includeStudio: false,
+      name: 'Expo 57 Auth Runtime',
+    });
+    const rootTabs = await createProjectAsync(manager, {
+      auth: false,
+      includeStudio: false,
+      name: 'Expo 57 Root Tabs',
+      rootNavigator: 'tabs',
+    });
+    const rootDrawer = await createProjectAsync(manager, {
+      auth: false,
+      includeStudio: false,
+      name: 'Expo 57 Root Drawer',
+      rootNavigator: 'drawer',
     });
     await createWorkspaceLockfileAsync(workspaceRoot);
     await runCommandAsync({
@@ -38,7 +55,6 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       cwd: workspaceRoot,
       label: 'Cold frozen navigation workspace install',
     });
-
     await assertGeneratedNavigationContractAsync(standalone);
     await runGeneratedProjectChecksAsync(standalone);
     await runDevelopmentNavigationSmokeAsync(standalone.path);
@@ -51,6 +67,11 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
     await assertReleasedStudioPackageAsync(workspaceRoot, studio);
+    await assertGeneratedNavigationContractAsync(authRuntime);
+    await runSignedOutAuthNavigationSmokeAsync(authRuntime.path);
+
+    await runFocusedRootNavigatorChecksAsync(rootTabs);
+    await runFocusedRootNavigatorChecksAsync(rootDrawer);
   } finally {
     await staticServer?.stop(true);
     await rm(workspaceRoot, { force: true, recursive: true });
@@ -160,7 +181,15 @@ async function assertReleasedStudioPackageAsync(
   }
 }
 
-async function assertRouterTypesAsync(project: NavigationProject): Promise<void> {
+async function assertRouterTypesAsync(
+  project: NavigationProject,
+  routeEvidence: readonly string[] = [
+    'profile/[id]',
+    'catalog/settings',
+    '(tabs)',
+    'hidden-tabs/secret',
+  ],
+): Promise<void> {
   const routerTypesPath = path.join(project.path, '.expo', 'types', 'router.d.ts');
   const routerTypesStat = await stat(routerTypesPath);
   if (!routerTypesStat.isFile() || routerTypesStat.size === 0) {
@@ -168,14 +197,9 @@ async function assertRouterTypesAsync(project: NavigationProject): Promise<void>
   }
 
   const routerTypes = await readFile(routerTypesPath, 'utf8');
-  for (const routeEvidence of [
-    'profile/[id]',
-    'catalog/settings',
-    '(tabs)',
-    'hidden-tabs/secret',
-  ]) {
-    if (!routerTypes.includes(routeEvidence)) {
-      throw new Error(`${project.id} Router declarations are missing ${routeEvidence}.`);
+  for (const route of routeEvidence) {
+    if (!routerTypes.includes(route)) {
+      throw new Error(`${project.id} Router declarations are missing ${route}.`);
     }
   }
 }
@@ -219,7 +243,12 @@ async function generateRouterTypesAsync(project: NavigationProject): Promise<voi
 
 async function createProjectAsync(
   manager: ProjectManager,
-  options: { readonly auth: boolean; readonly includeStudio: boolean; readonly name: string },
+  options: {
+    readonly auth: boolean;
+    readonly includeStudio: boolean;
+    readonly name: string;
+    readonly rootNavigator?: 'drawer' | 'tabs';
+  },
 ): Promise<NavigationProject> {
   const created = await manager.createProject(
     options.name,
@@ -231,37 +260,11 @@ async function createProjectAsync(
   const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
     auth: options.auth,
     name: options.name,
+    ...(options.rootNavigator ? { rootNavigator: options.rootNavigator } : {}),
     slug: created.id,
   });
   await manager.saveProjectManifest({ projectId: created.id, manifest, mutations: [] });
   return { ...options, id: created.id, path: created.path };
-}
-
-async function writeNavigationProbeAsync(projectRoot: string): Promise<void> {
-  await writeFile(
-    path.join(projectRoot, 'src', 'app', 'navigation-probe.tsx'),
-    `import { Text } from '@ankhorage/zora';
-import { router } from 'expo-router';
-
-const navigationProbe = {
-  about: () => router.push('/about'),
-  catalog: () => router.push('/catalog'),
-  home: () => router.replace('/'),
-  profile: () =>
-    router.push({ pathname: '/profile/[id]', params: { id: 'ada', source: 'internal' } }),
-  settings: () => router.push({ pathname: '/catalog/settings', params: { tab: 'advanced' } }),
-};
-const navigationGlobal = globalThis as typeof globalThis & {
-  __ankhExpo57NavigationProbe?: typeof navigationProbe;
-};
-navigationGlobal.__ankhExpo57NavigationProbe = navigationProbe;
-
-export default function NavigationProbe() {
-  return <Text>Navigation Probe Ready</Text>;
-}
-`,
-    'utf8',
-  );
 }
 
 function createStaticExportServer(projectRoot: string): ReturnType<typeof Bun.serve> {
@@ -378,6 +381,52 @@ async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
 }
 
 async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<void> {
+  await runDevelopmentWebAsync(projectRoot, async (chrome, rootUrl) => {
+    await chrome.navigateAsync(`${rootUrl}/profile/grace?source=direct`);
+    await chrome.waitForLocationAsync({ pathname: '/profile/grace', search: '?source=direct' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+
+    await chrome.navigateAsync(rootUrl);
+    await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.clickByTestIdAsync('home-profile');
+    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.goForwardAsync();
+    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+    await chrome.goBackAsync();
+    await chrome.waitForLocationAsync({ pathname: '/' });
+
+    await chrome.clickByRoleAndNameAsync('tab', 'Catalog');
+    await chrome.waitForLocationAsync({ pathname: '/catalog' });
+    await chrome.waitForBodyTextAsync('Catalog Drawer Route');
+    await chrome.clickByRoleAndNameAsync('button', 'Show navigation menu');
+    await chrome.clickByRoleAndNameAsync('button', 'Catalog Settings');
+    await chrome.waitForLocationAsync({ pathname: '/catalog/settings' });
+    await chrome.waitForBodyTextAsync('Catalog Settings Route');
+
+    await chrome.navigateAsync(`${rootUrl}/hidden-tabs`);
+    await chrome.waitForBodyTextAsync('Visible Navigation Route');
+    if (!(await chrome.hasRoleAndNameAsync('tab', 'Visible'))) {
+      throw new Error('Visible generated tab is unavailable.');
+    }
+    if (await chrome.hasRoleAndNameAsync('tab', 'Secret')) {
+      throw new Error('Hidden generated route is exposed by ZoraTabBar.');
+    }
+    await chrome.navigateAsync(`${rootUrl}/hidden-tabs/secret`);
+    await chrome.waitForBodyTextAsync('Hidden Navigation Route');
+    assertNoBrowserErrors(chrome.errors, 'development navigation');
+  });
+}
+
+async function runDevelopmentWebAsync(
+  projectRoot: string,
+  smoke: (chrome: ChromeNavigationSession, rootUrl: string) => Promise<void>,
+): Promise<void> {
   const expoPort = await reservePortAsync();
   const chromePort = await reservePortAsync();
   const output: string[] = [];
@@ -404,33 +453,44 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
     await waitForHttpAsync(rootUrl, () => output.join('').slice(-8_000));
     chrome = await ChromeNavigationSession.createAsync(chromePort);
 
-    await chrome.navigateAsync(`${rootUrl}/navigation-probe`);
-    await chrome.waitForBodyTextAsync('Navigation Probe Ready');
-    await chrome.waitForNavigationProbeAsync();
-    await chrome.invokeNavigationProbeAsync('home');
-    await chrome.waitForLocationAsync({ pathname: '/' });
-    await chrome.waitForBodyTextAsync('Navigation Home');
-    await chrome.invokeNavigationProbeAsync('profile');
-    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
-    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
-
-    await chrome.goBackAsync();
-    await chrome.waitForLocationAsync({ pathname: '/' });
-    await chrome.goForwardAsync();
-    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
-
-    await chrome.invokeNavigationProbeAsync('settings');
-    await chrome.waitForLocationAsync({ pathname: '/catalog/settings', search: '?tab=advanced' });
-    await chrome.waitForBodyTextAsync('Catalog Settings Route');
-
-    await chrome.navigateAsync(`${rootUrl}/profile/grace?source=direct`);
-    await chrome.waitForLocationAsync({ pathname: '/profile/grace', search: '?source=direct' });
-    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
-    assertNoBrowserErrors(chrome.errors, 'development navigation');
+    await smoke(chrome, rootUrl);
   } finally {
     chrome?.close();
     stopProcess(expoProcess);
   }
+}
+
+async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): Promise<void> {
+  if (!project.rootNavigator) throw new Error(`${project.id} has no focused root navigator.`);
+
+  const rootLayout = await readFile(path.join(project.path, 'src', 'app', '_layout.tsx'), 'utf8');
+  const expectedImport =
+    project.rootNavigator === 'tabs' ? "from 'expo-router/js-tabs'" : "from 'expo-router/drawer'";
+  const expectedBridge =
+    project.rootNavigator === 'tabs'
+      ? '<ZoraTabBar {...props} routeMap={routeMap} />'
+      : '<ZoraDrawerContent {...props} routeMap={routeMap} />';
+  if (!rootLayout.includes(expectedImport) || !rootLayout.includes(expectedBridge)) {
+    throw new Error(`${project.id} does not generate its ${project.rootNavigator} at the root.`);
+  }
+  if (!rootLayout.includes('type Href') || FORBIDDEN_REACT_NAVIGATION_IMPORT.test(rootLayout)) {
+    throw new Error(`${project.id} violates the narrow Expo Router Href boundary.`);
+  }
+
+  await generateRouterTypesAsync(project);
+  await assertRouterTypesAsync(project, ['about']);
+  await runCommandAsync({
+    args: ['run', 'lint'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} focused root-${project.rootNavigator} lint`,
+  });
+  await runCommandAsync({
+    args: ['run', 'typecheck'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} focused root-${project.rootNavigator} typecheck`,
+  });
 }
 
 async function runGeneratedProjectChecksAsync(project: NavigationProject): Promise<void> {
@@ -509,19 +569,30 @@ async function runStaticExportSmokeAsync(port: number): Promise<void> {
   const chrome = await ChromeNavigationSession.createAsync(chromePort);
   try {
     const rootUrl = `http://127.0.0.1:${port}`;
-    await chrome.navigateAsync(`${rootUrl}/navigation-probe`);
-    await chrome.waitForBodyTextAsync('Navigation Probe Ready');
-    await chrome.waitForNavigationProbeAsync();
-    await chrome.invokeNavigationProbeAsync('about');
-    await chrome.waitForLocationAsync({ pathname: '/about' });
-    await chrome.waitForBodyTextAsync('Static About Route');
-    await chrome.invokeNavigationProbeAsync('home');
-    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.clickByTestIdAsync('home-profile');
+    await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
+    await chrome.waitForBodyTextAsync('Dynamic Profile Route');
     assertNoBrowserErrors(chrome.errors, 'served static export');
   } finally {
     chrome.close();
   }
+}
+
+async function runSignedOutAuthNavigationSmokeAsync(projectRoot: string): Promise<void> {
+  await runDevelopmentWebAsync(projectRoot, async (chrome, rootUrl) => {
+    await chrome.navigateAsync(`${rootUrl}/sign-in`);
+    await chrome.waitForBodyTextAsync('Sign in');
+    await chrome.clearLocalStorageAsync();
+    await chrome.navigateAsync(`${rootUrl}/profile/ada?source=protected`);
+    await chrome.waitForLocationAsync({ pathname: '/sign-in' });
+    const bodyText = await chrome.waitForBodyTextAsync('Sign in');
+    if (bodyText.includes('Dynamic Profile Route')) {
+      throw new Error('Signed-out Auth fixture exposed protected generated content.');
+    }
+    assertNoBrowserErrors(chrome.errors, 'signed-out Auth navigation');
+  });
 }
 
 async function waitForHttpAsync(url: string, diagnostics: () => string): Promise<void> {
@@ -535,20 +606,6 @@ async function waitForHttpAsync(url: string, diagnostics: () => string): Promise
     }
   }
   throw new Error(`Timed out waiting for ${url}.\n${diagnostics()}`);
-}
-
-function assertNoBrowserErrors(errors: readonly string[], label: string): void {
-  const source = errors.join('\n');
-  for (const forbidden of [
-    'Maximum update depth exceeded',
-    'Cannot read properties of undefined',
-    'Unable to resolve module',
-    '@react-navigation/',
-  ]) {
-    if (source.includes(forbidden)) {
-      throw new Error(`${label} reported ${forbidden}:\n${source}`);
-    }
-  }
 }
 
 function collectProcessOutput(
@@ -583,4 +640,5 @@ interface NavigationProject {
   readonly includeStudio: boolean;
   readonly name: string;
   readonly path: string;
+  readonly rootNavigator?: 'drawer' | 'tabs';
 }
