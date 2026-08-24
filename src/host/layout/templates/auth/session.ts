@@ -254,7 +254,7 @@ async function readPlatformStorage(key: string): Promise<string | null> {
 
   if (Platform.OS === 'web') {
     const storage = getWebStorage();
-    return storage ? storage.getItem(key) : nonPersistentRuntimeStorage.get(key) ?? null;
+    return storage ? storage.getItem(key) : (nonPersistentRuntimeStorage.get(key) ?? null);
   }
 
   return nonPersistentRuntimeStorage.get(key) ?? null;

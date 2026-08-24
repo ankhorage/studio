@@ -323,7 +323,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain("AppState.addEventListener('change'");
     expect(rootLayout).toContain('await bootstrapAuthSession()');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
-    expect(adapter).toContain('["google"]');
+    expect(adapter).toContain("['google']");
     expect(oauth).toContain('WebBrowser.openAuthSessionAsync');
     expect(oauth).toContain('Linking.createURL');
     expect(oauth).toContain('callback_already_completed');

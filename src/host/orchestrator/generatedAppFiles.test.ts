@@ -18,6 +18,20 @@ afterEach(async () => {
 });
 
 describe('generated app extension interaction-policy support', () => {
+  it('separates generated relative adapters from package imports', () => {
+    const source = createGeneratedAppExtensionRegistrySource({
+      usesExpoBarcodeScannerAdapter: true,
+      zoraExtensions: [],
+    });
+
+    expect(
+      source.startsWith(
+        "import type { ComponentRegistry } from '@ankhorage/runtime';\n\n" +
+          "import { ExpoBarcodeScannerView } from './expo/ExpoBarcodeScannerView';\n\n",
+      ),
+    ).toBe(true);
+  });
+
   it('emits an explicit support map beside the generated component registry', () => {
     const source = createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter: false,

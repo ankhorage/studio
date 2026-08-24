@@ -15,6 +15,9 @@ graph TD
   module_scripts_expo57_generated_app_acceptance_ts["scripts/expo57-generated-app-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_expo57_generated_app_acceptance_ts
   module_scripts_expo57_generated_app_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
+  module_scripts_expo57_generated_capability_acceptance_ts["scripts/expo57-generated-capability-acceptance.ts"]
+  package__ankhorage_studio -.-> module_scripts_expo57_generated_capability_acceptance_ts
+  module_scripts_expo57_generated_capability_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts
   module_scripts_expo57_generated_navigation_acceptance_ts["scripts/expo57-generated-navigation-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_expo57_generated_navigation_acceptance_ts
   module_scripts_expo57_generated_navigation_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
@@ -773,6 +776,13 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_secrets_trustedOAuthInfraEnvironment_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
+  module_src_host_smoke_assertExpo57GeneratedCapabilityContractAsync_ts["src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57GeneratedCapabilityContractAsync_ts
+  module_src_host_smoke_assertExpo57GeneratedCapabilityNativePrebuildAsync_ts["src/host/smoke/assertExpo57GeneratedCapabilityNativePrebuildAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57GeneratedCapabilityNativePrebuildAsync_ts
+  module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts["src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts
+  module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_assertNoBrowserErrors_test_ts["src/host/smoke/assertNoBrowserErrors.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_assertNoBrowserErrors_test_ts
   module_src_host_smoke_assertNoBrowserErrors_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
@@ -798,12 +808,19 @@ graph TD
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts["src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
+  module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts["src/host/smoke/createExpo57CapabilityFixtureManifest.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts
+  module_src_host_smoke_createExpo57CapabilityFixtureManifest_test_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts["src/host/smoke/createExpo57CapabilityFixtureManifest.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts["src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_layout_layoutGenerator_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_test_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
   module_src_host_smoke_createExpo57NavigationFixtureManifest_ts["src/host/smoke/createExpo57NavigationFixtureManifest.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_generateExpoRouterTypesAsync_ts["src/host/smoke/generateExpoRouterTypesAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_generateExpoRouterTypesAsync_ts
   module_src_host_smoke_getChromeNavigationIssue_test_ts["src/host/smoke/getChromeNavigationIssue.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_getChromeNavigationIssue_test_ts
   module_src_host_smoke_getChromeNavigationIssue_test_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
@@ -825,6 +842,8 @@ graph TD
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeInfra_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeManifest_ts
   module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts["src/host/smoke/prepareAuth5NativeOAuthSmokeWorkspace.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_prepareAuth5NativeOAuthSmokeWorkspace_ts
+  module_src_host_smoke_runAcceptanceCommandAsync_ts["src/host/smoke/runAcceptanceCommandAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts["src/host/smoke/runAuth5NativeOAuthSmoke.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
   module_src_host_smoke_runAuth5NativeOAuthSmoke_ts --> module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_ts
@@ -834,12 +853,24 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts["src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_assertExpo57GeneratedCapabilityContractAsync_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_assertExpo57GeneratedCapabilityNativePrebuildAsync_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_createExpo57CapabilityFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
+  module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_generateExpoRouterTypesAsync_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_studioInfra_e2e_test_ts["src/host/studioInfra.e2e.test.ts"]
   package__ankhorage_studio -.-> module_src_host_studioInfra_e2e_test_ts
   module_src_host_studioInfra_e2e_test_ts --> module_src_host_orchestrator_infraSession_ts
@@ -974,6 +1005,9 @@ graph TD
   module_src_projectDeployApi_ts --> module_src_projectDeployRuntimeInput_ts
   module_src_projectDeployApiError_ts["src/projectDeployApiError.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployApiError_ts
+  module_src_projectDeployAssetPicker_test_ts["src/projectDeployAssetPicker.test.ts"]
+  package__ankhorage_studio -.-> module_src_projectDeployAssetPicker_test_ts
+  module_src_projectDeployAssetPicker_test_ts --> module_src_projectDeployAssetPicker_ts
   module_src_projectDeployAssetPicker_ts["src/projectDeployAssetPicker.ts"]
   package__ankhorage_studio -.-> module_src_projectDeployAssetPicker_ts
   module_src_projectDeployClient_ts["src/projectDeployClient.ts"]

@@ -106,7 +106,7 @@ async function readRouteLedger(projectPath: string): Promise<RouteLedger | null>
 async function writeRouteLedger(projectPath: string, ledger: RouteLedger) {
   const ledgerPath = resolveProjectFile(projectPath, ROUTE_LEDGER_REL_PATH);
   await fs.mkdir(path.dirname(ledgerPath), { recursive: true });
-  await fs.writeFile(ledgerPath, JSON.stringify(ledger, null, 2), 'utf8');
+  await fs.writeFile(ledgerPath, `${JSON.stringify(ledger, null, 2)}\n`, 'utf8');
 }
 
 async function removeFiles(projectPath: string, files: Set<string>) {

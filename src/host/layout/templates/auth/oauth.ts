@@ -9,7 +9,7 @@ interface AuthOAuthRuntimeTemplateArgs extends AuthOAuthLayoutPlan {
 
 export function getAuthOAuthRuntimeTs(args: AuthOAuthRuntimeTemplateArgs) {
   const callbackRoute = escapeStringLiteral(args.callbackRoute);
-  const providers = JSON.stringify(args.providers);
+  const providers = serializeOAuthProviders(args.providers);
   const androidScheme =
     args.nativeSchemes.android === undefined
       ? 'undefined'
@@ -33,10 +33,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 
 import { authAdapter } from './adapter';
-import {
-  authSessionStorage,
-  getStoredAuthSession,
-} from './session';
+import { authSessionStorage, getStoredAuthSession } from './session';
 
 const OAUTH_CALLBACK_ROUTE = '${callbackRoute}';
 const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
@@ -61,9 +58,7 @@ interface StoredTransportAttempt {
   attemptId: string;
 }
 
-export type OAuthCallbackRouteParams = Readonly<
-  Record<string, string | string[] | undefined>
->;
+export type OAuthCallbackRouteParams = Readonly<Record<string, string | string[] | undefined>>;
 
 let activeAuthorization: Promise<GeneratedOAuthTransportOutcome> | null = null;
 
@@ -76,9 +71,7 @@ export function startOAuthAuthorization(
   return activeAuthorization;
 }
 
-async function runOAuthAuthorization(
-  providerId: string,
-): Promise<GeneratedOAuthTransportOutcome> {
+async function runOAuthAuthorization(providerId: string): Promise<GeneratedOAuthTransportOutcome> {
   const oauth = authAdapter.oauth;
   if (!oauth) {
     return {
@@ -250,9 +243,6 @@ export async function completeOAuthCallback(
 
   const attempt = await readTransportAttempt();
   if (!attempt) {
-    if (getStoredAuthSession() && isCanonicalOAuthCallback(callbackUrl)) {
-      return { status: 'authenticated' };
-    }
     return {
       status: 'error',
       message: 'The OAuth authorization attempt was not found or has expired.',
@@ -274,16 +264,25 @@ export async function completeOAuthCallback(
       recoverable: true,
     };
   }
-  await clearTransportAttempt();
+
+  const storedSession = getStoredAuthSession();
 
   if (
     !completed.ok &&
     completed.status === 'error' &&
     completed.error.code === 'callback_already_completed' &&
-    getStoredAuthSession()
+    storedSession
   ) {
     return { status: 'authenticated' };
   }
+
+  const preservesCompletedAttempt =
+    completed.ok ||
+    (!completed.ok &&
+      completed.status === 'error' &&
+      completed.error.code === 'invalid_callback' &&
+      storedSession !== null);
+  if (!preservesCompletedAttempt) await clearTransportAttempt();
 
   return toTransportOutcome(completed);
 }
@@ -315,31 +314,12 @@ function resolveOAuthRedirectUri(): string {
   return Linking.createURL(callbackPath, { scheme: nativeScheme });
 }
 
-function isCanonicalOAuthCallback(callbackUrl: string): boolean {
-  try {
-    const delivered = new URL(callbackUrl);
-    const expected = new URL(resolveOAuthRedirectUri());
-    return (
-      delivered.protocol === expected.protocol &&
-      delivered.username === expected.username &&
-      delivered.password === expected.password &&
-      delivered.host === expected.host &&
-      delivered.pathname === expected.pathname &&
-      delivered.hash.length === 0
-    );
-  } catch {
-    return false;
-  }
-}
-
 function getBrowserLocation(): object | null {
   const location = Reflect.get(globalThis, 'location');
   return typeof location === 'object' && location !== null ? location : null;
 }
 
-function toTransportOutcome(
-  result: AuthOAuthCompletionResult,
-): GeneratedOAuthTransportOutcome {
+function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTransportOutcome {
   if (result.ok) {
     return { status: 'authenticated' };
   }
@@ -413,4 +393,41 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 `;
+}
+
+function serializeOAuthProviders(providers: AuthOAuthLayoutPlan['providers']): string {
+  if (providers.length === 0) return '[]';
+  const entries = providers.map((provider) => {
+    const scopes = provider.scopes.map((scope) => `'${escapeStringLiteral(scope)}'`).join(', ');
+    const queryParams = Object.entries(provider.queryParams)
+      .flatMap(([name, value]) =>
+        value === undefined
+          ? []
+          : [`${serializeObjectPropertyName(name)}: '${escapeStringLiteral(value)}'`],
+      )
+      .join(', ');
+    const serializedQueryParams = queryParams.length > 0 ? `{ ${queryParams} }` : '{}';
+    const icon = provider.icon ? `,\n    icon: ${serializeOAuthIcon(provider.icon)}` : '';
+    return `  {
+    id: '${escapeStringLiteral(provider.id)}',
+    label: '${escapeStringLiteral(provider.label)}',
+    scopes: [${scopes}],
+    queryParams: ${serializedQueryParams}${icon},
+  }`;
+  });
+  return `[\n${entries.join(',\n')},\n]`;
+}
+
+function serializeOAuthIcon(icon: NonNullable<AuthOAuthLayoutPlan['providers'][number]['icon']>) {
+  const properties = Object.entries(icon).flatMap(([name, value]) => {
+    if (value === undefined) return [];
+    const serialized =
+      typeof value === 'number' ? String(value) : `'${escapeStringLiteral(value)}'`;
+    return [`${name}: ${serialized}`];
+  });
+  return `{ ${properties.join(', ')} }`;
+}
+
+function serializeObjectPropertyName(name: string): string {
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name) ? name : `'${escapeStringLiteral(name)}'`;
 }

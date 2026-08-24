@@ -107,7 +107,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       dependencies?: Record<string, string>;
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^8.0.0');
-    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.1');
+    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.2');
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.secureStore.name]).toBe(
       EXPO_PLATFORM.packages.secureStore.version,
     );
@@ -121,14 +121,14 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(appConfig).toContain("bundleIdentifier: 'com.ankh.oauthfixtureconsumer'");
 
     const adapter = await readProjectFile(created.path, 'src/auth/adapter.ts');
-    expect(adapter).toContain('const generatedOAuthProviders = ["google","apple"] as const;');
+    expect(adapter).toContain("const generatedOAuthProviders = ['google', 'apple'] as const;");
     expect(adapter).toContain('createSupabaseAuthAdapter({');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
 
     const oauthRuntime = await readProjectFile(created.path, 'src/auth/oauth.ts');
     expect(oauthRuntime).toContain(`const OAUTH_CALLBACK_ROUTE = '${OAUTH_CALLBACK_ROUTE}';`);
-    expect(oauthRuntime).toContain('"id":"google"');
-    expect(oauthRuntime).toContain('"id":"apple"');
+    expect(oauthRuntime).toContain("id: 'google'");
+    expect(oauthRuntime).toContain("id: 'apple'");
     expect(oauthRuntime).toContain("Platform.OS === 'web'");
     expect(oauthRuntime).toContain('new URL(`/${callbackPath}`');
     expect(oauthRuntime).toContain("android: 'ankh-oauthfixtureconsumer'");

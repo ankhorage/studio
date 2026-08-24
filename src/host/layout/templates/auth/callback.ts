@@ -10,10 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text, useZoraTheme } from '@ankhorage/zora';
 
-import {
-  completeOAuthCallback,
-  resolveOAuthCallbackUrl,
-} from '@/auth/oauth';
+import { completeOAuthCallback, resolveOAuthCallbackUrl } from '@/auth/oauth';
 
 const SIGN_IN_ROUTE = '${signInTarget}';
 const POST_SIGN_IN_ROUTE = '${postSignInTarget}';

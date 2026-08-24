@@ -85,18 +85,10 @@ async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void
 
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
   const setupCommands = [
-    { args: ['run', 'format'], command: 'bun', label: 'Generated capability format' },
     {
-      args: [
-        'x',
-        'ankhorage-eslint',
-        'src/generated/appExtensionRegistry.ts',
-        'src/generated/expo/ExpoBarcodeScannerView.tsx',
-        '--fix',
-        '--max-warnings=0',
-      ],
+      args: ['run', 'format:check'],
       command: 'bun',
-      label: 'Generated capability adapter lint fix',
+      label: 'Generated capability format check',
     },
     {
       args: [

@@ -143,9 +143,26 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   expect(harness.state.fetchCalls).toHaveLength(1);
   expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
   expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
-  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
   expect(hasPkceVerifier(harness.state.values)).toBe(false);
   expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
+
+  for (const [label, callbackUrl] of [
+    ['missing-code', CALLBACK_URL],
+    ['stale-code', `${CALLBACK_URL}?code=stale-code`],
+    ['invalid-parameters', `${CALLBACK_URL}?code=opaque-code&error_description=invalid`],
+  ] as const) {
+    const invalidCallbackDocument = await harness.importDocument(label);
+    const rejected = await invalidCallbackDocument.completeOAuthCallback(callbackUrl);
+
+    expect(rejected).toEqual({
+      status: 'error',
+      message: 'The OAuth callback does not match the completed authorization callback.',
+      recoverable: true,
+    });
+    expect(harness.state.fetchCalls).toHaveLength(1);
+    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
+  }
 
   const reloadedCallbackDocument = await harness.importDocument('callback-reload');
   const replay = await reloadedCallbackDocument.completeOAuthCallback(

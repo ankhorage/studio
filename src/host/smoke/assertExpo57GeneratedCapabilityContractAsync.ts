@@ -70,7 +70,7 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   );
   if (
     !scannerAdapter.includes(
-      'export { ExpoBarcodeScannerAdapter as ExpoBarcodeScannerView } from "@ankhorage/expo-runtime";',
+      "export { ExpoBarcodeScannerAdapter as ExpoBarcodeScannerView } from '@ankhorage/expo-runtime';",
     )
   ) {
     throw new Error('Generated scanner bridge does not consume the Expo Runtime adapter.');

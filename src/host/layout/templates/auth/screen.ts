@@ -46,10 +46,7 @@ export function getAuthScreenTsx(args: {
       : `        await clearStoredAuthSession();
         router.replace(SIGN_IN_ROUTE);`;
   const oauthImport = oauthEnabled
-    ? `import {
-  generatedOAuthProviderItems,
-  startOAuthAuthorization,
-} from '@/auth/oauth';\n`
+    ? `import { generatedOAuthProviderItems, startOAuthAuthorization } from '@/auth/oauth';\n`
     : '';
   const oauthState = oauthEnabled
     ? `  const [oauthLoadingProvider, setOAuthLoadingProvider] = useState<string | null>(null);\n`
@@ -87,8 +84,7 @@ export function getAuthScreenTsx(args: {
             onProviderPress={handleOAuthProviderPress}
             providers={generatedOAuthProviderItems.map((provider) => ({
               ...provider,
-              disabled:
-                oauthLoadingProvider !== null && oauthLoadingProvider !== provider.id,
+              disabled: oauthLoadingProvider !== null && oauthLoadingProvider !== provider.id,
               loading: oauthLoadingProvider === provider.id,
             }))}
           />
@@ -556,9 +552,12 @@ function validateIdentifier(identifier: string, identifiers: string[]): string |
   const normalizedIdentifier = identifier.trim();
   const set = new Set(identifiers.map((entry) => entry.trim().toLowerCase()));
   const allowed: { label: string; matches: boolean }[] = [];
-  if (set.has('email')) allowed.push({ label: 'email address', matches: isEmail(normalizedIdentifier) });
-  if (set.has('phone')) allowed.push({ label: 'phone number', matches: isPhone(normalizedIdentifier) });
-  if (set.has('username')) allowed.push({ label: 'username', matches: isUsername(normalizedIdentifier) });
+  if (set.has('email'))
+    allowed.push({ label: 'email address', matches: isEmail(normalizedIdentifier) });
+  if (set.has('phone'))
+    allowed.push({ label: 'phone number', matches: isPhone(normalizedIdentifier) });
+  if (set.has('username'))
+    allowed.push({ label: 'username', matches: isUsername(normalizedIdentifier) });
   if (allowed.length === 0 || allowed.some((entry) => entry.matches)) return null;
   if (allowed.length === 1 && allowed[0]?.label === 'username') {
     return 'Username must be at least 3 characters and use letters, numbers, dot, underscore, or dash.';

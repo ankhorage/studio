@@ -2,9 +2,24 @@ import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { describe, expect, it } from 'bun:test';
 
-import { getAndroidRunTs, getAppConfigTs, getEslintConfigMjs, getPackageJson } from './templates';
+import {
+  getAndroidRunTs,
+  getAppConfigTs,
+  getEslintConfigMjs,
+  getPackageJson,
+  getPrettierRcJs,
+} from './templates';
 
 describe('generated OAuth scaffold templates', () => {
+  it('formats generated JSON and YAML serializers with their canonical output styles', () => {
+    const prettierConfig = getPrettierRcJs();
+
+    expect(prettierConfig).toContain("{ files: '**/*.json', options: { printWidth: 1 } }");
+    expect(prettierConfig).toContain(
+      "{ files: '**/*.{yaml,yml}', options: { singleQuote: false } }",
+    );
+  });
+
   it('keeps the manifest-to-typed-route Href boundary lint-stable', () => {
     const eslintConfig = getEslintConfigMjs();
 
@@ -20,7 +35,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.3');
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
@@ -59,7 +74,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
-    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.1');
+    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.2');
     expect(dependencies['@ankhorage/supabase-storage']).toBe('^0.2.0');
     expect(dependencies[EXPO_PLATFORM.packages.secureStore.name]).toBe(
       EXPO_PLATFORM.packages.secureStore.version,
@@ -73,7 +88,7 @@ describe('generated OAuth scaffold templates', () => {
     const runtimePlan: ExpoRuntimePlan = {
       capabilities: [],
       dependencies: [
-        { name: '@ankhorage/permissions', reasons: ['permission:camera'], version: '^0.2.2' },
+        { name: '@ankhorage/permissions', reasons: ['permission:camera'], version: '^0.2.3' },
         {
           name: EXPO_PLATFORM.packages.camera.name,
           reasons: ['permission:camera'],
@@ -94,7 +109,7 @@ describe('generated OAuth scaffold templates', () => {
       string
     >;
 
-    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.2');
+    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.3');
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
       EXPO_PLATFORM.packages.camera.version,
     );
@@ -105,7 +120,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
     expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
+    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.3');
   });
 
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
@@ -113,7 +128,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.3');
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
@@ -147,7 +162,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(androidRun).toContain("const PUBLIC_STUDIO_API_URL = 'EXPO_PUBLIC_API_URL'");
     expect(androidRun).toContain("const DEFAULT_STUDIO_API_URL = 'http://127.0.0.1:3000/api'");
     expect(androidRun).toContain("const STUDIO_HOST_URL = 'ANKH_STUDIO_HOST_URL'");
-    expect(androidRun).toContain('const projectId = "native-app"');
+    expect(androidRun).toContain("const projectId = 'native-app'");
     expect(androidRun).toContain('const includeStudio = true');
     expect(androidRun).toContain("new Set(['127.0.0.1', '::1', '[::1]', 'localhost'])");
     expect(androidRun).toContain("spawn('adb', ['track-devices', '-l']");

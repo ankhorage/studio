@@ -6,7 +6,7 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const oauthProviders = options.oauthProviders ?? [];
   const oauthProviderDeclaration =
     oauthProviders.length > 0
-      ? `const generatedOAuthProviders = ${JSON.stringify(oauthProviders)} as const;\n\n`
+      ? `const generatedOAuthProviders = [${oauthProviders.map((provider) => `'${provider}'`).join(', ')}] as const;\n\n`
       : '';
   const oauthProviderProperty =
     oauthProviders.length > 0 ? '\n        oauthProviders: generatedOAuthProviders,' : '';

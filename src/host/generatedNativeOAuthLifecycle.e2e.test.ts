@@ -61,7 +61,7 @@ describe('generated native OAuth lifecycle', () => {
     expect(harness.state.fetchCalls).toHaveLength(1);
     expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
     expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
-    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
     expect(hasPkceVerifier(harness.state.values)).toBe(false);
   });
 

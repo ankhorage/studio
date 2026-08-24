@@ -26,7 +26,7 @@ describe('getAuthAdapterTs', () => {
   test('renders configured OAuth providers directly without a generated length condition', () => {
     const source = getAuthAdapterTs({ oauthProviders: ['google'] });
 
-    expect(source).toContain('const generatedOAuthProviders = ["google"] as const;');
+    expect(source).toContain("const generatedOAuthProviders = ['google'] as const;");
     expect(source).toContain('oauthProviders: generatedOAuthProviders');
     expect(source).not.toContain('generatedOAuthProviders.length > 0');
   });

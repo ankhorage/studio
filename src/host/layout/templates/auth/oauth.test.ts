@@ -36,6 +36,27 @@ test('generates syntax-safe OAuth callback path normalization', () => {
   expect(() => transpiler.transformSync(runtime)).not.toThrow();
 });
 
+test('serializes free-form OAuth query parameter names as syntax-safe properties', () => {
+  const runtime = getAuthOAuthRuntimeTs({
+    callbackRoute: '/auth/callback',
+    callbackRouteName: 'auth/callback',
+    callbackTopLevelRouteName: 'auth',
+    nativeSchemes: {},
+    providers: [
+      {
+        id: 'google',
+        label: 'Google',
+        scopes: ['openid'],
+        queryParams: { 'access-type': 'offline' },
+      },
+    ],
+  });
+
+  expect(runtime).toContain("queryParams: { 'access-type': 'offline' }");
+  const transpiler = new Bun.Transpiler({ loader: 'ts' });
+  expect(() => transpiler.transformSync(runtime)).not.toThrow();
+});
+
 test('generates full-page Web OAuth and preserves the native system browser', () => {
   const runtime = createOAuthRuntime();
   const webTransportStart = runtime.indexOf('async function redirectWebAuthorization');
@@ -134,7 +155,9 @@ test('generates one canonical correlation marker without legacy transport state'
   expect(runtime).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
   expect(runtime).not.toContain('version: 1;');
   expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
-  expect(runtime).toContain('getStoredAuthSession() && isCanonicalOAuthCallback(callbackUrl)');
+  expect(runtime).not.toContain('isCanonicalOAuthCallback');
+  expect(runtime).toContain("completed.error.code === 'callback_already_completed'");
+  expect(runtime).toContain("completed.error.code === 'invalid_callback'");
   expect(runtime).toContain('await clearTransportAttempt();');
   expect(runtime).not.toContain('clearLegacyTransportAttempt');
 });
