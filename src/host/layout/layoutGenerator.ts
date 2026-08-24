@@ -259,16 +259,16 @@ export class GeneratedAppFileGenerator {
   ): string {
     const studioAdminStackScreen = includeStudio
       ? `
-  <Stack.Screen key="ankh" name="ankh" />`
+      <Stack.Screen key="ankh" name="ankh" />`
       : '';
     const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
-  <Stack.Protected guard={authState === 'authenticated'}>
-    <Stack.Screen key="app" name="(app)" />
-  </Stack.Protected>
-  <Stack.Protected guard={authState === 'unauthenticated'}>
-    <Stack.Screen key="auth" name="(auth)" />
-  </Stack.Protected>${studioAdminStackScreen}
-</Stack>`;
+      <Stack.Protected guard={authState === 'authenticated'}>
+        <Stack.Screen key="app" name="(app)" />
+      </Stack.Protected>
+      <Stack.Protected guard={authState === 'unauthenticated'}>
+        <Stack.Screen key="auth" name="(auth)" />
+      </Stack.Protected>${studioAdminStackScreen}
+    </Stack>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {
   headerShown: false,
