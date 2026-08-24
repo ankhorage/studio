@@ -158,7 +158,7 @@ async function assertReleasedStudioPackageAsync(
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange !== '^2.0.1') {
+  if (studioRange !== '^2.0.2') {
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
@@ -172,14 +172,14 @@ async function assertReleasedStudioPackageAsync(
   const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
     readonly version?: unknown;
   };
-  if (installedPackage.version !== '2.0.1') {
+  if (installedPackage.version !== '2.0.2') {
     throw new Error(
-      `Studio-enabled navigation fixture must consume released Studio 2.0.1, received ${String(installedPackage.version)}.`,
+      `Studio-enabled navigation fixture must consume released Studio 2.0.2, received ${String(installedPackage.version)}.`,
     );
   }
 
   const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
-  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.1"')) {
+  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.2"')) {
     throw new Error('Studio fixture lockfile does not contain the released registry resolution.');
   }
 }

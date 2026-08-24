@@ -22,7 +22,7 @@ The scaffold consumes these released owners:
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
 bridge; Studio-enabled output adds the published Studio package and its authoring-only picker
-dependencies. Studio-enabled output requires `@ankhorage/studio@^2.0.0`; the Expo 57 peer-surface
+dependencies. Studio-enabled output requires `@ankhorage/studio@^2.0.2`; the Expo 57 peer-surface
 change is a breaking package release and cannot resolve an Expo 54-era Studio 1.x package.
 
 ## Direct Ankhorage dependency audit
@@ -156,7 +156,8 @@ edge-to-edge Android setting and iOS 16.4 deployment target.
 
 The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
-registry owner packages, and covers root and nested Stack, JavaScript Tabs and Drawer navigators,
+registry owner packages, asserts the released Studio 2.0.2 range and exact registry resolution, and
+covers root and nested Stack, JavaScript Tabs and Drawer navigators,
 hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
 OAuth callback is a separate root Stack route so correlation still runs for an existing session;
 ordinary sign-in and sign-up screens remain inside the unauthenticated `(auth)` guard. The app-owned
