@@ -29,6 +29,9 @@ test('generates a router-owned OAuth callback that completes once across effect 
   expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(callbackUrl);');
   expect(callback).toContain('const handledOutcomeRef = useRef(false);');
   expect(callback).toContain('if (signal.aborted || handledOutcomeRef.current) return;');
+  expect(callback).toContain("outcome.completion === 'already-completed'");
+  expect(callback).toContain('This OAuth callback was already completed. Continuing…');
+  expect(callback).toContain('await waitForCallbackStatusPaintAsync();');
   expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
   expect(callback.match(/completeOAuthCallback\(callbackUrl\)/gu)).toHaveLength(1);
 

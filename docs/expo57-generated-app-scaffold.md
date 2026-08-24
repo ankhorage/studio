@@ -158,6 +158,8 @@ The package-owned `test:acceptance:expo57-generated-navigation` runner adds the 
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
 registry owner packages, and covers root and nested Stack, JavaScript Tabs and Drawer navigators,
 hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
+OAuth callback is a separate root Stack route so correlation still runs for an existing session;
+ordinary sign-in and sign-up screens remain inside the unauthenticated `(auth)` guard. The app-owned
 Expo CLI first generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6
 run. Every Router start/export command disables the React Navigation compatibility rewrite. The
 runner performs static Web, Android and iOS exports for both full generation modes, checks Expo

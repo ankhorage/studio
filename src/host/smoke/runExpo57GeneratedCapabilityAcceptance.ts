@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -15,6 +14,8 @@ import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 240_000;
+const OAUTH_CLOCK_OFFSET_STORAGE_KEY = 'ankh.acceptance.oauth-clock-offset-ms';
+const OAUTH_EXPIRED_CLOCK_OFFSET_MS = 11 * 60 * 1_000;
 const ROUTER_REWRITE_DISABLED = '1';
 
 export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<void> {
@@ -172,19 +173,55 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   for (const command of buildCommands) await runGeneratedCommandAsync(projectRoot, command);
 }
 
-function createAuthStubServer(): ReturnType<typeof Bun.serve> & { tokenExchangeCount: number } {
+function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
+  authorizationCount: number;
+  tokenExchangeCount: number;
+} {
   const server = Bun.serve({
     hostname: '127.0.0.1',
     port: 0,
     fetch(request) {
       const { pathname } = new URL(request.url);
-      if (pathname === '/auth/v1/token') server.tokenExchangeCount += 1;
-      return Response.json(
-        { error: 'Acceptance Auth stub does not exchange tokens.' },
-        { status: 400 },
-      );
+      const corsHeaders = {
+        'access-control-allow-headers':
+          request.headers.get('access-control-request-headers') ??
+          'authorization, apikey, content-type, x-client-info, x-supabase-api-version',
+        'access-control-allow-methods': 'GET, POST, OPTIONS',
+        'access-control-allow-origin': '*',
+      };
+      if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+      if (pathname === '/favicon.ico')
+        return new Response(null, { headers: corsHeaders, status: 204 });
+      if (pathname === '/auth/v1/authorize') {
+        server.authorizationCount += 1;
+        return new Response('Deterministic OAuth provider handoff', { headers: corsHeaders });
+      }
+      if (pathname === '/auth/v1/token' && request.method === 'POST') {
+        server.tokenExchangeCount += 1;
+        return Response.json(
+          {
+            access_token: 'capability-browser-access-token',
+            expires_in: 3600,
+            refresh_token: 'capability-browser-refresh-token',
+            token_type: 'bearer',
+            user: {
+              app_metadata: {},
+              aud: 'authenticated',
+              email: 'capability-browser@example.com',
+              id: 'capability-browser-user',
+              user_metadata: {},
+            },
+          },
+          { headers: corsHeaders },
+        );
+      }
+      return Response.json({ error: 'Unexpected acceptance Auth request.' }, { status: 404 });
     },
-  }) as ReturnType<typeof Bun.serve> & { tokenExchangeCount: number };
+  }) as ReturnType<typeof Bun.serve> & {
+    authorizationCount: number;
+    tokenExchangeCount: number;
+  };
+  server.authorizationCount = 0;
   server.tokenExchangeCount = 0;
   return server;
 }
@@ -202,6 +239,8 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     chrome = await ChromeNavigationSession.createAsync(
       await reserveTcpPortAsync('capability Chrome debug'),
     );
+    await chrome.installDateNowOffsetAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY);
+    await chrome.installObservedBodyTextHistoryAsync();
 
     await chrome.navigateAsync(`${rootUrl}/sign-in`);
     await chrome.waitForBodyTextAsync('Sign in');
@@ -219,7 +258,12 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
     await chrome.waitForLocationAsync({ pathname: '/sign-up' });
     await chrome.waitForHydratedRoleAndNameAsync('button', 'Create account');
 
-    await seedExpiredOAuthAttemptAsync(chrome, rootUrl);
+    await startBrowserOAuthAttemptAsync(chrome, rootUrl, authStub);
+    await chrome.navigateAsync(`${rootUrl}/sign-in`);
+    await chrome.setLocalStorageItemAsync(
+      OAUTH_CLOCK_OFFSET_STORAGE_KEY,
+      String(OAUTH_EXPIRED_CLOCK_OFFSET_MS),
+    );
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=expired-code`);
     await chrome.waitForBodyTextAsync('The OAuth authorization attempt expired.');
     await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
@@ -228,17 +272,37 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
       'The OAuth authorization attempt was not found or has expired.',
     );
 
-    await seedCompletedOAuthReplayAsync(chrome, rootUrl);
+    await startBrowserOAuthAttemptAsync(chrome, rootUrl, authStub);
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
     await chrome.waitForLocationAsync({ pathname: '/' });
     await chrome.waitForBodyTextAsync('Camera access is required to scan barcodes.');
     await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
+
+    const completedExchangeCount = authStub.tokenExchangeCount;
+    if (completedExchangeCount !== 1) {
+      throw new Error(
+        `Generated OAuth completion performed ${completedExchangeCount} token exchange(s).`,
+      );
+    }
+
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=mismatched-code`);
+    await chrome.waitForBodyTextAsync(
+      'The OAuth callback does not match the completed authorization callback.',
+    );
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
+
+    await chrome.navigateAsync(`${rootUrl}/auth/callback?code=replay-code`);
+    await chrome.waitForObservedBodyTextAsync(
+      'This OAuth callback was already completed. Continuing…',
+    );
+    await chrome.waitForLocationAsync({ pathname: '/' });
+    await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
     await chrome.reloadAsync();
     await chrome.waitForHydratedTestIdAsync('capability-acceptance-scanner');
 
-    if (authStub.tokenExchangeCount !== 0) {
+    if (authStub.tokenExchangeCount !== completedExchangeCount) {
       throw new Error(
-        `Generated OAuth stale/replay browser evidence performed ${authStub.tokenExchangeCount} token exchange(s).`,
+        'Generated OAuth mismatched/replay browser evidence performed an additional token exchange.',
       );
     }
     assertNoBrowserErrors(chrome.errors, 'served generated Auth/capability export');
@@ -248,62 +312,22 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
   }
 }
 
-async function seedExpiredOAuthAttemptAsync(
+async function startBrowserOAuthAttemptAsync(
   chrome: ChromeNavigationSession,
   rootUrl: string,
+  authStub: ReturnType<typeof createAuthStubServer>,
 ): Promise<void> {
-  const now = Date.now();
+  const authorizationCountBefore = authStub.authorizationCount;
   await chrome.clearLocalStorageAsync();
-  await chrome.setLocalStorageItemAsync(
-    'ankh.auth.oauth.transport',
-    JSON.stringify({ attemptId: 'expired-browser-attempt' }),
-  );
-  await chrome.setLocalStorageItemAsync(
-    'ankh.auth.session.v1.oauth.attempt',
-    JSON.stringify({
-      version: 3,
-      id: 'expired-browser-attempt',
-      provider: 'google',
-      redirectUri: `${rootUrl}/auth/callback`,
-      status: 'pending',
-      createdAt: now - 10_000,
-      expiresAt: now - 5_000,
-    }),
-  );
-}
-
-async function seedCompletedOAuthReplayAsync(
-  chrome: ChromeNavigationSession,
-  rootUrl: string,
-): Promise<void> {
-  const now = Date.now();
-  const attemptId = 'completed-browser-attempt';
-  const code = 'replay-code';
-  const callbackFingerprint = createHash('sha256').update(`${attemptId}\0${code}`).digest('hex');
-  await chrome.clearLocalStorageAsync();
-  await chrome.setLocalStorageItemAsync(
-    'ankh.auth.session.v1',
-    JSON.stringify({
-      accessToken: 'capability-browser-access-token',
-      refreshToken: 'capability-browser-refresh-token',
-      expiresAt: now + 60 * 60 * 1_000,
-      user: { id: 'capability-browser-user' },
-    }),
-  );
-  await chrome.setLocalStorageItemAsync('ankh.auth.oauth.transport', JSON.stringify({ attemptId }));
-  await chrome.setLocalStorageItemAsync(
-    'ankh.auth.session.v1.oauth.attempt',
-    JSON.stringify({
-      version: 3,
-      id: attemptId,
-      provider: 'google',
-      redirectUri: `${rootUrl}/auth/callback`,
-      status: 'completed',
-      createdAt: now - 1_000,
-      expiresAt: now + 10 * 60 * 1_000,
-      callbackFingerprint,
-    }),
-  );
+  await chrome.setLocalStorageItemAsync(OAUTH_CLOCK_OFFSET_STORAGE_KEY, '0');
+  await chrome.navigateAsync(`${rootUrl}/sign-in`);
+  await chrome.waitForHydratedRoleAndNameAsync('button', 'Continue with Google');
+  await chrome.clickByRoleAndNameAsync('button', 'Continue with Google');
+  await chrome.waitForLocationAsync({ pathname: '/auth/v1/authorize' });
+  await chrome.waitForBodyTextAsync('Deterministic OAuth provider handoff');
+  if (authStub.authorizationCount !== authorizationCountBefore + 1) {
+    throw new Error('Generated OAuth authorization did not reach the deterministic Auth stub.');
+  }
 }
 
 async function snapshotSourceTreeAsync(projectRoot: string): Promise<Map<string, Uint8Array>> {

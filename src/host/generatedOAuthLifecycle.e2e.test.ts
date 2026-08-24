@@ -25,7 +25,7 @@ interface GeneratedOAuthRuntime {
 }
 
 type GeneratedOAuthOutcome =
-  | { status: 'authenticated' }
+  | { status: 'authenticated'; completion: 'fresh' | 'already-completed' }
   | { status: 'cancelled'; message: string }
   | { status: 'error'; message: string; recoverable: boolean };
 
@@ -141,7 +141,7 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
     `${CALLBACK_URL}?code=opaque-code`,
   );
 
-  expect(completed).toEqual({ status: 'authenticated' });
+  expect(completed).toEqual({ status: 'authenticated', completion: 'fresh' });
   expect(harness.state.fetchCalls).toHaveLength(1);
   expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
   expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
@@ -171,7 +171,7 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
     `${CALLBACK_URL}?code=opaque-code`,
   );
 
-  expect(replay).toEqual({ status: 'authenticated' });
+  expect(replay).toEqual({ status: 'authenticated', completion: 'already-completed' });
   expect(harness.state.fetchCalls).toHaveLength(1);
 }
 

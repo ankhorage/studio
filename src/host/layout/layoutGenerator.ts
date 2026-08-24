@@ -266,13 +266,17 @@ export class GeneratedAppFileGenerator {
       ? `
       <Stack.Screen key="ankh" name="ankh" />`
       : '';
+    const oauthCallbackStackScreen = authLayoutPlan.oauth
+      ? `
+      <Stack.Screen key="oauth-callback" name="${authLayoutPlan.oauth.callbackRouteName}" />`
+      : '';
     const innerNavigationJsx = `<Stack screenOptions={rootStackScreenOptions}>
       <Stack.Protected guard={authState === 'authenticated'}>
         <Stack.Screen key="app" name="(app)" />
       </Stack.Protected>
       <Stack.Protected guard={authState === 'unauthenticated'}>
         <Stack.Screen key="auth" name="(auth)" />
-      </Stack.Protected>${studioAdminStackScreen}
+      </Stack.Protected>${oauthCallbackStackScreen}${studioAdminStackScreen}
     </Stack>`;
     const innerNavigation: BuiltNavigatorJsx = {
       declarations: `const rootStackScreenOptions = {

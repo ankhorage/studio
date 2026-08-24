@@ -30,13 +30,18 @@ The current acceptance slice proves:
   declarations;
 - the served static Web export hydrates direct `/sign-in`, `/sign-up`, `/auth/callback` and `/`
   requests, survives reload plus Back/Forward, rejects an expired OAuth attempt without a token
-  exchange, treats a completed replay with a valid session idempotently without a second exchange,
-  and renders the controlled Web camera-permission fallback.
+  exchange, keeps only the callback route reachable after authentication, rejects a mismatched
+  callback even with a valid session, treats the exact completed replay idempotently without a
+  second exchange, exposes that replay-specific completion in the hydrated callback UI, and renders
+  the controlled Web camera-permission fallback.
 
 The registry baseline asserted by this slice is `@ankhorage/expo-runtime@3.0.3`,
 `@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.2`, with Expo and Expo Router
 `~57.0.15`. Browser acceptance uses a deterministic local Auth transport that contains no real
-credentials and fails if any stale/replayed callback reaches the token endpoint.
+credentials. Pending, expired and completed correlation state is created through the released
+adapter's public authorization/completion flow; the harness does not reproduce owner-private
+storage keys, schemas or callback fingerprints. The single valid completion must exchange exactly
+once, while mismatched and replayed callbacks must not reach the token endpoint again.
 
 Focused CI tests separately execute deterministic global-fetch/auth behavior, OAuth success,
 single-exchange replay, missing/malformed/mismatched/expired correlation rejection, cancellation

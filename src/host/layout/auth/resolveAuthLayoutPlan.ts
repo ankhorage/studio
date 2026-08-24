@@ -318,7 +318,7 @@ function buildGeneratedFilePlans(
         kind: 'oauth-runtime',
       },
       {
-        path: normalizeRel(path.join(APP_ROOT_REL, '(auth)', `${oauth.callbackRouteName}.tsx`)),
+        path: normalizeRel(path.join(APP_ROOT_REL, `${oauth.callbackRouteName}.tsx`)),
         kind: 'oauth-callback',
         routeName: oauth.callbackRouteName,
       },

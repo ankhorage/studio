@@ -112,7 +112,7 @@ async function resolveCompletedOAuthOutcome(
     completed.error.code === 'callback_already_completed' &&
     hasStoredSession
   ) {
-    return { status: 'authenticated' };
+    return { status: 'authenticated', completion: 'already-completed' };
   }
   if (completed.ok) return toTransportOutcome(completed);
   const preservesAttempt =
@@ -130,7 +130,7 @@ function resolveWebOAuthRedirectUri(callbackPath: string): string {
 }
 
 function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTransportOutcome {
-  if (result.ok) return { status: 'authenticated' };
+  if (result.ok) return { status: 'authenticated', completion: 'fresh' };
   if (result.status === 'cancelled') {
     return {
       status: 'cancelled',

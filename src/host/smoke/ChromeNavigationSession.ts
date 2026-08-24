@@ -116,6 +116,44 @@ export class ChromeNavigationSession {
     await this.evaluateAsync('(() => { history.forward(); return true; })()');
   }
 
+  async installDateNowOffsetAsync(storageKey: string): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const originalDateNow = Date.now.bind(Date);
+  Date.now = () => {
+    try {
+      const offset = Number.parseInt(localStorage.getItem(${JSON.stringify(storageKey)}) ?? '0', 10);
+      return originalDateNow() + (Number.isFinite(offset) ? offset : 0);
+    } catch {
+      return originalDateNow();
+    }
+  };
+})();`,
+    });
+  }
+
+  async installObservedBodyTextHistoryAsync(): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const observedBodyText = [];
+  Object.defineProperty(globalThis, '__ankhObservedBodyText', {
+    configurable: false,
+    value: observedBodyText,
+  });
+  const recordBodyText = () => {
+    const bodyText = document.body?.innerText ?? '';
+    if (bodyText.length > 0 && observedBodyText.at(-1) !== bodyText) observedBodyText.push(bodyText);
+  };
+  new MutationObserver(recordBodyText).observe(document, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
+  document.addEventListener('DOMContentLoaded', recordBodyText, { once: true });
+})();`,
+    });
+  }
+
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(
       createRoleAndNameExpression(role, name, { click: false, requireHydration: false }),
@@ -170,6 +208,19 @@ export class ChromeNavigationSession {
     throw new Error(
       `Timed out waiting for body text "${expectedText}". Last body text:\n${bodyText}`,
     );
+  }
+
+  async waitForObservedBodyTextAsync(
+    expectedText: string,
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
+    const expression = `(() => {
+  const history = Reflect.get(globalThis, '__ankhObservedBodyText');
+  return Array.isArray(history) && history.some(
+    (bodyText) => typeof bodyText === 'string' && bodyText.includes(${JSON.stringify(expectedText)}),
+  );
+})()`;
+    await this.waitForBooleanAsync(expression, `observed body text "${expectedText}"`, timeoutMs);
   }
 
   async waitForLocationAsync(
@@ -249,9 +300,13 @@ export class ChromeNavigationSession {
     });
   }
 
-  private async waitForBooleanAsync(expression: string, description: string): Promise<void> {
+  private async waitForBooleanAsync(
+    expression: string,
+    description: string,
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
     const start = Date.now();
-    while (Date.now() - start < HTTP_TIMEOUT_MS) {
+    while (Date.now() - start < timeoutMs) {
       if (await this.evaluateAsync<boolean>(expression)) return;
       await Bun.sleep(250);
     }

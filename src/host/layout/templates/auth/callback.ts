@@ -132,6 +132,11 @@ async function completeCallbackRouteAsync(args: {
   if (signal.aborted || handledOutcomeRef.current) return;
   handledOutcomeRef.current = true;
   if (outcome.status === 'authenticated') {
+    if (outcome.completion === 'already-completed') {
+      setMessage('This OAuth callback was already completed. Continuing…');
+      await waitForCallbackStatusPaintAsync();
+      if (hasCallbackAborted(signal)) return;
+    }
     router.replace(POST_SIGN_IN_ROUTE);
     return;
   }
@@ -145,6 +150,18 @@ function resolveCallbackUrl(params: Record<string, string | string[]>): string |
   } catch {
     return null;
   }
+}
+
+function hasCallbackAborted(signal: AbortSignal): boolean {
+  return signal.aborted;
+}
+
+function waitForCallbackStatusPaintAsync(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
 }
 
 const styles = StyleSheet.create({

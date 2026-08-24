@@ -100,7 +100,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     ]);
 
     const generatedFiles = await collectRelativeFiles(created.path);
-    const callbackPath = `src/app/(auth)/${OAUTH_CALLBACK_ROUTE}.tsx`;
+    const callbackPath = `src/app/${OAUTH_CALLBACK_ROUTE}.tsx`;
     expect(generatedFiles.filter((file) => file === callbackPath)).toEqual([callbackPath]);
 
     const packageJson = JSON.parse(await readProjectFile(created.path, 'package.json')) as {

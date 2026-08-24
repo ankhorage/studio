@@ -165,6 +165,7 @@ test('generates one canonical correlation marker without legacy transport state'
   expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
   expect(runtime).not.toContain('isCanonicalOAuthCallback');
   expect(runtime).toContain("completed.error.code === 'callback_already_completed'");
+  expect(runtime).toContain("completion: 'already-completed'");
   expect(runtime).toContain("completed.error.code === 'invalid_callback'");
   expect(runtime).toContain('await clearTransportAttempt();');
   expect(runtime).not.toContain('clearLegacyTransportAttempt');

@@ -40,7 +40,7 @@ export const generatedOAuthProviderItems = GENERATED_OAUTH_PROVIDERS.map((provid
 }));
 
 export type GeneratedOAuthTransportOutcome =
-  | { status: 'authenticated' }
+  | { status: 'authenticated'; completion: 'fresh' | 'already-completed' }
   | { status: 'cancelled'; message: string }
   | { status: 'error'; message: string; recoverable: boolean };
 
@@ -270,7 +270,7 @@ function hasBrowserLocationAssign(
 
 function toTransportOutcome(result: AuthOAuthCompletionResult): GeneratedOAuthTransportOutcome {
   if (result.ok) {
-    return { status: 'authenticated' };
+    return { status: 'authenticated', completion: 'fresh' };
   }
   if (result.status === 'cancelled') {
     return {

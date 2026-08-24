@@ -311,7 +311,8 @@ describe('GeneratedAppFileGenerator', () => {
         includeStudio: false,
       },
     );
-    const callbackFiles = files.filter((file) => file.path === 'src/app/(auth)/auth/callback.tsx');
+    const callbackFiles = files.filter((file) => file.path === 'src/app/auth/callback.tsx');
+    const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
     const adapter = files.find((file) => file.path === 'src/auth/adapter.ts')?.content ?? '';
     const navigation = files.find((file) => file.path === 'src/auth/navigation.ts')?.content ?? '';
     const oauth = files.find((file) => file.path === 'src/auth/oauth.ts')?.content ?? '';
@@ -324,6 +325,7 @@ describe('GeneratedAppFileGenerator', () => {
     const allGeneratedSource = files.map((file) => file.content).join('\n');
 
     expect(callbackFiles).toHaveLength(1);
+    expect(rootLayout).toContain('<Stack.Screen key="oauth-callback" name="auth/callback" />');
     expect(navigation).toContain("AppState.addEventListener('change'");
     expect(navigation).toContain('await bootstrapAuthSession()');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
@@ -468,6 +470,7 @@ describe('GeneratedAppFileGenerator', () => {
 
     expect(paths).not.toContain('src/auth/oauth.ts');
     expect(paths).not.toContain('src/app/(auth)/auth/callback.tsx');
+    expect(paths).not.toContain('src/app/auth/callback.tsx');
     expect(files.map((file) => file.content).join('\n')).not.toContain('OAuthProviderList');
   });
 });

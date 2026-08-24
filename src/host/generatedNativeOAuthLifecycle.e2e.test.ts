@@ -17,7 +17,7 @@ const EXPO_GO_MESSAGE =
 const temporaryRoots = new Set<string>();
 
 type GeneratedOAuthOutcome =
-  | { status: 'authenticated' }
+  | { status: 'authenticated'; completion: 'fresh' | 'already-completed' }
   | { status: 'cancelled'; message: string }
   | { status: 'error'; message: string; recoverable: boolean };
 
@@ -59,7 +59,7 @@ describe('generated native OAuth lifecycle', () => {
 
     const result = await (await harness.importRuntime()).startOAuthAuthorization('google');
 
-    expect(result).toEqual({ status: 'authenticated' });
+    expect(result).toEqual({ status: 'authenticated', completion: 'fresh' });
     expect(harness.state.fetchCalls).toHaveLength(1);
     expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
     expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);

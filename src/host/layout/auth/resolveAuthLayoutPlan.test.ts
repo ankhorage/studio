@@ -137,7 +137,7 @@ describe('resolveAuthLayoutPlan', () => {
       kind: 'oauth-state',
     });
     expect(plan.generatedFiles).toContainEqual({
-      path: 'src/app/(auth)/auth/callback.tsx',
+      path: 'src/app/auth/callback.tsx',
       kind: 'oauth-callback',
       routeName: 'auth/callback',
     });
