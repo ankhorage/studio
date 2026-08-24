@@ -283,8 +283,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (!isInnerContentReady || rootNavigationKey.length === 0 || !isAuthRuntimeReady) return;
-  ${includeStudio ? 'if (isStudioAdminPath(pathname)) return;' : ''}
-
+${includeStudio ? '  if (isStudioAdminPath(pathname)) return;\n' : ''}
   if (!isGeneratedAuthEnforced()) return;
 
   const authenticated = isAuthenticated();
@@ -330,7 +329,7 @@ useEffect(() => {
     ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
   const innerContentSignature = authRuntime
-    ? '{ authState, onReady }: { authState: GeneratedAuthNavigationState; onReady?: () => void }'
+    ? `{\n  authState,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  onReady?: () => void;\n}`
     : '';
   const innerContentReadyHook = authRuntime
     ? `

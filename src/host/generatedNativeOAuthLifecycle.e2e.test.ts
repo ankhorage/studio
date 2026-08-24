@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from 'bun:test';
 import { getAuthOAuthRuntimeTs } from './layout/templates/auth/oauth';
 
 const SESSION_STORAGE_KEY = 'generated.native.oauth.session';
-const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport.v2';
+const TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';
 const CALLBACK_URL = 'ankh-ios://auth/callback';
 const EXPO_GO_MESSAGE =
   'Brokered OAuth requires a development or standalone build with the configured app scheme; Expo Go cannot provide a stable OAuth callback scheme.';
@@ -61,7 +61,7 @@ describe('generated native OAuth lifecycle', () => {
     expect(harness.state.fetchCalls).toHaveLength(1);
     expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
     expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
-    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
     expect(hasPkceVerifier(harness.state.values)).toBe(false);
   });
 

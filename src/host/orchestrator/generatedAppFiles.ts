@@ -56,12 +56,15 @@ export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
   zoraExtensions: readonly ZoraExtensionDefinition[];
 }): string {
-  const importLines = new Set<string>();
+  const externalImportLines = new Set<string>();
+  const relativeImportLines = new Set<string>();
   const interactionPolicySupportedComponents = new Set<string>();
   const entries = args.zoraExtensions
     .flatMap((extension) => {
       const exportNames = Array.from(new Set(Object.values(extension.components))).sort();
-      importLines.add(`import { ${exportNames.join(', ')} } from '${extension.packageName}';`);
+      externalImportLines.add(
+        `import { ${exportNames.join(', ')} } from '${extension.packageName}';`,
+      );
 
       for (const componentName of extension.interactionPolicySupportedComponents ?? []) {
         if (!Object.prototype.hasOwnProperty.call(extension.components, componentName)) {
@@ -80,7 +83,9 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     .sort((left, right) => left.componentName.localeCompare(right.componentName));
 
   if (args.usesExpoBarcodeScannerAdapter) {
-    importLines.add("import { ExpoBarcodeScannerView } from './expo/ExpoBarcodeScannerView';");
+    relativeImportLines.add(
+      "import { ExpoBarcodeScannerView } from './expo/ExpoBarcodeScannerView';",
+    );
     entries.unshift({
       componentName: 'BarcodeScannerView',
       exportName: 'ExpoBarcodeScannerView',
@@ -104,7 +109,8 @@ export function createGeneratedAppExtensionRegistrySource(args: {
 
   return [
     "import type { ComponentRegistry } from '@ankhorage/runtime';",
-    ...[...importLines].sort(),
+    ...[...externalImportLines].sort(),
+    ...(relativeImportLines.size > 0 ? ['', ...[...relativeImportLines].sort()] : []),
     '',
     componentRegistry,
     '',

@@ -81,6 +81,17 @@ describe('generated auth root bootstrap', () => {
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
+    expect(rootLayout).toContain(`return (
+    <Stack screenOptions={rootStackScreenOptions}>
+      <Stack.Protected guard={authState === 'authenticated'}>
+        <Stack.Screen key="app" name="(app)" />
+      </Stack.Protected>
+      <Stack.Protected guard={authState === 'unauthenticated'}>
+        <Stack.Screen key="auth" name="(auth)" />
+      </Stack.Protected>
+      <Stack.Screen key="ankh" name="ankh" />
+    </Stack>
+  );`);
   });
 
   test('keeps non-root / matchable while the root layout alone canonicalizes navigation', () => {

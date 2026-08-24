@@ -11,7 +11,7 @@ The scaffold consumes these released owners:
 
 | Owner                                              | Generated or Studio range | Role                                                                             |
 | -------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| `@ankhorage/expo-runtime`                          | `^3.0.1`                  | Expo 57 platform projection, planning and focused action bridge                  |
+| `@ankhorage/expo-runtime`                          | `^3.0.3`                  | Expo 57 platform projection, planning and focused action bridge                  |
 | `@ankhorage/runtime`                               | `^2.2.0`                  | manifest rendering and bindings                                                  |
 | `@ankhorage/zora`                                  | `^3.0.0`                  | app UI; brings `@ankhorage/surface@^3.0.0` through its released dependency graph |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.4.0`                  | Studio authoring drag-and-drop                                                   |
@@ -34,7 +34,7 @@ root package is classified below.
 
 | Dependency                                         | Previous  | Decision                                         |
 | -------------------------------------------------- | --------- | ------------------------------------------------ |
-| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.1` platform owner       |
+| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.3` platform owner       |
 | `@ankhorage/runtime`                               | `^2.1.0`  | update to released `^2.2.0` runtime owner        |
 | `@ankhorage/zora`                                  | `^2.13.2` | update to released `^3.0.0` Expo 57 UI owner     |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.3.2`  | update to released `^0.4.0` animation owner      |
@@ -46,8 +46,8 @@ root package is classified below.
 
 `@ankhorage/color-theory@^0.0.8`, `@ankhorage/contracts@^8.0.0`,
 `@ankhorage/data-sources@^2.0.0`, `@ankhorage/deploy@^0.12.0`,
-`@ankhorage/infra@^4.1.1`, `@ankhorage/orchestrator@^0.3.1`,
-`@ankhorage/supabase-auth@^1.2.1`, `@ankhorage/supabase-storage@^0.2.0`,
+`@ankhorage/infra@^4.1.2`, `@ankhorage/orchestrator@^0.3.1`,
+`@ankhorage/supabase-auth@^1.2.2`, `@ankhorage/supabase-storage@^0.2.0`,
 `@ankhorage/supabase-vault@^0.2.4`, `@ankhorage/templates@^7.0.0`,
 `@ankhorage/zora-chess@^0.1.2` and `@ankhorage/zora-tabletop@^0.0.5` match their current
 released owner baselines.
@@ -66,7 +66,7 @@ come through the root workspace package and the released dependency graph audite
 ## Canonical platform projection
 
 The generated package map reads package names and versions directly from `EXPO_PLATFORM`. The
-released 3.0.1 projection used by this migration is:
+released 3.0.3 projection used by this migration is:
 
 ```text
 Expo                         ~57.0.15

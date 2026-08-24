@@ -134,7 +134,7 @@ export class ProjectScaffolder {
 
     const nextPackageJson = mergePackageJson(existingPackageJson, templatePackageJson, targets);
 
-    await fs.writeFile(packageJsonPath, JSON.stringify(nextPackageJson, null, 2), 'utf8');
+    await fs.writeFile(packageJsonPath, `${JSON.stringify(nextPackageJson, null, 2)}\n`, 'utf8');
     await this.syncAndroidRunScript(projectPath, targets, slug, includeStudio);
     await this.writeAppConfig(projectPath, appName, slug, targets, splashScreen, runtimePlan);
     await this.writeTsConfig(projectPath);
@@ -177,7 +177,7 @@ export class ProjectScaffolder {
 
     await fs.writeFile(
       path.join(projectPath, 'ankh.config.json'),
-      JSON.stringify(manifest, null, 2),
+      `${JSON.stringify(manifest, null, 2)}\n`,
       'utf8',
     );
 
@@ -246,7 +246,7 @@ export class ProjectScaffolder {
     );
     await fs.writeFile(
       path.join(dir, 'package.json'),
-      JSON.stringify(packageJson, null, 2),
+      `${JSON.stringify(packageJson, null, 2)}\n`,
       'utf8',
     );
   }

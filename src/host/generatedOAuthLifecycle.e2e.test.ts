@@ -15,7 +15,7 @@ const temporaryRoots = new Set<string>();
 const hadOriginalLocation = Reflect.has(globalThis, 'location');
 const originalLocation: unknown = Reflect.get(globalThis, 'location');
 
-type IsolatedScenario = 'denial' | 'success';
+type IsolatedScenario = 'denial' | 'expired' | 'malformed' | 'mismatched' | 'missing' | 'success';
 
 interface GeneratedOAuthRuntime {
   startOAuthAuthorization(providerId: string): Promise<GeneratedOAuthOutcome>;
@@ -54,17 +54,18 @@ afterEach(async () => {
 
 const isolatedScenarioValue: unknown = Reflect.get(process.env, SCENARIO_ENV);
 const isolatedScenario =
-  isolatedScenarioValue === 'success' || isolatedScenarioValue === 'denial'
+  isolatedScenarioValue === 'success' ||
+  isolatedScenarioValue === 'denial' ||
+  isolatedScenarioValue === 'expired' ||
+  isolatedScenarioValue === 'malformed' ||
+  isolatedScenarioValue === 'mismatched' ||
+  isolatedScenarioValue === 'missing'
     ? isolatedScenarioValue
     : undefined;
 if (isolatedScenario !== undefined) {
   describe('isolated generated OAuth lifecycle scenario', () => {
     it(isolatedScenario, async () => {
-      if (isolatedScenario === 'success') {
-        await runSuccessfulCallbackScenario();
-      } else {
-        await runProviderDenialScenario();
-      }
+      await runScenario(isolatedScenario);
     });
   });
 } else {
@@ -76,7 +77,28 @@ if (isolatedScenario !== undefined) {
     it('cleans provider denial across navigation and permits an immediate new attempt', async () => {
       await runIsolatedScenario('denial');
     });
+
+    it.each(['missing', 'malformed', 'mismatched', 'expired'] as const)(
+      'rejects %s callback state without exchanging or creating a session',
+      async (scenario) => {
+        await runIsolatedScenario(scenario);
+      },
+    );
   });
+}
+
+async function runScenario(scenario: IsolatedScenario): Promise<void> {
+  switch (scenario) {
+    case 'denial':
+      return runProviderDenialScenario();
+    case 'expired':
+    case 'malformed':
+    case 'mismatched':
+    case 'missing':
+      return runRejectedCallbackScenario(scenario);
+    case 'success':
+      return runSuccessfulCallbackScenario();
+  }
 }
 
 async function runIsolatedScenario(scenario: IsolatedScenario): Promise<void> {
@@ -121,9 +143,26 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   expect(harness.state.fetchCalls).toHaveLength(1);
   expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
   expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
-  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
+  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
   expect(hasPkceVerifier(harness.state.values)).toBe(false);
   expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
+
+  for (const [label, callbackUrl] of [
+    ['missing-code', CALLBACK_URL],
+    ['stale-code', `${CALLBACK_URL}?code=stale-code`],
+    ['invalid-parameters', `${CALLBACK_URL}?code=opaque-code&error_description=invalid`],
+  ] as const) {
+    const invalidCallbackDocument = await harness.importDocument(label);
+    const rejected = await invalidCallbackDocument.completeOAuthCallback(callbackUrl);
+
+    expect(rejected).toEqual({
+      status: 'error',
+      message: 'The OAuth callback does not match the completed authorization callback.',
+      recoverable: true,
+    });
+    expect(harness.state.fetchCalls).toHaveLength(1);
+    expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
+  }
 
   const reloadedCallbackDocument = await harness.importDocument('callback-reload');
   const replay = await reloadedCallbackDocument.completeOAuthCallback(
@@ -163,6 +202,42 @@ async function runProviderDenialScenario(): Promise<void> {
   const restartedAttemptId = readTransportMarker(harness.state.values).attemptId;
   expect(restartedAttemptId).not.toBe(firstAttemptId);
   expect(hasPkceVerifier(harness.state.values)).toBe(true);
+}
+
+async function runRejectedCallbackScenario(
+  scenario: 'expired' | 'malformed' | 'mismatched' | 'missing',
+): Promise<void> {
+  const harness = await createHarness();
+  let callbackUrl = `${CALLBACK_URL}?code=opaque-code`;
+
+  if (scenario !== 'missing') {
+    const startDocument = await harness.importDocument(`${scenario}-start`);
+    void startDocument.startOAuthAuthorization('google');
+    await waitFor(() => harness.state.assignedUrls.length === 1);
+  }
+
+  if (scenario === 'malformed') {
+    callbackUrl = 'not-a-callback-url';
+  } else if (scenario === 'mismatched') {
+    harness.state.values.set(
+      TRANSPORT_ATTEMPT_KEY,
+      JSON.stringify({ attemptId: crypto.randomUUID() }),
+    );
+  } else if (scenario === 'expired') {
+    expireOwnerAttempt(harness.state.values);
+  }
+
+  const callbackDocument = await harness.importDocument(`${scenario}-callback`);
+  const rejected = await callbackDocument.completeOAuthCallback(callbackUrl);
+
+  expect(rejected).toEqual({
+    status: 'error',
+    message: expectedRejectedCallbackMessage(scenario),
+    recoverable: true,
+  });
+  expect(harness.state.fetchCalls).toHaveLength(0);
+  expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(false);
+  expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
 }
 
 async function createHarness(): Promise<GeneratedOAuthHarness> {
@@ -310,6 +385,30 @@ function readTransportMarker(values: ReadonlyMap<string, string>): { attemptId: 
 
 function hasPkceVerifier(values: ReadonlyMap<string, string>): boolean {
   return [...values.keys()].some((key) => key.endsWith('-code-verifier'));
+}
+
+function expireOwnerAttempt(values: Map<string, string>): void {
+  const attemptKey = `${SESSION_STORAGE_KEY}.oauth.attempt`;
+  const raw = values.get(attemptKey);
+  if (!raw) throw new Error('Supabase OAuth attempt state was not persisted.');
+  const value: unknown = JSON.parse(raw);
+  if (!isRecord(value)) throw new Error('Supabase OAuth attempt state is invalid.');
+  values.set(attemptKey, JSON.stringify({ ...value, createdAt: 0, expiresAt: 1 }));
+}
+
+function expectedRejectedCallbackMessage(
+  scenario: 'expired' | 'malformed' | 'mismatched' | 'missing',
+): string {
+  switch (scenario) {
+    case 'expired':
+      return 'The OAuth authorization attempt expired.';
+    case 'malformed':
+      return 'The OAuth callback URL is invalid.';
+    case 'mismatched':
+      return 'The OAuth authorization attempt was not found.';
+    case 'missing':
+      return 'The OAuth authorization attempt was not found or has expired.';
+  }
 }
 
 async function waitFor(predicate: () => boolean): Promise<void> {

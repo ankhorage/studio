@@ -18,12 +18,12 @@ export type GeneratedStorageProvider = 'supabase' | null;
 const CONTRACTS_VERSION = '^8.0.0';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
-const STUDIO_VERSION = '^2.0.0';
+const STUDIO_VERSION = '^2.0.1';
 const UTILITY_VERSION = '^0.2.0';
-const SUPABASE_AUTH_VERSION = '^1.2.1';
+const SUPABASE_AUTH_VERSION = '^1.2.2';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^3.0.0';
-const EXPO_RUNTIME_VERSION = '^3.0.1';
+const EXPO_RUNTIME_VERSION = '^3.0.3';
 const DEVTOOLS_VERSION = '^1.6.0';
 const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 
@@ -236,7 +236,7 @@ const LOOPBACK_HOSTNAMES = new Set(['127.0.0.1', '::1', '[::1]', 'localhost']);
 const ADB_TRACK_READY_TIMEOUT_MS = 5_000;
 const ADB_REVERSE_ATTEMPTS = 5;
 const ADB_REVERSE_RETRY_DELAY_MS = 100;
-const projectId = ${JSON.stringify(args.projectId)};
+const projectId = ${serializeStringLiteral(args.projectId)};
 const includeStudio = ${JSON.stringify(args.includeStudio)};
 const projectRoot = process.cwd();
 
@@ -245,9 +245,7 @@ const supabaseUrl = await readEffectiveEnvValue(environmentPath, PUBLIC_SUPABASE
 const studioApiUrl = includeStudio
   ? await readEffectiveEnvValue(environmentPath, PUBLIC_STUDIO_API_URL)
   : undefined;
-const supabaseMapping = supabaseUrl
-  ? await prepareAndroidLoopbackBridge(supabaseUrl)
-  : undefined;
+const supabaseMapping = supabaseUrl ? await prepareAndroidLoopbackBridge(supabaseUrl) : undefined;
 const studioApiMapping = includeStudio
   ? await prepareStudioApiBridge(studioApiUrl ?? DEFAULT_STUDIO_API_URL)
   : undefined;
@@ -260,9 +258,10 @@ const expoExecutable = path.join(
   '.bin',
   process.platform === 'win32' ? 'expo.cmd' : 'expo',
 );
-const androidBridge = reverseMappings.length > 0
-  ? await startAndroidBridgeSupervisor(reverseMappings, expoArgs)
-  : undefined;
+const androidBridge =
+  reverseMappings.length > 0
+    ? await startAndroidBridgeSupervisor(reverseMappings, expoArgs)
+    : undefined;
 await runExpoCommand(expoExecutable, ['run:android', ...expoArgs], androidBridge);
 
 interface AndroidReverseMapping {
@@ -528,14 +527,11 @@ async function resolveAndroidTargetSerial(
 
   for (const transport of transports) {
     if (!transport.serial.startsWith('emulator-')) continue;
-    const result = await runCapturedCommand('adb', [
-      '-s',
-      transport.serial,
-      'emu',
-      'avd',
-      'name',
-    ]);
-    const avdName = result.stdout.split(/\\r?\\n/u).find((line) => line.trim())?.trim();
+    const result = await runCapturedCommand('adb', ['-s', transport.serial, 'emu', 'avd', 'name']);
+    const avdName = result.stdout
+      .split(/\\r?\\n/u)
+      .find((line) => line.trim())
+      ?.trim();
     if (avdName === requestedDevice) return transport.serial;
   }
 
@@ -612,9 +608,7 @@ async function ensureTransportReverse(
         ]);
       }
       if (await hasTransportReverse(transport.serial, mapping)) return true;
-      throw new Error(
-        \`adb reverse --list did not contain \${mapping.local} -> \${mapping.remote}.\`,
-      );
+      throw new Error(\`adb reverse --list did not contain \${mapping.local} -> \${mapping.remote}.\`);
     } catch (error) {
       lastError = toError(error);
       if (!getLatestTransports().has(transport.key)) return false;
@@ -768,7 +762,10 @@ async function readEnvValue(filePath: string, key: string): Promise<string | und
     if (!trimmed || trimmed.startsWith('#')) continue;
     const separator = trimmed.indexOf('=');
     if (separator < 1) continue;
-    const candidateKey = trimmed.slice(0, separator).replace(/^export\\s+/u, '').trim();
+    const candidateKey = trimmed
+      .slice(0, separator)
+      .replace(/^export\\s+/u, '')
+      .trim();
     if (candidateKey !== key) continue;
     return stripMatchingQuotes(trimmed.slice(separator + 1).trim());
   }
@@ -776,10 +773,7 @@ async function readEnvValue(filePath: string, key: string): Promise<string | und
   return undefined;
 }
 
-async function readEffectiveEnvValue(
-  filePath: string,
-  key: string,
-): Promise<string | undefined> {
+async function readEffectiveEnvValue(filePath: string, key: string): Promise<string | undefined> {
   const processValue = process.env[key];
   if (typeof processValue === 'string' && processValue.length > 0) return processValue;
   return readEnvValue(filePath, key);
@@ -982,21 +976,12 @@ export default createConfig({
     'src/generated/**/*.{ts,tsx}',
     'src/modules/**/*.{ts,tsx}',
   ],
-  additionalIgnores: [
-    '**/*.js',
-    '**/*.cjs',
-    '**/*.mjs',
-    'dist/**',
-    '.expo/**',
-  ],
+  additionalIgnores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
   overrides: [
     {
       files: ['src/app/_layout.tsx'],
       rules: {
-        '@typescript-eslint/no-unnecessary-type-assertion': [
-          'error',
-          { typesToIgnore: ['Href'] },
-        ],
+        '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
       },
     },
   ],
@@ -1005,7 +990,16 @@ export default createConfig({
 }
 
 export function getPrettierRcJs() {
-  return `module.exports = require('@ankhorage/devtools/prettier');
+  return `const sharedConfig = require('@ankhorage/devtools/prettier');
+
+module.exports = {
+  ...sharedConfig,
+  overrides: [
+    ...(sharedConfig.overrides ?? []),
+    { files: '**/*.json', options: { printWidth: 1 } },
+    { files: '**/*.{yaml,yml}', options: { singleQuote: false } },
+  ],
+};
 `;
 }
 
@@ -1018,14 +1012,25 @@ export function getTsConfigJson() {
     "module": "esnext",
     "moduleResolution": "bundler",
     "strict": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@root/*": ["./*"],
-      "@/*": ["./src/*"]
+      "@root/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }
 `;
   return tsConfigJson;

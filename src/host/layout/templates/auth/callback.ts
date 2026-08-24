@@ -10,10 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Text, useZoraTheme } from '@ankhorage/zora';
 
-import {
-  completeOAuthCallback,
-  resolveOAuthCallbackUrl,
-} from '@/auth/oauth';
+import { completeOAuthCallback, resolveOAuthCallbackUrl } from '@/auth/oauth';
 
 const SIGN_IN_ROUTE = '${signInTarget}';
 const POST_SIGN_IN_ROUTE = '${postSignInTarget}';
@@ -48,7 +45,7 @@ function completeOAuthCallbackOnce(callbackUrl: string) {
 
 export default function OAuthCallbackScreen() {
   const router = useRouter();
-  const callbackParams = useLocalSearchParams<Record<string, string | string[] | undefined>>();
+  const callbackParams = useLocalSearchParams<Record<string, string | string[]>>();
   const callbackUrl = useMemo(() => {
     try {
       return resolveOAuthCallbackUrl(callbackParams);
@@ -116,7 +113,7 @@ export default function OAuthCallbackScreen() {
             onPress={() => router.replace(SIGN_IN_ROUTE)}
             style={[styles.button, { backgroundColor: theme.colors.primary }]}
           >
-            <Text color="inverse" weight="semiBold">
+            <Text emphasis="inverse" weight="semiBold">
               Return to sign in
             </Text>
           </Pressable>

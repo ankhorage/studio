@@ -7,6 +7,8 @@ import { ProjectManager } from '../orchestrator/projectManager';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
+import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
+import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 180_000;
 const FORBIDDEN_REACT_NAVIGATION_IMPORT =
@@ -155,7 +157,7 @@ async function assertReleasedStudioPackageAsync(
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange !== '^2.0.0') {
+  if (studioRange !== '^2.0.1') {
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
@@ -169,14 +171,14 @@ async function assertReleasedStudioPackageAsync(
   const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
     readonly version?: unknown;
   };
-  if (installedPackage.version !== '2.0.0') {
+  if (installedPackage.version !== '2.0.1') {
     throw new Error(
-      `Studio-enabled navigation fixture must consume released Studio 2.0.0, received ${String(installedPackage.version)}.`,
+      `Studio-enabled navigation fixture must consume released Studio 2.0.1, received ${String(installedPackage.version)}.`,
     );
   }
 
   const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
-  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.0"')) {
+  if (!workspaceLock.includes('"@ankhorage/studio": ["@ankhorage/studio@2.0.1"')) {
     throw new Error('Studio fixture lockfile does not contain the released registry resolution.');
   }
 }
@@ -205,40 +207,14 @@ async function assertRouterTypesAsync(
 }
 
 async function generateRouterTypesAsync(project: NavigationProject): Promise<void> {
-  console.log(`\n==> ${project.id} Expo Router typed-route generation`);
-  const expoPort = await reservePortAsync();
-  const output: string[] = [];
-  const expoProcess = spawn('bun', ['x', 'expo', 'start', '--port', String(expoPort), '--clear'], {
-    cwd: project.path,
-    detached: true,
+  await generateExpoRouterTypesAsync({
     env: {
-      ...process.env,
-      BROWSER: 'none',
-      CI: '1',
-      EXPO_NO_TELEMETRY: '1',
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
     },
+    label: `${project.id} Expo Router typed-route generation`,
+    projectRoot: project.path,
+    timeoutMs: HTTP_TIMEOUT_MS,
   });
-  collectProcessOutput(expoProcess, output);
-  const routerTypesPath = path.join(project.path, '.expo', 'types', 'router.d.ts');
-  const start = Date.now();
-
-  try {
-    while (Date.now() - start < HTTP_TIMEOUT_MS) {
-      if (await pathExistsAsync(routerTypesPath)) return;
-      if (expoProcess.exitCode !== null) {
-        throw new Error(
-          `${project.id} Expo Router type generation exited with ${expoProcess.exitCode}.\n${output.join('').slice(-8_000)}`,
-        );
-      }
-      await Bun.sleep(250);
-    }
-    throw new Error(
-      `${project.id} timed out generating Expo Router declarations.\n${output.join('').slice(-8_000)}`,
-    );
-  } finally {
-    stopProcess(expoProcess);
-  }
 }
 
 async function createProjectAsync(
@@ -357,27 +333,16 @@ function resolveStaticExportPath(pathname: string): string {
 }
 
 async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
-  console.log(`\n==> ${options.label}`);
-  const childProcess = Bun.spawn([options.command, ...options.args], {
-    cwd: options.cwd,
+  return runAcceptanceCommandAsync({
+    ...options,
     env: {
-      ...Bun.env,
-      CI: '1',
       EXPO_NO_TELEMETRY: '1',
-      TMPDIR: '/tmp',
       ...(options.routerCommand
         ? { EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED }
         : {}),
     },
-    stderr: 'inherit',
-    stdout: options.captureOutput ? 'pipe' : 'inherit',
+    timeoutMs: COMMAND_TIMEOUT_MS,
   });
-  const timeout = setTimeout(() => childProcess.kill(), COMMAND_TIMEOUT_MS);
-  const output = options.captureOutput ? await new Response(childProcess.stdout).text() : '';
-  const exitCode = await childProcess.exited;
-  clearTimeout(timeout);
-  if (exitCode !== 0) throw new Error(`${options.label} failed with exit code ${exitCode}.`);
-  return output;
 }
 
 async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<void> {

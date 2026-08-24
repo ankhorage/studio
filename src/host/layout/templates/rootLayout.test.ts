@@ -210,6 +210,37 @@ test('keeps non-Studio generated output Studio-independent', () => {
   expect(generated).not.toContain('wrapNode: studioWrapNode');
 });
 
+test('preserves navigator-owned relative indentation in generated app output', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: `<Stack>
+      <Stack.Screen key="index" name="index" />
+    </Stack>`,
+      usesTheme: false,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: false,
+  });
+
+  expect(generated).toContain(`return (
+    <Stack>
+      <Stack.Screen key="index" name="index" />
+    </Stack>
+  );`);
+});
+
 test('scopes Studio runtime selection config below StudioProvider', () => {
   const generated = getRootLayoutTsx({
     manifest: {
