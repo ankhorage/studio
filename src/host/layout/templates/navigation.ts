@@ -87,7 +87,7 @@ function buildTabsNavigatorJsx(args: {
   headerShown: ${headerShown},
 };`,
       `function renderZoraTabBar(props: BottomTabBarProps) {
-  return <ZoraTabBar {...(props as Parameters<typeof ZoraTabBar>[0])} routeMap={routeMap} />;
+  return <ZoraTabBar {...props} routeMap={routeMap} />;
 }`,
       ...screenTemplates.map((screen) => screen.declaration),
     ]
@@ -156,7 +156,7 @@ function buildDrawerNavigatorJsx(args: {
   headerShown: ${headerShown},
 };`,
       `function renderZoraDrawerContent(props: DrawerContentComponentProps) {
-  return <ZoraDrawerContent {...(props as Parameters<typeof ZoraDrawerContent>[0])} routeMap={routeMap} />;
+  return <ZoraDrawerContent {...props} routeMap={routeMap} />;
 }`,
       ...screenTemplates.map((screen) => screen.declaration),
     ]

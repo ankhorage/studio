@@ -2,9 +2,17 @@ import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { describe, expect, it } from 'bun:test';
 
-import { getAndroidRunTs, getAppConfigTs, getPackageJson } from './templates';
+import { getAndroidRunTs, getAppConfigTs, getEslintConfigMjs, getPackageJson } from './templates';
 
 describe('generated OAuth scaffold templates', () => {
+  it('keeps the manifest-to-typed-route Href boundary lint-stable', () => {
+    const eslintConfig = getEslintConfigMjs();
+
+    expect(eslintConfig).toContain("files: ['src/app/_layout.tsx']");
+    expect(eslintConfig).toContain("{ typesToIgnore: ['Href'] }");
+    expect(eslintConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
+  });
+
   it('pins the current generated app dependency baseline', () => {
     const pkg = getPackageJson({ name: 'generated-app', includeStudio: true });
     const dependencies = pkg.dependencies as Record<string, string>;
@@ -14,6 +22,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.1');
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
+    expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
+    expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
     expect(dependencies['@ankhorage/studio']).toBe('^2.0.0');
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');

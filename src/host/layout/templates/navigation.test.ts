@@ -27,6 +27,37 @@ function createNavigator(type: NavigatorSpec['type']): NavigatorSpec {
 }
 
 describe('generated primary navigation visibility', () => {
+  test('adapts Router-owned custom navigation props directly to ZORA', () => {
+    const tabsNavigator = createNavigator('tabs');
+    const drawerNavigator = createNavigator('drawer');
+    const tabs = buildNavigatorJsx({
+      navigator: {
+        ...tabsNavigator,
+        routes: tabsNavigator.routes.map((route) => ({
+          ...route,
+          showInPrimaryNavigation: true,
+        })),
+      },
+      manifest,
+      includeStudio: false,
+    });
+    const drawer = buildNavigatorJsx({
+      navigator: {
+        ...drawerNavigator,
+        routes: drawerNavigator.routes.map((route) => ({
+          ...route,
+          showInPrimaryNavigation: true,
+        })),
+      },
+      manifest,
+      includeStudio: false,
+    });
+
+    expect(tabs.declarations).toContain('<ZoraTabBar {...props} routeMap={routeMap} />');
+    expect(drawer.declarations).toContain('<ZoraDrawerContent {...props} routeMap={routeMap} />');
+    expect(`${tabs.declarations}\n${drawer.declarations}`).not.toContain('Parameters<typeof');
+  });
+
   test('omits hidden Tabs routes from chrome while retaining their route screen', () => {
     const built = buildNavigatorJsx({
       navigator: createNavigator('tabs'),

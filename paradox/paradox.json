@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.13.5",
+      "value": "v2.0.0",
       "color": "cb3837"
     },
     {
@@ -97,6 +97,12 @@
       "path": "scripts/expo57-generated-app-acceptance.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/runExpo57GeneratedAppAcceptance.ts"],
+      "exports": []
+    },
+    {
+      "path": "scripts/expo57-generated-navigation-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"],
       "exports": []
     },
     {
@@ -1879,10 +1885,28 @@
       ]
     },
     {
+      "path": "src/host/smoke/assertNoBrowserErrors.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/assertNoBrowserErrors.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/assertNoBrowserErrors.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["assertNoBrowserErrors"]
+    },
+    {
       "path": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["AUTH5_NATIVE_OAUTH_SMOKE"]
+    },
+    {
+      "path": "src/host/smoke/ChromeNavigationSession.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/getChromeNavigationIssue.ts"],
+      "exports": ["ChromeNavigationSession"]
     },
     {
       "path": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
@@ -1911,6 +1935,33 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"],
       "exports": ["createAuth5NativeOAuthSmokeManifest"]
+    },
+    {
+      "path": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/layout/layoutGenerator.ts",
+        "src/host/smoke/createExpo57NavigationFixtureManifest.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createExpo57NavigationFixtureManifest"]
+    },
+    {
+      "path": "src/host/smoke/getChromeNavigationIssue.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/getChromeNavigationIssue.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/getChromeNavigationIssue.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["getChromeNavigationIssue"]
     },
     {
       "path": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
@@ -1964,6 +2015,17 @@
       "isEntrypoint": false,
       "dependencies": ["src/host/orchestrator/projectManager.ts"],
       "exports": ["runExpo57GeneratedAppAcceptanceAsync"]
+    },
+    {
+      "path": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/assertNoBrowserErrors.ts",
+        "src/host/smoke/ChromeNavigationSession.ts",
+        "src/host/smoke/createExpo57NavigationFixtureManifest.ts"
+      ],
+      "exports": ["runExpo57GeneratedNavigationAcceptanceAsync"]
     },
     {
       "path": "src/host/studioInfra.e2e.test.ts",
@@ -13908,7 +13970,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 48,
+        "line": 51,
         "column": 1
       }
     },
@@ -13917,7 +13979,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 75,
+        "line": 78,
         "column": 1
       }
     },
@@ -13926,7 +13988,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 100,
+        "line": 109,
         "column": 1
       }
     },
@@ -13935,7 +13997,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 123,
+        "line": 132,
         "column": 11
       }
     },
@@ -13944,7 +14006,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 135,
+        "line": 144,
         "column": 11
       }
     },
@@ -13953,7 +14015,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 467,
+        "line": 496,
         "column": 1
       }
     },
@@ -13962,7 +14024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 481,
+        "line": 510,
         "column": 1
       }
     },
@@ -13971,7 +14033,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 488,
+        "line": 517,
         "column": 1
       }
     },
@@ -13980,7 +14042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 506,
+        "line": 535,
         "column": 1
       }
     },
@@ -13989,7 +14051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 520,
+        "line": 549,
         "column": 1
       }
     },
@@ -13998,7 +14060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 524,
+        "line": 553,
         "column": 1
       }
     },
@@ -14007,7 +14069,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 568,
+        "line": 597,
         "column": 1
       }
     },
@@ -14016,7 +14078,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 576,
+        "line": 605,
         "column": 1
       }
     },
@@ -14025,7 +14087,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 581,
+        "line": 610,
         "column": 1
       }
     },
@@ -14322,7 +14384,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/templates/nestedLayout.ts",
-        "line": 63,
+        "line": 61,
         "column": 1
       }
     },
@@ -14997,7 +15059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 89,
+        "line": 102,
         "column": 1
       }
     },
@@ -15006,7 +15068,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 99,
+        "line": 112,
         "column": 1
       }
     },
@@ -15015,7 +15077,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 107,
+        "line": 120,
         "column": 1
       }
     },
@@ -15024,7 +15086,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 128,
+        "line": 141,
         "column": 1
       }
     },
@@ -15465,7 +15527,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 323,
+        "line": 334,
         "column": 1
       }
     },
@@ -15474,7 +15536,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 332,
+        "line": 343,
         "column": 1
       }
     },
@@ -15483,7 +15545,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 345,
+        "line": 356,
         "column": 1
       }
     },
@@ -15492,7 +15554,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 407,
+        "line": 418,
         "column": 1
       }
     },
@@ -15501,7 +15563,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 433,
+        "line": 444,
         "column": 1
       }
     },
@@ -15645,7 +15707,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 974,
+        "line": 972,
         "column": 1
       }
     },
@@ -15654,7 +15716,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 998,
+        "line": 1007,
         "column": 1
       }
     },
@@ -15663,7 +15725,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1003,
+        "line": 1012,
         "column": 1
       }
     },
@@ -15672,7 +15734,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1025,
+        "line": 1034,
         "column": 1
       }
     },
@@ -15902,6 +15964,87 @@
       }
     },
     {
+      "name": "assertNoBrowserErrors",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "line": 1,
+        "column": 1
+      }
+    },
+    {
+      "name": "isKnownReactNativeWebWarning",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRoleAndNameExpression",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "canAccessAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 247,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 256,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseChromeProtocolMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChromePathAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 279,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 299,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForHttpAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/ChromeNavigationSession.ts",
+        "line": 308,
+        "column": 1
+      }
+    },
+    {
       "name": "readText",
       "description": null,
       "sourceLocation": {
@@ -15934,6 +16077,114 @@
       "sourceLocation": {
         "filePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
         "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createExpo57NavigationFixtureManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "line": 3,
+        "column": 1
+      }
+    },
+    {
+      "name": "createNavigationButton",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "createScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "line": 214,
+        "column": 1
+      }
+    },
+    {
+      "name": "getChromeNavigationIssue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 1,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatConsoleApiIssue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatExceptionIssue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatLogIssue",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatPrimitive",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatRemoteObject",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatStackTrace",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 104,
+        "column": 1
+      }
+    },
+    {
+      "name": "readString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 108,
         "column": 1
       }
     },
@@ -16060,6 +16311,213 @@
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "line": 180,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExpo57GeneratedNavigationAcceptanceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertGeneratedNavigationContractAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertReleasedStudioPackageAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertRouterTypesAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 184,
+        "column": 1
+      }
+    },
+    {
+      "name": "generateRouterTypesAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 207,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 244,
+        "column": 1
+      }
+    },
+    {
+      "name": "createStaticExportServer",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 270,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 289,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceLockfileAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 307,
+        "column": 1
+      }
+    },
+    {
+      "name": "listSourceFilesAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 316,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathExistsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 327,
+        "column": 1
+      }
+    },
+    {
+      "name": "reservePortAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 337,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveStaticExportPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 352,
+        "column": 1
+      }
+    },
+    {
+      "name": "runCommandAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 359,
+        "column": 1
+      }
+    },
+    {
+      "name": "runDevelopmentNavigationSmokeAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 383,
+        "column": 1
+      }
+    },
+    {
+      "name": "runDevelopmentWebAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 426,
+        "column": 1
+      }
+    },
+    {
+      "name": "runFocusedRootNavigatorChecksAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 463,
+        "column": 1
+      }
+    },
+    {
+      "name": "runGeneratedProjectChecksAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 496,
+        "column": 1
+      }
+    },
+    {
+      "name": "runStaticExportSmokeAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 567,
+        "column": 1
+      }
+    },
+    {
+      "name": "runSignedOutAuthNavigationSmokeAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 583,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForHttpAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 598,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectProcessOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 611,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcess",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 619,
         "column": 1
       }
     },
@@ -23655,6 +24113,11 @@
         "sourcePath": "scripts/expo57-generated-app-acceptance.ts"
       },
       {
+        "fromPath": "scripts/expo57-generated-navigation-acceptance.ts",
+        "toPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "sourcePath": "scripts/expo57-generated-navigation-acceptance.ts"
+      },
+      {
         "fromPath": "src/ankhAdmin.public.test.ts",
         "toPath": "src/root.ts",
         "sourcePath": "src/ankhAdmin.public.test.ts"
@@ -26290,6 +26753,16 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromPath": "src/host/smoke/assertNoBrowserErrors.test.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "toPath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
         "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
         "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts"
@@ -26333,6 +26806,21 @@
         "fromPath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts",
         "toPath": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
         "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toPath": "src/host/layout/layoutGenerator.ts",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toPath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/getChromeNavigationIssue.test.ts",
+        "toPath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
       },
       {
         "fromPath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
@@ -26398,6 +26886,26 @@
         "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
         "fromPath": "src/host/templateRegistry/catalog.test.ts",
@@ -27983,6 +28491,12 @@
         "toSymbol": "runExpo57GeneratedAppAcceptanceAsync",
         "callExpression": "runExpo57GeneratedAppAcceptanceAsync",
         "sourcePath": "scripts/expo57-generated-app-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-generated-navigation-acceptance.ts",
+        "toSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "callExpression": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "sourcePath": "scripts/expo57-generated-navigation-acceptance.ts"
       },
       {
         "fromSymbol": "src/ankhAdmin.public.test.ts",
@@ -44101,6 +44615,12 @@
         "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
       },
       {
+        "fromSymbol": "src/host/orchestrator/generatedDependencyContract.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
+      },
+      {
         "fromSymbol": "createScaffoldHarness",
         "toSymbol": "mkdtemp",
         "callExpression": "mkdtemp",
@@ -45920,6 +46440,12 @@
       },
       {
         "fromSymbol": "scaffoldProject",
+        "toSymbol": "ensureExpoGitIgnore",
+        "callExpression": "this.ensureExpoGitIgnore",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
         "toSymbol": "removeGeneratedExpoOverrides",
         "callExpression": "this.removeGeneratedExpoOverrides",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
@@ -46004,6 +46530,12 @@
       },
       {
         "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "ensureExpoGitIgnore",
+        "callExpression": "this.ensureExpoGitIgnore",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
         "toSymbol": "removeGeneratedExpoOverrides",
         "callExpression": "this.removeGeneratedExpoOverrides",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
@@ -46072,6 +46604,12 @@
         "fromSymbol": "writePrettierConfig",
         "toSymbol": "getPrettierRcJs",
         "callExpression": "getPrettierRcJs",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromSymbol": "ensureExpoGitIgnore",
+        "toSymbol": "exists",
+        "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -46208,14 +46746,20 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
-        "toSymbol": "getPackageJson",
-        "callExpression": "getPackageJson",
+        "toSymbol": "getEslintConfigMjs",
+        "callExpression": "getEslintConfigMjs",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/templates.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/templates.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/templates.test.ts",
+        "toSymbol": "getPackageJson",
+        "callExpression": "getPackageJson",
         "sourcePath": "src/host/orchestrator/templates.test.ts"
       },
       {
@@ -46855,6 +47399,240 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertNoBrowserErrors.ts",
+        "toSymbol": "isKnownReactNativeWebWarning",
+        "callExpression": "isKnownReactNativeWebWarning",
+        "sourcePath": "src/host/smoke/assertNoBrowserErrors.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "resolveChromePathAsync",
+        "callExpression": "resolveChromePathAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "waitForHttpAsync",
+        "callExpression": "waitForHttpAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "waitForSocketAsync",
+        "callExpression": "session.waitForSocketAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "sendAsync",
+        "callExpression": "session.sendAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "createAsync",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/ChromeNavigationSession.ts",
+        "toSymbol": "handleMessage",
+        "callExpression": "this.handleMessage",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "clearLocalStorageAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "clickByRoleAndNameAsync",
+        "toSymbol": "createRoleAndNameExpression",
+        "callExpression": "createRoleAndNameExpression",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "clickByRoleAndNameAsync",
+        "toSymbol": "waitForBooleanAsync",
+        "callExpression": "this.waitForBooleanAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "clickByTestIdAsync",
+        "toSymbol": "waitForBooleanAsync",
+        "callExpression": "this.waitForBooleanAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "close",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "goBackAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "goForwardAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "hasRoleAndNameAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "hasRoleAndNameAsync",
+        "toSymbol": "createRoleAndNameExpression",
+        "callExpression": "createRoleAndNameExpression",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "navigateAsync",
+        "toSymbol": "sendAsync",
+        "callExpression": "this.sendAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "navigateAsync",
+        "toSymbol": "waitForLoadAsync",
+        "callExpression": "this.waitForLoadAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForBodyTextAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForLocationAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "evaluateAsync",
+        "toSymbol": "sendAsync",
+        "callExpression": "this.sendAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/ChromeNavigationSession.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "reject",
+        "callExpression": "pending.reject",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "resolve",
+        "callExpression": "pending.resolve",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "handleMessage",
+        "toSymbol": "getChromeNavigationIssue",
+        "callExpression": "getChromeNavigationIssue",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/ChromeNavigationSession.ts",
+        "toSymbol": "parseChromeProtocolMessage",
+        "callExpression": "parseChromeProtocolMessage",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/ChromeNavigationSession.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "waitForBooleanAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/ChromeNavigationSession.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "canAccessAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "parseChromeProtocolMessage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "resolveChromePathAsync",
+        "toSymbol": "canAccessAsync",
+        "callExpression": "canAccessAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
         "fromSymbol": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.test.ts",
         "toSymbol": "test",
         "callExpression": "test",
@@ -46949,6 +47727,192 @@
         "toSymbol": "createOAuthFixtureManifest",
         "callExpression": "createOAuthFixtureManifest",
         "sourcePath": "src/host/smoke/createAuth5NativeOAuthSmokeManifest.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toSymbol": "createExpo57NavigationFixtureManifest",
+        "callExpression": "createExpo57NavigationFixtureManifest",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator().generateFiles",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
+      },
+      {
+        "fromSymbol": "createExpo57NavigationFixtureManifest",
+        "toSymbol": "createScreen",
+        "callExpression": "createScreen",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts"
+      },
+      {
+        "fromSymbol": "createExpo57NavigationFixtureManifest",
+        "toSymbol": "createNavigationButton",
+        "callExpression": "createNavigationButton",
+        "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.test.ts",
+        "toSymbol": "getChromeNavigationIssue",
+        "callExpression": "getChromeNavigationIssue",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "formatConsoleApiIssue",
+        "callExpression": "formatConsoleApiIssue",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "formatExceptionIssue",
+        "callExpression": "formatExceptionIssue",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "formatLogIssue",
+        "callExpression": "formatLogIssue",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatConsoleApiIssue",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.ts",
+        "toSymbol": "formatRemoteObject",
+        "callExpression": "formatRemoteObject",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatConsoleApiIssue",
+        "toSymbol": "formatStackTrace",
+        "callExpression": "formatStackTrace",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatExceptionIssue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatExceptionIssue",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatExceptionIssue",
+        "toSymbol": "formatRemoteObject",
+        "callExpression": "formatRemoteObject",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatExceptionIssue",
+        "toSymbol": "formatStackTrace",
+        "callExpression": "formatStackTrace",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatLogIssue",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatLogIssue",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatLogIssue",
+        "toSymbol": "formatStackTrace",
+        "callExpression": "formatStackTrace",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatRemoteObject",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatRemoteObject",
+        "toSymbol": "formatPrimitive",
+        "callExpression": "formatPrimitive",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatRemoteObject",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatStackTrace",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/getChromeNavigationIssue.ts",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
       },
       {
         "fromSymbol": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.test.ts",
@@ -47207,6 +48171,456 @@
         "toSymbol": "assertCameraFreeInstalledGraphAsync",
         "callExpression": "assertCameraFreeInstalledGraphAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "createWorkspaceAsync",
+        "callExpression": "createWorkspaceAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "createProjectAsync",
+        "callExpression": "createProjectAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "createWorkspaceLockfileAsync",
+        "callExpression": "createWorkspaceLockfileAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "assertGeneratedNavigationContractAsync",
+        "callExpression": "assertGeneratedNavigationContractAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runGeneratedProjectChecksAsync",
+        "callExpression": "runGeneratedProjectChecksAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runDevelopmentNavigationSmokeAsync",
+        "callExpression": "runDevelopmentNavigationSmokeAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "createStaticExportServer",
+        "callExpression": "createStaticExportServer",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runStaticExportSmokeAsync",
+        "callExpression": "runStaticExportSmokeAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "assertReleasedStudioPackageAsync",
+        "callExpression": "assertReleasedStudioPackageAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runSignedOutAuthNavigationSmokeAsync",
+        "callExpression": "runSignedOutAuthNavigationSmokeAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "runFocusedRootNavigatorChecksAsync",
+        "callExpression": "runFocusedRootNavigatorChecksAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedNavigationContractAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedNavigationContractAsync",
+        "toSymbol": "listSourceFilesAsync",
+        "callExpression": "listSourceFilesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedNavigationContractAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertReleasedStudioPackageAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertRouterTypesAsync",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertRouterTypesAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "generateRouterTypesAsync",
+        "toSymbol": "reservePortAsync",
+        "callExpression": "reservePortAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "generateRouterTypesAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "generateRouterTypesAsync",
+        "toSymbol": "collectProcessOutput",
+        "callExpression": "collectProcessOutput",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "generateRouterTypesAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "generateRouterTypesAsync",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectAsync",
+        "toSymbol": "createProject",
+        "callExpression": "manager.createProject",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectAsync",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "manager.getProjectManifest",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectAsync",
+        "toSymbol": "createExpo57NavigationFixtureManifest",
+        "callExpression": "createExpo57NavigationFixtureManifest",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectAsync",
+        "toSymbol": "saveProjectManifest",
+        "callExpression": "manager.saveProjectManifest",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "fetch",
+        "toSymbol": "resolveStaticExportPath",
+        "callExpression": "resolveStaticExportPath",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceLockfileAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "listSourceFilesAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "listSourceFilesAsync",
+        "toSymbol": "listSourceFilesAsync",
+        "callExpression": "listSourceFilesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "pathExistsAsync",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "createServer",
+        "callExpression": "createServer",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "reject",
+        "callExpression": "reject",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentNavigationSmokeAsync",
+        "toSymbol": "runDevelopmentWebAsync",
+        "callExpression": "runDevelopmentWebAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "navigateAsync",
+        "callExpression": "chrome.navigateAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "clickByTestIdAsync",
+        "callExpression": "chrome.clickByTestIdAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "goBackAsync",
+        "callExpression": "chrome.goBackAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "goForwardAsync",
+        "callExpression": "chrome.goForwardAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "chrome.clickByRoleAndNameAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "hasRoleAndNameAsync",
+        "callExpression": "chrome.hasRoleAndNameAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "reservePortAsync",
+        "callExpression": "reservePortAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "collectProcessOutput",
+        "callExpression": "collectProcessOutput",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "waitForHttpAsync",
+        "callExpression": "waitForHttpAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "smoke",
+        "callExpression": "smoke",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "close",
+        "callExpression": "chrome?.close",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "stopProcess",
+        "callExpression": "stopProcess",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runFocusedRootNavigatorChecksAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runFocusedRootNavigatorChecksAsync",
+        "toSymbol": "generateRouterTypesAsync",
+        "callExpression": "generateRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runFocusedRootNavigatorChecksAsync",
+        "toSymbol": "assertRouterTypesAsync",
+        "callExpression": "assertRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runFocusedRootNavigatorChecksAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedProjectChecksAsync",
+        "toSymbol": "generateRouterTypesAsync",
+        "callExpression": "generateRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedProjectChecksAsync",
+        "toSymbol": "assertRouterTypesAsync",
+        "callExpression": "assertRouterTypesAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedProjectChecksAsync",
+        "toSymbol": "runCommandAsync",
+        "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "reservePortAsync",
+        "callExpression": "reservePortAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "chrome.navigateAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "clickByTestIdAsync",
+        "callExpression": "chrome.clickByTestIdAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "chrome.waitForLocationAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "close",
+        "callExpression": "chrome.close",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runSignedOutAuthNavigationSmokeAsync",
+        "toSymbol": "runDevelopmentWebAsync",
+        "callExpression": "runDevelopmentWebAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toSymbol": "clearLocalStorageAsync",
+        "callExpression": "chrome.clearLocalStorageAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "waitForHttpAsync",
+        "toSymbol": "diagnostics",
+        "callExpression": "diagnostics",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
         "fromSymbol": "src/host/templateRegistry/catalog.test.ts",
@@ -48092,14 +49506,14 @@
       },
       {
         "fromSymbol": "src/host/layout/templates/navigation.test.ts",
-        "toSymbol": "buildNavigatorJsx",
-        "callExpression": "buildNavigatorJsx",
+        "toSymbol": "createNavigator",
+        "callExpression": "createNavigator",
         "sourcePath": "src/host/layout/templates/navigation.test.ts"
       },
       {
         "fromSymbol": "src/host/layout/templates/navigation.test.ts",
-        "toSymbol": "createNavigator",
-        "callExpression": "createNavigator",
+        "toSymbol": "buildNavigatorJsx",
+        "callExpression": "buildNavigatorJsx",
         "sourcePath": "src/host/layout/templates/navigation.test.ts"
       },
       {
