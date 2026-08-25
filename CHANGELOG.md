@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.4
+
+### Patch Changes
+
+- 1d82b1e: Wire generated Expo OAuth adapters to the released platform CSPRNG source.
+
 ## 2.0.3
 
 ### Patch Changes
