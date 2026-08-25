@@ -64,6 +64,11 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
+    path.join(workspaceRoot, 'bunfig.toml'),
+    '[install]\nlinker = "hoisted"\n',
+    'utf8',
+  );
+  await writeFile(
     path.join(workspaceRoot, 'package.json'),
     `${JSON.stringify(
       {
