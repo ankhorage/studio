@@ -7,10 +7,10 @@ deterministic local OAuth provider, then regenerates native projects for develop
 does not add a public Studio API or modify `apps/studio`.
 
 The protected `/` route remains the Studio-generated Runtime route. The evidence controller uses
-the ordinary generated sign-in route plus an unguarded `/native-evidence` route, and successful
-authentication returns to the generated protected route. Permission, media and OAuth behavior is
-exercised through the public Permissions, Expo Runtime and Supabase Auth adapters rather than
-locally reproduced owner logic.
+the generated auth route path with a harness-owned screen plus an unguarded `/native-evidence`
+route, and successful authentication returns to the generated protected route. Permission, media
+and OAuth behavior is exercised through the public Permissions, Expo Runtime and Supabase Auth
+adapters rather than locally reproduced owner logic.
 
 ## Recorded released baseline
 

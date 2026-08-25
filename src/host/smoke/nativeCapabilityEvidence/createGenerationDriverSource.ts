@@ -10,6 +10,7 @@ export function createGenerationDriverSource(workspaceRoot: string): string {
   return `import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+import { PERMISSIONS } from '@ankhorage/permissions';
 import { ProjectManager } from '@ankhorage/studio/host';
 import { createOAuthFixtureManifest } from '@ankhorage/templates';
 
@@ -47,17 +48,6 @@ const baseManifest = createOAuthFixtureManifest({
     },
   },
 });
-const permissionNames = [
-  'camera',
-  'clipboard',
-  'locationBackground',
-  'locationForeground',
-  'mediaLibrary',
-  'mediaLibraryWrite',
-  'microphone',
-  'notifications',
-];
-
 await manager.saveProjectManifest({
   projectId: created.id,
   mutations: [],
@@ -89,7 +79,7 @@ await manager.saveProjectManifest({
         name: 'Native evidence',
         requires: {
           capabilities: [{ capability: 'barcodeScanner' }],
-          permissions: permissionNames.map((permission) => ({ permission })),
+          permissions: PERMISSIONS.map((permission) => ({ permission })),
         },
         root: {
           id: 'native-evidence-screen',

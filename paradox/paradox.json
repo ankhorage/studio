@@ -16890,7 +16890,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 40,
+        "line": 77,
         "column": 1
       }
     },
@@ -16899,7 +16899,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 148,
+        "line": 185,
         "column": 1
       }
     },
@@ -16908,7 +16908,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 168,
+        "line": 205,
         "column": 1
       }
     },
@@ -16917,7 +16917,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 184,
+        "line": 221,
         "column": 1
       }
     },
@@ -16926,7 +16926,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 200,
+        "line": 237,
         "column": 1
       }
     },
@@ -16935,7 +16935,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 206,
+        "line": 243,
         "column": 1
       }
     },
@@ -16944,7 +16944,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 215,
+        "line": 252,
         "column": 1
       }
     },
@@ -16953,7 +16953,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 234,
+        "line": 271,
         "column": 1
       }
     },
@@ -16962,7 +16962,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 247,
+        "line": 284,
+        "column": 1
+      }
+    },
+    {
+      "name": "isEvidenceResult",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
+        "line": 302,
         "column": 1
       }
     },
@@ -16971,7 +16980,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 265,
+        "line": 306,
         "column": 1
       }
     },
@@ -16980,7 +16989,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 274,
+        "line": 315,
         "column": 1
       }
     },
@@ -16989,7 +16998,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 278,
+        "line": 319,
         "column": 1
       }
     },
@@ -16998,7 +17007,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
-        "line": 282,
+        "line": 323,
         "column": 1
       }
     },
@@ -52314,6 +52323,18 @@
         "fromSymbol": "normalizeEvidenceCommand",
         "toSymbol": "isEvidencePermission",
         "callExpression": "isEvidencePermission",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts"
+      },
+      {
+        "fromSymbol": "normalizeEvidenceRecord",
+        "toSymbol": "isEvidenceScenario",
+        "callExpression": "isEvidenceScenario",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts"
+      },
+      {
+        "fromSymbol": "normalizeEvidenceRecord",
+        "toSymbol": "isEvidenceResult",
+        "callExpression": "isEvidenceResult",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts"
       },
       {

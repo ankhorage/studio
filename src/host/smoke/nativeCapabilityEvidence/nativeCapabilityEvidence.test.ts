@@ -38,7 +38,10 @@ describe('Expo 57 native capability evidence harness', () => {
 
     expect(NATIVE_EVIDENCE_STUDIO_VERSION).toBe('2.0.6');
     expect(driver).toContain("import { ProjectManager } from '@ankhorage/studio/host';");
+    expect(driver).toContain("import { PERMISSIONS } from '@ankhorage/permissions';");
     expect(driver).toContain("import { createOAuthFixtureManifest } from '@ankhorage/templates';");
+    expect(driver).toContain('permissions: PERMISSIONS.map((permission) => ({ permission }))');
+    expect(driver).not.toContain('const permissionNames');
     expect(route.trim()).toBe(
       "export { NativeEvidenceScreen as default } from '@/native-evidence/native-evidence-screen';",
     );
