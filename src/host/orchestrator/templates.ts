@@ -994,13 +994,21 @@ export function getEslintLocalConfigMjs() {
 
 export function getPrettierRcJs() {
   return `const sharedConfig = require('@ankhorage/devtools/prettier');
+const localConfig = require('./prettier.local.config.js');
 
 module.exports = {
   ...sharedConfig,
+  ...localConfig,
+  overrides: [...(sharedConfig.overrides ?? []), ...(localConfig.overrides ?? [])],
+};
+`;
+}
+
+export function getPrettierLocalConfigJs() {
+  return `module.exports = {
   overrides: [
-    ...(sharedConfig.overrides ?? []),
-    { files: '**/*.json', options: { printWidth: 1 } },
-    { files: '**/*.{yaml,yml}', options: { singleQuote: false } },
+    { files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } },
+    { files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } },
   ],
 };
 `;

@@ -8,6 +8,7 @@ import {
   getEslintConfigMjs,
   getEslintLocalConfigMjs,
   getPackageJson,
+  getPrettierLocalConfigJs,
   getPrettierRcJs,
 } from './templates';
 
@@ -25,10 +26,15 @@ describe('generated OAuth scaffold templates', () => {
 
   it('formats generated JSON and YAML serializers with their canonical output styles', () => {
     const prettierConfig = getPrettierRcJs();
+    const localPrettierConfig = getPrettierLocalConfigJs();
 
-    expect(prettierConfig).toContain("{ files: '**/*.json', options: { printWidth: 1 } }");
-    expect(prettierConfig).toContain(
-      "{ files: '**/*.{yaml,yml}', options: { singleQuote: false } }",
+    expect(prettierConfig).toContain("require('./prettier.local.config.js')");
+    expect(prettierConfig).toContain('localConfig.overrides');
+    expect(localPrettierConfig).toContain(
+      "{ files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } }",
+    );
+    expect(localPrettierConfig).toContain(
+      "{ files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } }",
     );
   });
 

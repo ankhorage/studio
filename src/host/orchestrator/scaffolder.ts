@@ -21,6 +21,7 @@ import {
   getEslintConfigMjs,
   getEslintLocalConfigMjs,
   getPackageJson,
+  getPrettierLocalConfigJs,
   getPrettierRcJs,
   getTsConfigJson,
 } from './templates';
@@ -277,7 +278,10 @@ export class ProjectScaffolder {
   }
 
   private async writePrettierConfig(dir: string) {
-    await fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8');
+    await Promise.all([
+      fs.writeFile(path.join(dir, '.prettierrc.js'), getPrettierRcJs(), 'utf8'),
+      fs.writeFile(path.join(dir, 'prettier.local.config.js'), getPrettierLocalConfigJs(), 'utf8'),
+    ]);
   }
 
   private async ensureExpoGitIgnore(dir: string) {
