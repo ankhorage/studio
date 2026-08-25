@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.5
+
+### Patch Changes
+
+- 4273e8d: Coalesce identical generated OAuth callbacks across the native browser transport and Expo Router so terminal provider results complete once without being overwritten by a concurrent replay.
+
 ## 2.0.4
 
 ### Patch Changes
