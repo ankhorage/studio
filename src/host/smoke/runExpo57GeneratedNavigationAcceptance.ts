@@ -172,9 +172,9 @@ async function assertReleasedStudioPackageAsync(
   const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
     readonly version?: unknown;
   };
-  if (installedPackage.version !== '2.0.2') {
+  if (installedPackage.version !== '2.0.3') {
     throw new Error(
-      `Studio-enabled navigation fixture must consume released Studio 2.0.2, received ${String(installedPackage.version)}.`,
+      `Studio-enabled navigation fixture must consume released Studio 2.0.3, received ${String(installedPackage.version)}.`,
     );
   }
 

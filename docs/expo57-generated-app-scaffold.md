@@ -157,7 +157,7 @@ edge-to-edge Android setting and iOS 16.4 deployment target.
 
 The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
-registry owner packages, asserts the released Studio 2.0.2 range and exact registry resolution, and
+registry owner packages, asserts the released Studio 2.0.3 range and exact registry resolution, and
 covers root and nested Stack, JavaScript Tabs and Drawer navigators,
 hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
 OAuth callback is a separate root Stack route so correlation still runs for an existing session;
