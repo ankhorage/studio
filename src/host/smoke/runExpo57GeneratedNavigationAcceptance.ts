@@ -15,7 +15,7 @@ const COMMAND_TIMEOUT_MS = 180_000;
 const FORBIDDEN_REACT_NAVIGATION_IMPORT =
   /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
 const HTTP_TIMEOUT_MS = 120_000;
-const RELEASED_STUDIO_VERSION = '2.0.3';
+const RELEASED_STUDIO_VERSION = '2.0.4';
 const ROUTER_REWRITE_DISABLED = '1';
 
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
