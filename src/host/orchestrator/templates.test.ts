@@ -6,6 +6,7 @@ import {
   getAndroidRunTs,
   getAppConfigTs,
   getEslintConfigMjs,
+  getEslintLocalConfigMjs,
   getPackageJson,
   getPrettierRcJs,
 } from './templates';
@@ -33,10 +34,14 @@ describe('generated OAuth scaffold templates', () => {
 
   it('keeps the manifest-to-typed-route Href boundary lint-stable', () => {
     const eslintConfig = getEslintConfigMjs();
+    const localConfig = getEslintLocalConfigMjs();
 
-    expect(eslintConfig).toContain("files: ['src/app/_layout.tsx']");
-    expect(eslintConfig).toContain("{ typesToIgnore: ['Href'] }");
-    expect(eslintConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
+    expect(eslintConfig).toContain("import localConfig from './eslint.local.config.mjs'");
+    expect(eslintConfig).toContain("files: ['src/**/*.{ts,tsx}']");
+    expect(localConfig).toContain("files: ['src/app/_layout.tsx']");
+    expect(localConfig).toContain("{ typesToIgnore: ['Href'] }");
+    expect(localConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
+    expect(localConfig).not.toContain('createConfig');
   });
 
   it('pins the current generated app dependency baseline', () => {

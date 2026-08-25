@@ -962,27 +962,33 @@ export function getPackageJson(args: {
 
 export function getEslintConfigMjs() {
   return `import { createConfig } from '@ankhorage/devtools/eslint';
+import localConfig from './eslint.local.config.mjs';
 
-export default createConfig({
-  tsconfigRootDir: import.meta.dirname,
-  project: ['./tsconfig.json'],
-  files: [
-    'app.config.ts',
-    'src/app/**/*.{ts,tsx}',
-    'src/auth/**/*.{ts,tsx}',
-    'src/generated/**/*.{ts,tsx}',
-    'src/modules/**/*.{ts,tsx}',
-  ],
-  additionalIgnores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
-  overrides: [
-    {
-      files: ['src/app/_layout.tsx'],
-      rules: {
-        '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
-      },
+const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
+
+export default [
+  ...createConfig({
+    files: ['src/**/*.{ts,tsx}'],
+    project: ['./tsconfig.json'],
+    tsconfigRootDir: import.meta.dirname,
+  }),
+  ...localEntries,
+];
+`;
+}
+
+export function getEslintLocalConfigMjs() {
+  return `export default [
+  {
+    ignores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
+  },
+  {
+    files: ['src/app/_layout.tsx'],
+    rules: {
+      '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
     },
-  ],
-});
+  },
+];
 `;
 }
 

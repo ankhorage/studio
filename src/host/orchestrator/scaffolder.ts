@@ -19,6 +19,7 @@ import {
   getAndroidRunTs,
   getAppConfigTs,
   getEslintConfigMjs,
+  getEslintLocalConfigMjs,
   getPackageJson,
   getPrettierRcJs,
   getTsConfigJson,
@@ -269,7 +270,10 @@ export class ProjectScaffolder {
   }
 
   private async writeEslintConfig(dir: string) {
-    await fs.writeFile(path.join(dir, 'eslint.config.mjs'), getEslintConfigMjs(), 'utf8');
+    await Promise.all([
+      fs.writeFile(path.join(dir, 'eslint.config.mjs'), getEslintConfigMjs(), 'utf8'),
+      fs.writeFile(path.join(dir, 'eslint.local.config.mjs'), getEslintLocalConfigMjs(), 'utf8'),
+    ]);
   }
 
   private async writePrettierConfig(dir: string) {
