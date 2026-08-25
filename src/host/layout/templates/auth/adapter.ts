@@ -11,7 +11,7 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
   const oauthProviderProperty =
     oauthProviders.length > 0 ? '\n        oauthProviders: generatedOAuthProviders,' : '';
   const oauthRandomBytesImport =
-    oauthProviders.length > 0 ? "import { getRandomBytes } from 'expo-crypto';\n" : '';
+    oauthProviders.length > 0 ? "import { getRandomBytes } from 'expo-crypto';" : '';
   const oauthRandomBytesProperty =
     oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
