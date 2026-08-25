@@ -77,7 +77,7 @@ if (isolatedScenario !== undefined) {
       await runIsolatedScenario('success');
     });
 
-    it('cleans provider denial across navigation and permits an immediate new attempt', async () => {
+    it('coalesces interleaved provider denial delivery, cleans state, and permits a new attempt', async () => {
       await runIsolatedScenario('denial');
     });
 
@@ -186,14 +186,31 @@ async function runProviderDenialScenario(): Promise<void> {
   const firstChallenge = readAuthorizationPkce(harness.state.assignedUrls[0]);
 
   const callbackDocument = await harness.importDocument('denial-callback');
-  const denied = await callbackDocument.completeOAuthCallback(
-    `${CALLBACK_URL}?error=access_denied`,
+  const callbackUrl = `${CALLBACK_URL}?error=access_denied`;
+  const firstCompletion = callbackDocument.completeOAuthCallback(callbackUrl);
+  const interleavedCompletion = callbackDocument.completeOAuthCallback(
+    `${CALLBACK_URL}?error=temporarily_unavailable`,
   );
+  const concurrentCompletion = callbackDocument.completeOAuthCallback(callbackUrl);
+
+  expect(concurrentCompletion).toBe(firstCompletion);
+  expect(interleavedCompletion).not.toBe(firstCompletion);
+  const [denied, interleaved, concurrentDenied] = await Promise.all([
+    firstCompletion,
+    interleavedCompletion,
+    concurrentCompletion,
+  ]);
 
   expect(denied).toEqual({
     status: 'cancelled',
     message: 'Authorization was declined by the provider.',
   });
+  expect(interleaved).toEqual({
+    status: 'error',
+    message: 'The OAuth callback does not match the completed authorization callback.',
+    recoverable: true,
+  });
+  expect(concurrentDenied).toEqual(denied);
   expect(harness.state.fetchCalls).toHaveLength(0);
   expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
 

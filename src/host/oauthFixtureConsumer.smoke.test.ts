@@ -107,7 +107,7 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       dependencies?: Record<string, string>;
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^8.0.0');
-    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.4');
+    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.5');
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );
@@ -167,11 +167,11 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).toContain(
       'const callbackUrl = useMemo(() => resolveCallbackUrl(callbackParams), [callbackParams]);',
     );
-    expect(callback).toContain(
-      'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
-    );
+    expect(oauthCompletion).toContain('const activeCallbackCompletions = new Map<');
+    expect(oauthCompletion).toContain('activeCallbackCompletions.set(callbackUrl, completion);');
+    expect(callback).not.toContain('ActiveCallbackCompletion');
     expect(callback).toContain('const handledOutcomeRef = useRef(false);');
-    expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(callbackUrl);');
+    expect(callback).toContain('const outcome = await completeOAuthCallback(callbackUrl);');
     expect(callback).toContain('router.replace(POST_SIGN_IN_ROUTE);');
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');

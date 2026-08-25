@@ -218,7 +218,7 @@
     "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
     "@ankhorage/runtime": "^2.2.0",
-    "@ankhorage/supabase-auth": "^1.2.4",
+    "@ankhorage/supabase-auth": "^1.2.5",
     "@ankhorage/supabase-storage": "^0.2.0",
     "@ankhorage/supabase-vault": "^0.2.4",
     "@ankhorage/templates": "^7.0.0",

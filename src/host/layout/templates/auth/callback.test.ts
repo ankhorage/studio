@@ -19,14 +19,9 @@ test('generates a router-owned OAuth callback that completes once across effect 
   expect(callback).toContain(
     'const callbackUrl = useMemo(() => resolveCallbackUrl(callbackParams), [callbackParams]);',
   );
-  expect(callback).toContain(
-    'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
-  );
-  expect(callback).toContain('function completeOAuthCallbackOnce(callbackUrl: string)');
-  expect(callback).toContain('promise: completeOAuthCallback(callbackUrl)');
-  expect(callback).toContain('if (activeCallbackCompletion === completion) {');
-  expect(callback).toContain('activeCallbackCompletion = null;');
-  expect(callback).toContain('const outcome = await completeOAuthCallbackOnce(callbackUrl);');
+  expect(callback).not.toContain('ActiveCallbackCompletion');
+  expect(callback).not.toContain('completeOAuthCallbackOnce');
+  expect(callback).toContain('const outcome = await completeOAuthCallback(callbackUrl);');
   expect(callback).toContain('const handledOutcomeRef = useRef(false);');
   expect(callback).toContain('if (signal.aborted || handledOutcomeRef.current) return;');
   expect(callback).toContain("outcome.completion === 'already-completed'");

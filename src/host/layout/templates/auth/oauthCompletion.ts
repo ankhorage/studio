@@ -27,6 +27,8 @@ const GENERATED_NATIVE_SCHEMES = {
 
 export type OAuthCallbackRouteParams = Readonly<Record<string, string | string[] | undefined>>;
 
+const activeCallbackCompletions = new Map<string, Promise<GeneratedOAuthTransportOutcome>>();
+
 export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): string {
   const callbackUrl = new URL(resolveOAuthRedirectUri());
   for (const [name, value] of Object.entries(params)) {
@@ -40,7 +42,27 @@ export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): strin
   return callbackUrl.toString();
 }
 
-export async function completeOAuthCallback(
+export function completeOAuthCallback(
+  callbackUrl: string,
+): Promise<GeneratedOAuthTransportOutcome> {
+  const activeCompletion = activeCallbackCompletions.get(callbackUrl);
+  if (activeCompletion) return activeCompletion;
+
+  const completion = completeOAuthCallbackAsync(callbackUrl);
+  activeCallbackCompletions.set(callbackUrl, completion);
+  void completion
+    .finally(() => {
+      if (activeCallbackCompletions.get(callbackUrl) === completion) {
+        activeCallbackCompletions.delete(callbackUrl);
+      }
+    })
+    .catch(() => {
+      // The original promise remains the caller's error boundary.
+    });
+  return completion;
+}
+
+async function completeOAuthCallbackAsync(
   callbackUrl: string,
 ): Promise<GeneratedOAuthTransportOutcome> {
   const { oauth } = authAdapter;
