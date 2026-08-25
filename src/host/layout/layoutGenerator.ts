@@ -31,6 +31,7 @@ import {
   getAuthOAuthCompletionTs,
   getAuthOAuthRuntimeTs,
   getAuthOAuthStateTs,
+  getAuthScreenControllerTs,
   getAuthScreenRuntimeTsx,
   getAuthScreenTsx,
   getAuthSessionTs,
@@ -495,6 +496,20 @@ export class GeneratedAppFileGenerator {
         return getAuthOAuthStateTs();
       case 'screen-runtime':
         return getAuthScreenRuntimeTsx({
+          signInRoute: authLayoutPlan.signInRoute,
+          signUpRoute: authLayoutPlan.signUpRoute,
+          postSignInRoute: authLayoutPlan.postSignInRoute,
+          signInIdentifiers: manifest.infra.auth?.signIn?.identifiers ?? ['email'],
+          signUpRequiredFields: manifest.infra.auth?.signUp?.requiredFields ?? [
+            'email',
+            'password',
+          ],
+          signUpOptionalFields: manifest.infra.auth?.signUp?.optionalFields ?? [],
+          signUpPolicy: manifest.infra.auth?.signUp?.signUpPolicy ?? 'autoSignIn',
+          oauthProviders: authLayoutPlan.oauth?.providers,
+        });
+      case 'screen-controller':
+        return getAuthScreenControllerTs({
           signInRoute: authLayoutPlan.signInRoute,
           signUpRoute: authLayoutPlan.signUpRoute,
           postSignInRoute: authLayoutPlan.postSignInRoute,
