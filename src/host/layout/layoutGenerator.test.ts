@@ -322,6 +322,8 @@ describe('GeneratedAppFileGenerator', () => {
     const session = files.find((file) => file.path === 'src/auth/session.ts')?.content ?? '';
     const authScreen =
       files.find((file) => file.path === 'src/screens/auth-screen.tsx')?.content ?? '';
+    const authScreenController =
+      files.find((file) => file.path === 'src/auth/screen-controller.ts')?.content ?? '';
     const allGeneratedSource = files.map((file) => file.content).join('\n');
 
     expect(callbackFiles).toHaveLength(1);
@@ -346,7 +348,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(oauthState).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreen).toContain('OAuthProviderList');
-    expect(authScreen).toContain('startOAuthAuthorization');
+    expect(authScreenController).toContain('startOAuthAuthorization');
     expect(session).toContain("import * as SecureStore from 'expo-secure-store'");
     expect(session).toContain("Platform.OS === 'ios' || Platform.OS === 'android'");
     expect(session).toContain("if (Platform.OS === 'web')");

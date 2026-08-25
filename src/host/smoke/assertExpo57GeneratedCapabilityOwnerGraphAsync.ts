@@ -9,9 +9,9 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
   timeoutMs: number,
 ): Promise<void> {
   const expectedOwnerVersions = {
-    '@ankhorage/expo-runtime': '3.0.4',
+    '@ankhorage/expo-runtime': '3.0.5',
     '@ankhorage/permissions': '0.2.3',
-    '@ankhorage/supabase-auth': '1.2.5',
+    '@ankhorage/supabase-auth': '1.2.6',
   } as const;
   for (const [packageName, expectedVersion] of Object.entries(expectedOwnerVersions)) {
     const installedPackage = JSON.parse(

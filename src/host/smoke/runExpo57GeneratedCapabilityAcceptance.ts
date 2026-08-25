@@ -64,6 +64,11 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
   await writeFile(
+    path.join(workspaceRoot, 'bunfig.toml'),
+    '[install]\nlinker = "hoisted"\n',
+    'utf8',
+  );
+  await writeFile(
     path.join(workspaceRoot, 'package.json'),
     `${JSON.stringify(
       {
@@ -90,6 +95,7 @@ async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void
 }
 
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
+  await assertDevtoolsSyncIdempotentAsync(projectRoot);
   const sourceBeforeStaticChecks = await snapshotSourceTreeAsync(projectRoot);
   const setupCommands = [
     {
@@ -171,6 +177,28 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
     },
   ] as const;
   for (const command of buildCommands) await runGeneratedCommandAsync(projectRoot, command);
+}
+
+async function assertDevtoolsSyncIdempotentAsync(projectRoot: string): Promise<void> {
+  const syncArgs = ['x', '@ankhorage/ankh', 'devtools', 'sync', '.'] as const;
+  await runAcceptanceCommandAsync({
+    args: syncArgs,
+    command: 'bun',
+    cwd: projectRoot,
+    label: 'Generated capability Devtools sync',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
+  const secondSync = await runAcceptanceCommandAsync({
+    args: syncArgs,
+    captureOutput: true,
+    command: 'bun',
+    cwd: projectRoot,
+    label: 'Generated capability idempotent Devtools sync',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
+  if (/\b(?:created|updated)\b/u.test(secondSync)) {
+    throw new Error(`Second generated capability Devtools sync was not idempotent:\n${secondSync}`);
+  }
 }
 
 function createAuthStubServer(): ReturnType<typeof Bun.serve> & {

@@ -11,6 +11,7 @@ export { getAuthOAuthCompletionTs } from './auth/oauthCompletion';
 export { getAuthOAuthRuntimeTs } from './auth/oauth';
 export { getAuthOAuthStateTs } from './auth/oauthState';
 export { getAuthScreenRuntimeTsx, getAuthScreenTsx } from './auth/screen';
+export { getAuthScreenControllerTs } from './auth/screenController';
 export { getAuthFormTs } from './auth/form';
 export { getAuthNavigationTs } from './auth/navigation';
 export { getIndexRedirectRouteTsx } from './redirect';

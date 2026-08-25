@@ -17,6 +17,7 @@ const AUTH_OAUTH_COMPLETION_FILE_PATH = 'src/auth/oauth-completion.ts';
 const AUTH_OAUTH_RUNTIME_FILE_PATH = 'src/auth/oauth.ts';
 const AUTH_OAUTH_STATE_FILE_PATH = 'src/auth/oauth-state.ts';
 const AUTH_SCREEN_RUNTIME_FILE_PATH = 'src/screens/auth-screen.tsx';
+const AUTH_SCREEN_CONTROLLER_FILE_PATH = 'src/auth/screen-controller.ts';
 const AUTH_SESSION_FILE_PATH = 'src/auth/session.ts';
 const AUTH_SIGN_OUT_FILE_PATH = 'src/app/(app)/sign-out.tsx';
 const DEFAULT_SIGN_IN_SCREEN_ID = 'screen-auth-sign-in';
@@ -36,6 +37,7 @@ type AuthGeneratedFileKind =
   | 'session'
   | 'sign-out'
   | 'auth-screen'
+  | 'screen-controller'
   | 'oauth-runtime'
   | 'oauth-completion'
   | 'oauth-state'
@@ -296,6 +298,10 @@ function buildGeneratedFilePlans(
     {
       path: AUTH_FORM_FILE_PATH,
       kind: 'form',
+    },
+    {
+      path: AUTH_SCREEN_CONTROLLER_FILE_PATH,
+      kind: 'screen-controller',
     },
     {
       path: AUTH_SCREEN_RUNTIME_FILE_PATH,

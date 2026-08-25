@@ -962,39 +962,53 @@ export function getPackageJson(args: {
 
 export function getEslintConfigMjs() {
   return `import { createConfig } from '@ankhorage/devtools/eslint';
+import localConfig from './eslint.local.config.mjs';
 
-export default createConfig({
-  tsconfigRootDir: import.meta.dirname,
-  project: ['./tsconfig.json'],
-  files: [
-    'app.config.ts',
-    'src/app/**/*.{ts,tsx}',
-    'src/auth/**/*.{ts,tsx}',
-    'src/generated/**/*.{ts,tsx}',
-    'src/modules/**/*.{ts,tsx}',
-  ],
-  additionalIgnores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
-  overrides: [
-    {
-      files: ['src/app/_layout.tsx'],
-      rules: {
-        '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
-      },
+const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
+
+export default [
+  ...createConfig({
+    files: ['src/**/*.{ts,tsx}'],
+    project: ['./tsconfig.json'],
+    tsconfigRootDir: import.meta.dirname,
+  }),
+  ...localEntries,
+];
+`;
+}
+
+export function getEslintLocalConfigMjs() {
+  return `export default [
+  {
+    ignores: ['**/*.js', '**/*.cjs', '**/*.mjs', 'dist/**', '.expo/**'],
+  },
+  {
+    files: ['src/app/_layout.tsx'],
+    rules: {
+      '@typescript-eslint/no-unnecessary-type-assertion': ['error', { typesToIgnore: ['Href'] }],
     },
-  ],
-});
+  },
+];
 `;
 }
 
 export function getPrettierRcJs() {
   return `const sharedConfig = require('@ankhorage/devtools/prettier');
+const localConfig = require('./prettier.local.config.js');
 
 module.exports = {
   ...sharedConfig,
+  ...localConfig,
+  overrides: [...(sharedConfig.overrides ?? []), ...(localConfig.overrides ?? [])],
+};
+`;
+}
+
+export function getPrettierLocalConfigJs() {
+  return `module.exports = {
   overrides: [
-    ...(sharedConfig.overrides ?? []),
-    { files: '**/*.json', options: { printWidth: 1 } },
-    { files: '**/*.{yaml,yml}', options: { singleQuote: false } },
+    { files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } },
+    { files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } },
   ],
 };
 `;

@@ -6,7 +6,9 @@ import {
   getAndroidRunTs,
   getAppConfigTs,
   getEslintConfigMjs,
+  getEslintLocalConfigMjs,
   getPackageJson,
+  getPrettierLocalConfigJs,
   getPrettierRcJs,
 } from './templates';
 
@@ -24,19 +26,28 @@ describe('generated OAuth scaffold templates', () => {
 
   it('formats generated JSON and YAML serializers with their canonical output styles', () => {
     const prettierConfig = getPrettierRcJs();
+    const localPrettierConfig = getPrettierLocalConfigJs();
 
-    expect(prettierConfig).toContain("{ files: '**/*.json', options: { printWidth: 1 } }");
-    expect(prettierConfig).toContain(
-      "{ files: '**/*.{yaml,yml}', options: { singleQuote: false } }",
+    expect(prettierConfig).toContain("require('./prettier.local.config.js')");
+    expect(prettierConfig).toContain('localConfig.overrides');
+    expect(localPrettierConfig).toContain(
+      "{ files: ['ankh.config.json', 'tsconfig.json'], options: { printWidth: 1 } }",
+    );
+    expect(localPrettierConfig).toContain(
+      "{ files: 'infra/**/*.{yaml,yml}', options: { singleQuote: false } }",
     );
   });
 
   it('keeps the manifest-to-typed-route Href boundary lint-stable', () => {
     const eslintConfig = getEslintConfigMjs();
+    const localConfig = getEslintLocalConfigMjs();
 
-    expect(eslintConfig).toContain("files: ['src/app/_layout.tsx']");
-    expect(eslintConfig).toContain("{ typesToIgnore: ['Href'] }");
-    expect(eslintConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
+    expect(eslintConfig).toContain("import localConfig from './eslint.local.config.mjs'");
+    expect(eslintConfig).toContain("files: ['src/**/*.{ts,tsx}']");
+    expect(localConfig).toContain("files: ['src/app/_layout.tsx']");
+    expect(localConfig).toContain("{ typesToIgnore: ['Href'] }");
+    expect(localConfig).not.toContain("'@typescript-eslint/no-unnecessary-type-assertion': 'off'");
+    expect(localConfig).not.toContain('createConfig');
   });
 
   it('pins the current generated app dependency baseline', () => {
