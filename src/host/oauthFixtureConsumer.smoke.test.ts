@@ -167,10 +167,8 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(callback).toContain(
       'const callbackUrl = useMemo(() => resolveCallbackUrl(callbackParams), [callbackParams]);',
     );
-    expect(oauthCompletion).toContain(
-      'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
-    );
-    expect(oauthCompletion).toContain('promise: completeOAuthCallbackAsync(callbackUrl)');
+    expect(oauthCompletion).toContain('const activeCallbackCompletions = new Map<');
+    expect(oauthCompletion).toContain('activeCallbackCompletions.set(callbackUrl, completion);');
     expect(callback).not.toContain('ActiveCallbackCompletion');
     expect(callback).toContain('const handledOutcomeRef = useRef(false);');
     expect(callback).toContain('const outcome = await completeOAuthCallback(callbackUrl);');

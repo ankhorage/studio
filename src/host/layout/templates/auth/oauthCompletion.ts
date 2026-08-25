@@ -27,12 +27,7 @@ const GENERATED_NATIVE_SCHEMES = {
 
 export type OAuthCallbackRouteParams = Readonly<Record<string, string | string[] | undefined>>;
 
-interface ActiveCallbackCompletion {
-  callbackUrl: string;
-  promise: Promise<GeneratedOAuthTransportOutcome>;
-}
-
-let activeCallbackCompletion: ActiveCallbackCompletion | null = null;
+const activeCallbackCompletions = new Map<string, Promise<GeneratedOAuthTransportOutcome>>();
 
 export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): string {
   const callbackUrl = new URL(resolveOAuthRedirectUri());
@@ -50,23 +45,21 @@ export function resolveOAuthCallbackUrl(params: OAuthCallbackRouteParams): strin
 export function completeOAuthCallback(
   callbackUrl: string,
 ): Promise<GeneratedOAuthTransportOutcome> {
-  if (activeCallbackCompletion?.callbackUrl !== callbackUrl) {
-    const completion: ActiveCallbackCompletion = {
-      callbackUrl,
-      promise: completeOAuthCallbackAsync(callbackUrl),
-    };
-    activeCallbackCompletion = completion;
-    void completion.promise
-      .finally(() => {
-        if (activeCallbackCompletion === completion) {
-          activeCallbackCompletion = null;
-        }
-      })
-      .catch(() => {
-        // The original promise remains the caller's error boundary.
-      });
-  }
-  return activeCallbackCompletion.promise;
+  const activeCompletion = activeCallbackCompletions.get(callbackUrl);
+  if (activeCompletion) return activeCompletion;
+
+  const completion = completeOAuthCallbackAsync(callbackUrl);
+  activeCallbackCompletions.set(callbackUrl, completion);
+  void completion
+    .finally(() => {
+      if (activeCallbackCompletions.get(callbackUrl) === completion) {
+        activeCallbackCompletions.delete(callbackUrl);
+      }
+    })
+    .catch(() => {
+      // The original promise remains the caller's error boundary.
+    });
+  return completion;
 }
 
 async function completeOAuthCallbackAsync(

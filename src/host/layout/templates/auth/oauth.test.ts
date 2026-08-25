@@ -38,12 +38,11 @@ function createOAuthCompletion(
 test('generates syntax-safe OAuth callback path normalization', () => {
   const runtime = createOAuthCompletion();
 
-  expect(runtime).toContain(
-    'let activeCallbackCompletion: ActiveCallbackCompletion | null = null;',
-  );
-  expect(runtime).toContain('promise: completeOAuthCallbackAsync(callbackUrl)');
-  expect(runtime).toContain('if (activeCallbackCompletion === completion) {');
-  expect(runtime).toContain('activeCallbackCompletion = null;');
+  expect(runtime).toContain('const activeCallbackCompletions = new Map<');
+  expect(runtime).toContain('const completion = completeOAuthCallbackAsync(callbackUrl);');
+  expect(runtime).toContain('activeCallbackCompletions.set(callbackUrl, completion);');
+  expect(runtime).toContain('if (activeCallbackCompletions.get(callbackUrl) === completion) {');
+  expect(runtime).toContain('activeCallbackCompletions.delete(callbackUrl);');
   expect(runtime).toContain('let callbackPath = OAUTH_CALLBACK_ROUTE;');
   expect(runtime).toContain(
     "while (callbackPath.startsWith('/')) callbackPath = callbackPath.slice(1);",
