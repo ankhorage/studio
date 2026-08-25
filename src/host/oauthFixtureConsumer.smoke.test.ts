@@ -176,10 +176,14 @@ test('generates the released Google and Apple OAuth fixture through the real hos
 
     const signInScreen = await readProjectFile(created.path, 'src/app/(auth)/sign-in.tsx');
     const authScreenRuntime = await readProjectFile(created.path, 'src/screens/auth-screen.tsx');
+    const authScreenController = await readProjectFile(
+      created.path,
+      'src/auth/screen-controller.ts',
+    );
     expect(signInScreen).toContain('GeneratedAuthScreen');
     expect(authScreenRuntime).toContain('OAuthProviderList');
     expect(authScreenRuntime).toContain('generatedOAuthProviderItems');
-    expect(authScreenRuntime).toContain('startOAuthAuthorization(providerId)');
+    expect(authScreenController).toContain('startOAuthAuthorization(providerId)');
     expect(authScreenRuntime).toContain('or continue with password');
 
     const session = await readProjectFile(created.path, 'src/auth/session.ts');
