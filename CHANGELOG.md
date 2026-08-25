@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.6
+
+### Patch Changes
+
+- 48d50ac: Generate Expo apps with the managed Devtools ESLint wrapper and a narrow local override so repository synchronization remains lint-stable.
+
 ## 2.0.5
 
 ### Patch Changes
