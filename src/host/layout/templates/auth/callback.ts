@@ -16,33 +16,6 @@ const SIGN_IN_ROUTE = '${signInTarget}';
 const POST_SIGN_IN_ROUTE = '${postSignInTarget}';
 const callbackScreenOptions = { title: 'Completing sign in' };
 
-interface ActiveCallbackCompletion {
-  callbackUrl: string;
-  promise: ReturnType<typeof completeOAuthCallback>;
-}
-
-let activeCallbackCompletion: ActiveCallbackCompletion | null = null;
-
-function completeOAuthCallbackOnce(callbackUrl: string) {
-  if (activeCallbackCompletion?.callbackUrl !== callbackUrl) {
-    const completion: ActiveCallbackCompletion = {
-      callbackUrl,
-      promise: completeOAuthCallback(callbackUrl),
-    };
-    activeCallbackCompletion = completion;
-    void completion.promise
-      .finally(() => {
-        if (activeCallbackCompletion === completion) {
-          activeCallbackCompletion = null;
-        }
-      })
-      .catch(() => {
-        // The original promise remains the callback screen's error boundary.
-      });
-  }
-  return activeCallbackCompletion.promise;
-}
-
 function useOAuthCallbackOutcome(callbackUrl: string | null) {
   const router = useRouter();
   const handledOutcomeRef = useRef(false);
@@ -128,7 +101,7 @@ async function completeCallbackRouteAsync(args: {
     return;
   }
 
-  const outcome = await completeOAuthCallbackOnce(callbackUrl);
+  const outcome = await completeOAuthCallback(callbackUrl);
   if (signal.aborted || handledOutcomeRef.current) return;
   handledOutcomeRef.current = true;
   if (outcome.status === 'authenticated') {

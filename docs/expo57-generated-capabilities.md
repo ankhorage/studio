@@ -38,7 +38,7 @@ The current acceptance slice proves:
   the controlled Web camera-permission fallback.
 
 The registry baseline asserted by this slice is `@ankhorage/expo-runtime@3.0.4`,
-`@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.4`, with Expo and Expo Router
+`@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.5`, with Expo and Expo Router
 `~57.0.15`. Browser acceptance uses a deterministic local Auth transport that contains no real
 credentials. Pending, expired and completed correlation state is created through the released
 adapter's public authorization/completion flow; the harness does not reproduce owner-private

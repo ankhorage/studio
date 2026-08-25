@@ -186,14 +186,18 @@ async function runProviderDenialScenario(): Promise<void> {
   const firstChallenge = readAuthorizationPkce(harness.state.assignedUrls[0]);
 
   const callbackDocument = await harness.importDocument('denial-callback');
-  const denied = await callbackDocument.completeOAuthCallback(
-    `${CALLBACK_URL}?error=access_denied`,
-  );
+  const callbackUrl = `${CALLBACK_URL}?error=access_denied`;
+  const firstCompletion = callbackDocument.completeOAuthCallback(callbackUrl);
+  const concurrentCompletion = callbackDocument.completeOAuthCallback(callbackUrl);
+
+  expect(concurrentCompletion).toBe(firstCompletion);
+  const [denied, concurrentDenied] = await Promise.all([firstCompletion, concurrentCompletion]);
 
   expect(denied).toEqual({
     status: 'cancelled',
     message: 'Authorization was declined by the provider.',
   });
+  expect(concurrentDenied).toEqual(denied);
   expect(harness.state.fetchCalls).toHaveLength(0);
   expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
 

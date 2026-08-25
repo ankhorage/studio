@@ -16,7 +16,7 @@
         "@ankhorage/orchestrator-module-expo-localization": "^0.6.0",
         "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
         "@ankhorage/runtime": "^2.2.0",
-        "@ankhorage/supabase-auth": "^1.2.4",
+        "@ankhorage/supabase-auth": "^1.2.5",
         "@ankhorage/supabase-storage": "^0.2.0",
         "@ankhorage/supabase-vault": "^0.2.4",
         "@ankhorage/templates": "^7.0.0",
@@ -123,7 +123,7 @@
 
     "@ankhorage/studio-app": ["@ankhorage/studio-app@workspace:apps/studio"],
 
-    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.4", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@noble/hashes": "2.3.0" } }, "sha512-dhLbuPQMEv7UGBWCQNufNpHxQ4h7JvSyCuPTQs2z/6TdLfn1DVZGCVcncBUjZf0eV0C8TZHXpb3nYa+/YkxPXw=="],
+    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.5", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@noble/hashes": "2.3.0" } }, "sha512-T/7gtx01jp6xxpB15Vj1Bl6wfw99TAtlfUnFUP2zbOzpxoKfzUPkYzU/H2zyFc4FDhhpQC/au06w8XNF6W+3fA=="],
 
     "@ankhorage/supabase-storage": ["@ankhorage/supabase-storage@0.2.0", "", { "dependencies": { "@supabase/supabase-js": "^2.105.3" }, "peerDependencies": { "@ankhorage/contracts": "^7.4.0" }, "optionalPeers": ["@ankhorage/contracts"] }, "sha512-o5Fu4n9H0qPg5+8EHiwnjEyyBBHsFZWAIHi9Ula+QXbkh9LnIOK/wp6r934n2xG0OOuzbzgu63lAxyQnVzGn0g=="],
 

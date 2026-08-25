@@ -86,7 +86,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
-    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.4');
+    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.5');
     expect(dependencies['@ankhorage/supabase-storage']).toBe('^0.2.0');
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
