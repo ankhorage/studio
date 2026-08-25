@@ -20,10 +20,10 @@ const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
 const STUDIO_VERSION = '^2.0.2';
 const UTILITY_VERSION = '^0.2.0';
-const SUPABASE_AUTH_VERSION = '^1.2.2';
+const SUPABASE_AUTH_VERSION = '^1.2.4';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^3.0.0';
-const EXPO_RUNTIME_VERSION = '^3.0.3';
+const EXPO_RUNTIME_VERSION = '^3.0.4';
 const DEVTOOLS_VERSION = '^1.6.0';
 const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 
@@ -905,6 +905,7 @@ export function getPackageJson(args: {
         ? {
             '@ankhorage/supabase-auth': SUPABASE_AUTH_VERSION,
             ...createPlatformDependencyMap([
+              EXPO_PLATFORM.packages.crypto,
               EXPO_PLATFORM.packages.secureStore,
               EXPO_PLATFORM.packages.webBrowser,
             ]),

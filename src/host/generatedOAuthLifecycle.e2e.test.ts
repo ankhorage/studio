@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -134,7 +135,7 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   expect(markerBeforeCallback.attemptId.length).toBeGreaterThan(0);
   expect(JSON.stringify(markerBeforeCallback)).not.toContain('provider');
   expect(JSON.stringify(markerBeforeCallback)).not.toContain('redirectUri');
-  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+  readAuthorizationPkce(harness.state.assignedUrls[0]);
 
   const callbackDocument = await harness.importDocument('callback');
   const completed = await callbackDocument.completeOAuthCallback(
@@ -144,9 +145,9 @@ async function runSuccessfulCallbackScenario(): Promise<void> {
   expect(completed).toEqual({ status: 'authenticated', completion: 'fresh' });
   expect(harness.state.fetchCalls).toHaveLength(1);
   expect(harness.state.fetchCalls[0]?.url).toContain('/auth/v1/token?grant_type=pkce');
+  assertPkceRoundTrip(harness.state.assignedUrls[0], harness.state.fetchCalls[0]?.body);
   expect(harness.state.values.has(SESSION_STORAGE_KEY)).toBe(true);
   expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(true);
-  expect(hasPkceVerifier(harness.state.values)).toBe(false);
   expect([...harness.state.values.values()].join('\n')).not.toContain('opaque-code');
 
   for (const [label, callbackUrl] of [
@@ -182,7 +183,7 @@ async function runProviderDenialScenario(): Promise<void> {
   void startDocument.startOAuthAuthorization('google');
   await waitFor(() => harness.state.assignedUrls.length === 1);
   const firstAttemptId = readTransportMarker(harness.state.values).attemptId;
-  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+  const firstChallenge = readAuthorizationPkce(harness.state.assignedUrls[0]);
 
   const callbackDocument = await harness.importDocument('denial-callback');
   const denied = await callbackDocument.completeOAuthCallback(
@@ -195,7 +196,6 @@ async function runProviderDenialScenario(): Promise<void> {
   });
   expect(harness.state.fetchCalls).toHaveLength(0);
   expect(harness.state.values.has(TRANSPORT_ATTEMPT_KEY)).toBe(false);
-  expect(hasPkceVerifier(harness.state.values)).toBe(false);
 
   const restartDocument = await harness.importDocument('denial-restart');
   void restartDocument.startOAuthAuthorization('google');
@@ -203,7 +203,10 @@ async function runProviderDenialScenario(): Promise<void> {
 
   const restartedAttemptId = readTransportMarker(harness.state.values).attemptId;
   expect(restartedAttemptId).not.toBe(firstAttemptId);
-  expect(hasPkceVerifier(harness.state.values)).toBe(true);
+  const restartedChallenge = readAuthorizationPkce(harness.state.assignedUrls[1]);
+  if (restartedChallenge === firstChallenge) {
+    throw new Error('Restarted OAuth authorization did not create fresh PKCE state.');
+  }
 }
 
 async function runRejectedCallbackScenario(
@@ -402,8 +405,55 @@ function readTransportMarker(values: ReadonlyMap<string, string>): { attemptId: 
   return { attemptId };
 }
 
-function hasPkceVerifier(values: ReadonlyMap<string, string>): boolean {
-  return [...values.keys()].some((key) => key.endsWith('-code-verifier'));
+function readAuthorizationPkce(authorizationUrl: string | undefined): string {
+  if (authorizationUrl === undefined) {
+    throw new Error('OAuth authorization URL was not captured.');
+  }
+
+  let url: URL;
+  try {
+    url = new URL(authorizationUrl);
+  } catch {
+    throw new Error('OAuth authorization URL was invalid.');
+  }
+
+  const challenges = url.searchParams.getAll('code_challenge');
+  const methods = url.searchParams.getAll('code_challenge_method');
+  const [challenge] = challenges;
+  if (
+    challenges.length !== 1 ||
+    challenge === undefined ||
+    challenge.length === 0 ||
+    methods.length !== 1 ||
+    methods[0]?.toLowerCase() !== 's256'
+  ) {
+    throw new Error('OAuth authorization did not contain one S256 PKCE challenge.');
+  }
+  return challenge;
+}
+
+function assertPkceRoundTrip(
+  authorizationUrl: string | undefined,
+  exchangeBody: string | undefined,
+): void {
+  const challenge = readAuthorizationPkce(authorizationUrl);
+  let exchangePayload: unknown;
+  try {
+    exchangePayload = exchangeBody === undefined ? null : JSON.parse(exchangeBody);
+  } catch {
+    throw new Error('OAuth code exchange payload was invalid.');
+  }
+  const verifier =
+    isRecord(exchangePayload) && typeof exchangePayload.code_verifier === 'string'
+      ? exchangePayload.code_verifier
+      : null;
+  if (verifier === null || verifier.length === 0) {
+    throw new Error('OAuth code exchange did not contain a PKCE verifier.');
+  }
+  const derivedChallenge = createHash('sha256').update(verifier).digest('base64url');
+  if (derivedChallenge !== challenge) {
+    throw new Error('OAuth PKCE challenge and exchange verifier did not match.');
+  }
 }
 
 function expireOwnerAttempt(values: Map<string, string>): void {

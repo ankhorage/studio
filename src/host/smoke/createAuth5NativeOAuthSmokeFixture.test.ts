@@ -37,6 +37,7 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
     const packageJson = await readJson<GeneratedPackageJson>(fixture.projectRoot, 'package.json');
     const appConfig = await readText(fixture.projectRoot, 'app.config.ts');
     const androidRun = await readText(fixture.projectRoot, 'scripts/ankh-android.ts');
+    const authAdapter = await readText(fixture.projectRoot, 'src/auth/adapter.ts');
     const oauthRuntime = await readText(fixture.projectRoot, 'src/auth/oauth.ts');
 
     expect(fixture.projectId).toBe(AUTH5_NATIVE_OAUTH_SMOKE.projectId);
@@ -48,7 +49,10 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
 
     expect(packageJson.scripts?.android).toBe('bun scripts/ankh-android.ts');
     expect(packageJson.scripts?.ios).toBe('expo run:ios');
-    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.3');
+    expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.4');
+    expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.crypto.name]).toBe(
+      EXPO_PLATFORM.packages.crypto.version,
+    );
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.webBrowser.name]).toBe(
       EXPO_PLATFORM.packages.webBrowser.version,
     );
@@ -62,6 +66,8 @@ test('prepares a secret-free real generated app for Auth 5 native smoke validati
     expect(androidRun).toContain("'-s',\n          transport.serial,\n          'reverse'");
     expect(androidRun).toContain("['-s', serial, 'reverse', '--list']");
     expect(androidRun).not.toContain('EXPO_PUBLIC_SUPABASE_ANON_KEY');
+    expect(authAdapter).toContain("import { getRandomBytes } from 'expo-crypto';");
+    expect(authAdapter).toContain('oauthRandomBytes: getRandomBytes');
     expect(oauthRuntime).toContain('resolveExpoOAuthBrowserRuntimeReadiness()');
     expect(oauthRuntime).toContain('WebBrowser.openAuthSessionAsync(');
     expect(oauthRuntime).toContain('oauth.completeAuthorization({');

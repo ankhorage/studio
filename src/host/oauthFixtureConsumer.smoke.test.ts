@@ -107,7 +107,10 @@ test('generates the released Google and Apple OAuth fixture through the real hos
       dependencies?: Record<string, string>;
     };
     expect(packageJson.dependencies?.['@ankhorage/contracts']).toBe('^8.0.0');
-    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.2');
+    expect(packageJson.dependencies?.['@ankhorage/supabase-auth']).toBe('^1.2.4');
+    expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.crypto.name]).toBe(
+      EXPO_PLATFORM.packages.crypto.version,
+    );
     expect(packageJson.dependencies?.[EXPO_PLATFORM.packages.secureStore.name]).toBe(
       EXPO_PLATFORM.packages.secureStore.version,
     );
@@ -121,9 +124,11 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(appConfig).toContain("bundleIdentifier: 'com.ankh.oauthfixtureconsumer'");
 
     const adapter = await readProjectFile(created.path, 'src/auth/adapter.ts');
+    expect(adapter).toContain("import { getRandomBytes } from 'expo-crypto';");
     expect(adapter).toContain("const generatedOAuthProviders = ['google', 'apple'] as const;");
     expect(adapter).toContain('createSupabaseAuthAdapter({');
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
+    expect(adapter).toContain('oauthRandomBytes: getRandomBytes');
 
     const oauthRuntime = await readProjectFile(created.path, 'src/auth/oauth.ts');
     const oauthCompletion = await readProjectFile(created.path, 'src/auth/oauth-completion.ts');

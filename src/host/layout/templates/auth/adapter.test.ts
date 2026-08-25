@@ -20,6 +20,8 @@ describe('getAuthAdapterTs', () => {
 
     expect(source).not.toContain('generatedOAuthProviders');
     expect(source).not.toContain('oauthProviders: generatedOAuthProviders');
+    expect(source).not.toContain("from 'expo-crypto'");
+    expect(source).not.toContain('oauthRandomBytes: getRandomBytes');
     expect(source).not.toContain('generatedOAuthProviders.length > 0');
   });
 
@@ -28,6 +30,8 @@ describe('getAuthAdapterTs', () => {
 
     expect(source).toContain("const generatedOAuthProviders = ['google'] as const;");
     expect(source).toContain('oauthProviders: generatedOAuthProviders');
+    expect(source).toContain("import { getRandomBytes } from 'expo-crypto';");
+    expect(source).toContain('oauthRandomBytes: getRandomBytes');
     expect(source).not.toContain('generatedOAuthProviders.length > 0');
   });
 });
