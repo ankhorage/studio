@@ -17,6 +17,8 @@ The current acceptance slice proves:
 - owner-projected Expo 57 packages and config plugins for camera/scanner, microphone, media-library,
   location and notifications declarations;
 - canonical Web/native OAuth transport, target schemes and Secure Store session persistence source;
+- native OAuth PKCE entropy injected from the Expo-owned `expo-crypto` CSPRNG without a global
+  Crypto shim;
 - the generated `BarcodeScannerView` bridge consumes `ExpoBarcodeScannerAdapter` through the
   generated extension registry;
 - no generated `expo-av`, `expo-permissions`, `expo/fetch`, legacy OAuth transport key or legacy
@@ -35,8 +37,8 @@ The current acceptance slice proves:
   second exchange, exposes that replay-specific completion in the hydrated callback UI, and renders
   the controlled Web camera-permission fallback.
 
-The registry baseline asserted by this slice is `@ankhorage/expo-runtime@3.0.3`,
-`@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.2`, with Expo and Expo Router
+The registry baseline asserted by this slice is `@ankhorage/expo-runtime@3.0.4`,
+`@ankhorage/permissions@0.2.3`, and `@ankhorage/supabase-auth@1.2.4`, with Expo and Expo Router
 `~57.0.15`. Browser acceptance uses a deterministic local Auth transport that contains no real
 credentials. Pending, expired and completed correlation state is created through the released
 adapter's public authorization/completion flow; the harness does not reproduce owner-private

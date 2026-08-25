@@ -328,7 +328,9 @@ describe('GeneratedAppFileGenerator', () => {
     expect(rootLayout).toContain('<Stack.Screen key="oauth-callback" name="auth/callback" />');
     expect(navigation).toContain("AppState.addEventListener('change'");
     expect(navigation).toContain('await bootstrapAuthSession()');
+    expect(adapter).toContain("import { getRandomBytes } from 'expo-crypto';");
     expect(adapter).toContain('oauthProviders: generatedOAuthProviders');
+    expect(adapter).toContain('oauthRandomBytes: getRandomBytes');
     expect(adapter).toContain("['google']");
     expect(oauth).toContain('WebBrowser.openAuthSessionAsync');
     expect(oauthCompletion).toContain('Linking.createURL');

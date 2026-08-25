@@ -15,6 +15,7 @@ export async function assertExpo57GeneratedCapabilityContractAsync(
     '@ankhorage/supabase-auth',
     EXPO_PLATFORM.packages.audio.name,
     EXPO_PLATFORM.packages.camera.name,
+    EXPO_PLATFORM.packages.crypto.name,
     EXPO_PLATFORM.packages.location.name,
     EXPO_PLATFORM.packages.mediaLibrary.name,
     EXPO_PLATFORM.packages.notifications.name,
@@ -85,6 +86,7 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   }
 
   const oauthRuntime = await readFile(path.join(projectRoot, 'src', 'auth', 'oauth.ts'), 'utf8');
+  const authAdapter = await readFile(path.join(projectRoot, 'src', 'auth', 'adapter.ts'), 'utf8');
   const oauthCompletion = await readFile(
     path.join(projectRoot, 'src', 'auth', 'oauth-completion.ts'),
     'utf8',
@@ -96,6 +98,14 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   for (const expected of ['WebBrowser.openAuthSessionAsync(', 'oauth.completeAuthorization({']) {
     if (!oauthRuntime.includes(expected)) {
       throw new Error(`Generated capability OAuth runtime is missing ${expected}.`);
+    }
+  }
+  for (const expected of [
+    "import { getRandomBytes } from 'expo-crypto';",
+    'oauthRandomBytes: getRandomBytes',
+  ]) {
+    if (!authAdapter.includes(expected)) {
+      throw new Error(`Generated capability auth adapter is missing ${expected}.`);
     }
   }
   if (!oauthCompletion.includes('Linking.createURL(callbackPath, { scheme: nativeScheme })')) {

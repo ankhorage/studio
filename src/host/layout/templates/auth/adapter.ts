@@ -10,9 +10,14 @@ export function getAuthAdapterTs(options: AuthAdapterTemplateOptions = {}) {
       : '';
   const oauthProviderProperty =
     oauthProviders.length > 0 ? '\n        oauthProviders: generatedOAuthProviders,' : '';
+  const oauthRandomBytesImport =
+    oauthProviders.length > 0 ? "import { getRandomBytes } from 'expo-crypto';\n" : '';
+  const oauthRandomBytesProperty =
+    oauthProviders.length > 0 ? '\n        oauthRandomBytes: getRandomBytes,' : '';
 
   return `import type { AuthAdapter, AuthResult, AuthSession, AuthUser } from '@ankhorage/contracts/auth';
 import { createSupabaseAuthAdapter } from '@ankhorage/supabase-auth';
+${oauthRandomBytesImport}
 
 import { AUTH_SESSION_STORAGE_KEY, authSessionStorage } from './session';
 
@@ -32,7 +37,7 @@ export const authAdapter: AuthAdapter =
         url: supabaseUrl,
         anonKey: supabaseAnonKey,
         storage: authSessionStorage,
-        storageKey: AUTH_SESSION_STORAGE_KEY,${oauthProviderProperty}
+        storageKey: AUTH_SESSION_STORAGE_KEY,${oauthProviderProperty}${oauthRandomBytesProperty}
       })
     : createMissingSupabaseAuthAdapter();
 
