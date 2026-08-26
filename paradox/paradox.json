@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.6",
+      "value": "v2.0.7",
       "color": "cb3837"
     },
     {
@@ -119,6 +119,12 @@
         "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceServer.ts",
         "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
       ],
+      "exports": []
+    },
+    {
+      "path": "scripts/expo57-studio-standalone-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"],
       "exports": []
     },
     {
@@ -1986,6 +1992,18 @@
       "exports": ["assertExpo57GeneratedCapabilityOwnerGraphAsync"]
     },
     {
+      "path": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["assertExpo57StudioNativePrebuildAsync"]
+    },
+    {
+      "path": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["assertExpo57StudioStandaloneContractAsync"]
+    },
+    {
       "path": "src/host/smoke/assertNoBrowserErrors.test.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/assertNoBrowserErrors.ts"],
@@ -2065,10 +2083,37 @@
       "exports": ["createExpo57NavigationFixtureManifest"]
     },
     {
+      "path": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createExpo57StudioHostFixtureAsync"]
+    },
+    {
+      "path": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createExpo57StudioStandaloneFixtureAsync"]
+    },
+    {
+      "path": "src/host/smoke/createStaticExportServer.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/createStaticExportServer.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/smoke/createStaticExportServer.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["createStaticExportServer"]
+    },
+    {
+      "path": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/host/smoke/generateExpoRouterTypesAsync.ts",
@@ -2276,6 +2321,43 @@
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
       "exports": ["runExpo57GeneratedNavigationAcceptanceAsync"]
+    },
+    {
+      "path": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/http/serverWithSecrets.ts",
+        "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+        "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "src/host/templateRegistry/index.ts"
+      ],
+      "exports": ["runExpo57StudioStandaloneAcceptance"]
+    },
+    {
+      "path": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/assertNoBrowserErrors.ts",
+        "src/host/smoke/ChromeNavigationSession.ts",
+        "src/host/smoke/reserveTcpPortAsync.ts"
+      ],
+      "exports": ["runExpo57StudioStandaloneDevelopmentWebSmokeAsync"]
+    },
+    {
+      "path": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/smoke/assertNoBrowserErrors.ts",
+        "src/host/smoke/ChromeNavigationSession.ts",
+        "src/host/smoke/createStaticExportServer.ts",
+        "src/host/smoke/reserveTcpPortAsync.ts"
+      ],
+      "exports": ["runExpo57StudioStandaloneStaticWebSmokeAsync"]
     },
     {
       "path": "src/host/studioInfra.e2e.test.ts",
@@ -16517,6 +16599,78 @@
       }
     },
     {
+      "name": "assertExpo57StudioNativePrebuildAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveIosProjectAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertExpo57StudioStandaloneContractAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertCopiedFilesAreIndependentAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertInstalledContractAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertRegistryDependencyRanges",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "isWithin",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "listFilesAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "line": 137,
+        "column": 1
+      }
+    },
+    {
       "name": "assertNoBrowserErrors",
       "description": null,
       "sourceLocation": {
@@ -16670,6 +16824,42 @@
       }
     },
     {
+      "name": "createExpo57StudioHostFixtureAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "createExpo57StudioStandaloneFixtureAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "fetchRoute",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/createStaticExportServer.test.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
       "name": "createStaticExportServer",
       "description": null,
       "sourceLocation": {
@@ -16679,11 +16869,11 @@
       }
     },
     {
-      "name": "resolveStaticExportPath",
+      "name": "resolveStaticExportPaths",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createStaticExportServer.ts",
-        "line": 21,
+        "line": 23,
         "column": 1
       }
     },
@@ -17683,6 +17873,123 @@
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
         "line": 547,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExpo57StudioStandaloneAcceptance",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertLockfileUnchangedAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLockfileAndInstallAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "createCommandEnvironment",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "hash",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTemplateSelection",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "runAppOwnedQualityChecksAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 138,
+        "column": 1
+      }
+    },
+    {
+      "name": "runStaticAndNativeOutputChecksAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "line": 163,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "stopProcessAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "waitForHttpAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "line": 6,
         "column": 1
       }
     },
@@ -25321,6 +25628,11 @@
         "sourcePath": "scripts/expo57-native-capability-evidence.ts"
       },
       {
+        "fromPath": "scripts/expo57-studio-standalone-acceptance.ts",
+        "toPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "sourcePath": "scripts/expo57-studio-standalone-acceptance.ts"
+      },
+      {
         "fromPath": "src/ankhAdmin.public.test.ts",
         "toPath": "src/root.ts",
         "sourcePath": "src/ankhAdmin.public.test.ts"
@@ -28056,6 +28368,21 @@
         "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.test.ts"
       },
       {
+        "fromPath": "src/host/smoke/createStaticExportServer.test.ts",
+        "toPath": "src/host/smoke/createStaticExportServer.ts",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toPath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toPath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
         "fromPath": "src/host/smoke/getChromeNavigationIssue.test.ts",
         "toPath": "src/host/smoke/getChromeNavigationIssue.ts",
         "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
@@ -28224,6 +28551,86 @@
         "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
         "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/http/serverWithSecrets.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/templateRegistry/index.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts",
+        "toPath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/reserveTcpPortAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/createStaticExportServer.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts",
+        "toPath": "src/host/smoke/reserveTcpPortAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
       },
       {
         "fromPath": "src/host/templateRegistry/catalog.test.ts",
@@ -30016,6 +30423,12 @@
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "scripts/expo57-native-capability-evidence.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-studio-standalone-acceptance.ts",
+        "toSymbol": "runExpo57StudioStandaloneAcceptance",
+        "callExpression": "runExpo57StudioStandaloneAcceptance",
+        "sourcePath": "scripts/expo57-studio-standalone-acceptance.ts"
       },
       {
         "fromSymbol": "src/ankhAdmin.public.test.ts",
@@ -49278,6 +49691,114 @@
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
       },
       {
+        "fromSymbol": "assertExpo57StudioNativePrebuildAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioNativePrebuildAsync",
+        "toSymbol": "resolveIosProjectAsync",
+        "callExpression": "resolveIosProjectAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveIosProjectAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "assertRegistryDependencyRanges",
+        "callExpression": "assertRegistryDependencyRanges",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "assertCopiedFilesAreIndependentAsync",
+        "callExpression": "assertCopiedFilesAreIndependentAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "toSymbol": "assertInstalledContractAsync",
+        "callExpression": "assertInstalledContractAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertCopiedFilesAreIndependentAsync",
+        "toSymbol": "listFilesAsync",
+        "callExpression": "listFilesAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertCopiedFilesAreIndependentAsync",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertCopiedFilesAreIndependentAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "listFilesAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "listFilesAsync",
+        "toSymbol": "listFilesAsync",
+        "callExpression": "listFilesAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
         "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
         "toSymbol": "describe",
         "callExpression": "describe",
@@ -49740,10 +50261,136 @@
         "sourcePath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts"
       },
       {
+        "fromSymbol": "createExpo57StudioHostFixtureAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioHostFixtureAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioHostFixtureAsync",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/smoke/createExpo57StudioHostFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "createExpo57StudioStandaloneFixtureAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "src/host/smoke/createExpo57StudioStandaloneFixtureAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "createStaticExportServer",
+        "callExpression": "createStaticExportServer",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "fetchRoute",
+        "callExpression": "fetchRoute",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/createStaticExportServer.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/createStaticExportServer.test.ts"
+      },
+      {
         "fromSymbol": "fetch",
-        "toSymbol": "resolveStaticExportPath",
-        "callExpression": "resolveStaticExportPath",
+        "toSymbol": "resolveStaticExportPaths",
+        "callExpression": "resolveStaticExportPaths",
         "sourcePath": "src/host/smoke/createStaticExportServer.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "createExpo57StudioStandaloneFixtureAsync",
+        "callExpression": "createExpo57StudioStandaloneFixtureAsync",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "callExpression": "assertExpo57StudioStandaloneContractAsync",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
         "fromSymbol": "generateExpoRouterTypesAsync",
@@ -50974,6 +51621,330 @@
         "toSymbol": "diagnostics",
         "callExpression": "diagnostics",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "createExpo57StudioStandaloneFixtureAsync",
+        "callExpression": "createExpo57StudioStandaloneFixtureAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "assertExpo57StudioStandaloneContractAsync",
+        "callExpression": "assertExpo57StudioStandaloneContractAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "createLockfileAndInstallAsync",
+        "callExpression": "createLockfileAndInstallAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "runAppOwnedQualityChecksAsync",
+        "callExpression": "runAppOwnedQualityChecksAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "resolveTemplateSelection",
+        "callExpression": "resolveTemplateSelection",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "createExpo57StudioHostFixtureAsync",
+        "callExpression": "createExpo57StudioHostFixtureAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "startStudioHostServerWithSecrets",
+        "callExpression": "startStudioHostServerWithSecrets",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "callExpression": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "runStaticAndNativeOutputChecksAsync",
+        "callExpression": "runStaticAndNativeOutputChecksAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "assertExpo57StudioNativePrebuildAsync",
+        "callExpression": "assertExpo57StudioNativePrebuildAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "assertLockfileUnchangedAsync",
+        "callExpression": "assertLockfileUnchangedAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneAcceptance",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertLockfileUnchangedAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertLockfileUnchangedAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "createCommandEnvironment",
+        "callExpression": "createCommandEnvironment",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createLockfileAndInstallAsync",
+        "toSymbol": "assertLockfileUnchangedAsync",
+        "callExpression": "assertLockfileUnchangedAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "hash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "resolveTemplateSelection",
+        "toSymbol": "getTemplateCatalog",
+        "callExpression": "getTemplateCatalog",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runAppOwnedQualityChecksAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runAppOwnedQualityChecksAsync",
+        "toSymbol": "createCommandEnvironment",
+        "callExpression": "createCommandEnvironment",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticAndNativeOutputChecksAsync",
+        "toSymbol": "createCommandEnvironment",
+        "callExpression": "createCommandEnvironment",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticAndNativeOutputChecksAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticAndNativeOutputChecksAsync",
+        "toSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "callExpression": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "reserveTcpPortAsync",
+        "callExpression": "reserveTcpPortAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "collectOutput",
+        "callExpression": "collectOutput",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "waitForHttpAsync",
+        "callExpression": "waitForHttpAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "browser.navigateAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "browser.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "browser.clickByRoleAndNameAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "browser.waitForLocationAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "goBackAsync",
+        "callExpression": "browser.goBackAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "goForwardAsync",
+        "callExpression": "browser.goForwardAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "reloadAsync",
+        "callExpression": "browser.reloadAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "close",
+        "callExpression": "browser?.close",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneDevelopmentWebSmokeAsync",
+        "toSymbol": "stopProcessAsync",
+        "callExpression": "stopProcessAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneDevelopmentWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "createStaticExportServer",
+        "callExpression": "createStaticExportServer",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "reserveTcpPortAsync",
+        "callExpression": "reserveTcpPortAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "browser.navigateAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "browser.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "waitForHydratedRoleAndNameAsync",
+        "callExpression": "browser.waitForHydratedRoleAndNameAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "clickByRoleAndNameAsync",
+        "callExpression": "browser.clickByRoleAndNameAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "browser.waitForLocationAsync",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpo57StudioStandaloneStaticWebSmokeAsync",
+        "toSymbol": "close",
+        "callExpression": "browser?.close",
+        "sourcePath": "src/host/smoke/runExpo57StudioStandaloneStaticWebSmokeAsync.ts"
       },
       {
         "fromSymbol": "src/host/templateRegistry/catalog.test.ts",

@@ -2,3 +2,4 @@ dist
 node_modules
 bun.lock
 *.tsbuildinfo
+/apps/studio/expo-env.d.ts

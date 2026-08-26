@@ -25,6 +25,7 @@ describe('createExpo57CapabilityFixtureManifest', () => {
     expect(plan.dependencies.map(({ name }) => name)).toEqual([
       '@ankhorage/expo-runtime',
       '@ankhorage/permissions',
+      EXPO_PLATFORM.packages.asset.name,
       EXPO_PLATFORM.packages.audio.name,
       EXPO_PLATFORM.packages.camera.name,
       EXPO_PLATFORM.packages.location.name,

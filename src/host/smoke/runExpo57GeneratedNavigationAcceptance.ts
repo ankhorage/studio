@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/
 import path from 'node:path';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationFixtureManifest';
@@ -15,7 +16,6 @@ const COMMAND_TIMEOUT_MS = 180_000;
 const FORBIDDEN_REACT_NAVIGATION_IMPORT =
   /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
 const HTTP_TIMEOUT_MS = 120_000;
-const RELEASED_STUDIO_VERSION = '2.0.6';
 const ROUTER_REWRITE_DISABLED = '1';
 
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
@@ -163,28 +163,13 @@ async function assertReleasedStudioPackageAsync(
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
-  const installedPackagePath = path.join(
-    workspaceRoot,
-    'node_modules',
-    '@ankhorage',
-    'studio',
-    'package.json',
-  );
-  const installedPackage = JSON.parse(await readFile(installedPackagePath, 'utf8')) as {
-    readonly version?: unknown;
-  };
-  if (installedPackage.version !== RELEASED_STUDIO_VERSION) {
-    throw new Error(
-      `Studio-enabled navigation fixture must consume released Studio ${RELEASED_STUDIO_VERSION}, received ${String(installedPackage.version)}.`,
-    );
-  }
-
   const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
-  if (
-    !workspaceLock.includes(`"@ankhorage/studio": ["@ankhorage/studio@${RELEASED_STUDIO_VERSION}"`)
-  ) {
-    throw new Error('Studio fixture lockfile does not contain the released registry resolution.');
-  }
+  await assertInstalledRegistryPackageAsync({
+    installationRoot: workspaceRoot,
+    lockfile: workspaceLock,
+    packageName: '@ankhorage/studio',
+    range: studioRange,
+  });
 }
 
 async function assertRouterTypesAsync(
