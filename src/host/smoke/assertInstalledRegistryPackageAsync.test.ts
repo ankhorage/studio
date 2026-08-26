@@ -82,6 +82,28 @@ describe('assertInstalledRegistryPackageAsync', () => {
       }),
     ).rejects.toThrow('fixture-owned node_modules');
   });
+
+  it('rejects a package symlink that stays inside the fixture but escapes node_modules', async () => {
+    const installationRoot = await createInstallationRootAsync();
+    const localPackageRoot = path.join(installationRoot, 'local-source', 'studio');
+    await mkdir(localPackageRoot, { recursive: true });
+    await writeFile(
+      path.join(localPackageRoot, 'package.json'),
+      `${JSON.stringify({ name: '@ankhorage/studio', version: '2.0.8' })}\n`,
+    );
+    const installedPackageRoot = resolvePackageRoot(installationRoot, '@ankhorage/studio');
+    await mkdir(path.dirname(installedPackageRoot), { recursive: true });
+    await symlink(localPackageRoot, installedPackageRoot);
+
+    expect(
+      assertInstalledRegistryPackageAsync({
+        installationRoot,
+        lockfile: createLockfileEntry('@ankhorage/studio', '2.0.8'),
+        packageName: '@ankhorage/studio',
+        range: '^2.0.7',
+      }),
+    ).rejects.toThrow('fixture-owned node_modules');
+  });
 });
 
 async function createInstallationRootAsync(): Promise<string> {

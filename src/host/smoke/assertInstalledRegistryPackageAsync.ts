@@ -14,12 +14,9 @@ export async function assertInstalledRegistryPackageAsync(options: {
   readonly packageName: string;
   readonly range: string;
 }): Promise<string> {
-  const packageRoot = path.join(
-    options.installationRoot,
-    'node_modules',
-    ...options.packageName.split('/'),
-  );
-  const provenance = await resolveInstalledPackageProvenance(options.installationRoot, packageRoot);
+  const nodeModulesRoot = path.join(options.installationRoot, 'node_modules');
+  const packageRoot = path.join(nodeModulesRoot, ...options.packageName.split('/'));
+  const provenance = await resolveInstalledPackageProvenance(nodeModulesRoot, packageRoot);
   if (!isPathInsideResolved(provenance.resolvedWorkspacePath, provenance.resolvedCandidatePath)) {
     throw new Error(`${options.packageName} did not resolve from the fixture-owned node_modules.`);
   }
