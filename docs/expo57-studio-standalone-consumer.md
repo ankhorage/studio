@@ -75,20 +75,23 @@ workspace, sibling package, parent `node_modules`, or symlink. A separate tempor
 used only to serve the HTTP behavior exercised by the app and is not part of dependency-resolution
 evidence.
 
-The acceptance creates a registry lockfile, deletes `node_modules`, performs a cold frozen install,
-and proves that Studio 2.0.7, Expo Runtime 3.0.5, and Devtools 1.6.1 resolve from the fixture's own
-`node_modules`. It hashes the lockfile before and after all checks. The frozen SDK 57 resolution used
-during implementation contained Expo 57.0.16, Expo Router 57.0.16, Expo Dev Client 57.0.15,
-Expo Splash Screen 57.0.8, React Native 0.86.2, and TypeScript 6.0.3.
+The acceptance creates a registry lockfile, deletes `node_modules`, and performs a cold frozen
+install. For Studio, Expo Runtime, and Devtools it derives the installed registry version, proves
+that it satisfies the declared release range, matches the exact fresh lockfile resolution, and lives
+inside the fixture's own `node_modules`. This remains valid when a newer compatible patch is
+published. It hashes the lockfile before and after all checks. The frozen SDK 57 resolution used
+during implementation contained Studio 2.0.7, Expo Runtime 3.0.5, Devtools 1.6.1, Expo 57.0.16,
+Expo Router 57.0.16, Expo Dev Client 57.0.15, Expo Splash Screen 57.0.8, React Native 0.86.2, and
+TypeScript 6.0.3.
 
 The same run performs the platform assertion, Router type generation, TypeScript, lint, format,
 `expo install --check`, Expo Doctor, React Compiler healthcheck, development Web navigation, static
 Web export and hydration, Android and iOS JavaScript exports, and clean CNG. Browser console errors,
-page exceptions, request failures, hydration failures, and runtime failures are hard failures. It
-exercises `/`, `/create`, `/create/[category]`, `/create/[category]/[templateId]`, and
-`/projects/[projectId]`, including real path/search parameters, nested layout behavior, direct URLs,
-reload, and Back/Forward. CNG assertions cover scheme, application identifiers, edge-to-edge, iOS
-16.4 deployment target, static icon-font registration, and continued absence of obsolete bar config.
+page exceptions, hydration failures, and runtime failures are hard failures. It exercises `/`,
+`/create`, `/create/[category]`, `/create/[category]/[templateId]`, and `/projects/[projectId]`,
+including real path/search parameters, nested layout behavior, direct URLs, reload, and Back/Forward.
+CNG assertions cover scheme, application identifiers, edge-to-edge, iOS 16.4 deployment target,
+static icon-font registration, and continued absence of obsolete bar config.
 
 The CI job repeats this registry-only proof on Node 24 and Bun 1.3.14. Normal repository-workspace
 validation remains separate and mandatory.
