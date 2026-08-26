@@ -33,6 +33,7 @@ export default {
           '@react-native-vector-icons/fontawesome5',
           '@react-native-vector-icons/fontawesome6',
           '@react-native-vector-icons/ionicons',
+          'expo-splash-screen',
           'expo-updates',
         ],
       },
