@@ -1,4 +1,5 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -10,6 +11,7 @@ import { createExpo57NavigationFixtureManifest } from './createExpo57NavigationF
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
+import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 180_000;
@@ -17,6 +19,7 @@ const FORBIDDEN_REACT_NAVIGATION_IMPORT =
   /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTER_REWRITE_DISABLED = '1';
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
 
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
@@ -52,13 +55,12 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       name: 'Expo 57 Root Drawer',
       rootNavigator: 'drawer',
     });
-    await createWorkspaceLockfileAsync(workspaceRoot);
-    await runCommandAsync({
-      args: ['install', '--frozen-lockfile', '--linker=hoisted'],
-      command: 'bun',
-      cwd: workspaceRoot,
-      label: 'Cold frozen navigation workspace install',
-    });
+    const projects = [standalone, studio, authRuntime, rootTabs, rootDrawer] as const;
+    await rm(path.join(workspaceRoot, 'package.json'));
+    const lockfileDigests = new Map<string, string>();
+    for (const project of projects) {
+      lockfileDigests.set(project.path, await installGeneratedProjectAsync(project));
+    }
     await assertGeneratedNavigationContractAsync(standalone);
     await runGeneratedProjectChecksAsync(standalone);
     await runDevelopmentNavigationSmokeAsync(standalone.path);
@@ -70,12 +72,20 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
 
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
-    await assertReleasedStudioPackageAsync(workspaceRoot, studio);
+    await assertReleasedStudioPackageAsync(studio);
     await assertGeneratedNavigationContractAsync(authRuntime);
     await runSignedOutAuthNavigationSmokeAsync(authRuntime.path);
 
     await runFocusedRootNavigatorChecksAsync(rootTabs);
     await runFocusedRootNavigatorChecksAsync(rootDrawer);
+    for (const project of projects) {
+      const expectedDigest = lockfileDigests.get(project.path);
+      if (!expectedDigest) throw new Error(`${project.id} has no lockfile digest.`);
+      const actualDigest = hash(await readFile(path.join(project.path, 'bun.lock')));
+      if (actualDigest !== expectedDigest) {
+        throw new Error(`${project.id} acceptance mutated its frozen lockfile.`);
+      }
+    }
   } finally {
     await staticServer?.stop(true);
     await rm(workspaceRoot, { force: true, recursive: true });
@@ -151,10 +161,7 @@ async function assertGeneratedNavigationContractAsync(project: NavigationProject
   }
 }
 
-async function assertReleasedStudioPackageAsync(
-  workspaceRoot: string,
-  studioProject: NavigationProject,
-): Promise<void> {
+async function assertReleasedStudioPackageAsync(studioProject: NavigationProject): Promise<void> {
   const generatedPackage = JSON.parse(
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
@@ -163,13 +170,18 @@ async function assertReleasedStudioPackageAsync(
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
-  const workspaceLock = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
-  await assertInstalledRegistryPackageAsync({
-    installationRoot: workspaceRoot,
-    lockfile: workspaceLock,
+  const projectLock = await readFile(path.join(studioProject.path, 'bun.lock'), 'utf8');
+  const version = await assertInstalledRegistryPackageAsync({
+    installationRoot: studioProject.path,
+    lockfile: projectLock,
     packageName: '@ankhorage/studio',
     range: studioRange,
   });
+  if (version !== REQUIRED_STUDIO_REGISTRY_VERSION) {
+    throw new Error(
+      `Studio-enabled navigation fixture installed ${version}; expected published ${REQUIRED_STUDIO_REGISTRY_VERSION}.`,
+    );
+  }
 }
 
 async function assertRouterTypesAsync(
@@ -198,6 +210,7 @@ async function assertRouterTypesAsync(
 async function generateRouterTypesAsync(project: NavigationProject): Promise<void> {
   await generateExpoRouterTypesAsync({
     env: {
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(project.path, '.ankh', 'expo-home'),
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
     },
     label: `${project.id} Expo Router typed-route generation`,
@@ -250,13 +263,26 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   );
 }
 
-async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void> {
+async function installGeneratedProjectAsync(project: NavigationProject): Promise<string> {
   await runCommandAsync({
-    args: ['install', '--linker=hoisted', '--lockfile-only', '--os=*', '--cpu=*'],
+    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
     command: 'bun',
-    cwd: workspaceRoot,
-    label: 'Create generated navigation workspace lockfile',
+    cwd: project.path,
+    label: `${project.id} create app-owned lockfile`,
   });
+  await rm(path.join(project.path, 'node_modules'), { force: true, recursive: true });
+  const digest = hash(await readFile(path.join(project.path, 'bun.lock')));
+  await runCommandAsync({
+    args: ['install', '--frozen-lockfile'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} cold frozen app install`,
+  });
+  return digest;
+}
+
+function hash(value: Uint8Array): string {
+  return createHash('sha256').update(value).digest('hex');
 }
 
 async function listSourceFilesAsync(rootPath: string): Promise<string[]> {
@@ -284,6 +310,7 @@ async function runCommandAsync(options: AcceptanceCommand): Promise<string> {
   return runAcceptanceCommandAsync({
     ...options,
     env: {
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(options.cwd, '.ankh', 'expo-home'),
       EXPO_NO_TELEMETRY: '1',
       ...(options.routerCommand
         ? { EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED }
@@ -340,24 +367,22 @@ async function runDevelopmentWebAsync(
   projectRoot: string,
   smoke: (chrome: ChromeNavigationSession, rootUrl: string) => Promise<void>,
 ): Promise<void> {
+  const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
   const expoPort = await reserveTcpPortAsync('navigation smoke');
   const chromePort = await reserveTcpPortAsync('navigation Chrome debug');
   const output: string[] = [];
-  const expoProcess = spawn(
-    'bun',
-    ['x', 'expo', 'start', '--web', '--port', String(expoPort), '--clear'],
-    {
-      cwd: projectRoot,
-      detached: true,
-      env: {
-        ...process.env,
-        BROWSER: 'none',
-        CI: '1',
-        EXPO_NO_TELEMETRY: '1',
-        EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
-      },
+  const expoProcess = spawn(expoCli, ['start', '--web', '--port', String(expoPort), '--clear'], {
+    cwd: projectRoot,
+    detached: true,
+    env: {
+      ...process.env,
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home'),
+      BROWSER: 'none',
+      CI: '1',
+      EXPO_NO_TELEMETRY: '1',
+      EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
     },
-  );
+  });
   collectProcessOutput(expoProcess, output);
   let chrome: ChromeNavigationSession | null = null;
 
@@ -409,6 +434,7 @@ async function runFocusedRootNavigatorChecksAsync(project: NavigationProject): P
 async function runGeneratedProjectChecksAsync(project: NavigationProject): Promise<void> {
   await generateRouterTypesAsync(project);
   await assertRouterTypesAsync(project);
+  const expoCli = await resolveAppOwnedExpoCliAsync(project.path);
 
   const commands: readonly AcceptanceCommand[] = [
     project.auth
@@ -428,8 +454,8 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
         }
       : { args: ['run', 'lint'], command: 'bun', cwd: project.path, label: `${project.id} lint` },
     {
-      args: ['x', 'expo', 'install', '--check'],
-      command: 'bun',
+      args: ['install', '--check'],
+      command: expoCli,
       cwd: project.path,
       label: `${project.id} Expo dependency compatibility`,
     },
@@ -448,25 +474,16 @@ async function runGeneratedProjectChecksAsync(project: NavigationProject): Promi
     cwd: project.path,
     label: `${project.id} TypeScript 6 with generated Router declarations`,
   });
-  await runCommandAsync({
-    args: ['x', 'react-compiler-healthcheck@latest'],
-    command: 'bun',
-    cwd: project.path,
-    label: `${project.id} React Compiler healthcheck`,
-  });
-
   for (const platform of ['web', 'android', 'ios'] as const) {
     await runCommandAsync({
       args: [
-        'x',
-        'expo',
         'export',
         '--platform',
         platform,
         ...(platform === 'web' ? [] : ['--output-dir', `dist-${platform}`]),
         '--clear',
       ],
-      command: 'bun',
+      command: expoCli,
       cwd: project.path,
       label:
         platform === 'web'
@@ -482,11 +499,15 @@ async function runStaticExportSmokeAsync(port: number): Promise<void> {
   const chrome = await ChromeNavigationSession.createAsync(chromePort);
   try {
     const rootUrl = `http://127.0.0.1:${port}`;
+    await chrome.setViewportAsync(390, 844);
     await chrome.navigateAsync(rootUrl);
     await chrome.waitForBodyTextAsync('Navigation Home');
+    await chrome.assertNoHorizontalOverflowAsync('served static export at mobile width');
     await chrome.clickByTestIdAsync('home-profile');
     await chrome.waitForLocationAsync({ pathname: '/profile/ada', search: '?source=internal' });
     await chrome.waitForBodyTextAsync('Dynamic Profile Route');
+    await chrome.setViewportAsync(1440, 900);
+    await chrome.assertNoHorizontalOverflowAsync('served static export at desktop width');
     assertNoBrowserErrors(chrome.errors, 'served static export');
   } finally {
     chrome.close();

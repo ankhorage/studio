@@ -4,6 +4,7 @@ import path from 'node:path';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 
 const FORBIDDEN_DEPENDENCY_PREFIX = /^(?:file|link|workspace):/u;
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
 const REQUIRED_ROUTE_EVIDENCE = [
   '/create',
   '/create/[category]',
@@ -94,12 +95,20 @@ async function assertInstalledContractAsync(
     if (declaredRange === undefined) {
       throw new Error(`Standalone Studio fixture does not declare ${requirement.packageName}.`);
     }
-    await assertInstalledRegistryPackageAsync({
+    const version = await assertInstalledRegistryPackageAsync({
       installationRoot: fixtureRoot,
       lockfile,
       packageName: requirement.packageName,
       range: declaredRange,
     });
+    if (
+      requirement.packageName === '@ankhorage/studio' &&
+      version !== REQUIRED_STUDIO_REGISTRY_VERSION
+    ) {
+      throw new Error(
+        `Standalone Studio fixture installed ${version}; expected published ${REQUIRED_STUDIO_REGISTRY_VERSION}.`,
+      );
+    }
   }
 
   const routerTypesPath = path.join(fixtureRoot, '.expo', 'types', 'router.d.ts');

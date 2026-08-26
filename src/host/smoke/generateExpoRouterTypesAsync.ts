@@ -3,6 +3,8 @@ import { stat } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import path from 'node:path';
 
+import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
+
 export async function generateExpoRouterTypesAsync(options: {
   readonly env?: Readonly<Record<string, string>>;
   readonly label: string;
@@ -10,9 +12,10 @@ export async function generateExpoRouterTypesAsync(options: {
   readonly timeoutMs?: number;
 }): Promise<void> {
   console.log(`\n==> ${options.label}`);
+  const expoCli = await resolveAppOwnedExpoCliAsync(options.projectRoot);
   const expoPort = await reservePortAsync();
   const output: string[] = [];
-  const expoProcess = spawn('bun', ['x', 'expo', 'start', '--port', String(expoPort), '--clear'], {
+  const expoProcess = spawn(expoCli, ['start', '--port', String(expoPort), '--clear'], {
     cwd: options.projectRoot,
     detached: true,
     env: {

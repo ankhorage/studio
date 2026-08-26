@@ -4,7 +4,6 @@ import path from 'node:path';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
-  workspaceRoot: string,
   projectRoot: string,
   timeoutMs: number,
 ): Promise<void> {
@@ -15,7 +14,7 @@ export async function assertExpo57GeneratedCapabilityOwnerGraphAsync(
   } as const;
   for (const [packageName, expectedVersion] of Object.entries(expectedOwnerVersions)) {
     const installedPackage = JSON.parse(
-      await readFile(path.join(workspaceRoot, 'node_modules', packageName, 'package.json'), 'utf8'),
+      await readFile(path.join(projectRoot, 'node_modules', packageName, 'package.json'), 'utf8'),
     ) as { readonly version?: string };
     if (installedPackage.version !== expectedVersion) {
       throw new Error(

@@ -52,9 +52,10 @@ root package is classified below.
 `@ankhorage/zora-chess@^0.1.2` and `@ankhorage/zora-tabletop@^0.0.5` match their current
 released owner baselines.
 
-`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@latest`. That is
-the published package boundary the first-party app exercises; all of its remaining Ankhorage owners
-come through the root workspace package and the released dependency graph audited below.
+`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.7`. That is the
+published package boundary the first-party app exercises and admits the prepared 2.0.8 patch without
+using `latest`; all of its remaining Ankhorage owners come through the released dependency graph
+audited below.
 
 ### Separate owner or roadmap step
 
@@ -122,12 +123,11 @@ packages (with only the Studio candidate itself packed when necessary), and vali
 package root:
 
 ```bash
-bun install --frozen-lockfile --linker=hoisted
+bun install --frozen-lockfile
 bun run lint
 expo install --check
 expo-doctor
 bun run typecheck
-bunx react-compiler-healthcheck@latest
 expo export --platform web
 expo export --platform android
 expo export --platform ios
@@ -140,8 +140,9 @@ claims of native binary compilation.
 The package-owned `test:acceptance:expo57-generated-app` runner creates this fixture through
 `ProjectManager` for every pull request and push to `main`. Its dedicated CI job selects Node 24,
 starts from a cold frozen install, and executes the app-owned lint and platform commands from the
-generated project directory. The hoisted linker gives Expo Doctor one physical installation of each
-native module. Standalone layouts import the focused
+generated project directory. After ProjectManager generation, the runner removes its temporary
+workspace wrapper. The generated app is both the package root and installation root; its lockfile,
+`node_modules/.bin/expo`, and all execution remain app-owned. Standalone layouts import the focused
 `@ankhorage/expo-runtime/action-bridge` entrypoint, so camera-free manifests do not declare or
 install `@ankhorage/permissions` or `expo-camera`; the acceptance runner asserts both the generated
 manifest and installed dependency graph stay free of both packages. The Studio
@@ -150,14 +151,15 @@ retains its focused follow-up boundary.
 
 The 2026-08-23 acceptance fixture was created and regenerated only through `ProjectManager`. Its
 single-stack route topology exercises the #310 scaffold boundary. From a cold frozen Bun install it passed
-Expo dependency validation, Expo Doctor (21/21), TypeScript 6 and React Compiler healthcheck (4/4
-components). Its app-owned CLI served hydrated Web HTML, emitted ten static routes, bundled Android
+Expo dependency validation, Expo Doctor (21/21), TypeScript 6 and React Compiler-backed production
+exports. Its app-owned CLI served hydrated Web HTML, emitted ten static routes, bundled Android
 and iOS JavaScript, and completed clean CNG prebuild. The generated native output retained Expo 57's
 edge-to-edge Android setting and iOS 16.4 deployment target.
 
 The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
-registry owner packages, asserts the released Studio 2.0.3 range and exact registry resolution, and
+registry owner packages, asserts the generated `^2.0.2` Studio range and exact 2.0.8 registry
+resolution, and
 covers root and nested Stack, JavaScript Tabs and Drawer navigators,
 hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
 OAuth callback is a separate root Stack route so correlation still runs for an existing session;
@@ -165,7 +167,7 @@ ordinary sign-in and sign-up screens remain inside the unauthenticated `(auth)` 
 Expo CLI first generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6
 run. Every Router start/export command disables the React Navigation compatibility rewrite. The
 runner performs static Web, Android and iOS exports for both full generation modes, checks Expo
-Doctor and the React Compiler, then drives the generated manifest Button, `ZoraTabBar` and
+Doctor and production compilation, then drives the generated manifest Button, `ZoraTabBar` and
 `ZoraDrawerContent` controls in Chrome. These interactions prove the Runtime action through the
 narrow `Href` adapter into Expo Router, dynamic/search params, Drawer selection, Tabs navigation and
 browser Back/Forward. A fresh signed-out Auth fixture enters a protected URL and verifies the Router

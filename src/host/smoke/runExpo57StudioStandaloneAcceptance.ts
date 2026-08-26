@@ -13,6 +13,7 @@ import { runExpo57StudioStandaloneDevelopmentWebSmokeAsync } from './runExpo57St
 import { runExpo57StudioStandaloneStaticWebSmokeAsync } from './runExpo57StudioStandaloneStaticWebSmokeAsync';
 
 const COMMAND_TIMEOUT_MS = 300_000;
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
 
 export async function runExpo57StudioStandaloneAcceptance(
   options: {
@@ -26,6 +27,7 @@ export async function runExpo57StudioStandaloneAcceptance(
   let host: Awaited<ReturnType<typeof startStudioHostServerWithSecrets>> | null = null;
 
   try {
+    await assertRequiredStudioRegistryVersionAsync();
     await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
     await assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
@@ -75,6 +77,24 @@ export async function runExpo57StudioStandaloneAcceptance(
       ...(options.keepFixture ? [] : [rm(fixtureRoot, { force: true, recursive: true })]),
     ]);
     if (options.keepFixture) console.log(`Retained standalone Studio fixture: ${fixtureRoot}`);
+  }
+}
+
+async function assertRequiredStudioRegistryVersionAsync(): Promise<void> {
+  const version = (
+    await runAcceptanceCommandAsync({
+      args: ['view', '@ankhorage/studio', 'version'],
+      captureOutput: true,
+      command: 'npm',
+      cwd: process.cwd(),
+      label: 'Resolve published Studio version from npm',
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    })
+  ).trim();
+  if (version !== REQUIRED_STUDIO_REGISTRY_VERSION) {
+    throw new Error(
+      `Published @ankhorage/studio version is ${version || '<empty>'}; expected ${REQUIRED_STUDIO_REGISTRY_VERSION}.`,
+    );
   }
 }
 

@@ -6,7 +6,7 @@ export async function assertExpo57StudioNativePrebuildAsync(fixtureRoot: string)
   const iosRoot = path.join(fixtureRoot, 'ios');
   const [androidManifest, androidBuild, gradleProperties] = await Promise.all([
     readFile(path.join(androidRoot, 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8'),
-    readFile(path.join(androidRoot, 'app', 'build.gradle'), 'utf8'),
+    readFile(path.join(androidRoot, 'build.gradle'), 'utf8'),
     readFile(path.join(androidRoot, 'gradle.properties'), 'utf8'),
   ]);
 
@@ -18,8 +18,22 @@ export async function assertExpo57StudioNativePrebuildAsync(fixtureRoot: string)
       throw new Error(`Android prebuild is missing ${evidence}.`);
     }
   }
-  if (!androidBuild.includes("applicationId 'com.ankhorage.studio'")) {
+  const androidAppBuild = await readFile(path.join(androidRoot, 'app', 'build.gradle'), 'utf8');
+  if (!androidAppBuild.includes("applicationId 'com.ankhorage.studio'")) {
     throw new Error('Android prebuild is missing the Studio application ID.');
+  }
+  for (const [source, expected] of [
+    [androidBuild, 'apply plugin: "expo-root-project"'],
+    [androidAppBuild, 'compileSdk rootProject.ext.compileSdkVersion'],
+    [androidAppBuild, 'minSdkVersion rootProject.ext.minSdkVersion'],
+    [androidAppBuild, 'targetSdkVersion rootProject.ext.targetSdkVersion'],
+  ] as const) {
+    if (!source.includes(expected)) {
+      throw new Error(`Android prebuild is missing Expo-owned platform binding ${expected}.`);
+    }
+  }
+  if (!gradleProperties.includes('newArchEnabled=true')) {
+    throw new Error('Android prebuild did not retain the New Architecture baseline.');
   }
   if (!gradleProperties.includes('edgeToEdgeEnabled=true')) {
     throw new Error('Android prebuild did not retain Expo 57 edge-to-edge mode.');

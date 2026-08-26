@@ -27,6 +27,11 @@ Recorded on 2026-08-25 from fresh workspaces and cold frozen installs:
 | Android runtime | Pixel 8 Pro emulator, Android 14 / API 34                                                                                      |
 | Application     | `com.ankhorage.expo57nativeevidence`, version `1.0.0 (1)`, clean Debug development-client builds                               |
 
+This table remains the last completed native run; it is not rewritten as prospective evidence. The
+harness now targets Studio 2.0.8 for the final registry-only repetition, but that run remains blocked
+until `npm view @ankhorage/studio version` returns 2.0.8. Only then may the recorded baseline and
+rebuilt-client evidence be advanced.
+
 The preparation gate passed twice in independent fresh workspaces. Each run:
 
 - resolved the exact registry versions above;
@@ -105,14 +110,14 @@ REACT_NATIVE_PACKAGER_HOSTNAME=127.0.0.1 \
 EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:48757 \
 EXPO_PUBLIC_SUPABASE_ANON_KEY=synthetic-public-anon-key \
 EXPO_PUBLIC_NATIVE_EVIDENCE_URL=http://127.0.0.1:48757 \
-bun x expo start --dev-client --lan --clear
+./node_modules/.bin/expo start --dev-client --lan --clear
 ```
 
 Build and install the clients after preparation:
 
 ```bash
-bun x expo run:ios --device <ios-device> --no-bundler --no-build-cache
-bun x expo run:android --device <android-device> --no-bundler --no-build-cache
+./node_modules/.bin/expo run:ios --device <ios-device> --no-bundler --no-build-cache
+./node_modules/.bin/expo run:android --device <android-device> --no-bundler --no-build-cache
 ```
 
 Queue one scenario and read the redacted state:

@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
-import { access, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { access, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { generateExpoRouterTypesAsync } from '../generateExpoRouterTypesAsync';
+import { resolveAppOwnedExpoCliAsync } from '../resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from '../runAcceptanceCommandAsync';
 import {
   NATIVE_EVIDENCE_ANDROID_SCHEME,
@@ -31,7 +32,7 @@ const ROUTER_REWRITE_DISABLED = '1';
 export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string): Promise<void> {
   await assertFreshWorkspaceAsync(workspaceRoot);
   const node24Path = await resolveNode24PathAsync();
-  const commandEnv = createCommandEnvironment(node24Path);
+  const commandEnv = createCommandEnvironment(node24Path, workspaceRoot);
   const generatorRoot = path.join(workspaceRoot, '.generator');
   await mkdir(generatorRoot, { recursive: true });
 
@@ -66,16 +67,38 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
 
   const appRoot = path.join(workspaceRoot, 'apps', NATIVE_EVIDENCE_APP_ID);
   await configureNativeEvidenceDevelopmentClientAsync(appRoot);
+  await configureNativeEvidenceToolingAsync(appRoot);
   await writeNativeEvidenceAppFilesAsync(appRoot);
-  const lockfileFingerprint = await createLockfileAndColdInstallAsync(
+  await createLockfileAndColdInstallAsync(
     workspaceRoot,
     commandEnv,
-    'native evidence workspace',
+    'temporary generation workspace',
   );
-  await assertInstalledPackageVersionsAsync(workspaceRoot, EXPECTED_GENERATED_OWNER_VERSIONS);
+  await assertDevtoolsSyncIdempotentAsync(
+    appRoot,
+    path.join(workspaceRoot, 'bun.lock'),
+    commandEnv,
+  );
+  await rm(path.join(workspaceRoot, 'node_modules'), { force: true, recursive: true });
+  await rm(path.join(workspaceRoot, 'bun.lock'));
+  await rm(path.join(workspaceRoot, 'package.json'));
+  await rm(path.join(workspaceRoot, 'bunfig.toml'));
+  await rm(path.join(appRoot, 'node_modules'), { force: true, recursive: true });
+  const lockfileFingerprint = await createLockfileAndColdInstallAsync(
+    appRoot,
+    commandEnv,
+    'native evidence app',
+  );
+  await assertInstalledPackageVersionsAsync(appRoot, EXPECTED_GENERATED_OWNER_VERSIONS);
   await assertReleasedNativeOAuthWiringAsync(appRoot);
   const checkResults = await runGeneratedNativeEvidenceChecksAsync(appRoot, commandEnv);
   await assertNativePrebuildAsync(appRoot);
+  const finalLockfileFingerprint = createHash('sha256')
+    .update(await readFile(path.join(appRoot, 'bun.lock')))
+    .digest('hex');
+  if (finalLockfileFingerprint !== lockfileFingerprint) {
+    throw new Error('Native evidence acceptance mutated its frozen app lockfile.');
+  }
   await writeBaselineEvidenceAsync({
     appRoot,
     checkResults,
@@ -96,11 +119,11 @@ interface NativeEvidenceCheckResults {
 
 async function assertDevtoolsSyncIdempotentAsync(
   appRoot: string,
+  lockPath: string,
   commandEnv: Readonly<Record<string, string>>,
 ): Promise<void> {
   const args = ['x', '@ankhorage/ankh', 'devtools', 'sync', '.'] as const;
   await runCommandAsync(appRoot, 'Synchronize generated Devtools configuration', args, commandEnv);
-  const lockPath = path.join(appRoot, '..', '..', 'bun.lock');
   const lockAfterFirstSync = await readFile(lockPath);
   const secondSync = await runCommandOutputAsync(
     appRoot,
@@ -113,7 +136,7 @@ async function assertDevtoolsSyncIdempotentAsync(
   }
   const lockAfterSecondSync = await readFile(lockPath);
   if (!lockAfterFirstSync.equals(lockAfterSecondSync)) {
-    throw new Error('Second generated Devtools synchronization mutated the workspace lockfile.');
+    throw new Error('Second generated Devtools synchronization mutated the app lockfile.');
   }
 }
 
@@ -176,7 +199,7 @@ async function createLockfileAndColdInstallAsync(
   await runCommandAsync(
     installationRoot,
     `Create ${label} lockfile`,
-    ['install', '--lockfile-only', '--linker=hoisted', '--os=*', '--cpu=*'],
+    ['install', '--lockfile-only', '--os=*', '--cpu=*'],
     commandEnv,
   );
   const lockPath = path.join(installationRoot, 'bun.lock');
@@ -184,7 +207,7 @@ async function createLockfileAndColdInstallAsync(
   await runCommandAsync(
     installationRoot,
     `Cold frozen install for ${label}`,
-    ['install', '--frozen-lockfile', '--linker=hoisted', '--no-cache'],
+    ['install', '--frozen-lockfile', '--no-cache'],
     commandEnv,
   );
   const installed = await readFile(lockPath);
@@ -205,6 +228,27 @@ async function configureNativeEvidenceDevelopmentClientAsync(appRoot: string): P
   await writeFile(
     appConfigPath,
     appConfig.replace(pluginListStart, developmentClientPlugin),
+    'utf8',
+  );
+}
+
+async function configureNativeEvidenceToolingAsync(appRoot: string): Promise<void> {
+  const packagePath = path.join(appRoot, 'package.json');
+  const packageJson = await readPackageJsonAsync(packagePath);
+  const devDependencies = isRecord(packageJson.devDependencies) ? packageJson.devDependencies : {};
+  await writeFile(
+    packagePath,
+    `${JSON.stringify(
+      {
+        ...packageJson,
+        devDependencies: {
+          ...devDependencies,
+          'react-compiler-healthcheck': '1.0.0',
+        },
+      },
+      null,
+      2,
+    )}\n`,
     'utf8',
   );
 }
@@ -256,10 +300,14 @@ async function readPackageJsonAsync(filePath: string): Promise<Readonly<Record<s
   return parsed;
 }
 
-function createCommandEnvironment(nodePath: string): Readonly<Record<string, string>> {
+function createCommandEnvironment(
+  nodePath: string,
+  workspaceRoot: string,
+): Readonly<Record<string, string>> {
   const currentPath = getPathEnvironment();
   const taskTempDirectory = getEnvironmentValue('TMPDIR');
   return {
+    __UNSAFE_EXPO_HOME_DIRECTORY: path.join(workspaceRoot, '.expo-home'),
     PATH: `${path.dirname(nodePath)}:${currentPath}`,
     ...(taskTempDirectory ? { TMPDIR: taskTempDirectory } : {}),
   };
@@ -389,7 +437,6 @@ async function runGeneratedNativeEvidenceChecksAsync(
     EXPO_NO_TELEMETRY: '1',
     EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
   };
-  await assertDevtoolsSyncIdempotentAsync(appRoot, commandEnv);
   await runCommandAsync(
     appRoot,
     'Check native evidence formatting',
@@ -419,12 +466,15 @@ async function runGeneratedNativeEvidenceChecksAsync(
   });
   const routerTypesBytes = await assertRouterTypesAsync(appRoot);
   await runCommandAsync(appRoot, 'Run native evidence TypeScript 6', ['run', 'typecheck'], expoEnv);
-  const compilerOutput = await runCommandOutputAsync(
-    appRoot,
-    'Run native evidence React Compiler healthcheck',
-    ['x', 'react-compiler-healthcheck@latest'],
-    expoEnv,
-  );
+  const compilerOutput = await runAcceptanceCommandAsync({
+    args: [],
+    captureOutput: true,
+    command: path.join(appRoot, 'node_modules', '.bin', 'react-compiler-healthcheck'),
+    cwd: appRoot,
+    env: expoEnv,
+    label: 'Run native evidence React Compiler healthcheck',
+    timeoutMs: COMMAND_TIMEOUT_MS,
+  });
   const reactCompiler = readCheckSummary(
     compilerOutput,
     /Successfully compiled (\d+) out of (\d+) components/u,
@@ -473,9 +523,10 @@ async function runExpoCommandAsync(
   args: readonly string[],
   env: Readonly<Record<string, string>>,
 ): Promise<void> {
+  const expoCli = await resolveAppOwnedExpoCliAsync(cwd);
   await runAcceptanceCommandAsync({
-    args: ['x', 'expo', ...args],
-    command: 'bun',
+    args,
+    command: expoCli,
     cwd,
     env: { ...env, EXPO_NO_TELEMETRY: '1' },
     label,
@@ -508,7 +559,7 @@ async function writeBaselineEvidenceAsync(args: {
   const versions = new Map<string, string>([['@ankhorage/studio', NATIVE_EVIDENCE_STUDIO_VERSION]]);
   for (const packageName of packageNames) {
     const packageJson = await readPackageJsonAsync(
-      path.join(args.workspaceRoot, 'node_modules', ...packageName.split('/'), 'package.json'),
+      path.join(args.appRoot, 'node_modules', ...packageName.split('/'), 'package.json'),
     );
     if (typeof packageJson.version !== 'string') {
       throw new Error(`Installed package ${packageName} has no version.`);

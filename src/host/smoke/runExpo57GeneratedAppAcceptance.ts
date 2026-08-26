@@ -1,20 +1,28 @@
+import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import type { AppManifest, ScreenSpec } from '@ankhorage/contracts';
 
 import { ProjectManager } from '../orchestrator/projectManager';
+import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const CAMERA_DEPENDENCIES = ['@ankhorage/permissions', 'expo-camera'] as const;
+const COMMAND_TIMEOUT_MS = 300_000;
 
 export async function runExpo57GeneratedAppAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-acceptance-'));
 
   try {
     const projectRoot = await createGeneratedProjectAsync(workspaceRoot);
-    await createWorkspaceLockfileAsync(workspaceRoot);
+    await rm(path.join(workspaceRoot, 'package.json'));
+    const lockfileDigest = await createProjectLockfileAsync(projectRoot);
     await runAcceptanceChecksAsync(projectRoot);
+    const finalDigest = hash(await readFile(path.join(projectRoot, 'bun.lock')));
+    if (finalDigest !== lockfileDigest) {
+      throw new Error('Generated app acceptance mutated its frozen lockfile.');
+    }
   } finally {
     await rm(workspaceRoot, { force: true, recursive: true });
   }
@@ -30,6 +38,7 @@ async function assertCameraFreeInstalledGraphAsync(projectRoot: string): Promise
     command: 'bun',
     cwd: projectRoot,
     label: 'Inspect camera-free installed dependency graph',
+    timeoutMs: COMMAND_TIMEOUT_MS,
   });
 
   for (const dependency of CAMERA_DEPENDENCIES) {
@@ -98,13 +107,19 @@ async function createGeneratedProjectAsync(workspaceRoot: string): Promise<strin
   return created.path;
 }
 
-async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void> {
+async function createProjectLockfileAsync(projectRoot: string): Promise<string> {
   await runAcceptanceCommandAsync({
-    args: ['install', '--linker=hoisted', '--lockfile-only', '--os=*', '--cpu=*'],
+    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
     command: 'bun',
-    cwd: workspaceRoot,
-    label: 'Create generated workspace lockfile',
+    cwd: projectRoot,
+    label: 'Create generated app-owned lockfile',
+    timeoutMs: COMMAND_TIMEOUT_MS,
   });
+  return hash(await readFile(path.join(projectRoot, 'bun.lock')));
+}
+
+function hash(value: Uint8Array): string {
+  return createHash('sha256').update(value).digest('hex');
 }
 
 function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
@@ -117,63 +132,56 @@ function resolveAcceptanceScreen(manifest: AppManifest): ScreenSpec {
 
 async function runAcceptanceChecksAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
-    args: ['install', '--frozen-lockfile', '--linker=hoisted'],
+    args: ['install', '--frozen-lockfile'],
     command: 'bun',
     cwd: projectRoot,
     label: 'Cold frozen install',
+    timeoutMs: COMMAND_TIMEOUT_MS,
   });
   await assertCameraFreeInstalledGraphAsync(projectRoot);
+  const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
 
   const commands = [
     { args: ['run', 'lint'], command: 'bun', cwd: projectRoot, label: 'Generated app lint' },
     {
-      args: ['x', 'expo', 'install', '--check'],
-      command: 'bun',
+      args: ['install', '--check'],
+      command: expoCli,
       cwd: projectRoot,
       label: 'Expo dependency compatibility',
     },
     { args: ['run', 'doctor'], command: 'bun', cwd: projectRoot, label: 'Expo Doctor' },
     { args: ['run', 'typecheck'], command: 'bun', cwd: projectRoot, label: 'TypeScript 6' },
     {
-      args: ['x', 'react-compiler-healthcheck@latest'],
-      command: 'bun',
-      cwd: projectRoot,
-      label: 'React Compiler healthcheck',
-    },
-    {
-      args: ['run', 'export:web', '--', '--clear'],
-      command: 'bun',
+      args: ['export', '--platform', 'web', '--output-dir', 'dist-web', '--clear'],
+      command: expoCli,
       cwd: projectRoot,
       label: 'Static Web export',
     },
     {
-      args: [
-        'x',
-        'expo',
-        'export',
-        '--platform',
-        'android',
-        '--output-dir',
-        'dist-android',
-        '--clear',
-      ],
-      command: 'bun',
+      args: ['export', '--platform', 'android', '--output-dir', 'dist-android', '--clear'],
+      command: expoCli,
       cwd: projectRoot,
       label: 'Android JavaScript export',
     },
     {
-      args: ['x', 'expo', 'export', '--platform', 'ios', '--output-dir', 'dist-ios', '--clear'],
-      command: 'bun',
+      args: ['export', '--platform', 'ios', '--output-dir', 'dist-ios', '--clear'],
+      command: expoCli,
       cwd: projectRoot,
       label: 'iOS JavaScript export',
     },
     {
-      args: ['x', 'expo', 'prebuild', '--clean', '--no-install'],
-      command: 'bun',
+      args: ['prebuild', '--clean', '--no-install'],
+      command: expoCli,
       cwd: projectRoot,
       label: 'Clean CNG prebuild',
     },
   ];
 
-  for (const command of commands) await runAcceptanceCommandAsync(command);
+  for (const command of commands) {
+    await runAcceptanceCommandAsync({
+      ...command,
+      env: { __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home') },
+      timeoutMs: COMMAND_TIMEOUT_MS,
+    });
+  }
 }

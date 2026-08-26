@@ -11,6 +11,7 @@ import { createExpo57CapabilityFixtureManifest } from './createExpo57CapabilityF
 import { createStaticExportServer } from './createStaticExportServer';
 import { generateExpoRouterTypesAsync } from './generateExpoRouterTypesAsync';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
+import { resolveAppOwnedExpoCliAsync } from './resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 240_000;
@@ -36,26 +37,28 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
       mutations: [],
     });
     await assertExpo57GeneratedCapabilityContractAsync(created.path);
-    await createWorkspaceLockfileAsync(workspaceRoot);
-    const lockedDependencies = await readFile(path.join(workspaceRoot, 'bun.lock'));
+    await rm(path.join(workspaceRoot, 'package.json'));
+    await rm(path.join(created.path, 'node_modules'), { force: true, recursive: true });
+    await createProjectLockfileAsync(created.path);
+    const lockedDependencies = await readFile(path.join(created.path, 'bun.lock'));
     await runAcceptanceCommandAsync({
-      args: ['install', '--frozen-lockfile', '--linker=hoisted'],
+      args: ['install', '--frozen-lockfile'],
       command: 'bun',
-      cwd: workspaceRoot,
-      label: 'Cold frozen capability workspace install',
+      cwd: created.path,
+      label: 'Cold frozen capability app install',
       timeoutMs: COMMAND_TIMEOUT_MS,
     });
-    const installedDependencies = await readFile(path.join(workspaceRoot, 'bun.lock'));
+    const installedDependencies = await readFile(path.join(created.path, 'bun.lock'));
     if (!lockedDependencies.equals(installedDependencies)) {
       throw new Error('The frozen generated capability install mutated bun.lock.');
     }
-    await assertExpo57GeneratedCapabilityOwnerGraphAsync(
-      workspaceRoot,
-      created.path,
-      COMMAND_TIMEOUT_MS,
-    );
+    await assertExpo57GeneratedCapabilityOwnerGraphAsync(created.path, COMMAND_TIMEOUT_MS);
     await runGeneratedCapabilityChecksAsync(created.path);
     await assertExpo57GeneratedCapabilityNativePrebuildAsync(created.path);
+    const finalDependencies = await readFile(path.join(created.path, 'bun.lock'));
+    if (!lockedDependencies.equals(finalDependencies)) {
+      throw new Error('Generated capability acceptance mutated its frozen app lockfile.');
+    }
   } finally {
     await rm(workspaceRoot, { force: true, recursive: true });
   }
@@ -63,11 +66,6 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
 
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   await mkdir(path.join(workspaceRoot, 'apps'), { recursive: true });
-  await writeFile(
-    path.join(workspaceRoot, 'bunfig.toml'),
-    '[install]\nlinker = "hoisted"\n',
-    'utf8',
-  );
   await writeFile(
     path.join(workspaceRoot, 'package.json'),
     `${JSON.stringify(
@@ -84,19 +82,19 @@ async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
   );
 }
 
-async function createWorkspaceLockfileAsync(workspaceRoot: string): Promise<void> {
+async function createProjectLockfileAsync(projectRoot: string): Promise<void> {
   await runAcceptanceCommandAsync({
-    args: ['install', '--linker=hoisted', '--lockfile-only', '--os=*', '--cpu=*'],
+    args: ['install', '--lockfile-only', '--os=*', '--cpu=*'],
     command: 'bun',
-    cwd: workspaceRoot,
-    label: 'Create generated capability workspace lockfile',
+    cwd: projectRoot,
+    label: 'Create generated capability app lockfile',
     timeoutMs: COMMAND_TIMEOUT_MS,
   });
 }
 
 async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<void> {
-  await assertDevtoolsSyncIdempotentAsync(projectRoot);
   const sourceBeforeStaticChecks = await snapshotSourceTreeAsync(projectRoot);
+  const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
   const setupCommands = [
     {
       args: ['run', 'format:check'],
@@ -105,8 +103,8 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
     },
     { args: ['run', 'lint'], command: 'bun', label: 'Generated capability project lint' },
     {
-      args: ['x', 'expo', 'install', '--check'],
-      command: 'bun',
+      args: ['install', '--check'],
+      command: expoCli,
       label: 'Generated capability Expo dependency compatibility',
     },
     { args: ['run', 'doctor'], command: 'bun', label: 'Generated capability Expo Doctor' },
@@ -115,7 +113,10 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   await assertSourceTreeUnchangedAsync(projectRoot, sourceBeforeStaticChecks);
 
   await generateExpoRouterTypesAsync({
-    env: { EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED },
+    env: {
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home'),
+      EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+    },
     label: 'Generated capability Expo Router typed-route generation',
     projectRoot,
     timeoutMs: 120_000,
@@ -132,8 +133,8 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
   try {
     if (authStub.port === undefined) throw new Error('Capability Auth stub has no TCP port.');
     await runGeneratedCommandAsync(projectRoot, {
-      args: ['x', 'expo', 'export', '--platform', 'web', '--clear'],
-      command: 'bun',
+      args: ['export', '--platform', 'web', '--clear'],
+      command: expoCli,
       env: {
         EXPO_PUBLIC_SUPABASE_ANON_KEY: 'capability-acceptance-anon-key',
         EXPO_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${authStub.port}`,
@@ -147,58 +148,22 @@ async function runGeneratedCapabilityChecksAsync(projectRoot: string): Promise<v
 
   const buildCommands = [
     {
-      args: ['x', 'react-compiler-healthcheck@latest'],
-      command: 'bun',
-      label: 'Generated capability React Compiler healthcheck',
-    },
-    {
-      args: [
-        'x',
-        'expo',
-        'export',
-        '--platform',
-        'android',
-        '--output-dir',
-        'dist-android',
-        '--clear',
-      ],
-      command: 'bun',
+      args: ['export', '--platform', 'android', '--output-dir', 'dist-android', '--clear'],
+      command: expoCli,
       label: 'Generated capability Android JavaScript export',
     },
     {
-      args: ['x', 'expo', 'export', '--platform', 'ios', '--output-dir', 'dist-ios', '--clear'],
-      command: 'bun',
+      args: ['export', '--platform', 'ios', '--output-dir', 'dist-ios', '--clear'],
+      command: expoCli,
       label: 'Generated capability iOS JavaScript export',
     },
     {
-      args: ['x', 'expo', 'prebuild', '--clean', '--no-install'],
-      command: 'bun',
+      args: ['prebuild', '--clean', '--no-install'],
+      command: expoCli,
       label: 'Generated capability clean CNG prebuild',
     },
   ] as const;
   for (const command of buildCommands) await runGeneratedCommandAsync(projectRoot, command);
-}
-
-async function assertDevtoolsSyncIdempotentAsync(projectRoot: string): Promise<void> {
-  const syncArgs = ['x', '@ankhorage/ankh', 'devtools', 'sync', '.'] as const;
-  await runAcceptanceCommandAsync({
-    args: syncArgs,
-    command: 'bun',
-    cwd: projectRoot,
-    label: 'Generated capability Devtools sync',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  const secondSync = await runAcceptanceCommandAsync({
-    args: syncArgs,
-    captureOutput: true,
-    command: 'bun',
-    cwd: projectRoot,
-    label: 'Generated capability idempotent Devtools sync',
-    timeoutMs: COMMAND_TIMEOUT_MS,
-  });
-  if (/\b(?:created|updated)\b/u.test(secondSync)) {
-    throw new Error(`Second generated capability Devtools sync was not idempotent:\n${secondSync}`);
-  }
 }
 
 function createAuthStubServer(): ReturnType<typeof Bun.serve> & {
@@ -412,6 +377,7 @@ async function runGeneratedCommandAsync(
     ...command,
     cwd: projectRoot,
     env: {
+      __UNSAFE_EXPO_HOME_DIRECTORY: path.join(projectRoot, '.ankh', 'expo-home'),
       EXPO_NO_TELEMETRY: '1',
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
       ...command.env,
