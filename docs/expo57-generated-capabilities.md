@@ -53,8 +53,10 @@ instead of maintaining a direct DocumentPicker/FileSystem path.
 
 This acceptance is build/configuration evidence. It does not claim native permission dialogs,
 Secure Store behavior, system picker UI, camera preview, native OAuth return, or process-restart
-behavior without an actual rebuilt development client. Xcode and iOS Simulator runtimes are
-available in the current implementation environment; no Android emulator/device is currently
-connected. An iOS development-client run and Android device/emulator runtime evidence remain open
-before #312 can close. Bundle, static export and CNG prebuild evidence do not replace those native
-runtime checks.
+behavior by itself. Those checks were completed separately with freshly rebuilt iOS and Android
+development clients on the exact final released baseline. Bundle, static export and CNG prebuild
+evidence did not substitute for the native runtime checks.
+
+The package-owned development-client harness, recorded iOS/Android results, redaction rules and the
+physical-camera boundary are documented in
+[Expo 57 native capability evidence](expo57-native-capability-evidence.md).
