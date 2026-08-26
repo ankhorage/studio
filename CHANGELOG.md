@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.7
+
+### Patch Changes
+
+- ebd20aa: Add a released-only Expo 57 native development-client evidence harness.
+
 ## 2.0.6
 
 ### Patch Changes
