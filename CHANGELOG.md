@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.8
+
+### Patch Changes
+
+- 82d12f7: Prove the first-party Expo 57 Studio app as an independent registry consumer with permanent Web and native acceptance.
+
 ## 2.0.7
 
 ### Patch Changes
