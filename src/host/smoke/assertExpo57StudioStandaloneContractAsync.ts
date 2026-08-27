@@ -19,7 +19,7 @@ const REQUIRED_RELEASE_RANGES = [
   {
     dependencyGroup: 'devDependencies',
     packageName: '@ankhorage/expo-runtime',
-    range: '^3.0.5',
+    range: '^3.0.6',
   },
   {
     dependencyGroup: 'devDependencies',
