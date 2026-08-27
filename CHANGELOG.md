@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.9
+
+### Patch Changes
+
+- 8d60f2e: Support the React Native 0.86 patch line, consume the released RN 0.86.3 owner graph, and pin first-party Expo 57 validation to React Native 0.86.3.
+
 ## 2.0.8
 
 ### Patch Changes
