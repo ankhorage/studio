@@ -5,7 +5,13 @@ import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPa
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 
 const FORBIDDEN_DEPENDENCY_PREFIX = /^(?:file|link|workspace):/u;
-const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.9';
+const REQUIRED_OWNER_RANGES = {
+  '@ankhorage/expo-runtime': '^3.0.6',
+  '@ankhorage/runtime': '^2.2.1',
+  '@ankhorage/studio': '^2.0.9',
+  '@ankhorage/surface': '^3.0.1',
+  '@ankhorage/zora': '^3.0.1',
+} as const;
 const REQUIRED_ROUTE_EVIDENCE = [
   '/create',
   '/create/[category]',
@@ -16,12 +22,12 @@ const REQUIRED_RELEASE_RANGES = [
   {
     dependencyGroup: 'dependencies',
     packageName: '@ankhorage/studio',
-    range: '^2.0.9',
+    range: REQUIRED_OWNER_RANGES['@ankhorage/studio'],
   },
   {
     dependencyGroup: 'devDependencies',
     packageName: '@ankhorage/expo-runtime',
-    range: '^3.0.6',
+    range: REQUIRED_OWNER_RANGES['@ankhorage/expo-runtime'],
   },
   {
     dependencyGroup: 'devDependencies',
@@ -96,32 +102,18 @@ async function assertInstalledContractAsync(
     if (declaredRange === undefined) {
       throw new Error(`Standalone Studio fixture does not declare ${requirement.packageName}.`);
     }
-    const version = await assertInstalledRegistryPackageAsync({
+    await assertInstalledRegistryPackageAsync({
       installationRoot: fixtureRoot,
       lockfile,
       packageName: requirement.packageName,
       range: declaredRange,
     });
-    if (
-      requirement.packageName === '@ankhorage/studio' &&
-      version !== REQUIRED_STUDIO_REGISTRY_VERSION
-    ) {
-      throw new Error(
-        `Standalone Studio fixture installed ${version}; expected published ${REQUIRED_STUDIO_REGISTRY_VERSION}.`,
-      );
-    }
   }
 
   await assertReactNativeOwnerGraphAsync({
     installationRoot: fixtureRoot,
     reactNativeVersion: '0.86.3',
-    requiredOwnerVersions: {
-      '@ankhorage/expo-runtime': '3.0.6',
-      '@ankhorage/runtime': '2.2.1',
-      '@ankhorage/studio': '2.0.9',
-      '@ankhorage/surface': '3.0.1',
-      '@ankhorage/zora': '3.0.1',
-    },
+    requiredOwnerRanges: REQUIRED_OWNER_RANGES,
   });
 
   const routerTypesPath = path.join(fixtureRoot, '.expo', 'types', 'router.d.ts');

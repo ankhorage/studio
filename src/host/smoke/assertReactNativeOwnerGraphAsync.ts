@@ -10,7 +10,7 @@ interface InstalledPackageJson {
 export async function assertReactNativeOwnerGraphAsync(options: {
   readonly installationRoot: string;
   readonly reactNativeVersion: string;
-  readonly requiredOwnerVersions: Readonly<Record<string, string>>;
+  readonly requiredOwnerRanges: Readonly<Record<string, string>>;
 }): Promise<void> {
   const nodeModulesRoots = await listNodeModulesRootsAsync(
     path.join(options.installationRoot, 'node_modules'),
@@ -72,15 +72,18 @@ export async function assertReactNativeOwnerGraphAsync(options: {
     }
   }
 
-  for (const [packageName, expectedVersion] of Object.entries(options.requiredOwnerVersions)) {
+  for (const [packageName, requiredRange] of Object.entries(options.requiredOwnerRanges)) {
     const versions = new Set(
       [...(ownerPackages.get(packageName)?.values() ?? [])]
         .map((packageJson) => packageJson.version)
         .filter((version): version is string => version !== undefined),
     );
-    if (!versions.has(expectedVersion)) {
+    const hasCompatibleVersion = [...versions].some((version) =>
+      Bun.semver.satisfies(version, requiredRange),
+    );
+    if (!hasCompatibleVersion) {
       throw new Error(
-        `${packageName} resolved ${[...versions].sort().join(', ') || '<none>'}; expected released owner ${expectedVersion}.`,
+        `${packageName} resolved ${[...versions].sort().join(', ') || '<none>'}; expected a released owner satisfying ${requiredRange}.`,
       );
     }
   }

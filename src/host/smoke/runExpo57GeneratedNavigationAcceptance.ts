@@ -19,7 +19,6 @@ const FORBIDDEN_REACT_NAVIGATION_IMPORT =
   /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTER_REWRITE_DISABLED = '1';
-const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.9';
 
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
@@ -171,17 +170,12 @@ async function assertReleasedStudioPackageAsync(studioProject: NavigationProject
   }
 
   const projectLock = await readFile(path.join(studioProject.path, 'bun.lock'), 'utf8');
-  const version = await assertInstalledRegistryPackageAsync({
+  await assertInstalledRegistryPackageAsync({
     installationRoot: studioProject.path,
     lockfile: projectLock,
     packageName: '@ankhorage/studio',
     range: studioRange,
   });
-  if (version !== REQUIRED_STUDIO_REGISTRY_VERSION) {
-    throw new Error(
-      `Studio-enabled navigation fixture installed ${version}; expected published ${REQUIRED_STUDIO_REGISTRY_VERSION}.`,
-    );
-  }
 }
 
 async function assertRouterTypesAsync(

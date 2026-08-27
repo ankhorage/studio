@@ -52,7 +52,7 @@ export async function runExpo57GeneratedCapabilityAcceptanceAsync(): Promise<voi
     if (!lockedDependencies.equals(installedDependencies)) {
       throw new Error('The frozen generated capability install mutated bun.lock.');
     }
-    await assertExpo57GeneratedCapabilityOwnerGraphAsync(created.path, COMMAND_TIMEOUT_MS);
+    await assertExpo57GeneratedCapabilityOwnerGraphAsync(created.path);
     await runGeneratedCapabilityChecksAsync(created.path);
     await assertExpo57GeneratedCapabilityNativePrebuildAsync(created.path);
     const finalDependencies = await readFile(path.join(created.path, 'bun.lock'));

@@ -97,7 +97,7 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
   await assertReactNativeOwnerGraphAsync({
     installationRoot: appRoot,
     reactNativeVersion: '0.86.3',
-    requiredOwnerVersions: {
+    requiredOwnerRanges: {
       '@ankhorage/expo-runtime': EXPECTED_EXPO_RUNTIME_VERSION,
       '@ankhorage/runtime': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/runtime'],
       '@ankhorage/surface': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/surface'],

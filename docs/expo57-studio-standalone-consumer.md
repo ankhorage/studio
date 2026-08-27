@@ -81,7 +81,8 @@ that it satisfies the declared release range, matches the exact fresh lockfile r
 inside the fixture's own `node_modules`. The final gate additionally scans the physical Bun graph,
 requires exactly one React Native 0.86.3 installation, rejects incompatible RN peers from every
 installed Ankhorage owner, and requires Studio 2.0.9, Expo Runtime 3.0.6, Runtime 2.2.1, Surface
-3.0.1 and ZORA 3.0.1. It hashes the lockfile before and after all checks. The earlier frozen SDK 57
+3.0.1 and ZORA 3.0.1 as compatible range floors rather than exact permanent versions. It hashes the
+lockfile before and after all checks. The earlier frozen SDK 57
 resolution used during implementation contained Studio 2.0.7, Expo Runtime 3.0.5, Devtools 1.6.1,
 Expo 57.0.16, Expo Router 57.0.16, Expo Dev Client 57.0.15, Expo Splash Screen 57.0.8, React Native
 0.86.2, and TypeScript 6.0.3. The completed 2026-08-27 repetition instead resolved Studio 2.0.9,

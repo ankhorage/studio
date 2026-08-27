@@ -15,19 +15,35 @@ afterEach(async () => {
   );
 });
 
-test('accepts one RN installation and compatible installed Ankhorage owner peers', async () => {
+test('accepts newer owner patches within their declared ranges', async () => {
+  const root = await createGraphAsync();
+  await writePackageAsync(root, '@ankhorage/runtime', '2.2.2', '0.86.x');
+  await writePackageAsync(root, '@ankhorage/studio', '2.0.10', '0.86.x');
+
+  expect(
+    assertReactNativeOwnerGraphAsync({
+      installationRoot: root,
+      reactNativeVersion: '0.86.3',
+      requiredOwnerRanges: {
+        '@ankhorage/runtime': '^2.2.1',
+        '@ankhorage/studio': '^2.0.9',
+      },
+    }),
+  ).resolves.toBeUndefined();
+});
+
+test('rejects an installed owner below its declared range', async () => {
   const root = await createGraphAsync();
 
   expect(
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
-      requiredOwnerVersions: {
-        '@ankhorage/runtime': '2.2.1',
-        '@ankhorage/studio': '2.0.9',
-      },
+      requiredOwnerRanges: { '@ankhorage/studio': '^2.0.10' },
     }),
-  ).resolves.toBeUndefined();
+  ).rejects.toThrow(
+    '@ankhorage/studio resolved 2.0.9; expected a released owner satisfying ^2.0.10',
+  );
 });
 
 test('rejects an incompatible installed Ankhorage RN peer', async () => {
@@ -38,7 +54,7 @@ test('rejects an incompatible installed Ankhorage RN peer', async () => {
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
-      requiredOwnerVersions: {},
+      requiredOwnerRanges: {},
     }),
   ).rejects.toThrow('requires incompatible React Native peer 0.86.2');
 });
@@ -55,7 +71,7 @@ test('rejects multiple physical RN installations', async () => {
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
-      requiredOwnerVersions: {},
+      requiredOwnerRanges: {},
     }),
   ).rejects.toThrow('Expected one physical React Native installation, found 2');
 });
