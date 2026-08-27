@@ -2,9 +2,10 @@ import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
+import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 
 const FORBIDDEN_DEPENDENCY_PREFIX = /^(?:file|link|workspace):/u;
-const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.9';
 const REQUIRED_ROUTE_EVIDENCE = [
   '/create',
   '/create/[category]',
@@ -15,17 +16,17 @@ const REQUIRED_RELEASE_RANGES = [
   {
     dependencyGroup: 'dependencies',
     packageName: '@ankhorage/studio',
-    range: '^2.0.7',
+    range: '^2.0.9',
   },
   {
     dependencyGroup: 'devDependencies',
     packageName: '@ankhorage/expo-runtime',
-    range: '^3.0.5',
+    range: '^3.0.6',
   },
   {
     dependencyGroup: 'devDependencies',
     packageName: '@ankhorage/devtools',
-    range: '^1.6.1',
+    range: '^1.7.0',
   },
 ] as const;
 
@@ -110,6 +111,18 @@ async function assertInstalledContractAsync(
       );
     }
   }
+
+  await assertReactNativeOwnerGraphAsync({
+    installationRoot: fixtureRoot,
+    reactNativeVersion: '0.86.3',
+    requiredOwnerVersions: {
+      '@ankhorage/expo-runtime': '3.0.6',
+      '@ankhorage/runtime': '2.2.1',
+      '@ankhorage/studio': '2.0.9',
+      '@ankhorage/surface': '3.0.1',
+      '@ankhorage/zora': '3.0.1',
+    },
+  });
 
   const routerTypesPath = path.join(fixtureRoot, '.expo', 'types', 'router.d.ts');
   const routerTypesStat = await stat(routerTypesPath).catch(() => null);

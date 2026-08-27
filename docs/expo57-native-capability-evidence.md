@@ -12,6 +12,43 @@ route, and successful authentication returns to the generated protected route. P
 and OAuth behavior is exercised through the public Permissions, Expo Runtime and Supabase Auth
 adapters rather than locally reproduced owner logic.
 
+## Final RN 0.86.3 production repetition
+
+Issue #314 repeated the required native build evidence on 2026-08-27 from the fresh standalone
+workspace `/tmp/ankh-expo57-native-rn0863-final`. The generated app is its own package and
+installation root. Generation and installation used only public registry packages; no workspace,
+source, `file:`, `link:`, global CLI, `bunx`, or sibling-resolution fallback was available.
+
+| Item            | Final value                                                                                        |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| Generator       | `@ankhorage/studio@2.0.9`                                                                          |
+| Tooling         | `@ankhorage/devtools@1.7.0`, Node `24.19.0`, Bun `1.3.14`, TypeScript `6.0.3`                      |
+| RN owners       | Expo Runtime `3.0.6`, Runtime `2.2.1`, Surface `3.0.1`, ZORA `3.0.1`                               |
+| Expo graph      | Expo `57.0.17`, Router `57.0.17`, Dev Client `57.0.16`, React Native `0.86.3`                      |
+| Host toolchain  | macOS, Xcode `26.6 (17F113)`, Temurin Java `17.0.10`                                               |
+| iOS runtime     | iPhone 17 Pro `1BC84E26-39FC-4CDF-B877-CA6F044277B8`, iOS 26.5                                     |
+| Android runtime | Pixel 8 Pro AVD `Pixel_8_Pro_API_34-ext11`, API 34; generated min SDK 24 and compile/target SDK 36 |
+
+The fresh preparation passed a cold frozen install without lockfile mutation, the permanent
+single-RN owner-graph audit, format, lint, Expo dependency compatibility, Expo Doctor `21/21`,
+Router declaration generation, TypeScript, React Compiler health `27/27`, Web/Android/iOS
+JavaScript exports and clean CNG.
+
+The clean native projects then produced, installed and launched all required configurations:
+
+| Configuration              | Result                                                                              |
+| -------------------------- | ----------------------------------------------------------------------------------- |
+| Android Development Client | Debug build succeeded; APK installed; launched process PID `6235`                   |
+| Android Release            | Release build succeeded in 10m 09s; APK installed; launched process PID `7153`      |
+| iOS Development Client     | Debug build succeeded with zero errors; installed and launched process PID `96341`  |
+| iOS Release                | Release build succeeded with zero errors; installed and launched process PID `2225` |
+
+The process IDs are ephemeral launch confirmation, not stable identifiers. Upstream native builds
+reported only deprecation, duplicate-library and build-phase dependency warnings; there were no
+peer, compile or linker failures. This final repetition supersedes RN 0.86.2 build evidence for
+issue #314. The detailed capability scenario matrix below remains the historical issue #312 runtime
+record and is not presented as having been rerun by the production-build gate.
+
 ## Recorded released baseline
 
 Recorded on 2026-08-25 from fresh workspaces and cold frozen installs:
@@ -27,10 +64,8 @@ Recorded on 2026-08-25 from fresh workspaces and cold frozen installs:
 | Android runtime | Pixel 8 Pro emulator, Android 14 / API 34                                                                                      |
 | Application     | `com.ankhorage.expo57nativeevidence`, version `1.0.0 (1)`, clean Debug development-client builds                               |
 
-This table remains the last completed native run; it is not rewritten as prospective evidence. The
-harness now targets Studio 2.0.8 for the final registry-only repetition, but that run remains blocked
-until `npm view @ankhorage/studio version` returns 2.0.8. Only then may the recorded baseline and
-rebuilt-client evidence be advanced.
+This table is the historical issue #312 capability-runtime baseline and is not rewritten as later
+evidence. The final issue #314 build repetition is recorded separately above.
 
 The preparation gate passed twice in independent fresh workspaces. Each run:
 
@@ -118,6 +153,8 @@ Build and install the clients after preparation:
 ```bash
 ./node_modules/.bin/expo run:ios --device <ios-device> --no-bundler --no-build-cache
 ./node_modules/.bin/expo run:android --device <android-device> --no-bundler --no-build-cache
+./node_modules/.bin/expo run:ios --configuration Release --device <ios-device> --no-bundler --no-build-cache
+./node_modules/.bin/expo run:android --variant release --device <android-device> --no-bundler --no-build-cache
 ```
 
 Queue one scenario and read the redacted state:

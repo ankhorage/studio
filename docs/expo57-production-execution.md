@@ -6,7 +6,8 @@ generated app and acceptance orchestration; Infra owns the generated image-build
 
 ## Owner boundary
 
-`ankhorage/infra#67` is implemented by Infra PR `#79`. Its generated `build-app-image.sh` resolves
+`ankhorage/infra#67` is implemented by Infra PR `#79` and published in
+`@ankhorage/infra@4.1.3`. Its generated `build-app-image.sh` resolves
 only this executable:
 
 ```text
@@ -71,22 +72,32 @@ capability acceptance independently performs Web/Android/iOS JavaScript export, 
 asserts the manifest-derived native permissions, schemes, identifiers, iOS deployment target, and
 Expo-owned platform configuration.
 
-## Publication gates
+## Completed publication and owner-graph gates
 
-The implementation is intentionally split from publication availability:
+All publication gates were completed on 2026-08-27 before final acceptance:
 
-1. `@ankhorage/studio` 2.0.8 is published. On 2026-08-27,
-   `npm view @ankhorage/studio version` returned exactly `2.0.8` after GitHub reported Actions
-   operational and the preceding incident resolved.
-2. The standalone registry/frozen-install runner enforces this exact registry version before
-   installing its fixture and then verifies that the fixture-owned package and lockfile also resolve
-   exactly 2.0.8. `ankhorage/expo-runtime#62` must first be published so the normal `^3.0.5`
-   registry range supplies the current Expo 57.0.17 / React Native 0.86.3 platform contract; the
-   runner deliberately rejects the older published contract rather than overriding it from source.
-3. The generated Infra E2E must use the published Infra version containing PR `#79`. Until that
-   version is in the registry and Studio's normal semver range resolves it, this is a documented
-   external gate, not a reason to add a source override.
+| Owner                     | Accepted registry version | React Native contract |
+| ------------------------- | ------------------------- | --------------------- |
+| `@ankhorage/studio`       | `2.0.9`                   | `0.86.x`              |
+| `@ankhorage/expo-runtime` | `3.0.6`                   | exact `0.86.3`        |
+| `@ankhorage/runtime`      | `2.2.1`                   | `0.86.x`              |
+| `@ankhorage/surface`      | `3.0.1`                   | `0.86.x`              |
+| `@ankhorage/zora`         | `3.0.1`                   | `0.86.x`              |
+| `@ankhorage/infra`        | `4.1.3`                   | not RN-facing         |
 
-No new Studio changeset or 2.0.9 release is created for the Actions outage. After service recovery,
-the release workflow only needs a fresh trigger; adding `workflow_dispatch` is handled as the small
-release-workflow follow-up requested for that point in time.
+The RN-facing portable owners intentionally support the React Native 0.86 patch line, while Expo
+Runtime remains the exact Expo 57 platform authority. Studio 2.0.9 contains the public peer-metadata
+change and raised released-owner floors; it was published separately before this issue branch
+consumed it.
+
+The standalone and generated-capability runners now scan the physical Bun installation graph. They
+require exactly one React Native installation at 0.86.3, reject every incompatible
+`@ankhorage/*` React Native peer, and require the released owner versions above. Both runners passed
+from fresh package/install roots with cold frozen installs. The production Infra E2E also passed
+against the released Infra package through Docker, Minikube and browser hydration.
+
+The final native fixture additionally resolved `@ankhorage/devtools@1.7.0`, which contains the
+canonical generated `knip:check` script fix needed for Expo Doctor. Expo Doctor passed 21/21, and
+fresh Android and iOS Development and Release builds were installed and launched from the same
+single-RN 0.86.3 graph. No workspace, source, `file:`, `link:`, global CLI, `bunx`, or registry
+fallback was used.

@@ -36,7 +36,7 @@ describe('Expo 57 native capability evidence harness', () => {
     const scenarios = createNativeEvidenceScenariosSource();
     const screen = createNativeEvidenceScreenSource();
 
-    expect(NATIVE_EVIDENCE_STUDIO_VERSION).toBe('2.0.8');
+    expect(NATIVE_EVIDENCE_STUDIO_VERSION).toBe('2.0.9');
     expect(driver).toContain("import { ProjectManager } from '@ankhorage/studio/host';");
     expect(driver).toContain("import { PERMISSIONS } from '@ankhorage/permissions';");
     expect(driver).toContain("import { createOAuthFixtureManifest } from '@ankhorage/templates';");

@@ -13,7 +13,7 @@ import { runExpo57StudioStandaloneDevelopmentWebSmokeAsync } from './runExpo57St
 import { runExpo57StudioStandaloneStaticWebSmokeAsync } from './runExpo57StudioStandaloneStaticWebSmokeAsync';
 
 const COMMAND_TIMEOUT_MS = 300_000;
-const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.9';
 
 export async function runExpo57StudioStandaloneAcceptance(
   options: {

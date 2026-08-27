@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { access, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { assertReactNativeOwnerGraphAsync } from '../assertReactNativeOwnerGraphAsync';
 import { generateExpoRouterTypesAsync } from '../generateExpoRouterTypesAsync';
 import { resolveAppOwnedExpoCliAsync } from '../resolveAppOwnedExpoCliAsync';
 import { runAcceptanceCommandAsync } from '../runAcceptanceCommandAsync';
@@ -21,10 +22,13 @@ import { createNativeEvidenceScreenSource } from './createNativeEvidenceScreenSo
 
 const COMMAND_TIMEOUT_MS = 240_000;
 const EXPECTED_GENERATED_OWNER_VERSIONS = {
-  '@ankhorage/devtools': '1.6.1',
-  '@ankhorage/expo-runtime': '3.0.5',
+  '@ankhorage/devtools': '1.7.0',
+  '@ankhorage/expo-runtime': '3.0.6',
   '@ankhorage/permissions': '0.2.3',
+  '@ankhorage/runtime': '2.2.1',
   '@ankhorage/supabase-auth': '1.2.6',
+  '@ankhorage/surface': '3.0.1',
+  '@ankhorage/zora': '3.0.1',
 } as const;
 const EXPECTED_EXPO_RUNTIME_VERSION = EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/expo-runtime'];
 const ROUTER_REWRITE_DISABLED = '1';
@@ -90,6 +94,16 @@ export async function prepareNativeCapabilityEvidenceAsync(workspaceRoot: string
     'native evidence app',
   );
   await assertInstalledPackageVersionsAsync(appRoot, EXPECTED_GENERATED_OWNER_VERSIONS);
+  await assertReactNativeOwnerGraphAsync({
+    installationRoot: appRoot,
+    reactNativeVersion: '0.86.3',
+    requiredOwnerVersions: {
+      '@ankhorage/expo-runtime': EXPECTED_EXPO_RUNTIME_VERSION,
+      '@ankhorage/runtime': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/runtime'],
+      '@ankhorage/surface': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/surface'],
+      '@ankhorage/zora': EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/zora'],
+    },
+  });
   await assertReleasedNativeOAuthWiringAsync(appRoot);
   const checkResults = await runGeneratedNativeEvidenceChecksAsync(appRoot, commandEnv);
   await assertNativePrebuildAsync(appRoot);

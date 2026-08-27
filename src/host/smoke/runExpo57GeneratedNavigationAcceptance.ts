@@ -19,7 +19,7 @@ const FORBIDDEN_REACT_NAVIGATION_IMPORT =
   /(?:from\s*|import\s*\(|require\s*\()\s*['"]@react-navigation\//u;
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTER_REWRITE_DISABLED = '1';
-const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.8';
+const REQUIRED_STUDIO_REGISTRY_VERSION = '2.0.9';
 
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));

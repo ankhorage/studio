@@ -11,10 +11,10 @@ const tsconfig = await readFile(path.join(projectRoot, 'tsconfig.json'), 'utf8')
 assertEqual(packageJson.main, `${EXPO_PLATFORM.navigation.expoRouter.name}/entry`, 'Router entry');
 assertEqual(packageJson.engines?.node, EXPO_PLATFORM.tooling.node.version, 'Node engine');
 assertEqual(packageJson.packageManager, 'bun@1.3.14', 'Bun toolchain');
-assertEqual(packageJson.dependencies?.['@ankhorage/studio'], '^2.0.7', 'Studio release range');
+assertEqual(packageJson.dependencies?.['@ankhorage/studio'], '^2.0.9', 'Studio release range');
 assertEqual(
   packageJson.devDependencies?.['@ankhorage/expo-runtime'],
-  '^3.0.5',
+  '^3.0.6',
   'Expo Runtime release range',
 );
 

@@ -11,18 +11,18 @@ The scaffold consumes these released owners:
 
 | Owner                                              | Generated or Studio range | Role                                                                             |
 | -------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| `@ankhorage/expo-runtime`                          | `^3.0.4`                  | Expo 57 platform projection, planning and focused action bridge                  |
-| `@ankhorage/runtime`                               | `^2.2.0`                  | manifest rendering and bindings                                                  |
-| `@ankhorage/zora`                                  | `^3.0.0`                  | app UI; brings `@ankhorage/surface@^3.0.0` through its released dependency graph |
+| `@ankhorage/expo-runtime`                          | `^3.0.6`                  | Expo 57 platform projection, planning and focused action bridge                  |
+| `@ankhorage/runtime`                               | `^2.2.1`                  | manifest rendering and bindings                                                  |
+| `@ankhorage/zora`                                  | `^3.0.1`                  | app UI; brings `@ankhorage/surface@^3.0.1` through its released dependency graph |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.4.0`                  | Studio authoring drag-and-drop                                                   |
 | `@ankhorage/orchestrator-module-expo-localization` | `^0.6.0`                  | localization module host/admin contribution                                      |
 | `@ankhorage/orchestrator-module-expo-google-fonts` | `^0.2.1`                  | Google Fonts module host contribution                                            |
-| `@ankhorage/devtools`                              | `^1.6.0`                  | generated and repository quality tooling                                         |
+| `@ankhorage/devtools`                              | `^1.7.0`                  | generated and repository quality tooling                                         |
 
 No generated dependency uses `workspace:`, `link:`, `file:`, a Git branch or a sibling-source path.
 Standalone output omits `@ankhorage/studio` and binds actions through Expo Runtime 3's public action
 bridge; Studio-enabled output adds the published Studio package and its authoring-only picker
-dependencies. Studio-enabled output requires `@ankhorage/studio@^2.0.2`; the Expo 57 peer-surface
+dependencies. Studio-enabled output requires `@ankhorage/studio@^2.0.9`; the Expo 57 peer-surface
 change is a breaking package release and cannot resolve an Expo 54-era Studio 1.x package.
 
 ## Direct Ankhorage dependency audit
@@ -34,28 +34,27 @@ root package is classified below.
 
 | Dependency                                         | Previous  | Decision                                         |
 | -------------------------------------------------- | --------- | ------------------------------------------------ |
-| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.4` platform owner       |
-| `@ankhorage/runtime`                               | `^2.1.0`  | update to released `^2.2.0` runtime owner        |
-| `@ankhorage/zora`                                  | `^2.13.2` | update to released `^3.0.0` Expo 57 UI owner     |
+| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.6` platform owner       |
+| `@ankhorage/runtime`                               | `^2.1.0`  | update to released `^2.2.1` runtime owner        |
+| `@ankhorage/zora`                                  | `^2.13.2` | update to released `^3.0.1` Expo 57 UI owner     |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.3.2`  | update to released `^0.4.0` animation owner      |
 | `@ankhorage/orchestrator-module-expo-localization` | `^0.5.2`  | update to released `^0.6.0` Expo 57 module owner |
 | `@ankhorage/orchestrator-module-expo-google-fonts` | `^0.2.0`  | update to released `^0.2.1` Expo 57 module owner |
-| `@ankhorage/devtools`                              | `1.5.1`   | update to released `^1.6.0` canonical tooling    |
+| `@ankhorage/devtools`                              | `1.5.1`   | update to released `^1.7.0` canonical tooling    |
 
 ### Verified current / no change required
 
 `@ankhorage/color-theory@^0.0.8`, `@ankhorage/contracts@^8.0.0`,
 `@ankhorage/data-sources@^2.0.0`, `@ankhorage/deploy@^0.12.0`,
-`@ankhorage/infra@^4.1.2`, `@ankhorage/orchestrator@^0.3.1`,
+`@ankhorage/infra@^4.1.3`, `@ankhorage/orchestrator@^0.3.1`,
 `@ankhorage/supabase-auth@^1.2.5`, `@ankhorage/supabase-storage@^0.2.0`,
 `@ankhorage/supabase-vault@^0.2.4`, `@ankhorage/templates@^7.0.0`,
 `@ankhorage/zora-chess@^0.1.2` and `@ankhorage/zora-tabletop@^0.0.5` match their current
 released owner baselines.
 
-`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.7`. That is the
-published package boundary the first-party app exercises and admits the prepared 2.0.8 patch without
-using `latest`; all of its remaining Ankhorage owners come through the released dependency graph
-audited below.
+`apps/studio` has one direct Ankhorage dependency of its own: `@ankhorage/studio@^2.0.9`. That is the
+published package boundary the first-party app exercises without using `latest`; all of its
+remaining Ankhorage owners come through the released dependency graph audited below.
 
 ### Separate owner or roadmap step
 
@@ -67,15 +66,15 @@ audited below.
 ## Canonical platform projection
 
 The generated package map reads package names and versions directly from `EXPO_PLATFORM`. The
-released 3.0.4 projection used by this migration is:
+released 3.0.6 projection used by final acceptance is:
 
 ```text
-Expo                         ~57.0.15
+Expo                         57.0.17
 React                        19.2.3
 React DOM                    19.2.3
-React Native                 0.86.2
+React Native                 0.86.3
 React Native Web             ~0.21.0
-Expo Router                  ~57.0.15
+Expo Router                  57.0.17
 Expo Crypto                  ~57.0.2
 React Native Screens         ~4.26.0
 safe-area-context             ~5.7.0
@@ -118,8 +117,8 @@ surviving override has focused behavioral coverage.
 
 ## Acceptance boundary
 
-A representative fixture must be created through `ProjectManager`, use released registry owner
-packages (with only the Studio candidate itself packed when necessary), and validate from its own
+A representative fixture must be created through `ProjectManager`, use only released registry owner
+packages, and validate from its own
 package root:
 
 ```bash
@@ -158,8 +157,9 @@ edge-to-edge Android setting and iOS 16.4 deployment target.
 
 The package-owned `test:acceptance:expo57-generated-navigation` runner adds the permanent Router 57
 matrix. It generates standalone and released-Studio fixtures through `ProjectManager`, installs only
-registry owner packages, asserts the generated `^2.0.2` Studio range and exact 2.0.8 registry
-resolution, and
+registry owner packages, asserts the generated `^2.0.9` Studio range and exact 2.0.9 registry
+resolution, requires Expo Runtime 3.0.6, Runtime 2.2.1, Surface 3.0.1 and ZORA 3.0.1 against exactly
+one React Native 0.86.3 installation, and
 covers root and nested Stack, JavaScript Tabs and Drawer navigators,
 hidden routes, dynamic/search params, `(app)` / `(auth)` groups and `Stack.Protected`. The app-owned
 OAuth callback is a separate root Stack route so correlation still runs for an existing session;
