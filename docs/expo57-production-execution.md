@@ -80,7 +80,9 @@ The implementation is intentionally split from publication availability:
    operational and the preceding incident resolved.
 2. The standalone registry/frozen-install runner enforces this exact registry version before
    installing its fixture and then verifies that the fixture-owned package and lockfile also resolve
-   exactly 2.0.8.
+   exactly 2.0.8. `ankhorage/expo-runtime#62` must first be published so the normal `^3.0.5`
+   registry range supplies the current Expo 57.0.17 / React Native 0.86.3 platform contract; the
+   runner deliberately rejects the older published contract rather than overriding it from source.
 3. The generated Infra E2E must use the published Infra version containing PR `#79`. Until that
    version is in the registry and Studio's normal semver range resolves it, this is a documented
    external gate, not a reason to add a source override.
