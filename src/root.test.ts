@@ -37,7 +37,7 @@ test('keeps the package root and first-party apps in Studio workspace installs',
   expect(appPackageJson.devDependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.6');
 });
 
-test('supplies the published peer required by Expo Runtime planning', async () => {
+test('supplies the published peers required by consumed Expo Runtime entrypoints', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
   };
@@ -47,8 +47,15 @@ test('supplies the published peer required by Expo Runtime planning', async () =
     readonly peerDependencies?: Readonly<Record<string, string>>;
   };
 
-  const requiredPermissionsRange =
-    expoRuntimePackageJson.peerDependencies?.['@ankhorage/permissions'];
-  expect(requiredPermissionsRange).toBe('^0.2.3');
-  expect(packageJson.dependencies?.['@ankhorage/permissions']).toBe(requiredPermissionsRange);
+  const expectedStudioOwnedPeers = {
+    '@ankhorage/permissions': '^0.2.3',
+    'expo-image-picker': '~57.0.12',
+  } as const;
+  const expoRuntimePeers = new Map(Object.entries(expoRuntimePackageJson.peerDependencies ?? {}));
+  const studioDependencies = new Map(Object.entries(packageJson.dependencies ?? {}));
+
+  for (const [packageName, expectedRange] of Object.entries(expectedStudioOwnedPeers)) {
+    expect(expoRuntimePeers.get(packageName)).toBe(expectedRange);
+    expect(studioDependencies.get(packageName)).toBe(expectedRange);
+  }
 });

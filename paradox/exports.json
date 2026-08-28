@@ -2536,7 +2536,7 @@
     "relatedSymbols": ["StudioBindableEventOption"],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindableEventOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2546,7 +2546,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
             "required": true,
             "description": null
           }
@@ -2574,7 +2574,7 @@
     "relatedSymbols": ["StudioBindablePropOption"],
     "signatures": [
       {
-        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
+        "label": "(node: UiNode, registry: Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>) => readonly StudioBindablePropOption[]",
         "parameters": [
           {
             "name": "node",
@@ -2584,7 +2584,7 @@
           },
           {
             "name": "registry",
-            "type": "Readonly<Record<string, import(\"@ankhorage/contracts/dist/ui\").UiComponentMeta>>",
+            "type": "Readonly<Record<string, import(\"@ankhorage/contracts\").UiComponentMeta>>",
             "required": true,
             "description": null
           }
@@ -4238,7 +4238,7 @@
       {
         "name": "body",
         "kind": "property",
-        "type": "Uint8Array",
+        "type": "Uint8Array<ArrayBufferLike>",
         "required": true,
         "description": null
       },
