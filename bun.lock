@@ -9,7 +9,7 @@
         "@ankhorage/contracts": "^8.0.0",
         "@ankhorage/data-sources": "^2.0.0",
         "@ankhorage/deploy": "^0.12.0",
-        "@ankhorage/expo-runtime": "^3.0.6",
+        "@ankhorage/expo-runtime": "^3.0.9",
         "@ankhorage/infra": "^4.1.3",
         "@ankhorage/orchestrator": "^0.3.1",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",
@@ -90,7 +90,7 @@
       },
       "devDependencies": {
         "@ankhorage/devtools": "^1.7.0",
-        "@ankhorage/expo-runtime": "^3.0.6",
+        "@ankhorage/expo-runtime": "^3.0.9",
         "@types/node": "^24.13.3",
         "@types/react": "^19.2.18",
         "expo-doctor": "1.20.2",
@@ -114,7 +114,7 @@
 
     "@ankhorage/doctor": ["@ankhorage/doctor@0.10.1", "", { "dependencies": { "@ankhorage/contracts": "^7.9.0", "@ankhorage/supabase-auth": "^1.2.6" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-g7vPANcuL8uCPVRSVh7MW52OjdzV/svpgskWK+R8gKbGaWoYhQ0Vopr29+/xLsV/h7HM9VfAX2eDjjZ9M0qquw=="],
 
-    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.6", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.3", "@ankhorage/zora": "^3.0.0", "expo": "57.0.17", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.3" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-NlGaATxasjfjjv/vWdxNiA1KogIoBfvrXlg3ln2Kq3EjAjcqjDqvVsILs1JkTySqsmMDQkWqoj/ym0ggMIBVbw=="],
+    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.9", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.3", "@ankhorage/zora": "^3.0.0", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "expo": "57.0.17", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-font": "~57.0.1", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.3" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "@react-native-vector-icons/fontawesome", "@react-native-vector-icons/fontawesome5", "@react-native-vector-icons/fontawesome6", "@react-native-vector-icons/ionicons", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-font", "expo-image-picker", "react", "react-native"] }, "sha512-x29d3HdAcv/wyTRwYnJUhuJS3B76ZDhquj5fOLoVW9ujtG53foYVdoBuVgzqMFUw9tsbJJ6F0hFG40UqoEUDZA=="],
 
     "@ankhorage/infra": ["@ankhorage/infra@4.1.3", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/supabase-vault": "^0.2.4" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-n+7UyWruPC+BUZap4sc9uaS9ORqWU3sprSoA3hJOOuonWMhjGMxISjUnraXxjqauuOMsFaBacLcdq0zroRVjoQ=="],
 
@@ -2027,8 +2027,6 @@
     "@ankhorage/orchestrator-module-expo-localization/@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.0.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.2", "@ankhorage/zora": "^3.0.0", "expo": "~57.0.15", "expo-camera": "~57.0.4", "expo-constants": "~57.0.13", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.5", "expo-image-picker": "~57.0.12", "react": "19.2.3", "react-native": "0.86.2" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-image-picker", "react", "react-native"] }, "sha512-R8fq0y5vRc/UPhJWEW1gl+ZMJuM9mSZfBHNj6enJweMQoYkqVd1dvrgWY5i+KwKgH+OaodeljWlpXhdmeqKJeg=="],
 
     "@ankhorage/studio/expo-file-system": ["expo-file-system@57.0.6", "", { "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-pm8PMYEW6BnVOCBJ7df9FcDmQtE1tqImuYphlfYe1ipQRLYtdCayRczJcbKIsnB3mqEyp4gC2gWmMbsAsAOjVg=="],
-
-    "@ankhorage/studio-app/@ankhorage/devtools": ["@ankhorage/devtools@1.6.1", "", { "dependencies": { "@ankhorage/utility": "^0.1.1", "@eslint/compat": "^2.1.0", "@eslint/js": "^10.0.1", "eslint": "^10.7.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.5", "eslint-plugin-react": "^7.37.5", "eslint-plugin-react-hooks": "^7.1.1", "eslint-plugin-react-native": "^5.0.0", "eslint-plugin-security": "^4.0.1", "eslint-plugin-simple-import-sort": "^12.1.1", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.12.2", "prettier": "^3.8.1", "typescript-eslint": "^8.24.0" }, "bin": { "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-ExD1VEDWgBPHVzA5hT0k8iyLgPW7WYzxO2jxnvHhv6GM48UVqbkzgu9uu+g80v/9b2tkVPhbei9waW+flfHtkg=="],
 
     "@ankhorage/supabase-auth/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
 
