@@ -5,8 +5,9 @@ import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPa
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 
 const FORBIDDEN_DEPENDENCY_PREFIX = /^(?:file|link|workspace):/u;
+const EXPO_FONT_RANGE = '~57.0.1';
 const REQUIRED_OWNER_RANGES = {
-  '@ankhorage/expo-runtime': '^3.0.6',
+  '@ankhorage/expo-runtime': '^3.0.10',
   '@ankhorage/runtime': '^2.2.1',
   '@ankhorage/studio': '^2.0.9',
   '@ankhorage/surface': '^3.0.1',
@@ -25,7 +26,7 @@ const REQUIRED_RELEASE_RANGES = [
     range: REQUIRED_OWNER_RANGES['@ankhorage/studio'],
   },
   {
-    dependencyGroup: 'devDependencies',
+    dependencyGroup: 'dependencies',
     packageName: '@ankhorage/expo-runtime',
     range: REQUIRED_OWNER_RANGES['@ankhorage/expo-runtime'],
   },
@@ -62,6 +63,11 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
         `Standalone Studio fixture declares ${requirement.packageName} ${String(declaredRange)} instead of ${requirement.range}.`,
       );
     }
+  }
+  if (packageJson.dependencies?.['expo-font'] !== EXPO_FONT_RANGE) {
+    throw new Error(
+      `Standalone Studio fixture declares expo-font ${String(packageJson.dependencies?.['expo-font'])} instead of ${EXPO_FONT_RANGE}.`,
+    );
   }
   assertRegistryDependencyRanges(packageJson);
 

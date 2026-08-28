@@ -1,6 +1,7 @@
 import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
+import { assertStudioWebIconFontsAsync } from './assertStudioWebIconFontsAsync';
 import { ChromeNavigationSession } from './ChromeNavigationSession';
 import { reserveTcpPortAsync } from './reserveTcpPortAsync';
 
@@ -40,15 +41,30 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     browser = await ChromeNavigationSession.createAsync(debugPort);
     await browser.navigateAsync(`${appUrl}/`);
     await browser.waitForBodyTextAsync('Release Monitor');
-    await browser.clickByRoleAndNameAsync('button', 'New project');
+    await assertStudioWebIconFontsAsync(browser);
+    await pointerClickAsync(browser, 'button', 'Updated');
+    await pointerClickAsync(browser, 'button', 'Name');
+    await pointerClickAsync(browser, 'button', 'Use light mode');
+    await browser.waitForHydratedRoleAndNameAsync('button', 'Use dark mode');
+    await pointerClickAsync(browser, 'button', 'Workspace menu');
+    await pointerClickAsync(browser, 'button', 'Install workspace packages');
+    await browser.waitForBodyTextAsync('Packages installed');
+
+    await pointerClickAsync(browser, 'button', 'New project');
     await browser.waitForLocationAsync({ pathname: '/create' });
     await browser.waitForBodyTextAsync('New Project');
+    await pointerClickAsync(browser, 'button', 'Go to projects');
+    await browser.waitForLocationAsync({ pathname: '/' });
+    await pointerClickAsync(browser, 'button', 'New project');
+    await browser.waitForLocationAsync({ pathname: '/create' });
+    await pointerClickAsync(browser, 'button', 'Back');
+    await browser.waitForLocationAsync({ pathname: '/' });
 
     await browser.navigateAsync(`${appUrl}/create?source=standalone`);
     await browser.waitForLocationAsync({ pathname: '/create', search: '?source=standalone' });
-    await browser.clickByRoleAndNameAsync('button', `Browse ${options.categoryLabel} templates`);
+    await pointerClickAsync(browser, 'button', `Browse ${options.categoryLabel} templates`);
     await browser.waitForLocationAsync({ pathname: `/create/${options.categoryId}` });
-    await browser.clickByRoleAndNameAsync('button', `Select ${options.templateName}`);
+    await pointerClickAsync(browser, 'button', `Select ${options.templateName}`);
     const templatePath = `/create/${options.categoryId}/${options.templateId}`;
     await browser.waitForLocationAsync({ pathname: templatePath });
     await browser.waitForBodyTextAsync('Project name');
@@ -60,12 +76,33 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.reloadAsync();
     await browser.waitForBodyTextAsync('Project name');
 
+    await browser.navigateAsync(`${appUrl}/`);
+    await browser.waitForBodyTextAsync('Release Monitor');
+    await pointerClickAsync(browser, 'button', 'Open Release Monitor');
+    await browser.waitForLocationAsync({
+      pathname: '/projects/release-monitor',
+      search: '',
+    });
+    await browser.waitForBodyTextAsync('Project Detail');
+
     await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
     await browser.waitForLocationAsync({
       pathname: '/projects/release-monitor',
       search: '?view=details',
     });
     await browser.waitForBodyTextAsync('Project Detail');
+
+    await deleteHostProjectAsync(options.apiUrl, 'release-monitor');
+    await browser.navigateAsync(`${appUrl}/`);
+    await browser.waitForBodyTextAsync('No projects yet');
+    await assertStudioWebIconFontsAsync(browser);
+    await pointerClickAsync(browser, 'button', 'New project');
+    await browser.waitForLocationAsync({ pathname: '/create' });
+    await pointerClickAsync(browser, 'button', 'Back');
+    await browser.waitForLocationAsync({ pathname: '/' });
+    await browser.waitForBodyTextAsync('No projects yet');
+    await pointerClickAsync(browser, 'button', 'New project', 1);
+    await browser.waitForLocationAsync({ pathname: '/create' });
     assertNoBrowserErrors(browser.errors, 'Standalone Studio development Web');
   } finally {
     browser?.close();
@@ -76,6 +113,25 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
 function collectOutput(processToCollect: ChildProcessWithoutNullStreams, output: string[]): void {
   processToCollect.stdout.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
   processToCollect.stderr.on('data', (chunk: Buffer) => output.push(chunk.toString('utf8')));
+}
+
+async function deleteHostProjectAsync(apiUrl: string, projectId: string): Promise<void> {
+  const response = await fetch(`${apiUrl}/projects/${encodeURIComponent(projectId)}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error(`Could not delete standalone host fixture project: ${response.status}.`);
+  }
+}
+
+async function pointerClickAsync(
+  browser: ChromeNavigationSession,
+  role: string,
+  name: string,
+  occurrence = 0,
+): Promise<void> {
+  await browser.waitForHydratedRoleAndNameAsync(role, name, occurrence);
+  await browser.clickByRoleAndNameAsync(role, name, occurrence);
 }
 
 async function stopProcessAsync(processToStop: ChildProcessWithoutNullStreams): Promise<void> {

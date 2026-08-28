@@ -23,7 +23,7 @@ const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.5';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^3.0.0';
-const EXPO_RUNTIME_VERSION = '^3.0.4';
+const EXPO_RUNTIME_VERSION = '^3.0.10';
 const DEVTOOLS_VERSION = '^1.6.0';
 
 function serializeStringLiteral(value: string): string {
@@ -928,6 +928,7 @@ export function getPackageJson(args: {
           ])
         : {}),
       ...createPlatformDependencyMap([
+        EXPO_PLATFORM.packages.font,
         EXPO_PLATFORM.runtime.expo,
         EXPO_PLATFORM.runtime.react,
         EXPO_PLATFORM.runtime.reactDom,

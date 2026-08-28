@@ -6,6 +6,14 @@ import path from 'node:path';
 import { getChromeNavigationIssue } from './getChromeNavigationIssue';
 
 const HTTP_TIMEOUT_MS = 120_000;
+const HIT_TEST_TIMEOUT_MS = 10_000;
+
+interface HitTestResult {
+  readonly hit?: string;
+  readonly state: 'blocked' | 'missing' | 'ready' | 'scrolling';
+  readonly x?: number;
+  readonly y?: number;
+}
 
 export class ChromeNavigationSession {
   readonly errors: string[] = [];
@@ -78,12 +86,29 @@ export class ChromeNavigationSession {
     await this.evaluateAsync('(() => { localStorage.clear(); return true; })()');
   }
 
-  async clickByRoleAndNameAsync(role: string, name: string): Promise<void> {
-    const expression = createRoleAndNameExpression(role, name, {
-      click: true,
-      requireHydration: true,
+  async clickByRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
+    const point = await this.waitForHitTestedRoleAndNameAsync(role, name, occurrence);
+    await this.sendAsync('Input.dispatchMouseEvent', {
+      type: 'mouseMoved',
+      x: point.x,
+      y: point.y,
     });
-    await this.waitForBooleanAsync(expression, `${role} named "${name}" to become clickable`);
+    await this.sendAsync('Input.dispatchMouseEvent', {
+      button: 'left',
+      buttons: 1,
+      clickCount: 1,
+      type: 'mousePressed',
+      x: point.x,
+      y: point.y,
+    });
+    await this.sendAsync('Input.dispatchMouseEvent', {
+      button: 'left',
+      buttons: 0,
+      clickCount: 1,
+      type: 'mouseReleased',
+      x: point.x,
+      y: point.y,
+    });
   }
 
   async clickByTestIdAsync(testId: string): Promise<void> {
@@ -157,7 +182,24 @@ export class ChromeNavigationSession {
 
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(
-      createRoleAndNameExpression(role, name, { click: false, requireHydration: false }),
+      createRoleAndNameExpression(role, name, { occurrence: 0, requireHydration: false }),
+    );
+  }
+
+  async assertRoleUsesFontFamilyAsync(
+    role: string,
+    name: string,
+    fontFamily: string,
+    occurrence = 0,
+  ): Promise<void> {
+    const result = await this.evaluateAsync<{
+      readonly computedFamily?: string;
+      readonly faceLoaded: boolean;
+      readonly glyphLoaded: boolean;
+    }>(createRoleFontExpression(role, name, fontFamily, occurrence));
+    if (result.faceLoaded && result.glyphLoaded && result.computedFamily === fontFamily) return;
+    throw new Error(
+      `${role} named "${name}" does not render with loaded ${fontFamily}: ${JSON.stringify(result)}.`,
     );
   }
 
@@ -200,9 +242,47 @@ export class ChromeNavigationSession {
     );
   }
 
-  async waitForHydratedRoleAndNameAsync(role: string, name: string): Promise<void> {
+  async waitForLoadedFontFamiliesAsync(
+    fontFamilies: readonly string[],
+    timeoutMs = HTTP_TIMEOUT_MS,
+  ): Promise<void> {
+    const expression = `(() => {
+  const normalize = (value) => value.replaceAll('"', '').trim();
+  const required = ${JSON.stringify(fontFamilies)};
+  for (const family of required) {
+    void document.fonts.load('16px "' + family + '"');
+  }
+  const faces = [...document.fonts].map((face) => ({
+    family: normalize(face.family),
+    status: face.status,
+  }));
+  return {
+    faces,
+    ready: required.every((family) =>
+      faces.some((face) => face.family === family && face.status === 'loaded'),
+    ),
+    style: document.getElementById('expo-generated-fonts')?.textContent ?? '',
+  };
+})()`;
+    let observed: {
+      readonly faces: readonly { readonly family: string; readonly status: string }[];
+      readonly ready: boolean;
+      readonly style: string;
+    } = { faces: [], ready: false, style: '' };
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      observed = await this.evaluateAsync<typeof observed>(expression);
+      if (observed.ready) return;
+      await Bun.sleep(250);
+    }
+    throw new Error(
+      `Timed out waiting for loaded font families ${fontFamilies.join(', ')}. Observed: ${JSON.stringify(observed)}.`,
+    );
+  }
+
+  async waitForHydratedRoleAndNameAsync(role: string, name: string, occurrence = 0): Promise<void> {
     const expression = createRoleAndNameExpression(role, name, {
-      click: false,
+      occurrence,
       requireHydration: true,
     });
     await this.waitForBooleanAsync(expression, `hydrated ${role} named "${name}"`);
@@ -337,6 +417,26 @@ export class ChromeNavigationSession {
     throw new Error(`Timed out waiting for ${description}.`);
   }
 
+  private async waitForHitTestedRoleAndNameAsync(
+    role: string,
+    name: string,
+    occurrence: number,
+  ): Promise<{ readonly x: number; readonly y: number }> {
+    const expression = createRoleHitTestExpression(role, name, occurrence);
+    const start = Date.now();
+    let observed: HitTestResult = { state: 'missing' };
+    while (Date.now() - start < HIT_TEST_TIMEOUT_MS) {
+      observed = await this.evaluateAsync<HitTestResult>(expression);
+      if (observed.state === 'ready' && observed.x !== undefined && observed.y !== undefined) {
+        return { x: observed.x, y: observed.y };
+      }
+      await Bun.sleep(100);
+    }
+    throw new Error(
+      `Hit testing blocked ${role} named "${name}" at occurrence ${occurrence}: ${JSON.stringify(observed)}.`,
+    );
+  }
+
   private waitForSocketAsync(): Promise<void> {
     if (this.socket.readyState === WebSocket.OPEN) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -349,7 +449,7 @@ export class ChromeNavigationSession {
 function createRoleAndNameExpression(
   role: string,
   name: string,
-  options: { readonly click: boolean; readonly requireHydration: boolean },
+  options: { readonly occurrence: number; readonly requireHydration: boolean },
 ): string {
   return `(() => {
   const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
@@ -357,17 +457,125 @@ function createRoleAndNameExpression(
     const propsKey = Object.keys(element).find((key) => key.startsWith('__reactProps$'));
     return propsKey !== undefined && typeof element[propsKey]?.onClick === 'function';
   };
-  const element = [...document.querySelectorAll('[role]')].find((candidate) => {
+  const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
     if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
     const ariaLabel = candidate.getAttribute('aria-label');
-    if (ariaLabel !== null) return normalize(ariaLabel) === ${JSON.stringify(name)};
     const visibleText = normalize(candidate.textContent ?? '');
-    return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
   });
+  const element = elements[${options.occurrence}];
   if (!(element instanceof HTMLElement)) return false;
   ${options.requireHydration ? 'if (!hasHydratedClickHandler(element)) return false;' : ''}
-  ${options.click ? 'element.click();' : ''}
   return true;
+})()`;
+}
+
+function createRoleFontExpression(
+  role: string,
+  name: string,
+  fontFamily: string,
+  occurrence: number,
+): string {
+  return `(() => {
+  const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
+  const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
+    if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
+    const ariaLabel = candidate.getAttribute('aria-label');
+    const visibleText = normalize(candidate.textContent ?? '');
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
+  const element = elements[${occurrence}];
+  if (!(element instanceof HTMLElement)) {
+    return { faceLoaded: false, glyphLoaded: false };
+  }
+  const expectedFamily = ${JSON.stringify(fontFamily)};
+  const normalizeFamily = (value) => value.replaceAll('"', '').trim();
+  const icon = [element, ...element.querySelectorAll('*')].find((candidate) =>
+    getComputedStyle(candidate).fontFamily
+      .split(',')
+      .map(normalizeFamily)
+      .includes(expectedFamily),
+  );
+  if (!(icon instanceof HTMLElement)) {
+    return { faceLoaded: false, glyphLoaded: false };
+  }
+  const computedStyle = getComputedStyle(icon);
+  const glyph = icon.textContent ?? '';
+  const faceLoaded = [...document.fonts].some(
+    (face) => normalizeFamily(face.family) === expectedFamily && face.status === 'loaded',
+  );
+  return {
+    computedFamily: normalizeFamily(computedStyle.fontFamily.split(',')[0] ?? ''),
+    faceLoaded,
+    glyphLoaded:
+      glyph.length > 0 &&
+      document.fonts.check(computedStyle.fontSize + ' "' + expectedFamily + '"', glyph),
+  };
+})()`;
+}
+
+function createRoleHitTestExpression(role: string, name: string, occurrence: number): string {
+  return `(() => {
+  const normalize = (value) => value.replace(/\\s+/gu, ' ').trim();
+  const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
+    if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
+    const ariaLabel = candidate.getAttribute('aria-label');
+    const visibleText = normalize(candidate.textContent ?? '');
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
+  });
+  const element = elements[${occurrence}];
+  if (!(element instanceof HTMLElement)) {
+    const buttons = [...document.querySelectorAll('[role="button"]')].map((candidate) => ({
+      label: candidate.getAttribute('aria-label'),
+      text: normalize(candidate.textContent ?? ''),
+    }));
+    return {
+      hit: JSON.stringify({ buttons, pathname: location.pathname }),
+      state: 'missing',
+    };
+  }
+  const rect = element.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return { state: 'missing' };
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  if (x < 0 || y < 0 || x > innerWidth || y > innerHeight) {
+    element.scrollIntoView({ block: 'center', inline: 'center' });
+    return { state: 'scrolling' };
+  }
+  const hit = document.elementFromPoint(x, y);
+  if (!(hit instanceof Element) || !element.contains(hit)) {
+    const hitRole = hit instanceof Element ? hit.getAttribute('role') : null;
+    const hitLabel = hit instanceof Element ? hit.getAttribute('aria-label') : null;
+    return {
+      state: 'blocked',
+      hit: hit instanceof Element
+        ? [
+            hit.tagName.toLowerCase(),
+            hitRole ? 'role=' + hitRole : '',
+            hitLabel ? 'aria-label=' + hitLabel : '',
+          ].filter(Boolean).join(' ')
+        : 'none',
+    };
+  }
+  return { state: 'ready', x, y };
 })()`;
 }
 

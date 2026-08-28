@@ -53,6 +53,10 @@ export function getRootLayoutImportRequirements(
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     },
     {
+      source: '@ankhorage/expo-runtime/icon-fonts',
+      namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
+    },
+    {
       source: '@/generated/bundledMediaRegistry',
       namedImports: [{ imported: 'bundledMediaRegistry' }],
     },
@@ -316,7 +320,7 @@ const shouldMountAppHeader =
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (
-    <GestureHandlerRootView style={rootViewStyle}>
+    <GeneratedRootView>
       <StudioProvider
         projectId={ankhConfig.metadata.slug}
         initialManifest={runtimeManifest}
@@ -334,7 +338,7 @@ const shouldMountAppHeader =
           shouldMountAppHeader={shouldMountAppHeader}
         />
       </StudioProvider>
-    </GestureHandlerRootView>
+    </GeneratedRootView>
   );
 }`
     : '';
@@ -367,6 +371,14 @@ ${moduleLevelDeclarations}
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 ${runtimeComponentRegistryDeclaration}
 const rootViewStyle = { flex: 1 } as const;
+
+function GeneratedRootView({ children }: { children: ReactNode }) {
+  return (
+    <ExpoZoraIconFontProvider>
+      <GestureHandlerRootView style={rootViewStyle}>{children}</GestureHandlerRootView>
+    </ExpoZoraIconFontProvider>
+  );
+}
 
 function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
   return {
@@ -416,7 +428,7 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
       </SafeAreaProvider>
     </GeneratedZoraProvider>
   );
-${indentedStudioShellBlock}  return <GestureHandlerRootView style={rootViewStyle}>{shell}</GestureHandlerRootView>;
+${indentedStudioShellBlock}  return <GeneratedRootView>{shell}</GeneratedRootView>;
 }${
     includeStudio
       ? `

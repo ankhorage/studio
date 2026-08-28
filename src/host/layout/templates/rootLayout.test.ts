@@ -354,3 +354,41 @@ test('wires bundled media through generated runtime and Studio preview', () => {
   expect(generated).toContain('resolveMediaAsset: bundledMediaResolver');
   expect(generated).toContain('bundledMediaRegistry={bundledMediaRegistry}');
 });
+
+test('holds generated app output behind the shared Expo ZORA icon font boundary', () => {
+  for (const includeStudio of [false, true]) {
+    expect(getRootLayoutImportRequirements(includeStudio)).toContainEqual({
+      source: '@ankhorage/expo-runtime/icon-fonts',
+      namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
+    });
+    expect(getRootLayoutImportRequirements(includeStudio)).not.toContainEqual({
+      source: '@ankhorage/expo-runtime',
+      namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
+    });
+
+    const generated = getRootLayoutTsx({
+      manifest: { navigator: { initialRouteName: 'index' } } as unknown as AppManifest,
+      mutations: [],
+      allImports: '',
+      allHooks: '',
+      innerNavigation: {
+        declarations: '',
+        jsx: '<></>',
+        usesTheme: false,
+        usesIcon: false,
+        usesZoraTabBar: false,
+        usesZoraDrawerContent: false,
+        usesZoraNavigationRouteMap: false,
+      },
+      includeStudio,
+    });
+
+    expect(generated).toContain('<ExpoZoraIconFontProvider>');
+    expect(generated).toContain('</ExpoZoraIconFontProvider>');
+    expect(generated.match(/<ExpoZoraIconFontProvider>/g)).toHaveLength(1);
+    expect(generated).toContain(
+      'function GeneratedRootView({ children }: { children: ReactNode })',
+    );
+    expect(generated).toContain('return <GeneratedRootView>{shell}</GeneratedRootView>;');
+  }
+});
