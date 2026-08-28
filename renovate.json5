@@ -2,6 +2,8 @@
  * Repository configuration
  *
  * Loads the canonical Ankhorage dependency-update policy from its default branch.
+ * The Studio app consumes the last published Studio package for acceptance and must
+ * not recursively update itself through the automatic dependency cascade.
  *
  * @usage
  * @readme
@@ -9,4 +11,5 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['github>ankhorage/renovate'],
+  ignoreDeps: ['@ankhorage/studio'],
 }
