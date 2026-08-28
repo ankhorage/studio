@@ -76,10 +76,12 @@ export async function runExpo57StudioStandaloneDevelopmentWebSmokeAsync(options:
     await browser.reloadAsync();
     await browser.waitForBodyTextAsync('Project name');
 
-    await browser.navigateAsync(`${appUrl}/projects/release-monitor?view=details`);
+    await browser.navigateAsync(`${appUrl}/`);
+    await browser.waitForBodyTextAsync('Release Monitor');
+    await pointerClickAsync(browser, 'button', 'Open Release Monitor');
     await browser.waitForLocationAsync({
       pathname: '/projects/release-monitor',
-      search: '?view=details',
+      search: '',
     });
     await browser.waitForBodyTextAsync('Project Detail');
 

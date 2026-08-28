@@ -242,20 +242,25 @@ export class ChromeNavigationSession {
     );
   }
 
-  async waitForRegisteredFontFamiliesAsync(
+  async waitForLoadedFontFamiliesAsync(
     fontFamilies: readonly string[],
     timeoutMs = HTTP_TIMEOUT_MS,
   ): Promise<void> {
     const expression = `(() => {
   const normalize = (value) => value.replaceAll('"', '').trim();
   const required = ${JSON.stringify(fontFamilies)};
+  for (const family of required) {
+    void document.fonts.load('16px "' + family + '"');
+  }
   const faces = [...document.fonts].map((face) => ({
     family: normalize(face.family),
     status: face.status,
   }));
   return {
     faces,
-    ready: required.every((family) => faces.some((face) => face.family === family)),
+    ready: required.every((family) =>
+      faces.some((face) => face.family === family && face.status === 'loaded'),
+    ),
     style: document.getElementById('expo-generated-fonts')?.textContent ?? '',
   };
 })()`;
@@ -271,7 +276,7 @@ export class ChromeNavigationSession {
       await Bun.sleep(250);
     }
     throw new Error(
-      `Timed out waiting for registered font families ${fontFamilies.join(', ')}. Observed: ${JSON.stringify(observed)}.`,
+      `Timed out waiting for loaded font families ${fontFamilies.join(', ')}. Observed: ${JSON.stringify(observed)}.`,
     );
   }
 
