@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.11
+
+### Patch Changes
+
+- a57ecc1: Update Ankhorage dependencies: `@ankhorage/supabase-auth`.
+
 ## 2.0.10
 
 ### Patch Changes
