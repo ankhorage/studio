@@ -160,7 +160,7 @@ describe('StudioExternalApiService', () => {
     const service = new StudioExternalApiService({ projectManager: store.manager });
 
     const result = await service.createManualRest('demo', {
-      apiId: 'legacy',
+      apiId: 'inventory',
       baseUrl: 'https://api.example.com',
       endpointId: 'items',
       path: '/items',
@@ -169,7 +169,7 @@ describe('StudioExternalApiService', () => {
       intent: 'read',
     });
 
-    expect(result).toMatchObject({ ok: true, apiId: 'legacy', protocol: 'rest' });
+    expect(result).toMatchObject({ ok: true, apiId: 'inventory', protocol: 'rest' });
     expect(store.read().infra.apis?.[0]?.endpoints.items?.operations['list-items']).toMatchObject({
       method: 'GET',
       path: '/items',

@@ -105,6 +105,32 @@ describe('generated bundled media registry', () => {
     expect(source).toContain("from '@ankhorage/expo-runtime/bundled-media';");
     expect(source).not.toContain("from '@ankhorage/expo-runtime';");
   });
+
+  it('preserves source directories outside current generated ownership', async () => {
+    const projectPath = await createProjectRoot();
+    const appOwnedFiles = [
+      'src/runtime/app-owned.ts',
+      'src/studio/app-owned.ts',
+      'src/dnd/app-owned.ts',
+    ];
+    await Promise.all(
+      appOwnedFiles.map(async (relativePath) => {
+        const filePath = path.join(projectPath, relativePath);
+        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        await fs.writeFile(filePath, 'export const appOwned = true;\n', 'utf8');
+      }),
+    );
+
+    await syncGeneratedAppFiles(projectPath);
+
+    await Promise.all(
+      appOwnedFiles.map(async (relativePath) => {
+        expect(await fs.readFile(path.join(projectPath, relativePath), 'utf8')).toBe(
+          'export const appOwned = true;\n',
+        );
+      }),
+    );
+  });
 });
 
 async function createProjectRoot(): Promise<string> {

@@ -6,7 +6,7 @@
 
 Generated APIs persist in `AppManifest.generatedApis` as `GeneratedApiDefinition` values from `@ankhorage/contracts`. Resources preserve collection/table identity, schema, primary key, typed fields, required/unique/default flags, selected CRUD operations, and starter seed records.
 
-Studio never persists a second generated-backend model and does not restore `manifest.data.apis` or `/ankh/datasets`.
+Studio persists no second generated-backend model.
 
 ## Normalized operation projection
 

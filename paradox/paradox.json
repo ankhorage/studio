@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.9",
+      "value": "v2.0.11",
       "color": "cb3837"
     },
     {
@@ -281,12 +281,6 @@
         "ThemedWorkspaceTextInput",
         "WorkspaceScreen"
       ]
-    },
-    {
-      "path": "src/authFlowContract.test.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": []
     },
     {
       "path": "src/authSettings.test.ts",
@@ -903,6 +897,23 @@
       "exports": ["serializeProjectDeploySecret"]
     },
     {
+      "path": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/infraSession.ts",
+        "src/host/orchestrator/projectManager.ts",
+        "src/host/orchestrator/studioInfraUp.ts",
+        "src/host/smoke/assertNoBrowserErrors.ts",
+        "src/host/smoke/ChromeNavigationSession.ts",
+        "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "src/host/smoke/createStaticExportServer.ts",
+        "src/host/smoke/reserveTcpPortAsync.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "src/host/smoke/runAcceptanceCommandAsync.ts"
+      ],
+      "exports": []
+    },
+    {
       "path": "src/host/generatedAdminExpoWeb.smoke.test.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1257,12 +1268,6 @@
         "src/studioAdminRouteModel.ts"
       ],
       "exports": ["GeneratedAppFileGenerationOptions", "GeneratedAppFileGenerator", "GeneratedFile"]
-    },
-    {
-      "path": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-      "isEntrypoint": false,
-      "dependencies": ["src/host/layout/layoutGenerator.ts"],
-      "exports": []
     },
     {
       "path": "src/host/layout/templates/auth/adapter.test.ts",
@@ -1724,10 +1729,16 @@
       "exports": []
     },
     {
-      "path": "src/host/orchestrator/generatedRouteCleanup.ts",
+      "path": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/orchestrator/GeneratedRouteFileOwnership.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["syncGeneratedRouteFiles"]
+      "exports": ["GeneratedRouteFileOwnership"]
     },
     {
       "path": "src/host/orchestrator/infraSession.test.ts",
@@ -1789,7 +1800,7 @@
         "src/host/layout/layoutGenerator.ts",
         "src/host/manifestSystem/index.ts",
         "src/host/modules/layout.ts",
-        "src/host/orchestrator/generatedRouteCleanup.ts",
+        "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
         "src/host/orchestrator/projectGenerationState.ts",
         "src/host/orchestrator/projectPaths.ts",
         "src/host/orchestrator/projectStore.ts",
@@ -1802,6 +1813,15 @@
         "src/projectIdentity.ts"
       ],
       "exports": ["ProjectManager"]
+    },
+    {
+      "path": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "src/host/orchestrator/projectManager.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/host/orchestrator/projectManagerDeletion.test.ts",
@@ -1823,12 +1843,7 @@
         "src/host/orchestrator/projectPaths.ts",
         "src/projectWorkspaceContracts.ts"
       ],
-      "exports": [
-        "ObsoleteStudioManifestError",
-        "ProjectManifestNotFoundError",
-        "ProjectStore",
-        "ProjectSummary"
-      ]
+      "exports": ["ProjectManifestNotFoundError", "ProjectStore", "ProjectSummary"]
     },
     {
       "path": "src/host/orchestrator/projectStoreSummary.test.ts",
@@ -1854,6 +1869,7 @@
       "dependencies": [
         "src/host/manifestSystem/index.ts",
         "src/host/orchestrator/generatedAppFiles.ts",
+        "src/host/orchestrator/projectTargets.ts",
         "src/host/orchestrator/templates.ts",
         "src/host/templateRegistry/index.ts",
         "src/host/zoraExtensions/index.ts"
@@ -1994,9 +2010,19 @@
       "exports": ["assertExpo57GeneratedCapabilityNativePrebuildAsync"]
     },
     {
+      "path": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"],
+      "exports": []
+    },
+    {
       "path": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/smoke/runAcceptanceCommandAsync.ts"],
+      "dependencies": [
+        "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "src/utils/readOwnProperty.ts"
+      ],
       "exports": ["assertExpo57GeneratedCapabilityOwnerGraphAsync"]
     },
     {
@@ -2008,7 +2034,10 @@
     {
       "path": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/host/smoke/assertInstalledRegistryPackageAsync.ts"],
+      "dependencies": [
+        "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      ],
       "exports": ["assertExpo57StudioStandaloneContractAsync"]
     },
     {
@@ -2037,6 +2066,18 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["assertNoBrowserErrors"]
+    },
+    {
+      "path": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/assertReactNativeOwnerGraphAsync.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["assertReactNativeOwnerGraphAsync"]
     },
     {
       "path": "src/host/smoke/auth5NativeOAuthSmokeConfig.ts",
@@ -2141,7 +2182,7 @@
     {
       "path": "src/host/smoke/generateExpoRouterTypesAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/host/smoke/resolveAppOwnedExpoCliAsync.ts"],
       "exports": ["generateExpoRouterTypesAsync"]
     },
     {
@@ -2232,6 +2273,7 @@
       "path": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "src/host/smoke/generateExpoRouterTypesAsync.ts",
         "src/host/smoke/nativeCapabilityEvidence/constants.ts",
         "src/host/smoke/nativeCapabilityEvidence/createGenerationDriverSource.ts",
@@ -2240,6 +2282,7 @@
         "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceRouteSource.ts",
         "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceScenariosSource.ts",
         "src/host/smoke/nativeCapabilityEvidence/createNativeEvidenceScreenSource.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
       "exports": ["prepareNativeCapabilityEvidenceAsync"]
@@ -2286,6 +2329,18 @@
       "exports": ["reserveTcpPortAsync"]
     },
     {
+      "path": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/resolveAppOwnedExpoCliAsync.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["resolveAppOwnedExpoCliAsync"]
+    },
+    {
       "path": "src/host/smoke/runAcceptanceCommandAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
@@ -2308,6 +2363,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
       "exports": ["runExpo57GeneratedAppAcceptanceAsync"]
@@ -2326,6 +2382,7 @@
         "src/host/smoke/createStaticExportServer.ts",
         "src/host/smoke/generateExpoRouterTypesAsync.ts",
         "src/host/smoke/reserveTcpPortAsync.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
       "exports": ["runExpo57GeneratedCapabilityAcceptanceAsync"]
@@ -2342,6 +2399,7 @@
         "src/host/smoke/createStaticExportServer.ts",
         "src/host/smoke/generateExpoRouterTypesAsync.ts",
         "src/host/smoke/reserveTcpPortAsync.ts",
+        "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "src/host/smoke/runAcceptanceCommandAsync.ts"
       ],
       "exports": ["runExpo57GeneratedNavigationAcceptanceAsync"]
@@ -10635,15 +10693,6 @@
       }
     },
     {
-      "name": "collectFiles",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/authFlowContract.test.ts",
-        "line": 8,
-        "column": 1
-      }
-    },
-    {
       "name": "createManifest",
       "description": null,
       "sourceLocation": {
@@ -12507,6 +12556,96 @@
       }
     },
     {
+      "name": "assertNode24",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 111,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkspaceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 117,
+        "column": 1
+      }
+    },
+    {
+      "name": "installFromCleanLockfileAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 135,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertGeneratedBuildUsesAppOwnedExpoCliAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 166,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertLockfileUnchangedAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 177,
+        "column": 1
+      }
+    },
+    {
+      "name": "hash",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 184,
+        "column": 1
+      }
+    },
+    {
+      "name": "reserveInfraPortsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeInfraEnvironmentAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 198,
+        "column": 1
+      }
+    },
+    {
+      "name": "runLocalArtifactBrowserAcceptanceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "runProductionBrowserAcceptanceAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "line": 240,
+        "column": 1
+      }
+    },
+    {
       "name": "createAdminSmokeManifest",
       "description": null,
       "sourceLocation": {
@@ -13006,7 +13145,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 117,
+        "line": 118,
         "column": 1
       }
     },
@@ -13015,7 +13154,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 157,
+        "line": 158,
         "column": 1
       }
     },
@@ -13024,7 +13163,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 191,
+        "line": 192,
         "column": 1
       }
     },
@@ -13033,7 +13172,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 210,
+        "line": 211,
         "column": 1
       }
     },
@@ -13042,7 +13181,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 290,
+        "line": 291,
         "column": 1
       }
     },
@@ -13051,7 +13190,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedAuthAdapterRuntime.smoke.test.ts",
-        "line": 313,
+        "line": 314,
         "column": 1
       }
     },
@@ -13186,7 +13325,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 140,
+        "line": 139,
         "column": 1
       }
     },
@@ -13195,7 +13334,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 155,
+        "line": 154,
         "column": 1
       }
     },
@@ -13204,7 +13343,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 178,
+        "line": 177,
         "column": 1
       }
     },
@@ -13213,7 +13352,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 192,
+        "line": 191,
         "column": 1
       }
     },
@@ -13222,7 +13361,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 204,
+        "line": 203,
         "column": 1
       }
     },
@@ -13231,7 +13370,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/generatedNutritionApi.e2e.test.ts",
-        "line": 218,
+        "line": 217,
         "column": 1
       }
     },
@@ -14239,7 +14378,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/authRootBootstrap.test.ts",
-        "line": 57,
+        "line": 58,
         "column": 1
       }
     },
@@ -14392,7 +14531,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
-        "line": 38,
+        "line": 39,
         "column": 1
       }
     },
@@ -14401,7 +14540,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
-        "line": 79,
+        "line": 80,
         "column": 1
       }
     },
@@ -14410,7 +14549,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.test.ts",
-        "line": 107,
+        "line": 108,
         "column": 1
       }
     },
@@ -14419,7 +14558,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 57,
+        "line": 58,
         "column": 1
       }
     },
@@ -14428,7 +14567,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 84,
+        "line": 85,
         "column": 1
       }
     },
@@ -14437,7 +14576,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 115,
+        "line": 116,
         "column": 1
       }
     },
@@ -14446,7 +14585,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 138,
+        "line": 145,
         "column": 11
       }
     },
@@ -14455,7 +14594,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 150,
+        "line": 157,
         "column": 11
       }
     },
@@ -14464,7 +14603,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 543,
+        "line": 556,
         "column": 1
       }
     },
@@ -14473,7 +14612,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 557,
+        "line": 570,
         "column": 1
       }
     },
@@ -14482,7 +14621,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 564,
+        "line": 577,
         "column": 1
       }
     },
@@ -14491,7 +14630,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 582,
+        "line": 595,
         "column": 1
       }
     },
@@ -14500,7 +14639,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 596,
+        "line": 609,
         "column": 1
       }
     },
@@ -14509,7 +14648,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 600,
+        "line": 613,
         "column": 1
       }
     },
@@ -14518,7 +14657,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 644,
+        "line": 657,
         "column": 1
       }
     },
@@ -14527,7 +14666,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 652,
+        "line": 665,
         "column": 1
       }
     },
@@ -14536,34 +14675,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/layout/layoutGenerator.ts",
-        "line": 657,
-        "column": 1
-      }
-    },
-    {
-      "name": "createManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "line": 6,
-        "column": 1
-      }
-    },
-    {
-      "name": "createAuthManifest",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "line": 34,
-        "column": 1
-      }
-    },
-    {
-      "name": "generateRootLayout",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "line": 61,
+        "line": 670,
         "column": 1
       }
     },
@@ -15553,7 +15665,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.test.ts",
-        "line": 110,
+        "line": 136,
         "column": 1
       }
     },
@@ -15571,7 +15683,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 55,
+        "line": 49,
         "column": 1
       }
     },
@@ -15580,7 +15692,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 124,
+        "line": 118,
         "column": 1
       }
     },
@@ -15589,7 +15701,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 132,
+        "line": 126,
         "column": 1
       }
     },
@@ -15598,7 +15710,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 136,
+        "line": 130,
         "column": 1
       }
     },
@@ -15607,7 +15719,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 155,
+        "line": 149,
         "column": 1
       }
     },
@@ -15616,7 +15728,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedAppFiles.ts",
-        "line": 178,
+        "line": 172,
         "column": 1
       }
     },
@@ -15625,7 +15737,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 102,
+        "line": 148,
         "column": 1
       }
     },
@@ -15634,7 +15746,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 112,
+        "line": 158,
         "column": 1
       }
     },
@@ -15643,7 +15755,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 120,
+        "line": 166,
         "column": 1
       }
     },
@@ -15652,70 +15764,97 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/generatedDependencyContract.test.ts",
-        "line": 141,
+        "line": 187,
         "column": 1
       }
     },
     {
-      "name": "syncGeneratedRouteFiles",
+      "name": "createProjectPath",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 13,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "line": 97,
         "column": 1
       }
     },
     {
-      "name": "removeOrphanedGeneratedScreenFiles",
+      "name": "readLedger",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 39,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "line": 103,
         "column": 1
       }
     },
     {
-      "name": "listFilesRecursively",
+      "name": "writeLedger",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 60,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "line": 109,
         "column": 1
       }
     },
     {
-      "name": "looksLikeGeneratedScreenFile",
+      "name": "assertRouteLedgerMissing",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 76,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 36,
         "column": 1
       }
     },
     {
-      "name": "readRouteLedger",
+      "name": "createRouteLedger",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 86,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 48,
         "column": 1
       }
     },
     {
-      "name": "writeRouteLedger",
+      "name": "isMissingPathError",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 106,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 58,
         "column": 1
       }
     },
     {
-      "name": "removeFiles",
+      "name": "isRecord",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 112,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRouteLedger",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeRelativePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRequiredRouteLedger",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 81,
         "column": 1
       }
     },
@@ -15723,26 +15862,17 @@
       "name": "resolveProjectFile",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 123,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 113,
         "column": 1
       }
     },
     {
-      "name": "normalizeRel",
+      "name": "writeRouteLedger",
       "description": null,
       "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 137,
-        "column": 1
-      }
-    },
-    {
-      "name": "exists",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "line": 141,
+        "filePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "line": 126,
         "column": 1
       }
     },
@@ -15882,11 +16012,20 @@
       }
     },
     {
+      "name": "requireProjectDeployTargets",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManager.ts",
+        "line": 327,
+        "column": 1
+      }
+    },
+    {
       "name": "exists",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 303,
+        "line": 337,
         "column": 1
       }
     },
@@ -15895,7 +16034,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 312,
+        "line": 346,
         "column": 1
       }
     },
@@ -15904,7 +16043,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectManager.ts",
-        "line": 320,
+        "line": 354,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProjectHarness",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "line": 76,
         "column": 1
       }
     },
@@ -15976,7 +16133,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 137,
+        "line": 114,
         "column": 1
       }
     },
@@ -15985,7 +16142,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 148,
+        "line": 125,
         "column": 1
       }
     },
@@ -15994,7 +16151,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 156,
+        "line": 133,
         "column": 1
       }
     },
@@ -16003,7 +16160,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 164,
+        "line": 141,
         "column": 1
       }
     },
@@ -16012,7 +16169,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 173,
+        "line": 150,
         "column": 1
       }
     },
@@ -16021,7 +16178,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStore.ts",
-        "line": 182,
+        "line": 159,
         "column": 1
       }
     },
@@ -16030,7 +16187,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "line": 110,
+        "line": 88,
         "column": 1
       }
     },
@@ -16039,16 +16196,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "line": 118,
-        "column": 1
-      }
-    },
-    {
-      "name": "pathExists",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "line": 143,
+        "line": 96,
         "column": 1
       }
     },
@@ -16057,7 +16205,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "line": 152,
+        "line": 121,
         "column": 1
       }
     },
@@ -16093,7 +16241,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 342,
+        "line": 335,
         "column": 1
       }
     },
@@ -16102,7 +16250,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 351,
+        "line": 344,
         "column": 1
       }
     },
@@ -16111,7 +16259,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 364,
+        "line": 357,
         "column": 1
       }
     },
@@ -16120,7 +16268,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 426,
+        "line": 417,
         "column": 1
       }
     },
@@ -16129,7 +16277,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/scaffolder.ts",
-        "line": 452,
+        "line": 443,
         "column": 1
       }
     },
@@ -16174,7 +16322,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 30,
+        "line": 29,
         "column": 1
       }
     },
@@ -16183,7 +16331,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 38,
+        "line": 37,
         "column": 1
       }
     },
@@ -16192,7 +16340,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 80,
+        "line": 79,
         "column": 1
       }
     },
@@ -16201,7 +16349,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 90,
+        "line": 89,
         "column": 1
       }
     },
@@ -16210,7 +16358,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 94,
+        "line": 93,
         "column": 1
       }
     },
@@ -16219,7 +16367,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 110,
+        "line": 109,
         "column": 1
       }
     },
@@ -16228,7 +16376,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 132,
+        "line": 131,
         "column": 1
       }
     },
@@ -16237,7 +16385,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 144,
+        "line": 143,
         "column": 1
       }
     },
@@ -16246,7 +16394,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 172,
+        "line": 171,
         "column": 1
       }
     },
@@ -16255,7 +16403,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 218,
+        "line": 217,
         "column": 1
       }
     },
@@ -16264,7 +16412,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 857,
+        "line": 856,
         "column": 1
       }
     },
@@ -16273,7 +16421,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 963,
+        "line": 962,
         "column": 1
       }
     },
@@ -16282,7 +16430,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 980,
+        "line": 979,
         "column": 1
       }
     },
@@ -16291,7 +16439,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 995,
+        "line": 994,
         "column": 1
       }
     },
@@ -16300,7 +16448,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1007,
+        "line": 1006,
         "column": 1
       }
     },
@@ -16309,7 +16457,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1017,
+        "line": 1016,
         "column": 1
       }
     },
@@ -16318,7 +16466,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/orchestrator/templates.ts",
-        "line": 1050,
+        "line": 1049,
         "column": 1
       }
     },
@@ -16575,7 +16723,7 @@
       }
     },
     {
-      "name": "assertNoObsoleteSourceAsync",
+      "name": "assertGeneratedSourceContractAsync",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts",
@@ -16588,7 +16736,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts",
-        "line": 151,
+        "line": 148,
         "column": 1
       }
     },
@@ -16597,7 +16745,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts",
-        "line": 162,
+        "line": 159,
         "column": 1
       }
     },
@@ -16615,7 +16763,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityNativePrebuildAsync.ts",
-        "line": 43,
+        "line": 65,
+        "column": 1
+      }
+    },
+    {
+      "name": "createCapabilityGraphAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "line": 48,
         "column": 1
       }
     },
@@ -16624,7 +16781,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
-        "line": 6,
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageJsonAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
+        "line": 50,
+        "column": 1
+      }
+    },
+    {
+      "name": "requireDependencyRange",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
+        "line": 54,
         "column": 1
       }
     },
@@ -16642,7 +16817,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts",
-        "line": 59,
+        "line": 67,
         "column": 1
       }
     },
@@ -16651,7 +16826,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 31,
+        "line": 39,
         "column": 1
       }
     },
@@ -16660,7 +16835,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 68,
+        "line": 76,
         "column": 1
       }
     },
@@ -16669,7 +16844,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 87,
+        "line": 95,
         "column": 1
       }
     },
@@ -16678,7 +16853,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 120,
+        "line": 134,
         "column": 1
       }
     },
@@ -16687,7 +16862,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 136,
+        "line": 150,
         "column": 1
       }
     },
@@ -16696,7 +16871,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 141,
+        "line": 155,
         "column": 1
       }
     },
@@ -16764,11 +16939,74 @@
       }
     },
     {
+      "name": "createGraphAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "writePackageAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "writePackageJsonAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertReactNativeOwnerGraphAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "listNodeModulesRootsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDirectoryAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "line": 134,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathExistsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "line": 138,
+        "column": 1
+      }
+    },
+    {
       "name": "createRoleAndNameExpression",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 325,
+        "line": 349,
         "column": 1
       }
     },
@@ -16777,7 +17015,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 350,
+        "line": 374,
         "column": 1
       }
     },
@@ -16786,7 +17024,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 359,
+        "line": 383,
         "column": 1
       }
     },
@@ -16795,7 +17033,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 363,
+        "line": 387,
         "column": 1
       }
     },
@@ -16804,7 +17042,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 382,
+        "line": 406,
         "column": 1
       }
     },
@@ -16813,7 +17051,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 402,
+        "line": 426,
         "column": 1
       }
     },
@@ -16822,7 +17060,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/ChromeNavigationSession.ts",
-        "line": 411,
+        "line": 435,
         "column": 1
       }
     },
@@ -16930,7 +17168,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createStaticExportServer.test.ts",
-        "line": 30,
+        "line": 45,
         "column": 1
       }
     },
@@ -16948,7 +17186,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/createStaticExportServer.ts",
-        "line": 23,
+        "line": 26,
         "column": 1
       }
     },
@@ -16957,7 +17195,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 67,
+        "line": 83,
         "column": 1
       }
     },
@@ -16966,7 +17204,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "line": 73,
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeInstalledGraphAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "line": 108,
         "column": 1
       }
     },
@@ -16975,7 +17222,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 6,
+        "line": 8,
         "column": 1
       }
     },
@@ -16984,7 +17231,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 47,
+        "line": 50,
         "column": 1
       }
     },
@@ -16993,7 +17240,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 55,
+        "line": 58,
         "column": 1
       }
     },
@@ -17002,7 +17249,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 65,
+        "line": 68,
         "column": 1
       }
     },
@@ -17011,7 +17258,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 80,
+        "line": 83,
         "column": 1
       }
     },
@@ -17020,7 +17267,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 90,
+        "line": 93,
         "column": 1
       }
     },
@@ -17029,7 +17276,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
-        "line": 104,
+        "line": 107,
         "column": 11
       }
     },
@@ -17043,11 +17290,29 @@
       }
     },
     {
+      "name": "formatFailedNetworkResponse",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 30,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatNetworkFailure",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
       "name": "formatConsoleApiIssue",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 22,
+        "line": 44,
         "column": 1
       }
     },
@@ -17056,7 +17321,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 34,
+        "line": 56,
         "column": 1
       }
     },
@@ -17065,7 +17330,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 49,
+        "line": 71,
         "column": 1
       }
     },
@@ -17074,7 +17339,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 63,
+        "line": 85,
         "column": 1
       }
     },
@@ -17083,7 +17348,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 73,
+        "line": 95,
         "column": 1
       }
     },
@@ -17092,7 +17357,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 89,
+        "line": 111,
         "column": 1
       }
     },
@@ -17101,7 +17366,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 104,
+        "line": 126,
         "column": 1
       }
     },
@@ -17110,7 +17375,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/getChromeNavigationIssue.ts",
-        "line": 108,
+        "line": 130,
         "column": 1
       }
     },
@@ -17299,7 +17564,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 31,
+        "line": 36,
         "column": 1
       }
     },
@@ -17308,7 +17573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 97,
+        "line": 134,
         "column": 1
       }
     },
@@ -17317,7 +17582,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 120,
+        "line": 157,
         "column": 1
       }
     },
@@ -17326,7 +17591,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 132,
+        "line": 169,
         "column": 1
       }
     },
@@ -17335,7 +17600,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 160,
+        "line": 197,
         "column": 1
       }
     },
@@ -17344,7 +17609,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 171,
+        "line": 208,
         "column": 1
       }
     },
@@ -17353,7 +17618,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 197,
+        "line": 234,
+        "column": 1
+      }
+    },
+    {
+      "name": "configureNativeEvidenceToolingAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
+        "line": 249,
         "column": 1
       }
     },
@@ -17362,7 +17636,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 212,
+        "line": 270,
         "column": 1
       }
     },
@@ -17371,7 +17645,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 227,
+        "line": 285,
         "column": 1
       }
     },
@@ -17380,7 +17654,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 239,
+        "line": 297,
         "column": 1
       }
     },
@@ -17389,7 +17663,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 253,
+        "line": 311,
         "column": 1
       }
     },
@@ -17398,7 +17672,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 259,
+        "line": 317,
         "column": 1
       }
     },
@@ -17407,7 +17681,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 268,
+        "line": 330,
         "column": 1
       }
     },
@@ -17416,7 +17690,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 272,
+        "line": 334,
         "column": 1
       }
     },
@@ -17425,7 +17699,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 278,
+        "line": 340,
         "column": 1
       }
     },
@@ -17434,7 +17708,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 293,
+        "line": 355,
         "column": 1
       }
     },
@@ -17443,7 +17717,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 336,
+        "line": 398,
         "column": 1
       }
     },
@@ -17452,7 +17726,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 351,
+        "line": 413,
         "column": 1
       }
     },
@@ -17461,7 +17735,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 357,
+        "line": 419,
         "column": 1
       }
     },
@@ -17470,7 +17744,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 383,
+        "line": 445,
         "column": 1
       }
     },
@@ -17479,7 +17753,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 437,
+        "line": 501,
         "column": 1
       }
     },
@@ -17488,7 +17762,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 453,
+        "line": 517,
         "column": 1
       }
     },
@@ -17497,7 +17771,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 470,
+        "line": 534,
         "column": 1
       }
     },
@@ -17506,7 +17780,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 486,
+        "line": 551,
         "column": 1
       }
     },
@@ -17515,7 +17789,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 541,
+        "line": 606,
         "column": 1
       }
     },
@@ -17524,7 +17798,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 550,
+        "line": 615,
         "column": 1
       }
     },
@@ -17533,7 +17807,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 570,
+        "line": 635,
         "column": 1
       }
     },
@@ -17542,7 +17816,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
-        "line": 620,
+        "line": 685,
         "column": 1
       }
     },
@@ -17619,6 +17893,24 @@
       }
     },
     {
+      "name": "createProjectRootAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "line": 37,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveAppOwnedExpoCliAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
       "name": "runAcceptanceCommandAsync",
       "description": null,
       "sourceLocation": {
@@ -17632,7 +17924,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 11,
+        "line": 14,
         "column": 1
       }
     },
@@ -17641,7 +17933,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 23,
+        "line": 31,
         "column": 1
       }
     },
@@ -17650,21 +17942,12 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 47,
+        "line": 56,
         "column": 1
       }
     },
     {
-      "name": "createWorkspaceLockfileAsync",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 101,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveAcceptanceScreen",
+      "name": "createProjectLockfileAsync",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
@@ -17673,11 +17956,29 @@
       }
     },
     {
+      "name": "hash",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 121,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveAcceptanceScreen",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "line": 125,
+        "column": 1
+      }
+    },
+    {
       "name": "runAcceptanceChecksAsync",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
-        "line": 118,
+        "line": 133,
         "column": 1
       }
     },
@@ -17686,7 +17987,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 21,
+        "line": 22,
         "column": 1
       }
     },
@@ -17695,16 +17996,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 64,
+        "line": 67,
         "column": 1
       }
     },
     {
-      "name": "createWorkspaceLockfileAsync",
+      "name": "createProjectLockfileAsync",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 87,
+        "line": 85,
         "column": 1
       }
     },
@@ -17713,16 +18014,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 97,
-        "column": 1
-      }
-    },
-    {
-      "name": "assertDevtoolsSyncIdempotentAsync",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 182,
+        "line": 95,
         "column": 1
       }
     },
@@ -17731,7 +18023,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 204,
+        "line": 169,
         "column": 1
       }
     },
@@ -17740,7 +18032,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 257,
+        "line": 222,
         "column": 1
       }
     },
@@ -17749,7 +18041,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 343,
+        "line": 308,
         "column": 1
       }
     },
@@ -17758,7 +18050,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 361,
+        "line": 326,
         "column": 1
       }
     },
@@ -17767,7 +18059,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 373,
+        "line": 338,
         "column": 1
       }
     },
@@ -17776,7 +18068,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 389,
+        "line": 354,
         "column": 1
       }
     },
@@ -17785,7 +18077,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
-        "line": 402,
+        "line": 367,
         "column": 1
       }
     },
@@ -17794,7 +18086,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 21,
+        "line": 23,
         "column": 1
       }
     },
@@ -17803,7 +18095,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 85,
+        "line": 94,
         "column": 1
       }
     },
@@ -17812,7 +18104,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 154,
+        "line": 163,
         "column": 1
       }
     },
@@ -17821,7 +18113,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 175,
+        "line": 181,
         "column": 1
       }
     },
@@ -17830,7 +18122,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 198,
+        "line": 204,
         "column": 1
       }
     },
@@ -17839,7 +18131,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 209,
+        "line": 216,
         "column": 1
       }
     },
@@ -17848,16 +18140,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 235,
+        "line": 242,
         "column": 1
       }
     },
     {
-      "name": "createWorkspaceLockfileAsync",
+      "name": "installGeneratedProjectAsync",
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 253,
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "hash",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "line": 278,
         "column": 1
       }
     },
@@ -17866,7 +18167,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 262,
+        "line": 282,
         "column": 1
       }
     },
@@ -17875,7 +18176,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 273,
+        "line": 293,
         "column": 1
       }
     },
@@ -17884,7 +18185,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 283,
+        "line": 303,
         "column": 1
       }
     },
@@ -17893,7 +18194,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 296,
+        "line": 317,
         "column": 1
       }
     },
@@ -17902,7 +18203,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 339,
+        "line": 360,
         "column": 1
       }
     },
@@ -17911,7 +18212,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 376,
+        "line": 395,
         "column": 1
       }
     },
@@ -17920,7 +18221,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 409,
+        "line": 428,
         "column": 1
       }
     },
@@ -17929,7 +18230,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 480,
+        "line": 491,
         "column": 1
       }
     },
@@ -17938,7 +18239,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 496,
+        "line": 511,
         "column": 1
       }
     },
@@ -17947,7 +18248,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 511,
+        "line": 526,
         "column": 1
       }
     },
@@ -17956,7 +18257,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 524,
+        "line": 539,
         "column": 1
       }
     },
@@ -17965,7 +18266,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 532,
+        "line": 547,
         "column": 1
       }
     },
@@ -20935,7 +21236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/projectOAuthSetup.ts",
-        "line": 26,
+        "line": 30,
         "column": 1
       }
     },
@@ -26927,6 +27228,56 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/infraSession.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/orchestrator/studioInfraUp.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/ChromeNavigationSession.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/createStaticExportServer.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/reserveTcpPortAsync.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromPath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
         "fromPath": "src/host/generatedAdminExpoWeb.smoke.test.ts",
         "toPath": "src/moduleAdminContracts.ts",
         "sourcePath": "src/host/generatedAdminExpoWeb.smoke.test.ts"
@@ -28027,11 +28378,6 @@
         "sourcePath": "src/host/layout/layoutGenerator.ts"
       },
       {
-        "fromPath": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toPath": "src/host/layout/layoutGenerator.ts",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
         "fromPath": "src/host/manifestSystem/index.ts",
         "toPath": "src/host/utils/requirementsInference.ts",
         "sourcePath": "src/host/manifestSystem/index.ts"
@@ -28187,6 +28533,11 @@
         "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
       },
       {
+        "fromPath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toPath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
         "fromPath": "src/host/orchestrator/infraSession.test.ts",
         "toPath": "src/host/orchestrator/infraSession.ts",
         "sourcePath": "src/host/orchestrator/infraSession.test.ts"
@@ -28278,7 +28629,7 @@
       },
       {
         "fromPath": "src/host/orchestrator/projectManager.ts",
-        "toPath": "src/host/orchestrator/generatedRouteCleanup.ts",
+        "toPath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -28315,6 +28666,16 @@
         "fromPath": "src/host/orchestrator/projectManager.ts",
         "toPath": "src/host/orchestrator/workspaceRuntime.ts",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toPath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
       },
       {
         "fromPath": "src/host/orchestrator/projectManagerDeletion.test.ts",
@@ -28369,6 +28730,11 @@
       {
         "fromPath": "src/host/orchestrator/scaffolder.ts",
         "toPath": "src/host/orchestrator/generatedAppFiles.ts",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
+      },
+      {
+        "fromPath": "src/host/orchestrator/scaffolder.ts",
+        "toPath": "src/host/orchestrator/projectTargets.ts",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -28472,13 +28838,33 @@
         "sourcePath": "src/host/secrets/trustedOAuthInfraEnvironment.ts"
       },
       {
+        "fromPath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toPath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
         "fromPath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
-        "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "toPath": "src/utils/readOwnProperty.ts",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
+        "toPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts",
+        "toPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
       },
       {
         "fromPath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
         "toPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "toPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
         "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
@@ -28500,6 +28886,11 @@
         "fromPath": "src/host/smoke/assertNoBrowserErrors.test.ts",
         "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
         "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
       },
       {
         "fromPath": "src/host/smoke/ChromeNavigationSession.ts",
@@ -28582,6 +28973,11 @@
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
+        "fromPath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "sourcePath": "src/host/smoke/generateExpoRouterTypesAsync.ts"
+      },
+      {
         "fromPath": "src/host/smoke/getChromeNavigationIssue.test.ts",
         "toPath": "src/host/smoke/getChromeNavigationIssue.ts",
         "sourcePath": "src/host/smoke/getChromeNavigationIssue.test.ts"
@@ -28637,6 +29033,11 @@
         "sourcePath": "src/host/smoke/prepareAuth5NativeOAuthSmokeInfra.ts"
       },
       {
+        "fromPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
         "fromPath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
         "toPath": "src/host/smoke/createAuth5NativeOAuthSmokeFixture.ts",
         "sourcePath": "src/host/smoke/runAuth5NativeOAuthSmoke.ts"
@@ -28649,6 +29050,11 @@
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -28708,6 +29114,11 @@
       },
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts",
         "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
@@ -28749,6 +29160,11 @@
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
         "toPath": "src/host/smoke/reserveTcpPortAsync.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -29268,7 +29684,17 @@
       },
       {
         "fromPath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
+        "toPath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
         "toPath": "src/host/smoke/generateExpoRouterTypesAsync.ts",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts",
+        "toPath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
       },
       {
@@ -30656,66 +31082,6 @@
         "toSymbol": "expect",
         "callExpression": "expect",
         "sourcePath": "src/ankhAdmin.public.test.ts"
-      },
-      {
-        "fromSymbol": "collectFiles",
-        "toSymbol": "readdir",
-        "callExpression": "readdir",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "collectFiles",
-        "toSymbol": "join",
-        "callExpression": "join",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "collectFiles",
-        "toSymbol": "collectFiles",
-        "callExpression": "collectFiles",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "describe",
-        "callExpression": "describe",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "it",
-        "callExpression": "it",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "join",
-        "callExpression": "join",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "collectFiles",
-        "callExpression": "collectFiles",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "basename",
-        "callExpression": "basename",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/authFlowContract.test.ts"
-      },
-      {
-        "fromSymbol": "src/authFlowContract.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/authFlowContract.test.ts"
       },
       {
         "fromSymbol": "src/authSettings.test.ts",
@@ -38386,6 +38752,324 @@
         "sourcePath": "src/host/createStudioHost.ts"
       },
       {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "productionInfraTest",
+        "callExpression": "productionInfraTest",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "assertNode24",
+        "callExpression": "assertNode24",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "createWorkspaceAsync",
+        "callExpression": "createWorkspaceAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "createProject",
+        "callExpression": "manager.createProject",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "getProjectManifest",
+        "callExpression": "manager.getProjectManifest",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "saveProjectManifest",
+        "callExpression": "manager.saveProjectManifest",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "createExpo57NavigationFixtureManifest",
+        "callExpression": "createExpo57NavigationFixtureManifest",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "installFromCleanLockfileAsync",
+        "callExpression": "installFromCleanLockfileAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "assertGeneratedBuildUsesAppOwnedExpoCliAsync",
+        "callExpression": "assertGeneratedBuildUsesAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "reserveInfraPortsAsync",
+        "callExpression": "reserveInfraPortsAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "writeInfraEnvironmentAsync",
+        "callExpression": "writeInfraEnvironmentAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "upProjectInfrastructure",
+        "callExpression": "upProjectInfrastructure",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "runLocalArtifactBrowserAcceptanceAsync",
+        "callExpression": "runLocalArtifactBrowserAcceptanceAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "ensureProjectWebLaunchSession",
+        "callExpression": "ensureProjectWebLaunchSession",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "runProductionBrowserAcceptanceAsync",
+        "callExpression": "runProductionBrowserAcceptanceAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "assertLockfileUnchangedAsync",
+        "callExpression": "assertLockfileUnchangedAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "stopAllProjectInfraPortForwards",
+        "callExpression": "stopAllProjectInfraPortForwards",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "runProjectInfrastructureLifecycle",
+        "callExpression": "runProjectInfrastructureLifecycle",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/expo57GeneratedProductionInfra.e2e.test.ts",
+        "toSymbol": "execFile",
+        "callExpression": "execFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "createWorkspaceAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "installFromCleanLockfileAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "installFromCleanLockfileAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "installFromCleanLockfileAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "installFromCleanLockfileAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "installFromCleanLockfileAsync",
+        "toSymbol": "assertLockfileUnchangedAsync",
+        "callExpression": "assertLockfileUnchangedAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedBuildUsesAppOwnedExpoCliAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertGeneratedBuildUsesAppOwnedExpoCliAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertLockfileUnchangedAsync",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertLockfileUnchangedAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "assertLockfileUnchangedAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "hash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "reserveInfraPortsAsync",
+        "toSymbol": "reserveTcpPortAsync",
+        "callExpression": "reserveTcpPortAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "writeInfraEnvironmentAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runLocalArtifactBrowserAcceptanceAsync",
+        "toSymbol": "createStaticExportServer",
+        "callExpression": "createStaticExportServer",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runLocalArtifactBrowserAcceptanceAsync",
+        "toSymbol": "runProductionBrowserAcceptanceAsync",
+        "callExpression": "runProductionBrowserAcceptanceAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "createAsync",
+        "callExpression": "ChromeNavigationSession.createAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "reserveTcpPortAsync",
+        "callExpression": "reserveTcpPortAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "setViewportAsync",
+        "callExpression": "browser.setViewportAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "navigateAsync",
+        "callExpression": "browser.navigateAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "waitForBodyTextAsync",
+        "callExpression": "browser.waitForBodyTextAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "waitForHydratedTestIdAsync",
+        "callExpression": "browser.waitForHydratedTestIdAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "assertNoHorizontalOverflowAsync",
+        "callExpression": "browser.assertNoHorizontalOverflowAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "clickByTestIdAsync",
+        "callExpression": "browser.clickByTestIdAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "waitForLocationAsync",
+        "callExpression": "browser.waitForLocationAsync",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "assertNoBrowserErrors",
+        "callExpression": "assertNoBrowserErrors",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
+        "fromSymbol": "runProductionBrowserAcceptanceAsync",
+        "toSymbol": "close",
+        "callExpression": "browser.close",
+        "sourcePath": "src/host/expo57GeneratedProductionInfra.e2e.test.ts"
+      },
+      {
         "fromSymbol": "createAdminSmokeManifest",
         "toSymbol": "getProjectTemplate",
         "callExpression": "getProjectTemplate",
@@ -45545,12 +46229,6 @@
       },
       {
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
-        "toSymbol": "generateFiles",
-        "callExpression": "new GeneratedAppFileGenerator().generateFiles",
-        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "createManifest",
         "callExpression": "createManifest",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
@@ -45559,6 +46237,12 @@
         "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/layout/layoutGenerator.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/layout/layoutGenerator.test.ts",
+        "toSymbol": "generateFiles",
+        "callExpression": "new GeneratedAppFileGenerator().generateFiles",
         "sourcePath": "src/host/layout/layoutGenerator.test.ts"
       },
       {
@@ -45944,48 +46628,6 @@
         "toSymbol": "prepareNavigatorForGeneratedRoutes",
         "callExpression": "prepareNavigatorForGeneratedRoutes",
         "sourcePath": "src/host/layout/layoutGenerator.ts"
-      },
-      {
-        "fromSymbol": "createAuthManifest",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "generateRootLayout",
-        "toSymbol": "generateFiles",
-        "callExpression": "new GeneratedAppFileGenerator()\n      .generateFiles",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toSymbol": "test",
-        "callExpression": "test",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toSymbol": "expect",
-        "callExpression": "expect",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toSymbol": "generateRootLayout",
-        "callExpression": "generateRootLayout",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toSymbol": "createManifest",
-        "callExpression": "createManifest",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/layout/layoutGeneratorThemeImports.test.ts",
-        "toSymbol": "createAuthManifest",
-        "callExpression": "createAuthManifest",
-        "sourcePath": "src/host/layout/layoutGeneratorThemeImports.test.ts"
       },
       {
         "fromSymbol": "src/host/manifestSystem/index.ts",
@@ -47014,88 +47656,160 @@
         "sourcePath": "src/host/orchestrator/generatedDependencyContract.test.ts"
       },
       {
-        "fromSymbol": "src/host/orchestrator/generatedRouteCleanup.ts",
-        "toSymbol": "normalizeRel",
-        "callExpression": "normalizeRel",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
       },
       {
-        "fromSymbol": "syncGeneratedRouteFiles",
-        "toSymbol": "readRouteLedger",
-        "callExpression": "readRouteLedger",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
       },
       {
-        "fromSymbol": "syncGeneratedRouteFiles",
-        "toSymbol": "removeFiles",
-        "callExpression": "removeFiles",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
       },
       {
-        "fromSymbol": "syncGeneratedRouteFiles",
-        "toSymbol": "removeOrphanedGeneratedScreenFiles",
-        "callExpression": "removeOrphanedGeneratedScreenFiles",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "createProjectPath",
+        "callExpression": "createProjectPath",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
       },
       {
-        "fromSymbol": "syncGeneratedRouteFiles",
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "initialize",
+        "callExpression": "ownership.initialize",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "readLedger",
+        "callExpression": "readLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "assertSyncable",
+        "callExpression": "ownership.assertSyncable",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "writeLedger",
+        "callExpression": "writeLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts",
+        "toSymbol": "reconcile",
+        "callExpression": "ownership.reconcile",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.test.ts"
+      },
+      {
+        "fromSymbol": "assertSyncable",
+        "toSymbol": "readRequiredRouteLedger",
+        "callExpression": "readRequiredRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "initialize",
+        "toSymbol": "assertRouteLedgerMissing",
+        "callExpression": "assertRouteLedgerMissing",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "initialize",
         "toSymbol": "writeRouteLedger",
         "callExpression": "writeRouteLedger",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
       },
       {
-        "fromSymbol": "removeOrphanedGeneratedScreenFiles",
+        "fromSymbol": "initialize",
+        "toSymbol": "createRouteLedger",
+        "callExpression": "createRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "reconcile",
+        "toSymbol": "readRequiredRouteLedger",
+        "callExpression": "readRequiredRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "reconcile",
+        "toSymbol": "createRouteLedger",
+        "callExpression": "createRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "reconcile",
         "toSymbol": "resolveProjectFile",
         "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
       },
       {
-        "fromSymbol": "removeOrphanedGeneratedScreenFiles",
-        "toSymbol": "exists",
-        "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "fromSymbol": "reconcile",
+        "toSymbol": "writeRouteLedger",
+        "callExpression": "writeRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
       },
       {
-        "fromSymbol": "removeOrphanedGeneratedScreenFiles",
-        "toSymbol": "listFilesRecursively",
-        "callExpression": "listFilesRecursively",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
-      },
-      {
-        "fromSymbol": "removeOrphanedGeneratedScreenFiles",
-        "toSymbol": "normalizeRel",
-        "callExpression": "normalizeRel",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
-      },
-      {
-        "fromSymbol": "removeOrphanedGeneratedScreenFiles",
-        "toSymbol": "looksLikeGeneratedScreenFile",
-        "callExpression": "looksLikeGeneratedScreenFile",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
-      },
-      {
-        "fromSymbol": "listFilesRecursively",
-        "toSymbol": "listFilesRecursively",
-        "callExpression": "listFilesRecursively",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
-      },
-      {
-        "fromSymbol": "readRouteLedger",
+        "fromSymbol": "assertRouteLedgerMissing",
         "toSymbol": "resolveProjectFile",
         "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "assertRouteLedgerMissing",
+        "toSymbol": "isMissingPathError",
+        "callExpression": "isMissingPathError",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "createRouteLedger",
+        "toSymbol": "resolveProjectFile",
+        "callExpression": "resolveProjectFile",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "isRouteLedger",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "readRequiredRouteLedger",
+        "toSymbol": "resolveProjectFile",
+        "callExpression": "resolveProjectFile",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "readRequiredRouteLedger",
+        "toSymbol": "isMissingPathError",
+        "callExpression": "isMissingPathError",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
+      },
+      {
+        "fromSymbol": "readRequiredRouteLedger",
+        "toSymbol": "isRouteLedger",
+        "callExpression": "isRouteLedger",
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
       },
       {
         "fromSymbol": "writeRouteLedger",
         "toSymbol": "resolveProjectFile",
         "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
-      },
-      {
-        "fromSymbol": "removeFiles",
-        "toSymbol": "resolveProjectFile",
-        "callExpression": "resolveProjectFile",
-        "sourcePath": "src/host/orchestrator/generatedRouteCleanup.ts"
+        "sourcePath": "src/host/orchestrator/GeneratedRouteFileOwnership.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/infraSession.test.ts",
@@ -48161,18 +48875,30 @@
       },
       {
         "fromSymbol": "saveProjectManifest",
+        "toSymbol": "getProjectPath",
+        "callExpression": "getProjectPath",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "saveProjectManifest",
+        "toSymbol": "assertSyncable",
+        "callExpression": "this.generatedRouteFiles.assertSyncable",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "saveProjectManifest",
+        "toSymbol": "requireProjectDeployTargets",
+        "callExpression": "requireProjectDeployTargets",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "saveProjectManifest",
         "toSymbol": "persistProjectManifest",
         "callExpression": "this.persistProjectManifest",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
         "fromSymbol": "saveProjectManifest",
-        "toSymbol": "getProjectPath",
-        "callExpression": "getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectManager.ts"
-      },
-      {
-        "fromSymbol": "saveProjectManifest",
         "toSymbol": "resolveExpoRuntimePlan",
         "callExpression": "resolveExpoRuntimePlan",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -48215,6 +48941,12 @@
       },
       {
         "fromSymbol": "syncProjectRuntime",
+        "toSymbol": "assertSyncable",
+        "callExpression": "this.generatedRouteFiles.assertSyncable",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectRuntime",
         "toSymbol": "shouldIncludeStudio",
         "callExpression": "this.shouldIncludeStudio",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
@@ -48253,6 +48985,12 @@
         "fromSymbol": "rebuildRootLayout",
         "toSymbol": "getProjectPath",
         "callExpression": "getProjectPath",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "rebuildRootLayout",
+        "toSymbol": "assertSyncable",
+        "callExpression": "this.generatedRouteFiles.assertSyncable",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -48341,8 +49079,14 @@
       },
       {
         "fromSymbol": "writeGeneratedFiles",
-        "toSymbol": "syncGeneratedRouteFiles",
-        "callExpression": "syncGeneratedRouteFiles",
+        "toSymbol": "initialize",
+        "callExpression": "this.generatedRouteFiles.initialize",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "writeGeneratedFiles",
+        "toSymbol": "reconcile",
+        "callExpression": "this.generatedRouteFiles.reconcile",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
       },
       {
@@ -48371,9 +49115,63 @@
       },
       {
         "fromSymbol": "syncProjectScaffold",
+        "toSymbol": "requireProjectDeployTargets",
+        "callExpression": "requireProjectDeployTargets",
+        "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "syncProjectScaffold",
         "toSymbol": "writeProjectStudioInclusion",
         "callExpression": "writeProjectStudioInclusion",
         "sourcePath": "src/host/orchestrator/projectManager.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "createProjectHarness",
+        "callExpression": "createProjectHarness",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "saveProjectManifest",
+        "callExpression": "manager.saveProjectManifest",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/orchestrator/projectManagerCurrentState.test.ts",
+        "toSymbol": "initialize",
+        "callExpression": "new GeneratedRouteFileOwnership().initialize",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectHarness",
+        "toSymbol": "createManifest",
+        "callExpression": "createManifest",
+        "sourcePath": "src/host/orchestrator/projectManagerCurrentState.test.ts"
       },
       {
         "fromSymbol": "src/host/orchestrator/projectManagerDeletion.test.ts",
@@ -48496,12 +49294,6 @@
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
-        "fromSymbol": "getObsoleteStudioManifestPath",
-        "toSymbol": "getProjectPath",
-        "callExpression": "this.getProjectPath",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
         "fromSymbol": "src/host/orchestrator/projectStore.ts",
         "toSymbol": "readProjectSummary",
         "callExpression": "this.readProjectSummary",
@@ -48533,12 +49325,6 @@
       },
       {
         "fromSymbol": "readManifest",
-        "toSymbol": "assertNoObsoleteStudioManifest",
-        "callExpression": "this.assertNoObsoleteStudioManifest",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "readManifest",
         "toSymbol": "parseReadableAppManifest",
         "callExpression": "parseReadableAppManifest",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
@@ -48553,12 +49339,6 @@
         "fromSymbol": "writeManifest",
         "toSymbol": "exists",
         "callExpression": "exists",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "writeManifest",
-        "toSymbol": "assertNoObsoleteStudioManifest",
-        "callExpression": "this.assertNoObsoleteStudioManifest",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
@@ -48619,18 +49399,6 @@
         "fromSymbol": "readProjectSummary",
         "toSymbol": "resolveActiveTheme",
         "callExpression": "resolveActiveTheme",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "assertNoObsoleteStudioManifest",
-        "toSymbol": "getObsoleteStudioManifestPath",
-        "callExpression": "this.getObsoleteStudioManifestPath",
-        "sourcePath": "src/host/orchestrator/projectStore.ts"
-      },
-      {
-        "fromSymbol": "assertNoObsoleteStudioManifest",
-        "toSymbol": "exists",
-        "callExpression": "exists",
         "sourcePath": "src/host/orchestrator/projectStore.ts"
       },
       {
@@ -48719,14 +49487,8 @@
       },
       {
         "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "toSymbol": "pathExists",
-        "callExpression": "pathExists",
-        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/orchestrator/projectStoreSummary.test.ts",
-        "toSymbol": "readManifest",
-        "callExpression": "new ProjectStore(workspaceRoot).readManifest",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
@@ -48754,12 +49516,6 @@
         "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
       },
       {
-        "fromSymbol": "pathExists",
-        "toSymbol": "access",
-        "callExpression": "access",
-        "sourcePath": "src/host/orchestrator/projectStoreSummary.test.ts"
-      },
-      {
         "fromSymbol": "createDefaultAppDeployManifest",
         "toSymbol": "createNativeIdentifierSegment",
         "callExpression": "createNativeIdentifierSegment",
@@ -48770,6 +49526,12 @@
         "toSymbol": "getHostModule",
         "callExpression": "getHostModule",
         "sourcePath": "src/host/orchestrator/resolveMutations.ts"
+      },
+      {
+        "fromSymbol": "scaffoldProject",
+        "toSymbol": "createDefaultAppDeployManifest",
+        "callExpression": "createDefaultAppDeployManifest",
+        "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
         "fromSymbol": "scaffoldProject",
@@ -48811,12 +49573,6 @@
         "fromSymbol": "scaffoldProject",
         "toSymbol": "ensureExpoGitIgnore",
         "callExpression": "this.ensureExpoGitIgnore",
-        "sourcePath": "src/host/orchestrator/scaffolder.ts"
-      },
-      {
-        "fromSymbol": "scaffoldProject",
-        "toSymbol": "removeGeneratedExpoOverrides",
-        "callExpression": "this.removeGeneratedExpoOverrides",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -48901,12 +49657,6 @@
         "fromSymbol": "syncProjectScaffold",
         "toSymbol": "ensureExpoGitIgnore",
         "callExpression": "this.ensureExpoGitIgnore",
-        "sourcePath": "src/host/orchestrator/scaffolder.ts"
-      },
-      {
-        "fromSymbol": "syncProjectScaffold",
-        "toSymbol": "removeGeneratedExpoOverrides",
-        "callExpression": "this.removeGeneratedExpoOverrides",
         "sourcePath": "src/host/orchestrator/scaffolder.ts"
       },
       {
@@ -49823,8 +50573,8 @@
       },
       {
         "fromSymbol": "assertExpo57GeneratedCapabilityContractAsync",
-        "toSymbol": "assertNoObsoleteSourceAsync",
-        "callExpression": "assertNoObsoleteSourceAsync",
+        "toSymbol": "assertGeneratedSourceContractAsync",
+        "callExpression": "assertGeneratedSourceContractAsync",
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts"
       },
       {
@@ -49840,7 +50590,7 @@
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts"
       },
       {
-        "fromSymbol": "assertNoObsoleteSourceAsync",
+        "fromSymbol": "assertGeneratedSourceContractAsync",
         "toSymbol": "readSourceTreeAsync",
         "callExpression": "readSourceTreeAsync",
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityContractAsync.ts"
@@ -49894,6 +50644,66 @@
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityNativePrebuildAsync.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "createCapabilityGraphAsync",
+        "callExpression": "createCapabilityGraphAsync",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts",
+        "toSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
+        "callExpression": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createCapabilityGraphAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createCapabilityGraphAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createCapabilityGraphAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
+        "toSymbol": "readPackageJsonAsync",
+        "callExpression": "readPackageJsonAsync",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
         "fromSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -49901,8 +50711,32 @@
       },
       {
         "fromSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
-        "toSymbol": "runAcceptanceCommandAsync",
-        "callExpression": "runAcceptanceCommandAsync",
+        "toSymbol": "requireDependencyRange",
+        "callExpression": "requireDependencyRange",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
+        "toSymbol": "assertInstalledRegistryPackageAsync",
+        "callExpression": "assertInstalledRegistryPackageAsync",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpo57GeneratedCapabilityOwnerGraphAsync",
+        "toSymbol": "assertReactNativeOwnerGraphAsync",
+        "callExpression": "assertReactNativeOwnerGraphAsync",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageJsonAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "requireDependencyRange",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
       },
       {
@@ -49987,6 +50821,12 @@
         "fromSymbol": "assertInstalledContractAsync",
         "toSymbol": "assertInstalledRegistryPackageAsync",
         "callExpression": "assertInstalledRegistryPackageAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "assertReactNativeOwnerGraphAsync",
+        "callExpression": "assertReactNativeOwnerGraphAsync",
         "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
@@ -50188,6 +51028,156 @@
         "sourcePath": "src/host/smoke/assertNoBrowserErrors.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "createGraphAsync",
+        "callExpression": "createGraphAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "writePackageAsync",
+        "callExpression": "writePackageAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "assertReactNativeOwnerGraphAsync",
+        "callExpression": "assertReactNativeOwnerGraphAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts",
+        "toSymbol": "writePackageJsonAsync",
+        "callExpression": "writePackageJsonAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createGraphAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createGraphAsync",
+        "toSymbol": "writePackageJsonAsync",
+        "callExpression": "writePackageJsonAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createGraphAsync",
+        "toSymbol": "writePackageAsync",
+        "callExpression": "writePackageAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writePackageAsync",
+        "toSymbol": "writePackageJsonAsync",
+        "callExpression": "writePackageJsonAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writePackageJsonAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writePackageJsonAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.test.ts"
+      },
+      {
+        "fromSymbol": "assertReactNativeOwnerGraphAsync",
+        "toSymbol": "listNodeModulesRootsAsync",
+        "callExpression": "listNodeModulesRootsAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReactNativeOwnerGraphAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReactNativeOwnerGraphAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReactNativeOwnerGraphAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReactNativeOwnerGraphAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "listNodeModulesRootsAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "listNodeModulesRootsAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "listNodeModulesRootsAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "listNodeModulesRootsAsync",
+        "toSymbol": "isDirectoryAsync",
+        "callExpression": "isDirectoryAsync",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "isDirectoryAsync",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
+        "fromSymbol": "pathExistsAsync",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/host/smoke/assertReactNativeOwnerGraphAsync.ts"
+      },
+      {
         "fromSymbol": "createAsync",
         "toSymbol": "resolveChromePathAsync",
         "callExpression": "resolveChromePathAsync",
@@ -50323,6 +51313,18 @@
         "fromSymbol": "reloadAsync",
         "toSymbol": "waitForLoadAsync",
         "callExpression": "this.waitForLoadAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "assertNoHorizontalOverflowAsync",
+        "toSymbol": "evaluateAsync",
+        "callExpression": "this.evaluateAsync",
+        "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
+      },
+      {
+        "fromSymbol": "setViewportAsync",
+        "toSymbol": "sendAsync",
+        "callExpression": "this.sendAsync",
         "sourcePath": "src/host/smoke/ChromeNavigationSession.ts"
       },
       {
@@ -50753,14 +51755,8 @@
       },
       {
         "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "toSymbol": "writeInstalledPackageAsync",
-        "callExpression": "writeInstalledPackageAsync",
-        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
-      },
-      {
-        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
+        "toSymbol": "writeInstalledGraphAsync",
+        "callExpression": "writeInstalledGraphAsync",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
@@ -50780,6 +51776,24 @@
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledGraphAsync",
+        "toSymbol": "writeInstalledPackageAsync",
+        "callExpression": "writeInstalledPackageAsync",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledGraphAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "generateExpoRouterTypesAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/generateExpoRouterTypesAsync.ts"
       },
       {
         "fromSymbol": "generateExpoRouterTypesAsync",
@@ -50893,6 +51907,36 @@
         "fromSymbol": "getChromeNavigationIssue",
         "toSymbol": "formatLogIssue",
         "callExpression": "formatLogIssue",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "formatNetworkFailure",
+        "callExpression": "formatNetworkFailure",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "getChromeNavigationIssue",
+        "toSymbol": "formatFailedNetworkResponse",
+        "callExpression": "formatFailedNetworkResponse",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatFailedNetworkResponse",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatFailedNetworkResponse",
+        "toSymbol": "readString",
+        "callExpression": "readString",
+        "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
+      },
+      {
+        "fromSymbol": "formatNetworkFailure",
+        "toSymbol": "readString",
+        "callExpression": "readString",
         "sourcePath": "src/host/smoke/getChromeNavigationIssue.ts"
       },
       {
@@ -51148,6 +52192,72 @@
         "sourcePath": "src/host/smoke/reserveTcpPortAsync.ts"
       },
       {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "test",
+        "callExpression": "test",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "createProjectRootAsync",
+        "callExpression": "createProjectRootAsync",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createProjectRootAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.test.ts"
+      },
+      {
+        "fromSymbol": "resolveAppOwnedExpoCliAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/host/smoke/resolveAppOwnedExpoCliAsync.ts"
+      },
+      {
         "fromSymbol": "src/host/smoke/runAuth5NativeOAuthSmoke.ts",
         "toSymbol": "existsSync",
         "callExpression": "existsSync",
@@ -51185,8 +52295,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
-        "toSymbol": "createWorkspaceLockfileAsync",
-        "callExpression": "createWorkspaceLockfileAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
+        "toSymbol": "createProjectLockfileAsync",
+        "callExpression": "createProjectLockfileAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -51197,8 +52313,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedAppAcceptanceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -51250,9 +52372,27 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
-        "fromSymbol": "createWorkspaceLockfileAsync",
+        "fromSymbol": "createProjectLockfileAsync",
         "toSymbol": "runAcceptanceCommandAsync",
         "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectLockfileAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "createProjectLockfileAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "hash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -51265,6 +52405,12 @@
         "fromSymbol": "runAcceptanceChecksAsync",
         "toSymbol": "assertCameraFreeInstalledGraphAsync",
         "callExpression": "assertCameraFreeInstalledGraphAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runAcceptanceChecksAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts"
       },
       {
@@ -51305,8 +52451,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedCapabilityAcceptanceAsync",
-        "toSymbol": "createWorkspaceLockfileAsync",
-        "callExpression": "createWorkspaceLockfileAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedCapabilityAcceptanceAsync",
+        "toSymbol": "createProjectLockfileAsync",
+        "callExpression": "createProjectLockfileAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
@@ -51340,12 +52492,6 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
-        "fromSymbol": "runExpo57GeneratedCapabilityAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
-      },
-      {
         "fromSymbol": "createWorkspaceAsync",
         "toSymbol": "mkdir",
         "callExpression": "mkdir",
@@ -51358,21 +52504,21 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
-        "fromSymbol": "createWorkspaceLockfileAsync",
+        "fromSymbol": "createProjectLockfileAsync",
         "toSymbol": "runAcceptanceCommandAsync",
         "callExpression": "runAcceptanceCommandAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
         "fromSymbol": "runGeneratedCapabilityChecksAsync",
-        "toSymbol": "assertDevtoolsSyncIdempotentAsync",
-        "callExpression": "assertDevtoolsSyncIdempotentAsync",
+        "toSymbol": "snapshotSourceTreeAsync",
+        "callExpression": "snapshotSourceTreeAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
         "fromSymbol": "runGeneratedCapabilityChecksAsync",
-        "toSymbol": "snapshotSourceTreeAsync",
-        "callExpression": "snapshotSourceTreeAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
@@ -51409,12 +52555,6 @@
         "fromSymbol": "runGeneratedCapabilityChecksAsync",
         "toSymbol": "runGeneratedCapabilityBrowserAcceptanceAsync",
         "callExpression": "runGeneratedCapabilityBrowserAcceptanceAsync",
-        "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
-      },
-      {
-        "fromSymbol": "assertDevtoolsSyncIdempotentAsync",
-        "toSymbol": "runAcceptanceCommandAsync",
-        "callExpression": "runAcceptanceCommandAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedCapabilityAcceptance.ts"
       },
       {
@@ -51623,14 +52763,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
-        "toSymbol": "createWorkspaceLockfileAsync",
-        "callExpression": "createWorkspaceLockfileAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
-        "toSymbol": "runCommandAsync",
-        "callExpression": "runCommandAsync",
+        "toSymbol": "installGeneratedProjectAsync",
+        "callExpression": "installGeneratedProjectAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -51683,8 +52823,14 @@
       },
       {
         "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runExpo57GeneratedNavigationAcceptanceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -51772,9 +52918,33 @@
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
-        "fromSymbol": "createWorkspaceLockfileAsync",
+        "fromSymbol": "installGeneratedProjectAsync",
         "toSymbol": "runCommandAsync",
         "callExpression": "runCommandAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectAsync",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "installGeneratedProjectAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "hash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -51863,6 +53033,12 @@
       },
       {
         "fromSymbol": "runDevelopmentWebAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runDevelopmentWebAsync",
         "toSymbol": "reserveTcpPortAsync",
         "callExpression": "reserveTcpPortAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
@@ -51947,6 +53123,12 @@
       },
       {
         "fromSymbol": "runGeneratedProjectChecksAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedProjectChecksAsync",
         "toSymbol": "runCommandAsync",
         "callExpression": "runCommandAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
@@ -51965,6 +53147,12 @@
       },
       {
         "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "setViewportAsync",
+        "callExpression": "chrome.setViewportAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
         "toSymbol": "navigateAsync",
         "callExpression": "chrome.navigateAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
@@ -51973,6 +53161,12 @@
         "fromSymbol": "runStaticExportSmokeAsync",
         "toSymbol": "waitForBodyTextAsync",
         "callExpression": "chrome.waitForBodyTextAsync",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "runStaticExportSmokeAsync",
+        "toSymbol": "assertNoHorizontalOverflowAsync",
+        "callExpression": "chrome.assertNoHorizontalOverflowAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -54011,8 +55205,32 @@
       },
       {
         "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "configureNativeEvidenceToolingAsync",
+        "callExpression": "configureNativeEvidenceToolingAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
         "toSymbol": "writeNativeEvidenceAppFilesAsync",
         "callExpression": "writeNativeEvidenceAppFilesAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "assertDevtoolsSyncIdempotentAsync",
+        "callExpression": "assertDevtoolsSyncIdempotentAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "assertReactNativeOwnerGraphAsync",
+        "callExpression": "assertReactNativeOwnerGraphAsync",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
       },
       {
@@ -54031,6 +55249,18 @@
         "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
         "toSymbol": "assertNativePrebuildAsync",
         "callExpression": "assertNativePrebuildAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareNativeCapabilityEvidenceAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
       },
       {
@@ -54113,6 +55343,24 @@
       },
       {
         "fromSymbol": "configureNativeEvidenceDevelopmentClientAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "configureNativeEvidenceToolingAsync",
+        "toSymbol": "readPackageJsonAsync",
+        "callExpression": "readPackageJsonAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "configureNativeEvidenceToolingAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "configureNativeEvidenceToolingAsync",
         "toSymbol": "writeFile",
         "callExpression": "writeFile",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
@@ -54209,12 +55457,6 @@
       },
       {
         "fromSymbol": "runGeneratedNativeEvidenceChecksAsync",
-        "toSymbol": "assertDevtoolsSyncIdempotentAsync",
-        "callExpression": "assertDevtoolsSyncIdempotentAsync",
-        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
-      },
-      {
-        "fromSymbol": "runGeneratedNativeEvidenceChecksAsync",
         "toSymbol": "runCommandAsync",
         "callExpression": "runCommandAsync",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
@@ -54251,6 +55493,12 @@
       },
       {
         "fromSymbol": "runGeneratedNativeEvidenceChecksAsync",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "runGeneratedNativeEvidenceChecksAsync",
         "toSymbol": "runNativeEvidenceExportsAsync",
         "callExpression": "runNativeEvidenceExportsAsync",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
@@ -54265,6 +55513,12 @@
         "fromSymbol": "runCommandOutputAsync",
         "toSymbol": "runAcceptanceCommandAsync",
         "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
+      },
+      {
+        "fromSymbol": "runExpoCommandAsync",
+        "toSymbol": "resolveAppOwnedExpoCliAsync",
+        "callExpression": "resolveAppOwnedExpoCliAsync",
         "sourcePath": "src/host/smoke/nativeCapabilityEvidence/prepareNativeCapabilityEvidenceAsync.ts"
       },
       {

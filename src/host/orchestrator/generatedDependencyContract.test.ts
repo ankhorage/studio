@@ -8,6 +8,7 @@ import { ProjectScaffolder } from './scaffolder';
 import { getPackageJson } from './templates';
 
 const temporaryDirectories: string[] = [];
+const WEB_TARGETS = { web: { enabled: true } } as const;
 
 afterEach(async () => {
   await Promise.all(
@@ -20,6 +21,7 @@ describe('generated app dependency contract', () => {
     const { dependencies } = getPackageJson({
       name: 'standalone',
       includeStudio: false,
+      targets: WEB_TARGETS,
     });
 
     expectRuntimePeers(dependencies);
@@ -30,6 +32,7 @@ describe('generated app dependency contract', () => {
     const { dependencies } = getPackageJson({
       name: 'studio-enabled',
       includeStudio: true,
+      targets: WEB_TARGETS,
     });
 
     expectRuntimePeers(dependencies);
@@ -41,9 +44,11 @@ describe('generated app dependency contract', () => {
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
       includeStudio: true,
+      targets: WEB_TARGETS,
     });
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
       includeStudio: false,
+      targets: WEB_TARGETS,
     });
 
     const dependencies = await readGeneratedDependencies(projectPath);
@@ -56,11 +61,13 @@ describe('generated app dependency contract', () => {
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
       includeStudio: false,
+      targets: WEB_TARGETS,
     });
     const standaloneDependencies = await readGeneratedDependencies(projectPath);
 
     await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
       includeStudio: true,
+      targets: WEB_TARGETS,
     });
     const studioDependencies = await readGeneratedDependencies(projectPath);
 
@@ -68,21 +75,56 @@ describe('generated app dependency contract', () => {
     expectStudioAuthoringDependencies(studioDependencies, 'defined');
   });
 
-  it('removes obsolete Expo default overrides when synchronizing a scaffold', async () => {
+  it('preserves app-owned Expo configuration files while synchronizing current output', async () => {
     const { projectPath, scaffolder } = await createScaffoldHarness();
     await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
     await Promise.all(
       ['babel.config.js', 'index.js', 'metro.config.js'].map((fileName) =>
-        writeFile(path.join(projectPath, fileName), 'obsolete'),
+        writeFile(path.join(projectPath, fileName), `app-owned ${fileName}`),
       ),
     );
 
-    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
 
     const files = await readdir(projectPath);
-    expect(files).not.toContain('babel.config.js');
-    expect(files).not.toContain('index.js');
-    expect(files).not.toContain('metro.config.js');
+    expect(files).toContain('babel.config.js');
+    expect(files).toContain('index.js');
+    expect(files).toContain('metro.config.js');
+    await Promise.all(
+      ['babel.config.js', 'index.js', 'metro.config.js'].map(async (fileName) => {
+        expect(await readFile(path.join(projectPath, fileName), 'utf8')).toBe(
+          `app-owned ${fileName}`,
+        );
+      }),
+    );
+  });
+
+  it('preserves application-owned development dependencies outside the current template', async () => {
+    const { projectPath, scaffolder } = await createScaffoldHarness();
+    await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
+    const packageJsonPath = path.join(projectPath, 'package.json');
+    const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as {
+      devDependencies: Record<string, string>;
+    };
+    packageJson.devDependencies.eslint = '^10.0.0';
+    packageJson.devDependencies.prettier = '^4.0.0';
+    packageJson.devDependencies['@expo/metro-config'] = '~57.0.0';
+    await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, 'utf8');
+
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
+
+    const synchronized = JSON.parse(await readFile(packageJsonPath, 'utf8')) as {
+      devDependencies: Record<string, string>;
+    };
+    expect(synchronized.devDependencies).toMatchObject({
+      eslint: '^10.0.0',
+      prettier: '^4.0.0',
+      '@expo/metro-config': '~57.0.0',
+    });
   });
 
   it('ignores generated Expo state without replacing app-owned ignore rules', async () => {
@@ -90,8 +132,12 @@ describe('generated app dependency contract', () => {
     await scaffolder.scaffoldProject(projectPath, 'Fixture', 'fixture');
     await writeFile(path.join(projectPath, '.gitignore'), 'app-owned-cache/');
 
-    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
-    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture');
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
+    await scaffolder.syncProjectScaffold(projectPath, 'Fixture', 'fixture', {
+      targets: WEB_TARGETS,
+    });
 
     expect(await readFile(path.join(projectPath, '.gitignore'), 'utf8')).toBe(
       'app-owned-cache/\n.expo/\n',

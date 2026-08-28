@@ -12,6 +12,8 @@ import {
   getPrettierRcJs,
 } from './templates';
 
+const WEB_TARGETS = { web: { enabled: true } } as const;
+
 describe('generated OAuth scaffold templates', () => {
   it('keeps generated Expo config plugin data outside the default export function', () => {
     const appConfig = getAppConfigTs({
@@ -51,7 +53,11 @@ describe('generated OAuth scaffold templates', () => {
   });
 
   it('pins the current generated app dependency baseline', () => {
-    const pkg = getPackageJson({ name: 'generated-app', includeStudio: true });
+    const pkg = getPackageJson({
+      name: 'generated-app',
+      includeStudio: true,
+      targets: WEB_TARGETS,
+    });
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
 
@@ -96,6 +102,7 @@ describe('generated OAuth scaffold templates', () => {
       name: 'oauth-app',
       authProvider: 'supabase',
       storageProvider: 'supabase',
+      targets: WEB_TARGETS,
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
@@ -133,10 +140,11 @@ describe('generated OAuth scaffold templates', () => {
       runtimeAdapters: [],
       usesExpoRuntimeRegistry: true,
     };
-    const dependencies = getPackageJson({ name: 'camera-app', runtimePlan }).dependencies as Record<
-      string,
-      string
-    >;
+    const dependencies = getPackageJson({
+      name: 'camera-app',
+      runtimePlan,
+      targets: WEB_TARGETS,
+    }).dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/permissions']).toBe('^0.2.3');
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
@@ -144,16 +152,12 @@ describe('generated OAuth scaffold templates', () => {
     );
   });
 
-  it('does not inject the removed generated database runtime adapter', () => {
-    const pkg = getPackageJson({ name: 'plain-app' });
-
-    expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
-    expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
-  });
-
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
-    const pkg = getPackageJson({ name: 'studio-enabled-app', includeStudio: true });
+    const pkg = getPackageJson({
+      name: 'studio-enabled-app',
+      includeStudio: true,
+      targets: WEB_TARGETS,
+    });
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
@@ -161,7 +165,11 @@ describe('generated OAuth scaffold templates', () => {
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
-    const pkg = getPackageJson({ name: 'native-app', includeStudio: true });
+    const pkg = getPackageJson({
+      name: 'native-app',
+      includeStudio: true,
+      targets: WEB_TARGETS,
+    });
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies[EXPO_PLATFORM.animation.reanimated.name]).toBe(
@@ -173,9 +181,13 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies[EXPO_PLATFORM.animation.gestureHandler.name]).toBe(
       EXPO_PLATFORM.animation.gestureHandler.version,
     );
-    expect(getPackageJson({ name: 'second-native-app', includeStudio: true }).dependencies).toEqual(
-      pkg.dependencies,
-    );
+    expect(
+      getPackageJson({
+        name: 'second-native-app',
+        includeStudio: true,
+        targets: WEB_TARGETS,
+      }).dependencies,
+    ).toEqual(pkg.dependencies);
     expect(pkg.main).toBe('expo-router/entry');
   });
 
@@ -228,7 +240,7 @@ describe('generated OAuth scaffold templates', () => {
   });
 
   it('omits auth-specific packages when auth is not generated', () => {
-    const pkg = getPackageJson({ name: 'public-app' });
+    const pkg = getPackageJson({ name: 'public-app', targets: WEB_TARGETS });
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/utility']).toBeUndefined();
@@ -264,7 +276,7 @@ describe('generated OAuth scaffold templates', () => {
   });
 
   it('enables the default Expo Router and compiler configuration', () => {
-    const pkg = getPackageJson({ name: 'generated-app' });
+    const pkg = getPackageJson({ name: 'generated-app', targets: WEB_TARGETS });
     const appConfig = getAppConfigTs({
       name: 'Generated App',
       slug: 'generated-app',

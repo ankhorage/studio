@@ -147,9 +147,6 @@ test('generates the released Google and Apple OAuth fixture through the real hos
     expect(oauthState).toContain(
       "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
     );
-    expect(oauthState).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
-    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v1');
-    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
     expect(oauthCompletion).toContain('export function resolveOAuthCallbackUrl(');
     expect(oauthCompletion).toContain('callbackUrl.searchParams.append(name, value);');

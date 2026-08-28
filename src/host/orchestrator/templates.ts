@@ -25,7 +25,6 @@ const SUPABASE_STORAGE_VERSION = '^0.2.0';
 const ZORA_VERSION = '^3.0.0';
 const EXPO_RUNTIME_VERSION = '^3.0.10';
 const DEVTOOLS_VERSION = '^1.6.0';
-const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
 
 function serializeStringLiteral(value: string): string {
   return `'${value
@@ -860,7 +859,7 @@ export function getPackageJson(args: {
   authProvider?: GeneratedAuthProvider;
   storageProvider?: GeneratedStorageProvider;
   runtimePlan?: ExpoRuntimePlan;
-  targets?: AppDeployTargets;
+  targets: AppDeployTargets;
 }) {
   const {
     name,
@@ -868,7 +867,7 @@ export function getPackageJson(args: {
     authProvider = null,
     storageProvider = null,
     runtimePlan,
-    targets = LEGACY_WEB_ONLY_TARGETS,
+    targets,
   } = args;
   const runtimeDependencies = resolveExpoRuntimeDependencyMap(runtimePlan);
   const pkgJson = {

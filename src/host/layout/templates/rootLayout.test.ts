@@ -136,7 +136,7 @@ test('suppresses the normal Studio app header inside admin routes without auth r
   expect(generated).toContain('true;');
 });
 
-test('generates a root stationary tap selector for edit mode and excludes old Pressable selection code', () => {
+test('generates the current root-owned stationary selection composition for edit mode', () => {
   const generated = getRootLayoutTsx({
     manifest: {
       navigator: {
@@ -172,11 +172,6 @@ test('generates a root stationary tap selector for edit mode and excludes old Pr
   expect(generated).toContain('setActiveDragNodeId: setActiveCanvasDragNodeId');
   expect(generated).toContain('APP_EXTENSION_INTERACTION_POLICY_SUPPORT');
   expect(generated).toContain('ZORA_COMPONENT_REGISTRY');
-  expect(generated).not.toContain('<Pressable');
-  expect(generated).not.toContain('cloneElement');
-  expect(generated).not.toContain('GestureResponderEvent');
-  expect(generated).not.toContain('isValidElement');
-  expect(generated).not.toContain('wrapStudioRuntimeNode');
 });
 
 test('keeps non-Studio generated output Studio-independent', () => {

@@ -1,6 +1,6 @@
 # Studio authoring model
 
-This package now owns the package-neutral Studio authoring/model helpers used by host apps to edit manifests and UI node trees.
+This package owns the package-neutral Studio authoring/model helpers used by host apps to edit manifests and UI node trees.
 
 ## Owned here
 
@@ -23,13 +23,11 @@ This keeps `@ankhorage/studio` as the authoring-model owner while letting the fi
 and generated app hosts inject the same component registry that powers their Runtime rendering.
 
 Placement mutation is intentionally singular. `insertNodeAtPlacement`,
-`resolveMoveNodePlacement`, and `moveNodeToPlacement` are the canonical tree APIs. The older
-directional `addNodeToTree`, `moveNodeInTree`, and `moveStudioManifestNode` APIs are removed, as are
-the `@ankhorage/studio/dnd*` wrapper subpaths.
+`resolveMoveNodePlacement`, and `moveNodeToPlacement` are the canonical tree APIs.
 
 ## Deliberately not moved here
 
-This slice still does not move product shell or platform code. In particular, this package still does not own:
+This package does not own product shell or platform code. In particular, it does not own:
 
 - `AnkhStudio`
 - `StudioApp`

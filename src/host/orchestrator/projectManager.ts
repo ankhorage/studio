@@ -17,7 +17,7 @@ import { applySystemTemplates } from '../manifestSystem';
 import type { LayoutMutation } from '../modules/layout';
 import type { ProjectTemplateSelection } from '../templateRegistry';
 import { resolveZoraExtensionsForTemplateSelection } from '../zoraExtensions';
-import { syncGeneratedRouteFiles } from './generatedRouteCleanup';
+import { GeneratedRouteFileOwnership } from './GeneratedRouteFileOwnership';
 import { readProjectStudioInclusion, writeProjectStudioInclusion } from './projectGenerationState';
 import { getAppsRoot, getProjectPath } from './projectPaths';
 import { ProjectStore, type ProjectSummary } from './projectStore';
@@ -34,6 +34,7 @@ export class ProjectManager {
   private readonly store: ProjectStore;
   private readonly scaffolder: ProjectScaffolder;
   private readonly appFiles: GeneratedAppFileGenerator;
+  private readonly generatedRouteFiles: GeneratedRouteFileOwnership;
   private readonly dependencies: ProjectManagerDependencies;
   private readonly appsRoot: string;
 
@@ -45,6 +46,7 @@ export class ProjectManager {
     this.store = new ProjectStore(rootPath);
     this.scaffolder = new ProjectScaffolder(rootPath);
     this.appFiles = new GeneratedAppFileGenerator();
+    this.generatedRouteFiles = new GeneratedRouteFileOwnership();
     this.dependencies = {
       runProjectInfrastructureLifecycle,
       ...dependencies,
@@ -124,7 +126,11 @@ export class ProjectManager {
       deploy,
     );
     const runtimePlan = resolveExpoRuntimePlan(manifest);
-    await this.writeGeneratedFiles(projectPath, manifest, [], { includeStudio, runtimePlan });
+    await this.writeGeneratedFiles(projectPath, manifest, [], {
+      includeStudio,
+      operation: 'create',
+      runtimePlan,
+    });
     await syncProjectInfrastructure({ projectId: slug, projectPath, manifest });
     if (onProjectCreated) await onProjectCreated(slug);
     return { success: true, id: slug, path: projectPath };
@@ -154,8 +160,14 @@ export class ProjectManager {
     regenerateRouterFiles?: boolean;
   }) {
     const { projectId, manifest, mutations, regenerateRouterFiles = true } = args;
-    const updated = await this.persistProjectManifest({ projectId, manifest });
     const projectPath = getProjectPath(this.rootPath, projectId);
+
+    if (regenerateRouterFiles) {
+      await this.generatedRouteFiles.assertSyncable(projectPath);
+      requireProjectDeployTargets(manifest);
+    }
+
+    const updated = await this.persistProjectManifest({ projectId, manifest });
     const runtimePlan = resolveExpoRuntimePlan(updated);
 
     if (regenerateRouterFiles) {
@@ -163,6 +175,7 @@ export class ProjectManager {
       await this.syncProjectScaffold(projectPath, projectId, updated, includeStudio, runtimePlan);
       await this.writeGeneratedFiles(projectPath, updated, mutations, {
         includeStudio,
+        operation: 'sync',
         runtimePlan,
       });
     }
@@ -179,6 +192,7 @@ export class ProjectManager {
     const { projectId, mutations, includeStudio } = args;
     const projectPath = getProjectPath(this.rootPath, projectId);
     const manifest = await this.getProjectManifest(projectId);
+    await this.generatedRouteFiles.assertSyncable(projectPath);
     const resolvedIncludeStudio = await this.shouldIncludeStudio(projectPath, includeStudio);
     const runtimePlan = resolveExpoRuntimePlan(manifest);
 
@@ -191,6 +205,7 @@ export class ProjectManager {
     );
     await this.writeGeneratedFiles(projectPath, manifest, mutations, {
       includeStudio: resolvedIncludeStudio,
+      operation: 'sync',
       runtimePlan,
     });
     await syncProjectInfrastructure({ projectId, projectPath, manifest });
@@ -201,6 +216,7 @@ export class ProjectManager {
     const { projectId, mutations } = args;
     const manifest = await this.getProjectManifest(projectId);
     const projectPath = getProjectPath(this.rootPath, projectId);
+    await this.generatedRouteFiles.assertSyncable(projectPath);
     const runtimePlan = resolveExpoRuntimePlan(manifest);
     const rootOnly = this.appFiles
       .generateFiles(projectPath, manifest, mutations, {
@@ -259,7 +275,11 @@ export class ProjectManager {
     projectPath: string,
     manifest: AppManifest,
     mutations: LayoutMutation[],
-    options: { includeStudio: boolean; runtimePlan: ExpoRuntimePlan },
+    options: {
+      includeStudio: boolean;
+      operation: 'create' | 'sync';
+      runtimePlan: ExpoRuntimePlan;
+    },
   ) {
     const generated = this.appFiles.generateFiles(projectPath, manifest, mutations, {
       includeStudio: options.includeStudio,
@@ -269,7 +289,11 @@ export class ProjectManager {
     for (const file of generated) {
       await this.writeText(path.join(projectPath, file.path), file.content);
     }
-    await syncGeneratedRouteFiles({ projectPath, generatedPaths });
+    if (options.operation === 'create') {
+      await this.generatedRouteFiles.initialize(projectPath, generatedPaths);
+    } else {
+      await this.generatedRouteFiles.reconcile(projectPath, generatedPaths);
+    }
   }
 
   private async writeText(absPath: string, content: string) {
@@ -294,10 +318,20 @@ export class ProjectManager {
       runtimePlan,
       storageProvider: resolveGeneratedStorageProvider(manifest),
       splashScreen: manifest.splashScreen ?? null,
-      targets: manifest.deploy?.targets,
+      targets: requireProjectDeployTargets(manifest),
     });
     await writeProjectStudioInclusion(projectPath, includeStudio);
   }
+}
+
+function requireProjectDeployTargets(manifest: AppManifest) {
+  const targets = manifest.deploy?.targets;
+  if (!targets) {
+    throw new Error(
+      `Project '${manifest.metadata.slug}' is missing canonical deploy.targets generation state.`,
+    );
+  }
+  return targets;
 }
 
 async function exists(filePath: string): Promise<boolean> {

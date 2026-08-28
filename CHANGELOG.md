@@ -1,5 +1,12 @@
 # @ankhorage/studio
 
+## 2.0.12
+
+### Patch Changes
+
+- f1bcc2d: Require canonical generated-project target and route ownership state during sync, reconcile only
+  current generator-owned files, and preserve application-owned scaffold paths.
+
 ## 2.0.11
 
 ### Patch Changes

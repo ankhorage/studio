@@ -87,10 +87,12 @@ describe('project OAuth setup planning', () => {
     }
   }
 
-  test('keeps targetless legacy manifests Web-only', () => {
+  test('rejects missing canonical target state', () => {
     const manifest = createManifest(['web']);
     const { deploy: _deploy, ...targetlessManifest } = manifest;
 
-    expect(resolveProjectEnabledTargets(targetlessManifest)).toEqual(['web']);
+    expect(() => resolveProjectEnabledTargets(targetlessManifest)).toThrow(
+      "Project 'demo' is missing canonical deploy.targets generation state.",
+    );
   });
 });

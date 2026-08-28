@@ -74,7 +74,13 @@ Issue #56 establishes `src/host/` as the direct owner of the local Studio applic
 
 ### No legacy or compatibility code
 
-Do not add or keep legacy, deprecated, compatibility, migration, fallback, alias, shim, or dual old/new code paths. Update the canonical implementation and all affected Ankhorage packages directly; remove obsolete code instead of preserving it.
+Do not add or keep legacy, deprecated, migration, compatibility, alias, shim, dual old/new, or historical-state fallback code paths. Update the canonical implementation and all affected Ankhorage packages directly; remove obsolete code instead of preserving it.
+
+Use this classification rule:
+
+> Can this state be intentionally produced by the current Ankhorage architecture, or genuinely occur while the current valid application is running?
+
+Current runtime error handling, platform/capability dispatch, and explicit product alternatives are legitimate current behavior. A branch that exists only for an older or hypothetical project, API, storage, filesystem, dependency, or implementation state is historical-state compatibility and must be removed.
 
 ### Studio owns authoring/product contracts and package-neutral model helpers
 
@@ -175,7 +181,7 @@ Preferred full validation:
 bun run build
 bun run lint:fix
 bun run test
-bun run knip
+bun run knip:check
 bun run typecheck
 bun run format:check
 bun run docs
@@ -189,7 +195,7 @@ bun run build
 bun run changeset
 bun run changeset:status
 bun run docs
-bun run knip
+bun run knip:check
 bun run lint
 bun run lint:fix
 bun run format
@@ -279,7 +285,7 @@ Before final handoff:
 - Adding public exports without tests, causing Knip failures.
 - Forgetting a changeset for public package changes.
 - Treating `ankhorage4` transition host behavior as package-owned behavior.
-- Adding or keeping legacy, deprecated, compatibility, migration, fallback, alias, shim, or dual old/new code paths.
+- Adding or keeping legacy, deprecated, migration, compatibility, alias, shim, dual old/new, or historical-state fallback code paths.
 - Building a Studio-only auth, navigation, data, action, module, or UI path that ordinary Ankhorage apps cannot use.
 - Solving a missing shared capability locally in Studio instead of improving the owning Ankhorage package first.
 
