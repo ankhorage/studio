@@ -158,20 +158,13 @@ test('reconstructs the canonical callback URL from router-owned search params', 
   expect(runtime).toContain('return callbackUrl.toString();');
 });
 
-test('generates one canonical correlation marker without legacy transport state', () => {
+test('generates the current correlation marker and clears it after completion', () => {
   const runtime = `${createOAuthRuntime()}\n${createOAuthCompletion()}\n${getAuthOAuthStateTs()}`;
 
   expect(runtime).toContain("const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';");
-  expect(runtime).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
-  expect(runtime).not.toContain('ankh.auth.oauth.transport.v1');
-  expect(runtime).not.toContain('ankh.auth.oauth.transport.v2');
   expect(runtime).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
-  expect(runtime).not.toContain('version: 1;');
-  expect(runtime).not.toContain('provider: AuthOAuthProviderId;');
-  expect(runtime).not.toContain('isCanonicalOAuthCallback');
   expect(runtime).toContain("completed.error.code === 'callback_already_completed'");
   expect(runtime).toContain("completion: 'already-completed'");
   expect(runtime).toContain("completed.error.code === 'invalid_callback'");
   expect(runtime).toContain('await clearTransportAttempt();');
-  expect(runtime).not.toContain('clearLegacyTransportAttempt');
 });

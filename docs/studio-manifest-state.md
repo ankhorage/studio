@@ -1,6 +1,6 @@
 # Studio manifest state model
 
-This package now exposes a package-neutral manifest state model through `@ankhorage/studio/manifestState`.
+This package exposes a package-neutral manifest state model through `@ankhorage/studio/manifestState`.
 
 ## Owned here
 
@@ -62,7 +62,7 @@ deterministic survivor. Invalid mutations preserve the original manifest instanc
 Route order changes use `moveStudioManifestRoute` with a parent path, route name, and target sibling
 index. Visibility changes use `setStudioManifestRoutePrimaryNavigationVisibility`; visible routes
 use the contract default (the field is omitted) and hidden routes retain their route with
-`showInPrimaryNavigation: false`. The broad manifest route replacement APIs were removed.
+`showInPrimaryNavigation: false`.
 
 ## Import path
 

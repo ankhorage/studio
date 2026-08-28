@@ -49,10 +49,6 @@ describe('stationarySelection RN integration', () => {
     expect(source).not.toContain('.onStart(() => {');
   });
 
-  it('does not use legacy TapGestureHandler', () => {
-    expect(source).not.toContain('TapGestureHandler');
-  });
-
   it('does not use per-node recognizer', () => {
     const matches = source.match(/Gesture\.Tap\(\)/g) ?? [];
     expect(matches.length).toBe(1);

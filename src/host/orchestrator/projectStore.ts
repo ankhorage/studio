@@ -15,16 +15,6 @@ export class ProjectManifestNotFoundError extends Error {
   }
 }
 
-export class ObsoleteStudioManifestError extends Error {
-  constructor(projectId: string, filePath: string) {
-    super(
-      `Project '${projectId}' contains obsolete parallel Studio state at '${filePath}'. ` +
-        'Remove that file explicitly before continuing; ankh.config.json is now the sole manifest truth.',
-    );
-    this.name = 'ObsoleteStudioManifestError';
-  }
-}
-
 export class ProjectStore {
   constructor(private readonly rootPath: string) {}
 
@@ -34,10 +24,6 @@ export class ProjectStore {
 
   private getManifestPath(projectId: string) {
     return path.join(this.getProjectPath(projectId), 'ankh.config.json');
-  }
-
-  private getObsoleteStudioManifestPath(projectId: string) {
-    return path.join(this.getProjectPath(projectId), '.ankh', 'studio.manifest.json');
   }
 
   async listProjects(): Promise<ProjectSummary[]> {
@@ -71,7 +57,6 @@ export class ProjectStore {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
-    await this.assertNoObsoleteStudioManifest(projectId);
     if (await exists(manifestPath)) {
       return parseReadableAppManifest(JSON.parse(await fs.readFile(manifestPath, 'utf8')));
     }
@@ -85,7 +70,6 @@ export class ProjectStore {
       throw new Error(`Project '${projectId}' not found.`);
     }
 
-    await this.assertNoObsoleteStudioManifest(projectId);
     const updated = normalizeManifestForProject(projectId, manifest);
     await writeJsonAtomic(this.getManifestPath(projectId), updated);
     return updated;
@@ -123,13 +107,6 @@ export class ProjectStore {
       };
     } catch {
       return null;
-    }
-  }
-
-  private async assertNoObsoleteStudioManifest(projectId: string): Promise<void> {
-    const obsoletePath = this.getObsoleteStudioManifestPath(projectId);
-    if (await exists(obsoletePath)) {
-      throw new ObsoleteStudioManifestError(projectId, obsoletePath);
     }
   }
 }

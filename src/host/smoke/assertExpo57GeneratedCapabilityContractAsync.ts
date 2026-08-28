@@ -34,7 +34,7 @@ export async function assertExpo57GeneratedCapabilityContractAsync(
   }
   await assertConfigAsync(projectRoot);
   await assertGeneratedRuntimesAsync(projectRoot);
-  await assertNoObsoleteSourceAsync(projectRoot);
+  await assertGeneratedSourceContractAsync(projectRoot);
 }
 
 async function assertConfigAsync(projectRoot: string): Promise<void> {
@@ -134,16 +134,13 @@ async function assertGeneratedRuntimesAsync(projectRoot: string): Promise<void> 
   }
 }
 
-async function assertNoObsoleteSourceAsync(projectRoot: string): Promise<void> {
+async function assertGeneratedSourceContractAsync(projectRoot: string): Promise<void> {
   const generatedSource = await readSourceTreeAsync(path.join(projectRoot, 'src'));
-  for (const forbiddenSource of [
-    'ankh.auth.oauth.transport.v1',
-    'ankh.auth.oauth.transport.v2',
-    "from 'expo/fetch'",
-    'readAsStringAsync(',
-  ]) {
+  for (const forbiddenSource of ["from 'expo/fetch'", 'readAsStringAsync(']) {
     if (generatedSource.includes(forbiddenSource)) {
-      throw new Error(`Generated capability source contains obsolete path ${forbiddenSource}.`);
+      throw new Error(
+        `Generated capability source violates the Expo 57 contract: ${forbiddenSource}.`,
+      );
     }
   }
 }

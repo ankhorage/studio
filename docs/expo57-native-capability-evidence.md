@@ -1,7 +1,7 @@
 # Expo 57 native capability evidence
 
-Issue #312 uses this package-owned host harness for native-runtime evidence that export, hydration
-and CNG cannot provide. The harness creates a fresh app through the released
+This package-owned host harness provides native-runtime evidence that export, hydration and CNG
+cannot provide. The harness creates a fresh app through the released
 `@ankhorage/studio` host, installs the released owner graph, adds only test-app routes and a
 deterministic local OAuth provider, then regenerates native projects for development clients. It
 does not add a public Studio API or modify `apps/studio`.
@@ -12,16 +12,14 @@ route, and successful authentication returns to the generated protected route. P
 and OAuth behavior is exercised through the public Permissions, Expo Runtime and Supabase Auth
 adapters rather than locally reproduced owner logic.
 
-## Final RN 0.86.3 production repetition
+## RN 0.86.3 production baseline
 
-Issue #314 repeated the required native build evidence on 2026-08-27 from the fresh standalone
-workspace `/tmp/ankh-expo57-native-rn0863-final`. The generated app is its own package and
-installation root. Generation and installation used only public registry packages; no workspace,
-source, `file:`, `link:`, global CLI, `bunx`, or sibling-resolution fallback was available.
+The generated app is its own package and installation root. Generation and installation use the
+current released package graph from the public registry.
 
 | Item            | Final value                                                                                        |
 | --------------- | -------------------------------------------------------------------------------------------------- |
-| Generator       | `@ankhorage/studio@2.0.9`                                                                          |
+| Generator       | Current released `@ankhorage/studio` satisfying the repository range                               |
 | Tooling         | `@ankhorage/devtools@1.7.0`, Node `24.19.0`, Bun `1.3.14`, TypeScript `6.0.3`                      |
 | RN owners       | Expo Runtime `3.0.6`, Runtime `2.2.1`, Surface `3.0.1`, ZORA `3.0.1`                               |
 | Expo graph      | Expo `57.0.17`, Router `57.0.17`, Dev Client `57.0.16`, React Native `0.86.3`                      |
@@ -43,45 +41,10 @@ The clean native projects then produced, installed and launched all required con
 | iOS Development Client     | Debug build succeeded with zero errors; installed and launched process PID `96341`  |
 | iOS Release                | Release build succeeded with zero errors; installed and launched process PID `2225` |
 
-The process IDs are ephemeral launch confirmation, not stable identifiers. Upstream native builds
-reported only deprecation, duplicate-library and build-phase dependency warnings; there were no
-peer, compile or linker failures. This final repetition supersedes RN 0.86.2 build evidence for
-issue #314. The detailed capability scenario matrix below remains the historical issue #312 runtime
-record and is not presented as having been rerun by the production-build gate.
-
-## Recorded released baseline
-
-Recorded on 2026-08-25 from fresh workspaces and cold frozen installs:
-
-| Item            | Recorded value                                                                                                                 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Generator       | `@ankhorage/studio@2.0.6`, resolved and installed from the public registry                                                     |
-| Owners          | `@ankhorage/devtools@1.6.1`, `@ankhorage/expo-runtime@3.0.5`, `@ankhorage/permissions@0.2.3`, `@ankhorage/supabase-auth@1.2.6` |
-| Expo graph      | Expo `57.0.16`, Router `57.0.16`, Dev Client `57.0.15`, Document Picker `57.0.1`, Image Picker `57.0.13`                       |
-| TypeScript      | `6.0.3`                                                                                                                        |
-| Host toolchain  | Bun `1.3.14`, Node `24.19.0`, Xcode `26.6 (17F113)`                                                                            |
-| iOS runtime     | iPhone 17 Pro simulator, iOS 26.5                                                                                              |
-| Android runtime | Pixel 8 Pro emulator, Android 14 / API 34                                                                                      |
-| Application     | `com.ankhorage.expo57nativeevidence`, version `1.0.0 (1)`, clean Debug development-client builds                               |
-
-This table is the historical issue #312 capability-runtime baseline and is not rewritten as later
-evidence. The final issue #314 build repetition is recorded separately above.
-
-The preparation gate passed twice in independent fresh workspaces. Each run:
-
-- resolved the exact registry versions above;
-- created lockfiles followed by no-cache frozen installs without lockfile mutation;
-- generated through the released `ProjectManager` host path;
-- ran Devtools sync twice and proved the second run byte-stable;
-- passed generated-app format and lint, Expo dependency compatibility, Expo Doctor `21/21`, Expo
-  Router type generation, TypeScript 6, and React Compiler health `27/27`;
-- exported Web, Android and iOS JavaScript; and
-- regenerated clean Android and iOS native projects and asserted callback schemes, plugins and
-  permission declarations.
-
-The final clients were then built from the clean native projects with native build caches disabled,
-installed, and booted. Both executable identities and the evidence log fingerprint were retained
-locally; they are intentionally not published with the redacted evidence.
+The process IDs are ephemeral launch confirmation, not stable identifiers. The permanent
+preparation gate performs frozen install without lockfile mutation, graph validation, generated-app
+format/lint, Expo dependency compatibility, Expo Doctor, Router declarations, TypeScript, React
+Compiler health, Web/Android/iOS JavaScript exports, and clean CNG before native clients are built.
 
 ## Native evidence matrix
 

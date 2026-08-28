@@ -1,4 +1,5 @@
 import type { AppManifest, NavigatorSpec, RouteDefinition } from '@ankhorage/contracts';
+import type { AppDeployTargets } from '@ankhorage/contracts/deploy';
 import {
   type ExpoRuntimePlan,
   resolveExpoRuntimeLayoutIntegration,
@@ -126,6 +127,12 @@ export class GeneratedAppFileGenerator {
     mutations: LayoutMutation[],
     options: GeneratedAppFileGenerationOptions = {},
   ): GeneratedFile[] {
+    const targets = manifest.deploy?.targets;
+    if (!targets) {
+      throw new Error(
+        `Project '${manifest.metadata.slug}' is missing canonical deploy.targets generation state.`,
+      );
+    }
     const files: GeneratedFile[] = [];
     const { includeStudio = true, runtimePlan } = options;
     const authLayoutPlan = resolveAuthLayoutPlan({ manifest });
@@ -234,7 +241,12 @@ export class GeneratedAppFileGenerator {
       for (const generatedAuthFile of authLayoutPlan.generatedFiles) {
         files.push({
           path: generatedAuthFile.path,
-          content: this.getGeneratedAuthFileContent(generatedAuthFile, authLayoutPlan, manifest),
+          content: this.getGeneratedAuthFileContent(
+            generatedAuthFile,
+            authLayoutPlan,
+            manifest,
+            targets,
+          ),
         });
       }
 
@@ -464,6 +476,7 @@ export class GeneratedAppFileGenerator {
     filePlan: AuthGeneratedFilePlan,
     authLayoutPlan: EnabledAuthLayoutPlan,
     manifest: AppManifest,
+    targets: AppDeployTargets,
   ): string {
     switch (filePlan.kind) {
       case 'adapter':
@@ -482,7 +495,7 @@ export class GeneratedAppFileGenerator {
         }
         return getAuthOAuthRuntimeTs({
           ...authLayoutPlan.oauth,
-          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(manifest.deploy?.targets ?? {}),
+          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(targets),
         });
       case 'oauth-completion':
         if (!authLayoutPlan.oauth) {
@@ -490,7 +503,7 @@ export class GeneratedAppFileGenerator {
         }
         return getAuthOAuthCompletionTs({
           callbackRoute: authLayoutPlan.oauth.callbackRoute,
-          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(manifest.deploy?.targets ?? {}),
+          nativeSchemes: resolveExpoRuntimeNativeSchemeMap(targets),
         });
       case 'oauth-state':
         return getAuthOAuthStateTs();

@@ -22,8 +22,7 @@ The current acceptance slice proves:
   Crypto shim;
 - the generated `BarcodeScannerView` bridge consumes `ExpoBarcodeScannerAdapter` through the
   generated extension registry;
-- no generated `expo-av`, `expo-permissions`, `expo/fetch`, legacy OAuth transport key or legacy
-  FileSystem read API;
+- generated source uses the current Expo media, fetch, OAuth correlation, and FileSystem contracts;
 - a pristine generated source tree passes its complete app-owned `format:check` and `lint` scripts,
   and those checks do not change any source file;
 - Expo Router declarations exist before TypeScript 6 runs;

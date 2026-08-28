@@ -62,7 +62,7 @@ describe('canonical app target generation', () => {
     expect(appConfig).not.toContain('ankh-renamedslug');
   });
 
-  it('persists the historical target identity for new projects', () => {
+  it('persists the current Web, Android, and iOS product defaults for new projects', () => {
     expect(createDefaultAppDeployManifest('oauth-fixture-consumer')).toEqual({
       targets: {
         web: { enabled: true },
@@ -82,14 +82,14 @@ describe('canonical app target generation', () => {
 
   it('does not invent a native scheme when the canonical target omits one', () => {
     const appConfig = getAppConfigTs({
-      name: 'Legacy Native App',
-      slug: 'legacy-native-app',
+      name: 'Canonical Native App',
+      slug: 'canonical-native-app',
       targets: {
-        android: { enabled: true, package: 'com.example.legacy' },
+        android: { enabled: true, package: 'com.example.canonical' },
       },
     });
 
-    expect(appConfig).toContain("package: 'com.example.legacy'");
+    expect(appConfig).toContain("package: 'com.example.canonical'");
     expect(appConfig).not.toContain('scheme:');
   });
 });

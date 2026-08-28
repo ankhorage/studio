@@ -1,15 +1,11 @@
-import { access, mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import type { AppManifest } from '@ankhorage/contracts';
 import { expect, test } from 'bun:test';
 
-import {
-  ObsoleteStudioManifestError,
-  ProjectManifestNotFoundError,
-  ProjectStore,
-} from './projectStore';
+import { ProjectManifestNotFoundError, ProjectStore } from './projectStore';
 
 test('project summary reads canonical category, active theme, and timestamps', async () => {
   const workspaceRoot = await mkdtemp(path.join(tmpdir(), 'studio-project-summary-'));
@@ -75,7 +71,7 @@ test('missing project manifests are rejected instead of synthesized', async () =
   );
 });
 
-test('canonical writes persist only ankh.config.json', async () => {
+test('canonical writes persist ankh.config.json', async () => {
   const workspaceRoot = await createProjectWorkspace('canonical-write');
   const store = new ProjectStore(workspaceRoot);
   await store.writeManifest('demo', createManifest('Canonical'));
@@ -84,27 +80,9 @@ test('canonical writes persist only ankh.config.json', async () => {
   const persisted = await store.readManifest('demo');
 
   expect(persisted.metadata.name).toBe('Canonical');
-  expect(await pathExists(path.join(projectRoot, 'ankh.config.json'))).toBe(true);
-  expect(await pathExists(path.join(projectRoot, '.ankh', 'studio.manifest.json'))).toBe(false);
-});
-
-test('obsolete Studio manifest state is rejected without merging it', async () => {
-  const workspaceRoot = await createProjectWorkspace('obsolete-studio-manifest');
-  const projectRoot = path.join(workspaceRoot, 'apps', 'demo');
-  await writeFile(
-    path.join(projectRoot, 'ankh.config.json'),
-    JSON.stringify(createManifest('Canonical')),
+  expect(JSON.parse(await readFile(path.join(projectRoot, 'ankh.config.json'), 'utf8'))).toEqual(
+    persisted,
   );
-  await mkdir(path.join(projectRoot, '.ankh'), { recursive: true });
-  await writeFile(
-    path.join(projectRoot, '.ankh', 'studio.manifest.json'),
-    JSON.stringify(createManifest('Obsolete Draft')),
-  );
-
-  const error = await catchError(new ProjectStore(workspaceRoot).readManifest('demo'));
-
-  expect(error).toBeInstanceOf(ObsoleteStudioManifestError);
-  expect(error instanceof Error ? error.message : '').toContain('ankh.config.json is now the sole');
 });
 
 async function createProjectWorkspace(prefix: string): Promise<string> {
@@ -138,15 +116,6 @@ function createManifest(name: string): AppManifest {
     screens: {},
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
   };
-}
-
-async function pathExists(filePath: string): Promise<boolean> {
-  try {
-    await access(filePath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 async function catchError(promise: Promise<unknown>): Promise<unknown> {
