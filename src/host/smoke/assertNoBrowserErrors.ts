@@ -8,7 +8,7 @@ export function assertNoBrowserErrors(issues: readonly string[], label: string):
   );
   const classification = renderMismatch
     ? `React hydration/recoverable-render mismatch (${renderMismatch})`
-    : 'browser exception, console error/warning/assertion, or browser log error/warning';
+    : 'browser exception, console error/warning/assertion, browser log error/warning, or failed asset request';
   throw new Error(`${label} reported ${classification}:\n${source}`);
 }
 

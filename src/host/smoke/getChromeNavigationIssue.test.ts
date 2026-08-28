@@ -69,4 +69,36 @@ describe('getChromeNavigationIssue', () => {
       }),
     ).toBeNull();
   });
+
+  test('captures failed asset responses and transport failures', () => {
+    expect(
+      getChromeNavigationIssue('Network.responseReceived', {
+        response: { status: 404, url: 'http://localhost/_expo/static/app.js' },
+      }),
+    ).toBe('[network response] 404 http://localhost/_expo/static/app.js');
+    expect(
+      getChromeNavigationIssue('Network.loadingFailed', {
+        errorText: 'net::ERR_CONNECTION_REFUSED',
+      }),
+    ).toBe('[network failure] net::ERR_CONNECTION_REFUSED');
+  });
+
+  test('ignores successful responses, favicon absence, and canceled requests', () => {
+    expect(
+      getChromeNavigationIssue('Network.responseReceived', {
+        response: { status: 200, url: 'http://localhost/_expo/static/app.js' },
+      }),
+    ).toBeNull();
+    expect(
+      getChromeNavigationIssue('Network.responseReceived', {
+        response: { status: 404, url: 'http://localhost/favicon.ico' },
+      }),
+    ).toBeNull();
+    expect(
+      getChromeNavigationIssue('Network.loadingFailed', {
+        canceled: true,
+        errorText: 'net::ERR_ABORTED',
+      }),
+    ).toBeNull();
+  });
 });

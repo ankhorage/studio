@@ -21,20 +21,22 @@ The registry was checked before this Studio package change. The released prerequ
 | `@ankhorage/surface`      | `3.0.1`          | `0.86.x`          |
 | `@ankhorage/zora`         | `3.0.1`          | `0.86.x`          |
 | `@ankhorage/expo-runtime` | `3.0.6`          | `0.86.3`          |
+| `@ankhorage/studio`       | `2.0.9`          | `0.86.x`          |
 
 Studio now publishes the same intentional `0.86.x` portable peer, raises its dependency floors to
 those released owners, and validates `apps/studio` on React Native `0.86.3` and Expo `57.0.17`.
-The patch changeset publishes this metadata as Studio 2.0.9.
+The patch changeset published this metadata as Studio 2.0.9.
 
 ## Boundary and acceptance
 
 This change adds no source API and no compatibility path. Package-neutral Studio code stays
 independent of Expo and React Native implementation details; only public package metadata and the
-first-party ordinary-app validation baseline change. The final issue #314 acceptance must consume
-the published Studio 2.0.9 tarball from the registry in a fixture that is itself both package and
+first-party ordinary-app validation baseline change. The final issue #314 acceptance consumed the
+published Studio 2.0.9 tarball from the registry in a fixture that is itself both package and
 installation root, with no workspace, source, `file:`, or `link:` fallback.
 
-That final acceptance must permanently assert that every installed RN-facing Ankhorage owner accepts
-the fixture's one React Native 0.86.3 installation. Native Android/iOS Debug and Release builds and
-fresh development clients must then be repeated from the final published graph; the earlier 0.86.2
-native evidence is historical only.
+The permanent graph assertion passed for the standalone Studio consumer, generated capability app,
+and final native fixture: every installed RN-facing Ankhorage owner accepts the one physical React
+Native 0.86.3 installation. Android/iOS Debug and Release builds and fresh development clients were
+then rebuilt, installed and launched from that final graph. The earlier 0.86.2 native evidence is
+historical only.

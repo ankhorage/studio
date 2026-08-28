@@ -15,7 +15,7 @@ describe('assertNoBrowserErrors', () => {
   test('rejects arbitrary console errors instead of relying on selected substrings', () => {
     expect(() =>
       assertNoBrowserErrors(['[console.error] application-specific failure'], 'development'),
-    ).toThrow('browser exception, console error/warning/assertion, or browser log error/warning');
+    ).toThrow('failed asset request');
   });
 
   test('allows only exact known React Native Web deprecation warnings', () => {

@@ -47,7 +47,7 @@ The mandatory skills affected the result as follows:
 ## Consumer contract
 
 `apps/studio` now declares Node 24, Bun 1.3.14, every imported runtime dependency, and every invoked
-tool directly. Its `@ankhorage/studio` range is `^2.0.7`; Expo Runtime `^3.0.5` supplies the sole
+tool directly. Its `@ankhorage/studio` range is `^2.0.9`; Expo Runtime `^3.0.6` supplies the sole
 `EXPO_PLATFORM` authority used by `platform:check`. Ordinary app scripts never invoke a parent build,
 and TypeScript has no parent path or `dist/root.d.ts` alias.
 
@@ -78,11 +78,16 @@ evidence.
 The acceptance creates a registry lockfile, deletes `node_modules`, and performs a cold frozen
 install. For Studio, Expo Runtime, and Devtools it derives the installed registry version, proves
 that it satisfies the declared release range, matches the exact fresh lockfile resolution, and lives
-inside the fixture's own `node_modules`. This remains valid when a newer compatible patch is
-published. It hashes the lockfile before and after all checks. The frozen SDK 57 resolution used
-during implementation contained Studio 2.0.7, Expo Runtime 3.0.5, Devtools 1.6.1, Expo 57.0.16,
-Expo Router 57.0.16, Expo Dev Client 57.0.15, Expo Splash Screen 57.0.8, React Native 0.86.2, and
-TypeScript 6.0.3.
+inside the fixture's own `node_modules`. The final gate additionally scans the physical Bun graph,
+requires exactly one React Native 0.86.3 installation, rejects incompatible RN peers from every
+installed Ankhorage owner, and requires Studio 2.0.9, Expo Runtime 3.0.6, Runtime 2.2.1, Surface
+3.0.1 and ZORA 3.0.1 as compatible range floors rather than exact permanent versions. It hashes the
+lockfile before and after all checks. The earlier frozen SDK 57
+resolution used during implementation contained Studio 2.0.7, Expo Runtime 3.0.5, Devtools 1.6.1,
+Expo 57.0.16, Expo Router 57.0.16, Expo Dev Client 57.0.15, Expo Splash Screen 57.0.8, React Native
+0.86.2, and TypeScript 6.0.3. The completed 2026-08-27 repetition instead resolved Studio 2.0.9,
+Expo Runtime 3.0.6, Devtools 1.7.0, Expo 57.0.17, Expo Router 57.0.17, Expo Dev Client 57.0.16,
+React Native 0.86.3 and TypeScript 6.0.3 from the registry.
 
 The same run performs the platform assertion, Router type generation, TypeScript, lint, format,
 `expo install --check`, Expo Doctor, React Compiler healthcheck, development Web navigation, static
@@ -96,9 +101,9 @@ static icon-font registration, and continued absence of obsolete bar config.
 The CI job repeats this registry-only proof on Node 24 and Bun 1.3.14. Normal repository-workspace
 validation remains separate and mandatory.
 
-## Native build and runtime evidence
+## Issue #313 native build and runtime evidence
 
-The final app fixture was rebuilt from clean CNG output on macOS 26.6 with Xcode 26.6, Bun 1.3.14,
+The issue #313 app fixture was rebuilt from clean CNG output on macOS 26.6 with Xcode 26.6, Bun 1.3.14,
 Temurin Java 17.0.10, and the local Android SDK/NDK selected by Expo. The local shell provided Node
 26.7.0; the package engine, platform assertion, and CI job enforce the authoritative Node 24 line.
 
@@ -118,8 +123,13 @@ Two defects surfaced only under honest native execution and are now covered by t
    fonts were not registered in `UIAppFonts`. The official package config plugins fixed registration;
    CNG assertions now protect the four required font entries.
 
+This section records the earlier standalone-app run and is historical for the RN patch. Issue #314
+repeated Android/iOS Development and Release builds, installation and launch with the final single
+RN 0.86.3 owner graph; that result is recorded in `docs/expo57-native-capability-evidence.md`.
+
 For a fresh local repetition, run `bun run prebuild` before the native commands and use a rebuilt
-development client. Existing SDK 54 or issue #312 clients are not valid evidence for this app.
+development client. Existing SDK 54, RN 0.86.2, or issue #312 clients are not valid final issue #314
+evidence.
 
 ## Package boundary and convergence
 

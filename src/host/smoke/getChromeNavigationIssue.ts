@@ -16,7 +16,29 @@ export function getChromeNavigationIssue(
     return formatLogIssue(params);
   }
 
+  if (method === 'Network.loadingFailed') {
+    return formatNetworkFailure(params);
+  }
+
+  if (method === 'Network.responseReceived') {
+    return formatFailedNetworkResponse(params);
+  }
+
   return null;
+}
+
+function formatFailedNetworkResponse(params: Record<string, unknown>): string | null {
+  const response = isRecord(params.response) ? params.response : undefined;
+  if (!response || typeof response.status !== 'number' || response.status < 400) return null;
+  const url = readString(response, 'url') ?? '<unknown URL>';
+  if (new URL(url, 'http://localhost').pathname === '/favicon.ico') return null;
+  return `[network response] ${response.status} ${url}`;
+}
+
+function formatNetworkFailure(params: Record<string, unknown>): string | null {
+  if (params.canceled === true) return null;
+  const errorText = readString(params, 'errorText') ?? 'Network request failed';
+  return `[network failure] ${errorText}`;
 }
 
 function formatConsoleApiIssue(params: Record<string, unknown>): string | null {
