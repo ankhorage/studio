@@ -3,6 +3,7 @@ graph LR
   module_paradox_config_ts["paradox.config.ts"]
   module_scripts_auth5_native_oauth_smoke_infra_ts["scripts/auth5-native-oauth-smoke-infra.ts"]
   module_scripts_auth5_native_oauth_smoke_ts["scripts/auth5-native-oauth-smoke.ts"]
+  module_scripts_expo57_all_template_acceptance_ts["scripts/expo57-all-template-acceptance.ts"]
   module_scripts_expo57_generated_app_acceptance_ts["scripts/expo57-generated-app-acceptance.ts"]
   module_scripts_expo57_generated_capability_acceptance_ts["scripts/expo57-generated-capability-acceptance.ts"]
   module_scripts_expo57_generated_navigation_acceptance_ts["scripts/expo57-generated-navigation-acceptance.ts"]
@@ -214,6 +215,8 @@ graph LR
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts["src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"]
   module_src_host_smoke_assertExpo57StudioNativePrebuildAsync_ts["src/host/smoke/assertExpo57StudioNativePrebuildAsync.ts"]
   module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts["src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"]
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts["src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"]
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts["src/host/smoke/assertInstalledRegistryPackageAsync.ts"]
   module_src_host_smoke_assertNoBrowserErrors_test_ts["src/host/smoke/assertNoBrowserErrors.test.ts"]
   module_src_host_smoke_assertNoBrowserErrors_ts["src/host/smoke/assertNoBrowserErrors.ts"]
   module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts["src/host/smoke/auth5NativeOAuthSmokeConfig.ts"]
@@ -472,6 +475,7 @@ graph LR
   module_src_workspaceSearch_ts["src/workspaceSearch.ts"]
   module_scripts_auth5_native_oauth_smoke_infra_ts --> module_src_host_smoke_runAuth5NativeOAuthSmokeInfra_ts
   module_scripts_auth5_native_oauth_smoke_ts --> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
+  module_scripts_expo57_all_template_acceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_scripts_expo57_generated_app_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
   module_scripts_expo57_generated_capability_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts
   module_scripts_expo57_generated_navigation_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
@@ -858,6 +862,10 @@ graph LR
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_orchestrator_projectManager_ts
   module_src_host_secrets_trustedOAuthInfraEnvironment_ts --> module_src_host_secrets_projectSecretService_ts
   module_src_host_smoke_assertExpo57GeneratedCapabilityOwnerGraphAsync_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
+  module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts --> module_src_host_installedPackageProvenance_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_smoke_assertNoBrowserErrors_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_ChromeNavigationSession_ts --> module_src_host_smoke_getChromeNavigationIssue_ts
   module_src_host_smoke_createAuth5NativeOAuthSmokeFixture_test_ts --> module_src_host_smoke_auth5NativeOAuthSmokeConfig_ts
@@ -921,6 +929,7 @@ graph LR
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_reserveTcpPortAsync_ts
   module_src_host_smoke_runExpo57GeneratedCapabilityAcceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts

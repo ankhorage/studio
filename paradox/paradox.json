@@ -12,7 +12,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.7",
+      "value": "v2.0.9",
       "color": "cb3837"
     },
     {
@@ -91,6 +91,12 @@
       "path": "scripts/auth5-native-oauth-smoke.ts",
       "isEntrypoint": false,
       "dependencies": ["src/host/smoke/runAuth5NativeOAuthSmoke.ts"],
+      "exports": []
+    },
+    {
+      "path": "scripts/expo57-all-template-acceptance.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/runAcceptanceCommandAsync.ts"],
       "exports": []
     },
     {
@@ -2000,8 +2006,23 @@
     {
       "path": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": ["src/host/smoke/assertInstalledRegistryPackageAsync.ts"],
       "exports": ["assertExpo57StudioStandaloneContractAsync"]
+    },
+    {
+      "path": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/host/smoke/assertInstalledRegistryPackageAsync.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/host/installedPackageProvenance.ts",
+        "src/host/orchestrator/semverRange.ts"
+      ],
+      "exports": ["assertInstalledRegistryPackageAsync"]
     },
     {
       "path": "src/host/smoke/assertNoBrowserErrors.test.ts",
@@ -2312,6 +2333,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/host/orchestrator/projectManager.ts",
+        "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
         "src/host/smoke/assertNoBrowserErrors.ts",
         "src/host/smoke/ChromeNavigationSession.ts",
         "src/host/smoke/createExpo57NavigationFixtureManifest.ts",
@@ -16621,7 +16643,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 12,
+        "line": 31,
         "column": 1
       }
     },
@@ -16630,7 +16652,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 47,
+        "line": 68,
         "column": 1
       }
     },
@@ -16639,7 +16661,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 66,
+        "line": 87,
         "column": 1
       }
     },
@@ -16648,7 +16670,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 116,
+        "line": 120,
         "column": 1
       }
     },
@@ -16657,7 +16679,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 132,
+        "line": 136,
         "column": 1
       }
     },
@@ -16666,7 +16688,52 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
-        "line": 137,
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "createInstallationRootAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "createLockfileEntry",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "line": 115,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolvePackageRoot",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeInstalledPackageAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertInstalledRegistryPackageAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "line": 11,
         "column": 1
       }
     },
@@ -16874,6 +16941,24 @@
       "sourceLocation": {
         "filePath": "src/host/smoke/createStaticExportServer.ts",
         "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFixtureRootAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeInstalledPackageAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "line": 73,
         "column": 1
       }
     },
@@ -17728,7 +17813,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 190,
+        "line": 175,
         "column": 1
       }
     },
@@ -17737,7 +17822,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 213,
+        "line": 198,
         "column": 1
       }
     },
@@ -17746,7 +17831,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 224,
+        "line": 209,
         "column": 1
       }
     },
@@ -17755,7 +17840,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 250,
+        "line": 235,
         "column": 1
       }
     },
@@ -17764,7 +17849,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 268,
+        "line": 253,
         "column": 1
       }
     },
@@ -17773,7 +17858,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 277,
+        "line": 262,
         "column": 1
       }
     },
@@ -17782,7 +17867,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 288,
+        "line": 273,
         "column": 1
       }
     },
@@ -17791,7 +17876,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 298,
+        "line": 283,
         "column": 1
       }
     },
@@ -17800,7 +17885,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 311,
+        "line": 296,
         "column": 1
       }
     },
@@ -17809,7 +17894,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 354,
+        "line": 339,
         "column": 1
       }
     },
@@ -17818,7 +17903,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 391,
+        "line": 376,
         "column": 1
       }
     },
@@ -17827,7 +17912,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 424,
+        "line": 409,
         "column": 1
       }
     },
@@ -17836,7 +17921,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 495,
+        "line": 480,
         "column": 1
       }
     },
@@ -17845,7 +17930,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 511,
+        "line": 496,
         "column": 1
       }
     },
@@ -17854,7 +17939,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 526,
+        "line": 511,
         "column": 1
       }
     },
@@ -17863,7 +17948,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 539,
+        "line": 524,
         "column": 1
       }
     },
@@ -17872,7 +17957,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
-        "line": 547,
+        "line": 532,
         "column": 1
       }
     },
@@ -25598,6 +25683,11 @@
         "sourcePath": "scripts/auth5-native-oauth-smoke.ts"
       },
       {
+        "fromPath": "scripts/expo57-all-template-acceptance.ts",
+        "toPath": "src/host/smoke/runAcceptanceCommandAsync.ts",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
         "fromPath": "scripts/expo57-generated-app-acceptance.ts",
         "toPath": "src/host/smoke/runExpo57GeneratedAppAcceptance.ts",
         "sourcePath": "scripts/expo57-generated-app-acceptance.ts"
@@ -28298,6 +28388,26 @@
         "sourcePath": "src/host/smoke/assertExpo57GeneratedCapabilityOwnerGraphAsync.ts"
       },
       {
+        "fromPath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts",
+        "toPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "toPath": "src/host/installedPackageProvenance.ts",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
+        "toPath": "src/host/orchestrator/semverRange.ts",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
         "fromPath": "src/host/smoke/assertNoBrowserErrors.test.ts",
         "toPath": "src/host/smoke/assertNoBrowserErrors.ts",
         "sourcePath": "src/host/smoke/assertNoBrowserErrors.test.ts"
@@ -28515,6 +28625,11 @@
       {
         "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
         "toPath": "src/host/orchestrator/projectManager.ts",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromPath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts",
+        "toPath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {
@@ -30375,6 +30490,60 @@
         "toSymbol": "defineParadoxConfig",
         "callExpression": "defineParadoxConfig",
         "sourcePath": "paradox.config.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "cp",
+        "callExpression": "cp",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "isWithin",
+        "callExpression": "isWithin",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "runAcceptanceCommandAsync",
+        "callExpression": "runAcceptanceCommandAsync",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "hash",
+        "callExpression": "hash",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "scripts/expo57-all-template-acceptance.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
+      },
+      {
+        "fromSymbol": "hash",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "scripts/expo57-all-template-acceptance.ts"
       },
       {
         "fromSymbol": "scripts/expo57-generated-app-acceptance.ts",
@@ -49764,26 +49933,20 @@
       },
       {
         "fromSymbol": "assertInstalledContractAsync",
-        "toSymbol": "stat",
-        "callExpression": "stat",
-        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
-      },
-      {
-        "fromSymbol": "assertInstalledContractAsync",
-        "toSymbol": "realpath",
-        "callExpression": "realpath",
-        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
-      },
-      {
-        "fromSymbol": "assertInstalledContractAsync",
-        "toSymbol": "isWithin",
-        "callExpression": "isWithin",
-        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
-      },
-      {
-        "fromSymbol": "assertInstalledContractAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "assertInstalledRegistryPackageAsync",
+        "callExpression": "assertInstalledRegistryPackageAsync",
+        "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledContractAsync",
+        "toSymbol": "stat",
+        "callExpression": "stat",
         "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
       },
       {
@@ -49797,6 +49960,156 @@
         "toSymbol": "listFilesAsync",
         "callExpression": "listFilesAsync",
         "sourcePath": "src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "afterEach",
+        "callExpression": "afterEach",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "describe",
+        "callExpression": "describe",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "it",
+        "callExpression": "it",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "createInstallationRootAsync",
+        "callExpression": "createInstallationRootAsync",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "writeInstalledPackageAsync",
+        "callExpression": "writeInstalledPackageAsync",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "expect",
+        "callExpression": "expect",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "assertInstalledRegistryPackageAsync",
+        "callExpression": "assertInstalledRegistryPackageAsync",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "createLockfileEntry",
+        "callExpression": "createLockfileEntry",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "resolvePackageRoot",
+        "callExpression": "resolvePackageRoot",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createInstallationRootAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "createInstallationRootAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "resolvePackageRoot",
+        "callExpression": "resolvePackageRoot",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledRegistryPackageAsync",
+        "toSymbol": "resolveInstalledPackageProvenance",
+        "callExpression": "resolveInstalledPackageProvenance",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledRegistryPackageAsync",
+        "toSymbol": "isPathInsideResolved",
+        "callExpression": "isPathInsideResolved",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledRegistryPackageAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledRegistryPackageAsync",
+        "toSymbol": "satisfiesCaretSemverRange",
+        "callExpression": "satisfiesCaretSemverRange",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
+      },
+      {
+        "fromSymbol": "assertInstalledRegistryPackageAsync",
+        "toSymbol": "bunLockfileReferencesPackageVersion",
+        "callExpression": "bunLockfileReferencesPackageVersion",
+        "sourcePath": "src/host/smoke/assertInstalledRegistryPackageAsync.ts"
       },
       {
         "fromSymbol": "src/host/smoke/assertNoBrowserErrors.test.ts",
@@ -50364,8 +50677,8 @@
       },
       {
         "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
-        "toSymbol": "mkdtemp",
-        "callExpression": "mkdtemp",
+        "toSymbol": "createFixtureRootAsync",
+        "callExpression": "createFixtureRootAsync",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
@@ -50390,6 +50703,36 @@
         "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
         "toSymbol": "expect",
         "callExpression": "expect",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "writeInstalledPackageAsync",
+        "callExpression": "writeInstalledPackageAsync",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "src/host/smoke/expo57StudioStandaloneFixture.test.ts",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "createFixtureRootAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
+      },
+      {
+        "fromSymbol": "writeInstalledPackageAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
         "sourcePath": "src/host/smoke/expo57StudioStandaloneFixture.test.ts"
       },
       {
@@ -51320,6 +51663,12 @@
         "fromSymbol": "assertReleasedStudioPackageAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
+      },
+      {
+        "fromSymbol": "assertReleasedStudioPackageAsync",
+        "toSymbol": "assertInstalledRegistryPackageAsync",
+        "callExpression": "assertInstalledRegistryPackageAsync",
         "sourcePath": "src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"
       },
       {

@@ -12,6 +12,9 @@ graph TD
   module_scripts_auth5_native_oauth_smoke_ts["scripts/auth5-native-oauth-smoke.ts"]
   package__ankhorage_studio -.-> module_scripts_auth5_native_oauth_smoke_ts
   module_scripts_auth5_native_oauth_smoke_ts --> module_src_host_smoke_runAuth5NativeOAuthSmoke_ts
+  module_scripts_expo57_all_template_acceptance_ts["scripts/expo57-all-template-acceptance.ts"]
+  package__ankhorage_studio -.-> module_scripts_expo57_all_template_acceptance_ts
+  module_scripts_expo57_all_template_acceptance_ts --> module_src_host_smoke_runAcceptanceCommandAsync_ts
   module_scripts_expo57_generated_app_acceptance_ts["scripts/expo57-generated-app-acceptance.ts"]
   package__ankhorage_studio -.-> module_scripts_expo57_generated_app_acceptance_ts
   module_scripts_expo57_generated_app_acceptance_ts --> module_src_host_smoke_runExpo57GeneratedAppAcceptance_ts
@@ -820,6 +823,14 @@ graph TD
   package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57StudioNativePrebuildAsync_ts
   module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts["src/host/smoke/assertExpo57StudioStandaloneContractAsync.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts
+  module_src_host_smoke_assertExpo57StudioStandaloneContractAsync_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts["src/host/smoke/assertInstalledRegistryPackageAsync.test.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_test_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts["src/host/smoke/assertInstalledRegistryPackageAsync.ts"]
+  package__ankhorage_studio -.-> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts --> module_src_host_installedPackageProvenance_ts
+  module_src_host_smoke_assertInstalledRegistryPackageAsync_ts --> module_src_host_orchestrator_semverRange_ts
   module_src_host_smoke_assertNoBrowserErrors_test_ts["src/host/smoke/assertNoBrowserErrors.test.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_assertNoBrowserErrors_test_ts
   module_src_host_smoke_assertNoBrowserErrors_test_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
@@ -961,6 +972,7 @@ graph TD
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts["src/host/smoke/runExpo57GeneratedNavigationAcceptance.ts"]
   package__ankhorage_studio -.-> module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_orchestrator_projectManager_ts
+  module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertInstalledRegistryPackageAsync_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_assertNoBrowserErrors_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_ChromeNavigationSession_ts
   module_src_host_smoke_runExpo57GeneratedNavigationAcceptance_ts --> module_src_host_smoke_createExpo57NavigationFixtureManifest_ts
