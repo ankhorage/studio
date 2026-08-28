@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.13
+
+### Patch Changes
+
+- 248580c: Restore Studio and generated Expo Web icon fonts through the shared Expo Runtime boundary, and verify browser controls with genuine pointer hit-testing.
+
 ## 2.0.12
 
 ### Patch Changes
