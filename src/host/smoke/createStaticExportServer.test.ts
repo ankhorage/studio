@@ -27,6 +27,21 @@ test('serves both flat and nested Expo static route output', async () => {
   }
 });
 
+test('serves an explicitly selected generated Infra export directory', async () => {
+  const projectRoot = await mkdtemp(path.join('/tmp', 'ankh-static-infra-server-'));
+  const outputRoot = path.join(projectRoot, '.ankh', 'web-export');
+  await mkdir(outputRoot, { recursive: true });
+  await writeFile(path.join(outputRoot, 'index.html'), 'generated Infra artifact');
+  const server = createStaticExportServer(projectRoot, '.ankh/web-export');
+
+  try {
+    expect(await fetchRoute(server, '/')).toBe('generated Infra artifact');
+  } finally {
+    await server.stop(true);
+    await rm(projectRoot, { force: true, recursive: true });
+  }
+});
+
 async function fetchRoute(server: ReturnType<typeof Bun.serve>, pathname: string): Promise<string> {
   if (server.port === undefined) throw new Error('Static fixture server has no port.');
   const response = await fetch(`http://127.0.0.1:${server.port}${pathname}`);

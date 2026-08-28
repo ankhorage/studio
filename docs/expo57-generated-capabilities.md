@@ -12,7 +12,8 @@ bun run test:acceptance:expo57-generated-capabilities
 
 The current acceptance slice proves:
 
-- a clean frozen workspace install that leaves the generated lockfile byte-for-byte unchanged;
+- a clean frozen install from the generated app's own package root that leaves its lockfile
+  byte-for-byte unchanged;
 - exact released owner versions for Expo Runtime, permissions and Supabase Auth;
 - owner-projected Expo 57 packages and config plugins for camera/scanner, microphone, media-library,
   location and notifications declarations;
@@ -26,7 +27,7 @@ The current acceptance slice proves:
 - a pristine generated source tree passes its complete app-owned `format:check` and `lint` scripts,
   and those checks do not change any source file;
 - Expo Router declarations exist before TypeScript 6 runs;
-- Expo dependency compatibility, Expo Doctor, React Compiler health, Web export, Android/iOS
+- Expo dependency compatibility, Expo Doctor, React Compiler-backed Web export, Android/iOS
   JavaScript exports and clean CNG prebuild;
 - Android and iOS prebuild output contains the expected app schemes and app-owned permission
   declarations;

@@ -54,6 +54,7 @@ export class ChromeNavigationSession {
       await session.sendAsync('Page.enable');
       await session.sendAsync('Runtime.enable');
       await session.sendAsync('Log.enable');
+      await session.sendAsync('Network.enable');
       await session.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
         source: `window.addEventListener('unhandledrejection', (event) => {
   const reason = event.reason instanceof Error ? event.reason.stack ?? event.reason.message : String(event.reason);
@@ -168,6 +169,29 @@ export class ChromeNavigationSession {
   async reloadAsync(): Promise<void> {
     await this.sendAsync('Page.reload');
     await this.waitForLoadAsync();
+  }
+
+  async assertNoHorizontalOverflowAsync(label: string): Promise<void> {
+    const layout = await this.evaluateAsync<{
+      readonly clientWidth: number;
+      readonly scrollWidth: number;
+    }>(
+      '({ clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth })',
+    );
+    if (layout.scrollWidth > layout.clientWidth) {
+      throw new Error(
+        `${label} overflows horizontally: ${layout.scrollWidth}px content in a ${layout.clientWidth}px viewport.`,
+      );
+    }
+  }
+
+  async setViewportAsync(width: number, height: number): Promise<void> {
+    await this.sendAsync('Emulation.setDeviceMetricsOverride', {
+      deviceScaleFactor: 1,
+      height,
+      mobile: width < 768,
+      width,
+    });
   }
 
   async setLocalStorageItemAsync(key: string, value: string): Promise<void> {

@@ -1,7 +1,10 @@
 import path from 'node:path';
 
-export function createStaticExportServer(projectRoot: string): ReturnType<typeof Bun.serve> {
-  const outputRoot = path.resolve(projectRoot, 'dist');
+export function createStaticExportServer(
+  projectRoot: string,
+  outputDirectory = 'dist',
+): ReturnType<typeof Bun.serve> {
+  const outputRoot = path.resolve(projectRoot, outputDirectory);
   return Bun.serve({
     hostname: '127.0.0.1',
     port: 0,
