@@ -335,10 +335,13 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
     await chrome.goBackAsync();
     await chrome.waitForLocationAsync({ pathname: '/' });
 
+    await chrome.waitForHydratedRoleAndNameAsync('tab', 'Catalog');
     await chrome.clickByRoleAndNameAsync('tab', 'Catalog');
     await chrome.waitForLocationAsync({ pathname: '/catalog' });
     await chrome.waitForBodyTextAsync('Catalog Drawer Route');
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Show navigation menu');
     await chrome.clickByRoleAndNameAsync('button', 'Show navigation menu');
+    await chrome.waitForHydratedRoleAndNameAsync('button', 'Catalog Settings');
     await chrome.clickByRoleAndNameAsync('button', 'Catalog Settings');
     await chrome.waitForLocationAsync({ pathname: '/catalog/settings' });
     await chrome.waitForBodyTextAsync('Catalog Settings Route');
