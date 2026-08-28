@@ -385,5 +385,10 @@ test('holds generated app output behind the shared Expo ZORA icon font boundary'
 
     expect(generated).toContain('<ExpoZoraIconFontProvider>');
     expect(generated).toContain('</ExpoZoraIconFontProvider>');
+    expect(generated.match(/<ExpoZoraIconFontProvider>/g)).toHaveLength(1);
+    expect(generated).toContain(
+      'function GeneratedRootView({ children }: { children: ReactNode })',
+    );
+    expect(generated).toContain('return <GeneratedRootView>{shell}</GeneratedRootView>;');
   }
 });

@@ -320,27 +320,25 @@ const shouldMountAppHeader =
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (
-    <ExpoZoraIconFontProvider>
-      <GestureHandlerRootView style={rootViewStyle}>
-        <StudioProvider
-          projectId={ankhConfig.metadata.slug}
-          initialManifest={runtimeManifest}
-          activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
-          componentMeta={ZORA_COMPONENT_META}
-          mediaPicker={studioMediaPicker}
-        >
-          <StudioShell
-            output={output}
-            activeTheme={activeTheme}
-            activeThemeMode={activeThemeMode}
-            runtimeManifest={runtimeManifest}
-            appPathname={appPathname}
-            appLocation={appLocation}
-            shouldMountAppHeader={shouldMountAppHeader}
-          />
-        </StudioProvider>
-      </GestureHandlerRootView>
-    </ExpoZoraIconFontProvider>
+    <GeneratedRootView>
+      <StudioProvider
+        projectId={ankhConfig.metadata.slug}
+        initialManifest={runtimeManifest}
+        activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
+        componentMeta={ZORA_COMPONENT_META}
+        mediaPicker={studioMediaPicker}
+      >
+        <StudioShell
+          output={output}
+          activeTheme={activeTheme}
+          activeThemeMode={activeThemeMode}
+          runtimeManifest={runtimeManifest}
+          appPathname={appPathname}
+          appLocation={appLocation}
+          shouldMountAppHeader={shouldMountAppHeader}
+        />
+      </StudioProvider>
+    </GeneratedRootView>
   );
 }`
     : '';
@@ -373,6 +371,14 @@ ${moduleLevelDeclarations}
 const fallbackManifest = ankhConfig as unknown as AppManifest;
 ${runtimeComponentRegistryDeclaration}
 const rootViewStyle = { flex: 1 } as const;
+
+function GeneratedRootView({ children }: { children: ReactNode }) {
+  return (
+    <ExpoZoraIconFontProvider>
+      <GestureHandlerRootView style={rootViewStyle}>{children}</GestureHandlerRootView>
+    </ExpoZoraIconFontProvider>
+  );
+}
 
 function resolveZoraSurfaceThemeConfig(theme: AppManifest['themes'][number]) {
   return {
@@ -422,11 +428,7 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
       </SafeAreaProvider>
     </GeneratedZoraProvider>
   );
-${indentedStudioShellBlock}  return (
-    <ExpoZoraIconFontProvider>
-      <GestureHandlerRootView style={rootViewStyle}>{shell}</GestureHandlerRootView>
-    </ExpoZoraIconFontProvider>
-  );
+${indentedStudioShellBlock}  return <GeneratedRootView>{shell}</GeneratedRootView>;
 }${
     includeStudio
       ? `
