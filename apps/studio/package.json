@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@ankhorage/devtools": "^1.7.0",
-    "@ankhorage/expo-runtime": "^3.0.6",
+    "@ankhorage/expo-runtime": "^3.0.10",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "expo-doctor": "1.20.2",
