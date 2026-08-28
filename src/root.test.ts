@@ -36,3 +36,19 @@ test('keeps the package root and first-party apps in Studio workspace installs',
   expect(appPackageJson.dependencies?.['react-native']).toBe('0.86.3');
   expect(appPackageJson.devDependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.6');
 });
+
+test('supplies the published peer required by Expo Runtime planning', async () => {
+  const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
+    readonly dependencies?: Readonly<Record<string, string>>;
+  };
+  const expoRuntimePackageJson = (await Bun.file(
+    new URL('../node_modules/@ankhorage/expo-runtime/package.json', import.meta.url),
+  ).json()) as {
+    readonly peerDependencies?: Readonly<Record<string, string>>;
+  };
+
+  const requiredPermissionsRange =
+    expoRuntimePackageJson.peerDependencies?.['@ankhorage/permissions'];
+  expect(requiredPermissionsRange).toBe('^0.2.3');
+  expect(packageJson.dependencies?.['@ankhorage/permissions']).toBe(requiredPermissionsRange);
+});
