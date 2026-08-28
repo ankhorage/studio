@@ -2,6 +2,17 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 const ROUTE_LEDGER_REL_PATH = '.ankh/route-ledger.json';
+const GENERATED_AUTH_FILE_PATHS = new Set([
+  'src/auth/adapter.ts',
+  'src/auth/form.ts',
+  'src/auth/navigation.ts',
+  'src/auth/oauth-completion.ts',
+  'src/auth/oauth-state.ts',
+  'src/auth/oauth.ts',
+  'src/auth/screen-controller.ts',
+  'src/auth/session.ts',
+  'src/screens/auth-screen.tsx',
+]);
 
 interface RouteLedger {
   readonly schemaVersion: 1;
@@ -26,7 +37,7 @@ export class GeneratedRouteFileOwnership {
 
     for (const relativePath of previousLedger.files) {
       if (nextFiles.has(relativePath)) continue;
-      await fs.rm(resolveProjectFile(projectPath, relativePath), { force: true });
+      await fs.rm(resolveGeneratedFile(projectPath, relativePath), { force: true });
     }
 
     await writeRouteLedger(projectPath, nextLedger);
@@ -47,7 +58,7 @@ async function assertRouteLedgerMissing(projectPath: string): Promise<void> {
 
 function createRouteLedger(projectPath: string, generatedPaths: readonly string[]): RouteLedger {
   const files = [...new Set(generatedPaths.map(normalizeRelativePath))].sort();
-  for (const filePath of files) resolveProjectFile(projectPath, filePath);
+  for (const filePath of files) resolveGeneratedFile(projectPath, filePath);
   return {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
@@ -75,7 +86,7 @@ function isRouteLedger(value: unknown): value is RouteLedger {
 }
 
 function normalizeRelativePath(filePath: string): string {
-  return filePath.replace(/\\/gu, '/');
+  return path.posix.normalize(filePath.replace(/\\/gu, '/'));
 }
 
 async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger> {
@@ -106,8 +117,23 @@ async function readRequiredRouteLedger(projectPath: string): Promise<RouteLedger
   }
 
   const files = parsed.files.map(normalizeRelativePath);
-  for (const filePath of files) resolveProjectFile(projectPath, filePath);
+  try {
+    for (const filePath of files) resolveGeneratedFile(projectPath, filePath);
+  } catch (error) {
+    throw new Error(`Project route ownership state is invalid at '${ledgerPath}'.`, {
+      cause: error,
+    });
+  }
   return { ...parsed, files };
+}
+
+function resolveGeneratedFile(projectPath: string, relativePath: string): string {
+  const target = resolveProjectFile(projectPath, relativePath);
+  const isGeneratedAppRoute = relativePath.startsWith('src/app/') && relativePath.endsWith('.tsx');
+  if (!isGeneratedAppRoute && !GENERATED_AUTH_FILE_PATHS.has(relativePath)) {
+    throw new Error(`Path is outside current route-generation ownership: ${relativePath}`);
+  }
+  return target;
 }
 
 function resolveProjectFile(projectPath: string, relativePath: string): string {

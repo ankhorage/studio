@@ -22,14 +22,18 @@ describe('ProjectManager current generation state', () => {
   it('rejects a missing route ledger before persisting a manifest save', async () => {
     const { manager, manifest, projectPath } = await createProjectHarness();
 
-    await expect(
+    const error = await catchError(
       manager.saveProjectManifest({
         projectId: 'demo',
         manifest: { ...manifest, metadata: { ...manifest.metadata, name: 'Unsynced edit' } },
         mutations: [],
       }),
-    ).rejects.toThrow('Project route ownership state is missing');
+    );
 
+    expect(error).toBeInstanceOf(Error);
+    expect(error instanceof Error ? error.message : '').toContain(
+      'Project route ownership state is missing',
+    );
     expect(
       JSON.parse(await fs.readFile(path.join(projectPath, 'ankh.config.json'), 'utf8')),
     ).toEqual(manifest);
@@ -40,19 +44,32 @@ describe('ProjectManager current generation state', () => {
     await new GeneratedRouteFileOwnership().initialize(projectPath, ['src/app/_layout.tsx']);
     const { deploy: _deploy, ...targetlessManifest } = manifest;
 
-    await expect(
+    const error = await catchError(
       manager.saveProjectManifest({
         projectId: 'demo',
         manifest: targetlessManifest,
         mutations: [],
       }),
-    ).rejects.toThrow("Project 'demo' is missing canonical deploy.targets generation state.");
+    );
 
+    expect(error).toBeInstanceOf(Error);
+    expect(error instanceof Error ? error.message : '').toContain(
+      "Project 'demo' is missing canonical deploy.targets generation state.",
+    );
     expect(
       JSON.parse(await fs.readFile(path.join(projectPath, 'ankh.config.json'), 'utf8')),
     ).toEqual(manifest);
   });
 });
+
+async function catchError(promise: Promise<unknown>): Promise<unknown> {
+  try {
+    await promise;
+    return undefined;
+  } catch (error) {
+    return error;
+  }
+}
 
 async function createProjectHarness(): Promise<{
   manager: ProjectManager;
