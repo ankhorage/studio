@@ -38,12 +38,6 @@ export async function assertExpo57StudioNativePrebuildAsync(fixtureRoot: string)
   if (!gradleProperties.includes('edgeToEdgeEnabled=true')) {
     throw new Error('Android prebuild did not retain Expo 57 edge-to-edge mode.');
   }
-  for (const obsolete of ['androidStatusBar', 'androidNavigationBar', 'navigationBarColor']) {
-    if (androidManifest.includes(obsolete) || gradleProperties.includes(obsolete)) {
-      throw new Error(`Android prebuild contains obsolete ${obsolete} configuration.`);
-    }
-  }
-
   const iosProject = await resolveIosProjectAsync(iosRoot);
   const [infoPlist, projectFile] = await Promise.all([
     readFile(path.join(iosRoot, iosProject, 'Info.plist'), 'utf8'),

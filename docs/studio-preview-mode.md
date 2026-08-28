@@ -29,6 +29,5 @@ canonical Expo Router location, and returning to Edit retains the reached route.
 continues to use `/ankh/*` and the session's latest non-admin location; it is never rendered as the
 app Preview surface.
 
-The removed preview registry, preview Runtime config, and manifest navigator preview model exports
-were historical parallel projections. The generated app registry and manifest navigator are now
-the only production and Preview sources of truth.
+The generated app registry and manifest navigator are the only production and Preview sources of
+truth.

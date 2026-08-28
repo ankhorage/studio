@@ -13,6 +13,7 @@ const BASE_MANIFEST: AppManifest = {
     themeId: 'default',
   },
   settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+  deploy: { targets: { web: { enabled: true } } },
   infra: { modules: [] },
   navigator: {
     type: 'stack',

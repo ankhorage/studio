@@ -18,6 +18,7 @@ function createAuthManifest(postSignInRoute: 'index' | 'products'): AppManifest 
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+    deploy: { targets: { web: { enabled: true } } },
     infra: {
       modules: [],
       auth: {

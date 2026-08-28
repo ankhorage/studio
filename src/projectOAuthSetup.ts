@@ -16,7 +16,11 @@ export function resolveProjectAuthEnvironment(value: string | undefined): AppDep
 
 export function resolveProjectEnabledTargets(manifest: AppManifest): readonly AppDeployTargetId[] {
   const targets = manifest.deploy?.targets;
-  if (!targets) return ['web'];
+  if (!targets) {
+    throw new Error(
+      `Project '${manifest.metadata.slug}' is missing canonical deploy.targets generation state.`,
+    );
+  }
 
   return APP_DEPLOY_TARGET_IDS.filter(
     (target) => readOwnProperty<{ readonly enabled?: boolean }>(targets, target)?.enabled === true,

@@ -13,6 +13,7 @@ import {
   type ZoraExtensionDefinition,
 } from '../zoraExtensions';
 import { syncGeneratedAppFiles } from './generatedAppFiles';
+import { createDefaultAppDeployManifest } from './projectTargets';
 import {
   type GeneratedAuthProvider,
   type GeneratedStorageProvider,
@@ -36,6 +37,10 @@ interface ScaffoldProjectOptions {
   targets?: AppDeployTargets;
 }
 
+interface SyncProjectScaffoldOptions extends Omit<ScaffoldProjectOptions, 'targets'> {
+  targets: AppDeployTargets;
+}
+
 type PackageJsonShape = ReturnType<typeof getPackageJson>;
 type ExtendedPackageJsonShape = Omit<PackageJsonShape, 'dependencies'> & {
   dependencies: Record<string, string>;
@@ -45,8 +50,6 @@ type PartialPackageScripts = Partial<PackageScripts>;
 
 const REQUIRED_MANAGED_SCRIPT_NAMES = ['lint', 'lint:fix', 'format', 'format:check'] as const;
 const TARGET_SCRIPT_NAMES = ['android', 'ios', 'web'] as const;
-const LEGACY_WEB_ONLY_TARGETS: AppDeployTargets = { web: { enabled: true } };
-const LEGACY_MANAGED_DEV_DEPENDENCIES = ['eslint', 'prettier'] as const;
 
 export class ProjectScaffolder {
   constructor(private readonly rootPath: string) {}
@@ -64,7 +67,7 @@ export class ProjectScaffolder {
       splashScreen = null,
       zoraExtensions = [],
       runtimePlan,
-      targets = LEGACY_WEB_ONLY_TARGETS,
+      targets = createDefaultAppDeployManifest(slug).targets,
     } = options;
     await fs.mkdir(projectPath, { recursive: true });
     await fs.mkdir(path.join(projectPath, 'assets'), { recursive: true });
@@ -86,7 +89,6 @@ export class ProjectScaffolder {
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
     await this.ensureExpoGitIgnore(projectPath);
-    await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -99,7 +101,7 @@ export class ProjectScaffolder {
     projectPath: string,
     appName: string,
     slug: string,
-    options: ScaffoldProjectOptions = {},
+    options: SyncProjectScaffoldOptions,
   ) {
     const {
       includeStudio = true,
@@ -107,7 +109,7 @@ export class ProjectScaffolder {
       storageProvider = null,
       splashScreen = null,
       runtimePlan,
-      targets = LEGACY_WEB_ONLY_TARGETS,
+      targets,
     } = options;
     await fs.mkdir(projectPath, { recursive: true });
     await fs.mkdir(path.join(projectPath, 'assets'), { recursive: true });
@@ -143,7 +145,6 @@ export class ProjectScaffolder {
     await this.writeEslintConfig(projectPath);
     await this.writePrettierConfig(projectPath);
     await this.ensureExpoGitIgnore(projectPath);
-    await this.removeGeneratedExpoOverrides(projectPath);
     await syncGeneratedAppFiles(projectPath, {
       runtimePlan,
       zoraExtensions,
@@ -215,14 +216,6 @@ export class ProjectScaffolder {
 
     await fs.mkdir(path.dirname(scriptPath), { recursive: true });
     await fs.writeFile(scriptPath, getAndroidRunTs({ projectId, includeStudio }), 'utf8');
-  }
-
-  private async removeGeneratedExpoOverrides(dir: string) {
-    await Promise.all(
-      ['babel.config.js', 'index.js', 'metro.config.js'].map((fileName) =>
-        fs.rm(path.join(dir, fileName), { force: true }),
-      ),
-    );
   }
 
   private async writePackageJson(
@@ -328,12 +321,12 @@ export class ProjectScaffolder {
 
     for (const asset of splashAssets) {
       const src = path.join(templateAssetsPath, asset);
-      const fallbackSrc = path.join(templateAssetsPath, 'splash.png');
+      const defaultSplashSrc = path.join(templateAssetsPath, 'splash.png');
       const dest = path.join(splashAssetsPath, asset);
       if (await exists(src)) {
         await fs.copyFile(src, dest);
-      } else if (await exists(fallbackSrc)) {
-        await fs.copyFile(fallbackSrc, dest);
+      } else if (await exists(defaultSplashSrc)) {
+        await fs.copyFile(defaultSplashSrc, dest);
       }
     }
   }
@@ -393,8 +386,6 @@ function mergePackageJson(
   const managedDevDependencies = new Set([
     ...Object.keys(baseTemplate.devDependencies),
     ...Object.keys(studioTemplate.devDependencies),
-    '@expo/metro-config',
-    ...LEGACY_MANAGED_DEV_DEPENDENCIES,
   ]);
 
   const mergedDependencies: Record<string, string> = {

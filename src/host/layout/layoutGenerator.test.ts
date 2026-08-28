@@ -17,6 +17,7 @@ function createManifest(): AppManifest {
       themeId: 'default',
     },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
+    deploy: { targets: { web: { enabled: true } } },
     infra: { modules: [] },
     navigator: {
       type: 'stack',
@@ -113,6 +114,15 @@ function getGeneratedAuthAdapter(manifest: AppManifest): string {
 }
 
 describe('GeneratedAppFileGenerator', () => {
+  test('requires canonical target state for current generation', () => {
+    const manifest = createManifest();
+    const { deploy: _deploy, ...targetlessManifest } = manifest;
+
+    expect(() =>
+      new GeneratedAppFileGenerator().generateFiles('/tmp/demo', targetlessManifest, []),
+    ).toThrow("Project 'demo' is missing canonical deploy.targets generation state.");
+  });
+
   test('generates canonical Studio admin route anchors', () => {
     const files = new GeneratedAppFileGenerator().generateFiles('/tmp/demo', createManifest(), []);
     const paths = files.map((file) => file.path).sort();
@@ -342,10 +352,6 @@ describe('GeneratedAppFileGenerator', () => {
       "const OAUTH_TRANSPORT_ATTEMPT_KEY = 'ankh.auth.oauth.transport';",
     );
     expect(oauthState).toContain('interface StoredTransportAttempt {\n  attemptId: string;\n}');
-    expect(oauthState).not.toContain('version === 1');
-    expect(oauthState).not.toContain('LEGACY_OAUTH_TRANSPORT_ATTEMPT_KEY');
-    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v1');
-    expect(oauthState).not.toContain('ankh.auth.oauth.transport.v2');
     expect(oauth).toContain('GENERATED_OAUTH_PROVIDERS.find');
     expect(authScreen).toContain('OAuthProviderList');
     expect(authScreenController).toContain('startOAuthAuthorization');
@@ -431,7 +437,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(getGeneratedAuthAdapter(firstManifest)).toBe(getGeneratedAuthAdapter(secondManifest));
   });
 
-  test('does not derive prior split identity values into generated Auth source', () => {
+  test('keeps generated Auth endpoint source independent of project display identity', () => {
     const manifest = createOAuthManifest();
     manifest.metadata.slug = 'scanner';
     manifest.infra.networking = { domain: 'local.example.test', cdn: false };

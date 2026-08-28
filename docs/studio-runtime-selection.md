@@ -65,7 +65,7 @@ The unsupported-node visual indicator remains a distinct dashed layer rendered b
 selection surface. Web selected chrome and unsupported overlays both use `pointerEvents="none"` and
 never intercept authored input. Scroll, viewport resize, responsive layout, and authored-root
 `onLayout` refresh applicable geometry. Changing or clearing selection immediately removes the
-previous web outline. Preview releases authoring ResizeObserver targets and renders neither
+selection outline. Preview releases authoring ResizeObserver targets and renders neither
 selected chrome, unsupported chrome, nor canvas drag affordances. Unmount disconnects the observer
 and clears desired-target
 ownership; navigation and active measurement removal cancel pending work once no indicator remains.

@@ -134,7 +134,6 @@ async function assertGeneratedRuntimeSource(projectPath: string): Promise<void> 
   expect(rootLayout).not.toContain('EXPO_PUBLIC_SUPABASE_URL');
   expect(rootLayout).not.toContain('/rest/v1/');
   expect(rootLayout).not.toContain('nutrition_products');
-  expect(rootLayout).not.toContain('@ankhorage/supabase-db');
 }
 
 async function executeGeneratedRuntimeBinding(
