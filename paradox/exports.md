@@ -831,9 +831,9 @@ Source: `src/bindingMetadataModel.ts:21:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>) => readonly StudioBindableEventOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>`
   - returns: `readonly StudioBindableEventOption[]`
 
 ## resolveStudioBindableProps
@@ -844,9 +844,9 @@ Source: `src/bindingMetadataModel.ts:8:1`
 
 ### Signatures
 
-- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
+- `(node: UiNode, registry: Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>) => readonly StudioBindablePropOption[]`
   - node: `UiNode`
-  - registry: `Readonly<Record<string, import("@ankhorage/contracts/dist/ui").UiComponentMeta>>`
+  - registry: `Readonly<Record<string, import("@ankhorage/contracts").UiComponentMeta>>`
   - returns: `readonly StudioBindablePropOption[]`
 
 ## resolveStudioInstancePropertyFields
@@ -1329,7 +1329,7 @@ Source: `src/mediaPickerAuthoring.ts:11:1`
 
 | Name        | Kind     | Type                                                | Required | Description |
 | ----------- | -------- | --------------------------------------------------- | -------- | ----------- |
-| body        | property | `Uint8Array`                                        | yes      |             |
+| body        | property | `Uint8Array<ArrayBufferLike>`                       | yes      |             |
 | contentType | property | `string \| undefined`                               | no       |             |
 | durationMs  | property | `number \| undefined`                               | no       |             |
 | height      | property | `number \| undefined`                               | no       |             |

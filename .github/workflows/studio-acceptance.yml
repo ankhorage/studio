@@ -58,6 +58,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Validate packed Studio host artifact
+        run: bun run test:acceptance:packed-studio-host
+
       - name: Validate standalone Studio registry consumer
         run: bun run test:acceptance:expo57-studio-standalone
 
