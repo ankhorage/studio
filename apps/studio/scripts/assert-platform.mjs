@@ -13,8 +13,8 @@ assertEqual(packageJson.engines?.node, EXPO_PLATFORM.tooling.node.version, 'Node
 assertEqual(packageJson.packageManager, 'bun@1.3.14', 'Bun toolchain');
 assertEqual(packageJson.dependencies?.['@ankhorage/studio'], '^2.0.9', 'Studio release range');
 assertEqual(
-  packageJson.devDependencies?.['@ankhorage/expo-runtime'],
-  '^3.0.6',
+  packageJson.dependencies?.['@ankhorage/expo-runtime'],
+  '^3.0.10',
   'Expo Runtime release range',
 );
 
@@ -66,6 +66,7 @@ function collectPlatformDependencies() {
     EXPO_PLATFORM.animation.worklets,
     EXPO_PLATFORM.packages.constants,
     EXPO_PLATFORM.packages.devClient,
+    EXPO_PLATFORM.packages.font,
     EXPO_PLATFORM.packages.linking,
     EXPO_PLATFORM.packages.splashScreen,
     EXPO_PLATFORM.packages.statusBar,

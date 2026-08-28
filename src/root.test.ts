@@ -29,12 +29,13 @@ test('keeps the package root and first-party apps in Studio workspace installs',
   expect(packageJson.workspaces).toEqual(['.', 'apps/*']);
   expect(packageJson.peerDependencies?.expo).toBe('57.0.17');
   expect(packageJson.peerDependencies?.['react-native']).toBe('0.86.x');
-  expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.6');
+  expect(packageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.10');
   expect(packageJson.dependencies?.['@ankhorage/runtime']).toBe('^2.2.1');
   expect(packageJson.dependencies?.['@ankhorage/zora']).toBe('^3.0.1');
   expect(appPackageJson.dependencies?.expo).toBe('57.0.17');
   expect(appPackageJson.dependencies?.['react-native']).toBe('0.86.3');
-  expect(appPackageJson.devDependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.6');
+  expect(appPackageJson.dependencies?.['@ankhorage/expo-runtime']).toBe('^3.0.10');
+  expect(appPackageJson.dependencies?.['expo-font']).toBe('~57.0.1');
 });
 
 test('supplies the published peers required by consumed Expo Runtime entrypoints', async () => {

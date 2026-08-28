@@ -121,21 +121,25 @@ function expectRuntimePeers(
   {
     '@react-native-picker/picker': nativePicker,
     '@react-native-vector-icons/ionicons': ionicons,
+    'expo-font': expoFont,
   }: Record<string, string>,
   expected?: Record<string, string>,
 ) {
   if (expected === undefined) {
     expect(nativePicker).toBeDefined();
     expect(ionicons).toBeDefined();
+    expect(expoFont).toBe('~57.0.1');
     return;
   }
 
   const {
     '@react-native-picker/picker': expectedNativePicker,
     '@react-native-vector-icons/ionicons': expectedIonicons,
+    'expo-font': expectedExpoFont,
   } = expected;
   expect(nativePicker).toBe(expectedNativePicker);
   expect(ionicons).toBe(expectedIonicons);
+  expect(expoFont).toBe(expectedExpoFont);
 }
 
 function expectStudioAuthoringDependencies(

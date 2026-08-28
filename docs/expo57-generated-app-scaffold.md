@@ -11,7 +11,7 @@ The scaffold consumes these released owners:
 
 | Owner                                              | Generated or Studio range | Role                                                                             |
 | -------------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| `@ankhorage/expo-runtime`                          | `^3.0.6`                  | Expo 57 platform projection, planning and focused action bridge                  |
+| `@ankhorage/expo-runtime`                          | `^3.0.10`                 | Expo 57 platform projection, planning, icon fonts and focused action bridge      |
 | `@ankhorage/runtime`                               | `^2.2.1`                  | manifest rendering and bindings                                                  |
 | `@ankhorage/zora`                                  | `^3.0.1`                  | app UI; brings `@ankhorage/surface@^3.0.1` through its released dependency graph |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.4.0`                  | Studio authoring drag-and-drop                                                   |
@@ -35,7 +35,7 @@ root package is classified below.
 
 | Dependency                                         | Previous  | Decision                                         |
 | -------------------------------------------------- | --------- | ------------------------------------------------ |
-| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.6` platform owner       |
+| `@ankhorage/expo-runtime`                          | `^2.6.0`  | update to released `^3.0.10` platform owner      |
 | `@ankhorage/runtime`                               | `^2.1.0`  | update to released `^2.2.1` runtime owner        |
 | `@ankhorage/zora`                                  | `^2.13.2` | update to released `^3.0.1` Expo 57 UI owner     |
 | `@ankhorage/react-native-reanimated-dnd-web`       | `^0.3.2`  | update to released `^0.4.0` animation owner      |
@@ -67,7 +67,7 @@ remaining Ankhorage owners come through the released dependency graph audited be
 ## Canonical platform projection
 
 The generated package map reads package names and versions directly from `EXPO_PLATFORM`. The
-released 3.0.6 projection used by final acceptance is:
+released 3.0.10 projection used by current acceptance is:
 
 ```text
 Expo                         57.0.17
@@ -104,6 +104,7 @@ The comparison fixture was created with the actual Expo command
 | TypeScript                | Use the platform-owned `~6.0.3` with additional Ankhorage strictness, Node types for generated scripts and the `@`/`@root` source aliases.                                                                                                        |
 | Expo modules              | Use only modules required by Router, generated Runtime capabilities, optional Studio authoring and optional auth. Expo default showcase-only packages are intentionally omitted.                                                                  |
 | ZORA native peers         | Replace deprecated `@expo/vector-icons` with the released ZORA 3/Surface 3 `@react-native-vector-icons/*` peer contract.                                                                                                                          |
+| ZORA Web icon fonts       | Declare platform-owned `expo-font` and wrap the app in Expo Runtime's focused icon-font provider so every ZORA face is registered before interaction. Native scoped-icon plugins remain unchanged.                                                |
 | Static web                | Keep `web.output: 'static'` and an app-owned `expo export --platform web` script.                                                                                                                                                                 |
 | CNG                       | Keep `android/` and `ios/` absent from source. App config and released config plugins feed clean `expo prebuild`; generated native files are disposable output.                                                                                   |
 | Android                   | Expo 57 owns API 24 minimum, compile/target SDK 36 and edge-to-edge defaults. Ankhorage adds only manifest-derived package identity, scheme and permissions.                                                                                      |
@@ -168,7 +169,9 @@ OAuth callback is a separate root Stack route so correlation still runs for an e
 ordinary sign-in and sign-up screens remain inside the unauthenticated `(auth)` guard. The app-owned
 Expo CLI first generates a non-empty `.expo/types/router.d.ts`; only then do lint and TypeScript 6
 run. Every Router start/export command disables the React Navigation compatibility rewrite. The
-runner performs static Web, Android and iOS exports for both full generation modes, checks Expo
+generated root layout uses the same focused Expo Runtime icon-font provider as first-party Studio,
+so ordinary generated apps receive the Web font boundary without Studio-only wiring. The runner
+performs static Web, Android and iOS exports for both full generation modes, checks Expo
 Doctor and production compilation, then drives the generated manifest Button, `ZoraTabBar` and
 `ZoraDrawerContent` controls in Chrome. These interactions prove the Runtime action through the
 narrow `Href` adapter into Expo Router, dynamic/search params, Drawer selection, Tabs navigation and

@@ -242,7 +242,7 @@ export class ChromeNavigationSession {
     );
   }
 
-  async waitForFontFamiliesAsync(
+  async waitForRegisteredFontFamiliesAsync(
     fontFamilies: readonly string[],
     timeoutMs = HTTP_TIMEOUT_MS,
   ): Promise<void> {
@@ -253,14 +253,25 @@ export class ChromeNavigationSession {
     family: normalize(face.family),
     status: face.status,
   }));
-  return required.every((family) =>
-    faces.some((face) => face.family === family && face.status === 'loaded'),
-  );
+  return {
+    faces,
+    ready: required.every((family) => faces.some((face) => face.family === family)),
+    style: document.getElementById('expo-generated-fonts')?.textContent ?? '',
+  };
 })()`;
-    await this.waitForBooleanAsync(
-      expression,
-      `loaded font families ${fontFamilies.join(', ')}`,
-      timeoutMs,
+    let observed: {
+      readonly faces: readonly { readonly family: string; readonly status: string }[];
+      readonly ready: boolean;
+      readonly style: string;
+    } = { faces: [], ready: false, style: '' };
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      observed = await this.evaluateAsync<typeof observed>(expression);
+      if (observed.ready) return;
+      await Bun.sleep(250);
+    }
+    throw new Error(
+      `Timed out waiting for registered font families ${fontFamilies.join(', ')}. Observed: ${JSON.stringify(observed)}.`,
     );
   }
 
@@ -444,9 +455,14 @@ function createRoleAndNameExpression(
   const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
     if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
     const ariaLabel = candidate.getAttribute('aria-label');
-    if (ariaLabel !== null) return normalize(ariaLabel) === ${JSON.stringify(name)};
     const visibleText = normalize(candidate.textContent ?? '');
-    return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
   });
   const element = elements[${options.occurrence}];
   if (!(element instanceof HTMLElement)) return false;
@@ -466,9 +482,14 @@ function createRoleFontExpression(
   const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
     if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
     const ariaLabel = candidate.getAttribute('aria-label');
-    if (ariaLabel !== null) return normalize(ariaLabel) === ${JSON.stringify(name)};
     const visibleText = normalize(candidate.textContent ?? '');
-    return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
   });
   const element = elements[${occurrence}];
   if (!(element instanceof HTMLElement)) {
@@ -506,12 +527,26 @@ function createRoleHitTestExpression(role: string, name: string, occurrence: num
   const elements = [...document.querySelectorAll('[role]')].filter((candidate) => {
     if (candidate.getAttribute('role') !== ${JSON.stringify(role)}) return false;
     const ariaLabel = candidate.getAttribute('aria-label');
-    if (ariaLabel !== null) return normalize(ariaLabel) === ${JSON.stringify(name)};
     const visibleText = normalize(candidate.textContent ?? '');
-    return visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    const matchesName = ariaLabel !== null
+      ? normalize(ariaLabel) === ${JSON.stringify(name)}
+      : visibleText === ${JSON.stringify(name)} || visibleText.endsWith(${JSON.stringify(name)});
+    if (!matchesName || !(candidate instanceof HTMLElement)) return false;
+    const rect = candidate.getBoundingClientRect();
+    const style = getComputedStyle(candidate);
+    return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden';
   });
   const element = elements[${occurrence}];
-  if (!(element instanceof HTMLElement)) return { state: 'missing' };
+  if (!(element instanceof HTMLElement)) {
+    const buttons = [...document.querySelectorAll('[role="button"]')].map((candidate) => ({
+      label: candidate.getAttribute('aria-label'),
+      text: normalize(candidate.textContent ?? ''),
+    }));
+    return {
+      hit: JSON.stringify({ buttons, pathname: location.pathname }),
+      state: 'missing',
+    };
+  }
   const rect = element.getBoundingClientRect();
   if (rect.width <= 0 || rect.height <= 0) return { state: 'missing' };
   const x = rect.left + rect.width / 2;

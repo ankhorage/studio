@@ -14,7 +14,7 @@ const STUDIO_WEB_ICON_FONT_FAMILIES = [
 export async function assertStudioWebIconFontsAsync(
   browser: ChromeNavigationSession,
 ): Promise<void> {
-  await browser.waitForFontFamiliesAsync(STUDIO_WEB_ICON_FONT_FAMILIES);
+  await browser.waitForRegisteredFontFamiliesAsync(STUDIO_WEB_ICON_FONT_FAMILIES);
   await browser.assertRoleUsesFontFamilyAsync('button', 'Go to projects', 'Ionicons');
   await browser.assertRoleUsesFontFamilyAsync('button', 'New project', 'Ionicons');
 }

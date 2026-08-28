@@ -53,6 +53,10 @@ export function getRootLayoutImportRequirements(
       namedImports: [{ imported: 'createExpoBundledMediaResolver' }],
     },
     {
+      source: '@ankhorage/expo-runtime/icon-fonts',
+      namedImports: [{ imported: 'ExpoZoraIconFontProvider' }],
+    },
+    {
       source: '@/generated/bundledMediaRegistry',
       namedImports: [{ imported: 'bundledMediaRegistry' }],
     },
@@ -316,25 +320,27 @@ const shouldMountAppHeader =
   const studioShellBlock = includeStudio
     ? `if (__DEV__) {
   return (
-    <GestureHandlerRootView style={rootViewStyle}>
-      <StudioProvider
-        projectId={ankhConfig.metadata.slug}
-        initialManifest={runtimeManifest}
-        activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
-        componentMeta={ZORA_COMPONENT_META}
-        mediaPicker={studioMediaPicker}
-      >
-        <StudioShell
-          output={output}
-          activeTheme={activeTheme}
-          activeThemeMode={activeThemeMode}
-          runtimeManifest={runtimeManifest}
-          appPathname={appPathname}
-          appLocation={appLocation}
-          shouldMountAppHeader={shouldMountAppHeader}
-        />
-      </StudioProvider>
-    </GestureHandlerRootView>
+    <ExpoZoraIconFontProvider>
+      <GestureHandlerRootView style={rootViewStyle}>
+        <StudioProvider
+          projectId={ankhConfig.metadata.slug}
+          initialManifest={runtimeManifest}
+          activePathname={isStudioAdminPath(appPathname) ? undefined : appPathname}
+          componentMeta={ZORA_COMPONENT_META}
+          mediaPicker={studioMediaPicker}
+        >
+          <StudioShell
+            output={output}
+            activeTheme={activeTheme}
+            activeThemeMode={activeThemeMode}
+            runtimeManifest={runtimeManifest}
+            appPathname={appPathname}
+            appLocation={appLocation}
+            shouldMountAppHeader={shouldMountAppHeader}
+          />
+        </StudioProvider>
+      </GestureHandlerRootView>
+    </ExpoZoraIconFontProvider>
   );
 }`
     : '';
@@ -416,7 +422,11 @@ ${indentedHandleInnerContentReadyDeclaration}  const appContent = ${innerContent
       </SafeAreaProvider>
     </GeneratedZoraProvider>
   );
-${indentedStudioShellBlock}  return <GestureHandlerRootView style={rootViewStyle}>{shell}</GestureHandlerRootView>;
+${indentedStudioShellBlock}  return (
+    <ExpoZoraIconFontProvider>
+      <GestureHandlerRootView style={rootViewStyle}>{shell}</GestureHandlerRootView>
+    </ExpoZoraIconFontProvider>
+  );
 }${
     includeStudio
       ? `

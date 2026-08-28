@@ -57,7 +57,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.4');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
@@ -69,6 +69,9 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.constants.name]).toBe(
       EXPO_PLATFORM.packages.constants.version,
+    );
+    expect(dependencies[EXPO_PLATFORM.packages.font.name]).toBe(
+      EXPO_PLATFORM.packages.font.version,
     );
     expect(dependencies[EXPO_PLATFORM.packages.splashScreen.name]).toBe(
       EXPO_PLATFORM.packages.splashScreen.version,
@@ -146,7 +149,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(Object.hasOwn(pkg.dependencies, '@ankhorage/supabase-db')).toBe(false);
     expect(pkg.dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.4');
+    expect(pkg.dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
   });
 
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
@@ -154,7 +157,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.4');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {

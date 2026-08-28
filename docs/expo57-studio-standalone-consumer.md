@@ -47,7 +47,7 @@ The mandatory skills affected the result as follows:
 ## Consumer contract
 
 `apps/studio` now declares Node 24, Bun 1.3.14, every imported runtime dependency, and every invoked
-tool directly. Its `@ankhorage/studio` range is `^2.0.9`; Expo Runtime `^3.0.6` supplies the sole
+tool directly. Its `@ankhorage/studio` range is `^2.0.9`; Expo Runtime `^3.0.10` supplies the sole
 `EXPO_PLATFORM` authority used by `platform:check`. Ordinary app scripts never invoke a parent build,
 and TypeScript has no parent path or `dist/root.d.ts` alias.
 
@@ -59,7 +59,10 @@ unchanged. React Compiler stays enabled through Expo config and its healthcheck 
 
 The app uses static Web output, a stable native scheme and application identifiers, and only the
 four scoped React Native Vector Icons config plugins needed to register their linked fonts on iOS.
-No direct `@expo/vector-icons` package or manual font-loading code was introduced.
+No direct `@expo/vector-icons` package or app-specific font-loading code was introduced. The app
+declares `expo-font` and composes the shared `ExpoZoraIconFontProvider` from Expo Runtime's focused
+`icon-fonts` subpath. Web registers all ZORA icon faces before presenting the interactive app;
+native keeps using the scoped config plugins through the provider's platform no-op.
 
 ## Permanent acceptance topology
 
@@ -80,7 +83,7 @@ install. For Studio, Expo Runtime, and Devtools it derives the installed registr
 that it satisfies the declared release range, matches the exact fresh lockfile resolution, and lives
 inside the fixture's own `node_modules`. The final gate additionally scans the physical Bun graph,
 requires exactly one React Native 0.86.3 installation, rejects incompatible RN peers from every
-installed Ankhorage owner, and requires Studio 2.0.9, Expo Runtime 3.0.6, Runtime 2.2.1, Surface
+installed Ankhorage owner, and requires Studio 2.0.9, Expo Runtime 3.0.10, Runtime 2.2.1, Surface
 3.0.1 and ZORA 3.0.1 as compatible range floors rather than exact permanent versions. It hashes the
 lockfile before and after all checks. The earlier frozen SDK 57
 resolution used during implementation contained Studio 2.0.7, Expo Runtime 3.0.5, Devtools 1.6.1,
@@ -95,6 +98,10 @@ Web export and hydration, Android and iOS JavaScript exports, and clean CNG. Bro
 page exceptions, hydration failures, and runtime failures are hard failures. It exercises `/`,
 `/create`, `/create/[category]`, `/create/[category]/[templateId]`, and `/projects/[projectId]`,
 including real path/search parameters, nested layout behavior, direct URLs, reload, and Back/Forward.
+Centrally dispatched Chrome pointer input must hit-test to each visible Projects control or one of
+its descendants before the click is sent; DOM `.click()` is not accepted as pointer evidence. The
+same browser gate verifies every ZORA icon face is registered and visible Ionicons load and use that
+face.
 CNG assertions cover scheme, application identifiers, edge-to-edge, iOS 16.4 deployment target,
 static icon-font registration, and continued absence of obsolete bar config.
 
