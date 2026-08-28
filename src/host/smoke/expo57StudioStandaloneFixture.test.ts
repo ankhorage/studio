@@ -71,7 +71,7 @@ test('rejects a registry package below the declared fixture range', async () => 
     'react-native': '0.86.3',
   });
 
-  expect(
+  return expect(
     assertExpo57StudioStandaloneContractAsync({
       fixtureRoot,
       installed: true,

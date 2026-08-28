@@ -25,7 +25,9 @@ test('accepts newer capability owners within generated and owner-declared ranges
     '@ankhorage/zora': '3.0.2',
   });
 
-  expect(assertExpo57GeneratedCapabilityOwnerGraphAsync(projectRoot)).resolves.toBeUndefined();
+  return expect(
+    assertExpo57GeneratedCapabilityOwnerGraphAsync(projectRoot),
+  ).resolves.toBeUndefined();
 });
 
 test('rejects a capability owner below its generated range', async () => {
@@ -38,7 +40,7 @@ test('rejects a capability owner below its generated range', async () => {
     '@ankhorage/zora': '3.0.1',
   });
 
-  expect(assertExpo57GeneratedCapabilityOwnerGraphAsync(projectRoot)).rejects.toThrow(
+  return expect(assertExpo57GeneratedCapabilityOwnerGraphAsync(projectRoot)).rejects.toThrow(
     '@ankhorage/expo-runtime resolved 3.0.3, which does not satisfy ^3.0.4',
   );
 });

@@ -20,7 +20,7 @@ test('accepts newer owner patches within their declared ranges', async () => {
   await writePackageAsync(root, '@ankhorage/runtime', '2.2.2', '0.86.x');
   await writePackageAsync(root, '@ankhorage/studio', '2.0.10', '0.86.x');
 
-  expect(
+  return expect(
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
@@ -35,7 +35,7 @@ test('accepts newer owner patches within their declared ranges', async () => {
 test('rejects an installed owner below its declared range', async () => {
   const root = await createGraphAsync();
 
-  expect(
+  return expect(
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
@@ -50,7 +50,7 @@ test('rejects an incompatible installed Ankhorage RN peer', async () => {
   const root = await createGraphAsync();
   await writePackageAsync(root, '@ankhorage/runtime', '2.2.0', '0.86.2');
 
-  expect(
+  return expect(
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
@@ -67,7 +67,7 @@ test('rejects multiple physical RN installations', async () => {
     version: '0.86.3',
   });
 
-  expect(
+  return expect(
     assertReactNativeOwnerGraphAsync({
       installationRoot: root,
       reactNativeVersion: '0.86.3',
