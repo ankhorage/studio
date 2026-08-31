@@ -4,12 +4,21 @@ export function createExpo57NavigationFixtureManifest(
   baseManifest: AppManifest,
   options: {
     readonly auth: boolean;
+    readonly authScope?: 'global' | 'integrated' | 'none';
     readonly name: string;
+    readonly postSignInRoute?: 'about' | 'index';
     readonly rootNavigator?: 'drawer' | 'stack' | 'tabs';
     readonly slug: string;
   },
 ): AppManifest {
-  const { auth, name, rootNavigator = 'stack', slug } = options;
+  const {
+    auth,
+    authScope = 'global',
+    name,
+    postSignInRoute = 'index',
+    rootNavigator = 'stack',
+    slug,
+  } = options;
   const { auth: _baseAuth, ...baseInfra } = baseManifest.infra;
 
   return {
@@ -20,13 +29,13 @@ export function createExpo57NavigationFixtureManifest(
       ...(auth
         ? {
             auth: {
-              scope: 'global' as const,
+              scope: authScope,
               provider: 'supabase' as const,
               flow: {
                 signInRoute: 'sign-in',
                 signUpRoute: 'sign-up',
                 signOutRoute: 'sign-out',
-                postSignInRoute: 'index',
+                postSignInRoute,
                 unauthorizedRoute: 'sign-in',
               },
               signIn: { identifiers: ['email' as const] },

@@ -148,7 +148,7 @@ export class GeneratedAppFileGenerator {
       files.push(
         {
           path: normalizeRel(path.join(appRootRel, 'ankh', '_layout.tsx')),
-          content: getStudioAdminLayoutTsx(),
+          content: getStudioAdminLayoutTsx(authLayoutPlan.enabled),
         },
         ...createStudioAdminRouteGeneratedFiles(appRootRel),
       );
@@ -277,7 +277,9 @@ export class GeneratedAppFileGenerator {
   ): string {
     const studioAdminStackScreen = includeStudio
       ? `
-      <Stack.Screen key="ankh" name="ankh" />`
+      <Stack.Protected guard={hasAuthenticatedSession}>
+        <Stack.Screen key="ankh" name="ankh" />
+      </Stack.Protected>`
       : '';
     const oauthCallbackStackScreen = authLayoutPlan.oauth
       ? `
@@ -553,7 +555,16 @@ export class GeneratedAppFileGenerator {
   }
 }
 
-function getStudioAdminLayoutTsx(): string {
+function getStudioAdminLayoutTsx(hasGeneratedGlobalAuth: boolean): string {
+  if (!hasGeneratedGlobalAuth) {
+    return `import { Redirect } from 'expo-router';
+
+export default function AnkhLayout() {
+  return <Redirect href="/" />;
+}
+`;
+  }
+
   return `import { AnkhAdminShell } from '@ankhorage/studio';
 import { Redirect } from 'expo-router';
 

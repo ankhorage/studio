@@ -180,8 +180,13 @@ function resolveStudioAppHeaderTitle(args: {
   const authRuntimeHook = authRuntime
     ? includeStudio
       ? `
-const { authState, handleInnerContentReady, isAuthRuntimeReady, pathname } =
-  useGeneratedAuthNavigation({ isRouteGuardDisabled: isStudioAdminPath });
+const {
+  authState,
+  handleInnerContentReady,
+  hasAuthenticatedSession,
+  isAuthRuntimeReady,
+  pathname,
+} = useGeneratedAuthNavigation();
 `
       : `
 const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
@@ -192,10 +197,14 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
     rootHookBlock.length > 0 ? `${indentGeneratedBlock(rootHookBlock)}\n\n` : '';
 
   const innerContentNode = authRuntime
-    ? '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
+    ? includeStudio
+      ? '<InnerContent authState={authState} hasAuthenticatedSession={hasAuthenticatedSession} onReady={handleInnerContentReady} />'
+      : '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
   const innerContentSignature = authRuntime
-    ? `{\n  authState,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  onReady?: () => void;\n}`
+    ? includeStudio
+      ? `{\n  authState,\n  hasAuthenticatedSession,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  hasAuthenticatedSession: boolean;\n  onReady?: () => void;\n}`
+      : `{\n  authState,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  onReady?: () => void;\n}`
     : '';
   const innerContentReadyHook = authRuntime
     ? `
@@ -203,14 +212,13 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
     onReady?.();
   }, [onReady]);`
     : '';
-  const innerContentPendingBoundary =
-    authRuntime && !includeStudio
-      ? `
+  const innerContentPendingBoundary = authRuntime
+    ? `
   if (authState === 'pending') {
     return null;
   }
 `
-      : '';
+    : '';
   const runtimeOperationHelpers = `
 async function runtimeApiFetch(
   url: string,

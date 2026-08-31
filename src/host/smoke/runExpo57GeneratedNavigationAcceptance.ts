@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { startStudioHostServer } from '../http/server';
 import { ProjectManager } from '../orchestrator/projectManager';
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertNoBrowserErrors } from './assertNoBrowserErrors';
@@ -23,6 +24,7 @@ const ROUTER_REWRITE_DISABLED = '1';
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
   let staticServer: ReturnType<typeof Bun.serve> | null = null;
+  let studioHost: Awaited<ReturnType<typeof startStudioHostServer>> | null = null;
 
   try {
     await createWorkspaceAsync(workspaceRoot);
@@ -36,6 +38,19 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       auth: true,
       includeStudio: true,
       name: 'Expo 57 Navigation Studio',
+      postSignInRoute: 'about',
+    });
+    const integratedStudio = await createProjectAsync(manager, {
+      auth: true,
+      authScope: 'integrated',
+      includeStudio: true,
+      name: 'Expo 57 Integrated Auth Studio',
+    });
+    const noAuthStudio = await createProjectAsync(manager, {
+      auth: true,
+      authScope: 'none',
+      includeStudio: true,
+      name: 'Expo 57 No Auth Studio',
     });
     const authRuntime = await createProjectAsync(manager, {
       auth: true,
@@ -54,7 +69,15 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       name: 'Expo 57 Root Drawer',
       rootNavigator: 'drawer',
     });
-    const projects = [standalone, studio, authRuntime, rootTabs, rootDrawer] as const;
+    const projects = [
+      standalone,
+      studio,
+      integratedStudio,
+      noAuthStudio,
+      authRuntime,
+      rootTabs,
+      rootDrawer,
+    ] as const;
     await rm(path.join(workspaceRoot, 'package.json'));
     const lockfileDigests = new Map<string, string>();
     for (const project of projects) {
@@ -72,6 +95,18 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     await assertGeneratedNavigationContractAsync(studio);
     await runGeneratedProjectChecksAsync(studio);
     await assertReleasedStudioPackageAsync(studio);
+    const studioHostPort = await reserveTcpPortAsync('navigation Studio host');
+    studioHost = await startStudioHostServer({
+      host: '127.0.0.1',
+      port: studioHostPort,
+      projectRoot: workspaceRoot,
+    });
+    const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
+    await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
+    for (const project of [integratedStudio, noAuthStudio]) {
+      await assertGeneratedNavigationContractAsync(project);
+      await runScopeAwareStudioChecksAsync(project, studioApiUrl);
+    }
     await assertGeneratedNavigationContractAsync(authRuntime);
     await runSignedOutAuthNavigationSmokeAsync(authRuntime.path);
 
@@ -87,6 +122,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     }
   } finally {
     await staticServer?.stop(true);
+    await studioHost?.close();
     await rm(workspaceRoot, { force: true, recursive: true });
   }
 }
@@ -217,8 +253,10 @@ async function createProjectAsync(
   manager: ProjectManager,
   options: {
     readonly auth: boolean;
+    readonly authScope?: 'global' | 'integrated' | 'none';
     readonly includeStudio: boolean;
     readonly name: string;
+    readonly postSignInRoute?: 'about' | 'index';
     readonly rootNavigator?: 'drawer' | 'tabs';
   },
 ): Promise<NavigationProject> {
@@ -231,12 +269,19 @@ async function createProjectAsync(
   const baseManifest = await manager.getProjectManifest(created.id);
   const manifest = createExpo57NavigationFixtureManifest(baseManifest, {
     auth: options.auth,
+    ...(options.authScope ? { authScope: options.authScope } : {}),
     name: options.name,
+    ...(options.postSignInRoute ? { postSignInRoute: options.postSignInRoute } : {}),
     ...(options.rootNavigator ? { rootNavigator: options.rootNavigator } : {}),
     slug: created.id,
   });
   await manager.saveProjectManifest({ projectId: created.id, manifest, mutations: [] });
-  return { ...options, id: created.id, path: created.path };
+  return {
+    ...options,
+    auth: options.auth && (options.authScope ?? 'global') === 'global',
+    id: created.id,
+    path: created.path,
+  };
 }
 
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
@@ -363,6 +408,7 @@ async function runDevelopmentNavigationSmokeAsync(projectRoot: string): Promise<
 async function runDevelopmentWebAsync(
   projectRoot: string,
   smoke: (chrome: ChromeNavigationSession, rootUrl: string) => Promise<void>,
+  env: Readonly<Record<string, string>> = {},
 ): Promise<void> {
   const expoCli = await resolveAppOwnedExpoCliAsync(projectRoot);
   const expoPort = await reserveTcpPortAsync('navigation smoke');
@@ -378,6 +424,7 @@ async function runDevelopmentWebAsync(
       CI: '1',
       EXPO_NO_TELEMETRY: '1',
       EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: ROUTER_REWRITE_DISABLED,
+      ...env,
     },
   });
   collectProcessOutput(expoProcess, output);
@@ -526,6 +573,86 @@ async function runSignedOutAuthNavigationSmokeAsync(projectRoot: string): Promis
   });
 }
 
+async function runGlobalStudioAuthNavigationSmokeAsync(
+  projectRoot: string,
+  studioApiUrl: string,
+): Promise<void> {
+  await runDevelopmentWebAsync(
+    projectRoot,
+    async (chrome, rootUrl) => {
+      await chrome.installObservedBodyTextHistoryAsync();
+      await chrome.installObservedPathnameHistoryAsync();
+      await chrome.navigateAsync(rootUrl);
+      await chrome.waitForLocationAsync({ pathname: '/sign-in' });
+      await chrome.waitForBodyTextAsync('Sign in');
+      if (await chrome.hasObservedPathnameAsync('/ankh')) {
+        throw new Error('Global Auth cold start selected Studio administration during bootstrap.');
+      }
+      if (await chrome.hasObservedBodyTextAsync('Administration')) {
+        throw new Error('Global Auth cold start rendered Studio administration during bootstrap.');
+      }
+
+      await chrome.clearLocalStorageAsync();
+      await chrome.navigateAsync(`${rootUrl}/ankh/deploy`);
+      await chrome.waitForLocationAsync({ pathname: '/sign-in' });
+      const deniedBody = await chrome.waitForBodyTextAsync('Sign in');
+      if (deniedBody.includes('Deployment administration')) {
+        throw new Error('Signed-out direct Studio access rendered protected administration.');
+      }
+
+      await chrome.setLocalStorageItemAsync(
+        'ankh.auth.session.v1',
+        JSON.stringify({
+          accessToken: 'expo57-navigation-acceptance-token',
+          user: { id: 'expo57-navigation-acceptance-user' },
+        }),
+      );
+      await chrome.navigateAsync(rootUrl);
+      await chrome.waitForLocationAsync({ pathname: '/about' });
+      await chrome.waitForBodyTextAsync('Static About Route');
+
+      await chrome.navigateAsync(`${rootUrl}/ankh`);
+      await chrome.waitForLocationAsync({ pathname: '/ankh' });
+      await chrome.waitForBodyTextAsync('Administration');
+      await chrome.clickByRoleAndNameAsync('button', 'Back to app');
+      await chrome.waitForLocationAsync({ pathname: '/about' });
+      await chrome.waitForBodyTextAsync('Static About Route');
+      assertNoBrowserErrors(chrome.errors, 'global Auth Studio navigation');
+    },
+    { EXPO_PUBLIC_API_URL: studioApiUrl },
+  );
+}
+
+async function runScopeAwareStudioChecksAsync(
+  project: NavigationProject,
+  studioApiUrl: string,
+): Promise<void> {
+  await generateRouterTypesAsync(project);
+  await assertRouterTypesAsync(project);
+  await runCommandAsync({
+    args: ['run', 'typecheck'],
+    command: 'bun',
+    cwd: project.path,
+    label: `${project.id} scope-aware Studio TypeScript`,
+  });
+  await runDevelopmentWebAsync(
+    project.path,
+    async (chrome, rootUrl) => {
+      await chrome.navigateAsync(rootUrl);
+      await chrome.waitForLocationAsync({ pathname: '/' });
+      await chrome.waitForBodyTextAsync('Navigation Home');
+      await chrome.navigateAsync(`${rootUrl}/ankh/deploy`);
+      await chrome.waitForLocationAsync({ pathname: '/' });
+      const bodyText = await chrome.waitForBodyTextAsync('Navigation Home');
+      if (bodyText.includes('Deployment administration') || bodyText.includes('Administration')) {
+        throw new Error(`${project.id} exposed Studio administration without a global session.`);
+      }
+      assertNoBrowserErrors(chrome.errors, `${project.id} public scope navigation`);
+    },
+    { EXPO_PUBLIC_API_URL: studioApiUrl },
+  );
+}
+
 async function waitForHttpAsync(url: string, diagnostics: () => string): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < HTTP_TIMEOUT_MS) {
@@ -567,9 +694,11 @@ interface AcceptanceCommand {
 
 interface NavigationProject {
   readonly auth: boolean;
+  readonly authScope?: 'global' | 'integrated' | 'none';
   readonly id: string;
   readonly includeStudio: boolean;
   readonly name: string;
   readonly path: string;
+  readonly postSignInRoute?: 'about' | 'index';
   readonly rootNavigator?: 'drawer' | 'tabs';
 }
