@@ -23,12 +23,12 @@ import { createNativeEvidenceScreenSource } from './createNativeEvidenceScreenSo
 const COMMAND_TIMEOUT_MS = 240_000;
 const EXPECTED_GENERATED_OWNER_VERSIONS = {
   '@ankhorage/devtools': '1.7.0',
-  '@ankhorage/expo-runtime': '3.0.10',
+  '@ankhorage/expo-runtime': '3.0.12',
   '@ankhorage/permissions': '0.2.3',
   '@ankhorage/runtime': '2.2.1',
   '@ankhorage/supabase-auth': '1.2.6',
-  '@ankhorage/surface': '3.0.1',
-  '@ankhorage/zora': '3.0.1',
+  '@ankhorage/surface': '3.0.2',
+  '@ankhorage/zora': '3.0.2',
 } as const;
 const EXPECTED_EXPO_RUNTIME_VERSION = EXPECTED_GENERATED_OWNER_VERSIONS['@ankhorage/expo-runtime'];
 const ROUTER_REWRITE_DISABLED = '1';
