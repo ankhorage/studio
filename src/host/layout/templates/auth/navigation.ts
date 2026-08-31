@@ -52,11 +52,7 @@ export function useGeneratedAuthNavigation() {
   const authEnforced = isGeneratedAuthEnforced();
   const hasAuthenticatedSession = session !== null && isAuthenticated();
   const authenticated = !authEnforced || hasAuthenticatedSession;
-  const authState = resolveAuthNavigationState(
-    isAuthRuntimeReady,
-    authenticated,
-    authEnforced,
-  );
+  const authState = resolveAuthNavigationState(isAuthRuntimeReady, authenticated, authEnforced);
   const canAccessStudioAdmin = !authEnforced || (isAuthRuntimeReady && hasAuthenticatedSession);
   useRefreshAuthSessionOnActive();
   useAuthRouteGuard({
