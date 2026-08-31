@@ -93,15 +93,20 @@ describe('generated auth root bootstrap', () => {
       "type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';",
     );
     expect(authNavigation).toContain("if (!ready) return 'pending';");
+    expect(authNavigation).toContain('const authEnforced = isGeneratedAuthEnforced();');
     expect(authNavigation).toContain(
-      'const hasAuthenticatedSession = isAuthRuntimeReady && authenticated;',
+      'const authenticated = !authEnforced || hasAuthenticatedSession;',
+    );
+    expect(authNavigation).toContain(
+      'const canAccessStudioAdmin = !authEnforced || (isAuthRuntimeReady && hasAuthenticatedSession);',
     );
     expect(authNavigation).not.toContain('isRouteGuardDisabled');
+    expect(authNavigation).not.toContain('if (!isGeneratedAuthEnforced()) return null;');
     expect(rootLayout).toContain('<InnerContent authState={authState}');
     expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
-    expect(rootLayout).toContain('<Stack.Protected guard={hasAuthenticatedSession}>');
+    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).toContain(`return (
     <Stack screenOptions={rootStackScreenOptions}>
@@ -111,7 +116,7 @@ describe('generated auth root bootstrap', () => {
       <Stack.Protected guard={authState === 'unauthenticated'}>
         <Stack.Screen key="auth" name="(auth)" />
       </Stack.Protected>
-      <Stack.Protected guard={hasAuthenticatedSession}>
+      <Stack.Protected guard={canAccessStudioAdmin}>
         <Stack.Screen key="ankh" name="ankh" />
       </Stack.Protected>
     </Stack>

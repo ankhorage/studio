@@ -171,7 +171,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).not.toContain('return null;');
   });
 
-  test('generates session-protected and production-gated Studio admin routes', () => {
+  test('generates auth-protected and production-gated Studio admin routes', () => {
     const files = new GeneratedAppFileGenerator().generateFiles(
       '/tmp/demo',
       createOAuthManifest(),
@@ -187,7 +187,7 @@ describe('GeneratedAppFileGenerator', () => {
     )?.content;
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
-    expect(rootLayout).toContain('<Stack.Protected guard={hasAuthenticatedSession}>');
+    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
     expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
     expect(rootLayout).toContain('} = useGeneratedAuthNavigation();');

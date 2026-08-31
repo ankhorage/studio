@@ -182,8 +182,8 @@ function resolveStudioAppHeaderTitle(args: {
       ? `
 const {
   authState,
+  canAccessStudioAdmin,
   handleInnerContentReady,
-  hasAuthenticatedSession,
   isAuthRuntimeReady,
   pathname,
 } = useGeneratedAuthNavigation();
@@ -198,12 +198,12 @@ const { authState, handleInnerContentReady } = useGeneratedAuthNavigation();
 
   const innerContentNode = authRuntime
     ? includeStudio
-      ? '<InnerContent authState={authState} hasAuthenticatedSession={hasAuthenticatedSession} onReady={handleInnerContentReady} />'
+      ? '<InnerContent authState={authState} canAccessStudioAdmin={canAccessStudioAdmin} onReady={handleInnerContentReady} />'
       : '<InnerContent authState={authState} onReady={handleInnerContentReady} />'
     : '<InnerContent />';
   const innerContentSignature = authRuntime
     ? includeStudio
-      ? `{\n  authState,\n  hasAuthenticatedSession,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  hasAuthenticatedSession: boolean;\n  onReady?: () => void;\n}`
+      ? `{\n  authState,\n  canAccessStudioAdmin,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  canAccessStudioAdmin: boolean;\n  onReady?: () => void;\n}`
       : `{\n  authState,\n  onReady,\n}: {\n  authState: GeneratedAuthNavigationState;\n  onReady?: () => void;\n}`
     : '';
   const innerContentReadyHook = authRuntime

@@ -103,6 +103,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     });
     const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
     await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
+    await runGlobalStudioAuthBypassNavigationSmokeAsync(studio.path, studioApiUrl);
     for (const project of [integratedStudio, noAuthStudio]) {
       await assertGeneratedNavigationContractAsync(project);
       await runScopeAwareStudioChecksAsync(project, studioApiUrl);
@@ -620,6 +621,31 @@ async function runGlobalStudioAuthNavigationSmokeAsync(
       assertNoBrowserErrors(chrome.errors, 'global Auth Studio navigation');
     },
     { EXPO_PUBLIC_API_URL: studioApiUrl },
+  );
+}
+
+async function runGlobalStudioAuthBypassNavigationSmokeAsync(
+  projectRoot: string,
+  studioApiUrl: string,
+): Promise<void> {
+  await runDevelopmentWebAsync(
+    projectRoot,
+    async (chrome, rootUrl) => {
+      await chrome.navigateAsync(rootUrl);
+      await chrome.clearLocalStorageAsync();
+      await chrome.reloadAsync();
+      await chrome.waitForLocationAsync({ pathname: '/about' });
+      await chrome.waitForBodyTextAsync('Static About Route');
+
+      await chrome.navigateAsync(`${rootUrl}/ankh`);
+      await chrome.waitForLocationAsync({ pathname: '/ankh' });
+      await chrome.waitForBodyTextAsync('Administration');
+      assertNoBrowserErrors(chrome.errors, 'global Auth development bypass navigation');
+    },
+    {
+      EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV: 'true',
+      EXPO_PUBLIC_API_URL: studioApiUrl,
+    },
   );
 }
 

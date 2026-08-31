@@ -277,7 +277,7 @@ export class GeneratedAppFileGenerator {
   ): string {
     const studioAdminStackScreen = includeStudio
       ? `
-      <Stack.Protected guard={hasAuthenticatedSession}>
+      <Stack.Protected guard={canAccessStudioAdmin}>
         <Stack.Screen key="ankh" name="ankh" />
       </Stack.Protected>`
       : '';
