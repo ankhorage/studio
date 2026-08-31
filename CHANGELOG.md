@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.14
+
+### Patch Changes
+
+- 9ffbfe1: Update Ankhorage dependencies: `@ankhorage/expo-runtime`, `@ankhorage/supabase-vault`, `@ankhorage/zora`, and synchronize the standalone Studio app with the released Expo 57.0.18 platform projection.
+
 ## 2.0.13
 
 ### Patch Changes
