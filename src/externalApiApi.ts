@@ -187,7 +187,6 @@ function isSeverity(value: unknown): value is DataSourceDiagnostic['severity'] {
   return value === 'error' || value === 'info' || value === 'warning';
 }
 
-
 function isDataContractValue(value: unknown): value is DataContractValue {
   if (value === null || ['boolean', 'number', 'string'].includes(typeof value)) return true;
   if (Array.isArray(value)) return value.every(isDataContractValue);
@@ -198,7 +197,7 @@ function isDataContractValue(value: unknown): value is DataContractValue {
 /***
  * @owner ankhorage/utility/{category}
  * @question why is the return null instead of undefined?
-*/
+ */
 function readRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
@@ -207,7 +206,7 @@ function readRecord(value: unknown): Record<string, unknown> | null {
 
 /***
  * @owner ankhorage/utility/{category}
-*/
+ */
 function readString(value: unknown): string | undefined {
   return typeof value === 'string' ? value : undefined;
 }
