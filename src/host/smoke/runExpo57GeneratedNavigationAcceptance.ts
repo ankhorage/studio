@@ -40,6 +40,14 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       name: 'Expo 57 Navigation Studio',
       postSignInRoute: 'about',
     });
+    const themedRootStudio = await createProjectAsync(manager, {
+      auth: true,
+      hideRootAboutRoute: true,
+      includeStudio: true,
+      name: 'Expo 57 Themed Root Auth Studio',
+      postSignInRoute: 'about',
+      rootNavigator: 'drawer',
+    });
     const integratedStudio = await createProjectAsync(manager, {
       auth: true,
       authScope: 'integrated',
@@ -72,6 +80,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const projects = [
       standalone,
       studio,
+      themedRootStudio,
       integratedStudio,
       noAuthStudio,
       authRuntime,
@@ -104,6 +113,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
     await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
     await runGlobalStudioAuthBypassNavigationSmokeAsync(studio.path, studioApiUrl);
+    await runThemedRootStudioAuthNavigationSmokeAsync(themedRootStudio, studioApiUrl);
     for (const project of [integratedStudio, noAuthStudio]) {
       await assertGeneratedNavigationContractAsync(project);
       await runScopeAwareStudioChecksAsync(project, studioApiUrl);
@@ -255,6 +265,7 @@ async function createProjectAsync(
   options: {
     readonly auth: boolean;
     readonly authScope?: 'global' | 'integrated' | 'none';
+    readonly hideRootAboutRoute?: boolean;
     readonly includeStudio: boolean;
     readonly name: string;
     readonly postSignInRoute?: 'about' | 'index';
@@ -649,6 +660,45 @@ async function runGlobalStudioAuthBypassNavigationSmokeAsync(
   );
 }
 
+async function runThemedRootStudioAuthNavigationSmokeAsync(
+  project: NavigationProject,
+  studioApiUrl: string,
+): Promise<void> {
+  const appLayout = await readFile(
+    path.join(project.path, 'src', 'app', '(app)', '_layout.tsx'),
+    'utf8',
+  );
+  if (!appLayout.includes('const { theme } = useZoraTheme();')) {
+    throw new Error(`${project.id} does not exercise a themed root navigator.`);
+  }
+
+  await generateRouterTypesAsync(project);
+  await assertRouterTypesAsync(project, ['about']);
+  await runDevelopmentWebAsync(
+    project.path,
+    async (chrome, rootUrl) => {
+      await chrome.navigateAsync(rootUrl);
+      await chrome.waitForLocationAsync({ pathname: '/sign-in' });
+      await chrome.waitForBodyTextAsync('Sign in');
+      await chrome.setLocalStorageItemAsync(
+        'ankh.auth.session.v1',
+        JSON.stringify({
+          accessToken: 'expo57-themed-root-acceptance-token',
+          user: { id: 'expo57-themed-root-acceptance-user' },
+        }),
+      );
+      await chrome.navigateAsync(rootUrl);
+      await chrome.waitForLocationAsync({ pathname: '/about' });
+      await chrome.waitForBodyTextAsync('Root Navigator About Route');
+      await chrome.navigateAsync(`${rootUrl}/ankh`);
+      await chrome.waitForLocationAsync({ pathname: '/ankh' });
+      await chrome.waitForBodyTextAsync('Administration');
+      assertNoBrowserErrors(chrome.errors, 'themed root global Auth Studio navigation');
+    },
+    { EXPO_PUBLIC_API_URL: studioApiUrl },
+  );
+}
+
 async function runScopeAwareStudioChecksAsync(
   project: NavigationProject,
   studioApiUrl: string,
@@ -721,6 +771,7 @@ interface AcceptanceCommand {
 interface NavigationProject {
   readonly auth: boolean;
   readonly authScope?: 'global' | 'integrated' | 'none';
+  readonly hideRootAboutRoute?: boolean;
   readonly id: string;
   readonly includeStudio: boolean;
   readonly name: string;

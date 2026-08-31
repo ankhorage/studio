@@ -236,6 +236,43 @@ test('preserves navigator-owned relative indentation in generated app output', (
   );`);
 });
 
+test('calls themed navigator hooks before the global auth pending boundary', () => {
+  const generated = getRootLayoutTsx({
+    manifest: {
+      navigator: {
+        initialRouteName: 'index',
+      },
+    } as unknown as AppManifest,
+    mutations: [],
+    allImports: '',
+    allHooks: '',
+    innerNavigation: {
+      declarations: '',
+      jsx: '<></>',
+      usesTheme: true,
+      usesIcon: false,
+      usesZoraTabBar: false,
+      usesZoraDrawerContent: false,
+      usesZoraNavigationRouteMap: false,
+    },
+    includeStudio: true,
+    authRuntime: {
+      signInRoute: 'sign-in',
+      signInRouteName: 'sign-in',
+      signUpRoute: 'sign-up',
+      signUpRouteName: 'sign-up',
+      postSignInRoute: 'index',
+      publicRoutes: ['sign-in', 'sign-up'],
+    },
+  });
+  const innerContent = generated.slice(generated.indexOf('function InnerContent('));
+  const themeHookIndex = innerContent.indexOf('const { theme } = useZoraTheme();');
+  const pendingBoundaryIndex = innerContent.indexOf("if (authState === 'pending') {");
+
+  expect(themeHookIndex).toBeGreaterThanOrEqual(0);
+  expect(pendingBoundaryIndex).toBeGreaterThan(themeHookIndex);
+});
+
 test('scopes Studio runtime selection config below StudioProvider', () => {
   const generated = getRootLayoutTsx({
     manifest: {

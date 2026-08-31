@@ -589,7 +589,7 @@ function GeneratedStatusBar() {
 }
 
 function InnerContent(${innerContentSignature}) {${innerContentReadyHook}
-${innerContentPendingBoundary}${innerThemeHook}  return (
+${innerThemeHook}${innerContentPendingBoundary}  return (
 ${indentedInnerNavigationJsx}
   );
 }
