@@ -180,10 +180,46 @@ export class ChromeNavigationSession {
     });
   }
 
+  async installObservedPathnameHistoryAsync(): Promise<void> {
+    await this.sendAsync('Page.addScriptToEvaluateOnNewDocument', {
+      source: `(() => {
+  const observedPathnames = [];
+  Object.defineProperty(globalThis, '__ankhObservedPathnames', {
+    configurable: false,
+    value: observedPathnames,
+  });
+  const recordPathname = () => {
+    const pathname = globalThis.location?.pathname;
+    if (typeof pathname === 'string' && observedPathnames.at(-1) !== pathname) {
+      observedPathnames.push(pathname);
+    }
+  };
+  recordPathname();
+  setInterval(recordPathname, 5);
+})();`,
+    });
+  }
+
   async hasRoleAndNameAsync(role: string, name: string): Promise<boolean> {
     return this.evaluateAsync<boolean>(
       createRoleAndNameExpression(role, name, { occurrence: 0, requireHydration: false }),
     );
+  }
+
+  async hasObservedBodyTextAsync(expectedText: string): Promise<boolean> {
+    return this.evaluateAsync<boolean>(`(() => {
+  const history = Reflect.get(globalThis, '__ankhObservedBodyText');
+  return Array.isArray(history) && history.some(
+    (bodyText) => typeof bodyText === 'string' && bodyText.includes(${JSON.stringify(expectedText)}),
+  );
+})()`);
+  }
+
+  async hasObservedPathnameAsync(expectedPathname: string): Promise<boolean> {
+    return this.evaluateAsync<boolean>(`(() => {
+  const history = Reflect.get(globalThis, '__ankhObservedPathnames');
+  return Array.isArray(history) && history.includes(${JSON.stringify(expectedPathname)});
+})()`);
   }
 
   async assertRoleUsesFontFamilyAsync(

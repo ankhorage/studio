@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.15
+
+### Patch Changes
+
+- eb75754: Keep global-auth startup out of Studio administration without changing generated hook order, apply the canonical authentication or development-bypass decision to generated `/ankh` routes, and fail those routes closed for integrated or disabled auth scopes.
+
 ## 2.0.14
 
 ### Patch Changes
