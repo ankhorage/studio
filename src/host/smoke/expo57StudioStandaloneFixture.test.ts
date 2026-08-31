@@ -40,7 +40,7 @@ test('accepts newer compatible registry patches installed and locked inside the 
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
 
   const installedVersions = {
-    '@ankhorage/devtools': '1.8.0',
+    '@ankhorage/devtools': '1.8.2',
     '@ankhorage/expo-runtime': '3.0.12',
     '@ankhorage/runtime': '2.2.2',
     '@ankhorage/studio': '2.0.10',
@@ -63,7 +63,7 @@ test('rejects a registry package below the declared fixture range', async () => 
   const fixtureRoot = await createFixtureRootAsync();
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
   await writeInstalledGraphAsync(fixtureRoot, {
-    '@ankhorage/devtools': '1.8.0',
+    '@ankhorage/devtools': '1.8.2',
     '@ankhorage/expo-runtime': '3.0.12',
     '@ankhorage/runtime': '2.2.1',
     '@ankhorage/studio': '2.0.8',
