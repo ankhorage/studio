@@ -30,8 +30,13 @@ test('copies apps/studio directly into an independent single-package root', asyn
   const packageJson = JSON.parse(
     await readFile(path.join(fixtureRoot, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Record<string, string>; readonly workspaces?: unknown };
+  const sourcePackageJson = await readPackageJsonAsync(
+    path.join(repositoryRoot, 'apps', 'studio', 'package.json'),
+  );
   expect(packageJson.workspaces).toBeUndefined();
-  expect(packageJson.dependencies?.['@ankhorage/studio']).toBe('^2.0.9');
+  expect(packageJson.dependencies?.['@ankhorage/studio']).toBe(
+    requireDependencyRange(sourcePackageJson.dependencies, '@ankhorage/studio'),
+  );
 });
 
 test('accepts newer compatible registry patches installed and locked inside the fixture', async () => {
@@ -39,16 +44,7 @@ test('accepts newer compatible registry patches installed and locked inside the 
   const fixtureRoot = await createFixtureRootAsync();
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
 
-  const installedVersions = {
-    '@ankhorage/devtools': '1.8.2',
-    '@ankhorage/expo-runtime': '3.0.12',
-    '@ankhorage/runtime': '2.2.2',
-    '@ankhorage/studio': '2.0.10',
-    '@ankhorage/surface': '3.0.2',
-    '@ankhorage/zora': '3.0.2',
-    'expo-font': '57.0.2',
-    'react-native': '0.86.3',
-  } as const;
+  const installedVersions = await createCompatibleInstalledVersionsAsync(repositoryRoot);
   await writeInstalledGraphAsync(fixtureRoot, installedVersions);
 
   await assertExpo57StudioStandaloneContractAsync({
@@ -62,15 +58,12 @@ test('rejects a registry package below the declared fixture range', async () => 
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();
   await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
+  const fixturePackageJson = await readPackageJsonAsync(path.join(fixtureRoot, 'package.json'));
+  const studioRange = requireDependencyRange(fixturePackageJson.dependencies, '@ankhorage/studio');
+  const incompatibleStudioVersion = createVersionBelowRange(studioRange);
   await writeInstalledGraphAsync(fixtureRoot, {
-    '@ankhorage/devtools': '1.8.2',
-    '@ankhorage/expo-runtime': '3.0.12',
-    '@ankhorage/runtime': '2.2.1',
-    '@ankhorage/studio': '2.0.8',
-    '@ankhorage/surface': '3.0.2',
-    '@ankhorage/zora': '3.0.2',
-    'expo-font': '57.0.2',
-    'react-native': '0.86.3',
+    ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
+    '@ankhorage/studio': incompatibleStudioVersion,
   });
 
   return expect(
@@ -79,7 +72,9 @@ test('rejects a registry package below the declared fixture range', async () => 
       installed: true,
       repositoryRoot,
     }),
-  ).rejects.toThrow('@ankhorage/studio resolved 2.0.8, which does not satisfy ^2.0.9');
+  ).rejects.toThrow(
+    `@ankhorage/studio resolved ${incompatibleStudioVersion}, which does not satisfy ${studioRange}`,
+  );
 });
 
 test('requires the standalone app to use the repository-selected Devtools range', async () => {
@@ -144,6 +139,95 @@ async function createFixtureRootAsync(): Promise<string> {
   return fixtureRoot;
 }
 
+async function createCompatibleInstalledVersionsAsync(
+  repositoryRoot: string,
+): Promise<Readonly<Record<string, string>>> {
+  const [repositoryPackageJson, studioPackageJson, zoraPackageJson] = await Promise.all([
+    readPackageJsonAsync(path.join(repositoryRoot, 'package.json')),
+    readPackageJsonAsync(path.join(repositoryRoot, 'apps', 'studio', 'package.json')),
+    readPackageJsonAsync(
+      path.join(repositoryRoot, 'node_modules', '@ankhorage', 'zora', 'package.json'),
+    ),
+  ]);
+  return {
+    '@ankhorage/devtools': createCompatibleVersion(
+      requireDependencyRange(repositoryPackageJson.devDependencies, '@ankhorage/devtools'),
+    ),
+    '@ankhorage/expo-runtime': createCompatibleVersion(
+      requireDependencyRange(repositoryPackageJson.dependencies, '@ankhorage/expo-runtime'),
+    ),
+    '@ankhorage/runtime': createCompatibleVersion(
+      requireDependencyRange(repositoryPackageJson.dependencies, '@ankhorage/runtime'),
+    ),
+    '@ankhorage/studio': createCompatibleVersion(
+      requireDependencyRange(studioPackageJson.dependencies, '@ankhorage/studio'),
+    ),
+    '@ankhorage/surface': createCompatibleVersion(
+      requireDependencyRange(zoraPackageJson.dependencies, '@ankhorage/surface'),
+    ),
+    '@ankhorage/zora': createCompatibleVersion(
+      requireDependencyRange(repositoryPackageJson.dependencies, '@ankhorage/zora'),
+    ),
+    'expo-font': createCompatibleVersion(
+      requireDependencyRange(studioPackageJson.dependencies, 'expo-font'),
+    ),
+    'react-native': createCompatibleVersion(
+      requireDependencyRange(studioPackageJson.dependencies, 'react-native'),
+    ),
+  };
+}
+
+function createCompatibleVersion(range: string): string {
+  const version = parseSemverRange(range);
+  if (version.patch === 'x') return `${version.major}.${version.minor}.1`;
+  if (version.operator === '') return `${version.major}.${version.minor}.${version.patch}`;
+  return `${version.major}.${version.minor}.${Number(version.patch) + 1}`;
+}
+
+function createVersionBelowRange(range: string): string {
+  const version = parseSemverRange(range);
+  if (version.patch === 'x' || version.operator === '') {
+    throw new Error(`Cannot create an incompatible lower version for ${range}.`);
+  }
+  const patch = Number(version.patch);
+  if (patch > 0) return `${version.major}.${version.minor}.${patch - 1}`;
+  if (version.minor > 0) return `${version.major}.${version.minor - 1}.0`;
+  throw new Error(`Cannot create an incompatible lower version for ${range}.`);
+}
+
+function parseSemverRange(range: string): ParsedSemverRange {
+  const match = /^(?<operator>\^|~)?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+|x)$/u.exec(range);
+  if (match?.groups === undefined) throw new Error(`Unsupported test semver range: ${range}.`);
+  const { major, minor, operator = '', patch } = match.groups;
+  if (
+    major === undefined ||
+    minor === undefined ||
+    patch === undefined ||
+    (operator !== '' && operator !== '^' && operator !== '~')
+  ) {
+    throw new Error(`Unsupported test semver range: ${range}.`);
+  }
+  return {
+    major: Number(major),
+    minor: Number(minor),
+    operator,
+    patch,
+  };
+}
+
+async function readPackageJsonAsync(packagePath: string): Promise<PackageJsonShape> {
+  return JSON.parse(await readFile(packagePath, 'utf8')) as PackageJsonShape;
+}
+
+function requireDependencyRange(
+  dependencies: Readonly<Record<string, string>> | undefined,
+  packageName: string,
+): string {
+  const range = new Map(Object.entries(dependencies ?? {})).get(packageName);
+  if (range === undefined) throw new Error(`Missing test dependency ${packageName}.`);
+  return range;
+}
+
 async function writeInstalledPackageAsync(
   fixtureRoot: string,
   packageName: string,
@@ -179,4 +263,16 @@ async function writeInstalledGraphAsync(
       )
       .join('\n')}\n`,
   );
+}
+
+interface PackageJsonShape {
+  readonly dependencies?: Readonly<Record<string, string>>;
+  readonly devDependencies?: Readonly<Record<string, string>>;
+}
+
+interface ParsedSemverRange {
+  readonly major: number;
+  readonly minor: number;
+  readonly operator: '' | '^' | '~';
+  readonly patch: string;
 }
