@@ -113,14 +113,18 @@ async function runStudioDev() {
   const shutdown = () => {
     if (!subprocess.killed) subprocess.kill('SIGTERM');
   };
-  process.once('SIGINT', shutdown);
-  process.once('SIGTERM', shutdown);
+  const signalProcess = process as unknown as {
+    off(signal: 'SIGINT' | 'SIGTERM', listener: () => void): void;
+    once(signal: 'SIGINT' | 'SIGTERM', listener: () => void): void;
+  };
+  signalProcess.once('SIGINT', shutdown);
+  signalProcess.once('SIGTERM', shutdown);
 
   try {
     return { exitCode: await subprocess.exited };
   } finally {
-    process.off('SIGINT', shutdown);
-    process.off('SIGTERM', shutdown);
+    signalProcess.off('SIGINT', shutdown);
+    signalProcess.off('SIGTERM', shutdown);
     shutdown();
     await host.close();
   }
