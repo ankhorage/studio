@@ -38,9 +38,7 @@ const AUTH_DISABLE_IN_DEV = process.env.EXPO_PUBLIC_ANKH_AUTH_DISABLE_IN_DEV ===
 
 export type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';
 
-export function useGeneratedAuthNavigation(
-  options: { isRouteGuardDisabled?: (pathname: string) => boolean } = {},
-) {
+export function useGeneratedAuthNavigation() {
   const router = useRouter();
   const rootNavigationKey = getRootNavigationKey(useRootNavigationState());
   const pathname = usePathname();
@@ -51,20 +49,28 @@ export function useGeneratedAuthNavigation(
   );
   const isAuthRuntimeReady = useGeneratedAuthRuntimeReady();
   const [isInnerContentReady, setIsInnerContentReady] = useState(false);
-  const authenticated = session !== null && isAuthenticated();
-  const authState = resolveAuthNavigationState(isAuthRuntimeReady, authenticated);
+  const authEnforced = isGeneratedAuthEnforced();
+  const hasAuthenticatedSession = session !== null && isAuthenticated();
+  const authenticated = !authEnforced || hasAuthenticatedSession;
+  const authState = resolveAuthNavigationState(isAuthRuntimeReady, authenticated, authEnforced);
+  const canAccessStudioAdmin = !authEnforced || (isAuthRuntimeReady && hasAuthenticatedSession);
   useRefreshAuthSessionOnActive();
   useAuthRouteGuard({
     authenticated,
     isAuthRuntimeReady,
     isInnerContentReady,
-    isRouteGuardDisabled: options.isRouteGuardDisabled,
     pathname,
     rootNavigationKey,
     router,
   });
   const handleInnerContentReady = useCallback(() => setIsInnerContentReady(true), []);
-  return { authState, handleInnerContentReady, isAuthRuntimeReady, pathname };
+  return {
+    authState,
+    canAccessStudioAdmin,
+    handleInnerContentReady,
+    isAuthRuntimeReady,
+    pathname,
+  };
 }
 
 export function shouldMountAuthenticatedAppHeader(
@@ -111,8 +117,9 @@ function useRefreshAuthSessionOnActive(): void {
 function resolveAuthNavigationState(
   ready: boolean,
   authenticated: boolean,
+  authEnforced: boolean,
 ): GeneratedAuthNavigationState {
-  if (!isGeneratedAuthEnforced()) return 'authenticated';
+  if (!authEnforced) return 'authenticated';
   if (!ready) return 'pending';
   return authenticated ? 'authenticated' : 'unauthenticated';
 }
@@ -121,7 +128,6 @@ interface AuthRouteGuardInput {
   authenticated: boolean;
   isAuthRuntimeReady: boolean;
   isInnerContentReady: boolean;
-  isRouteGuardDisabled?: (pathname: string) => boolean;
   pathname: string;
   rootNavigationKey: string;
   router: ReturnType<typeof useRouter>;
@@ -143,8 +149,6 @@ function resolveAuthRouteGuardTarget(args: AuthRouteGuardInput): Href | null {
   ) {
     return null;
   }
-  if (args.isRouteGuardDisabled?.(args.pathname) || !isGeneratedAuthEnforced()) return null;
-
   const activeTopLevelRoute = getTopLevelRoute(args.pathname);
   const currentPath = normalizeRoutePath(args.pathname);
   const postSignInPath = normalizeRoutePath(AUTH_POST_SIGN_IN_ROUTE_PATH);

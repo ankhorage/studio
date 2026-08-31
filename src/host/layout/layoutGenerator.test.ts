@@ -158,7 +158,8 @@ describe('GeneratedAppFileGenerator', () => {
       .map((file) => file.content)
       .join('\n');
 
-    expect(adminSources).toContain('AnkhAdminShell');
+    expect(adminSources).not.toContain('AnkhAdminShell');
+    expect(adminSources).toContain('return <Redirect href="/" />;');
     expect(adminSources).toContain('AnkhAdminPage');
     expect(adminSources).toContain('routeId="auth-providers"');
     expect(adminSources).toContain('routeId="screens"');
@@ -170,7 +171,7 @@ describe('GeneratedAppFileGenerator', () => {
     expect(adminSources).not.toContain('return null;');
   });
 
-  test('generates auth-independent and production-gated Studio admin routes', () => {
+  test('generates auth-protected and production-gated Studio admin routes', () => {
     const files = new GeneratedAppFileGenerator().generateFiles(
       '/tmp/demo',
       createOAuthManifest(),
@@ -186,11 +187,11 @@ describe('GeneratedAppFileGenerator', () => {
     )?.content;
 
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
-    expect(rootLayout).not.toContain("if (authState === 'pending') {");
+    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
+    expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain('isStudioAdminPath(appPathname) ? (');
-    expect(rootLayout).toContain(
-      'useGeneratedAuthNavigation({ isRouteGuardDisabled: isStudioAdminPath })',
-    );
+    expect(rootLayout).toContain('} = useGeneratedAuthNavigation();');
+    expect(rootLayout).not.toContain('isRouteGuardDisabled');
     expect(rootLayout).toContain('useGlobalSearchParams');
     expect(rootLayout).toContain('resolveStudioLastNonAdminLocation');
     expect(rootLayout).toContain('!isStudioAdminPath(appPathname) &&');

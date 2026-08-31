@@ -64,8 +64,22 @@ function generateAuthFiles(postSignInRoute: 'index' | 'products') {
   );
 }
 
+function generateScopeFiles(scope: 'integrated' | 'none') {
+  const manifest = createAuthManifest('index');
+  if (!manifest.infra.auth) throw new Error('Expected auth fixture configuration.');
+  manifest.infra.auth = { ...manifest.infra.auth, scope };
+  return new GeneratedAppFileGenerator().generateFiles(
+    '/tmp/auth-bootstrap-fixture',
+    manifest,
+    [],
+    {
+      includeStudio: true,
+    },
+  );
+}
+
 describe('generated auth root bootstrap', () => {
-  test('keeps Studio routes mounted while bootstrap gates both auth trees', () => {
+  test('keeps the router unmounted while bootstrap resolves and protects Studio with a session', () => {
     const files = generateAuthFiles('index');
     const paths = files.map((file) => file.path);
     const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
@@ -79,10 +93,20 @@ describe('generated auth root bootstrap', () => {
       "type GeneratedAuthNavigationState = 'pending' | 'unauthenticated' | 'authenticated';",
     );
     expect(authNavigation).toContain("if (!ready) return 'pending';");
+    expect(authNavigation).toContain('const authEnforced = isGeneratedAuthEnforced();');
+    expect(authNavigation).toContain(
+      'const authenticated = !authEnforced || hasAuthenticatedSession;',
+    );
+    expect(authNavigation).toContain(
+      'const canAccessStudioAdmin = !authEnforced || (isAuthRuntimeReady && hasAuthenticatedSession);',
+    );
+    expect(authNavigation).not.toContain('isRouteGuardDisabled');
+    expect(authNavigation).not.toContain('if (!isGeneratedAuthEnforced()) return null;');
     expect(rootLayout).toContain('<InnerContent authState={authState}');
-    expect(rootLayout).not.toContain("if (authState === 'pending') {");
+    expect(rootLayout).toContain("if (authState === 'pending') {");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'authenticated'}>");
     expect(rootLayout).toContain("<Stack.Protected guard={authState === 'unauthenticated'}>");
+    expect(rootLayout).toContain('<Stack.Protected guard={canAccessStudioAdmin}>');
     expect(rootLayout).toContain('<Stack.Screen key="ankh" name="ankh" />');
     expect(rootLayout).toContain(`return (
     <Stack screenOptions={rootStackScreenOptions}>
@@ -92,7 +116,9 @@ describe('generated auth root bootstrap', () => {
       <Stack.Protected guard={authState === 'unauthenticated'}>
         <Stack.Screen key="auth" name="(auth)" />
       </Stack.Protected>
-      <Stack.Screen key="ankh" name="ankh" />
+      <Stack.Protected guard={canAccessStudioAdmin}>
+        <Stack.Screen key="ankh" name="ankh" />
+      </Stack.Protected>
     </Stack>
   );`);
   });
@@ -123,4 +149,23 @@ describe('generated auth root bootstrap', () => {
     expect(tabsLayout).toContain("initialRouteName: 'products'");
     expect(paths).toContain('src/app/(app)/(tabs)/products.tsx');
   });
+
+  test.each(['integrated', 'none'] as const)(
+    'keeps %s auth on the public app topology and fails Studio administration closed',
+    (scope) => {
+      const files = generateScopeFiles(scope);
+      const paths = files.map((file) => file.path);
+      const rootLayout = files.find((file) => file.path === 'src/app/_layout.tsx')?.content ?? '';
+      const adminLayout =
+        files.find((file) => file.path === 'src/app/ankh/_layout.tsx')?.content ?? '';
+
+      expect(paths).toContain('src/app/index.tsx');
+      expect(paths).not.toContain('src/app/(auth)/sign-in.tsx');
+      expect(paths).not.toContain('src/auth/navigation.ts');
+      expect(rootLayout).not.toContain('useGeneratedAuthNavigation');
+      expect(rootLayout).not.toContain('GeneratedAuthNavigationState');
+      expect(adminLayout).toContain('return <Redirect href="/" />;');
+      expect(adminLayout).not.toContain('AnkhAdminShell');
+    },
+  );
 });
