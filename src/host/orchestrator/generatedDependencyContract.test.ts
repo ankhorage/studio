@@ -2,6 +2,7 @@ import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { ProjectScaffolder } from './scaffolder';
@@ -174,7 +175,7 @@ function expectRuntimePeers(
   if (expected === undefined) {
     expect(nativePicker).toBeDefined();
     expect(ionicons).toBeDefined();
-    expect(expoFont).toBe('~57.0.1');
+    expect(expoFont).toBe(EXPO_PLATFORM.packages.font.version);
     return;
   }
 

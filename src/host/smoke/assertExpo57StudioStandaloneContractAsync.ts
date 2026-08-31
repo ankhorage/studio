@@ -1,13 +1,14 @@
 import { lstat, readdir, readFile, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+
 import { assertInstalledRegistryPackageAsync } from './assertInstalledRegistryPackageAsync';
 import { assertReactNativeOwnerGraphAsync } from './assertReactNativeOwnerGraphAsync';
 
 const FORBIDDEN_DEPENDENCY_PREFIX = /^(?:file|link|workspace):/u;
-const EXPO_FONT_RANGE = '~57.0.1';
+const EXPO_FONT_RANGE = EXPO_PLATFORM.packages.font.version;
 const REQUIRED_OWNER_RANGES = {
-  '@ankhorage/expo-runtime': '^3.0.10',
   '@ankhorage/runtime': '^2.2.1',
   '@ankhorage/studio': '^2.0.9',
   '@ankhorage/surface': '^3.0.1',
@@ -19,21 +20,11 @@ const REQUIRED_ROUTE_EVIDENCE = [
   '/create/[category]/[templateId]',
   '/projects/[projectId]',
 ] as const;
-const REQUIRED_RELEASE_RANGES = [
+const REQUIRED_RELEASE_RANGES: readonly ReleaseRequirement[] = [
   {
     dependencyGroup: 'dependencies',
     packageName: '@ankhorage/studio',
     range: REQUIRED_OWNER_RANGES['@ankhorage/studio'],
-  },
-  {
-    dependencyGroup: 'dependencies',
-    packageName: '@ankhorage/expo-runtime',
-    range: REQUIRED_OWNER_RANGES['@ankhorage/expo-runtime'],
-  },
-  {
-    dependencyGroup: 'devDependencies',
-    packageName: '@ankhorage/devtools',
-    range: '^1.7.0',
   },
 ] as const;
 
@@ -56,7 +47,8 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
   if (packageJson.workspaces !== undefined) {
     throw new Error('Standalone Studio fixture must not declare workspaces.');
   }
-  for (const requirement of REQUIRED_RELEASE_RANGES) {
+  const requiredReleaseRanges = await resolveRequiredReleaseRangesAsync(repositoryRoot);
+  for (const requirement of requiredReleaseRanges) {
     const declaredRange = packageJson[requirement.dependencyGroup]?.[requirement.packageName];
     if (declaredRange !== requirement.range) {
       throw new Error(
@@ -76,7 +68,9 @@ export async function assertExpo57StudioStandaloneContractAsync(options: {
     throw new Error('Standalone Studio TypeScript configuration reaches into parent output.');
   }
   await assertCopiedFilesAreIndependentAsync(fixtureRoot, repositoryRoot);
-  if (options.installed) await assertInstalledContractAsync(fixtureRoot, packageJson);
+  if (options.installed) {
+    await assertInstalledContractAsync(fixtureRoot, packageJson, requiredReleaseRanges);
+  }
 }
 
 async function assertCopiedFilesAreIndependentAsync(
@@ -101,9 +95,10 @@ async function assertCopiedFilesAreIndependentAsync(
 async function assertInstalledContractAsync(
   fixtureRoot: string,
   packageJson: StandalonePackageJson,
+  requiredReleaseRanges: readonly ReleaseRequirement[],
 ): Promise<void> {
   const lockfile = await readFile(path.join(fixtureRoot, 'bun.lock'), 'utf8');
-  for (const requirement of REQUIRED_RELEASE_RANGES) {
+  for (const requirement of requiredReleaseRanges) {
     const declaredRange = packageJson[requirement.dependencyGroup]?.[requirement.packageName];
     if (declaredRange === undefined) {
       throw new Error(`Standalone Studio fixture does not declare ${requirement.packageName}.`);
@@ -119,7 +114,14 @@ async function assertInstalledContractAsync(
   await assertReactNativeOwnerGraphAsync({
     installationRoot: fixtureRoot,
     reactNativeVersion: '0.86.3',
-    requiredOwnerRanges: REQUIRED_OWNER_RANGES,
+    requiredOwnerRanges: {
+      ...REQUIRED_OWNER_RANGES,
+      '@ankhorage/expo-runtime': requireDependencyRange(
+        packageJson,
+        'dependencies',
+        '@ankhorage/expo-runtime',
+      ),
+    },
   });
 
   const routerTypesPath = path.join(fixtureRoot, '.expo', 'types', 'router.d.ts');
@@ -168,6 +170,57 @@ async function listFilesAsync(root: string): Promise<string[]> {
     } else files.push(target);
   }
   return files;
+}
+
+async function resolveRequiredReleaseRangesAsync(
+  repositoryRoot: string,
+): Promise<readonly ReleaseRequirement[]> {
+  const repositoryPackageJson = JSON.parse(
+    await readFile(path.join(repositoryRoot, 'package.json'), 'utf8'),
+  ) as StandalonePackageJson;
+  const devtoolsRange = repositoryPackageJson.devDependencies?.['@ankhorage/devtools'];
+  if (devtoolsRange === undefined) {
+    throw new Error('Studio repository root does not declare @ankhorage/devtools.');
+  }
+
+  const expoRuntimeRange = repositoryPackageJson.dependencies?.['@ankhorage/expo-runtime'];
+  if (expoRuntimeRange === undefined) {
+    throw new Error('Studio repository root does not declare @ankhorage/expo-runtime.');
+  }
+
+  return [
+    ...REQUIRED_RELEASE_RANGES,
+    {
+      dependencyGroup: 'dependencies',
+      packageName: '@ankhorage/expo-runtime',
+      range: expoRuntimeRange,
+    },
+    {
+      dependencyGroup: 'devDependencies',
+      packageName: '@ankhorage/devtools',
+      range: devtoolsRange,
+    },
+  ];
+}
+
+function requireDependencyRange(
+  packageJson: StandalonePackageJson,
+  dependencyGroup: ReleaseRequirement['dependencyGroup'],
+  packageName: string,
+): string {
+  const dependencies =
+    dependencyGroup === 'dependencies' ? packageJson.dependencies : packageJson.devDependencies;
+  const range = new Map(Object.entries(dependencies ?? {})).get(packageName);
+  if (range === undefined) {
+    throw new Error(`Standalone Studio fixture does not declare ${packageName}.`);
+  }
+  return range;
+}
+
+interface ReleaseRequirement {
+  readonly dependencyGroup: 'dependencies' | 'devDependencies';
+  readonly packageName: string;
+  readonly range: string;
 }
 
 interface StandalonePackageJson {
