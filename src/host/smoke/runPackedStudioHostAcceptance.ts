@@ -2,13 +2,15 @@ import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promi
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+import { EXPO_PLATFORM } from '@ankhorage/expo-runtime/platform';
+
 import { runAcceptanceCommandAsync } from './runAcceptanceCommandAsync';
 
 const COMMAND_TIMEOUT_MS = 300_000;
 const STUDIO_TARBALL_NAME = 'ankhorage-studio.tgz';
 const STUDIO_OWNED_PEERS = {
   '@ankhorage/permissions': '^0.2.3',
-  'expo-image-picker': '~57.0.12',
+  [EXPO_PLATFORM.packages.imagePicker.name]: EXPO_PLATFORM.packages.imagePicker.version,
 } as const;
 
 export async function runPackedStudioHostAcceptance(
