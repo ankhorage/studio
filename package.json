@@ -181,6 +181,7 @@
     "test": "bun test",
     "test:acceptance:expo57-generated-app": "bun scripts/expo57-generated-app-acceptance.ts",
     "test:acceptance:expo57-generated-capabilities": "bun scripts/expo57-generated-capability-acceptance.ts",
+    "test:acceptance:expo57-auth-hidden-route-drawer": "bun scripts/expo57-generated-navigation-acceptance.ts --auth-hidden-route-drawer",
     "test:acceptance:expo57-generated-navigation": "bun scripts/expo57-generated-navigation-acceptance.ts",
     "test:acceptance:expo57-studio-standalone": "bun scripts/expo57-studio-standalone-acceptance.ts",
     "test:acceptance:packed-studio-host": "bun scripts/packed-studio-host-acceptance.ts",

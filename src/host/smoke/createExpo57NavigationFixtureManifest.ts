@@ -5,7 +5,6 @@ export function createExpo57NavigationFixtureManifest(
   options: {
     readonly auth: boolean;
     readonly authScope?: 'global' | 'integrated' | 'none';
-    readonly hideRootAboutRoute?: boolean;
     readonly name: string;
     readonly postSignInRoute?: 'about' | 'index';
     readonly rootNavigator?: 'drawer' | 'stack' | 'tabs';
@@ -15,7 +14,6 @@ export function createExpo57NavigationFixtureManifest(
   const {
     auth,
     authScope = 'global',
-    hideRootAboutRoute = false,
     name,
     postSignInRoute = 'index',
     rootNavigator = 'stack',
@@ -133,7 +131,6 @@ export function createExpo57NavigationFixtureManifest(
                 label: 'About',
                 icon: { name: 'information-circle-outline', provider: 'Ionicons' },
                 screenId: 'navigation-about',
-                ...(hideRootAboutRoute ? { showInPrimaryNavigation: false } : {}),
               },
             ],
           },

@@ -21,6 +21,36 @@ const FORBIDDEN_REACT_NAVIGATION_IMPORT =
 const HTTP_TIMEOUT_MS = 120_000;
 const ROUTER_REWRITE_DISABLED = '1';
 
+export async function runExpo57AuthHiddenRouteDrawerAcceptanceAsync(): Promise<void> {
+  const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-auth-hidden-drawer-'));
+  let studioHost: Awaited<ReturnType<typeof startStudioHostServer>> | null = null;
+
+  try {
+    await createWorkspaceAsync(workspaceRoot);
+    const manager = new ProjectManager(workspaceRoot);
+    const project = await createAuthHiddenRouteDrawerStudioAsync(manager);
+    await rm(path.join(workspaceRoot, 'package.json'));
+    const expectedLockfileDigest = await installGeneratedProjectAsync(project);
+    const studioHostPort = await reserveTcpPortAsync('auth hidden-route Drawer Studio host');
+    studioHost = await startStudioHostServer({
+      host: '127.0.0.1',
+      port: studioHostPort,
+      projectRoot: workspaceRoot,
+    });
+    await runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
+      project,
+      `http://127.0.0.1:${studioHostPort}/api`,
+    );
+    const actualLockfileDigest = hash(await readFile(path.join(project.path, 'bun.lock')));
+    if (actualLockfileDigest !== expectedLockfileDigest) {
+      throw new Error(`${project.id} focused acceptance mutated its frozen lockfile.`);
+    }
+  } finally {
+    await studioHost?.close();
+    await rm(workspaceRoot, { force: true, recursive: true });
+  }
+}
+
 export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<void> {
   const workspaceRoot = await mkdtemp(path.join('/tmp', 'ankh-expo57-navigation-'));
   let staticServer: ReturnType<typeof Bun.serve> | null = null;
@@ -40,14 +70,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
       name: 'Expo 57 Navigation Studio',
       postSignInRoute: 'about',
     });
-    const themedRootStudio = await createProjectAsync(manager, {
-      auth: true,
-      hideRootAboutRoute: true,
-      includeStudio: true,
-      name: 'Expo 57 Themed Root Auth Studio',
-      postSignInRoute: 'about',
-      rootNavigator: 'drawer',
-    });
+    const authHiddenRouteDrawerStudio = await createAuthHiddenRouteDrawerStudioAsync(manager);
     const integratedStudio = await createProjectAsync(manager, {
       auth: true,
       authScope: 'integrated',
@@ -80,7 +103,7 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const projects = [
       standalone,
       studio,
-      themedRootStudio,
+      authHiddenRouteDrawerStudio,
       integratedStudio,
       noAuthStudio,
       authRuntime,
@@ -113,7 +136,10 @@ export async function runExpo57GeneratedNavigationAcceptanceAsync(): Promise<voi
     const studioApiUrl = `http://127.0.0.1:${studioHostPort}/api`;
     await runGlobalStudioAuthNavigationSmokeAsync(studio.path, studioApiUrl);
     await runGlobalStudioAuthBypassNavigationSmokeAsync(studio.path, studioApiUrl);
-    await runThemedRootStudioAuthNavigationSmokeAsync(themedRootStudio, studioApiUrl);
+    await runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
+      authHiddenRouteDrawerStudio,
+      studioApiUrl,
+    );
     for (const project of [integratedStudio, noAuthStudio]) {
       await assertGeneratedNavigationContractAsync(project);
       await runScopeAwareStudioChecksAsync(project, studioApiUrl);
@@ -265,7 +291,6 @@ async function createProjectAsync(
   options: {
     readonly auth: boolean;
     readonly authScope?: 'global' | 'integrated' | 'none';
-    readonly hideRootAboutRoute?: boolean;
     readonly includeStudio: boolean;
     readonly name: string;
     readonly postSignInRoute?: 'about' | 'index';
@@ -294,6 +319,18 @@ async function createProjectAsync(
     id: created.id,
     path: created.path,
   };
+}
+
+async function createAuthHiddenRouteDrawerStudioAsync(
+  manager: ProjectManager,
+): Promise<NavigationProject> {
+  return createProjectAsync(manager, {
+    auth: true,
+    includeStudio: true,
+    name: 'Expo 57 Auth Hidden Route Drawer Studio',
+    postSignInRoute: 'about',
+    rootNavigator: 'drawer',
+  });
 }
 
 async function createWorkspaceAsync(workspaceRoot: string): Promise<void> {
@@ -660,7 +697,7 @@ async function runGlobalStudioAuthBypassNavigationSmokeAsync(
   );
 }
 
-async function runThemedRootStudioAuthNavigationSmokeAsync(
+async function runAuthHiddenRouteDrawerStudioNavigationSmokeAsync(
   project: NavigationProject,
   studioApiUrl: string,
 ): Promise<void> {
@@ -669,7 +706,20 @@ async function runThemedRootStudioAuthNavigationSmokeAsync(
     'utf8',
   );
   if (!appLayout.includes('const { theme } = useZoraTheme();')) {
-    throw new Error(`${project.id} does not exercise a themed root navigator.`);
+    throw new Error(`${project.id} does not exercise the themed Drawer fallback.`);
+  }
+  const signOutScreen =
+    /<Drawer\.Screen key="sign-out" name="sign-out" options=\{([^}]+)\} \/>/u.exec(appLayout);
+  const signOutOptionsName = signOutScreen?.[1];
+  if (!signOutOptionsName) {
+    throw new Error(`${project.id} does not generate the auth-injected sign-out Drawer route.`);
+  }
+  const hiddenSignOutOptions = new RegExp(
+    `const\\s+${signOutOptionsName}\\s*=\\s*\\{[\\s\\S]*?drawerItemStyle:\\s*\\{\\s*display:\\s*'none'\\s*\\}[\\s\\S]*?\\};`,
+    'u',
+  );
+  if (!hiddenSignOutOptions.test(appLayout)) {
+    throw new Error(`${project.id} exposes the auth-injected sign-out route in its Drawer.`);
   }
 
   await generateRouterTypesAsync(project);
@@ -684,7 +734,7 @@ async function runThemedRootStudioAuthNavigationSmokeAsync(
         'ankh.auth.session.v1',
         JSON.stringify({
           accessToken: 'expo57-themed-root-acceptance-token',
-          user: { id: 'expo57-themed-root-acceptance-user' },
+          user: { id: 'expo57-auth-hidden-drawer-acceptance-user' },
         }),
       );
       await chrome.navigateAsync(rootUrl);
@@ -693,7 +743,7 @@ async function runThemedRootStudioAuthNavigationSmokeAsync(
       await chrome.navigateAsync(`${rootUrl}/ankh`);
       await chrome.waitForLocationAsync({ pathname: '/ankh' });
       await chrome.waitForBodyTextAsync('Administration');
-      assertNoBrowserErrors(chrome.errors, 'themed root global Auth Studio navigation');
+      assertNoBrowserErrors(chrome.errors, 'auth hidden-route Drawer Studio navigation');
     },
     { EXPO_PUBLIC_API_URL: studioApiUrl },
   );
@@ -771,7 +821,6 @@ interface AcceptanceCommand {
 interface NavigationProject {
   readonly auth: boolean;
   readonly authScope?: 'global' | 'integrated' | 'none';
-  readonly hideRootAboutRoute?: boolean;
   readonly id: string;
   readonly includeStudio: boolean;
   readonly name: string;

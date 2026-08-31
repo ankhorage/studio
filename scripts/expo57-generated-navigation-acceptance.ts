@@ -1,3 +1,10 @@
-import { runExpo57GeneratedNavigationAcceptanceAsync } from '../src/host/smoke/runExpo57GeneratedNavigationAcceptance';
+import {
+  runExpo57AuthHiddenRouteDrawerAcceptanceAsync,
+  runExpo57GeneratedNavigationAcceptanceAsync,
+} from '../src/host/smoke/runExpo57GeneratedNavigationAcceptance';
 
-await runExpo57GeneratedNavigationAcceptanceAsync();
+if (process.argv.includes('--auth-hidden-route-drawer')) {
+  await runExpo57AuthHiddenRouteDrawerAcceptanceAsync();
+} else {
+  await runExpo57GeneratedNavigationAcceptanceAsync();
+}
