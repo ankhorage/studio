@@ -111,7 +111,7 @@ describe('generated native OAuth lifecycle', () => {
 
     expect(result).toEqual({
       status: 'error',
-      message: 'The OAuth authorization transport failed.',
+      message: 'The OAuth transport failed.',
       recoverable: true,
     });
     expect(harness.state.fetchCalls).toHaveLength(0);
@@ -127,7 +127,7 @@ describe('generated native OAuth lifecycle', () => {
 
     expect(result).toEqual({
       status: 'error',
-      message: 'The OAuth authorization transport failed.',
+      message: 'The OAuth transport failed.',
       recoverable: true,
     });
     expect(harness.state.fetchCalls).toHaveLength(0);
