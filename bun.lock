@@ -9,7 +9,7 @@
         "@ankhorage/contracts": "^8.0.1",
         "@ankhorage/data-sources": "^2.0.0",
         "@ankhorage/deploy": "^0.12.0",
-        "@ankhorage/expo-runtime": "^3.2.0",
+        "@ankhorage/expo-runtime": "^3.2.2",
         "@ankhorage/infra": "^4.1.3",
         "@ankhorage/orchestrator": "^0.3.1",
         "@ankhorage/orchestrator-module-expo-google-fonts": "^0.2.1",
@@ -64,7 +64,7 @@
       "name": "@ankhorage/studio-app",
       "version": "1.0.1",
       "dependencies": {
-        "@ankhorage/expo-runtime": "^3.2.0",
+        "@ankhorage/expo-runtime": "^3.2.2",
         "@ankhorage/studio": "^2.0.9",
         "@react-native-picker/picker": "2.11.4",
         "@react-native-vector-icons/fontawesome": "^13.1.3",
@@ -117,7 +117,7 @@
 
     "@ankhorage/doctor": ["@ankhorage/doctor@0.10.4", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/supabase-auth": "^1.2.6" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-k3KLgAXwGLgvTgxUqLbNajexwdNPm/0uw0EEMTA/MJyv1iBi1LwKH69UDEPOrbiI055NrZmBwLNaHqRZ1sK/rg=="],
 
-    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.2.0", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.3", "@ankhorage/zora": "^3.1.0", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "@readium/navigator": "2.8.2", "@readium/shared": "2.4.0", "@zip.js/zip.js": "2.9.0", "expo": "57.0.18", "expo-camera": "~57.0.4", "expo-constants": "~57.0.16", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.6", "expo-font": "~57.0.2", "expo-image-picker": "~57.0.14", "pdfjs-dist": "6.3.289", "react": "19.2.3", "react-native": "0.86.3" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "@react-native-vector-icons/fontawesome", "@react-native-vector-icons/fontawesome5", "@react-native-vector-icons/fontawesome6", "@react-native-vector-icons/ionicons", "@react-native-vector-icons/material-design-icons", "@readium/navigator", "@readium/shared", "@zip.js/zip.js", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-font", "expo-image-picker", "pdfjs-dist", "react", "react-native"] }, "sha512-QtDQ21kLwioQfmBWqn+gZg3nd31B3ysFGX3A0TTNfgs2qAuHzHYOAVDLWOrf2iWGVIZcDsDgybesdyBOOMn4oA=="],
+    "@ankhorage/expo-runtime": ["@ankhorage/expo-runtime@3.2.2", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1" }, "peerDependencies": { "@ankhorage/permissions": "^0.2.3", "@ankhorage/zora": "^3.1.1", "@react-native-vector-icons/fontawesome": "^13.1.3", "@react-native-vector-icons/fontawesome5": "^13.1.3", "@react-native-vector-icons/fontawesome6": "^13.1.3", "@react-native-vector-icons/ionicons": "^13.1.3", "@react-native-vector-icons/material-design-icons": "^13.1.3", "@readium/navigator": "2.8.2", "@readium/shared": "2.4.0", "@zip.js/zip.js": "2.9.0", "expo": "57.0.18", "expo-camera": "~57.0.4", "expo-constants": "~57.0.16", "expo-document-picker": "~57.0.1", "expo-file-system": "~57.0.6", "expo-font": "~57.0.2", "expo-image-picker": "~57.0.14", "pdfjs-dist": "6.3.289", "react": "19.2.3", "react-native": "0.86.3" }, "optionalPeers": ["@ankhorage/permissions", "@ankhorage/zora", "@react-native-vector-icons/fontawesome", "@react-native-vector-icons/fontawesome5", "@react-native-vector-icons/fontawesome6", "@react-native-vector-icons/ionicons", "@react-native-vector-icons/material-design-icons", "@readium/navigator", "@readium/shared", "@zip.js/zip.js", "expo", "expo-camera", "expo-constants", "expo-document-picker", "expo-file-system", "expo-font", "expo-image-picker", "pdfjs-dist", "react", "react-native"] }, "sha512-Kb3wZgwYqXubYJIwSatonXY4938hRvmh3+1ya1iaC1GgVpgL5Uc76GjLfUAx7i2pvEi4dPMZlsdihikB203TNg=="],
 
     "@ankhorage/infra": ["@ankhorage/infra@4.1.3", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/supabase-vault": "^0.2.4" }, "bin": { "ankhorage-infra": "dist/cli/bin.js" } }, "sha512-n+7UyWruPC+BUZap4sc9uaS9ORqWU3sprSoA3hJOOuonWMhjGMxISjUnraXxjqauuOMsFaBacLcdq0zroRVjoQ=="],
 
