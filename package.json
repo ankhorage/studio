@@ -224,7 +224,7 @@
     "@ankhorage/permissions": "^0.2.3",
     "@ankhorage/react-native-reanimated-dnd-web": "^0.4.0",
     "@ankhorage/runtime": "^2.2.1",
-    "@ankhorage/supabase-auth": "^1.2.6",
+    "@ankhorage/supabase-auth": "^1.2.7",
     "@ankhorage/supabase-storage": "^0.2.0",
     "@ankhorage/supabase-vault": "^0.2.5",
     "@ankhorage/templates": "^7.0.0",
