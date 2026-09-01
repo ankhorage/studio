@@ -83,7 +83,8 @@ For every file or new symbol, decide in order:
 
 1. Which Ankhorage package owns the capability?
 2. Which internal domain owns it?
-3. Is it core policy, application orchestration, a required port, an edge adapter, composition, or a public entrypoint?
+3. Is it core policy, application orchestration, a required port, an edge adapter, composition,
+   or a public entrypoint?
 4. Is it reusable enough to belong in `@ankhorage/utility` instead?
 
 If any answer is unclear, resolve ownership before moving or creating code.
