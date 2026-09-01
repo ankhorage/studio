@@ -258,7 +258,7 @@ async function runGeneratedCapabilityBrowserAcceptanceAsync(
       String(OAUTH_EXPIRED_CLOCK_OFFSET_MS),
     );
     await chrome.navigateAsync(`${rootUrl}/auth/callback?code=expired-code`);
-    await chrome.waitForBodyTextAsync('The OAuth authorization attempt expired.');
+    await chrome.waitForBodyTextAsync('The OAuth attempt expired.');
     await chrome.waitForHydratedRoleAndNameAsync('button', 'Return to sign in');
     await chrome.reloadAsync();
     await chrome.waitForBodyTextAsync(

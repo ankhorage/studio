@@ -487,11 +487,11 @@ function expectedRejectedCallbackMessage(
 ): string {
   switch (scenario) {
     case 'expired':
-      return 'The OAuth authorization attempt expired.';
+      return 'The OAuth attempt expired.';
     case 'malformed':
       return 'The OAuth callback URL is invalid.';
     case 'mismatched':
-      return 'The OAuth authorization attempt was not found.';
+      return 'The OAuth attempt was not found.';
     case 'missing':
       return 'The OAuth authorization attempt was not found or has expired.';
   }
