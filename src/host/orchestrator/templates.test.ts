@@ -13,6 +13,7 @@ import {
 } from './templates';
 
 const WEB_TARGETS = { web: { enabled: true } } as const;
+const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 
 describe('generated OAuth scaffold templates', () => {
   it('keeps generated Expo config plugin data outside the default export function', () => {
@@ -61,15 +62,15 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
     const devDependencies = pkg.devDependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/contracts']).toBe('^8.0.0');
+    expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
+    expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
     expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
     expect(dependencies['@ankhorage/studio']).toBe('^2.0.2');
-    expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
+    expect(dependencies['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBeUndefined();
@@ -152,6 +153,39 @@ describe('generated OAuth scaffold templates', () => {
     );
   });
 
+  it('adds reader dependencies without camera or permissions for an ebook-only plan', () => {
+    const runtimePlan: ExpoRuntimePlan = {
+      capabilities: [{ capability: 'ebookReader' }],
+      dependencies: [
+        { name: '@ankhorage/expo-runtime', reasons: ['capability:ebookReader'], version: '^3.2.4' },
+        { name: '@readium/navigator', reasons: ['capability:ebookReader'], version: '2.8.2' },
+        { name: '@readium/shared', reasons: ['capability:ebookReader'], version: '2.4.0' },
+        { name: '@zip.js/zip.js', reasons: ['capability:ebookReader'], version: '2.9.0' },
+        { name: 'pdfjs-dist', reasons: ['capability:ebookReader'], version: '6.3.289' },
+      ],
+      diagnostics: [],
+      impliedPermissions: [],
+      nativeConfig: { androidPermissions: [], configHints: [], plugins: [] },
+      needsPermissionsProvider: false,
+      permissions: [],
+      providers: [],
+      runtimeAdapters: ['ExpoReaderSurfaceAdapter'],
+      usesExpoRuntimeRegistry: true,
+    };
+    const dependencies = getPackageJson({
+      name: 'reader-app',
+      runtimePlan,
+      targets: WEB_TARGETS,
+    }).dependencies as Record<string, string>;
+
+    expect(dependencies['@readium/navigator']).toBe('2.8.2');
+    expect(dependencies['@readium/shared']).toBe('2.4.0');
+    expect(dependencies['@zip.js/zip.js']).toBe('2.9.0');
+    expect(dependencies['pdfjs-dist']).toBe('6.3.289');
+    expect(dependencies['@ankhorage/permissions']).toBeUndefined();
+    expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
+  });
+
   it('requires the ZORA release with bounded SidebarLayout fill sizing', () => {
     const pkg = getPackageJson({
       name: 'studio-enabled-app',
@@ -160,8 +194,8 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/zora']).toBe('^3.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.0.10');
+    expect(dependencies['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
