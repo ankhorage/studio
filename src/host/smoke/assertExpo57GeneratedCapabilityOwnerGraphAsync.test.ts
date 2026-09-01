@@ -17,7 +17,7 @@ afterEach(async () => {
 
 test('accepts newer capability owners within generated and owner-declared ranges', async () => {
   const projectRoot = await createCapabilityGraphAsync({
-    '@ankhorage/expo-runtime': '3.2.2',
+    '@ankhorage/expo-runtime': '3.2.4',
     '@ankhorage/permissions': '0.2.4',
     '@ankhorage/runtime': '2.2.2',
     '@ankhorage/supabase-auth': '1.2.7',
@@ -41,7 +41,7 @@ test('rejects a capability owner below its generated range', async () => {
   });
 
   return expect(assertExpo57GeneratedCapabilityOwnerGraphAsync(projectRoot)).rejects.toThrow(
-    '@ankhorage/expo-runtime resolved 3.1.9, which does not satisfy ^3.2.2',
+    '@ankhorage/expo-runtime resolved 3.1.9, which does not satisfy ^3.2.4',
   );
 });
 
@@ -51,7 +51,7 @@ async function createCapabilityGraphAsync(
   const projectRoot = await mkdtemp(path.join('/tmp', 'ankh-capability-owner-graph-'));
   temporaryDirectories.push(projectRoot);
   const dependencies = {
-    '@ankhorage/expo-runtime': '^3.2.2',
+    '@ankhorage/expo-runtime': '^3.2.4',
     '@ankhorage/permissions': '^0.2.3',
     '@ankhorage/runtime': '^2.2.0',
     '@ankhorage/supabase-auth': '^1.2.5',

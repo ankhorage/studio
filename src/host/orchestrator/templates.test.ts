@@ -63,7 +63,7 @@ describe('generated OAuth scaffold templates', () => {
 
     expect(dependencies['@ankhorage/contracts']).toBe('^8.0.1');
     expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.2.2');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.2.4');
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
@@ -156,7 +156,7 @@ describe('generated OAuth scaffold templates', () => {
     const runtimePlan: ExpoRuntimePlan = {
       capabilities: [{ capability: 'ebookReader' }],
       dependencies: [
-        { name: '@ankhorage/expo-runtime', reasons: ['capability:ebookReader'], version: '^3.2.2' },
+        { name: '@ankhorage/expo-runtime', reasons: ['capability:ebookReader'], version: '^3.2.4' },
         { name: '@readium/navigator', reasons: ['capability:ebookReader'], version: '2.8.2' },
         { name: '@readium/shared', reasons: ['capability:ebookReader'], version: '2.4.0' },
         { name: '@zip.js/zip.js', reasons: ['capability:ebookReader'], version: '2.9.0' },
@@ -194,7 +194,7 @@ describe('generated OAuth scaffold templates', () => {
     const dependencies = pkg.dependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/zora']).toBe('^3.3.1');
-    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.2.2');
+    expect(dependencies['@ankhorage/expo-runtime']).toBe('^3.2.4');
   });
 
   it('uses the owner-projected animation stack without explicit Babel configuration', () => {
