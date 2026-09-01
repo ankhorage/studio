@@ -1,5 +1,6 @@
 import { parseAppManifest } from '@ankhorage/contracts';
 import { resolveExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
+import type { ReaderSurfaceProps } from '@ankhorage/zora';
 import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 import { describe, expect, it } from 'bun:test';
 
@@ -54,5 +55,17 @@ describe('createExpo57ReaderFixtureManifest', () => {
       code: { kind: 'source', source: { kind: 'event', path: 'payload.code' } },
       message: { kind: 'source', source: { kind: 'event', path: 'payload.message' } },
     });
+  });
+
+  it('uses the standard ZORA interaction policy contract', () => {
+    const editProps: Pick<ReaderSurfaceProps, 'interactionPolicy'> = {
+      interactionPolicy: 'passive',
+    };
+    const previewProps: Pick<ReaderSurfaceProps, 'interactionPolicy'> = {
+      interactionPolicy: 'enabled',
+    };
+
+    expect(editProps.interactionPolicy).toBe('passive');
+    expect(previewProps.interactionPolicy).toBe('enabled');
   });
 });
