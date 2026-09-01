@@ -17,6 +17,7 @@ test('exports the Studio runtime symbols used by generated app layouts', async (
 test('keeps the package root and first-party apps in Studio workspace installs', async () => {
   const packageJson = (await Bun.file(new URL('../package.json', import.meta.url)).json()) as {
     readonly dependencies?: Readonly<Record<string, string>>;
+    readonly overrides?: Readonly<Record<string, string>>;
     readonly peerDependencies?: Readonly<Record<string, string>>;
     readonly workspaces?: readonly string[];
   };
@@ -30,6 +31,8 @@ test('keeps the package root and first-party apps in Studio workspace installs',
   expect(packageJson.workspaces).toEqual(['.', 'apps/*']);
   expect(packageJson.peerDependencies?.expo).toBe(EXPO_PLATFORM.runtime.expo.version);
   expect(packageJson.peerDependencies?.['react-native']).toBe('0.86.x');
+  expect(packageJson.dependencies?.['@ankhorage/contracts']).toMatch(/^\^\d+\.\d+\.\d+$/u);
+  expect(packageJson.overrides?.['@ankhorage/contracts']).toBe('$@ankhorage/contracts');
   const expoRuntimeRange = packageJson.dependencies?.['@ankhorage/expo-runtime'];
   expect(expoRuntimeRange).toMatch(/^\^\d+\.\d+\.\d+$/u);
   expect(packageJson.dependencies?.['@ankhorage/runtime']).toBe('^2.2.1');

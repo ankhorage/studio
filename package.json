@@ -267,7 +267,7 @@
     "typescript": "~6.0.3"
   },
   "overrides": {
-    "@ankhorage/contracts": "8.0.1"
+    "@ankhorage/contracts": "$@ankhorage/contracts"
   },
   "packageManager": "bun@1.4.0"
 }
