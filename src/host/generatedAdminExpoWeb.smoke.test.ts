@@ -633,7 +633,7 @@ adminWebSmokeTest(
       ) as { version?: string };
       const generatedLockfile = await readFile(path.join(workspaceRoot, 'bun.lock'), 'utf8');
 
-      expect(generatedZoraRange).toBe('^3.0.0');
+      expect(generatedZoraRange).toBe('^3.3.1');
       expect(typeof resolvedZoraPackage.version).toBe('string');
       expect(
         satisfiesCaretSemverRange(resolvedZoraPackage.version ?? '', generatedZoraRange ?? ''),
