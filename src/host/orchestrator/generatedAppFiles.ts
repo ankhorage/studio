@@ -1,5 +1,8 @@
 import type { ExpoRuntimePlan } from '@ankhorage/expo-runtime/planning';
-import { getExpoBarcodeScannerViewSource } from '@ankhorage/expo-runtime/planning';
+import {
+  getExpoBarcodeScannerViewSource,
+  getExpoReaderSurfaceViewSource,
+} from '@ankhorage/expo-runtime/planning';
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -22,21 +25,33 @@ export async function syncGeneratedAppFiles(
   const generatedDest = path.join(targetProjectPath, 'src/generated');
   const appExtensionRegistryDest = path.join(generatedDest, 'appExtensionRegistry.ts');
   const expoBarcodeScannerDest = path.join(generatedDest, 'expo/ExpoBarcodeScannerView.tsx');
+  const expoReaderSurfaceDest = path.join(generatedDest, 'expo/ExpoReaderSurfaceView.tsx');
   const usesExpoBarcodeScannerAdapter =
     runtimePlan?.runtimeAdapters.includes('ExpoBarcodeScannerAdapter') ?? false;
+  const usesExpoReaderSurfaceAdapter =
+    runtimePlan?.runtimeAdapters.includes('ExpoReaderSurfaceAdapter') ?? false;
 
-  await Promise.all([removePath(appExtensionRegistryDest), removePath(expoBarcodeScannerDest)]);
+  await Promise.all([
+    removePath(appExtensionRegistryDest),
+    removePath(expoBarcodeScannerDest),
+    removePath(expoReaderSurfaceDest),
+  ]);
   await fs.mkdir(generatedDest, { recursive: true });
 
   if (usesExpoBarcodeScannerAdapter) {
     await fs.mkdir(path.dirname(expoBarcodeScannerDest), { recursive: true });
     await fs.writeFile(expoBarcodeScannerDest, getExpoBarcodeScannerViewSource(), 'utf8');
   }
+  if (usesExpoReaderSurfaceAdapter) {
+    await fs.mkdir(path.dirname(expoReaderSurfaceDest), { recursive: true });
+    await fs.writeFile(expoReaderSurfaceDest, getExpoReaderSurfaceViewSource(), 'utf8');
+  }
 
   await fs.writeFile(
     appExtensionRegistryDest,
     createGeneratedAppExtensionRegistrySource({
       usesExpoBarcodeScannerAdapter,
+      usesExpoReaderSurfaceAdapter,
       zoraExtensions,
     }),
     'utf8',
@@ -48,6 +63,7 @@ export async function syncGeneratedAppFiles(
 
 export function createGeneratedAppExtensionRegistrySource(args: {
   usesExpoBarcodeScannerAdapter: boolean;
+  usesExpoReaderSurfaceAdapter: boolean;
   zoraExtensions: readonly ZoraExtensionDefinition[];
 }): string {
   const externalImportLines = new Set<string>();
@@ -83,6 +99,15 @@ export function createGeneratedAppExtensionRegistrySource(args: {
     entries.unshift({
       componentName: 'BarcodeScannerView',
       exportName: 'ExpoBarcodeScannerView',
+    });
+  }
+  if (args.usesExpoReaderSurfaceAdapter) {
+    relativeImportLines.add(
+      "import { ExpoReaderSurfaceView } from './expo/ExpoReaderSurfaceView';",
+    );
+    entries.unshift({
+      componentName: 'ReaderSurface',
+      exportName: 'ExpoReaderSurfaceView',
     });
   }
 
