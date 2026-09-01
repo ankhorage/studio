@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.17
+
+### Patch Changes
+
+- f51edbf: Align generated OAuth behavior with the current Supabase Auth contract and Expo SDK package policy.
+
 ## 2.0.16
 
 ### Patch Changes
