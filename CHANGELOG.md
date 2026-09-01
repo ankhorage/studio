@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.16
+
+### Patch Changes
+
+- 27ae7d8: Raise generated-app baselines to the released ZORA reader components and Expo reader planning, generate capability-scoped ReaderSurface and scanner bridges, and add a canonical EPUB/PDF parity fixture for downstream Studio and generated-app verification.
+
 ## 2.0.15
 
 ### Patch Changes
