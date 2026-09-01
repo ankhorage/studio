@@ -100,7 +100,7 @@
     },
   },
   "overrides": {
-    "@ankhorage/contracts": "8.0.1",
+    "@ankhorage/contracts": "^8.0.1",
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.8.4", "", { "dependencies": { "@ankhorage/contracts": "^8.0.0", "@ankhorage/devtools": "^1.7.1", "@ankhorage/doctor": "^0.10.1", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-v+23hEYX2CxN+5HRewXzZjuUi/0znu9X9EoPgTjApkClF11SjQFVVjMSsEVz43qfYqU0J4h+L4okYpuxSaQLFg=="],
