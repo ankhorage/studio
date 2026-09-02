@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.19
+
+### Patch Changes
+
+- 09b9cbf: Fix tests
+
 ## 2.0.18
 
 ### Patch Changes
