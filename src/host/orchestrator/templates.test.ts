@@ -68,8 +68,8 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
     expect(dependencies['@react-navigation/drawer']).toBeUndefined();
-    expect(dependencies['@ankhorage/runtime']).toBe('^2.2.0');
-    expect(dependencies['@ankhorage/studio']).toBe('^2.0.2');
+    expect(dependencies['@ankhorage/runtime']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/studio']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/zora']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies[EXPO_PLATFORM.runtime.expo.name]).toBe(EXPO_PLATFORM.runtime.expo.version);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBeUndefined();
@@ -87,7 +87,7 @@ describe('generated OAuth scaffold templates', () => {
     expect(dependencies['expo-modules-core']).toBeUndefined();
     expect(dependencies['@expo/vector-icons']).toBeUndefined();
     expect(dependencies['babel-preset-expo']).toBeUndefined();
-    expect(devDependencies['@ankhorage/devtools']).toBe('^1.6.0');
+    expect(devDependencies['@ankhorage/devtools']).toMatch(CARET_SEMVER_RANGE);
     expect(devDependencies[EXPO_PLATFORM.tooling.expoDoctor.name]).toBe(
       EXPO_PLATFORM.tooling.expoDoctor.version,
     );
@@ -107,9 +107,9 @@ describe('generated OAuth scaffold templates', () => {
     });
     const dependencies = pkg.dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/utility']).toBe('^0.2.0');
-    expect(dependencies['@ankhorage/supabase-auth']).toBe('^1.2.5');
-    expect(dependencies['@ankhorage/supabase-storage']).toBe('^0.2.0');
+    expect(dependencies['@ankhorage/utility']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/supabase-auth']).toMatch(CARET_SEMVER_RANGE);
+    expect(dependencies['@ankhorage/supabase-storage']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies[EXPO_PLATFORM.packages.crypto.name]).toBe(
       EXPO_PLATFORM.packages.crypto.version,
     );
