@@ -5107,7 +5107,7 @@
       {
         "name": "harmony",
         "kind": "property",
-        "type": "\"monochromatic\" | \"analogous\" | \"complementary\" | \"triadic\" | \"tetradic\" | \"splitComplementary\"",
+        "type": "\"monochromatic\" | \"analogous\" | \"complementary\" | \"splitComplementary\" | \"triadic\" | \"tetradic\" | \"square\"",
         "required": true,
         "description": null
       },

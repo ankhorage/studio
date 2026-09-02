@@ -107,10 +107,13 @@ test('requires the standalone app to use the repository-selected Devtools range'
   fixturePackageJson.devDependencies['@ankhorage/devtools'] = '^0.0.1';
   await writeFile(fixturePackagePath, `${JSON.stringify(fixturePackageJson, null, 2)}\n`);
 
-  const repositoryPackageJson = JSON.parse(
-    await readFile(path.join(repositoryRoot, 'package.json'), 'utf8'),
-  ) as { readonly devDependencies: Record<string, string> };
-  const expectedRange = repositoryPackageJson.devDependencies['@ankhorage/devtools'];
+  const studioPackageJson = await readPackageJsonAsync(
+    path.join(repositoryRoot, 'apps', 'studio', 'package.json'),
+  );
+  const expectedRange = requireDependencyRange(
+    studioPackageJson.devDependencies,
+    '@ankhorage/devtools',
+  );
 
   return expect(
     assertExpo57StudioStandaloneContractAsync({
@@ -135,10 +138,13 @@ test('requires the standalone app to use the repository-selected Expo Runtime ra
   fixturePackageJson.dependencies['@ankhorage/expo-runtime'] = '^0.0.1';
   await writeFile(fixturePackagePath, `${JSON.stringify(fixturePackageJson, null, 2)}\n`);
 
-  const repositoryPackageJson = JSON.parse(
-    await readFile(path.join(repositoryRoot, 'package.json'), 'utf8'),
-  ) as { readonly dependencies: Record<string, string> };
-  const expectedRange = repositoryPackageJson.dependencies['@ankhorage/expo-runtime'];
+  const studioPackageJson = await readPackageJsonAsync(
+    path.join(repositoryRoot, 'apps', 'studio', 'package.json'),
+  );
+  const expectedRange = requireDependencyRange(
+    studioPackageJson.dependencies,
+    '@ankhorage/expo-runtime',
+  );
 
   return expect(
     assertExpo57StudioStandaloneContractAsync({
