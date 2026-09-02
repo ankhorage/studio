@@ -1,5 +1,11 @@
 # @ankhorage/studio
 
+## 2.0.18
+
+### Patch Changes
+
+- cef460c: Update Ankhorage dependencies: `@ankhorage/templates`, `@ankhorage/zora`.
+
 ## 2.0.17
 
 ### Patch Changes
