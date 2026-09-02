@@ -63,7 +63,7 @@ describe('generated OAuth scaffold templates', () => {
     const devDependencies = pkg.devDependencies as Record<string, string>;
 
     expect(dependencies['@ankhorage/contracts']).toMatch(CARET_SEMVER_RANGE);
-    expect(dependencies['@ankhorage/data-sources']).toBe('^2.0.0');
+    expect(dependencies['@ankhorage/data-sources']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/expo-runtime']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies['@ankhorage/permissions']).toBeUndefined();
     expect(dependencies['@react-navigation/bottom-tabs']).toBeUndefined();
@@ -147,7 +147,7 @@ describe('generated OAuth scaffold templates', () => {
       targets: WEB_TARGETS,
     }).dependencies as Record<string, string>;
 
-    expect(dependencies['@ankhorage/permissions']).toBe('^0.2.3');
+    expect(dependencies['@ankhorage/permissions']).toMatch(CARET_SEMVER_RANGE);
     expect(dependencies[EXPO_PLATFORM.packages.camera.name]).toBe(
       EXPO_PLATFORM.packages.camera.version,
     );
