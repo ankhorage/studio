@@ -12,7 +12,6 @@ const REQUIRED_OWNER_RANGES = {
   '@ankhorage/runtime': '^2.2.1',
   '@ankhorage/studio': '^2.0.9',
   '@ankhorage/surface': '^3.0.1',
-  '@ankhorage/zora': '^3.0.1',
 } as const;
 const REQUIRED_ROUTE_EVIDENCE = [
   '/create',
@@ -116,6 +115,7 @@ async function assertInstalledContractAsync(
     reactNativeVersion: '0.86.3',
     requiredOwnerRanges: {
       ...REQUIRED_OWNER_RANGES,
+      ...(await resolveInstalledStudioOwnerRangesAsync(fixtureRoot)),
       '@ankhorage/expo-runtime': requireDependencyRange(
         packageJson,
         'dependencies',
@@ -137,6 +137,23 @@ async function assertInstalledContractAsync(
       }
     }
   }
+}
+
+/*** Reads the ZORA range owned by the installed registry Studio package. */
+async function resolveInstalledStudioOwnerRangesAsync(
+  fixtureRoot: string,
+): Promise<Readonly<Record<'@ankhorage/zora', string>>> {
+  const packageJson = JSON.parse(
+    await readFile(
+      path.join(fixtureRoot, 'node_modules', '@ankhorage', 'studio', 'package.json'),
+      'utf8',
+    ),
+  ) as StandalonePackageJson;
+  const zoraRange = packageJson.dependencies?.['@ankhorage/zora'];
+  if (zoraRange === undefined) {
+    throw new Error('Installed @ankhorage/studio does not declare @ankhorage/zora.');
+  }
+  return { '@ankhorage/zora': zoraRange };
 }
 
 function assertRegistryDependencyRanges(packageJson: StandalonePackageJson): void {
