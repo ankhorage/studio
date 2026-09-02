@@ -36,15 +36,15 @@ function createSeed(category: AppCategory): TemplateSeed {
     slug: preset.defaultSlug,
     summary: preset.summary,
     focusAreas: preset.focusAreas,
-    primaryColor: preset.primaryColor,
-    harmony: preset.harmony,
+    primaryColor: preset.recommendedPrimaryColors[0],
+    harmony: preset.recommendedHarmonies[0],
   };
 }
 
 function buildProjectTemplate(selection: ProjectTemplateSelection): AppManifest {
   return createStarterTemplate(createSeed(selection.category), {
     templateId: selection.templateId,
-  });
+  }).manifest;
 }
 
 const PROJECT_TEMPLATE_INDEX = createTemplateIndex();
@@ -104,8 +104,8 @@ function createTemplateCatalog(): TemplateCatalog {
       label: preset.label,
       summary: preset.summary,
       focusAreas: [...preset.focusAreas],
-      primaryColor: preset.primaryColor,
-      harmony: preset.harmony,
+      primaryColor: preset.recommendedPrimaryColors[0],
+      harmony: preset.recommendedHarmonies[0],
       templateCount: templates.length,
       templates,
     } satisfies TemplateCatalogCategory;
