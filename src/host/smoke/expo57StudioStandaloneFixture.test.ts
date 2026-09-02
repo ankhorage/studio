@@ -77,6 +77,24 @@ test('rejects a registry package below the declared fixture range', async () => 
   );
 });
 
+test('requires ZORA to satisfy the range declared by installed registry Studio', async () => {
+  const repositoryRoot = process.cwd();
+  const fixtureRoot = await createFixtureRootAsync();
+  await createExpo57StudioStandaloneFixtureAsync({ fixtureRoot, repositoryRoot });
+  await writeInstalledGraphAsync(fixtureRoot, {
+    ...(await createCompatibleInstalledVersionsAsync(repositoryRoot)),
+    '@ankhorage/zora': '3.3.4',
+  });
+
+  return expect(
+    assertExpo57StudioStandaloneContractAsync({
+      fixtureRoot,
+      installed: true,
+      repositoryRoot,
+    }),
+  ).rejects.toThrow('@ankhorage/zora resolved 3.3.4; expected a released owner satisfying ^4.0.0.');
+});
+
 test('requires the standalone app to use the repository-selected Devtools range', async () => {
   const repositoryRoot = process.cwd();
   const fixtureRoot = await createFixtureRootAsync();
@@ -241,6 +259,9 @@ async function writeInstalledPackageAsync(
       name: packageName,
       ...(packageName.startsWith('@ankhorage/') && packageName !== '@ankhorage/devtools'
         ? { peerDependencies: { 'react-native': '0.86.x' } }
+        : {}),
+      ...(packageName === '@ankhorage/studio'
+        ? { dependencies: { '@ankhorage/zora': '^4.0.0' } }
         : {}),
       version,
     })}\n`,
