@@ -6,7 +6,7 @@ import { resolveStudioApiBase } from './apiBase';
 
 /***
  * Resolve the Studio API base URL from explicit environment, Expo host, and platform inputs.
- * @todo Move Studio API environment/platform composition from core/ to platform/.
+ * @todo Move Expo/React Native environment composition out of core into the package's platform/app edge.
  */
 const getApiBase = (): string => {
   return resolveStudioApiBase({
@@ -16,10 +16,7 @@ const getApiBase = (): string => {
   });
 };
 
-/***
- * Read a non-empty string environment variable without traversing inherited properties.
- * @todo Keep environment access with the Studio platform/configuration adapter rather than core/.
- */
+/*** Read a non-empty string environment variable without traversing inherited properties. */
 function readEnvString(name: string): string | undefined {
   const value = readOwnProperty<unknown>(process.env, name);
   return typeof value === 'string' && value.length > 0 ? value : undefined;
@@ -27,7 +24,7 @@ function readEnvString(name: string): string | undefined {
 
 /***
  * Read the current Expo development host URI when Expo exposes a non-empty value.
- * @todo Move Expo-specific host inspection from core/ to platform/.
+ * @todo Keep Expo-specific host discovery at the platform/app edge rather than core.
  */
 function readExpoHostUri(): string | null {
   const expoConfig = Constants.expoConfig as { hostUri?: unknown } | null | undefined;
