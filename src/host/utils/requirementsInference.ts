@@ -8,10 +8,15 @@ import type {
 } from '@ankhorage/contracts';
 import { ZORA_COMPONENT_META } from '@ankhorage/zora/metadata';
 
+/***
+ * Infer screen permission/capability requirements by walking authored UiNodes and collecting requirements declared by ZORA component metadata.
+ * @todo Move this requirements-domain behavior out of generic `host/utils`; it depends directly on shared ScreenRequirements contracts and ZORA metadata and should live with the owning generation/requirements capability.
+ */
 export function inferScreenRequirementsFromUi(root: UiNode): ScreenRequirements | undefined {
   const permissions = new Map<AnkhoragePermissionName, ScreenPermissionRequirement>();
   const capabilities = new Map<AnkhorageCapabilityName, ScreenCapabilityRequirement>();
 
+  /*** Visit one UiNode subtree and collect metadata-declared permissions/capabilities by semantic key. */
   function walk(node: UiNode) {
     const meta = ZORA_COMPONENT_META[node.type];
 
@@ -41,6 +46,10 @@ export function inferScreenRequirementsFromUi(root: UiNode): ScreenRequirements 
   };
 }
 
+/***
+ * Merge inferred and explicit ScreenRequirements by semantic key, with explicit declarations overriding inferred ones.
+ * @todo This is reusable requirements-domain behavior, but the correct owner is the ScreenRequirements/contracts capability rather than generic Utility.
+ */
 export function mergeScreenRequirements(
   explicit?: ScreenRequirements,
   inferred?: ScreenRequirements,
