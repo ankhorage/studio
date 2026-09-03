@@ -24,6 +24,10 @@ const STUDIO_MODULE_ADMIN_VIEW_REGISTRY = new Map<string, StudioModuleAdminViewC
   ]),
 );
 
+/***
+ * Resolve the package-owned administration view contribution registered for one module id.
+ * @todo Keep module contribution registration/composition with the modules/app edge rather than generic UI ownership.
+ */
 export function getStudioModuleAdminView(
   moduleId: string,
 ): StudioModuleAdminViewContribution | null {
