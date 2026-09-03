@@ -25,10 +25,12 @@ interface ProjectModuleAdminParams extends ProjectModuleParams {
   readonly operation: string;
 }
 
+/*** Register Studio module lifecycle/config/admin HTTP adapters around the ModuleManager contract. */
 export function registerProjectModuleRoutes(
   fastify: FastifyInstance,
   orchestrator: ProjectModuleRouteManager,
 ): void {
+  /*** Apply pending module operations for one project. */
   fastify.post<{ Params: ProjectParams }>(
     '/api/projects/:id/modules/finalize-pending',
     async (req, reply) => {
@@ -40,6 +42,7 @@ export function registerProjectModuleRoutes(
     },
   );
 
+  /*** List module states for one project. */
   fastify.get<{ Params: ProjectParams }>('/api/projects/:id/modules', async (req, reply) => {
     try {
       return await orchestrator.listModules(req.params.id);
@@ -48,6 +51,7 @@ export function registerProjectModuleRoutes(
     }
   });
 
+  /*** Return one module state or 404 when no matching module exists. */
   fastify.get<{ Params: ProjectModuleParams }>(
     '/api/projects/:id/modules/:moduleId',
     async (req, reply) => {
@@ -61,6 +65,7 @@ export function registerProjectModuleRoutes(
     },
   );
 
+  /*** Install one module with optional object-shaped config. */
   fastify.post<{ Params: ProjectModuleParams; Body: unknown }>(
     '/api/projects/:id/modules/:moduleId/install',
     async (req, reply) => {
@@ -73,6 +78,7 @@ export function registerProjectModuleRoutes(
     },
   );
 
+  /*** Uninstall one project module. */
   fastify.post<{ Params: ProjectModuleParams }>(
     '/api/projects/:id/modules/:moduleId/uninstall',
     async (req, reply) => {
@@ -84,6 +90,7 @@ export function registerProjectModuleRoutes(
     },
   );
 
+  /*** Validate and update one module config payload. */
   fastify.put<{ Params: ProjectModuleParams; Body: unknown }>(
     '/api/projects/:id/modules/:moduleId/config',
     async (req, reply) => {
@@ -103,6 +110,7 @@ export function registerProjectModuleRoutes(
     },
   );
 
+  /*** Validate and execute one module-owned admin operation payload. */
   fastify.post<{ Params: ProjectModuleAdminParams; Body: unknown }>(
     '/api/projects/:id/modules/:moduleId/admin/:operation',
     async (req, reply) => {
@@ -124,10 +132,18 @@ export function registerProjectModuleRoutes(
   );
 }
 
+/***
+ * Narrow an unknown non-array object to a string-keyed record.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/***
+ * Convert an unknown thrown value to a human-readable message.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
