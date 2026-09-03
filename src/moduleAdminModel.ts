@@ -6,6 +6,10 @@ export type StudioModuleAdminDraftResult =
   | { readonly ok: true; readonly config: Record<string, unknown> }
   | { readonly ok: false; readonly message: string };
 
+/***
+ * Project typed configuration values into editable string draft fields from a field/control schema.
+ * @utility @ankhorage/utility/form
+ */
 export function createStudioModuleAdminDraft(args: {
   readonly contribution: StudioModuleAdminContribution;
   readonly config: unknown;
@@ -25,6 +29,10 @@ export function createStudioModuleAdminDraft(args: {
   );
 }
 
+/***
+ * Parse editable string draft fields back into configuration values according to field/control metadata.
+ * @utility @ankhorage/utility/form
+ */
 export function parseStudioModuleAdminDraft(args: {
   readonly contribution: StudioModuleAdminContribution;
   readonly currentConfig: unknown;
@@ -65,14 +73,26 @@ export function parseStudioModuleAdminDraft(args: {
   return { ok: true, config };
 }
 
+/***
+ * Create a standard required-field validation failure from a display label.
+ * @utility @ankhorage/utility/validation
+ */
 function requiredField(label: string): StudioModuleAdminDraftResult {
   return { ok: false, message: `${label} is required.` };
 }
 
+/***
+ * Narrow an unknown non-array object to a string-keyed record.
+ * @utility @ankhorage/utility/value
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/***
+ * Narrow an unknown value to an array containing only strings.
+ * @utility @ankhorage/utility/array
+ */
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
