@@ -16,24 +16,29 @@ export class StudioManifestPersistenceCoordinator {
   private readonly options: StudioManifestPersistenceCoordinatorOptions;
   private queue: Promise<void> = Promise.resolve();
 
+  /*** Create a persistence coordinator around the supplied manifest access and save adapters. */
   constructor(options: StudioManifestPersistenceCoordinatorOptions) {
     this.options = options;
   }
 
+  /*** Queue persistence of the newest manifest state after any already queued save work. */
   queueLatestSave(): Promise<void> {
     return this.enqueueLatestSave();
   }
 
+  /*** Wait until the newest manifest state has been persisted through the shared save queue. */
   flushLatestSave(): Promise<void> {
     return this.enqueueLatestSave();
   }
 
+  /*** Append one latest-state persistence task to the serialized save queue. */
   private enqueueLatestSave(): Promise<void> {
     const task = this.queue.catch(() => undefined).then(() => this.persistLatestUntilSettled());
     this.queue = task.catch(() => undefined);
     return task;
   }
 
+  /*** Persist manifest revisions until the stored signature matches the latest in-memory state. */
   private async persistLatestUntilSettled(): Promise<void> {
     for (;;) {
       const manifest = this.options.readManifest();
