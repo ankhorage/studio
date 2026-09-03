@@ -76,6 +76,7 @@ const handlers = [
   createHandler(['workspace', 'install'], installWorkspacePackages),
 ] as const;
 
+/*** Pair one Studio command path with its Ankh command handler for provider registration. */
 function createHandler(path: CommandPath, handler: AnkhCommandHandler) {
   return { path, handler };
 }
@@ -91,14 +92,23 @@ const provider = {
 
 export default provider;
 
+/***
+ * Resolve the package root relative to the current ESM module URL.
+ * @utility @ankhorage/utility/node/path
+ */
 function resolvePackageRoot() {
   return resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 }
 
+/*** Resolve Studio's host workspace root by applying the host workspace policy to this package root. */
 function resolveHostWorkspaceRoot() {
   return resolveWorkspaceRoot(resolvePackageRoot());
 }
 
+/***
+ * Start the Studio host and development app together, forwarding process signals and closing both resources on exit.
+ * @todo Keep this Bun/process lifecycle orchestration at the Studio CLI edge; reusable signal/subprocess primitives discovered underneath belong to Node/Bun Utility when extracted.
+ */
 async function runStudioDev() {
   const packageRoot = resolvePackageRoot();
   const projectRoot = resolveWorkspaceRoot(packageRoot);
@@ -110,6 +120,7 @@ async function runStudioDev() {
     stderr: 'inherit',
   });
 
+  /*** Terminate the Studio development subprocess when it is still running. */
   const shutdown = () => {
     if (!subprocess.killed) subprocess.kill('SIGTERM');
   };
@@ -130,6 +141,7 @@ async function runStudioDev() {
   }
 }
 
+/*** List Studio workspace projects through the host manager and print them as formatted JSON. */
 async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
@@ -142,6 +154,7 @@ async function listProjects(request: Parameters<AnkhCommandHandler>[0]) {
   }
 }
 
+/*** Parse project-creation CLI flags, create the project through the host manager, and print the result. */
 async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
   const input = parseCreateProjectArgs(request.argv);
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
@@ -158,6 +171,7 @@ async function createProject(request: Parameters<AnkhCommandHandler>[0]) {
   }
 }
 
+/*** Require a project id, delete that project through the host manager, and print the result. */
 async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
   const projectId = requireProjectId(request.argv, 'projects delete');
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
@@ -171,6 +185,7 @@ async function deleteProject(request: Parameters<AnkhCommandHandler>[0]) {
   }
 }
 
+/*** Require a project id, synchronize its generated output through the module manager, and print the result. */
 async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
   const projectId = requireProjectId(request.argv, 'projects sync');
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
@@ -184,6 +199,7 @@ async function syncProject(request: Parameters<AnkhCommandHandler>[0]) {
   }
 }
 
+/*** Install Studio workspace packages through the host manager and print the workspace-scoped result. */
 async function installWorkspacePackages(request: Parameters<AnkhCommandHandler>[0]) {
   const studioHost = createStudioHost({ workspaceRoot: resolveHostWorkspaceRoot() });
   try {
@@ -196,6 +212,7 @@ async function installWorkspacePackages(request: Parameters<AnkhCommandHandler>[
   }
 }
 
+/*** Require the first positional CLI argument as a non-empty project id and produce the command-specific usage error otherwise. */
 function requireProjectId(argv: readonly string[], command: string) {
   const [projectId] = argv;
   if (projectId === undefined || projectId.trim() === '') {
@@ -204,6 +221,7 @@ function requireProjectId(argv: readonly string[], command: string) {
   return projectId;
 }
 
+/*** Parse and validate the Studio-specific `projects create` flag set into the host template-selection input. */
 function parseCreateProjectArgs(argv: readonly string[]): {
   name: string;
   category: ProjectTemplateSelection['category'];
@@ -220,6 +238,10 @@ function parseCreateProjectArgs(argv: readonly string[]): {
   return { name, category: category as ProjectTemplateSelection['category'], templateId };
 }
 
+/***
+ * Read the value following a named CLI flag and return null when the flag/value is absent or blank.
+ * @utility @ankhorage/utility/cli
+ */
 function readFlag(argv: readonly string[], flag: string) {
   const index = argv.indexOf(flag);
   const value = index === -1 ? undefined : argv[index + 1];
