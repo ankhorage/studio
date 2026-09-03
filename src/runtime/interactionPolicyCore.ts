@@ -13,6 +13,10 @@ const EMPTY_THIRD_PARTY: ThirdPartyComponentSupport = {};
 
 type ComponentClassification = 'zora-builtin' | 'third-party-supported' | 'unsupported';
 
+/***
+ * Classify one string key against a primary predicate and an explicit supported-key record.
+ * @utility @ankhorage/utility/classification
+ */
 function classifyComponent(
   nodeType: string,
   isSupportedNodeType: (type: string) => boolean,
@@ -29,6 +33,10 @@ function classifyComponent(
   return 'unsupported';
 }
 
+/***
+ * Return whether a string key is accepted by either a primary predicate or an explicit supported-key record.
+ * @utility @ankhorage/utility/classification
+ */
 export function isComponentSupported(
   nodeType: string,
   thirdPartySupport: ThirdPartyComponentSupport,
@@ -37,6 +45,10 @@ export function isComponentSupported(
   return classifyComponent(nodeType, isSupportedNodeType, thirdPartySupport) !== 'unsupported';
 }
 
+/***
+ * Resolve a two-state policy for supported values while returning undefined for unsupported values.
+ * @utility @ankhorage/utility/classification
+ */
 function resolveInteractionPolicy(
   nodeType: string,
   previewMode: boolean,
@@ -62,11 +74,16 @@ export interface InteractionPolicyResolveArgs<TNode extends { type: string } = {
 export type InteractionPolicyNodePropsResolver<TNode extends { type: string } = { type: string }> =
   (resolveArgs: InteractionPolicyResolveArgs<TNode>) => Record<string, unknown>;
 
+/***
+ * Create a props resolver that conditionally injects one derived property based on node classification and preview state.
+ * @utility @ankhorage/utility/object
+ */
 export function createInteractionPolicyResolver(
   args: InteractionPolicyResolverArgs,
 ): InteractionPolicyNodePropsResolver {
   const { previewMode, thirdPartySupport = EMPTY_THIRD_PARTY, isSupportedNodeType } = args;
 
+  /*** Resolve one node's props and add the interaction-policy field only for supported node types. */
   return (resolveArgs) => {
     const baseProps = { ...resolveArgs.props };
 
@@ -95,6 +112,10 @@ export function composeInteractionPolicyResolver<TNode extends { type: string }>
   interactionPolicyResolver: InteractionPolicyNodePropsResolver,
   existingResolver: InteractionPolicyNodePropsResolver<TNode>,
 ): InteractionPolicyNodePropsResolver<TNode>;
+/***
+ * Compose an existing props resolver before a second resolver, or return the second resolver unchanged when no predecessor exists.
+ * @utility @ankhorage/utility/function
+ */
 export function composeInteractionPolicyResolver<TNode extends { type: string }>(
   interactionPolicyResolver: InteractionPolicyNodePropsResolver,
   existingResolver?: InteractionPolicyNodePropsResolver<TNode>,
@@ -103,6 +124,7 @@ export function composeInteractionPolicyResolver<TNode extends { type: string }>
     return interactionPolicyResolver;
   }
 
+  /*** Resolve props through the existing resolver before passing them into the interaction-policy resolver. */
   return (resolveArgs) =>
     interactionPolicyResolver({
       node: resolveArgs.node,
