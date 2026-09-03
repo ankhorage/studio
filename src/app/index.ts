@@ -1,3 +1,6 @@
+/***
+ * Studio app-composition entrypoint. Intentionally contains exports only; screen and shell implementations stay in their owning app modules.
+ */
 export { CreateCategoriesScreen } from './CreateCategoriesScreen';
 export { CreateCategoryTemplatesScreen } from './CreateCategoryTemplatesScreen';
 export { CreateProjectFromTemplateScreen } from './CreateProjectFromTemplateScreen';
