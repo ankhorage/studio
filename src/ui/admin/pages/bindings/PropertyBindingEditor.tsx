@@ -19,6 +19,7 @@ import {
   type StudioBindingSourceKind,
 } from './bindingEditorModel';
 
+/*** Render source-kind selection and source-specific editors for one bindable component property. */
 export function PropertyBindingEditor(props: {
   readonly option: StudioBindablePropOption;
   readonly binding: PropBinding | undefined;
@@ -75,6 +76,7 @@ export function PropertyBindingEditor(props: {
   );
 }
 
+/*** Render literal, state/context, or operation-response fields for one existing property binding source. */
 function PropertyBindingSourceFields(props: {
   readonly binding: PropBinding;
   readonly expected: StudioBindablePropOption['meta']['value'];
