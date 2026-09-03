@@ -14,6 +14,7 @@ import type {
   StudioInstancePropertyValue,
 } from '../../../propertiesAuthoringModel';
 
+/*** Render a media-asset selector for one media-backed Studio instance property and surface missing references. */
 export function MediaPropertyInput(props: {
   readonly field: StudioInstancePropertyField;
   readonly manifest: AppManifest;
