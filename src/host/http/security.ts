@@ -1,3 +1,7 @@
+/***
+ * Decide whether an optional HTTP(S) origin targets localhost, loopback, IPv4 private ranges, IPv6 ULA, or IPv6 link-local space; non-browser requests without Origin are allowed.
+ * @utility @ankhorage/utility/network/security
+ */
 export function isOriginAllowed(origin: string | undefined): boolean {
   // Allow non-browser requests (no origin header)
   if (origin === undefined) return true;
