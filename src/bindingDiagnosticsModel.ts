@@ -18,6 +18,10 @@ import { findStudioBindingOperationOption } from './bindingOperationModel';
 import { assessStudioBindingCompatibility } from './bindingSchemaModel';
 import { readOwnProperty } from './utils/readOwnProperty';
 
+/***
+ * Diagnose all authored prop and event bindings for one Studio component node.
+ * @todo Move binding diagnostics under src/bindings/.
+ */
 export function diagnoseStudioComponentBindings(args: {
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
@@ -50,6 +54,10 @@ export function diagnoseStudioComponentBindings(args: {
   ];
 }
 
+/***
+ * Diagnose one prop binding against component metadata and the selected operation response path.
+ * @todo Keep prop-binding diagnostics under src/bindings/.
+ */
 function diagnosePropBinding(
   name: string,
   binding: PropBinding,
@@ -92,6 +100,10 @@ function diagnosePropBinding(
     : [];
 }
 
+/***
+ * Diagnose one indexed event binding against event metadata, actions, operation availability, and inputs.
+ * @todo Keep event-binding diagnostics under src/bindings/.
+ */
 function diagnoseEventBinding(
   eventName: string,
   index: number,
@@ -124,6 +136,10 @@ function diagnoseEventBinding(
   return diagnoseEventInputs(binding, operation.inputFields, eventMeta.payload?.fields ?? [], path);
 }
 
+/***
+ * Diagnose required and mapped inputs for one event-to-operation binding.
+ * @todo Keep event input diagnostics under src/bindings/.
+ */
 function diagnoseEventInputs(
   binding: EventBinding,
   fields: readonly StudioBindingInputFieldOption[],
@@ -149,6 +165,10 @@ function diagnoseEventInputs(
   });
 }
 
+/***
+ * Diagnose one event-source input against the expected operation input field.
+ * @todo Keep input compatibility diagnostics under src/bindings/.
+ */
 function diagnoseInputCompatibility(
   input: BindingInputValue,
   field: StudioBindingInputFieldOption,
@@ -174,6 +194,10 @@ function diagnoseInputCompatibility(
     : [];
 }
 
+/***
+ * Resolve an exact or object-parent event field path into bindable value metadata.
+ * @todo Keep event-payload path semantics under src/bindings/.
+ */
 function resolveEventSourceValue(
   path: string,
   eventFields: readonly { readonly path: string; readonly type: string }[],
@@ -189,6 +213,10 @@ function resolveEventSourceValue(
   return parent ? { type: 'unknown' } : undefined;
 }
 
+/***
+ * Create the Studio diagnostic used when a referenced API operation cannot be resolved.
+ * @todo Keep missing-operation diagnostics under src/bindings/.
+ */
 function missingOperationDiagnostic(
   operation: BindingOperationRef,
   path: string,
@@ -199,6 +227,10 @@ function missingOperationDiagnostic(
   return diagnostic('missing-operation', `Operation '${ref}' is unavailable.`, path);
 }
 
+/***
+ * Narrow an event payload type string to the bindable primitive types supported by Studio.
+ * @todo Deduplicate bindable-type normalization within src/bindings/.
+ */
 function toBindableType(type: string): UiBindableValueMeta['type'] {
   if (
     type === 'string' ||
@@ -212,6 +244,10 @@ function toBindableType(type: string): UiBindableValueMeta['type'] {
   return 'unknown';
 }
 
+/***
+ * Construct an error diagnostic from a code, message, and optional path.
+ * @utility @ankhorage/utility/diagnostics
+ */
 function diagnostic(
   code: StudioBindingDiagnostic['code'],
   message: string,
