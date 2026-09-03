@@ -12,6 +12,7 @@ import { ZORA_BINDABLE_COMPONENT_META } from '@ankhorage/zora';
 import { bindingAdminStyles } from './bindingAdminStyles';
 import { PropertyBindingEditor } from './PropertyBindingEditor';
 
+/*** Render all metadata-exposed property bindings for one node and dispatch canonical registry updates from each editor. */
 export function PropertyBindingsCard(props: {
   readonly node: UiNode;
   readonly registry: ComponentDataBindingRegistry;
