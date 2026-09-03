@@ -85,9 +85,11 @@ export interface StudioProviderProps {
   mediaPicker?: StudioMediaPickerAdapter;
 }
 
+/*** Provide a no-op action for context capabilities that Studio does not currently implement. */
 const noop = () => undefined;
 const STUDIO_MANIFEST_SAVE_DELAY_MS = 350;
 
+/*** Own Studio authoring state, manifest mutations, media actions, selection, navigation, and persistence for one project. */
 export const StudioProvider = ({
   children,
   projectId,
@@ -523,6 +525,7 @@ export const StudioProvider = ({
   });
 };
 
+/*** Coordinate initial manifest hydration, debounced persistence, explicit flushes, and save-state reporting for StudioProvider. */
 function useStudioManifestPersistence(args: {
   readonly projectId: string;
   readonly manifest: StudioManifest | null;
@@ -641,6 +644,7 @@ function useStudioManifestPersistence(args: {
   return { refetchManifest: loadManifest, flushManifest };
 }
 
+/*** Fetch and parse the persisted Studio manifest for one project. */
 async function requestProjectManifest(projectId: string): Promise<StudioManifest> {
   const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`);
   const value = await readPersistenceJson(response);
@@ -648,6 +652,7 @@ async function requestProjectManifest(projectId: string): Promise<StudioManifest
   return value as StudioManifest;
 }
 
+/*** Persist the complete Studio manifest for one project through the host API. */
 async function persistProjectManifest(projectId: string, manifest: StudioManifest): Promise<void> {
   const response = await fetch(`${API_BASE}/projects/${encodeURIComponent(projectId)}/manifest`, {
     method: 'PUT',
@@ -658,6 +663,7 @@ async function persistProjectManifest(projectId: string, manifest: StudioManifes
   if (!response.ok) throw createPersistenceError(value, response.status);
 }
 
+/*** Parse a persistence response body as JSON and convert invalid bodies into an explicit request error. */
 async function readPersistenceJson(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -666,6 +672,7 @@ async function readPersistenceJson(response: Response): Promise<unknown> {
   }
 }
 
+/*** Convert an unsuccessful persistence response payload and HTTP status into an Error. */
 function createPersistenceError(value: unknown, status: number): Error {
   const record =
     typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
@@ -673,6 +680,7 @@ function createPersistenceError(value: unknown, status: number): Error {
   return new Error(error);
 }
 
+/*** Convert an unknown persistence failure into the message shown by Studio save-state UI. */
 function toPersistenceMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Project manifest persistence failed.';
 }
