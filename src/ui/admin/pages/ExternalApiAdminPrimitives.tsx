@@ -5,6 +5,10 @@ import { StyleSheet, View } from 'react-native';
 
 import type { ExternalApiDiscoveryAttempt } from '../../../externalApiAuthoringContracts';
 
+/***
+ * Render a labeled field wrapper used by external-API admin forms.
+ * @todo Replace this Studio-local generic field primitive with the canonical ZORA FormField pattern.
+ */
 export function ExternalApiField({
   label,
   children,
@@ -22,6 +26,7 @@ export function ExternalApiField({
   );
 }
 
+/*** Render external API discovery attempts and canonical data-source diagnostics as administration feedback. */
 export function ExternalApiDiagnosticList({
   diagnostics,
   attempts = [],
