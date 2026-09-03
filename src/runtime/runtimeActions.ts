@@ -5,6 +5,10 @@ interface RouterLike {
   push: (args: { pathname: string; params: Record<string, number | string> }) => void;
 }
 
+/***
+ * Forward Studio runtime actions directly to the canonical Expo runtime action bridge.
+ * @todo Remove or justify this pass-through wrapper; the implementation is already owned by `@ankhorage/expo-runtime/action-bridge` and should not be duplicated behind a Studio runtime facade without a Studio-specific contract.
+ */
 export async function executeRuntimeAction(args: {
   action: unknown;
   router: RouterLike;
