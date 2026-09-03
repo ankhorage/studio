@@ -12,6 +12,10 @@ interface ThemeRecipeTokenSource {
   };
 }
 
+/***
+ * Resolve sorted token names for one ZORA theme token family, merging the three typography token namespaces when requested.
+ * @todo This reusable ZORA token-catalog knowledge belongs with `@ankhorage/zora` theme metadata rather than Studio UI or generic Utility.
+ */
 export function resolveThemeRecipeTokenOptions(
   theme: ThemeRecipeTokenSource,
   family: ZoraThemeTokenFamily,
