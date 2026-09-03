@@ -18,6 +18,10 @@ export interface IndicatorSettleCoordinatorOptions<Snapshot, Handle> {
   readonly stableSampleCount: number;
 }
 
+/***
+ * Repeatedly sample an asynchronous value until it is stable for a configured number of samples or a maximum sample count is reached.
+ * @utility @ankhorage/utility/scheduling
+ */
 export function createIndicatorSettleCoordinator<Snapshot, Handle>(
   options: IndicatorSettleCoordinatorOptions<Snapshot, Handle>,
 ): IndicatorSettleCoordinator {
@@ -29,6 +33,7 @@ export function createIndicatorSettleCoordinator<Snapshot, Handle>(
   let stableSampleCount = 0;
   let previousSnapshot: Snapshot | null = null;
 
+  /*** Cancel and clear the currently scheduled sample callback when one exists. */
   function clearPending(): void {
     if (pendingHandle === null) {
       return;
@@ -37,6 +42,7 @@ export function createIndicatorSettleCoordinator<Snapshot, Handle>(
     pendingHandle = null;
   }
 
+  /*** Stop sampling, invalidate in-flight samples, and reset coordinator state. */
   function cancel(): void {
     active = false;
     revision += 1;
@@ -46,6 +52,7 @@ export function createIndicatorSettleCoordinator<Snapshot, Handle>(
     clearPending();
   }
 
+  /*** Schedule the next sample when the coordinator is active and no sample is running or pending. */
   function scheduleNext(delayMs: number): void {
     if (!active || sampling || pendingHandle !== null) {
       return;
@@ -56,6 +63,7 @@ export function createIndicatorSettleCoordinator<Snapshot, Handle>(
     }, delayMs);
   }
 
+  /*** Take one asynchronous sample and decide whether to settle, cancel, or schedule another sample. */
   async function sampleNext(): Promise<void> {
     if (!active || sampling) {
       return;
@@ -93,7 +101,9 @@ export function createIndicatorSettleCoordinator<Snapshot, Handle>(
 
   return {
     cancel,
+    /*** Return whether settle sampling is currently active. */
     isActive: () => active,
+    /*** Start or restart settle sampling and report whether this call changed the coordinator from inactive to active. */
     trigger: () => {
       const wasActive = active;
       active = true;
