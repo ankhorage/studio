@@ -13,6 +13,7 @@ export type ApisAdminRouteId = Extract<
   'apis' | 'api-catalog' | 'api-operations'
 >;
 
+/*** Compose API authoring, catalog, and operation administration sections according to the active API admin subroute. */
 export function ApisAdminPage({ routeId }: { readonly routeId: ApisAdminRouteId }) {
   const studio = useStudio();
   const apis = studio.manifest?.infra.apis ?? [];
