@@ -8,6 +8,10 @@ export interface InsertCategoryGroup {
   entries: InsertCatalogEntry[];
 }
 
+/***
+ * Filter catalog entries by a normalized query across selected string fields.
+ * @utility @ankhorage/utility/search
+ */
 export function filterInsertCatalogEntries(
   entries: InsertCatalogEntry[],
   query: string,
@@ -27,6 +31,10 @@ export function filterInsertCatalogEntries(
   });
 }
 
+/***
+ * Group entries by category while preserving first-seen group order and resolving a label per group.
+ * @utility @ankhorage/utility/collection
+ */
 export function groupInsertEntries(args: {
   entries: InsertCatalogEntry[];
   getCategoryLabel: (category: string) => string;
@@ -54,6 +62,10 @@ export function groupInsertEntries(args: {
   return groups;
 }
 
+/***
+ * Resolve the authored display label for a Studio node using alias, component metadata, type, or fallback.
+ * @todo Keep Studio node-label policy with canvas/insert authoring rather than a root model file.
+ */
 export function resolveNodeLabel(args: {
   node: UiNode | null;
   componentMeta: StudioComponentMetaRegistry;
@@ -65,6 +77,10 @@ export function resolveNodeLabel(args: {
   return node.alias ?? componentMeta[node.type]?.blueprint?.label ?? node.type;
 }
 
+/***
+ * Describe where an enabled insert-catalog entry will be placed relative to its resolved target node.
+ * @todo Move insert-placement presentation under src/canvas/ or the owning insert authoring responsibility.
+ */
 export function getPlacementHint(args: {
   entry: InsertCatalogEntry;
   rootNode: UiNode | null;
