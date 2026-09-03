@@ -8,11 +8,13 @@ import type {
   StudioMediaPickerSource,
 } from '../../../mediaPickerAuthoring';
 
+/*** Render device/photo-library import actions for managed-storage and bundled Studio authoring media. */
 export function MediaDeviceImportCard() {
   const studio = useStudio();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /*** Invoke the configured platform media picker and ingest the selection into the requested Studio media target. */
   const importMedia = async (source: StudioMediaPickerSource, target: StudioMediaIngestTarget) => {
     setBusy(true);
     setError(null);
