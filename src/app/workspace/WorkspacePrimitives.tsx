@@ -19,6 +19,9 @@ export { styles };
 
 type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
 
+/***
+ * Render the shared Studio workspace screen shell with safe-area, scrolling, title and subtitle composition.
+ */
 export function WorkspaceScreen(props: {
   title: string;
   subtitle: string;
@@ -44,6 +47,10 @@ export function WorkspaceScreen(props: {
   );
 }
 
+/***
+ * Render a workspace text input with ZORA theme colors and local focus-border state.
+ * @todo Prefer the canonical ZORA input primitive instead of maintaining a generic themed TextInput wrapper inside Studio when its behavior can be represented by ZORA.
+ */
 export function ThemedWorkspaceTextInput(props: TextInputProps) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -74,6 +81,9 @@ export function ThemedWorkspaceTextInput(props: TextInputProps) {
   );
 }
 
+/***
+ * Render one Studio project summary card with active-theme accent, project metadata and last-update label.
+ */
 export function ProjectOverviewCard(props: { project: StudioProjectSummary; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -112,6 +122,9 @@ export function ProjectOverviewCard(props: { project: StudioProjectSummary; onPr
   );
 }
 
+/***
+ * Render one template-catalog category card with category accent, summary and template count.
+ */
 export function CategoryCard(props: { category: TemplateCatalogCategory; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -146,6 +159,9 @@ export function CategoryCard(props: { category: TemplateCatalogCategory; onPress
   );
 }
 
+/***
+ * Render one selectable template summary card.
+ */
 export function TemplateCard(props: {
   template: { name: string; description: string };
   onPress: () => void;
@@ -179,6 +195,9 @@ export function TemplateCard(props: {
   );
 }
 
+/***
+ * Render template search results, including count, clear action and an empty state when no templates match.
+ */
 export function SearchResults(props: {
   query: string;
   results: TemplateEntry[];
@@ -218,6 +237,10 @@ export function SearchResults(props: {
   );
 }
 
+/***
+ * Render a workspace lifecycle operation card with loading, disabled and destructive presentation states.
+ * @todo Consolidate this generic action presentation with ZORA button/action patterns instead of owning another reusable UI primitive inside Studio.
+ */
 export function LifecycleAction(props: {
   iconName: IoniconsIconName;
   label: string;
@@ -262,6 +285,10 @@ export function LifecycleAction(props: {
   );
 }
 
+/***
+ * Render the primary workspace action button with icon, disabled and focus/press states.
+ * @todo Prefer the canonical ZORA Button API instead of maintaining a Studio-local generic primary button primitive.
+ */
 export function PrimaryAction(props: {
   iconName: IoniconsIconName;
   label: string;
@@ -296,6 +323,10 @@ export function PrimaryAction(props: {
   );
 }
 
+/***
+ * Render the secondary workspace action button with focus and press feedback.
+ * @todo Prefer the canonical ZORA Button API instead of maintaining a Studio-local generic secondary button primitive.
+ */
 export function SecondaryAction(props: { label: string; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -320,6 +351,10 @@ export function SecondaryAction(props: { label: string; onPress: () => void }) {
   );
 }
 
+/***
+ * Render a string-valued segmented selector from labeled options and forward the selected value.
+ * @todo Move/reuse this generic segmented-control UI through ZORA if it is an intentional reusable design-system primitive rather than Studio workspace ownership.
+ */
 export function SegmentedControl<TValue extends string>(props: {
   value: TValue;
   options: readonly { label: string; value: TValue }[];
@@ -344,6 +379,10 @@ export function SegmentedControl<TValue extends string>(props: {
   );
 }
 
+/***
+ * Render one selectable option inside the workspace segmented control.
+ * @todo Keep this implementation with the segmented-control owner if that primitive moves to ZORA.
+ */
 function SegmentedOption<TValue extends string>(props: {
   option: { label: string; value: TValue };
   selected: boolean;
@@ -377,6 +416,9 @@ function SegmentedOption<TValue extends string>(props: {
   );
 }
 
+/***
+ * Render labeled workspace metadata rows from string key/value pairs.
+ */
 export function MetadataRows(props: { rows: readonly (readonly [string, string])[] }) {
   return (
     <View style={styles.metadata}>
@@ -394,6 +436,10 @@ export function MetadataRows(props: { rows: readonly (readonly [string, string])
   );
 }
 
+/***
+ * Render a compact workspace status message with tone-dependent border and text semantics.
+ * @todo Prefer the canonical ZORA Notice/status primitive when it covers this presentation contract.
+ */
 export function InlineMessage(props: { tone: 'success' | 'error' | 'info'; text: string }) {
   const { theme } = useZoraTheme();
   const borderColor = props.tone === 'error' ? theme.colors.danger : theme.colors.primary;
@@ -407,6 +453,9 @@ export function InlineMessage(props: { tone: 'success' | 'error' | 'info'; text:
   );
 }
 
+/***
+ * Render a centered workspace loading indicator and explanatory label.
+ */
 export function LoadingState(props: { label: string }) {
   const { theme } = useZoraTheme();
   return (
@@ -419,6 +468,10 @@ export function LoadingState(props: { label: string }) {
   );
 }
 
+/***
+ * Render an empty-state message with an optional secondary action.
+ * @todo Replace this Studio-local duplicate with ZORA's canonical EmptyState pattern where its contract is sufficient.
+ */
 export function EmptyState(props: {
   title: string;
   detail: string;
@@ -439,6 +492,10 @@ export function EmptyState(props: {
   );
 }
 
+/***
+ * Format an AppCategory identifier as the human label shown by Studio workspace UI.
+ * @todo Move this small Studio-specific `finance_money` → `Finance & Money` convention into a real `src/utils/appCategory.ts` implementation and keep category display policy out of UI primitives.
+ */
 export function formatCategory(category: AppCategory): string {
   return category
     .split('_')
@@ -446,6 +503,10 @@ export function formatCategory(category: AppCategory): string {
     .join(' ');
 }
 
+/***
+ * Format an optional date string for human display, preserving invalid input and using a fallback for missing values.
+ * @utility @ankhorage/utility/date
+ */
 export function formatDate(value: string | undefined): string {
   if (!value) return 'Not recorded';
   const date = new Date(value);
