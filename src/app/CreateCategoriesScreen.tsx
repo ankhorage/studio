@@ -14,6 +14,9 @@ import {
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
 
+/***
+ * Render the first create-project workspace screen, combining catalog loading, global template search, category navigation and retry/empty states.
+ */
 export function CreateCategoriesScreen() {
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
   const [searchQuery, setSearchQuery] = useState('');
