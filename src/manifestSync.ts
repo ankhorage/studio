@@ -8,8 +8,8 @@ interface RuntimeScreenSignature {
 }
 
 /***
- * Reduce the screen registry to the stable fields that participate in runtime synchronization.
- * @todo Move this manifest synchronization helper from the src root into the manifest domain.
+ * Build the sorted screen subset used to detect runtime-relevant manifest changes.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
  */
 function createRuntimeScreenSignatures(
   manifest: StudioManifest,
@@ -27,8 +27,8 @@ function createRuntimeScreenSignatures(
 }
 
 /***
- * Serialize only manifest fields whose changes require generated runtime synchronization.
- * @todo Move this manifest synchronization policy from the src root into the manifest domain.
+ * Serialize only the manifest fields that affect generated runtime synchronization.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
  */
 export function createStudioRuntimeSyncSignature(manifest: StudioManifest): string {
   return JSON.stringify({
@@ -43,8 +43,8 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
 }
 
 /***
- * Serialize the complete Studio manifest to produce an equality signature for persistence tracking.
- * @todo Move this manifest persistence helper from the src root into the manifest domain.
+ * Serialize the complete manifest for exact persistence-change comparison.
+ * @todo Move manifest signature behavior from the source root into the manifest domain.
  */
 export function createStudioManifestSignature(manifest: StudioManifest): string {
   return JSON.stringify(manifest);
