@@ -8,6 +8,10 @@ export interface ActiveThemeModeSelection {
   readonly modeConfig: ThemeModeConfig;
 }
 
+/***
+ * Resolve the active theme by configured id with first-theme fallback, then select the requested light/dark mode config.
+ * @todo Move active-theme selection policy from admin UI into the theme domain/application model.
+ */
 export function resolveActiveThemeModeSelection(args: {
   readonly themes: readonly ThemeConfig[];
   readonly activeThemeId: string | undefined;
@@ -22,6 +26,7 @@ export function resolveActiveThemeModeSelection(args: {
   return { theme, mode: args.surfaceMode, modeConfig };
 }
 
+/*** Project partial mode updates into the light or dark branch expected by Studio theme mutations. */
 export function createThemeModeUpdates(
   mode: ActiveThemeMode,
   updates: Partial<ThemeModeConfig>,
@@ -29,6 +34,10 @@ export function createThemeModeUpdates(
   return mode === 'dark' ? { dark: updates } : { light: updates };
 }
 
+/***
+ * Resolve the source color/harmony values used to seed ZORA theme administration for one mode.
+ * @todo Keep this ZORA/theme bridge with the theme owner rather than generic UI.
+ */
 export function resolveZoraThemeSourceModeConfig(args: {
   readonly theme: ThemeConfig;
   readonly mode: ActiveThemeMode;
@@ -36,6 +45,10 @@ export function resolveZoraThemeSourceModeConfig(args: {
   return args.theme[args.mode];
 }
 
+/***
+ * Clone the theme and both mode configs before passing it into mutable/derived ZORA surface theme flows.
+ * @todo Keep this theme-boundary adapter with theme/ZORA integration ownership.
+ */
 export function resolveZoraSurfaceThemeConfig(theme: ThemeConfig): ThemeConfig {
   return {
     ...theme,
