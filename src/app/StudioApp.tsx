@@ -8,6 +8,9 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useWorkspaceActions } from '../hooks/useWorkspaceActions';
 import { resolveWorkspaceParentPath } from './workspace/navigation';
 
+/***
+ * Compose the Studio application providers and root workspace content.
+ */
 export function StudioApp() {
   return (
     <SafeAreaProvider>
@@ -18,6 +21,9 @@ export function StudioApp() {
   );
 }
 
+/***
+ * Render Studio's package-wide app shell: workspace navigation, theme toggle, workspace actions, Expo Router stack and status bar.
+ */
 function StudioAppRootContent() {
   const { theme, mode, setMode } = useZoraTheme();
   const { installWorkspacePackages } = useWorkspaceActions();
@@ -28,6 +34,7 @@ function StudioAppRootContent() {
     'idle',
   );
 
+  /*** Run the workspace package-install action and expose its lifecycle state in the app bar. */
   async function handleInstallWorkspacePackages() {
     setInstallState('running');
     setMenuOpen(false);
@@ -40,6 +47,7 @@ function StudioAppRootContent() {
     }
   }
 
+  /*** Navigate to the logical workspace parent, preferring router history when available. */
   function handleBack() {
     if (!parentPath) return;
     if (router.canGoBack()) {
@@ -107,6 +115,7 @@ function StudioAppRootContent() {
   );
 }
 
+/*** Render the Studio app-bar brand control that returns to the projects overview. */
 function AppBarBrand() {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -128,6 +137,10 @@ function AppBarBrand() {
 
 type IoniconsIconName = Extract<IconProps, { provider?: 'Ionicons' }>['name'];
 
+/***
+ * Render a compact icon-only app-bar button with focus/press feedback.
+ * @todo Prefer a canonical ZORA icon-button primitive if available instead of maintaining generic button behavior inside Studio.
+ */
 function IconButton(props: { label: string; iconName: IoniconsIconName; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
@@ -152,6 +165,7 @@ function IconButton(props: { label: string; iconName: IoniconsIconName; onPress:
   );
 }
 
+/*** Render the workspace-menu action that installs workspace packages. */
 function WorkspaceMenuItem(props: { disabled: boolean; onPress: () => void }) {
   const { theme } = useZoraTheme();
   const [focused, setFocused] = useState(false);
