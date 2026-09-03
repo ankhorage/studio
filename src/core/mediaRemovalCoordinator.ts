@@ -43,7 +43,10 @@ function cleanupFailure(message: string): StudioMediaDeleteResult {
   return { ok: false, reason: 'cleanup-failed', message, mediaRemoved: true };
 }
 
-/*** Convert an unknown thrown value into a user-facing error message. */
+/***
+ * Convert an unknown thrown value into a stable error message.
+ * @utility @ankhorage/utility/error
+ */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
