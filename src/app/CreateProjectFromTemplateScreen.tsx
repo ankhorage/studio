@@ -19,6 +19,9 @@ import {
 import { resolveCreateProjectFormState } from './workspace/createProjectFormState';
 import { resolveWorkspaceCategoryParam } from './workspace/routeParams';
 
+/***
+ * Render the final create-project workspace screen, combining selected template context, project-name validation, creation orchestration and navigation to the created project.
+ */
 export function CreateProjectFromTemplateScreen() {
   const { category, categoryParam, templateId } = useTemplateRouteParams();
   const { catalog, isLoading, error, refresh } = useTemplateCatalog();
@@ -49,6 +52,7 @@ export function CreateProjectFromTemplateScreen() {
     [projectName, projects, projectsLoading, projectsError, template, isCreating],
   );
 
+  /*** Submit a validated project-creation request, route to the new project on success, and expose domain/transport failures to the form. */
   async function handleCreate() {
     if (!category || !template || formState.validation?.ok !== true) return;
     setIsCreating(true);
@@ -146,6 +150,9 @@ export function CreateProjectFromTemplateScreen() {
   );
 }
 
+/***
+ * Read and normalize the category/template route parameters used by the create-project screen.
+ */
 function useTemplateRouteParams() {
   const params = useLocalSearchParams<{ category?: string; templateId?: string }>();
   const category = resolveWorkspaceCategoryParam(firstParam(params.category));
@@ -155,6 +162,10 @@ function useTemplateRouteParams() {
   };
 }
 
+/***
+ * Normalize a scalar-or-array route/search parameter to its first string value, falling back to an empty string.
+ * @utility @ankhorage/utility/url
+ */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }
