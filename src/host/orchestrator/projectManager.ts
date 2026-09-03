@@ -136,9 +136,9 @@ export class ProjectManager {
     return { success: true, id: slug, path: projectPath };
   }
 
-  async installWorkspacePackages() {
-    await runWorkspaceInstall(this.rootPath);
-    return { success: true };
+  async installProjectPackages(projectId: string) {
+    await runWorkspaceInstall(getProjectPath(this.rootPath, projectId));
+    return { success: true, scope: 'project' as const };
   }
 
   async getProjectManifest(projectId: string): Promise<AppManifest> {

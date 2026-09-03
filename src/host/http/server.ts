@@ -123,10 +123,10 @@ export async function createStudioHostServer(args: {
     });
   });
 
-  fastify.post('/api/workspace/packages/install', async (_req: FastifyRequest, reply) => {
+  fastify.post('/api/projects/:id/packages/install', async (req: FastifyRequest, reply) => {
     try {
-      await projectManager.installWorkspacePackages();
-      return { success: true, scope: 'workspace' as const };
+      const { id } = req.params as { id: string };
+      return await projectManager.installProjectPackages(id);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       reply.status(500).send({ error: message });
