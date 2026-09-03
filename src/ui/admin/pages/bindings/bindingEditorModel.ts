@@ -26,6 +26,7 @@ export const STUDIO_BINDING_SOURCE_OPTIONS: readonly {
   { value: 'operation', label: 'Operation result' },
 ];
 
+/*** Create the default property-binding shape for one selected Studio binding source kind and value metadata. */
 export function createStudioPropBindingForSource(
   kind: StudioBindingSourceKind,
   value: UiBindableValueMeta,
@@ -41,6 +42,7 @@ export function createStudioPropBindingForSource(
     : { source: { kind: 'context', path: '' } };
 }
 
+/*** Build an event binding target and optional input map from the current Studio event-input drafts. */
 export function createStudioEventBinding(args: {
   readonly target:
     | { readonly kind: 'action'; readonly type: string }
@@ -57,6 +59,7 @@ export interface StudioEventInputDraft {
   readonly value: string;
 }
 
+/*** Initialize event-input drafts by matching operation input fields to same-path event payload fields, falling back to empty literals. */
 export function createStudioEventInputDrafts(
   fields: readonly StudioBindingInputFieldOption[],
   eventFields: readonly UiComponentEventPayloadFieldMeta[],
@@ -74,6 +77,7 @@ export function createStudioEventInputDrafts(
   );
 }
 
+/*** Parse one binding-editor text input according to the declared binding value metadata and Studio fallback semantics. */
 export function parseStudioBindingLiteral(input: string, meta: UiBindableValueMeta): BindingValue {
   if (meta.type === 'boolean') return input === 'true';
   if (meta.type === 'number') {
@@ -87,15 +91,27 @@ export function parseStudioBindingLiteral(input: string, meta: UiBindableValueMe
   return input;
 }
 
+/***
+ * Format a JSON-compatible value for text editing while preserving strings verbatim.
+ * @utility @ankhorage/utility/json
+ */
 export function formatStudioBindingLiteral(value: BindingValue): string {
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
+/***
+ * Build a stable composite key from a multi-part operation identity.
+ * @utility @ankhorage/utility/string
+ */
 export function createStudioOperationKey(operation: BindingOperationRef): string {
   const { apiId, endpointId, operationId } = operation;
   return `${apiId}::${endpointId ?? ''}::${operationId}`;
 }
 
+/***
+ * Find the first array item whose projected composite key equals a requested key.
+ * @utility @ankhorage/utility/array
+ */
 export function findStudioOperationByKey(
   operations: readonly StudioBindingOperationOption[],
   key: string,
@@ -103,6 +119,7 @@ export function findStudioOperationByKey(
   return operations.find((option) => createStudioOperationKey(option.operation) === key);
 }
 
+/*** Convert event-input drafts into the canonical binding input map, omitting empty optional inputs. */
 function createStudioEventInputMap(
   fields: readonly StudioBindingInputFieldOption[],
   drafts: Readonly<Record<string, StudioEventInputDraft>>,
@@ -126,6 +143,7 @@ function createStudioEventInputMap(
   );
 }
 
+/*** Create the empty/default binding value associated with one Studio binding metadata type. */
 function createDefaultBindingValue(meta: UiBindableValueMeta): BindingValue {
   if (meta.type === 'boolean') return false;
   if (meta.type === 'number') return 0;
@@ -134,6 +152,10 @@ function createDefaultBindingValue(meta: UiBindableValueMeta): BindingValue {
   return '';
 }
 
+/***
+ * Parse JSON and return it only when an injected/value guard accepts the structured value, otherwise return a caller fallback.
+ * @utility @ankhorage/utility/json
+ */
 function parseStructuredValue(input: string, fallback: BindingValue): BindingValue {
   try {
     const value: unknown = JSON.parse(input);
@@ -143,6 +165,10 @@ function parseStructuredValue(input: string, fallback: BindingValue): BindingVal
   }
 }
 
+/***
+ * Recursively validate the canonical JSON-like binding value contract.
+ * @todo Move this reusable contract guard beside `BindingValue` in `@ankhorage/contracts` rather than Studio UI.
+ */
 function isBindingValue(value: unknown): value is BindingValue {
   if (value === null) return true;
   if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
