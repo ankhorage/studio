@@ -49,6 +49,10 @@ export type StudioUrlMediaAssetResult =
   | { readonly ok: true; readonly asset: MediaAsset }
   | { readonly ok: false; readonly error: 'invalid-url' };
 
+/***
+ * List manifest media assets, optionally filter by kind, and sort them by name.
+ * @utility @ankhorage/utility/array
+ */
 export function listStudioMediaAssets(
   manifest: AppManifest,
   mediaKinds?: readonly MediaAssetKind[],
@@ -60,10 +64,18 @@ export function listStudioMediaAssets(
   return [...filtered].sort((left, right) => left.name.localeCompare(right.name));
 }
 
+/***
+ * Create the canonical media-reference object for one media id.
+ * @todo Keep the MediaAssetReference constructor with its contracts/media owner unless a generic single-key reference constructor is extracted.
+ */
 export function createStudioMediaAssetReference(mediaId: string): MediaAssetReference {
   return { mediaId };
 }
 
+/***
+ * Parse an unknown value as an exact one-key media-reference object.
+ * @todo Keep MediaAssetReference semantics with media/contracts; implement it from generic object/value utilities.
+ */
 export function readStudioMediaAssetReference(value: unknown): MediaAssetReference | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return null;
   const keys = Reflect.ownKeys(value);
@@ -72,6 +84,10 @@ export function readStudioMediaAssetReference(value: unknown): MediaAssetReferen
   return typeof mediaId === 'string' && mediaId.length > 0 ? { mediaId } : null;
 }
 
+/***
+ * Create a unique slug-like media id from a name and an existing keyed registry.
+ * @utility @ankhorage/utility/string
+ */
 export function createStudioMediaAssetId(name: string, registry: MediaAssetRegistry = {}): string {
   const base =
     name
@@ -85,6 +101,10 @@ export function createStudioMediaAssetId(name: string, registry: MediaAssetRegis
   return `${base}-${suffix}`;
 }
 
+/***
+ * Create a URL-backed Studio media asset after validating and normalizing its HTTP URL.
+ * @todo Move URL-media authoring behavior under src/media/ while reusing generic URL normalization.
+ */
 export function createStudioUrlMediaAsset(args: {
   readonly id: string;
   readonly name: string;
@@ -104,12 +124,20 @@ export function createStudioUrlMediaAsset(args: {
   };
 }
 
+/***
+ * Immutably insert or replace a keyed media asset in a manifest registry.
+ * @utility @ankhorage/utility/object
+ */
 export function upsertStudioMediaAsset(manifest: AppManifest, asset: MediaAsset): AppManifest {
   const assets = { ...(manifest.media?.assets ?? {}) };
   setOwnProperty(assets, asset.id, asset);
   return { ...manifest, media: { assets } };
 }
 
+/***
+ * Collect every Studio node-property usage of one media asset across all manifest screens.
+ * @todo Move media usage analysis under src/media/ while extracting generic deep-value traversal.
+ */
 export function collectStudioMediaAssetUsages(
   manifest: AppManifest,
   mediaId: string,
@@ -121,6 +149,10 @@ export function collectStudioMediaAssetUsages(
   return usages;
 }
 
+/***
+ * Remove an unused media asset from the manifest and reject removal when the asset is missing or referenced.
+ * @todo Move media removal policy under src/media/.
+ */
 export function removeStudioMediaAsset(
   manifest: AppManifest,
   mediaId: string,
@@ -141,6 +173,10 @@ export function removeStudioMediaAsset(
   return { ok: true, manifest: nextManifest };
 }
 
+/***
+ * Recursively traverse a UiNode tree and inspect every prop value for media references.
+ * @todo Keep UiNode traversal with src/media/ or replace it with canonical tree/value traversal utilities.
+ */
 function collectNodeUsages(
   screenId: string,
   node: UiNode,
@@ -153,6 +189,10 @@ function collectNodeUsages(
   for (const child of node.children ?? []) collectNodeUsages(screenId, child, mediaId, usages);
 }
 
+/***
+ * Walk nested arrays and records while carrying a property path and report values matching a media-reference predicate.
+ * @utility @ankhorage/utility/object
+ */
 function collectValueUsages(
   screenId: string,
   nodeId: string,
@@ -178,6 +218,10 @@ function collectValueUsages(
   }
 }
 
+/***
+ * Normalize an HTTP(S) URL and reject credentials or unsupported protocols.
+ * @utility @ankhorage/utility/url
+ */
 function normalizeStableHttpUrl(value: string): string | null {
   try {
     const url = new URL(value.trim());
