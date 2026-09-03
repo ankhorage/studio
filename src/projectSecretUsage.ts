@@ -16,6 +16,10 @@ export interface ProjectSecretUsageSummary {
   readonly usages: readonly ProjectSecretUsage[];
 }
 
+/***
+ * Find and summarize manifest usages of one project secret reference.
+ * @todo Move project secret usage analysis under src/secrets/.
+ */
 export function findProjectSecretUsages(input: {
   readonly manifest: AppManifest;
   readonly ref: string;
@@ -50,6 +54,10 @@ export function findProjectSecretUsages(input: {
   };
 }
 
+/***
+ * Compare secret usages by category, path, label, and owner id in stable priority order.
+ * @utility @ankhorage/utility/sort
+ */
 function compareSecretUsages(left: ProjectSecretUsage, right: ProjectSecretUsage): number {
   return (
     left.category.localeCompare(right.category) ||
@@ -59,6 +67,10 @@ function compareSecretUsages(left: ProjectSecretUsage, right: ProjectSecretUsage
   );
 }
 
+/***
+ * Convert hyphen-, underscore-, or whitespace-separated words to title case.
+ * @utility @ankhorage/utility/string
+ */
 function titleCase(value: string): string {
   return value
     .split(/[-_\s]+/u)
