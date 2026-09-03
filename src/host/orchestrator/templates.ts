@@ -18,11 +18,11 @@ export type GeneratedStorageProvider = 'supabase' | null;
 const CONTRACTS_VERSION = '^8.0.1';
 const DATA_SOURCES_VERSION = '^2.0.0';
 const RUNTIME_VERSION = '^2.2.0';
-const STUDIO_VERSION = '^2.0.2';
+const STUDIO_VERSION = '^2.0.20';
 const UTILITY_VERSION = '^0.2.0';
 const SUPABASE_AUTH_VERSION = '^1.2.5';
 const SUPABASE_STORAGE_VERSION = '^0.2.0';
-const ZORA_VERSION = '^3.3.1';
+const ZORA_VERSION = '^4.0.0';
 const EXPO_RUNTIME_VERSION = '^3.2.4';
 const DEVTOOLS_VERSION = '^1.6.0';
 
