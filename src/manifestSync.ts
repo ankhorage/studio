@@ -7,6 +7,10 @@ interface RuntimeScreenSignature {
   title?: string;
 }
 
+/***
+ * Reduce the screen registry to the stable fields that participate in runtime synchronization.
+ * @todo Move this manifest synchronization helper from the src root into the manifest domain.
+ */
 function createRuntimeScreenSignatures(
   manifest: StudioManifest,
 ): Record<string, RuntimeScreenSignature> {
@@ -22,6 +26,10 @@ function createRuntimeScreenSignatures(
     }, {});
 }
 
+/***
+ * Serialize only manifest fields whose changes require generated runtime synchronization.
+ * @todo Move this manifest synchronization policy from the src root into the manifest domain.
+ */
 export function createStudioRuntimeSyncSignature(manifest: StudioManifest): string {
   return JSON.stringify({
     navigator: manifest.navigator,
@@ -34,6 +42,10 @@ export function createStudioRuntimeSyncSignature(manifest: StudioManifest): stri
   });
 }
 
+/***
+ * Serialize the complete Studio manifest to produce an equality signature for persistence tracking.
+ * @todo Move this manifest persistence helper from the src root into the manifest domain.
+ */
 export function createStudioManifestSignature(manifest: StudioManifest): string {
   return JSON.stringify(manifest);
 }
