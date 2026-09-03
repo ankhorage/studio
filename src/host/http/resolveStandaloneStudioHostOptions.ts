@@ -1,6 +1,10 @@
 const DEFAULT_STUDIO_HOST_PORT = 3000;
 const DEVELOPMENT_STUDIO_HOST = '0.0.0.0';
 
+/***
+ * Parse a raw optional port value, validate TCP port bounds, and combine it with a default development host.
+ * @utility @ankhorage/utility/network
+ */
 export function resolveStandaloneStudioHostOptions(rawPortValue: unknown) {
   const portValue = typeof rawPortValue === 'string' ? rawPortValue : undefined;
   const port = portValue === undefined ? DEFAULT_STUDIO_HOST_PORT : Number.parseInt(portValue, 10);
