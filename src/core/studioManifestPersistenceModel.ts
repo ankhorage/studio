@@ -12,48 +12,37 @@ export interface StudioManifestPersistenceCoordinatorOptions {
   readonly toErrorMessage: (error: unknown) => string;
 }
 
+/***
+ * Serialize persistence of the latest Studio manifest while tracking save status and persisted signatures.
+ * @todo Move this application-level persistence coordinator out of core into the manifest domain's application responsibility; keep concrete HTTP/filesystem adapters at package edges.
+ */
 export class StudioManifestPersistenceCoordinator {
   private readonly options: StudioManifestPersistenceCoordinatorOptions;
   private queue: Promise<void> = Promise.resolve();
 
-  /***
-   * Create a persistence coordinator around manifest state access, persistence, and save-status ports.
-   * @todo Move this application-level manifest persistence coordinator from core/ to the manifest domain.
-   */
+  /*** Create a persistence coordinator around the supplied manifest access and save adapters. */
   constructor(options: StudioManifestPersistenceCoordinatorOptions) {
     this.options = options;
   }
 
-  /***
-   * Queue persistence of the newest manifest state after any already queued save work.
-   * @todo Move with the manifest persistence application responsibility.
-   */
+  /*** Queue persistence of the newest manifest state after any already queued save work. */
   queueLatestSave(): Promise<void> {
     return this.enqueueLatestSave();
   }
 
-  /***
-   * Wait until the newest manifest state has been persisted through the shared save queue.
-   * @todo Move with the manifest persistence application responsibility.
-   */
+  /*** Wait until the newest manifest state has been persisted through the shared save queue. */
   flushLatestSave(): Promise<void> {
     return this.enqueueLatestSave();
   }
 
-  /***
-   * Append one latest-state persistence task to the serialized save queue.
-   * @todo Move with the manifest persistence application responsibility.
-   */
+  /*** Append one latest-state persistence task to the serialized save queue. */
   private enqueueLatestSave(): Promise<void> {
     const task = this.queue.catch(() => undefined).then(() => this.persistLatestUntilSettled());
     this.queue = task.catch(() => undefined);
     return task;
   }
 
-  /***
-   * Persist manifest revisions until the stored signature matches the latest in-memory state.
-   * @todo Move with the manifest persistence application responsibility.
-   */
+  /*** Persist manifest revisions until the stored signature matches the latest in-memory state. */
   private async persistLatestUntilSettled(): Promise<void> {
     for (;;) {
       const manifest = this.options.readManifest();
