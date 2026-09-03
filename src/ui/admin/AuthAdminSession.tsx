@@ -35,6 +35,10 @@ export interface AuthAdminSessionValue {
 
 const AuthAdminSessionContext = createContext<AuthAdminSessionValue | null>(null);
 
+/***
+ * Bridge the imperative auth-admin project session model into React context and keep its snapshot synchronized around every write transaction.
+ * @todo Keep this React context adapter at the auth/admin UI edge; durable transaction/busy-state rules belong to the auth application model.
+ */
 export function AuthAdminSessionProvider(props: {
   readonly projectId: string;
   readonly children: React.ReactNode;
@@ -44,10 +48,12 @@ export function AuthAdminSessionProvider(props: {
     sessionRef.current.getSnapshot(),
   );
 
+  /*** Refresh React state from the current imperative auth-admin session snapshot. */
   const syncSnapshot = useCallback(() => {
     setSnapshot(sessionRef.current.getSnapshot());
   }, []);
 
+  /*** Store or replace one pending OAuth credential link and publish the updated session snapshot. */
   const setPendingCredentialLink = useCallback(
     (link: StoredOAuthCredentialLink) => {
       sessionRef.current.setPendingCredentialLink(link);
@@ -56,6 +62,7 @@ export function AuthAdminSessionProvider(props: {
     [syncSnapshot],
   );
 
+  /*** Remove the pending credential link for one provider and publish the updated session snapshot. */
   const clearPendingCredentialLink = useCallback(
     (providerId: AuthOAuthProviderId) => {
       sessionRef.current.clearPendingCredentialLink(providerId);
@@ -64,6 +71,7 @@ export function AuthAdminSessionProvider(props: {
     [syncSnapshot],
   );
 
+  /*** Remove all pending credential links matching one credential reference and return the cleared links. */
   const clearPendingCredentialLinksByCredentialsRef = useCallback(
     (credentialsRef: string) => {
       const cleared =
@@ -74,6 +82,7 @@ export function AuthAdminSessionProvider(props: {
     [syncSnapshot],
   );
 
+  /*** Execute one full-auth save transaction while keeping React busy/snapshot state synchronized before and after the operation. */
   const runFullAuthSave = useCallback(
     async <T,>(operation: () => Promise<T>): Promise<AuthAdminWriteResult<T>> => {
       try {
@@ -88,6 +97,7 @@ export function AuthAdminSessionProvider(props: {
     [syncSnapshot],
   );
 
+  /*** Execute one provider/credential transaction while reflecting its busy state into React context. */
   const runCredentialTransaction = useCallback(
     async <T,>(
       providerId: AuthOAuthProviderId,
@@ -110,6 +120,7 @@ export function AuthAdminSessionProvider(props: {
     [syncSnapshot],
   );
 
+  /*** Execute cleanup for one credential secret while reflecting its busy state into React context. */
   const runCredentialSecretCleanup = useCallback(
     async <T,>(credentialsRef: string, operation: () => Promise<T>) => {
       try {
@@ -166,6 +177,7 @@ export function AuthAdminSessionProvider(props: {
   );
 }
 
+/*** Read the auth-admin React session and reject usage outside its provider boundary. */
 export function useAuthAdminSession(): AuthAdminSessionValue {
   const value = useContext(AuthAdminSessionContext);
   if (!value) {
