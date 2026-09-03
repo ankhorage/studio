@@ -95,4 +95,27 @@ describe('generated primary navigation visibility', () => {
     expect(built.declarations).not.toContain('href: null');
     expect(built.declarations).not.toContain('drawerItemStyle');
   });
+
+  test('emits the canonical Material Design icon provider in route metadata', () => {
+    const built = buildNavigatorJsx({
+      navigator: {
+        ...createNavigator('tabs'),
+        routes: [
+          {
+            name: 'home',
+            screenId: 'home',
+            icon: { name: 'home-outline', provider: 'material-community' },
+          },
+          { name: 'details', screenId: 'details' },
+        ],
+      },
+      manifest,
+      includeStudio: false,
+    });
+
+    expect(built.declarations).toContain(
+      "icon: { name: 'home-outline', provider: 'MaterialDesignIcons' }",
+    );
+    expect(built.declarations).not.toContain("provider: 'material-community'");
+  });
 });

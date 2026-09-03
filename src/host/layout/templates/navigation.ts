@@ -275,12 +275,16 @@ function buildTabsScreenFallbackJsx(
     .map((line) => `  ${line}`)
     .join('\n');
 
+  const iconProvider = route.icon?.provider
+    ? ` provider="${escapeStringLiteral(resolveIconProvider(route.icon.provider))}"`
+    : '';
+
   return {
     declaration: [
       route.icon
         ? `function ${iconFunctionName}({ color, size }: { color: string; size: number }) {
   return (
-    <Icon name="${escapeStringLiteral(route.icon.name)}"${route.icon.provider ? ` provider="${escapeStringLiteral(route.icon.provider)}"` : ''} color={color} size={size} />
+    <Icon name="${escapeStringLiteral(route.icon.name)}"${iconProvider} color={color} size={size} />
   );
 }`
         : '',
@@ -405,7 +409,9 @@ function buildRouteMapDeclaration(args: {
 }
 
 function buildRouteIconLiteral(icon: NonNullable<RouteDefinition['icon']>): string {
-  const provider = icon.provider ? `, provider: '${escapeStringLiteral(icon.provider)}'` : '';
+  const provider = icon.provider
+    ? `, provider: '${escapeStringLiteral(resolveIconProvider(icon.provider))}'`
+    : '';
   const size =
     icon.size === undefined
       ? ''
@@ -413,6 +419,10 @@ function buildRouteIconLiteral(icon: NonNullable<RouteDefinition['icon']>): stri
   const color = icon.color ? `, color: '${escapeStringLiteral(icon.color)}'` : '';
 
   return `{ name: '${escapeStringLiteral(icon.name)}'${provider}${size}${color} }`;
+}
+
+function resolveIconProvider(provider: string): string {
+  return provider === 'material-community' ? 'MaterialDesignIcons' : provider;
 }
 
 function buildScreenOptionsConstName(route: RouteDefinition, index: number): string {
