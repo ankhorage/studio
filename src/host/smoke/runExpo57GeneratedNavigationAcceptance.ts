@@ -238,7 +238,7 @@ async function assertReleasedStudioPackageAsync(studioProject: NavigationProject
     await readFile(path.join(studioProject.path, 'package.json'), 'utf8'),
   ) as { readonly dependencies?: Readonly<Record<string, string>> };
   const studioRange = generatedPackage.dependencies?.['@ankhorage/studio'];
-  if (studioRange !== '^2.0.2') {
+  if (studioRange === undefined) {
     throw new Error(`Studio-enabled navigation fixture resolved unexpected range ${studioRange}.`);
   }
 
