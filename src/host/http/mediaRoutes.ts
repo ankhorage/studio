@@ -12,6 +12,7 @@ import type { ProjectManager } from '../orchestrator/projectManager';
 
 const MAX_MEDIA_BODY_BYTES = 100 * 1024 * 1024;
 
+/*** Register Studio media ingest/bundle/resolve/cleanup HTTP adapters and binary-body support. */
 export function registerProjectMediaRoutes(
   fastify: FastifyInstance,
   args: { readonly projectManager: ProjectManager; readonly workspaceRoot: string },
@@ -20,13 +21,16 @@ export function registerProjectMediaRoutes(
   const storageService = new ProjectMediaService(args.projectManager, args.workspaceRoot);
   const bundledService = new ProjectBundledMediaService(args.workspaceRoot);
 
+  /*** Ingest uploaded media bytes into managed storage. */
   registerMediaByteRoute(fastify, '/api/projects/:id/media/ingest', (id, input) =>
     storageService.ingest(id, input),
   );
+  /*** Bundle uploaded media bytes into generated project assets. */
   registerMediaByteRoute(fastify, '/api/projects/:id/media/bundle', (id, input) =>
     bundledService.bundle(id, input),
   );
   registerMediaCleanupRoute(fastify, storageService, bundledService);
+  /*** Resolve a canonical storage source to its runtime URL. */
   fastify.post('/api/projects/:id/media/resolve', async (req, reply) => {
     const source = readStorageSource((req.body as { source?: unknown } | undefined)?.source);
     if (!source) return reply.status(400).send({ error: 'Canonical storage source required.' });
@@ -39,11 +43,13 @@ export function registerProjectMediaRoutes(
   });
 }
 
+/*** Register cleanup for canonical managed storage/bundled media sources. */
 function registerMediaCleanupRoute(
   fastify: FastifyInstance,
   storageService: ProjectMediaService,
   bundledService: ProjectBundledMediaService,
 ): void {
+  /*** Remove one canonical managed media source through its owning storage/bundle service. */
   fastify.post('/api/projects/:id/media/cleanup', async (req, reply) => {
     const source = readCleanupSource((req.body as { source?: unknown } | undefined)?.source);
     if (!source)
@@ -59,17 +65,23 @@ function registerMediaCleanupRoute(
   });
 }
 
+/***
+ * Ensure a Fastify instance has an octet-stream parser that exposes uploaded bytes as Buffer.
+ * @utility @ankhorage/utility/http/fastify
+ */
 function ensureBinaryBodyParser(fastify: FastifyInstance) {
   if (fastify.hasContentTypeParser('application/octet-stream')) return;
   fastify.addContentTypeParser(
     'application/octet-stream',
     { parseAs: 'buffer' },
+    /*** Pass Fastify's parsed binary body through unchanged. */
     (_req, body, done) => {
       done(null, body);
     },
   );
 }
 
+/*** Register one bounded binary-media write route around a project-scoped ingest function. */
 function registerMediaByteRoute(
   fastify: FastifyInstance,
   route: string,
@@ -78,6 +90,7 @@ function registerMediaByteRoute(
     input: NonNullable<ReturnType<typeof readIngestRequest>>,
   ) => Promise<unknown>,
 ) {
+  /*** Parse media metadata/bytes, execute the injected ingest operation, and map failures to HTTP 400. */
   fastify.post(
     route,
     { bodyLimit: MAX_MEDIA_BODY_BYTES },
@@ -95,6 +108,7 @@ function registerMediaByteRoute(
   );
 }
 
+/*** Parse media-ingest query metadata plus a binary request body into the media service input. */
 function readIngestRequest(req: FastifyRequest) {
   const query = req.query as Record<string, unknown>;
   const kind = typeof query.kind === 'string' ? query.kind : '';
@@ -114,6 +128,10 @@ function readIngestRequest(req: FastifyRequest) {
   };
 }
 
+/***
+ * Parse a managed media cleanup source across canonical storage and bundled source shapes.
+ * @todo Move this reusable media-source guard beside the media contracts owner rather than generic Utility.
+ */
 function readCleanupSource(value: unknown): MediaBundledSource | MediaStorageSource | null {
   const storage = readStorageSource(value);
   if (storage) return storage;
@@ -124,6 +142,10 @@ function readCleanupSource(value: unknown): MediaBundledSource | MediaStorageSou
   return { kind: 'bundled', path: source.path };
 }
 
+/***
+ * Parse a canonical MediaStorageSource from unknown input.
+ * @todo Move this guard beside `MediaStorageSource` in the media contracts owner.
+ */
 function readStorageSource(value: unknown): MediaStorageSource | null {
   if (!value || typeof value !== 'object') return null;
   const source = value as Record<string, unknown>;
@@ -141,16 +163,28 @@ function readStorageSource(value: unknown): MediaStorageSource | null {
   };
 }
 
+/***
+ * Read a non-empty string from an unknown value.
+ * @utility @ankhorage/utility/string
+ */
 function readString(value: unknown) {
   return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 
+/***
+ * Parse a non-empty string as a finite non-negative number.
+ * @utility @ankhorage/utility/number
+ */
 function readNumber(value: unknown) {
   if (typeof value !== 'string' || value.length === 0) return undefined;
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
 }
 
+/***
+ * Convert an unknown thrown value to a human-readable message.
+ * @utility @ankhorage/utility/error
+ */
 function readErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
