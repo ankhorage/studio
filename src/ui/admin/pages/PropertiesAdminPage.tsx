@@ -14,6 +14,10 @@ import {
 import { AdminHeader, AdminScroll, Field, Input, KeyValue } from '../adminPagePrimitives';
 import { MediaPropertyInput } from './MediaPropertyInput';
 
+/***
+ * Resolve the requested manifest node, synchronize Studio selection context, and render its per-instance property editors.
+ * @todo Keep this React page as the properties inbound UI edge while node/property resolution and mutation policy remain in the properties application/domain layer.
+ */
 export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null }) {
   const studio = useStudio();
   const owningScreenId =
@@ -39,10 +43,12 @@ export function PropertiesAdminPage({ nodeId }: { readonly nodeId: string | null
   );
 }
 
+/*** Render metadata and grouped instance-property editors for one resolved manifest node. */
 function ResolvedProperties({ node }: { readonly node: UiNode }) {
   const studio = useStudio();
   const componentMeta = new Map(Object.entries(ZORA_COMPONENT_META)).get(node.type);
   const groups = resolveStudioInstancePropertyGroups(node, ZORA_COMPONENT_META);
+  /*** Apply one instance-property value by deriving the canonical node patch and dispatching it through Studio. */
   const updateProperty = (propertyName: string, value: StudioInstancePropertyValue | undefined) => {
     studio.updateNode(node.id, createStudioInstancePropertyPatch(node, propertyName, value));
   };
@@ -76,6 +82,7 @@ function ResolvedProperties({ node }: { readonly node: UiNode }) {
   );
 }
 
+/*** Select the dedicated editor component for one Studio instance-property field. */
 function InstancePropertyEditor(props: {
   readonly field: StudioInstancePropertyField;
   readonly onChange: (value: StudioInstancePropertyValue | undefined) => void;
@@ -105,6 +112,7 @@ function InstancePropertyEditor(props: {
   );
 }
 
+/*** Maintain a textual numeric draft, validate it on commit, and emit number/undefined values to the property mutation boundary. */
 function NumberPropertyInput(props: {
   readonly field: StudioInstancePropertyField;
   readonly onChange: (value: number | undefined) => void;
@@ -118,6 +126,7 @@ function NumberPropertyInput(props: {
     setError(null);
   }, [field.name, field.value]);
 
+  /*** Normalize the numeric text draft, clear empty values, or emit a finite parsed number. */
   const commit = () => {
     const normalized = draft.trim();
     if (!normalized) {
@@ -154,6 +163,7 @@ function NumberPropertyInput(props: {
   );
 }
 
+/*** Render a boolean property as a switch-like pressable and emit its inverse value on activation. */
 function BooleanPropertyInput(props: {
   readonly field: StudioInstancePropertyField;
   readonly onChange: (value: boolean) => void;
@@ -173,6 +183,7 @@ function BooleanPropertyInput(props: {
   );
 }
 
+/*** Render a property field's finite option set as radio-like pressable choices. */
 function ChoicePropertyInput(props: {
   readonly field: StudioInstancePropertyField;
   readonly onChange: (value: string | number) => void;
@@ -200,6 +211,7 @@ function ChoicePropertyInput(props: {
   );
 }
 
+/*** Render the properties-page fallback when the requested node cannot be resolved. */
 function UnavailableNode() {
   return (
     <Card title="Node unavailable">
@@ -210,6 +222,7 @@ function UnavailableNode() {
   );
 }
 
+/*** Render the properties-page fallback when the component exposes no per-instance authoring fields. */
 function NoInstanceProperties() {
   return (
     <Card title="No instance properties">
@@ -220,6 +233,10 @@ function NoInstanceProperties() {
   );
 }
 
+/***
+ * Convert string/number values to editable input text and normalize all other values to an empty string.
+ * @utility @ankhorage/utility/string
+ */
 function toInputText(value: unknown): string {
   return typeof value === 'string' || typeof value === 'number' ? String(value) : '';
 }
