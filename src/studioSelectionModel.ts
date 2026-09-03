@@ -21,10 +21,18 @@ export interface StudioSelectionContext {
 
 const EMPTY_IDS: readonly string[] = [];
 
+/***
+ * Test whether a selected id exists in a node tree.
+ * @utility @ankhorage/utility/tree
+ */
 function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null): boolean {
   if (!rootNode || !selectedNodeId) return false;
   if (rootNode.id === selectedNodeId) return true;
 
+  /***
+   * Recursively visit a tree until the selected id is found.
+   * @utility @ankhorage/utility/tree
+   */
   const visit = (node: UiNode): boolean => {
     if (node.id === selectedNodeId) return true;
     for (const child of node.children ?? []) {
@@ -38,6 +46,10 @@ function containsUiNode(rootNode: UiNode | null, selectedNodeId: string | null):
   return visit(rootNode);
 }
 
+/***
+ * Find the parent id of a selected node in a tree while treating the root as parentless.
+ * @utility @ankhorage/utility/tree
+ */
 export function resolveStudioSelectionParentNodeId(
   rootNode: UiNode | null,
   selectedNodeId: string | null,
@@ -45,6 +57,10 @@ export function resolveStudioSelectionParentNodeId(
   if (!rootNode || !selectedNodeId || !containsUiNode(rootNode, selectedNodeId)) return null;
   if (rootNode.id === selectedNodeId) return null;
 
+  /***
+   * Recursively search a tree while carrying the current parent id.
+   * @utility @ankhorage/utility/tree
+   */
   const visit = (node: UiNode, parentId: string | null): string | null => {
     if (node.id === selectedNodeId) return parentId;
     for (const child of node.children ?? []) {
@@ -59,6 +75,10 @@ export function resolveStudioSelectionParentNodeId(
   return visit(rootNode, null);
 }
 
+/***
+ * Keep a selected id only while that id still exists in the current tree.
+ * @utility @ankhorage/utility/tree
+ */
 export function resolveStudioSelectedNodeId(
   rootNode: UiNode | null,
   selectedNodeId: string | null,
@@ -66,6 +86,10 @@ export function resolveStudioSelectedNodeId(
   return containsUiNode(rootNode, selectedNodeId) ? selectedNodeId : null;
 }
 
+/***
+ * Build a selection context containing the valid selected id and its parent relationship.
+ * @utility @ankhorage/utility/tree
+ */
 export function createStudioSelectionContext(args: {
   readonly rootNode: UiNode | null;
   readonly selectedNodeId: string | null;
@@ -80,6 +104,10 @@ export function createStudioSelectionContext(args: {
   };
 }
 
+/***
+ * Adapt nullable single-selection state to a provider that represents selection as an id array.
+ * @utility @ankhorage/utility/selection
+ */
 export function createStudioSelectionProviderProps(
   args: CreateStudioSelectionProviderPropsArgs,
 ): StudioSelectionProviderAdapterProps {
@@ -89,6 +117,7 @@ export function createStudioSelectionProviderProps(
     mode: 'single',
     disabled: previewMode,
     selectedIds: previewMode ? EMPTY_IDS : selectedNodeId ? [selectedNodeId] : EMPTY_IDS,
+    /*** Forward the provider's first selected id into nullable single-selection state. */
     onSelectionChange: previewMode
       ? undefined
       : (ids) => {
