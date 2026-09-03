@@ -7,6 +7,7 @@ export type StudioContextType = StudioContextValue;
 
 export const StudioContext = createContext<StudioContextType | undefined>(undefined);
 
+/*** Read the active Studio context and fail when called outside a StudioProvider. */
 export const useStudio = () => {
   const context = useContext(StudioContext);
   if (!context) {
