@@ -9,12 +9,14 @@ import type { ExternalApiOperationTestResult } from '../../../externalApiAuthori
 import { type ApiOperationRow, collectApiOperationRows } from './adminApiOperations';
 import { ExternalApiDiagnosticList, externalApiAdminStyles } from './ExternalApiAdminPrimitives';
 
+/*** Render canonical API operations and execute/dry-run external operations against the active Studio project. */
 export function ApiOperationsCard({ apis }: { readonly apis: ApiDefinitionList }) {
   const studio = useStudio();
   const rows = useMemo(() => collectApiOperationRows(apis), [apis]);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [results, setResults] = useState<Record<string, ExternalApiOperationTestResult>>({});
 
+  /*** Execute or dry-run one external API operation and store its result under the operation's stable UI key. */
   const run = useCallback(
     async (row: ApiOperationRow, dryRun: boolean) => {
       const key = operationKey(row);
@@ -80,6 +82,7 @@ export function ApiOperationsCard({ apis }: { readonly apis: ApiDefinitionList }
   );
 }
 
+/*** Render request/response/data diagnostics for one external API operation execution result. */
 function OperationResult({ result }: { readonly result: ExternalApiOperationTestResult }) {
   return (
     <View style={externalApiAdminStyles.feedback}>
@@ -103,10 +106,18 @@ function OperationResult({ result }: { readonly result: ExternalApiOperationTest
   );
 }
 
+/***
+ * Build a stable composite key from the identifying fields of an API operation row.
+ * @utility @ankhorage/utility/string
+ */
 function operationKey(row: ApiOperationRow): string {
   return `${row.apiId}:${row.endpointId}:${row.operationId}`;
 }
 
+/***
+ * Pretty-serialize a JSON-compatible value and truncate the resulting text to a configured display budget.
+ * @utility @ankhorage/utility/json
+ */
 function formatData(value: unknown): string {
   const serialized = JSON.stringify(value, null, 2);
   return serialized.length > 1_500 ? `${serialized.slice(0, 1_500)}…` : serialized;
