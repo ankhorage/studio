@@ -8,6 +8,7 @@ export interface StudioMediaSourceCleanupResult {
   readonly reason?: string;
 }
 
+/*** Persist removal of a media asset before cleaning up its owned source, restoring the manifest when persistence fails. */
 export async function commitStudioMediaRemoval(args: {
   readonly manifest: AppManifest;
   readonly mediaId: string;
@@ -37,10 +38,12 @@ export async function commitStudioMediaRemoval(args: {
   }
 }
 
+/*** Create the delete result used when source cleanup fails after the manifest has already been persisted. */
 function cleanupFailure(message: string): StudioMediaDeleteResult {
   return { ok: false, reason: 'cleanup-failed', message, mediaRemoved: true };
 }
 
+/*** Convert an unknown thrown value into a user-facing error message. */
 function toMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
