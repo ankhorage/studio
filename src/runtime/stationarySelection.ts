@@ -80,6 +80,10 @@ interface WebElementLike {
   getBoundingClientRect(): WebRectLike;
 }
 
+/***
+ * Detect a DOM-like element that exposes child traversal and bounding-rectangle measurement.
+ * @utility @ankhorage/utility/web
+ */
 function isWebElementLike(value: unknown): value is WebElementLike {
   return (
     typeof value === 'object' &&
@@ -90,10 +94,18 @@ function isWebElementLike(value: unknown): value is WebElementLike {
   );
 }
 
+/***
+ * Resolve an unknown React-Native view value to a DOM resize target only on the web platform.
+ * @utility @ankhorage/utility/react-native/web
+ */
 function getWebResizeTarget(value: unknown): Element | null {
   return Platform.OS === 'web' && isWebElementLike(value) ? (value as unknown as Element) : null;
 }
 
+/***
+ * Recursively collect every descendant DOM resize target from a DOM-like value when running on web.
+ * @utility @ankhorage/utility/web
+ */
 function getWebDescendantResizeTargets(value: unknown): readonly Element[] {
   if (Platform.OS !== 'web' || !isWebElementLike(value)) {
     return [];
@@ -105,6 +117,10 @@ function getWebDescendantResizeTargets(value: unknown): readonly Element[] {
   ]);
 }
 
+/***
+ * Convert a left/top/width/height rectangle into the package's x/y measured-rectangle shape.
+ * @utility @ankhorage/utility/geometry
+ */
 function toMeasuredRect(rect: WebRectLike): MeasuredRect {
   return {
     x: rect.left,
@@ -114,6 +130,10 @@ function toMeasuredRect(rect: WebRectLike): MeasuredRect {
   };
 }
 
+/***
+ * Measure a DOM-like element, falling through zero-area wrappers to the rendered descendant boxes they contain.
+ * @utility @ankhorage/utility/web
+ */
 function measureRenderedBoxes(element: WebElementLike): readonly MeasuredRect[] {
   const rect = toMeasuredRect(element.getBoundingClientRect());
   if (rect.width > 0 && rect.height > 0) {
@@ -123,6 +143,10 @@ function measureRenderedBoxes(element: WebElementLike): readonly MeasuredRect[] 
   return Array.from(element.children).flatMap((child) => measureRenderedBoxes(child));
 }
 
+/***
+ * Measure a React-Native view in window coordinates across web and native, returning null for a missing view.
+ * @utility @ankhorage/utility/react-native/measurement
+ */
 function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
   if (!view) {
     return Promise.resolve(null);
@@ -135,6 +159,10 @@ function measureRootView(view: ViewRef | null): Promise<MeasuredRect | null> {
   return measureNativeRuntimeNodeView(view);
 }
 
+/***
+ * Measure the rendered descendant boxes of a web view and return their union rectangle.
+ * @utility @ankhorage/utility/web
+ */
 function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect | null> {
   if (!view) {
     return Promise.resolve(null);
@@ -149,6 +177,10 @@ function measureRuntimeNodeWebView(view: ViewRef | null): Promise<MeasuredRect |
   return Promise.resolve(null);
 }
 
+/***
+ * Measure one authored web view directly and treat zero-area geometry as absent.
+ * @utility @ankhorage/utility/web
+ */
 function measureAuthoredWebView(view: ViewRef): Promise<MeasuredRect | null> {
   if (!isWebElementLike(view)) {
     return Promise.resolve(null);
@@ -158,6 +190,10 @@ function measureAuthoredWebView(view: ViewRef): Promise<MeasuredRect | null> {
   return Promise.resolve(rect.width > 0 && rect.height > 0 ? rect : null);
 }
 
+/***
+ * Compare ordered indicator-rectangle collections by identity flags and sub-pixel geometry tolerance.
+ * @utility @ankhorage/utility/geometry
+ */
 function areIndicatorRectsEqual(
   left: readonly RuntimeNodeIndicatorRect[],
   right: readonly RuntimeNodeIndicatorRect[],
@@ -182,6 +218,10 @@ function areIndicatorRectsEqual(
   });
 }
 
+/***
+ * Expose the measurement ref/layout callbacks used by Studio-rendered unsupported nodes.
+ * @todo Move this Studio React measurement hook to the selection/canvas app edge; it composes reusable measurement primitives but is not generic runtime behavior.
+ */
 export function useStudioUnsupportedNodeMeasurement(): {
   readonly onLayout: (_event: LayoutChangeEvent) => void;
   readonly ref: (view: ViewRef | null) => void;
@@ -189,6 +229,7 @@ export function useStudioUnsupportedNodeMeasurement(): {
   const context = React.useContext(RuntimeNodeMeasurementContext);
   const unregisterRef = React.useRef<(() => void) | null>(null);
 
+  /*** Replace the currently registered unsupported-node view and unregister the previous measurement. */
   const setViewRef = React.useCallback(
     (view: ViewRef | null) => {
       unregisterRef.current?.();
@@ -205,6 +246,7 @@ export function useStudioUnsupportedNodeMeasurement(): {
     [],
   );
 
+  /*** Request a geometry refresh after React Native reports a layout change. */
   const onLayout = React.useCallback(
     (_event: LayoutChangeEvent) => {
       context?.requestRefresh();
@@ -215,6 +257,10 @@ export function useStudioUnsupportedNodeMeasurement(): {
   return React.useMemo(() => ({ onLayout, ref: setViewRef }), [onLayout, setViewRef]);
 }
 
+/***
+ * Wrap one rendered Studio runtime node so pointer/touch interactions and geometry can be recorded for stationary selection and unsupported-node indicators.
+ * @todo Keep this React-Native gesture/measurement adapter at the Studio selection/canvas app edge instead of generic `runtime/` ownership.
+ */
 function StudioNodeTouchRecorder(props: {
   readonly nodeId: string | undefined;
   readonly recordSelection: boolean;
@@ -225,6 +271,7 @@ function StudioNodeTouchRecorder(props: {
   const unregisterMeasurementRef = React.useRef<(() => void) | null>(null);
   const { nodeId, recordSelection, showUnsupportedIndicator } = props;
 
+  /*** Record one normalized pointer/touch interaction for this node when selection recording is enabled. */
   function recordInteraction(input: StationarySelectionInput): void {
     if (!ctx || !recordSelection || !nodeId) {
       return;
@@ -233,6 +280,7 @@ function StudioNodeTouchRecorder(props: {
     ctx.recordNode(nodeId, input);
   }
 
+  /*** Normalize a React-Native pointer-down event into the stationary-selection pointer input contract. */
   function handlePointerDown(event: NativePointerEvent): void {
     recordInteraction({
       kind: 'pointer',
@@ -244,6 +292,7 @@ function StudioNodeTouchRecorder(props: {
     });
   }
 
+  /*** Normalize a React-Native touch-start event into the stationary-selection touch input contract. */
   function handleTouchStart(event: GestureResponderEvent): void {
     const [changedTouch] = event.nativeEvent.changedTouches;
     recordInteraction({
@@ -253,14 +302,17 @@ function StudioNodeTouchRecorder(props: {
     });
   }
 
+  /*** Complete the currently pending pointer/touch interaction when the platform signals end or cancellation. */
   function handleInteractionCompletion(): void {
     ctx?.completePendingInteraction();
   }
 
+  /*** Request fresh indicator geometry after this recorder's layout changes. */
   function handleLayout(_event: LayoutChangeEvent): void {
     ctx?.requestIndicatorRefresh();
   }
 
+  /*** Register the recorder view as a runtime-node measurement source and unregister the previous view. */
   const setViewRef = React.useCallback(
     (view: ViewRef | null) => {
       unregisterMeasurementRef.current?.();
@@ -286,6 +338,7 @@ function StudioNodeTouchRecorder(props: {
     [ctx, nodeId, showUnsupportedIndicator],
   );
 
+  /*** Build the child measurement context used by authored descendants rendered inside this runtime-node recorder. */
   const measurementContext = React.useMemo<RuntimeNodeMeasurementContextValue | null>(() => {
     if (!ctx || !nodeId) {
       return null;
@@ -345,6 +398,10 @@ function StudioNodeTouchRecorder(props: {
   );
 }
 
+/***
+ * Create Studio's runtime-node wrapper that records stationary selection and unsupported-node measurement around eligible rendered nodes.
+ * @todo Move this Studio/ZORA selection wrapper to the selection/canvas app edge; it is package integration rather than generic runtime policy.
+ */
 export function createStudioStationarySelectionWrapNode(options?: {
   readonly previewMode?: boolean;
   readonly thirdPartySupport?: Readonly<Record<string, true>>;
@@ -356,6 +413,7 @@ export function createStudioStationarySelectionWrapNode(options?: {
   const { previewMode, thirdPartySupport } = options ?? {};
   const isEditMode = previewMode !== true;
 
+  /*** Wrap one eligible rendered node while preserving unsupported/root nodes that should not be instrumented. */
   return function wrapNode(args: {
     readonly node: { readonly id?: string; readonly type: string };
     readonly rendered: React.ReactNode;
@@ -392,6 +450,10 @@ export interface StudioCanvasInteractionAdapter {
   readonly setActiveDragNodeId: (nodeId: string | null) => void;
 }
 
+/***
+ * Coordinate Studio stationary tap selection, drag interaction, node measurement, indicator refresh, and selected/unsupported chrome rendering.
+ * @todo Split this large React composition into the Studio selection/canvas app edge; the reusable coordinators and measurement primitives should remain independent owners.
+ */
 function StationaryTapSelector(props: {
   readonly isEditMode: boolean;
   readonly selectedNodeId: string | null;
@@ -462,6 +524,7 @@ function StationaryTapSelector(props: {
   });
   const inputState = inputStateRef.current;
 
+  /*** Coalesce runtime-node geometry refresh requests through requestAnimationFrame. */
   const requestIndicatorRefresh = React.useCallback(() => {
     refreshCoordinatorRef.current ??= createIndicatorRefreshCoordinator(
       () => {
@@ -475,6 +538,7 @@ function StationaryTapSelector(props: {
     refreshCoordinatorRef.current.requestRefresh();
   }, []);
 
+  /*** Refresh immediately for scrolling and trigger native settle sampling while geometry can continue moving after the event. */
   const requestScrollIndicatorRefresh = React.useCallback(() => {
     requestIndicatorRefresh();
     if (
@@ -505,6 +569,7 @@ function StationaryTapSelector(props: {
     settleCoordinatorRef.current.trigger();
   }, [requestIndicatorRefresh]);
 
+  /*** Synchronize the web ResizeObserver target set with currently active node measurements and the canvas root. */
   const syncActiveResizeTargets = React.useCallback(() => {
     if (Platform.OS !== 'web') {
       return;
@@ -523,6 +588,7 @@ function StationaryTapSelector(props: {
     );
   }, []);
 
+  /*** Register one runtime-node measurement and return an unregister callback that updates active observation/refresh state. */
   const registerRuntimeNode = React.useCallback(
     (nodeId: string, measurement: RuntimeNodeMeasurement) => {
       const measurements = runtimeNodesRef.current.get(nodeId) ?? new Set();
@@ -577,6 +643,7 @@ function StationaryTapSelector(props: {
     [requestIndicatorRefresh, syncActiveResizeTargets],
   );
 
+  /*** Memoize the tracker-context adapter exposed to descendant runtime node recorders. */
   const contextValue = React.useMemo(
     () => ({
       completePendingInteraction: () => inputState.completePendingInteraction(),
@@ -590,6 +657,7 @@ function StationaryTapSelector(props: {
     [inputState, registerRuntimeNode, requestIndicatorRefresh, requestScrollIndicatorRefresh],
   );
 
+  /*** Measure active runtime nodes, reject stale async results, and commit changed indicator rectangles. */
   const refreshIndicatorRects = React.useCallback(async (): Promise<
     readonly RuntimeNodeIndicatorRect[] | null
   > => {
@@ -684,7 +752,9 @@ function StationaryTapSelector(props: {
       : null;
     syncActiveResizeTargets();
 
+    /*** Request updated indicator geometry after any captured web scroll. */
     const handleScroll = () => requestIndicatorRefresh();
+    /*** Request updated indicator geometry after a web viewport resize. */
     const handleResize = () => requestIndicatorRefresh();
     window.addEventListener('scroll', handleScroll, true);
     window.addEventListener('resize', handleResize);
@@ -697,6 +767,7 @@ function StationaryTapSelector(props: {
     };
   }, [requestIndicatorRefresh, syncActiveResizeTargets]);
 
+  /*** Store the current canvas root view and synchronize/refresh geometry whenever the ref changes. */
   const setRootViewRef = React.useCallback(
     (view: ViewRef | null) => {
       rootViewRef.current = view;
@@ -706,6 +777,7 @@ function StationaryTapSelector(props: {
     [requestIndicatorRefresh, syncActiveResizeTargets],
   );
 
+  /*** Begin a new stationary-selection transaction and replay any pending recorded node path into it. */
   const handleTapBegin = React.useCallback(() => {
     generationRef.current = coordinator.beginTransaction();
     inputState.beginTransaction((nodeId) => {
@@ -713,6 +785,7 @@ function StationaryTapSelector(props: {
     });
   }, [coordinator, inputState]);
 
+  /*** Commit a successful tap transaction to the current Studio selection exactly once. */
   const handleTapEnd = React.useCallback(
     (_event: unknown, success: boolean) => {
       if (!success) {
@@ -732,12 +805,14 @@ function StationaryTapSelector(props: {
     [coordinator],
   );
 
+  /*** Finalize tap handling by clearing the active generation and buffered interaction path. */
   const handleTapFinalize = React.useCallback(() => {
     coordinator.clearTransaction(generationRef.current);
     generationRef.current = 0;
     inputState.clear();
   }, [coordinator, inputState]);
 
+  /*** Build the native tap gesture that bounds stationary-selection movement/duration and forwards lifecycle callbacks to JavaScript. */
   const tapGesture = React.useMemo(() => {
     const gesture = Gesture.Tap().maxDeltaX(5).maxDeltaY(5).maxDuration(500).runOnJS(true);
     gesture.onBegin(handleTapBegin);
