@@ -5,6 +5,10 @@ import type {
   StudioBindablePropOption,
 } from './bindingAuthoringContracts';
 
+/***
+ * Convert a component's bindable prop metadata record into labeled authoring options.
+ * @utility @ankhorage/utility/collection
+ */
 export function resolveStudioBindableProps(
   node: UiNode,
   registry: UiComponentMetaRegistry,
@@ -18,6 +22,10 @@ export function resolveStudioBindableProps(
   }));
 }
 
+/***
+ * Convert a component's bindable event metadata record into labeled authoring options.
+ * @utility @ankhorage/utility/collection
+ */
 export function resolveStudioBindableEvents(
   node: UiNode,
   registry: UiComponentMetaRegistry,
