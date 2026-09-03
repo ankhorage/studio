@@ -4,10 +4,15 @@ import { isAppCategory, isColorHarmony } from '../contractGuards';
 import { API_BASE } from '../core/constants';
 import type { TemplateCatalog, TemplateCatalogCategory } from '../templateCatalogContracts';
 
+/***
+ * Return whether an unknown value is any non-null JavaScript object, including arrays.
+ * @utility @ankhorage/utility/object
+ */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
+/*** Validate one template-catalog category and its embedded template summaries. */
 function isCatalogCategory(value: unknown): value is TemplateCatalogCategory {
   return (
     isRecord(value) &&
@@ -31,6 +36,7 @@ function isCatalogCategory(value: unknown): value is TemplateCatalogCategory {
   );
 }
 
+/*** Validate and normalize an unknown Studio template-catalog response. */
 function parseTemplateCatalog(value: unknown): TemplateCatalog {
   if (
     !isRecord(value) ||
@@ -43,6 +49,10 @@ function parseTemplateCatalog(value: unknown): TemplateCatalog {
   return { categories: value.categories };
 }
 
+/***
+ * Fetch and validate the current template catalog from the Studio host.
+ * @todo Move concrete template-catalog HTTP access into the templates package-edge adapter.
+ */
 async function requestTemplateCatalog(): Promise<TemplateCatalog> {
   const response = await fetch(`${API_BASE}/templates`);
   if (!response.ok) {
@@ -51,11 +61,16 @@ async function requestTemplateCatalog(): Promise<TemplateCatalog> {
   return parseTemplateCatalog(await response.json());
 }
 
+/***
+ * Own React loading/error state for the Studio template catalog.
+ * @todo Move this hook beside the templates UI/application owner and keep HTTP transport outside the hook.
+ */
 export function useTemplateCatalog() {
   const [catalog, setCatalog] = useState<TemplateCatalog>({ categories: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  /*** Reload the template catalog and update hook loading/error state. */
   const loadCatalog = useCallback(async () => {
     try {
       setCatalog(await requestTemplateCatalog());
@@ -68,6 +83,7 @@ export function useTemplateCatalog() {
     }
   }, []);
 
+  /*** Mark the catalog as loading and run a fresh load. */
   const refresh = useCallback(async () => {
     setIsLoading(true);
     await loadCatalog();
