@@ -23,6 +23,10 @@ import { isOriginAllowed } from './security';
 
 const MAX_INFRA_RUNTIME_OUTPUT_CHARS = 12_000;
 
+/***
+ * Validate an HTTP request body as the Studio project-template category/id selection consumed by project creation.
+ * @todo Keep this ProjectTemplateSelection validation with the projects/templates HTTP adapter; the AppCategory guard itself belongs to contracts.
+ */
 function resolveProjectTemplateSelection(body: {
   category?: unknown;
   templateId?: unknown;
@@ -41,6 +45,10 @@ function resolveProjectTemplateSelection(body: {
   };
 }
 
+/***
+ * Compose the Studio Fastify host: security policy, project/template/manifest/infra routes, feature route adapters, health endpoint and shutdown cleanup.
+ * @todo Keep HTTP/Fastify composition in the package-level host edge; project, deploy, manifest and module behavior should remain in their owning application/domain services.
+ */
 export async function createStudioHostServer(args: {
   projectManager: ProjectManager;
   orchestrator: ModuleManager;
@@ -50,6 +58,7 @@ export async function createStudioHostServer(args: {
   const { projectManager, orchestrator, projectRoot } = args;
   const fastify = args.fastifyInstance ?? Fastify({ logger: true });
 
+  /*** Apply Studio's local/LAN CORS origin policy to incoming browser origins. */
   await fastify.register(cors, {
     origin: (origin, cb) => {
       if (isOriginAllowed(origin)) {
@@ -68,10 +77,13 @@ export async function createStudioHostServer(args: {
 
   // --- PROJECT ROUTES ---
 
+  /*** List all Studio workspace projects. */
   fastify.get('/api/projects', () => projectManager.listProjects());
 
+  /*** Return the Studio template catalog. */
   fastify.get('/api/templates', () => getTemplateCatalog());
 
+  /*** Create a project from a validated name/template selection and map domain validation failures to HTTP status codes. */
   fastify.post('/api/projects', async (req: FastifyRequest, reply: FastifyReply) => {
     const { name, includeStudio = true } = req.body as {
       name?: unknown;
@@ -103,6 +115,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Delete one project by route id and map host failures to an HTTP error response. */
   fastify.delete('/api/projects/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     try {
@@ -113,6 +126,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Synchronize one project through the module orchestrator. */
   fastify.post('/api/projects/:id/sync', async (req: FastifyRequest) => {
     const { id } = req.params as { id: string };
     const { includeStudio = true } = (req.body as { includeStudio?: boolean } | undefined) ?? {};
@@ -123,6 +137,7 @@ export async function createStudioHostServer(args: {
     });
   });
 
+  /*** Install packages required by the current Studio workspace. */
   fastify.post('/api/workspace/packages/install', async (_req: FastifyRequest, reply) => {
     try {
       await projectManager.installWorkspacePackages();
@@ -133,6 +148,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Regenerate one project's infrastructure artifacts. */
   fastify.post('/api/projects/:id/infra/generate', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
@@ -143,6 +159,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Return generated infrastructure status for one project. */
   fastify.get('/api/projects/:id/infra/status', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
@@ -153,6 +170,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Regenerate/start one project's infrastructure and expose its lifecycle result. */
   fastify.post('/api/projects/:id/infra/up', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
@@ -171,6 +189,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Stop one project's generated infrastructure after resolving its active target. */
   fastify.post('/api/projects/:id/infra/down', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
@@ -198,6 +217,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Execute one project's infrastructure runtime-status script and return bounded stdout/stderr diagnostics. */
   fastify.post('/api/projects/:id/infra/runtime-status', async (req: FastifyRequest, reply) => {
     const { id } = req.params as { id: string };
     try {
@@ -275,6 +295,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
+  /*** Synchronize generated runtime files for one project. */
   fastify.post(
     '/api/projects/:id/runtime/sync',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -288,14 +309,12 @@ export async function createStudioHostServer(args: {
     },
   );
 
-  // GET manifest
+  /*** Return one project manifest, optionally finalizing pending module operations first. */
   fastify.get('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const { finalize } = req.query as { finalize?: string };
 
     try {
-      // Apply pending operations ONLY if explicitly requested via query param.
-      // In normal Studio dev mode, we should NOT call this to avoid Metro crashes.
       if (finalize === 'true') {
         await orchestrator.applyPendingOperations(id);
       }
@@ -307,7 +326,7 @@ export async function createStudioHostServer(args: {
     }
   });
 
-  // PUT (Save) Manifest
+  /*** Validate and persist one project manifest through the orchestrator. */
   fastify.put('/api/projects/:id/manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
 
@@ -326,13 +345,12 @@ export async function createStudioHostServer(args: {
     }
   });
 
-  // --- MODULE ROUTES ---
-
   registerProjectModuleRoutes(fastify, orchestrator);
 
-  // Health check
+  /*** Return basic host health and workspace identity. */
   fastify.get('/health', () => ({ status: 'ok', workspace: projectRoot }));
 
+  /*** Stop all project infrastructure port forwards when the Studio host closes. */
   fastify.addHook('onClose', async () => {
     await stopAllProjectInfraPortForwards();
   });
@@ -346,6 +364,10 @@ export interface StartStudioHostServerOptions {
   readonly projectRoot?: string;
 }
 
+/***
+ * Construct Studio host managers, create the Fastify server, listen on resolved host/port options, and return the running instance.
+ * @todo Keep this concrete server lifecycle in the package-level host edge.
+ */
 export async function startStudioHostServer(options: number | StartStudioHostServerOptions = {}) {
   const resolvedOptions = typeof options === 'number' ? { port: options } : options;
   const projectRoot = resolvedOptions.projectRoot ?? resolveWorkspaceRoot(import.meta.dirname);
@@ -360,6 +382,10 @@ export async function startStudioHostServer(options: number | StartStudioHostSer
   return fastify;
 }
 
+/***
+ * Trim stdout/stderr independently and project their text, truncation flags and original lengths into an API-safe response shape.
+ * @utility @ankhorage/utility/process/output
+ */
 function formatRuntimeOutputForResponse(output: { stdout: string; stderr: string }) {
   const stdout = trimOutputForApi(output.stdout, MAX_INFRA_RUNTIME_OUTPUT_CHARS);
   const stderr = trimOutputForApi(output.stderr, MAX_INFRA_RUNTIME_OUTPUT_CHARS);
