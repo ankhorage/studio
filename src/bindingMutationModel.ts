@@ -10,6 +10,10 @@ import { deleteOwnProperty } from './utils/deleteOwnProperty';
 import { readOwnProperty } from './utils/readOwnProperty';
 import { setOwnProperty } from './utils/setOwnProperty';
 
+/***
+ * Add or replace one Studio prop binding for a component node.
+ * @todo Move binding mutation behavior under src/bindings/.
+ */
 export function upsertStudioPropBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
@@ -22,6 +26,10 @@ export function upsertStudioPropBinding(
   return writeBinding(registry, node, { ...current, props });
 }
 
+/***
+ * Remove one Studio prop binding while leaving unrelated component bindings intact.
+ * @todo Move binding mutation behavior under src/bindings/.
+ */
 export function removeStudioPropBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
@@ -34,6 +42,10 @@ export function removeStudioPropBinding(
   return writeBinding(registry, node, { ...current, props });
 }
 
+/***
+ * Append an event binding to one Studio node/event pair without replacing earlier bindings.
+ * @todo Move binding mutation behavior under src/bindings/.
+ */
 export function appendStudioEventBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
@@ -49,6 +61,10 @@ export function appendStudioEventBinding(
   return writeBinding(registry, node, { ...current, events });
 }
 
+/***
+ * Remove one indexed event binding and delete the event entry when no bindings remain.
+ * @todo Move binding mutation behavior under src/bindings/.
+ */
 export function removeStudioEventBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
@@ -67,6 +83,10 @@ export function removeStudioEventBinding(
   return writeBinding(registry, node, { ...current, events });
 }
 
+/***
+ * Write normalized component identity into a binding registry and remove empty bindings.
+ * @todo Keep component-binding normalization under src/bindings/.
+ */
 function writeBinding(
   registry: ComponentDataBindingRegistry,
   node: UiNode,
@@ -83,6 +103,10 @@ function writeBinding(
   return next;
 }
 
+/***
+ * Test whether a binding has no prop or event entries.
+ * @utility @ankhorage/utility/object
+ */
 function isEmptyBinding(binding: ComponentDataBinding): boolean {
   return (
     Object.keys(binding.props ?? {}).length === 0 && Object.keys(binding.events ?? {}).length === 0
