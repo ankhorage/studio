@@ -7,7 +7,10 @@ export type StudioContextType = StudioContextValue;
 
 export const StudioContext = createContext<StudioContextType | undefined>(undefined);
 
-/*** Read the active Studio context and fail when called outside a StudioProvider. */
+/***
+ * Read the active Studio context and fail when called outside a StudioProvider.
+ * @todo Move Studio React context composition from core/ to app/.
+ */
 export const useStudio = () => {
   const context = useContext(StudioContext);
   if (!context) {
