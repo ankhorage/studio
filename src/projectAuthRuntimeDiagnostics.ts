@@ -16,6 +16,10 @@ export interface ProjectAuthRuntimeDiagnostics {
   readonly diagnostics?: readonly ProjectAuthDiagnostic[];
 }
 
+/***
+ * Merge runtime rollout evidence into authored project auth health and recompute diagnostics/status.
+ * @todo Move auth runtime diagnostic composition under src/auth/.
+ */
 export function applyProjectAuthRuntimeDiagnostics(
   health: ProjectAuthHealth,
   runtime: ProjectAuthRuntimeDiagnostics,
@@ -50,6 +54,10 @@ export function applyProjectAuthRuntimeDiagnostics(
   };
 }
 
+/***
+ * Convert one auth runtime rollout state to the corresponding Studio diagnostic.
+ * @todo Keep auth rollout-state semantics under src/auth/.
+ */
 function resolveRolloutDiagnostic(status: ProjectAuthRuntimeRolloutStatus): ProjectAuthDiagnostic {
   switch (status) {
     case 'ready':
@@ -83,6 +91,10 @@ function resolveRolloutDiagnostic(status: ProjectAuthRuntimeRolloutStatus): Proj
   }
 }
 
+/***
+ * Resolve aggregate health from the highest diagnostic severity present.
+ * @utility @ankhorage/utility/diagnostics
+ */
 function resolveHealthStatus(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): ProjectAuthHealthStatus {
@@ -91,6 +103,10 @@ function resolveHealthStatus(
   return 'healthy';
 }
 
+/***
+ * Sort diagnostics by severity rank and stable secondary string keys.
+ * @utility @ankhorage/utility/diagnostics
+ */
 function sortDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): readonly ProjectAuthDiagnostic[] {
@@ -109,6 +125,10 @@ function sortDiagnostics(
   );
 }
 
+/***
+ * Remove duplicate diagnostics using a composite key built from all identity-bearing fields.
+ * @utility @ankhorage/utility/array
+ */
 function uniqueDiagnostics(
   diagnostics: readonly ProjectAuthDiagnostic[],
 ): readonly ProjectAuthDiagnostic[] {
