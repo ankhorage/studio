@@ -44,6 +44,10 @@ export interface StudioInstancePropertyGroup {
 
 export type StudioInstancePropertyValue = string | number | boolean | MediaAssetReference;
 
+/***
+ * Resolve instance-authorable property fields for a Studio node from component metadata and current props.
+ * @todo Move instance-property authoring behavior under src/properties/.
+ */
 export function resolveStudioInstancePropertyFields(
   node: UiNode,
   registry: StudioAuthoringMetaRegistry,
@@ -74,6 +78,10 @@ export function resolveStudioInstancePropertyFields(
   });
 }
 
+/***
+ * Group resolved Studio instance-property fields by their authoring category.
+ * @todo Move instance-property grouping under src/properties/.
+ */
 export function resolveStudioInstancePropertyGroups(
   node: UiNode,
   registry: StudioAuthoringMetaRegistry,
@@ -89,6 +97,10 @@ export function resolveStudioInstancePropertyGroups(
   return Array.from(groups, ([category, fields]) => ({ category, fields }));
 }
 
+/***
+ * Create an immutable props patch that removes a property for undefined or replaces it for a defined value.
+ * @utility @ankhorage/utility/object
+ */
 export function createStudioInstancePropertyPatch(
   node: UiNode,
   propertyName: string,
@@ -102,6 +114,10 @@ export function createStudioInstancePropertyPatch(
   return { props: Object.fromEntries(entries) };
 }
 
+/***
+ * Map an authored property schema type to the Studio instance editor used to edit it.
+ * @todo Keep property-editor selection policy under src/properties/.
+ */
 function resolveEditorKind(schema: StudioAuthoringPropSchema): StudioInstancePropertyEditorKind {
   if (schema.type === 'string') return 'text';
   if (schema.type === 'number') return 'number';
