@@ -19,6 +19,7 @@ const MEDIA_KIND_OPTIONS = MEDIA_ASSET_KINDS.map((value) => ({
   label: value[0]?.toUpperCase() + value.slice(1),
 })) satisfies readonly { value: MediaAssetKind; label: string }[];
 
+/*** Render canonical authoring-media import, metadata, usage, and removal controls for the active Studio manifest. */
 export function MediaAdminPage() {
   const studio = useStudio();
   const [name, setName] = useState('');
@@ -42,6 +43,7 @@ export function MediaAdminPage() {
     );
   }
 
+  /*** Validate and insert one stable URL-backed media asset into the current Studio manifest. */
   const importUrl = () => {
     const id = createStudioMediaAssetId(name || 'media', studio.manifest?.media?.assets);
     const result = createStudioUrlMediaAsset({ id, name: name || id, kind, url });
@@ -112,6 +114,7 @@ export function MediaAdminPage() {
   );
 }
 
+/*** Render one canonical media asset with source metadata, usage count, and guarded removal action. */
 function MediaAssetCard({
   asset,
   onDeleteNotice,
@@ -122,6 +125,7 @@ function MediaAssetCard({
   const studio = useStudio();
   const usages = studio.manifest ? collectStudioMediaAssetUsages(studio.manifest, asset.id) : [];
   const metadata = asset.metadata;
+  /*** Delete the media asset through Studio's guarded media lifecycle and surface any cleanup/persistence notice. */
   const removeAsset = async () => {
     const result = await studio.deleteMediaAsset(asset.id);
     onDeleteNotice(formatDeleteNotice(result));
@@ -158,6 +162,7 @@ function MediaAssetCard({
   );
 }
 
+/*** Convert a Studio media-delete outcome into the lifecycle warning text shown by the admin page. */
 function formatDeleteNotice(result: StudioMediaDeleteResult): string | null {
   if (result.ok) return null;
   if (result.reason === 'save-failed') {
@@ -171,6 +176,7 @@ function formatDeleteNotice(result: StudioMediaDeleteResult): string | null {
   return 'The media item no longer exists in the authoring pool.';
 }
 
+/*** Format the canonical media source kind/location for administration display. */
 function formatMediaSource(asset: MediaAsset): string {
   if (asset.source.kind === 'url') return asset.source.url;
   if (asset.source.kind === 'bundled') return `Bundled · ${asset.source.path}`;
