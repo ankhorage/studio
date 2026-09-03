@@ -16,7 +16,10 @@ const getApiBase = (): string => {
   });
 };
 
-/*** Read a non-empty string environment variable without traversing inherited properties. */
+/***
+ * Read a non-empty string environment variable without traversing inherited properties.
+ * @utility @ankhorage/utility/node/env
+ */
 function readEnvString(name: string): string | undefined {
   const value = readOwnProperty<unknown>(process.env, name);
   return typeof value === 'string' && value.length > 0 ? value : undefined;
@@ -24,7 +27,7 @@ function readEnvString(name: string): string | undefined {
 
 /***
  * Read the current Expo development host URI when Expo exposes a non-empty value.
- * @todo Keep Expo-specific host discovery at the platform/app edge rather than core.
+ * @utility @ankhorage/utility/expo
  */
 function readExpoHostUri(): string | null {
   const expoConfig = Constants.expoConfig as { hostUri?: unknown } | null | undefined;
