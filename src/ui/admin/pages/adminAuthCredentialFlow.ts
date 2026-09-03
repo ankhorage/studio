@@ -31,6 +31,10 @@ interface StoredOAuthCredentialRollback {
   readonly insertedProvider: AuthOAuthProviderConfig;
 }
 
+/***
+ * Persist a newly stored OAuth credential reference into auth settings, rollback the optimistic manifest mutation on flush failure, and refresh health on success.
+ * @todo Move this transaction/orchestration from admin UI into the auth application domain.
+ */
 export async function persistStoredOAuthCredentialLink(args: {
   readonly link: StoredOAuthCredentialLink;
   readonly mutateAuthSettings: (mutation: StudioAuthSettingsMutation) => StudioAuthSettings | null;
@@ -59,6 +63,7 @@ export async function persistStoredOAuthCredentialLink(args: {
   return { ok: true, message: args.link.successMessage };
 }
 
+/*** Apply one stored OAuth credential link to the local auth draft without persistence side effects. */
 export function patchLocalAuthDraftWithStoredOAuthCredentialLink(
   settings: StudioAuthSettings,
   link: StoredOAuthCredentialLink,
@@ -66,6 +71,7 @@ export function patchLocalAuthDraftWithStoredOAuthCredentialLink(
   return applyStoredOAuthCredentialLink(settings, link);
 }
 
+/*** Persist one credential link and patch the local draft only when persistence succeeds. */
 export async function persistStoredOAuthCredentialLinkAndPatchLocalDraft(args: {
   readonly link: StoredOAuthCredentialLink;
   readonly persistCredentialLink: (
@@ -82,6 +88,7 @@ export async function persistStoredOAuthCredentialLinkAndPatchLocalDraft(args: {
   return result;
 }
 
+/*** Insert or update the OAuth provider matching a stored credential link while preserving unrelated auth settings. */
 export function applyStoredOAuthCredentialLink(
   settings: StudioAuthSettings | null,
   link: StoredOAuthCredentialLink,
@@ -109,6 +116,7 @@ export function applyStoredOAuthCredentialLink(
   };
 }
 
+/*** Capture the pre-transaction auth/provider shape required to safely undo one optimistic credential-link mutation. */
 function createStoredOAuthCredentialRollback(
   settings: StudioAuthSettings | null,
   link: StoredOAuthCredentialLink,
@@ -135,6 +143,7 @@ function createStoredOAuthCredentialRollback(
   };
 }
 
+/*** Roll back only the credential-link structure introduced by the matching optimistic transaction. */
 function rollbackStoredOAuthCredentialLink(
   settings: StudioAuthSettings | null,
   rollback: StoredOAuthCredentialRollback,
@@ -168,6 +177,7 @@ function rollbackStoredOAuthCredentialLink(
   return removeTransactionIntroducedStructure(nextSettings, rollback);
 }
 
+/*** Restore a provider's previous optional credential reference while retaining other concurrent provider edits. */
 function restoreProviderCredentialsRef(
   currentProvider: AuthOAuthProviderConfig,
   previousProvider: AuthOAuthProviderConfig,
@@ -184,6 +194,7 @@ function restoreProviderCredentialsRef(
   };
 }
 
+/*** Remove the provider inserted by a failed transaction or strip only its failed credential reference when other provider fields changed concurrently. */
 function removeInsertedOrFailedCredentialsRef(
   providers: readonly AuthOAuthProviderConfig[],
   rollback: StoredOAuthCredentialRollback,
@@ -197,6 +208,10 @@ function removeInsertedOrFailedCredentialsRef(
   });
 }
 
+/***
+ * Compare two JSON-compatible values by their serialized representation.
+ * @utility @ankhorage/utility/equality
+ */
 function areOAuthProvidersEqual(
   left: AuthOAuthProviderConfig,
   right: AuthOAuthProviderConfig,
@@ -204,6 +219,7 @@ function areOAuthProvidersEqual(
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
+/*** Remove auth/OAuth shells that were created solely for a failed credential-link transaction. */
 function removeTransactionIntroducedStructure(
   settings: StudioAuthSettings,
   rollback: StoredOAuthCredentialRollback,
@@ -224,11 +240,16 @@ function removeTransactionIntroducedStructure(
   return withoutIntroducedOAuth;
 }
 
+/***
+ * Return an object copy without one known property; parameterizing the property key yields a reusable immutable omit primitive.
+ * @utility @ankhorage/utility/object
+ */
 function omitOAuth(settings: StudioAuthSettings): StudioAuthSettings {
   const { oauth: _oauth, ...rest } = settings;
   return rest;
 }
 
+/*** Return whether an OAuth settings object exactly matches the default shell introduced by the credential flow. */
 function isDefaultOAuthSettings(oauth: NonNullable<StudioAuthSettings['oauth']>): boolean {
   return (
     oauth.enabled === false &&
@@ -237,6 +258,7 @@ function isDefaultOAuthSettings(oauth: NonNullable<StudioAuthSettings['oauth']>)
   );
 }
 
+/*** Return whether auth settings exactly match the default auth shell introduced by this flow. */
 function isDefaultAuthShell(settings: StudioAuthSettings): boolean {
   return (
     settings.scope === 'none' &&
@@ -249,6 +271,7 @@ function isDefaultAuthShell(settings: StudioAuthSettings): boolean {
   );
 }
 
+/*** Create the default Studio auth shell required before adding an OAuth credential link. */
 function createDefaultAuthSettings(): StudioAuthSettings {
   return {
     scope: 'none',
@@ -259,6 +282,7 @@ function createDefaultAuthSettings(): StudioAuthSettings {
   };
 }
 
+/*** Create the default OAuth configuration shell used when auth settings do not yet contain OAuth state. */
 function createDefaultOAuthSettings(): NonNullable<StudioAuthSettings['oauth']> {
   return {
     enabled: false,
@@ -267,6 +291,10 @@ function createDefaultOAuthSettings(): NonNullable<StudioAuthSettings['oauth']> 
   };
 }
 
+/***
+ * Immutably insert or replace an array entry selected by a key projection; this instance keys OAuth providers by id.
+ * @utility @ankhorage/utility/array
+ */
 function upsertOAuthProvider(
   providers: NonNullable<StudioAuthSettings['oauth']>['providers'],
   provider: AuthOAuthProviderConfig,
