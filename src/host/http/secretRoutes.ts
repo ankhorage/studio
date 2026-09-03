@@ -4,6 +4,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { ProjectManager } from '../orchestrator/projectManager';
 import { ProjectSecretService, ProjectSecretUsageError } from '../secrets/projectSecretService';
 
+/*** Register Studio secret metadata/usage/create/replace/remove and OAuth-credential HTTP adapters. */
 export function registerProjectSecretRoutes(
   fastify: FastifyInstance,
   options: {
@@ -13,6 +14,7 @@ export function registerProjectSecretRoutes(
 ): void {
   const service = new ProjectSecretService(options);
 
+  /*** List project secret metadata using optional environment/kind/provider filters. */
   fastify.get('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as {
@@ -32,6 +34,7 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  /*** Return metadata for one required secret reference. */
   fastify.get('/api/projects/:id/secrets/metadata', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { environment?: string; ref?: unknown };
@@ -51,6 +54,7 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  /*** Analyze usages of one required secret reference and map usage/domain failures to structured HTTP errors. */
   fastify.get('/api/projects/:id/secrets/usages', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { environment?: string; ref?: unknown };
@@ -84,6 +88,7 @@ export function registerProjectSecretRoutes(
     }
   });
 
+  /*** Validate and create one project secret payload. */
   fastify.post('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const body = asRecord(request.body);
@@ -110,6 +115,7 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  /*** Validate and replace one complete project secret payload. */
   fastify.put('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const body = asRecord(request.body);
@@ -135,6 +141,7 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  /*** Remove one project secret through the guarded usage-aware removal service. */
   fastify.delete('/api/projects/:id/secrets', async (request: FastifyRequest, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as {
@@ -159,6 +166,7 @@ export function registerProjectSecretRoutes(
     );
   });
 
+  /*** Configure one OAuth provider credential payload through the project secret service. */
   fastify.post(
     '/api/projects/:id/auth/oauth/:providerId',
     async (request: FastifyRequest, reply) => {
@@ -191,6 +199,7 @@ export function registerProjectSecretRoutes(
   );
 }
 
+/*** Translate one SecretStoreResult into the Studio HTTP status/error envelope while preserving successful results. */
 function sendSecretResult<TData>(reply: FastifyReply, result: SecretStoreResult<TData>) {
   if (result.ok) return result;
 
@@ -204,6 +213,7 @@ function sendSecretResult<TData>(reply: FastifyReply, result: SecretStoreResult<
   });
 }
 
+/*** Translate guarded secret-removal failures, including in-use conflict data, into the Studio HTTP envelope. */
 function sendSecretRemoveResult(
   reply: FastifyReply,
   result: Awaited<ReturnType<ProjectSecretService['removeGuarded']>>,
@@ -222,6 +232,10 @@ function sendSecretRemoveResult(
   });
 }
 
+/***
+ * Map secret-store error codes to HTTP status semantics.
+ * @todo Keep this mapping beside the SecretStoreResult/error-code contract rather than generic Utility.
+ */
 function resolveErrorStatus(code: string): number {
   if (code === 'not_found') return 404;
   if (code === 'conflict') return 409;
@@ -230,16 +244,28 @@ function resolveErrorStatus(code: string): number {
   return 400;
 }
 
+/***
+ * Convert an unknown value to a record, falling back to an empty record.
+ * @utility @ankhorage/utility/object
+ */
 function asRecord(value: unknown): Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : {};
 }
 
+/***
+ * Read a trimmed non-empty string from an unknown value.
+ * @utility @ankhorage/utility/string
+ */
 function readOptionalString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined;
 }
 
+/***
+ * Parse a non-empty record whose keys and values are non-empty strings and freeze the resulting string record.
+ * @utility @ankhorage/utility/validation
+ */
 function readSecretPayload(value: unknown): SecretPayload | null {
   const record = asRecord(value);
   const entries = Object.entries(record);
