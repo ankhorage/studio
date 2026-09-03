@@ -19,6 +19,7 @@ export class ProjectAuthApiError extends Error {
   readonly code: string;
   readonly status: number;
 
+  /*** Create a typed project-auth API error with a stable code and HTTP status. */
   constructor(args: { readonly code: string; readonly message: string; readonly status: number }) {
     super(args.message);
     this.name = 'ProjectAuthApiError';
@@ -27,6 +28,10 @@ export class ProjectAuthApiError extends Error {
   }
 }
 
+/***
+ * Fetch and validate auth-health state for one project and optional deploy environment.
+ * @todo Move project-auth HTTP access from the source root into the auth package-edge adapter.
+ */
 export async function getProjectAuthHealth(input: {
   readonly projectId: string;
   readonly environment?: AppDeployEnvironmentId;
@@ -38,6 +43,7 @@ export async function getProjectAuthHealth(input: {
   return parseProjectAuthHealthResponse(value);
 }
 
+/*** Validate the auth-health response envelope before parsing the contained project auth state. */
 export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealth {
   rejectRawSecretResponse(value, 'Project auth health response was invalid.');
   const record = asRecord(value);
@@ -47,6 +53,10 @@ export function parseProjectAuthHealthResponse(value: unknown): ProjectAuthHealt
   return parseProjectAuthHealth(record.data);
 }
 
+/***
+ * Fetch a Studio-host path, decode JSON, and translate unsuccessful HTTP responses through a caller-owned error parser.
+ * @utility @ankhorage/utility/http
+ */
 async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   const { API_BASE } = await import('./core/constants');
   const response = await fetch(`${API_BASE}${path}`, init);
@@ -55,6 +65,10 @@ async function requestJson(path: string, init?: RequestInit): Promise<unknown> {
   return value;
 }
 
+/***
+ * Decode a Response body as JSON while preserving the response status for decode failures.
+ * @utility @ankhorage/utility/http
+ */
 async function readJson(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -67,10 +81,12 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
+/*** Convert an unsuccessful auth HTTP payload into the typed project-auth API error contract. */
 function parseHttpError(value: unknown, status: number): ProjectAuthApiError {
   return parseProjectAuthHttpErrorResponse(value, status);
 }
 
+/*** Validate a raw-secret-safe auth error response and project it into ProjectAuthApiError. */
 export function parseProjectAuthHttpErrorResponse(
   value: unknown,
   status: number,
@@ -88,16 +104,25 @@ export function parseProjectAuthHttpErrorResponse(
   });
 }
 
+/***
+ * Create a typed invalid-upstream-response error with a fixed bad-gateway status.
+ * @utility @ankhorage/utility/http
+ */
 function invalidResponse(message: string): ProjectAuthApiError {
   return new ProjectAuthApiError({ code: 'invalid_response', message, status: 502 });
 }
 
+/***
+ * Narrow an unknown value to a strict non-array record or return null.
+ * @utility @ankhorage/utility/value
+ */
 function asRecord(value: unknown): Record<string, unknown> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : null;
 }
 
+/*** Validate and normalize the project-auth health payload inside a successful host response. */
 function parseProjectAuthHealth(value: unknown): ProjectAuthHealth {
   const record = asRecord(value);
   const setup = asRecord(record?.setup);
@@ -135,6 +160,7 @@ function parseProjectAuthHealth(value: unknown): ProjectAuthHealth {
   };
 }
 
+/*** Validate and normalize one project-auth diagnostic from an unknown host payload. */
 function parseProjectAuthDiagnostic(value: unknown): ProjectAuthDiagnostic {
   const record = asRecord(value);
   if (
@@ -159,6 +185,7 @@ function parseProjectAuthDiagnostic(value: unknown): ProjectAuthDiagnostic {
   };
 }
 
+/*** Validate and normalize one OAuth-provider health record from an unknown host payload. */
 function parseProjectOAuthProviderHealth(value: unknown): ProjectOAuthProviderHealth {
   const record = asRecord(value);
   if (
@@ -187,6 +214,10 @@ function parseProjectOAuthProviderHealth(value: unknown): ProjectOAuthProviderHe
   };
 }
 
+/***
+ * Serialize defined non-empty string values into an optional URL query string.
+ * @utility @ankhorage/utility/url
+ */
 function createQuery(values: Readonly<Record<string, string | undefined>>): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(values)) {
@@ -197,6 +228,10 @@ function createQuery(values: Readonly<Record<string, string | undefined>>): stri
   return query ? `?${query}` : '';
 }
 
+/***
+ * Reject an unknown response when a nested forbidden-key detector reports a match.
+ * @utility @ankhorage/utility/validation
+ */
 function rejectRawSecretResponse(value: unknown, message: string): void {
   const match = findRawSecretResponseKey(value);
   if (match) {
@@ -206,10 +241,18 @@ function rejectRawSecretResponse(value: unknown, message: string): void {
   }
 }
 
+/***
+ * Return whether an unknown value is an array containing only strings.
+ * @utility @ankhorage/utility/array
+ */
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
 }
 
+/***
+ * Return whether a value belongs to the canonical deploy-environment identifier set.
+ * @todo Move this reusable guard to the deploy contracts owner beside APP_DEPLOY_ENVIRONMENT_IDS.
+ */
 function isAppDeployEnvironmentId(value: unknown): value is AppDeployEnvironmentId {
   return (
     typeof value === 'string' &&
@@ -217,6 +260,10 @@ function isAppDeployEnvironmentId(value: unknown): value is AppDeployEnvironment
   );
 }
 
+/***
+ * Return whether every array entry belongs to the canonical deploy-target identifier set.
+ * @todo Move this reusable guard to the deploy contracts owner beside APP_DEPLOY_TARGET_IDS.
+ */
 function isAppDeployTargetIdArray(value: unknown): value is AppDeployTargetId[] {
   return (
     Array.isArray(value) &&
@@ -227,16 +274,19 @@ function isAppDeployTargetIdArray(value: unknown): value is AppDeployTargetId[] 
   );
 }
 
+/*** Return whether an unknown value is one of the project-auth aggregate health statuses. */
 function isProjectAuthHealthStatus(value: unknown): value is ProjectAuthHealthStatus {
   return (
     value === 'healthy' || value === 'warning' || value === 'error' || value === 'unconfigured'
   );
 }
 
+/*** Return whether an unknown value is a supported project-auth diagnostic severity. */
 function isProjectAuthDiagnosticSeverity(value: unknown): value is ProjectAuthDiagnosticSeverity {
   return value === 'info' || value === 'warning' || value === 'error';
 }
 
+/*** Return whether an unknown value is a supported OAuth-provider health status. */
 function isProjectOAuthProviderHealthStatus(
   value: unknown,
 ): value is ProjectOAuthProviderHealthStatus {
