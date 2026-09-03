@@ -16,6 +16,9 @@ import {
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
 
+/***
+ * Render the Studio project overview with search/sort controls, loading/error/empty states and navigation into create/detail flows.
+ */
 export function ProjectsOverviewScreen() {
   const { projects, isLoading, error, refresh } = useProjects();
   const [searchQuery, setSearchQuery] = useState('');
