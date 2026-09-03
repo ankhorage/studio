@@ -14,7 +14,7 @@ export type StudioManifestDraftMutation = (current: StudioManifest) => StudioMan
 
 /***
  * Apply a manifest mutation only when a Studio manifest draft currently exists.
- * @todo Move generic manifest-draft application orchestration from core/ into the manifest domain.
+ * @todo Move draft mutation orchestration out of core into the manifest application responsibility.
  */
 export function applyStudioManifestDraftMutation(
   current: StudioManifest | null,
@@ -25,7 +25,7 @@ export function applyStudioManifestDraftMutation(
 
 /***
  * Update a node in the manifest draft after resolving which screen owns that node.
- * @todo Split this manifest facade toward the owning canvas/manifest responsibility instead of core/.
+ * @todo Review with canvas/manifest boundaries when splitting manifestState by domain ownership.
  */
 export function updateStudioManifestDraftNode(
   manifest: StudioManifest,
@@ -39,7 +39,7 @@ export function updateStudioManifestDraftNode(
 
 /***
  * Apply theme updates to a Studio manifest draft.
- * @todo Remove this cross-domain core facade when manifest authoring responsibilities are reorganized.
+ * @todo Move theme authoring behavior to its owning domain when the Studio target structure defines that responsibility.
  */
 export function updateStudioManifestDraftTheme(
   manifest: StudioManifest,
@@ -51,7 +51,7 @@ export function updateStudioManifestDraftTheme(
 
 /***
  * Replace the Studio auth settings in a manifest draft with a non-null settings value.
- * @todo Keep auth policy under auth/ and remove the cross-domain core facade.
+ * @todo Move auth-specific manifest mutation into the auth domain.
  */
 export function updateStudioManifestDraftAuthSettings(
   manifest: StudioManifest,
@@ -62,7 +62,7 @@ export function updateStudioManifestDraftAuthSettings(
 
 /***
  * Replace or remove the auth settings stored in a Studio manifest draft.
- * @todo Keep auth policy under auth/ and remove the cross-domain core facade.
+ * @todo Move auth-specific manifest mutation into the auth domain.
  */
 export function replaceStudioManifestDraftAuthSettings(
   manifest: StudioManifest,
@@ -78,7 +78,7 @@ export function replaceStudioManifestDraftAuthSettings(
 
 /***
  * Replace the component data-binding registry in a Studio manifest draft.
- * @todo Keep binding authoring behavior under bindings/ and remove the cross-domain core facade.
+ * @todo Move binding-specific manifest mutation into the bindings domain.
  */
 export function updateStudioManifestDraftDataBindings(
   manifest: StudioManifest,
@@ -89,7 +89,7 @@ export function updateStudioManifestDraftDataBindings(
 
 /***
  * Replace the data-source registry in a Studio manifest draft.
- * @todo Resolve the owning domain for data-source authoring and remove the cross-domain core facade.
+ * @todo Review data-source ownership with bindings/external-apis before structural migration.
  */
 export function updateStudioManifestDraftDataSources(
   manifest: StudioManifest,
