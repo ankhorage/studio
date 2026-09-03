@@ -15,7 +15,10 @@ interface IngestStudioMediaSelectionArgs {
   readonly target?: StudioMediaIngestTarget;
 }
 
-/*** Send a picked media payload to the Studio host and return the persisted media asset. */
+/***
+ * Send a picked media payload to the Studio host and return the persisted media asset.
+ * @todo Move this concrete HTTP adapter from core/ beside the media domain boundary.
+ */
 export async function ingestStudioMediaSelection(
   args: IngestStudioMediaSelectionArgs,
 ): Promise<StudioMediaIngestResult> {
@@ -36,7 +39,10 @@ export async function ingestStudioMediaSelection(
   return { ok: true, asset: payload.asset };
 }
 
-/*** Request deletion of a Studio-owned media source while treating external URLs as non-owned. */
+/***
+ * Request deletion of a Studio-owned media source while treating external URLs as non-owned.
+ * @todo Move this concrete HTTP adapter from core/ beside the media domain boundary.
+ */
 export async function cleanupStudioMediaSource(
   projectId: string,
   source: MediaAssetSource,
@@ -57,7 +63,10 @@ export async function cleanupStudioMediaSource(
   return { ok: true, cleanup: payload.cleanup ?? 'removed' };
 }
 
-/*** Serialize media ingest metadata into the query string expected by the Studio host endpoint. */
+/***
+ * Serialize media ingest metadata into the query string expected by the Studio host endpoint.
+ * @todo Keep this protocol-specific serializer with the media HTTP adapter.
+ */
 function createIngestQuery(assetId: string, selection: StudioMediaPickerSelection): string {
   const query = new URLSearchParams({ assetId, name: selection.name, kind: selection.kind });
   appendQuery(query, 'contentType', selection.contentType);
@@ -68,7 +77,10 @@ function createIngestQuery(assetId: string, selection: StudioMediaPickerSelectio
   return query.toString();
 }
 
-/*** Append an optional scalar value to a URL query when the value is present. */
+/***
+ * Append an optional scalar value to a URL query when the value is present.
+ * @todo Keep this small helper local to the media HTTP adapter until cross-repository reuse is demonstrated.
+ */
 function appendQuery(query: URLSearchParams, key: string, value: number | string | undefined) {
   if (value !== undefined) query.set(key, String(value));
 }
