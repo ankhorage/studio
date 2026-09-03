@@ -17,6 +17,9 @@ import {
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
 
+/***
+ * Render one project workspace detail screen with metadata, lifecycle actions, host feedback and delete confirmation.
+ */
 export function ProjectDetailScreen() {
   const { projectId } = useProjectRouteParams();
   const {
@@ -33,6 +36,10 @@ export function ProjectDetailScreen() {
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [message, setMessage] = useState<{ tone: 'success' | 'error'; text: string } | null>(null);
 
+  /***
+   * Execute one project lifecycle UI action with shared busy state, success/error messaging and project-list refresh.
+   * @todo Replace the local unknown-error message fallback with the canonical `@ankhorage/utility/error` primitive during Utility consumption.
+   */
   async function runAction(label: string, action: () => Promise<string>) {
     setActiveAction(label);
     setMessage(null);
@@ -51,6 +58,7 @@ export function ProjectDetailScreen() {
     }
   }
 
+  /*** Launch the generated app, validate the returned URL and open it through the platform adapter/fallback. */
   const handleOpenRunningApp = () =>
     runAction('Open running app', async () => {
       const response: LaunchProjectResponse = await launchProject(projectId);
@@ -68,6 +76,7 @@ export function ProjectDetailScreen() {
         : `Running app opened at ${url}.`;
     });
 
+  /*** Confirm project deletion, execute the delete lifecycle and return to the project overview. */
   const handleDelete = () => {
     if (!project) return;
     confirmDelete(
@@ -178,11 +187,16 @@ export function ProjectDetailScreen() {
   );
 }
 
+/*** Read and normalize the projectId route parameter used by the project-detail screen. */
 function useProjectRouteParams() {
   const params = useLocalSearchParams<{ projectId?: string }>();
   return { projectId: firstParam(params.projectId) };
 }
 
+/***
+ * Normalize a scalar-or-array route/search parameter to its first string value, falling back to an empty string.
+ * @utility @ankhorage/utility/url
+ */
 function firstParam(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
 }
