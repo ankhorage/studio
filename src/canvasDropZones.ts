@@ -25,6 +25,10 @@ export type CanvasDropZoneResolution =
 
 const DROP_ZONE_KINDS: readonly PlacementKind[] = ['before', 'inside', 'after'];
 
+/***
+ * Resolve every Studio canvas placement kind as a valid or invalid drop zone for the dragged node.
+ * @todo Move Studio canvas drop-zone behavior under src/canvas/.
+ */
 export function resolveCanvasDropZones(args: {
   root: UiNode;
   targetNodeId: string;
@@ -83,6 +87,10 @@ export function resolveCanvasDropZones(args: {
   });
 }
 
+/***
+ * Filter Studio drop-zone resolutions to only their valid variants.
+ * @utility @ankhorage/utility/array
+ */
 export function getValidCanvasDropZones(
   zones: readonly CanvasDropZoneResolution[],
 ): readonly ValidCanvasDropZoneResolution[] {
