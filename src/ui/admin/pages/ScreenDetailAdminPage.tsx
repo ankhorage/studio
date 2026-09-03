@@ -17,6 +17,7 @@ export interface ScreenDetailAdminPageProps {
   readonly screenId: string | null;
 }
 
+/*** Render canonical screen metadata, route references, and guarded app-navigation actions for one stable screen id. */
 export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) {
   const studio = useStudio();
   const router = useRouter();
@@ -26,6 +27,7 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
   );
   const screensPath = createStudioAdminRoutePath({ routeId: 'screens' });
 
+  /*** Navigate back to the Studio screens administration route when it can be resolved. */
   const openScreens = () => {
     if (screensPath) router.push(screensPath);
   };
@@ -96,6 +98,7 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
 
   const appPath = resolveStudioScreenAppPath(model, entry.screenId);
   const label = entry.screen.title ?? entry.screen.name;
+  /*** Navigate from administration to the resolved unambiguous app pathname for this screen. */
   const openAppScreen = () => {
     if (appPath) router.replace(appPath);
   };
@@ -147,6 +150,7 @@ export function ScreenDetailAdminPage({ screenId }: ScreenDetailAdminPageProps) 
   );
 }
 
+/*** Render one labeled screen/route metadata fact. */
 function MetadataFact(props: { readonly label: string; readonly value: string }) {
   return (
     <View style={styles.fact}>
@@ -158,6 +162,7 @@ function MetadataFact(props: { readonly label: string; readonly value: string })
   );
 }
 
+/*** Explain why an otherwise valid screen cannot be opened as one concrete app pathname. */
 function AppPathUnavailable({ entry }: { readonly entry: StudioScreenNavigationEntry }) {
   let description = 'This screen has no route reference, so there is no app pathname to open.';
   if (entry.routeReferences.length > 1) {
@@ -170,6 +175,7 @@ function AppPathUnavailable({ entry }: { readonly entry: StudioScreenNavigationE
   return <Card compact title="Open app screen unavailable" description={description} />;
 }
 
+/*** Render canonical metadata for one navigator route reference to the selected screen. */
 function RouteReferenceRow(props: {
   readonly reference: StudioScreenRouteReference;
   readonly index: number;
@@ -214,12 +220,17 @@ function RouteReferenceRow(props: {
   );
 }
 
+/*** Format the number of route references to one screen as administration summary text. */
 function formatRouteReferenceSummary(count: number): string {
   if (count === 0) return 'No route references resolve to this screen.';
   if (count === 1) return 'One canonical route reference resolves to this screen.';
   return `${count} canonical route references resolve to this screen; each is shown separately.`;
 }
 
+/***
+ * Format a route path segment array as a slash-delimited path label with a configurable root concept.
+ * @utility @ankhorage/utility/route
+ */
 function formatRoutePath(routePath: readonly string[]): string {
   return routePath.length === 0 ? 'root' : routePath.join('/');
 }
