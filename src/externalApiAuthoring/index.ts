@@ -1,3 +1,6 @@
+/***
+ * External-API authoring public subpath entrypoint. Intentionally contains exports only; contracts and implementations remain in their owning modules.
+ */
 export type {
   ExternalApiConnectRequest,
   ExternalApiConnectResult,
