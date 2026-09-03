@@ -2,10 +2,18 @@ import { Card, Heading, Text, useZoraTheme } from '@ankhorage/zora';
 import React from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
+/***
+ * Render scrollable administration page content with Studio's shared page spacing and width constraints.
+ * @todo Prefer a canonical ZORA page/scroll layout primitive if this layout is generally useful; Studio should not own a parallel design-system primitive set.
+ */
 export function AdminScroll({ children }: { readonly children: React.ReactNode }) {
   return <ScrollView contentContainerStyle={styles.content}>{children}</ScrollView>;
 }
 
+/***
+ * Render the common title/description header used by Studio administration pages.
+ * @todo Prefer a canonical ZORA page-header pattern instead of maintaining Studio-specific generic UI primitives.
+ */
 export function AdminHeader(props: { readonly title: string; readonly description: string }) {
   return (
     <View style={styles.pageHeader}>
@@ -17,6 +25,10 @@ export function AdminHeader(props: { readonly title: string; readonly descriptio
   );
 }
 
+/***
+ * Render a compact labeled metric card for administration dashboards.
+ * @todo Promote/consume a ZORA metric/stat pattern rather than owning a generic visual primitive in Studio.
+ */
 export function Metric(props: { readonly title: string; readonly value: string }) {
   return (
     <Card compact title={props.title}>
@@ -25,6 +37,10 @@ export function Metric(props: { readonly title: string; readonly value: string }
   );
 }
 
+/***
+ * Render a labeled field wrapper for Studio admin forms.
+ * @todo Replace with the canonical ZORA FormField pattern where possible.
+ */
 export function Field(props: { readonly label: string; readonly children: React.ReactNode }) {
   return (
     <View style={styles.field}>
@@ -36,6 +52,10 @@ export function Field(props: { readonly label: string; readonly children: React.
   );
 }
 
+/***
+ * Render a theme-aware React Native text input for Studio administration forms.
+ * @todo Replace with the canonical ZORA Input component/pattern rather than duplicating focus-independent input styling in Studio.
+ */
 export function Input(props: React.ComponentProps<typeof TextInput>) {
   const { theme } = useZoraTheme();
   return (
@@ -55,6 +75,10 @@ export function Input(props: React.ComponentProps<typeof TextInput>) {
   );
 }
 
+/***
+ * Render one label/value metadata pair in Studio administration pages.
+ * @todo Prefer a canonical ZORA key/value or definition-list pattern if available.
+ */
 export function KeyValue(props: { readonly label: string; readonly value: string }) {
   return (
     <View style={styles.keyValue}>
