@@ -1,6 +1,10 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+/***
+ * Write one bundled authoring asset only when its resolved destination stays inside the authoring root.
+ * @utility @ankhorage/utility/node/fs
+ */
 export async function writeProjectAuthoringAsset(
   projectPath: string,
   relativePath: string,
