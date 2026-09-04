@@ -3,6 +3,10 @@ import type { ScreenSpec } from '@ankhorage/contracts';
 import { escapeStringLiteral } from '../utils/escapeStringLiteral';
 import { toSafeComponentName } from './utils/strings';
 
+/***
+ * Generate an Expo Router screen module that resolves the active manifest screen, injects route params into runtime bindings and renders a missing-screen fallback when needed.
+ * @todo Keep generated screen-module policy with the routes/project-generation owner rather than a generic host layout bucket.
+ */
 export function getScreenTsx(args: { screenId: string; screenDef: ScreenSpec }) {
   const { screenId, screenDef } = args;
   const safeName = toSafeComponentName(screenDef.name);
