@@ -1,5 +1,5 @@
 import { Heading, Text } from '@ankhorage/zora';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
@@ -16,6 +16,7 @@ import {
   styles,
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
+import { replaceWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function ProjectDetailScreen() {
   const { projectId } = useProjectRouteParams();
@@ -76,7 +77,7 @@ export function ProjectDetailScreen() {
       () => {
         void runAction('Delete project', async () => {
           await deleteProject(project.id);
-          router.replace('/');
+          replaceWorkspaceRoute('/');
           return `Deleted ${project.name}.`;
         });
       },
@@ -100,7 +101,7 @@ export function ProjectDetailScreen() {
           title="Project not found"
           detail="The requested project is not available in this workspace."
           actionLabel="Back to projects"
-          onAction={() => router.replace('/')}
+          onAction={() => replaceWorkspaceRoute('/')}
         />
       ) : (
         <View style={styles.detailLayout}>

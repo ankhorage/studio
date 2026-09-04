@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
@@ -15,6 +14,7 @@ import {
   ThemedWorkspaceTextInput,
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
+import { pushWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function ProjectsOverviewScreen() {
   const { projects, isLoading, error, refresh } = useProjects();
@@ -46,7 +46,7 @@ export function ProjectsOverviewScreen() {
         <PrimaryAction
           iconName="add-outline"
           label="New project"
-          onPress={() => router.push('/create')}
+          onPress={() => pushWorkspaceRoute('/create')}
         />
       </View>
 
@@ -72,7 +72,7 @@ export function ProjectsOverviewScreen() {
             if (searchQuery.trim()) {
               setSearchQuery('');
             } else {
-              router.push('/create');
+              pushWorkspaceRoute('/create');
             }
           }}
         />
@@ -82,7 +82,7 @@ export function ProjectsOverviewScreen() {
             <ProjectOverviewCard
               key={project.id}
               project={project}
-              onPress={() => router.push(`/projects/${project.id}`)}
+              onPress={() => pushWorkspaceRoute(`/projects/${project.id}`)}
             />
           ))}
         </View>

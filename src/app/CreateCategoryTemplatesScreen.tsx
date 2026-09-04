@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -11,6 +11,7 @@ import {
   WorkspaceScreen,
 } from './workspace/WorkspacePrimitives';
 import { resolveWorkspaceCategoryParam } from './workspace/routeParams';
+import { pushWorkspaceRoute, replaceWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function CreateCategoryTemplatesScreen() {
   const { category, categoryParam } = useCategoryRouteParams();
@@ -33,14 +34,14 @@ export function CreateCategoryTemplatesScreen() {
           title="Category not found"
           detail={`The requested template category "${categoryParam}" is not available.`}
           actionLabel="Back to categories"
-          onAction={() => router.replace('/create')}
+          onAction={() => replaceWorkspaceRoute('/create')}
         />
       ) : selected.templates.length === 0 ? (
         <EmptyState
           title="No templates in this category"
           detail="Choose a different category."
           actionLabel="Back to categories"
-          onAction={() => router.push('/create')}
+          onAction={() => pushWorkspaceRoute('/create')}
         />
       ) : (
         <View style={styles.templateGrid}>
@@ -48,7 +49,7 @@ export function CreateCategoryTemplatesScreen() {
             <TemplateCard
               key={template.id}
               template={template}
-              onPress={() => router.push(`/create/${category}/${template.slug}`)}
+              onPress={() => pushWorkspaceRoute(`/create/${category}/${template.slug}`)}
             />
           ))}
         </View>

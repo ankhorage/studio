@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { resolveWorkspaceParentPath } from './workspace/navigation';
+import { goBackFromWorkspaceRoute, replaceWorkspaceRoute } from './workspace/workspaceRouter';
 
 export function StudioApp() {
   return (
@@ -25,10 +26,10 @@ function StudioAppRootContent() {
   function handleBack() {
     if (!parentPath) return;
     if (router.canGoBack()) {
-      router.back();
+      goBackFromWorkspaceRoute();
       return;
     }
-    router.replace(parentPath);
+    replaceWorkspaceRoute(parentPath);
   }
 
   return (
@@ -64,7 +65,7 @@ function AppBarBrand() {
 
   return (
     <Pressable
-      onPress={() => router.replace('/')}
+      onPress={() => replaceWorkspaceRoute('/')}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       accessibilityRole="button"
