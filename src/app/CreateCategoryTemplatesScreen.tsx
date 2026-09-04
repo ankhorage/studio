@@ -48,7 +48,7 @@ export function CreateCategoryTemplatesScreen() {
             <TemplateCard
               key={template.id}
               template={template}
-              onPress={() => router.push(`/create/${category}/${template.templateId}`)}
+              onPress={() => router.push(`/create/${category}/${template.slug}`)}
             />
           ))}
         </View>
