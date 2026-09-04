@@ -158,7 +158,6 @@
       "studio.projects.create",
       "studio.projects.delete",
       "studio.projects.sync",
-      "studio.workspace.install",
       "studio.secrets.list",
       "studio.secrets.create",
       "studio.secrets.replace",
