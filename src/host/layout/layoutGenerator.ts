@@ -55,6 +55,9 @@ export interface GeneratedAppFileGenerationOptions {
   runtimePlan?: ExpoRuntimePlan;
 }
 
+/***
+ * Build the generated root-layout imports that bridge Runtime, Expo Runtime and optional Studio authoring ownership.
+ */
 function getPackageOwnedRuntimeImports(includeStudio: boolean): string {
   const runtimeImports = `import {
   ${includeStudio ? 'createComponentRegistry,\n  ' : ''}createRuntimeApiOperationExecutor,
@@ -82,6 +85,9 @@ import {
   return runtimeImports;
 }
 
+/***
+ * Build generated runtime registry declarations for standalone apps or Studio-enabled authoring apps.
+ */
 function getGeneratedRuntimeRegistryDeclarations(includeStudio: boolean): string {
   if (!includeStudio) {
     return `const APP_EXTENSION_COMPONENT_REGISTRY = GENERATED_APP_EXTENSION_COMPONENT_REGISTRY;
@@ -113,6 +119,10 @@ const APP_EXTENSION_INTERACTION_POLICY_SUPPORT = {
 } as const;`;
 }
 
+/***
+ * Trim, discard empty and join generated module-level declaration blocks with a blank line.
+ * @utility @ankhorage/utility/string
+ */
 function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): string {
   return declarations
     .map((declaration) => declaration.trim())
@@ -120,7 +130,14 @@ function mergeRuntimeModuleDeclarations(...declarations: readonly string[]): str
     .join('\n\n');
 }
 
+/***
+ * Generate the complete current file set for one Studio-managed app from its manifest, layout mutations and runtime plan.
+ * @todo Move generated-app file orchestration out of the generic host/layout bucket into the projects/template generation owner.
+ */
 export class GeneratedAppFileGenerator {
+  /***
+   * Walk the manifest navigators and compose root layouts, nested layouts, screens, auth runtime files and Studio admin routes into the generated project file set.
+   */
   generateFiles(
     _projectRoot: string,
     manifest: AppManifest,
@@ -268,6 +285,9 @@ export class GeneratedAppFileGenerator {
     return files;
   }
 
+  /***
+   * Generate the authenticated root shell with protected app/auth/Admin routes and the canonical generated auth runtime files.
+   */
   private getAuthShellLayoutContent(
     manifest: AppManifest,
     mutations: LayoutMutation[],
@@ -376,6 +396,9 @@ export class GeneratedAppFileGenerator {
     });
   }
 
+  /***
+   * Generate the unauthenticated root layout by composing navigator requirements, runtime integration and optional Studio authoring imports.
+   */
   private getRootLayoutContent(
     manifest: AppManifest,
     mutations: LayoutMutation[],
@@ -474,6 +497,9 @@ export class GeneratedAppFileGenerator {
     });
   }
 
+  /***
+   * Render one planned generated auth file through the canonical auth template for its plan kind.
+   */
   private getGeneratedAuthFileContent(
     filePlan: AuthGeneratedFilePlan,
     authLayoutPlan: EnabledAuthLayoutPlan,
@@ -549,12 +575,18 @@ export class GeneratedAppFileGenerator {
     }
   }
 
+  /***
+   * Generate one nested navigator layout module for a manifest navigator node.
+   */
   private getLayoutTemplate(node: NavigatorSpec, manifest: AppManifest, includeStudio: boolean) {
     const navigator = buildNavigatorJsx({ navigator: node, manifest, includeStudio });
     return getNestedLayoutTsx({ node, navigator });
   }
 }
 
+/***
+ * Generate the Studio Admin route-group layout, redirecting when generated global auth is unavailable and guarding production builds from the development Admin shell.
+ */
 function getStudioAdminLayoutTsx(hasGeneratedGlobalAuth: boolean): string {
   if (!hasGeneratedGlobalAuth) {
     return `import { Redirect } from 'expo-router';
@@ -578,6 +610,9 @@ export default function AnkhLayout() {
 `;
 }
 
+/***
+ * Generate the complete Studio Admin route file set from the canonical Admin route registry.
+ */
 function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile[] {
   return STUDIO_ADMIN_ROUTE_REGISTRY.map((route) => ({
     path: normalizeRel(path.join(appRootRel, resolveStudioAdminRouteFilePath(route.id))),
@@ -585,6 +620,9 @@ function createStudioAdminRouteGeneratedFiles(appRootRel: string): GeneratedFile
   }));
 }
 
+/***
+ * Resolve a canonical Studio Admin route definition to its generated Expo Router file path, preserving parent routes as index modules and dynamic parameters as bracket segments.
+ */
 function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
   const route = getStudioAdminRouteDefinition(routeId);
   const segments = route.path
@@ -603,6 +641,9 @@ function resolveStudioAdminRouteFilePath(routeId: StudioAdminRouteId): string {
   return path.join('ankh', ...segments.slice(0, -1), fileName);
 }
 
+/***
+ * Generate one Studio Admin Expo Router module that development-gates and renders the requested Admin route.
+ */
 function getStudioAdminRouteTsx(routeName: StudioAdminRouteId): string {
   return `import { AnkhAdminPage } from '@ankhorage/studio';
 import { Redirect } from 'expo-router';
@@ -617,10 +658,17 @@ export default function AnkhAdminRoute() {
 `;
 }
 
+/***
+ * Normalize a relative filesystem path to forward-slash separators for generated project files.
+ * @utility @ankhorage/utility/path
+ */
 function normalizeRel(p: string) {
   return p.replace(/\\/g, '/');
 }
 
+/***
+ * Normalize a manifest navigator recursively for generated Expo Router routes and lift hidden tab routes behind a stack wrapper when required.
+ */
 function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): NavigatorSpec {
   const normalizedRoutes = navigator.routes.map((route) => prepareRouteForGeneratedRoutes(route));
   const normalizedInitialRouteName = resolveValidGeneratedInitialRouteName(
@@ -665,6 +713,9 @@ function prepareNavigatorForGeneratedRoutes(navigator: NavigatorSpec): Navigator
   };
 }
 
+/***
+ * Normalize one route name and recursively prepare its nested navigator for generated Expo Router output.
+ */
 function prepareRouteForGeneratedRoutes(route: RouteDefinition): RouteDefinition {
   return {
     ...route,
@@ -673,11 +724,18 @@ function prepareRouteForGeneratedRoutes(route: RouteDefinition): RouteDefinition
   };
 }
 
+/***
+ * Normalize an Expo Router route name by trimming whitespace and surrounding slashes, falling back to the index route when empty.
+ * @utility @ankhorage/utility/route
+ */
 function normalizeGeneratedRouteName(routeName: string): string {
   const normalized = routeName.trim().replace(/^\/+/, '').replace(/\/+$/, '');
   return normalized.length > 0 ? normalized : 'index';
 }
 
+/***
+ * Keep the requested generated initial route when it exists in the route set, otherwise fall back to the first generated route or index.
+ */
 function resolveValidGeneratedInitialRouteName(
   initialRouteName: string | undefined,
   routes: readonly RouteDefinition[],
