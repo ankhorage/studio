@@ -1,4 +1,4 @@
-name: Finalize issue 183 branch
+name: Finalize issue 183 current head
 
 on:
   push:
@@ -82,36 +82,42 @@ jobs:
               "await expectRouteText(page, `${appUrl}/create`, ['New Project', FIXTURE_CATEGORY_LABEL]);",
               1,
           )
-          workspace = re.sub(
+          workspace, route_count = re.subn(
               r"        await expectRouteText\(page, `\$\{appUrl\}/create/\$\{category\.id\}`, \[\n          category\.label,\n          template\.name,\n        \]\);\n\n        await expectRouteText\(page, `\$\{appUrl\}/create/\$\{category\.id\}/\$\{template\.templateId\}`, \[\n          'Create Project',\n          template\.name,\n          'Project name',\n        \]\);",
               """        await expectRouteText(page, `${appUrl}/create/${FIXTURE_CATEGORY}`, [\n          FIXTURE_CATEGORY_LABEL,\n          'No templates in this category',\n        ]);""",
               workspace,
               count=1,
           )
+          if route_count != 1:
+              raise SystemExit(f'studioWorkspaceExpoWeb.smoke.test.ts: route replacement count={route_count}')
           workspace = workspace.replace(
               "`${appUrl}/create/${category.id}/not-a-template`",
               "`${appUrl}/create/${FIXTURE_CATEGORY}/not-a-template`",
               1,
           )
-          workspace, count = re.subn(
+          workspace, helper_count = re.subn(
               r"\nasync function getSmokeTemplateSelection\(\) \{.*?\n\}\n\nasync function createSmokeWorkspaceFixture",
               "\nasync function createSmokeWorkspaceFixture",
               workspace,
               count=1,
               flags=re.S,
           )
-          if count != 1:
-              raise SystemExit(f'studioWorkspaceExpoWeb.smoke.test.ts: selection helper replacement count={count}')
+          if helper_count != 1:
+              raise SystemExit(f'studioWorkspaceExpoWeb.smoke.test.ts: selection helper replacement count={helper_count}')
           workspace_path.write_text(workspace)
 
           project_manager = Path('src/host/orchestrator/projectManager.ts')
           text = project_manager.read_text()
-          text = text.replace(
-              '    const category = templateData.metadata.category;',
-              '    const { category } = templateData.metadata;',
-              1,
+          count = text.count('    const category = templateData.metadata.category;')
+          if count != 1:
+              raise SystemExit(f'projectManager.ts: category replacement count={count}')
+          project_manager.write_text(
+              text.replace(
+                  '    const category = templateData.metadata.category;',
+                  '    const { category } = templateData.metadata;',
+                  1,
+              )
           )
-          project_manager.write_text(text)
           PY
 
       - name: Align dependency contract and lockfile
